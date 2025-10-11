@@ -40,6 +40,21 @@ ATG GAA AAT GGA TAA
 - `GGA` - CIRCLE (draw circle with radius from stack)
 - `TAA` - STOP (end execution)
 
+## Built-in Examples
+
+The playground includes **10 pedagogical examples** demonstrating all features:
+
+1. **Hello Circle** - Minimal example with single circle
+2. **Two Shapes** - Circle and rectangle composition
+3. **Colorful Pattern** - Multiple colored shapes with rotation
+4. **Line Art** - LINE primitive with rotation patterns
+5. **Triangle Demo** - TRIANGLE primitive with different sizes
+6. **Ellipse Gallery** - ELLIPSE with various aspect ratios
+7. **Scale Transform** - SCALE opcode demonstration
+8. **Stack Operations** - DUP and SWAP for efficient stack management
+9. **Rosette Pattern** - Complex composition with rotation and color
+10. **Simple Face** - Combines primitives to draw a smiley face
+
 ## Codon Map Quick Reference
 
 ### Control Flow
@@ -227,9 +242,17 @@ CodonCanvas teaches:
   - Play/pause controls with speed adjustment
   - Stack and instruction display
   - Timeline markers for each codon
+- **Genome I/O** (`src/genome-io.ts`)
+  - Export genomes to .genome format (JSON)
+  - Import and validate .genome files
+  - Download and file upload utilities
 - **Interactive Demos**
   - Mutation Lab (`mutation-demo.html`)
   - Timeline Demo (`timeline-demo.html`)
+- **Example Library** (`src/examples.ts`)
+  - 10 pedagogical examples demonstrating all features
+  - Progressive complexity from simple to advanced
+  - All drawing primitives, transforms, and stack operations
 
 🚧 **Phase C: Extensions (Future)**
 

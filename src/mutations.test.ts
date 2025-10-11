@@ -45,7 +45,7 @@ describe('Mutation Tools', () => {
     });
 
     test('throws when no synonymous codons available', () => {
-      const genome = 'ATG TAA'; // Only START and STOP
+      const genome = 'ATG'; // Only START (no synonyms)
       expect(() => applySilentMutation(genome)).toThrow('No synonymous mutations available');
     });
   });
