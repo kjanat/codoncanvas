@@ -1,6 +1,6 @@
 # CodonCanvas 🧬
 
-**DNA-Inspired Visual Programming Language**
+> **DNA-Inspired Visual Programming Language**
 
 CodonCanvas is an educational programming language that uses DNA-like triplets (codons) as syntax. Learners write sequences of three-character tokens that execute as visual outputs, making genetic concepts like mutations and reading frames tangible and playful.
 
@@ -28,6 +28,7 @@ ATG GAA AAT GGA TAA
 ```
 
 **Explanation:**
+
 - `ATG` - START (begin execution)
 - `GAA AAT` - PUSH 3 (push value 3 to stack)
 - `GGA` - CIRCLE (draw circle with radius from stack)
@@ -36,10 +37,12 @@ ATG GAA AAT GGA TAA
 ## Codon Map Quick Reference
 
 ### Control Flow
+
 - `ATG` - START
 - `TAA|TAG|TGA` - STOP
 
 ### Drawing Primitives
+
 - `GG*` (GGA, GGC, GGG, GGT) - CIRCLE
 - `CC*` - RECT
 - `AA*` - LINE
@@ -47,18 +50,21 @@ ATG GAA AAT GGA TAA
 - `GT*` - ELLIPSE
 
 ### Transforms
+
 - `AC*` - TRANSLATE
 - `AG*` - ROTATE
 - `CG*` - SCALE
 - `TT*` - COLOR
 
 ### Stack Operations
+
 - `GA*` - PUSH (next codon is numeric literal)
 - `AT*` (ATA, ATC, ATT) - DUP
 - `TA*` (TAC, TAT), `TGC` - POP
 - `TG*` (TGG, TGT) - SWAP
 
 ### Utility
+
 - `CA*` - NOP
 - `CT*` - NOISE
 - `TC*` - SAVE_STATE
@@ -75,6 +81,7 @@ where A=0, C=1, G=2, T=3
 ```
 
 Examples:
+
 - `AAA` = 0
 - `CCC` = 21
 - `TTT` = 63
@@ -84,27 +91,35 @@ Values are scaled: `pixel_value = (codon_value / 64) × canvas_width`
 ## Mutation Demonstration
 
 ### Silent Mutation (No Change)
+
 ```dna
 ATG GAA AGG GGA TAA  → ATG GAA AGG GGC TAA
 ```
+
 GGA → GGC: Both are CIRCLE, output identical
 
 ### Missense Mutation (Shape Change)
+
 ```dna
 ATG GAA AGG GGA TAA  → ATG GAA AGG CCA TAA
 ```
+
 GGA → CCA: CIRCLE becomes RECT
 
 ### Nonsense Mutation (Early Stop)
+
 ```dna
 ATG GAA AGG GGA CCA TAA  → ATG GAA AGG TAA
 ```
+
 GGA → TAA: Early STOP, second shape missing
 
 ### Frameshift (Complete Scramble)
+
 ```dna
 ATG GAA AGG GGA TAA  → ATG GA AAG GGG ATA A
 ```
+
 Delete first 'A': All downstream codons shift, output completely different
 
 ## Project Structure
@@ -155,6 +170,7 @@ npm test
 ```
 
 Test suite includes:
+
 - Lexer tokenization and validation
 - VM execution and stack operations
 - Numeric literal decoding
@@ -164,6 +180,7 @@ Test suite includes:
 ## Pedagogy
 
 CodonCanvas teaches:
+
 - **Genetic code structure**: Triplet codons, reading frames
 - **Redundancy**: Synonymous codons mapping to same function
 - **Mutation types**: Silent, missense, nonsense, frameshift
@@ -173,6 +190,7 @@ CodonCanvas teaches:
 ## Implementation Status
 
 ✅ **Phase A: MVP Core (Completed)**
+
 - Lexer with comment stripping and validation
 - VM with all 9 opcode families
 - Canvas2D renderer with transforms
@@ -181,6 +199,7 @@ CodonCanvas teaches:
 - Comprehensive test suite
 
 🚧 **Phase B: Pedagogy Tools (Next)**
+
 - Mutation buttons (point, indel, frameshift)
 - Diff viewer for genome comparison
 - Timeline scrubber for step-through execution

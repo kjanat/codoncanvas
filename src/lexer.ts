@@ -1,4 +1,4 @@
-import { Base, Codon, CodonToken, ParseError } from './types.js';
+import { Base, Codon, CodonToken, ParseError } from './types';
 
 export interface Lexer {
   tokenize(source: string): CodonToken[];

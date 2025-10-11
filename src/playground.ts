@@ -1,7 +1,7 @@
-import { CodonLexer } from './lexer.js';
-import { CodonVM } from './vm.js';
-import { Canvas2DRenderer } from './renderer.js';
-import { examples, ExampleKey } from './examples.js';
+import { ExampleKey, examples } from './examples';
+import { CodonLexer } from './lexer';
+import { Canvas2DRenderer } from './renderer';
+import { CodonVM } from './vm';
 
 // Get DOM elements
 const editor = document.getElementById('editor') as HTMLTextAreaElement;

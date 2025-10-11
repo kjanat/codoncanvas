@@ -1,5 +1,5 @@
-import { CodonToken, Opcode, VMState, CODON_MAP } from './types.js';
-import { Renderer } from './renderer.js';
+import { Renderer } from './renderer';
+import { CODON_MAP, CodonToken, Opcode, VMState } from './types';
 
 export interface VM {
   state: VMState;

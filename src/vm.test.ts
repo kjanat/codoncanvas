@@ -1,248 +1,248 @@
-import { describe, test, expect, beforeEach } from 'vitest';
-import { CodonVM } from './vm.js';
-import { CodonLexer } from './lexer.js';
-import { Renderer } from './renderer.js';
+import { beforeEach, describe, expect, test } from "vitest";
+import { CodonLexer } from "./lexer";
+import { Renderer } from "./renderer";
+import { CodonVM } from "./vm";
 
 // Mock renderer for testing
 class MockRenderer implements Renderer {
-  readonly width = 400;
-  readonly height = 400;
+	readonly width = 400;
+	readonly height = 400;
 
-  private transform = { x: 200, y: 200, rotation: 0, scale: 1 };
-  public operations: string[] = [];
+	private transform = { x: 200, y: 200, rotation: 0, scale: 1 };
+	public operations: string[] = [];
 
-  clear(): void {
-    this.operations = [];
-    this.transform = { x: 200, y: 200, rotation: 0, scale: 1 };
-  }
+	clear(): void {
+		this.operations = [];
+		this.transform = { x: 200, y: 200, rotation: 0, scale: 1 };
+	}
 
-  circle(radius: number): void {
-    this.operations.push(`circle(${radius})`);
-  }
+	circle(radius: number): void {
+		this.operations.push(`circle(${radius})`);
+	}
 
-  rect(width: number, height: number): void {
-    this.operations.push(`rect(${width}, ${height})`);
-  }
+	rect(width: number, height: number): void {
+		this.operations.push(`rect(${width}, ${height})`);
+	}
 
-  line(length: number): void {
-    this.operations.push(`line(${length})`);
-  }
+	line(length: number): void {
+		this.operations.push(`line(${length})`);
+	}
 
-  triangle(size: number): void {
-    this.operations.push(`triangle(${size})`);
-  }
+	triangle(size: number): void {
+		this.operations.push(`triangle(${size})`);
+	}
 
-  ellipse(rx: number, ry: number): void {
-    this.operations.push(`ellipse(${rx}, ${ry})`);
-  }
+	ellipse(rx: number, ry: number): void {
+		this.operations.push(`ellipse(${rx}, ${ry})`);
+	}
 
-  translate(dx: number, dy: number): void {
-    this.transform.x += dx;
-    this.transform.y += dy;
-    this.operations.push(`translate(${dx}, ${dy})`);
-  }
+	translate(dx: number, dy: number): void {
+		this.transform.x += dx;
+		this.transform.y += dy;
+		this.operations.push(`translate(${dx}, ${dy})`);
+	}
 
-  rotate(degrees: number): void {
-    this.transform.rotation += degrees;
-    this.operations.push(`rotate(${degrees})`);
-  }
+	rotate(degrees: number): void {
+		this.transform.rotation += degrees;
+		this.operations.push(`rotate(${degrees})`);
+	}
 
-  scale(factor: number): void {
-    this.transform.scale *= factor;
-    this.operations.push(`scale(${factor})`);
-  }
+	scale(factor: number): void {
+		this.transform.scale *= factor;
+		this.operations.push(`scale(${factor})`);
+	}
 
-  setColor(h: number, s: number, l: number): void {
-    this.operations.push(`color(${h}, ${s}, ${l})`);
-  }
+	setColor(h: number, s: number, l: number): void {
+		this.operations.push(`color(${h}, ${s}, ${l})`);
+	}
 
-  getCurrentTransform() {
-    return this.transform;
-  }
+	getCurrentTransform() {
+		return this.transform;
+	}
 
-  toDataURL(): string {
-    return 'data:image/png;base64,mock';
-  }
+	toDataURL(): string {
+		return "data:image/png;base64,mock";
+	}
 
-  setPosition(_x: number, _y: number): void {}
-  setRotation(_degrees: number): void {}
-  setScale(_scale: number): void {}
+	setPosition(_x: number, _y: number): void {}
+	setRotation(_degrees: number): void {}
+	setScale(_scale: number): void {}
 }
 
-describe('CodonVM', () => {
-  let vm: CodonVM;
-  let renderer: MockRenderer;
-  let lexer: CodonLexer;
+describe("CodonVM", () => {
+	let vm: CodonVM;
+	let renderer: MockRenderer;
+	let lexer: CodonLexer;
 
-  beforeEach(() => {
-    renderer = new MockRenderer();
-    vm = new CodonVM(renderer);
-    lexer = new CodonLexer();
-  });
+	beforeEach(() => {
+		renderer = new MockRenderer();
+		vm = new CodonVM(renderer);
+		lexer = new CodonLexer();
+	});
 
-  describe('Basic execution', () => {
-    test('executes hello circle program', () => {
-      const genome = 'ATG GAA AAT GGA TAA';
-      const tokens = lexer.tokenize(genome);
-      vm.run(tokens);
+	describe("Basic execution", () => {
+		test("executes hello circle program", () => {
+			const genome = "ATG GAA AAT GGA TAA";
+			const tokens = lexer.tokenize(genome);
+			vm.run(tokens);
 
-      expect(renderer.operations).toContain('circle(18.75)'); // 3/64 * 400
-    });
+			expect(renderer.operations).toContain("circle(18.75)"); // 3/64 * 400
+		});
 
-    test('handles PUSH opcode correctly', () => {
-      const genome = 'ATG GAA CCC TAA'; // PUSH 21
-      const tokens = lexer.tokenize(genome);
-      vm.run(tokens);
+		test("handles PUSH opcode correctly", () => {
+			const genome = "ATG GAA CCC TAA"; // PUSH 21
+			const tokens = lexer.tokenize(genome);
+			vm.run(tokens);
 
-      expect(vm.state.stack).toHaveLength(1);
-      expect(vm.state.stack[0]).toBe(21);
-    });
+			expect(vm.state.stack).toHaveLength(1);
+			expect(vm.state.stack[0]).toBe(21);
+		});
 
-    test('decodes numeric literals correctly', () => {
-      const testCases = [
-        { codon: 'AAA', expected: 0 },   // 0*16 + 0*4 + 0 = 0
-        { codon: 'AAT', expected: 3 },   // 0*16 + 0*4 + 3 = 3
-        { codon: 'CCC', expected: 21 },  // 1*16 + 1*4 + 1 = 21
-        { codon: 'TTT', expected: 63 },  // 3*16 + 3*4 + 3 = 63
-      ];
+		test("decodes numeric literals correctly", () => {
+			const testCases = [
+				{ codon: "AAA", expected: 0 }, // 0*16 + 0*4 + 0 = 0
+				{ codon: "AAT", expected: 3 }, // 0*16 + 0*4 + 3 = 3
+				{ codon: "CCC", expected: 21 }, // 1*16 + 1*4 + 1 = 21
+				{ codon: "TTT", expected: 63 }, // 3*16 + 3*4 + 3 = 63
+			];
 
-      for (const { codon, expected } of testCases) {
-        const genome = `ATG GAA ${codon} TAA`;
-        const tokens = lexer.tokenize(genome);
-        vm.run(tokens);
-        expect(vm.state.stack[0]).toBe(expected);
-        vm.reset();
-      }
-    });
-  });
+			for (const { codon, expected } of testCases) {
+				const genome = `ATG GAA ${codon} TAA`;
+				const tokens = lexer.tokenize(genome);
+				vm.run(tokens);
+				expect(vm.state.stack[0]).toBe(expected);
+				vm.reset();
+			}
+		});
+	});
 
-  describe('Stack operations', () => {
-    test('DUP duplicates top value', () => {
-      const genome = 'ATG GAA CCC ATA TAA'; // PUSH 21, DUP
-      const tokens = lexer.tokenize(genome);
-      vm.run(tokens);
+	describe("Stack operations", () => {
+		test("DUP duplicates top value", () => {
+			const genome = "ATG GAA CCC ATA TAA"; // PUSH 21, DUP
+			const tokens = lexer.tokenize(genome);
+			vm.run(tokens);
 
-      expect(vm.state.stack).toHaveLength(2);
-      expect(vm.state.stack[0]).toBe(21);
-      expect(vm.state.stack[1]).toBe(21);
-    });
+			expect(vm.state.stack).toHaveLength(2);
+			expect(vm.state.stack[0]).toBe(21);
+			expect(vm.state.stack[1]).toBe(21);
+		});
 
-    test('POP removes top value', () => {
-      const genome = 'ATG GAA CCC TAC TAA'; // PUSH 21, POP
-      const tokens = lexer.tokenize(genome);
-      vm.run(tokens);
+		test("POP removes top value", () => {
+			const genome = "ATG GAA CCC TAC TAA"; // PUSH 21, POP
+			const tokens = lexer.tokenize(genome);
+			vm.run(tokens);
 
-      expect(vm.state.stack).toHaveLength(0);
-    });
+			expect(vm.state.stack).toHaveLength(0);
+		});
 
-    test('SWAP swaps top two values', () => {
-      const genome = 'ATG GAA CCC GAA AAT TGG TAA'; // PUSH 21, PUSH 3, SWAP
-      const tokens = lexer.tokenize(genome);
-      vm.run(tokens);
+		test("SWAP swaps top two values", () => {
+			const genome = "ATG GAA CCC GAA AAT TGG TAA"; // PUSH 21, PUSH 3, SWAP
+			const tokens = lexer.tokenize(genome);
+			vm.run(tokens);
 
-      expect(vm.state.stack).toHaveLength(2);
-      expect(vm.state.stack[0]).toBe(3);
-      expect(vm.state.stack[1]).toBe(21);
-    });
+			expect(vm.state.stack).toHaveLength(2);
+			expect(vm.state.stack[0]).toBe(3);
+			expect(vm.state.stack[1]).toBe(21);
+		});
 
-    test('throws on stack underflow', () => {
-      const genome = 'ATG GGA TAA'; // CIRCLE without PUSH
-      const tokens = lexer.tokenize(genome);
+		test("throws on stack underflow", () => {
+			const genome = "ATG GGA TAA"; // CIRCLE without PUSH
+			const tokens = lexer.tokenize(genome);
 
-      expect(() => vm.run(tokens)).toThrow('Stack underflow');
-    });
-  });
+			expect(() => vm.run(tokens)).toThrow("Stack underflow");
+		});
+	});
 
-  describe('Drawing primitives', () => {
-    test('draws rectangle with two values', () => {
-      const genome = 'ATG GAA AGG GAA AGG CCA TAA'; // PUSH 10, PUSH 10, RECT
-      const tokens = lexer.tokenize(genome);
-      vm.run(tokens);
+	describe("Drawing primitives", () => {
+		test("draws rectangle with two values", () => {
+			const genome = "ATG GAA AGG GAA AGG CCA TAA"; // PUSH 10, PUSH 10, RECT
+			const tokens = lexer.tokenize(genome);
+			vm.run(tokens);
 
-      expect(renderer.operations).toContain('rect(62.5, 62.5)'); // 10/64 * 400
-    });
+			expect(renderer.operations).toContain("rect(62.5, 62.5)"); // 10/64 * 400
+		});
 
-    test('draws line', () => {
-      const genome = 'ATG GAA CCC AAA TAA'; // PUSH 21, LINE
-      const tokens = lexer.tokenize(genome);
-      vm.run(tokens);
+		test("draws line", () => {
+			const genome = "ATG GAA CCC AAA TAA"; // PUSH 21, LINE
+			const tokens = lexer.tokenize(genome);
+			vm.run(tokens);
 
-      expect(renderer.operations).toContain('line(131.25)'); // 21/64 * 400
-    });
-  });
+			expect(renderer.operations).toContain("line(131.25)"); // 21/64 * 400
+		});
+	});
 
-  describe('Transform operations', () => {
-    test('translates position', () => {
-      const genome = 'ATG GAA CCC GAA AAA ACA TAA'; // PUSH 21, PUSH 0, TRANSLATE
-      const tokens = lexer.tokenize(genome);
-      vm.run(tokens);
+	describe("Transform operations", () => {
+		test("translates position", () => {
+			const genome = "ATG GAA CCC GAA AAA ACA TAA"; // PUSH 21, PUSH 0, TRANSLATE
+			const tokens = lexer.tokenize(genome);
+			vm.run(tokens);
 
-      expect(renderer.operations).toContain('translate(131.25, 0)');
-    });
+			expect(renderer.operations).toContain("translate(131.25, 0)");
+		});
 
-    test('rotates direction', () => {
-      const genome = 'ATG GAA ATT AGA TAA'; // PUSH 15, ROTATE
-      const tokens = lexer.tokenize(genome);
-      vm.run(tokens);
+		test("rotates direction", () => {
+			const genome = "ATG GAA ATT AGA TAA"; // PUSH 15, ROTATE
+			const tokens = lexer.tokenize(genome);
+			vm.run(tokens);
 
-      expect(renderer.operations).toContain('rotate(15)');
-    });
-  });
+			expect(renderer.operations).toContain("rotate(15)");
+		});
+	});
 
-  describe('Mutation testing', () => {
-    test('silent mutation produces identical output', () => {
-      const genome1 = 'ATG GAA AGG GGA TAA';
-      const genome2 = 'ATG GAA AGG GGC TAA'; // GGA → GGC (both CIRCLE)
+	describe("Mutation testing", () => {
+		test("silent mutation produces identical output", () => {
+			const genome1 = "ATG GAA AGG GGA TAA";
+			const genome2 = "ATG GAA AGG GGC TAA"; // GGA → GGC (both CIRCLE)
 
-      const tokens1 = lexer.tokenize(genome1);
-      const tokens2 = lexer.tokenize(genome2);
+			const tokens1 = lexer.tokenize(genome1);
+			const tokens2 = lexer.tokenize(genome2);
 
-      vm.run(tokens1);
-      const ops1 = [...renderer.operations];
+			vm.run(tokens1);
+			const ops1 = [...renderer.operations];
 
-      vm.reset();
+			vm.reset();
 
-      vm.run(tokens2);
-      const ops2 = [...renderer.operations];
+			vm.run(tokens2);
+			const ops2 = [...renderer.operations];
 
-      expect(ops1).toEqual(ops2);
-    });
+			expect(ops1).toEqual(ops2);
+		});
 
-    test('nonsense mutation truncates output', () => {
-      const full = 'ATG GAA AGG GGA GAA AGG GAA AGG CCA TAA';
-      const truncated = 'ATG GAA AGG GGA TAA'; // Early STOP
+		test("nonsense mutation truncates output", () => {
+			const full = "ATG GAA AGG GGA GAA AGG GAA AGG CCA TAA";
+			const truncated = "ATG GAA AGG GGA TAA"; // Early STOP
 
-      const tokensFull = lexer.tokenize(full);
-      const tokensTrunc = lexer.tokenize(truncated);
+			const tokensFull = lexer.tokenize(full);
+			const tokensTrunc = lexer.tokenize(truncated);
 
-      vm.run(tokensFull);
-      const opsFull = renderer.operations.length;
+			vm.run(tokensFull);
+			const opsFull = renderer.operations.length;
 
-      vm.reset();
+			vm.reset();
 
-      vm.run(tokensTrunc);
-      const opsTrunc = renderer.operations.length;
+			vm.run(tokensTrunc);
+			const opsTrunc = renderer.operations.length;
 
-      expect(opsTrunc).toBeLessThan(opsFull);
-    });
-  });
+			expect(opsTrunc).toBeLessThan(opsFull);
+		});
+	});
 
-  describe('Error handling', () => {
-    test('throws on unknown codon', () => {
-      const tokens = [
-        { text: 'ATG' as any, position: 0, line: 1 },
-        { text: 'XXX' as any, position: 3, line: 1 },
-        { text: 'TAA' as any, position: 6, line: 1 }
-      ];
+	describe("Error handling", () => {
+		test("throws on unknown codon", () => {
+			const tokens = [
+				{ text: "ATG" as any, position: 0, line: 1 },
+				{ text: "XXX" as any, position: 3, line: 1 },
+				{ text: "TAA" as any, position: 6, line: 1 },
+			];
 
-      expect(() => vm.run(tokens)).toThrow('Unknown codon');
-    });
+			expect(() => vm.run(tokens)).toThrow("Unknown codon");
+		});
 
-    test('throws on PUSH at end of program', () => {
-      const genome = 'ATG GAA'; // PUSH without literal
-      const tokens = lexer.tokenize(genome);
+		test("throws on PUSH at end of program", () => {
+			const genome = "ATG GAA"; // PUSH without literal
+			const tokens = lexer.tokenize(genome);
 
-      expect(() => vm.run(tokens)).toThrow('missing numeric literal');
-    });
-  });
+			expect(() => vm.run(tokens)).toThrow("missing numeric literal");
+		});
+	});
 });

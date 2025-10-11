@@ -9,6 +9,7 @@
 Complete implementation of CodonCanvas MVP (Phase A) from scratch:
 
 ### Core System (6 TypeScript modules, ~1,200 LOC)
+
 1. **types.ts** - Type definitions, codon map, enums
 2. **lexer.ts** - Tokenizer with validation
 3. **vm.ts** - Stack-based virtual machine
@@ -17,15 +18,18 @@ Complete implementation of CodonCanvas MVP (Phase A) from scratch:
 6. **playground.ts** - Web UI logic
 
 ### Testing (2 test suites, 26 tests, 100% passing)
+
 - lexer.test.ts: Tokenization, validation, error handling
 - vm.test.ts: Execution, stack ops, mutations, rendering
 
 ### Documentation
+
 - README.md: User-facing documentation
 - implementation-notes.md: Technical details for future sessions
 - This session summary
 
 ### Infrastructure
+
 - package.json, tsconfig.json, vite.config.ts
 - index.html with Monaco-style dark theme UI
 - .gitignore
@@ -33,6 +37,7 @@ Complete implementation of CodonCanvas MVP (Phase A) from scratch:
 ## Key Features Implemented
 
 ✅ **Complete 64-codon instruction set**
+
 - Control: START, STOP (4 codons)
 - Drawing: CIRCLE, RECT, LINE, TRIANGLE, ELLIPSE (20 codons)
 - Transforms: TRANSLATE, ROTATE, SCALE, COLOR (16 codons)
@@ -40,22 +45,26 @@ Complete implementation of CodonCanvas MVP (Phase A) from scratch:
 - Utility: NOP, NOISE, SAVE_STATE (9 codons)
 
 ✅ **Base-4 numeric encoding**
+
 - Formula: value = d1×16 + d2×4 + d3 (A=0, C=1, G=2, T=3)
 - Range: 0-63, scaled to canvas coordinates
 
 ✅ **Genetic mutation demonstrations**
+
 - Silent: Synonymous codon substitution (no visual change)
 - Missense: Different opcode (shape change)
 - Nonsense: Early STOP (truncated output)
 - Frameshift: Insertion/deletion (complete scramble)
 
 ✅ **Validation & error handling**
+
 - Frame alignment checking
 - START/STOP structure validation
 - Stack underflow detection
 - Instruction limit (10K) sandboxing
 
 ✅ **Live web playground**
+
 - Split-pane editor + canvas
 - Syntax highlighting (base-colored)
 - Example loader (3 built-in genomes)
@@ -90,9 +99,11 @@ npm run dev
 ```
 
 **Example genome:**
+
 ```dna
 ATG GAA AAT GGA TAA
 ```
+
 Draws a small circle at canvas center.
 
 ## Next Steps (Phase B - Not Implemented Yet)
@@ -125,12 +136,14 @@ Per specification, Phase B includes:
 ## Files for Future Reference
 
 **Most important:**
+
 - `claudedocs/implementation-notes.md` - Technical details
 - `src/types.ts` - Codon map and type definitions
 - `src/vm.ts` - Execution logic
 - `README.md` - User documentation
 
 **Quick commands:**
+
 ```bash
 npm test        # Run tests
 npm run dev     # Start dev server
@@ -156,6 +169,7 @@ When resuming work:
 5. **Consider Phase B** - Mutation tools, diff viewer, timeline
 
 **Key architecture points:**
+
 - Stack machine with transform state
 - PUSH reads next codon for literals
 - Renderer manages canvas state

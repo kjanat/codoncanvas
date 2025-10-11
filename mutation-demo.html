@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CodonCanvas - Mutation Demo</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Monaco', 'Menlo', 'Courier New', monospace;
+      background: #1e1e1e;
+      color: #d4d4d4;
+      padding: 1rem;
+    }
+
+    .container {
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+
+    header {
+      background: #252526;
+      padding: 1.5rem;
+      border-radius: 4px;
+      margin-bottom: 1rem;
+      border: 1px solid #3e3e42;
+    }
+
+    h1 {
+      font-size: 1.75rem;
+      color: #4ec9b0;
+      margin-bottom: 0.5rem;
+    }
+
+    .subtitle {
+      font-size: 0.875rem;
+      color: #858585;
+    }
+
+    .main-content {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+      margin-bottom: 1rem;
+    }
+
+    .panel {
+      background: #252526;
+      border: 1px solid #3e3e42;
+      border-radius: 4px;
+      overflow: hidden;
+    }
+
+    .panel-header {
+      background: #2d2d30;
+      padding: 0.75rem 1rem;
+      border-bottom: 1px solid #3e3e42;
+      font-weight: bold;
+      font-size: 0.875rem;
+    }
+
+    .panel-content {
+      padding: 1rem;
+    }
+
+    .editor-wrapper {
+      grid-column: 1 / -1;
+    }
+
+    #editor {
+      width: 100%;
+      min-height: 150px;
+      background: #1e1e1e;
+      color: #d4d4d4;
+      padding: 1rem;
+      font-family: 'Monaco', 'Menlo', 'Courier New', monospace;
+      font-size: 14px;
+      line-height: 1.5;
+      border: 1px solid #3e3e42;
+      border-radius: 4px;
+      resize: vertical;
+    }
+
+    .button-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+      gap: 0.5rem;
+      margin-bottom: 1rem;
+    }
+
+    button {
+      background: #0e639c;
+      color: white;
+      border: none;
+      padding: 0.75rem 1rem;
+      border-radius: 3px;
+      cursor: pointer;
+      font-size: 0.875rem;
+      font-family: inherit;
+      transition: background 0.2s;
+    }
+
+    button:hover {
+      background: #1177bb;
+    }
+
+    button.mutation-btn {
+      background: #3e3e42;
+    }
+
+    button.mutation-btn:hover {
+      background: #505052;
+    }
+
+    button.primary {
+      background: #4ec9b0;
+      color: #1e1e1e;
+      font-weight: bold;
+    }
+
+    button.primary:hover {
+      background: #5ed9c0;
+    }
+
+    .examples-section {
+      margin-bottom: 1rem;
+    }
+
+    .example-buttons {
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+    }
+
+    .example-buttons button {
+      background: #3e3e42;
+      padding: 0.5rem 0.75rem;
+      font-size: 0.75rem;
+    }
+
+    #diffContainer {
+      grid-column: 1 / -1;
+      margin-top: 1rem;
+    }
+
+    .canvas-container {
+      display: flex;
+      justify-content: center;
+      padding: 1rem;
+      background: #1e1e1e;
+      border-radius: 4px;
+    }
+
+    canvas {
+      border: 1px solid #3e3e42;
+      background: white;
+      border-radius: 4px;
+    }
+
+    .info-box {
+      background: #1e1e1e;
+      border: 1px solid #3e3e42;
+      border-radius: 4px;
+      padding: 1rem;
+      margin-bottom: 1rem;
+    }
+
+    .info-box h3 {
+      color: #4ec9b0;
+      font-size: 1rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .info-box p {
+      font-size: 0.875rem;
+      line-height: 1.6;
+      color: #858585;
+    }
+
+    .status {
+      padding: 0.75rem 1rem;
+      border-radius: 4px;
+      font-size: 0.875rem;
+      margin-bottom: 1rem;
+    }
+
+    .status.success {
+      background: rgba(137, 209, 133, 0.2);
+      border: 1px solid #89d185;
+      color: #89d185;
+    }
+
+    .status.error {
+      background: rgba(255, 107, 107, 0.2);
+      border: 1px solid #ff6b6b;
+      color: #ff6b6b;
+    }
+
+    .status.info {
+      background: rgba(78, 201, 176, 0.2);
+      border: 1px solid #4ec9b0;
+      color: #4ec9b0;
+    }
+
+    .hidden {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>🧬 CodonCanvas Mutation Laboratory</h1>
+      <div class="subtitle">Explore how genetic mutations affect visual phenotypes</div>
+    </header>
+
+    <div class="info-box">
+      <h3>How to use:</h3>
+      <p>
+        1. Load an example or write your own genome<br>
+        2. Click a mutation button to apply a mutation<br>
+        3. View the side-by-side comparison showing changes<br>
+        4. Observe how different mutation types produce different effects
+      </p>
+    </div>
+
+    <div id="statusContainer"></div>
+
+    <div class="main-content">
+      <div class="editor-wrapper">
+        <div class="panel">
+          <div class="panel-header">Genome Editor</div>
+          <div class="panel-content">
+            <div class="examples-section">
+              <strong style="font-size: 0.875rem; display: block; margin-bottom: 0.5rem;">Load Example:</strong>
+              <div class="example-buttons">
+                <button onclick="loadExample('helloCircle')">Hello Circle</button>
+                <button onclick="loadExample('twoShapes')">Two Shapes</button>
+                <button onclick="loadExample('colorfulPattern')">Colorful Pattern</button>
+              </div>
+            </div>
+            <textarea id="editor" placeholder="Enter genome here...">ATG GAA AAT GGA TAA</textarea>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel">
+        <div class="panel-header">Mutation Tools</div>
+        <div class="panel-content">
+          <div class="button-grid">
+            <button class="mutation-btn" onclick="applyMutation('silent')">Silent</button>
+            <button class="mutation-btn" onclick="applyMutation('missense')">Missense</button>
+            <button class="mutation-btn" onclick="applyMutation('nonsense')">Nonsense</button>
+            <button class="mutation-btn" onclick="applyMutation('point')">Point</button>
+            <button class="mutation-btn" onclick="applyMutation('insertion')">Insertion</button>
+            <button class="mutation-btn" onclick="applyMutation('deletion')">Deletion</button>
+            <button class="mutation-btn" onclick="applyMutation('frameshift')">Frameshift</button>
+            <button class="primary" onclick="clearDiff()">Clear Diff</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel">
+        <div class="panel-header">Original Output</div>
+        <div class="canvas-container">
+          <canvas id="canvasOriginal" width="350" height="350"></canvas>
+        </div>
+      </div>
+
+      <div class="panel">
+        <div class="panel-header">Current Output</div>
+        <div class="canvas-container">
+          <canvas id="canvasCurrent" width="350" height="350"></canvas>
+        </div>
+      </div>
+
+      <div id="diffContainer"></div>
+    </div>
+  </div>
+
+  <script type="module">
+    import { examples } from './src/examples.ts';
+    import { CodonLexer } from './src/lexer.ts';
+    import { Canvas2DRenderer } from './src/renderer.ts';
+    import { CodonVM } from './src/vm.ts';
+    import {
+      applySilentMutation,
+      applyMissenseMutation,
+      applyNonsenseMutation,
+      applyPointMutation,
+      applyInsertion,
+      applyDeletion,
+      applyFrameshiftMutation
+    } from './src/mutations.ts';
+    import { DiffViewer, injectDiffViewerStyles } from './src/diff-viewer.ts';
+
+    // Inject diff viewer styles
+    injectDiffViewerStyles();
+
+    const editor = document.getElementById('editor');
+    const canvasOriginal = document.getElementById('canvasOriginal');
+    const canvasCurrent = document.getElementById('canvasCurrent');
+    const diffContainer = document.getElementById('diffContainer');
+    const statusContainer = document.getElementById('statusContainer');
+
+    const lexer = new CodonLexer();
+    const rendererOriginal = new Canvas2DRenderer(canvasOriginal);
+    const rendererCurrent = new Canvas2DRenderer(canvasCurrent);
+    const vmOriginal = new CodonVM(rendererOriginal);
+    const vmCurrent = new CodonVM(rendererCurrent);
+    const diffViewer = new DiffViewer({ containerElement: diffContainer, showCanvas: false });
+
+    let originalGenome = editor.value;
+
+    function showStatus(message, type = 'info') {
+      statusContainer.innerHTML = `<div class="status ${type}">${message}</div>`;
+      setTimeout(() => {
+        statusContainer.innerHTML = '';
+      }, 5000);
+    }
+
+    function renderGenome(genome, renderer, vm) {
+      try {
+        renderer.clear();
+        const tokens = lexer.tokenize(genome);
+        vm.reset();
+        vm.run(tokens);
+        return true;
+      } catch (error) {
+        console.error('Render error:', error);
+        showStatus(`Error: ${error.message}`, 'error');
+        return false;
+      }
+    }
+
+    function updateVisualizations() {
+      const current = editor.value;
+      renderGenome(originalGenome, rendererOriginal, vmOriginal);
+      renderGenome(current, rendererCurrent, vmCurrent);
+    }
+
+    window.loadExample = function(key) {
+      if (examples[key]) {
+        editor.value = examples[key].genome;
+        originalGenome = editor.value;
+        updateVisualizations();
+        diffViewer.clear();
+        showStatus(`Loaded: ${examples[key].title}`, 'success');
+      }
+    };
+
+    window.applyMutation = function(type) {
+      try {
+        const genome = editor.value;
+        let result;
+
+        switch(type) {
+          case 'silent':
+            result = applySilentMutation(genome);
+            break;
+          case 'missense':
+            result = applyMissenseMutation(genome);
+            break;
+          case 'nonsense':
+            result = applyNonsenseMutation(genome);
+            break;
+          case 'point':
+            result = applyPointMutation(genome);
+            break;
+          case 'insertion':
+            result = applyInsertion(genome);
+            break;
+          case 'deletion':
+            result = applyDeletion(genome);
+            break;
+          case 'frameshift':
+            result = applyFrameshiftMutation(genome);
+            break;
+          default:
+            throw new Error(`Unknown mutation type: ${type}`);
+        }
+
+        editor.value = result.mutated;
+        updateVisualizations();
+        diffViewer.renderMutation(result);
+        showStatus(`Applied ${type} mutation!`, 'success');
+
+      } catch (error) {
+        console.error('Mutation error:', error);
+        showStatus(`Mutation failed: ${error.message}`, 'error');
+      }
+    };
+
+    window.clearDiff = function() {
+      originalGenome = editor.value;
+      updateVisualizations();
+      diffViewer.clear();
+      showStatus('Diff cleared - current genome is now the original', 'info');
+    };
+
+    // Initial render
+    updateVisualizations();
+  </script>
+</body>
+</html>

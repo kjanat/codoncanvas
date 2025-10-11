@@ -1,5 +1,5 @@
-import { describe, test, expect } from 'vitest';
-import { CodonLexer } from './lexer.js';
+import { describe, expect, test } from 'vitest';
+import { CodonLexer } from './lexer';
 
 describe('CodonLexer', () => {
   const lexer = new CodonLexer();

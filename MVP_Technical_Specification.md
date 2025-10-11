@@ -9,48 +9,54 @@
 ## 1. Complete Opcode Table (64 Codons)
 
 ### Control Flow (4 codons)
-| Codon | Opcode | Stack Effect | Description |
-|-------|--------|--------------|-------------|
-| ATG | START | `[] → []` | Begin execution block. First codon in valid program. |
-| TAA | STOP | `[] → []` | Terminate execution. |
-| TAG | STOP | `[] → []` | Terminate execution (synonymous). |
-| TGA | STOP | `[] → []` | Terminate execution (synonymous). |
+
+| Codon | Opcode | Stack Effect | Description                                          |
+| ----- | ------ | ------------ | ---------------------------------------------------- |
+| ATG   | START  | `[] → []`    | Begin execution block. First codon in valid program. |
+| TAA   | STOP   | `[] → []`    | Terminate execution.                                 |
+| TAG   | STOP   | `[] → []`    | Terminate execution (synonymous).                    |
+| TGA   | STOP   | `[] → []`    | Terminate execution (synonymous).                    |
 
 ### Drawing Primitives (20 codons) - COMMON
-| Codons | Opcode | Stack Effect | Description | Pedagogy Note |
-|--------|--------|--------------|-------------|---------------|
-| GGA, GGC, GGG, GGT | CIRCLE | `[radius] → []` | Draw circle at current position with given radius | Silent mutations within family |
-| CCA, CCC, CCG, CCT | RECT | `[w, h] → []` | Draw rectangle at current position (w×h) | Silent mutations within family |
-| AAA, AAC, AAG, AAT | LINE | `[length] → []` | Draw line from current position at current rotation | Silent mutations within family |
-| GCA, GCC, GCG, GCT | TRIANGLE | `[size] → []` | Draw equilateral triangle at current position | Missense from CIRCLE |
-| GTA, GTC, GTG, GTT | ELLIPSE | `[rx, ry] → []` | Draw ellipse at current position | Missense from CIRCLE |
+
+| Codons             | Opcode   | Stack Effect    | Description                                         | Pedagogy Note                  |
+| ------------------ | -------- | --------------- | --------------------------------------------------- | ------------------------------ |
+| GGA, GGC, GGG, GGT | CIRCLE   | `[radius] → []` | Draw circle at current position with given radius   | Silent mutations within family |
+| CCA, CCC, CCG, CCT | RECT     | `[w, h] → []`   | Draw rectangle at current position (w×h)            | Silent mutations within family |
+| AAA, AAC, AAG, AAT | LINE     | `[length] → []` | Draw line from current position at current rotation | Silent mutations within family |
+| GCA, GCC, GCG, GCT | TRIANGLE | `[size] → []`   | Draw equilateral triangle at current position       | Missense from CIRCLE           |
+| GTA, GTC, GTG, GTT | ELLIPSE  | `[rx, ry] → []` | Draw ellipse at current position                    | Missense from CIRCLE           |
 
 ### Transform Operations (16 codons) - COMMON
-| Codons | Opcode | Stack Effect | Description | Pedagogy Note |
-|--------|--------|--------------|-------------|---------------|
-| ACA, ACC, ACG, ACT | TRANSLATE | `[dx, dy] → []` | Move drawing position by (dx, dy) | Silent mutations within family |
-| AGA, AGC, AGG, AGT | ROTATE | `[degrees] → []` | Rotate drawing direction by degrees | Silent mutations within family |
-| CGA, CGC, CGG, CGT | SCALE | `[factor] → []` | Scale subsequent drawing operations | Silent mutations within family |
-| TTA, TTC, TTG, TTT | COLOR | `[h, s, l] → []` | Set color (hue 0-360, saturation 0-100, lightness 0-100) | Silent mutations within family |
+
+| Codons             | Opcode    | Stack Effect     | Description                                              | Pedagogy Note                  |
+| ------------------ | --------- | ---------------- | -------------------------------------------------------- | ------------------------------ |
+| ACA, ACC, ACG, ACT | TRANSLATE | `[dx, dy] → []`  | Move drawing position by (dx, dy)                        | Silent mutations within family |
+| AGA, AGC, AGG, AGT | ROTATE    | `[degrees] → []` | Rotate drawing direction by degrees                      | Silent mutations within family |
+| CGA, CGC, CGG, CGT | SCALE     | `[factor] → []`  | Scale subsequent drawing operations                      | Silent mutations within family |
+| TTA, TTC, TTG, TTT | COLOR     | `[h, s, l] → []` | Set color (hue 0-360, saturation 0-100, lightness 0-100) | Silent mutations within family |
 
 ### Stack Operations (8 codons) - COMMON
-| Codons | Opcode | Stack Effect | Description | Literal Encoding |
-|--------|--------|--------------|-------------|------------------|
-| GAA, GAG, GAC, GAT | PUSH | `[] → [value]` | Push numeric literal (next codon is read as base-4: A=0,C=1,G=2,T=3) | value = d1×16 + d2×4 + d3 (range 0-63) |
-| ATA, ATC, ATT | DUP | `[a] → [a, a]` | Duplicate top stack value | Useful for repeated values |
+
+| Codons             | Opcode | Stack Effect   | Description                                                          | Literal Encoding                       |
+| ------------------ | ------ | -------------- | -------------------------------------------------------------------- | -------------------------------------- |
+| GAA, GAG, GAC, GAT | PUSH   | `[] → [value]` | Push numeric literal (next codon is read as base-4: A=0,C=1,G=2,T=3) | value = d1×16 + d2×4 + d3 (range 0-63) |
+| ATA, ATC, ATT      | DUP    | `[a] → [a, a]` | Duplicate top stack value                                            | Useful for repeated values             |
 
 ### Utility (7 codons) - COMMON
-| Codons | Opcode | Stack Effect | Description | Pedagogy Note |
-|--------|--------|--------------|-------------|---------------|
-| CAA, CAC, CAG, CAT | NOP | `[] → []` | No operation; used for visual spacing in source | Makes code readable |
-| TAC, TAT, TGC | POP | `[a] → []` | Remove top value from stack | Stack cleanup |
+
+| Codons             | Opcode | Stack Effect | Description                                     | Pedagogy Note       |
+| ------------------ | ------ | ------------ | ----------------------------------------------- | ------------------- |
+| CAA, CAC, CAG, CAT | NOP    | `[] → []`    | No operation; used for visual spacing in source | Makes code readable |
+| TAC, TAT, TGC      | POP    | `[a] → []`   | Remove top value from stack                     | Stack cleanup       |
 
 ### Advanced Operations (9 codons) - RARE
-| Codons | Opcode | Stack Effect | Description | Use Case |
-|--------|--------|--------------|-------------|----------|
-| TGG, TGT | SWAP | `[a, b] → [b, a]` | Swap top two stack values | Advanced compositions |
-| CTA, CTC, CTG, CTT | NOISE | `[seed, intensity] → []` | Add visual noise/texture at current position | Artistic effects |
-| TCA, TCC, TCG, TCT | SAVE_STATE | `[] → []` | Push current transform state (position, rotation, scale, color) to state stack | Nested compositions |
+
+| Codons             | Opcode     | Stack Effect             | Description                                                                    | Use Case              |
+| ------------------ | ---------- | ------------------------ | ------------------------------------------------------------------------------ | --------------------- |
+| TGG, TGT           | SWAP       | `[a, b] → [b, a]`        | Swap top two stack values                                                      | Advanced compositions |
+| CTA, CTC, CTG, CTT | NOISE      | `[seed, intensity] → []` | Add visual noise/texture at current position                                   | Artistic effects      |
+| TCA, TCC, TCG, TCT | SAVE_STATE | `[] → []`                | Push current transform state (position, rotation, scale, color) to state stack | Nested compositions   |
 
 ---
 
@@ -62,6 +68,7 @@ When a PUSH opcode executes, the **next codon** is interpreted as a base-4 numbe
 where `d1, d2, d3 ∈ {A:0, C:1, G:2, T:3}`
 
 **Examples:**
+
 ```
 GAA AAA → PUSH 0   (A=0, A=0, A=0 → 0×16 + 0×4 + 0 = 0)
 GAA TCA → PUSH 52  (T=3, C=1, A=0 → 3×16 + 1×4 + 0 = 52)
@@ -70,16 +77,19 @@ GAG ACG → PUSH 22  (A=0, C=1, G=2 → 0×16 + 1×4 + 2 = 6... wait)
 ```
 
 Wait, let me recalculate ACG:
+
 - A=0, C=1, G=2
 - 0×16 + 1×4 + 2 = 6
 
 Let me fix TCA:
+
 - T=3, C=1, A=0
 - 3×16 + 1×4 + 0 = 48 + 4 = 52 ✓
 
 **Range:** 0-63 (sufficient for most canvas coordinates when scaled)
 
 **Screen Scaling:** Literals are interpreted as percentages of canvas dimensions:
+
 - Canvas assumed to be 400×400 pixels for MVP
 - Value 32 → 200 pixels (32/64 × 400)
 
@@ -305,15 +315,18 @@ class Canvas2DRenderer implements Renderer {
 ### 4.1 Example 1: "Hello Circle" (Minimal)
 
 **Genome:**
+
 ```
 ATG GAA AGG GGA TAA
 ```
 
 **Explanation:**
+
 1. `ATG` - START
 2. `GAA AGG` - PUSH 22 (A=0,G=2,G=2 → 0×16 + 2×4 + 2 = 10... wait)
 
 Let me recalculate AGG with base-4:
+
 - A=0, G=2, G=2
 - 0×16 + 2×4 + 2 = 0 + 8 + 2 = 10
 
@@ -322,11 +335,13 @@ So the literal is 10, which would be radius 10 pixels (10/64 × 400 = 62.5 pixel
 Let me pick better examples:
 
 **Genome:**
+
 ```
 ATG GAA CCC GGA TAA
 ```
 
 **Explanation:**
+
 1. `ATG` - START
 2. `GAA CCC` - PUSH 23 (C=1,C=1,C=1 → 1×16 + 1×4 + 1 = 21)
 3. `GGA` - CIRCLE (draws circle with radius 21, scaled to ~131 pixels)
@@ -336,6 +351,7 @@ ATG GAA CCC GGA TAA
 Single circle centered at (200, 200) with radius ~131 pixels.
 
 **Mutation Demos:**
+
 - `GGA → GGC` (silent): Identical output
 - `GGA → CCA` (missense): Circle becomes rectangle (needs 2 stack values, will error or use default)
 - `GGA → TAA` (nonsense): No circle drawn (program stops early)
@@ -344,6 +360,7 @@ Single circle centered at (200, 200) with radius ~131 pixels.
 ### 4.2 Example 2: "Two Shapes" (Composition)
 
 **Genome:**
+
 ```
 ATG 
   GAA CCC GGA           ; Push 21, draw circle
@@ -353,6 +370,7 @@ ATG
 Wait, TRANSLATE needs 2 values (dx, dy). Let me fix this:
 
 **Genome:**
+
 ```
 ATG 
   GAA CGC GGA                    ; Push 50, draw circle (radius 50)
@@ -362,10 +380,12 @@ TAA
 ```
 
 **Explanation:**
+
 1. `ATG` - START
 2. `GAA CGC` - PUSH 50 (C=1,G=2,C=1 → 1×16 + 2×4 + 1 = 25... let me recalculate)
 
 Actually let me be more careful. Base-4 with A=0, C=1, G=2, T=3:
+
 - CGC: C=1, G=2, C=1 → 1×16 + 2×4 + 1 = 16 + 8 + 1 = 25
 - CCC: C=1, C=1, C=1 → 1×16 + 1×4 + 1 = 16 + 4 + 1 = 21
 - AGC: A=0, G=2, C=1 → 0×16 + 2×4 + 1 = 8 + 1 = 9
@@ -373,6 +393,7 @@ Actually let me be more careful. Base-4 with A=0, C=1, G=2, T=3:
 Let me rewrite with clearer values:
 
 **Genome:**
+
 ```
 ATG 
   GAA TCC GGA        ; Push 57, draw circle
@@ -384,11 +405,13 @@ TAA
 ```
 
 Let me calculate:
+
 - TCC: T=3, C=1, C=1 → 3×16 + 1×4 + 1 = 48 + 4 + 1 = 53
 - CCC: 21 (calculated above)
 - GCC: G=2, C=1, C=1 → 2×16 + 1×4 + 1 = 32 + 4 + 1 = 37
 
 **Expected Output:**  
+
 - Circle at (200, 200) with radius 53/64×400 = 331 pixels (too big!)
 - Move by (21, 21) pixels = (131, 131) pixels
 - Circle at (331, 331) with radius 37/64×400 = 231 pixels
@@ -396,6 +419,7 @@ Let me calculate:
 These radii are too large. Let me scale down the examples:
 
 **Genome (Fixed):**
+
 ```
 ATG 
   GAA AAT GGA        ; Push 3, draw small circle
@@ -407,6 +431,7 @@ TAA
 ```
 
 Calculations:
+
 - AAT: A=0, A=0, T=3 → 0 + 0 + 3 = 3 (radius 3/64×400 = 19 pixels)
 - CCC: 21 (dx = 21/64×400 = 131 pixels)
 - AAA: 0 (dy = 0)
@@ -418,6 +443,7 @@ Two circles side-by-side.
 ### 4.3 Example 3: "Mutation Demo" (Pedagogical)
 
 **Genome:**
+
 ```
 ATG 
   GAA AGG GGA        ; Push 10, draw circle
@@ -431,6 +457,7 @@ TAA
 Wait, RECT needs 2 stack values. Let me fix:
 
 **Genome:**
+
 ```
 ATG 
   GAA AGG            ; Push 10
@@ -449,13 +476,13 @@ TAA
 
 1. **Silent:** Change `CCA` (RECT) to `CCC` (also RECT)
    - **Effect:** Identical output
-   
+
 2. **Missense:** Change `CCA` (RECT) to `GCA` (TRIANGLE)
    - **Effect:** Square becomes triangle
-   
+
 3. **Nonsense:** Change `CCA` to `TAA` (STOP)
    - **Effect:** Second shape disappears (early termination)
-   
+
 4. **Frameshift:** Delete the first `A` in `GAA AGG`
    - Becomes: `GA AAG G...` → `GAA AGG` → `GAC CGA AA...`
    - **Effect:** Entire downstream code scrambled
@@ -673,6 +700,7 @@ CA* = NOP        CT* = NOISE
 ```
 
 **Pedagogy Legend:**
+
 - `*` = all 4 bases (family of 4 synonymous codons)
 - `(3)` = uses 3 of 4 codons in family
 - `(2)` = uses 2 of 4 codons in family
