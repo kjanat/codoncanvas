@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CodonCanvas - DNA-Inspired Visual Programming</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Monaco', 'Menlo', 'Courier New', monospace;
+      background: #1e1e1e;
+      color: #d4d4d4;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    .container {
+      display: grid;
+      grid-template-columns: 1fr 400px;
+      grid-template-rows: auto 1fr auto;
+      height: 100vh;
+    }
+
+    header {
+      grid-column: 1 / -1;
+      background: #252526;
+      padding: 1rem;
+      border-bottom: 1px solid #3e3e42;
+    }
+
+    h1 {
+      font-size: 1.5rem;
+      color: #4ec9b0;
+    }
+
+    .subtitle {
+      font-size: 0.875rem;
+      color: #858585;
+      margin-top: 0.25rem;
+    }
+
+    .editor-panel {
+      display: flex;
+      flex-direction: column;
+      border-right: 1px solid #3e3e42;
+    }
+
+    .toolbar {
+      background: #2d2d30;
+      padding: 0.5rem;
+      border-bottom: 1px solid #3e3e42;
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+    }
+
+    button {
+      background: #0e639c;
+      color: white;
+      border: none;
+      padding: 0.5rem 1rem;
+      border-radius: 3px;
+      cursor: pointer;
+      font-size: 0.875rem;
+      font-family: inherit;
+    }
+
+    button:hover {
+      background: #1177bb;
+    }
+
+    button.secondary {
+      background: #3e3e42;
+    }
+
+    button.secondary:hover {
+      background: #505052;
+    }
+
+    select {
+      background: #3e3e42;
+      color: #d4d4d4;
+      border: 1px solid #505052;
+      padding: 0.5rem;
+      border-radius: 3px;
+      font-family: inherit;
+      cursor: pointer;
+    }
+
+    #editor {
+      flex: 1;
+      background: #1e1e1e;
+      color: #d4d4d4;
+      padding: 1rem;
+      font-family: 'Monaco', 'Menlo', 'Courier New', monospace;
+      font-size: 14px;
+      line-height: 1.5;
+      border: none;
+      resize: none;
+      outline: none;
+      overflow-y: auto;
+    }
+
+    .canvas-panel {
+      display: flex;
+      flex-direction: column;
+      background: #252526;
+    }
+
+    .canvas-header {
+      padding: 0.5rem 1rem;
+      background: #2d2d30;
+      border-bottom: 1px solid #3e3e42;
+      font-weight: bold;
+    }
+
+    .canvas-container {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1rem;
+    }
+
+    #canvas {
+      border: 1px solid #3e3e42;
+      background: white;
+      max-width: 100%;
+      max-height: 100%;
+    }
+
+    .status-bar {
+      grid-column: 1 / -1;
+      background: #007acc;
+      color: white;
+      padding: 0.5rem 1rem;
+      font-size: 0.875rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .error {
+      background: #f48771;
+      color: #1e1e1e;
+    }
+
+    .success {
+      background: #89d185;
+      color: #1e1e1e;
+    }
+
+    .info {
+      background: #007acc;
+    }
+
+    .stats {
+      display: flex;
+      gap: 1rem;
+      font-size: 0.75rem;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>🧬 CodonCanvas</h1>
+      <div class="subtitle">DNA-Inspired Visual Programming Language</div>
+    </header>
+
+    <div class="editor-panel">
+      <div class="toolbar">
+        <button id="runBtn">▶ Run</button>
+        <button id="clearBtn" class="secondary">Clear Canvas</button>
+        <select id="exampleSelect">
+          <option value="">Load Example...</option>
+          <option value="helloCircle">Hello Circle</option>
+          <option value="twoShapes">Two Shapes</option>
+          <option value="colorfulPattern">Colorful Pattern</option>
+        </select>
+        <button id="exportBtn" class="secondary">Export PNG</button>
+      </div>
+      <textarea id="editor" spellcheck="false" placeholder="Enter your genome here...
+Example:
+ATG GAA AAT GGA TAA
+
+; Draw a circle
+; ATG = START
+; GAA AAT = PUSH 3
+; GGA = CIRCLE
+; TAA = STOP">ATG GAA AAT GGA TAA</textarea>
+    </div>
+
+    <div class="canvas-panel">
+      <div class="canvas-header">Output Canvas</div>
+      <div class="canvas-container">
+        <canvas id="canvas" width="400" height="400"></canvas>
+      </div>
+    </div>
+
+    <div class="status-bar info">
+      <span id="statusMessage">Ready</span>
+      <div class="stats">
+        <span id="codonCount">Codons: 0</span>
+        <span id="instructionCount">Instructions: 0</span>
+      </div>
+    </div>
+  </div>
+
+  <script type="module" src="/src/playground.ts"></script>
+</body>
+</html>
