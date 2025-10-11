@@ -15,11 +15,17 @@ CodonCanvas is an educational programming language that uses DNA-like triplets (
 ## Quick Start
 
 ```bash
+# Install dependencies
 npm install
+
+# Run development server
 npm run dev
 ```
 
-Open browser to `http://localhost:5173`
+Then open in browser:
+- Main playground: `http://localhost:5173`
+- Mutation lab: `http://localhost:5173/mutation-demo.html`
+- Timeline demo: `http://localhost:5173/timeline-demo.html`
 
 ## Example: Hello Circle
 
@@ -127,15 +133,21 @@ Delete first 'A': All downstream codons shift, output completely different
 ```
 codoncanvas/
 ├── src/
-│   ├── types.ts          # Core type definitions
-│   ├── lexer.ts          # Tokenizer and validator
-│   ├── vm.ts             # Stack machine VM
-│   ├── renderer.ts       # Canvas renderer
-│   ├── examples.ts       # Built-in examples
-│   ├── playground.ts     # Web UI
-│   ├── lexer.test.ts     # Lexer tests
-│   └── vm.test.ts        # VM tests
-├── index.html            # Playground UI
+│   ├── types.ts              # Core type definitions & CODON_MAP
+│   ├── lexer.ts              # Tokenizer and validator
+│   ├── vm.ts                 # Stack machine VM
+│   ├── renderer.ts           # Canvas2D renderer
+│   ├── mutations.ts          # Mutation tools (7 types)
+│   ├── diff-viewer.ts        # Genome comparison component
+│   ├── timeline-scrubber.ts  # Step-through execution
+│   ├── examples.ts           # Built-in example genomes
+│   ├── playground.ts         # Main playground UI logic
+│   ├── lexer.test.ts         # Lexer tests (13 tests)
+│   ├── vm.test.ts            # VM tests (17 tests)
+│   └── mutations.test.ts     # Mutation tests (15 tests)
+├── index.html                # Main playground interface
+├── mutation-demo.html        # Mutation laboratory
+├── timeline-demo.html        # Timeline scrubber demo
 ├── package.json
 ├── tsconfig.json
 └── vite.config.ts
@@ -192,18 +204,40 @@ CodonCanvas teaches:
 ✅ **Phase A: MVP Core (Completed)**
 
 - Lexer with comment stripping and validation
-- VM with all 9 opcode families
-- Canvas2D renderer with transforms
-- Base-4 numeric literal encoding
-- Basic playground UI
-- Comprehensive test suite
+- VM with all 9 opcode families (64 codons)
+- Canvas2D renderer with all drawing primitives
+- Base-4 numeric literal encoding (0-63 range)
+- Interactive playground UI with examples
+- Comprehensive test suite (30+ tests)
 
-🚧 **Phase B: Pedagogy Tools (Next)**
+✅ **Phase B: Pedagogy Tools (Completed)**
 
-- Mutation buttons (point, indel, frameshift)
-- Diff viewer for genome comparison
-- Timeline scrubber for step-through execution
+- **Mutation Tools** (`src/mutations.ts`)
+  - Silent, missense, nonsense mutations
+  - Point mutations, insertions, deletions
+  - Frameshift mutations (1-2 base changes)
+  - compareGenomes() utility for analysis
+- **Diff Viewer** (`src/diff-viewer.ts`)
+  - Side-by-side genome comparison
+  - Highlighted codon changes
+  - Optional canvas output comparison
+  - Mutation type badges
+- **Timeline Scrubber** (`src/timeline-scrubber.ts`)
+  - Step-through execution visualization
+  - Play/pause controls with speed adjustment
+  - Stack and instruction display
+  - Timeline markers for each codon
+- **Interactive Demos**
+  - Mutation Lab (`mutation-demo.html`)
+  - Timeline Demo (`timeline-demo.html`)
+
+🚧 **Phase C: Extensions (Future)**
+
+- Audio backend for sound synthesis
+- Evolutionary mode with fitness selection
+- Alternative alphabets (U for RNA)
 - Enhanced linter with stack depth analysis
+- Visual regression testing infrastructure
 
 ## License
 
