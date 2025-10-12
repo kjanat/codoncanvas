@@ -219,13 +219,80 @@ The "Both" mode enables **simultaneous audio and visual rendering**, bringing mu
 
 ---
 
+## MIDI Export (NEW in v1.2)
+
+### Professional Music Workflow Integration
+**Status**: ✅ **IMPLEMENTED**
+
+Export CodonCanvas genomes as **MIDI files** for integration with professional music software (GarageBand, Ableton Live, Logic Pro, FL Studio, etc.).
+
+**How to Use:**
+1. Switch to Audio or Both mode (click mode button)
+2. Run your genome with `▶ Run`
+3. Click `🎹 Export MIDI` button
+4. Import `.mid` file into your DAW (Digital Audio Workstation)
+5. Edit, layer, and produce professional music from genetic code!
+
+**Opcode → MIDI Mapping:**
+
+| CodonCanvas Opcode | MIDI Event | Musical Meaning |
+|-------------------|------------|-----------------|
+| **Drawing Primitives (Notes)** |
+| CIRCLE | C4 (60) | Fundamental tone |
+| RECT | E4 (64) | Major third |
+| LINE | G4 (67) | Perfect fifth |
+| TRIANGLE | A4 (69) | Major sixth |
+| ELLIPSE | C5 (72) | Octave |
+| **Transform Operations (Control Changes)** |
+| ROTATE | CC1 (Modulation) | Parameter modulation |
+| SCALE | CC7 (Volume) | Dynamic expression |
+| COLOR | CC10 (Pan) + CC74 (Brightness) | Spatial positioning + timbre |
+| TRANSLATE | CC91 (Reverb) + CC93 (Chorus) | Spatial effects |
+| **Stack Operations** |
+| PUSH | Velocity (32-127) | Note dynamics |
+| DUP | Duplicate note | Rhythmic repetition |
+| NOISE | Chromatic cluster | Dissonant texture |
+
+**Technical Details:**
+- **Format**: Standard MIDI File (SMF) Format 0 (single track)
+- **Tempo**: 120 BPM (configurable)
+- **Timing**: 480 ticks per quarter note (standard resolution)
+- **Duration**: 1 quarter note per instruction
+- **Channel**: MIDI channel 1
+
+**Use Cases:**
+- **Musicians**: Compose using genetic algorithms as inspiration source
+- **Sound Designers**: Generate unique melodic/rhythmic patterns
+- **Educators**: Demonstrate genetic algorithms through music composition
+- **Researchers**: Study genetic mutation effects in musical domain
+
+**Examples:**
+```
+# audio-scale.genome → Musical scale ascending
+ATG
+  GAA AAA GGA  ; C4 (CIRCLE)
+  GAA AAC GGA  ; C4 (CIRCLE)
+  GAA AAG GGA  ; C4 (CIRCLE)
+  ...
+TAA
+```
+
+**Import Instructions:**
+- **GarageBand (Mac)**: File → Open → Select `.mid` → Choose software instrument
+- **Ableton Live**: Drag `.mid` file into MIDI track
+- **Logic Pro**: File → Import → MIDI → Select `.mid` file
+- **FL Studio**: File → Import → MIDI file
+- **MuseScore**: File → Open → Select `.mid` for notation view
+
+---
+
 ## Future Enhancements
 
 ### Phase C Extensions
 - ✅ ~~Dual-mode rendering~~ **COMPLETE** (v1.1)
+- ✅ ~~MIDI export~~ **COMPLETE** (v1.2)
 - **Timeline scrubber**: Scrub through audio like visual timeline
 - **Polyphonic synthesis**: Multiple "genetic voices" at once
-- **MIDI export**: Export as MIDI file for music software integration
 
 ### Advanced Features
 - **Spatial audio**: 3D audio positioning for complex programs
@@ -274,5 +341,6 @@ The "Both" mode enables **simultaneous audio and visual rendering**, bringing mu
 ---
 
 **Created**: 2025-10-12 (Autonomous Session 39)
+**Updated**: 2025-10-12 (Autonomous Session 41 - MIDI Export)
 **Author**: CodonCanvas Development Team
 **License**: MIT (same as main project)

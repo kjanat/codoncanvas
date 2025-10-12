@@ -103,6 +103,8 @@ export interface VMState {
   instructionCount: number;
   /** Random seed for NOISE opcode (deterministic rendering) */
   seed: number;
+  /** Last executed opcode (for MIDI export and debugging) */
+  lastOpcode?: Opcode;
 }
 
 /**

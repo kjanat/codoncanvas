@@ -2,7 +2,9 @@ import { ExampleKey, examples, type DifficultyLevel, type Concept, ExampleMetada
 import { CodonLexer } from './lexer';
 import { Canvas2DRenderer, type Renderer } from './renderer';
 import { AudioRenderer } from './audio-renderer';
+import { MIDIExporter } from './midi-exporter';
 import { CodonVM } from './vm';
+import { VMState } from './types';
 import { downloadGenomeFile, readGenomeFile } from './genome-io';
 import {
   applySilentMutation,
@@ -27,6 +29,7 @@ const clearBtn = document.getElementById('clearBtn') as HTMLButtonElement;
 const exampleSelect = document.getElementById('exampleSelect') as HTMLSelectElement;
 const exportBtn = document.getElementById('exportBtn') as HTMLButtonElement;
 const exportAudioBtn = document.getElementById('exportAudioBtn') as HTMLButtonElement;
+const exportMidiBtn = document.getElementById('exportMidiBtn') as HTMLButtonElement;
 const saveGenomeBtn = document.getElementById('saveGenomeBtn') as HTMLButtonElement;
 const loadGenomeBtn = document.getElementById('loadGenomeBtn') as HTMLButtonElement;
 const genomeFileInput = document.getElementById('genomeFileInput') as HTMLInputElement;
@@ -66,9 +69,11 @@ const audioToggleBtn = document.getElementById('audioToggleBtn') as HTMLButtonEl
 const lexer = new CodonLexer();
 const renderer = new Canvas2DRenderer(canvas);
 const audioRenderer = new AudioRenderer();
+const midiExporter = new MIDIExporter();
 type RenderMode = 'visual' | 'audio' | 'both';
 let renderMode: RenderMode = 'visual'; // Start with visual mode
 const vm = new CodonVM(renderer);
+let lastSnapshots: VMState[] = []; // Store last execution snapshots for MIDI export
 
 function setStatus(message: string, type: 'info' | 'error' | 'success') {
   statusMessage.textContent = message;
@@ -114,6 +119,7 @@ async function runProgram() {
 
       audioVM.reset();
       const snapshots = audioVM.run(tokens);
+      lastSnapshots = snapshots; // Store for MIDI export
 
       updateStats(tokens.length, audioVM.state.instructionCount);
       setStatus(`♪ Playing ${audioVM.state.instructionCount} audio instructions`, 'success');
@@ -121,6 +127,7 @@ async function runProgram() {
       // Visual only mode: use Canvas2DRenderer
       vm.reset();
       const snapshots = vm.run(tokens);
+      lastSnapshots = snapshots; // Store for MIDI export
 
       updateStats(tokens.length, vm.state.instructionCount);
       setStatus(`Executed ${vm.state.instructionCount} instructions successfully`, 'success');
@@ -144,6 +151,7 @@ async function runProgram() {
         Promise.resolve(audioVM.run(tokens)),
         Promise.resolve(vm.run(tokens))
       ]);
+      lastSnapshots = audioSnapshots; // Store for MIDI export (use audio snapshots)
 
       updateStats(tokens.length, vm.state.instructionCount);
       setStatus(`♪🎨 Playing ${audioVM.state.instructionCount} audio + visual instructions`, 'success');
@@ -687,6 +695,7 @@ async function toggleAudio() {
     audioToggleBtn.setAttribute('aria-label', 'Visual mode - click for audio');
     exportBtn.style.display = 'inline-block';
     exportAudioBtn.style.display = 'none';
+    exportMidiBtn.style.display = 'none';
     canvas.style.display = 'block';
     setStatus('Visual mode - genomes render to canvas', 'info');
   } else if (renderMode === 'audio') {
@@ -694,6 +703,7 @@ async function toggleAudio() {
     audioToggleBtn.setAttribute('aria-label', 'Audio mode - click for both');
     exportBtn.style.display = 'none';
     exportAudioBtn.style.display = 'inline-block';
+    exportMidiBtn.style.display = 'inline-block'; // MIDI export available in audio mode
     canvas.style.display = 'none'; // Hide canvas in audio-only mode
     setStatus('Audio mode - genomes play as sound', 'info');
   } else {
@@ -701,6 +711,7 @@ async function toggleAudio() {
     audioToggleBtn.setAttribute('aria-label', 'Both modes - click for visual only');
     exportBtn.style.display = 'inline-block';
     exportAudioBtn.style.display = 'inline-block';
+    exportMidiBtn.style.display = 'inline-block'; // MIDI export available in both mode
     canvas.style.display = 'block';
     setStatus('Multi-sensory mode - audio + visual simultaneously', 'info');
   }
@@ -722,6 +733,27 @@ async function exportAudio() {
   }
 }
 
+// MIDI export handler
+function exportMidi() {
+  try {
+    if (lastSnapshots.length === 0) {
+      setStatus('Run genome first before exporting MIDI', 'error');
+      return;
+    }
+
+    const midiBlob = midiExporter.generateMIDI(lastSnapshots);
+    const url = URL.createObjectURL(midiBlob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `codoncanvas-${Date.now()}.mid`;
+    a.click();
+    URL.revokeObjectURL(url);
+    setStatus('MIDI exported successfully - import into GarageBand, Ableton, etc.', 'success');
+  } catch (error) {
+    setStatus('Error exporting MIDI: ' + (error as Error).message, 'error');
+  }
+}
+
 // Event listeners
 runBtn.addEventListener('click', runProgram);
 clearBtn.addEventListener('click', clearCanvas);
@@ -729,6 +761,7 @@ audioToggleBtn.addEventListener('click', toggleAudio);
 exampleSelect.addEventListener('change', loadExample);
 exportBtn.addEventListener('click', exportImage);
 exportAudioBtn.addEventListener('click', exportAudio);
+exportMidiBtn.addEventListener('click', exportMidi);
 saveGenomeBtn.addEventListener('click', saveGenome);
 loadGenomeBtn.addEventListener('click', loadGenome);
 genomeFileInput.addEventListener('change', handleFileLoad);

@@ -143,6 +143,9 @@ export class CodonVM implements VM {
       throw new Error('Instruction limit exceeded (max 10,000)');
     }
 
+    // Track executed opcode for MIDI export
+    this.state.lastOpcode = opcode;
+
     switch (opcode) {
       case Opcode.START:
         // Initialize execution
