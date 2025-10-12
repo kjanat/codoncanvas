@@ -21,6 +21,7 @@ import { TutorialManager, helloCircleTutorial } from './tutorial';
 import { initializeTutorial } from './tutorial-ui';
 import './tutorial-ui.css';
 import { TimelineScrubber, injectTimelineStyles } from './timeline-scrubber';
+import { ThemeManager } from './theme-manager';
 
 // Get DOM elements
 const editor = document.getElementById('editor') as HTMLTextAreaElement;
@@ -71,6 +72,9 @@ const timelineToggleBtn = document.getElementById('timelineToggleBtn') as HTMLBu
 const timelinePanel = document.getElementById('timelinePanel') as HTMLDivElement;
 const timelineContainer = document.getElementById('timelineContainer') as HTMLDivElement;
 
+// Theme elements
+const themeToggleBtn = document.getElementById('themeToggleBtn') as HTMLButtonElement;
+
 // Initialize lexer, renderer, and VM
 const lexer = new CodonLexer();
 const renderer = new Canvas2DRenderer(canvas);
@@ -89,6 +93,20 @@ const timelineScrubber = new TimelineScrubber({
   playbackSpeed: 500,
 });
 let timelineVisible = false;
+
+// Initialize theme manager
+const themeManager = new ThemeManager();
+
+// Update theme button text
+function updateThemeButton() {
+  const icon = themeManager.getThemeIcon();
+  const name = themeManager.getThemeDisplayName();
+  themeToggleBtn.textContent = `${icon} ${name}`;
+  themeToggleBtn.setAttribute('aria-label', `Current theme: ${name}. Click to cycle to next theme.`);
+}
+
+// Set initial button state
+updateThemeButton();
 
 function setStatus(message: string, type: 'info' | 'error' | 'success') {
   statusMessage.textContent = message;
@@ -795,6 +813,11 @@ runBtn.addEventListener('click', runProgram);
 clearBtn.addEventListener('click', clearCanvas);
 audioToggleBtn.addEventListener('click', toggleAudio);
 timelineToggleBtn.addEventListener('click', toggleTimeline);
+themeToggleBtn.addEventListener('click', () => {
+  themeManager.cycleTheme();
+  updateThemeButton();
+  setStatus(`Theme changed to ${themeManager.getThemeDisplayName()}`, 'info');
+});
 exampleSelect.addEventListener('change', loadExample);
 exportBtn.addEventListener('click', exportImage);
 exportAudioBtn.addEventListener('click', exportAudio);

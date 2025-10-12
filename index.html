@@ -23,6 +23,90 @@
   <meta property="twitter:description" content="Learn genetics through code! Write DNA-like triplets that execute as visual outputs.">
   <meta property="twitter:image" content="https://yourusername.github.io/codoncanvas/screenshot_playground.png">
   <style>
+    /* Theme Variables */
+    :root {
+      --color-bg-primary: #1e1e1e;
+      --color-bg-secondary: #252526;
+      --color-bg-tertiary: #2d2d30;
+      --color-text-primary: #d4d4d4;
+      --color-text-secondary: #a0a0a0;
+      --color-text-accent: #4ec9b0;
+      --color-border: #3e3e42;
+      --color-border-light: #505052;
+      --color-button-primary: #0e639c;
+      --color-button-primary-hover: #1177bb;
+      --color-button-secondary: #3e3e42;
+      --color-button-secondary-hover: #505052;
+      --color-focus: #007acc;
+      --color-error: #f48771;
+      --color-success: #89d185;
+      --color-info: #007acc;
+      --color-canvas-bg: white;
+    }
+
+    /* Dark Theme (default, matches existing) */
+    [data-theme="dark"] {
+      --color-bg-primary: #1e1e1e;
+      --color-bg-secondary: #252526;
+      --color-bg-tertiary: #2d2d30;
+      --color-text-primary: #d4d4d4;
+      --color-text-secondary: #a0a0a0;
+      --color-text-accent: #4ec9b0;
+      --color-border: #3e3e42;
+      --color-border-light: #505052;
+      --color-button-primary: #0e639c;
+      --color-button-primary-hover: #1177bb;
+      --color-button-secondary: #3e3e42;
+      --color-button-secondary-hover: #505052;
+      --color-focus: #007acc;
+      --color-error: #f48771;
+      --color-success: #89d185;
+      --color-info: #007acc;
+      --color-canvas-bg: white;
+    }
+
+    /* Light Theme */
+    [data-theme="light"] {
+      --color-bg-primary: #ffffff;
+      --color-bg-secondary: #f3f3f3;
+      --color-bg-tertiary: #e8e8e8;
+      --color-text-primary: #1e1e1e;
+      --color-text-secondary: #616161;
+      --color-text-accent: #0b7d69;
+      --color-border: #d0d0d0;
+      --color-border-light: #b0b0b0;
+      --color-button-primary: #0e639c;
+      --color-button-primary-hover: #1177bb;
+      --color-button-secondary: #d0d0d0;
+      --color-button-secondary-hover: #c0c0c0;
+      --color-focus: #007acc;
+      --color-error: #c42b1c;
+      --color-success: #107c10;
+      --color-info: #005a9e;
+      --color-canvas-bg: white;
+    }
+
+    /* High Contrast Theme */
+    [data-theme="high-contrast"] {
+      --color-bg-primary: #000000;
+      --color-bg-secondary: #000000;
+      --color-bg-tertiary: #000000;
+      --color-text-primary: #ffffff;
+      --color-text-secondary: #ffffff;
+      --color-text-accent: #00ff00;
+      --color-border: #ffffff;
+      --color-border-light: #ffffff;
+      --color-button-primary: #ffff00;
+      --color-button-primary-hover: #ffff33;
+      --color-button-secondary: #ffffff;
+      --color-button-secondary-hover: #cccccc;
+      --color-focus: #00ff00;
+      --color-error: #ff0000;
+      --color-success: #00ff00;
+      --color-info: #00ffff;
+      --color-canvas-bg: white;
+    }
+
     * {
       margin: 0;
       padding: 0;
@@ -31,8 +115,8 @@
 
     body {
       font-family: 'Monaco', 'Menlo', 'Courier New', monospace;
-      background: #1e1e1e;
-      color: #d4d4d4;
+      background: var(--color-bg-primary);
+      color: var(--color-text-primary);
       height: 100vh;
       overflow: hidden;
     }
@@ -53,7 +137,7 @@
 
       .editor-panel {
         border-right: none;
-        border-bottom: 1px solid #3e3e42;
+        border-bottom: 1px solid var(--color-border);
         max-height: 40vh;
       }
 
@@ -78,32 +162,32 @@
 
     header {
       grid-column: 1 / -1;
-      background: #252526;
+      background: var(--color-bg-secondary);
       padding: 1rem;
-      border-bottom: 1px solid #3e3e42;
+      border-bottom: 1px solid var(--color-border);
     }
 
     h1 {
       font-size: 1.5rem;
-      color: #4ec9b0;
+      color: var(--color-text-accent);
     }
 
     .subtitle {
       font-size: 0.875rem;
-      color: #a0a0a0; /* WCAG AA compliant: 5.2:1 contrast ratio */
+      color: var(--color-text-secondary);
       margin-top: 0.25rem;
     }
 
     .editor-panel {
       display: flex;
       flex-direction: column;
-      border-right: 1px solid #3e3e42;
+      border-right: 1px solid var(--color-border);
     }
 
     .toolbar {
-      background: #2d2d30;
+      background: var(--color-bg-tertiary);
       padding: 0.5rem;
-      border-bottom: 1px solid #3e3e42;
+      border-bottom: 1px solid var(--color-border);
       display: flex;
       gap: 0.5rem;
       flex-wrap: wrap;
@@ -115,12 +199,12 @@
       gap: 0.5rem;
       align-items: center;
       padding: 0 0.5rem;
-      border-left: 1px solid #3e3e42;
+      border-left: 1px solid var(--color-border);
       margin-left: auto;
     }
 
     button {
-      background: #0e639c;
+      background: var(--color-button-primary);
       color: white;
       border: none;
       padding: 0.5rem 1rem;
@@ -152,21 +236,21 @@
     }
 
     button:hover {
-      background: #1177bb;
+      background: var(--color-button-primary-hover);
     }
 
     button.secondary {
-      background: #3e3e42;
+      background: var(--color-button-secondary);
     }
 
     button.secondary:hover {
-      background: #505052;
+      background: var(--color-button-secondary-hover);
     }
 
     select {
-      background: #3e3e42;
-      color: #d4d4d4;
-      border: 1px solid #505052;
+      background: var(--color-button-secondary);
+      color: var(--color-text-primary);
+      border: 1px solid var(--color-border-light);
       padding: 0.5rem;
       border-radius: 3px;
       font-family: inherit;
@@ -221,8 +305,8 @@
 
     #editor {
       flex: 1;
-      background: #1e1e1e;
-      color: #d4d4d4;
+      background: var(--color-bg-primary);
+      color: var(--color-text-primary);
       padding: 1rem;
       font-family: 'Monaco', 'Menlo', 'Courier New', monospace;
       font-size: 14px;
@@ -234,14 +318,14 @@
 
     /* Accessibility: Visible focus indicators */
     *:focus {
-      outline: 2px solid #007acc;
+      outline: 2px solid var(--color-focus);
       outline-offset: 2px;
     }
 
     button:focus,
     select:focus,
     input:focus {
-      outline: 2px solid #007acc;
+      outline: 2px solid var(--color-focus);
       outline-offset: 2px;
     }
 
@@ -250,7 +334,7 @@
       position: absolute;
       top: -40px;
       left: 0;
-      background: #007acc;
+      background: var(--color-focus);
       color: white;
       padding: 8px;
       text-decoration: none;
@@ -296,13 +380,13 @@
     .canvas-panel {
       display: flex;
       flex-direction: column;
-      background: #252526;
+      background: var(--color-bg-secondary);
     }
 
     .canvas-header {
       padding: 0.5rem 1rem;
-      background: #2d2d30;
-      border-bottom: 1px solid #3e3e42;
+      background: var(--color-bg-tertiary);
+      border-bottom: 1px solid var(--color-border);
       font-weight: bold;
     }
 
@@ -315,8 +399,8 @@
     }
 
     #canvas {
-      border: 1px solid #3e3e42;
-      background: white;
+      border: 1px solid var(--color-border);
+      background: var(--color-canvas-bg);
       max-width: 100%;
       max-height: 100%;
     }
@@ -352,7 +436,7 @@
 
     .status-bar {
       grid-column: 1 / -1;
-      background: #007acc;
+      background: var(--color-info);
       color: white;
       padding: 0.5rem 1rem;
       font-size: 0.875rem;
@@ -362,17 +446,17 @@
     }
 
     .error {
-      background: #f48771;
+      background: var(--color-error);
       color: #1e1e1e;
     }
 
     .success {
-      background: #89d185;
+      background: var(--color-success);
       color: #1e1e1e;
     }
 
     .info {
-      background: #007acc;
+      background: var(--color-info);
     }
 
     .stats {
@@ -478,8 +562,15 @@
 
   <div class="container">
     <header role="banner">
-      <h1>🧬 CodonCanvas</h1>
-      <div class="subtitle">DNA-Inspired Visual Programming Language</div>
+      <div style="display: flex; justify-content: space-between; align-items: center;">
+        <div>
+          <h1>🧬 CodonCanvas</h1>
+          <div class="subtitle">DNA-Inspired Visual Programming Language</div>
+        </div>
+        <button id="themeToggleBtn" class="secondary" aria-label="Cycle through themes: dark, light, high contrast" title="Change theme">
+          🌙 Dark
+        </button>
+      </div>
     </header>
 
     <main id="main-content" class="editor-panel">
