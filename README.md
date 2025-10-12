@@ -446,10 +446,14 @@ codoncanvas/
 │   ├── genome-io.ts          # Import/export .genome files
 │   ├── examples.ts           # Built-in example genomes
 │   ├── playground.ts         # Main playground UI logic
-│   ├── lexer.test.ts         # Lexer tests (11 tests)
-│   ├── vm.test.ts            # VM tests (20 tests)
-│   ├── mutations.test.ts     # Mutation tests (17 tests)
-│   └── genome-io.test.ts     # Genome I/O tests (11 tests)
+│   ├── lexer.test.ts         # Lexer validation tests
+│   ├── vm.test.ts            # VM execution tests
+│   ├── mutations.test.ts     # Mutation engine tests
+│   ├── genome-io.test.ts     # File I/O tests
+│   ├── evolution-engine.test.ts  # Evolution algorithm tests
+│   ├── assessment-engine.test.ts # Assessment system tests
+│   ├── achievement-engine.test.ts # Gamification tests
+│   └── ... (15 test files total, 233 test cases)
 ├── index.html                # Main playground interface
 ├── mutation-demo.html        # Mutation laboratory
 ├── timeline-demo.html        # Timeline scrubber demo
@@ -539,7 +543,7 @@ See [EDUCATORS.md](EDUCATORS.md) for complete lesson plans, assessment rubrics, 
 - Canvas2D renderer with all drawing primitives + noise
 - Base-4 numeric literal encoding (0-63 range)
 - Interactive playground UI with examples
-- Comprehensive test suite (59 tests)
+- Comprehensive test suite (233 tests across 15 test files)
 
 ✅ **Phase B: Pedagogy Tools (Completed)**
 
