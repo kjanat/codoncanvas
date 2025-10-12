@@ -17,7 +17,9 @@
     "zip-examples": "./scripts/zip-examples.sh",
     "prepare-distribution": "npm run export-examples && npm run zip-examples",
     "generate-screenshots": "tsx scripts/generate-screenshots.ts",
-    "cli": "tsx cli.ts"
+    "cli": "tsx cli.ts",
+    "research:analyze": "tsx scripts/research-data-analyzer.ts",
+    "research:generate-data": "tsx scripts/generate-sample-data.ts"
   },
   "bin": {
     "codoncanvas": "./cli.ts"
