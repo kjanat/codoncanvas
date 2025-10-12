@@ -1,71 +1,93 @@
-; Starfield - Advanced Showcase
-; Generative star pattern with noise texture and varied sizes
-; Difficulty: advanced-showcase
-; Concepts: advanced-opcodes, composition, colors, NOISE, pseudo-random positioning
-; Visual: Night sky with textured stars of varying brightness
-; Good for mutations: silent, NOISE parameter changes
+; Starfield - Showcase
+; Scattered stars creating night sky effect through overlapping circles
+; Difficulty: showcase
+; Concepts: layering, color variation, composition
+; Visual: Multiple small bright circles creating starfield illusion
+; Good for mutations: silent (safe), missense (color shifts)
 
 ATG
-  ; Background - dark blue with subtle noise
-  GAA TTT GAA CCC GAA ATT TTA ; Color(63, 21, 15) deep blue
-  GAA TTT GGA                 ; Push 63, large circle (background)
-  GAA AAA GAA AAT CTA          ; NOISE(0, 3) subtle texture
+  ; Layer 1 - Large dim background stars (8 positions)
+  GAA TGG GAA TGG GAA GCC TTA ; Color(45, 45, 37) dim gray
+  TCA                         ; SAVE
+  GAA GCC GGA                 ; Circle 37
+  GAA ATT AGA                 ; Rotate 45
+  GAA TGG GAA TCC GAA GCC TTA ; Color(45, 53, 37) dim greenish
+  GAA GCC GGA                 ; Circle 37
+  GAA ATT AGA                 ; Rotate 45
+  GAA TCC GAA TGG GAA GCC TTA ; Color(53, 45, 37) dim brownish
+  GAA GCC GGA                 ; Circle 37
+  GAA ATT AGA                 ; Rotate 45
+  GAA TGG GAA TGG GAA TCC TTA ; Color(45, 45, 53) dim purple
+  GAA GCC GGA                 ; Circle 37
+  GAA ATT AGA                 ; Rotate 45
+  GAA TCC GAA TCC GAA GCC TTA ; Color(53, 53, 37) dim olive
+  GAA GCC GGA                 ; Circle 37
+  GAA ATT AGA                 ; Rotate 45
+  GAA TGG GAA GCC GAA GCC TTA ; Color(45, 37, 37) dim red
+  GAA GCC GGA                 ; Circle 37
+  GAA ATT AGA                 ; Rotate 45
+  GAA GCC GAA TGG GAA TCC TTA ; Color(37, 45, 53) dim blue
+  GAA GCC GGA                 ; Circle 37
+  GAA ATT AGA                 ; Rotate 45
+  GAA TGG GAA TGG GAA GCC TTA ; Color(45, 45, 37) dim gray
+  GAA GCC GGA                 ; Circle 37
 
-  ; Large bright stars (white)
-  GAA TTT GAA AAT GAA TGG TTA ; Color(63, 3, 57) white
-  TCA                         ; SAVE_STATE
-  GAA ATT GAA CCC ACA          ; Translate(15, 21) - star position 1
-  GAA AAT GGA                 ; Push 3, circle
-  GAA AGG GAA AAT CTA          ; NOISE(10, 3) twinkle
-  GAA GCC GAA ATT ACA          ; Translate(37, 15) - star position 2
-  GAA AAT GGA                 ; Circle
-  GAA ATT GAA AAA ACA          ; Translate(15, 0) - star position 3
-  GAA AAT GGA                 ; Circle
-  GAA CCC GAA GCC ACA          ; Translate(21, 37) - star position 4
-  GAA AAT GGA                 ; Circle
-  GAA ATT GAA AAT CTA          ; NOISE(15, 3)
+  ; Layer 2 - Medium bright stars (12 positions)
+  GAA TTT GAA TTT GAA TGG TTA ; Color(63, 63, 45) pale yellow
+  TCA                         ; SAVE
+  GAA CCC GGA                 ; Circle 21
+  GAA GGC AGA                 ; Rotate 30
+  GAA TTT GAA TGG GAA TTT TTA ; Color(63, 45, 63) pale purple
+  GAA CCC GGA                 ; Circle 21
+  GAA GGC AGA                 ; Rotate 30
+  GAA TGG GAA TTT GAA TTT TTA ; Color(45, 63, 63) pale cyan
+  GAA CCC GGA                 ; Circle 21
+  GAA GGC AGA                 ; Rotate 30
+  GAA TTT GAA TTT GAA TTT TTA ; Color(63, 63, 63) white
+  GAA CCC GGA                 ; Circle 21
+  GAA GGC AGA                 ; Rotate 30
+  GAA TTT GAA TCC GAA TGG TTA ; Color(63, 53, 45) cream
+  GAA CCC GGA                 ; Circle 21
+  GAA GGC AGA                 ; Rotate 30
+  GAA TCC GAA TTT GAA TTT TTA ; Color(53, 63, 63) light cyan
+  GAA CCC GGA                 ; Circle 21
+  GAA GGC AGA                 ; Rotate 30
+  GAA TTT GAA TTT GAA TGG TTA ; Color(63, 63, 45) pale yellow
+  GAA CCC GGA                 ; Circle 21
+  GAA GGC AGA                 ; Rotate 30
+  GAA TGG GAA TGG GAA TTT TTA ; Color(45, 45, 63) lavender
+  GAA CCC GGA                 ; Circle 21
+  GAA GGC AGA                 ; Rotate 30
+  GAA TTT GAA TGG GAA TGG TTA ; Color(63, 45, 45) peach
+  GAA CCC GGA                 ; Circle 21
+  GAA GGC AGA                 ; Rotate 30
+  GAA TGG GAA TTT GAA TGG TTA ; Color(45, 63, 45) mint
+  GAA CCC GGA                 ; Circle 21
+  GAA GGC AGA                 ; Rotate 30
+  GAA TTT GAA TTT GAA TTT TTA ; Color(63, 63, 63) white
+  GAA CCC GGA                 ; Circle 21
+  GAA GGC AGA                 ; Rotate 30
+  GAA TCC GAA TGG GAA TGG TTA ; Color(53, 45, 45) rose
+  GAA CCC GGA                 ; Circle 21
 
-  ; Medium stars (light yellow)
-  GAA CTT GAA TGG GAA GCC TTA ; Color(31, 57, 37) light yellow
-  TCA                         ; SAVE_STATE
-  GAA CCC GAA ATT ACA          ; Translate(21, 15)
-  GAA AAC GGA                 ; Push 1, small circle
-  GAA TCC GAA CCC ACA          ; Translate(53, 21)
-  GAA AAC GGA                 ; Circle
-  GAA AGG GAA TCC ACA          ; Translate(10, 53)
-  GAA AAC GGA                 ; Circle
-  GAA GCC GAA AGG ACA          ; Translate(37, 10)
-  GAA AAC GGA                 ; Circle
-  GAA ATT GAA GCC ACA          ; Translate(15, 37)
-  GAA AAC GGA                 ; Circle
-  GAA CCC GAA AAT CTA          ; NOISE(21, 3)
-
-  ; Small distant stars (dim white)
-  GAA TTT GAA AGG GAA CTT TTA ; Color(63, 10, 31) dim white
-  TCA                         ; SAVE_STATE
-  GAA AAT GAA AGG ACA          ; Translate(3, 10)
-  GAA AAC GGA                 ; Tiny circle
-  GAA TCC GAA AAT ACA          ; Translate(53, 3)
-  GAA AAC GGA                 ; Circle
-  GAA ATT GAA TCC ACA          ; Translate(15, 53)
-  GAA AAC GGA                 ; Circle
-  GAA CGC GAA CCC ACA          ; Translate(25, 21)
-  GAA AAC GGA                 ; Circle
-  GAA AAT GAA CGC ACA          ; Translate(3, 25)
-  GAA AAC GGA                 ; Circle
-  GAA TCC GAA GCC ACA          ; Translate(53, 37)
-  GAA AAC GGA                 ; Circle
-  GAA GCC GAA TCC ACA          ; Translate(37, 53)
-  GAA AAC GGA                 ; Circle
-  GAA AGG GAA AAT ACA          ; Translate(10, 3)
-  GAA AAC GGA                 ; Circle
-  GAA CGC GAA ATT ACA          ; Translate(25, 15)
-  GAA AAC GGA                 ; Circle
-
-  ; Nebula effect - colored noise regions
-  GAA TTT GAA CTT GAA CGC TTA ; Color(63, 31, 25) purple nebula
-  GAA CCC GAA ATT CTA          ; NOISE(21, 15) nebula texture
-  GAA GGC GAA TGG GAA CGC TTA ; Color(42, 57, 25) blue nebula
-  GAA GCC GAA CCC CTA          ; NOISE(37, 21) nebula texture
+  ; Layer 3 - Small bright core stars
+  GAA TTT GAA TTT GAA TTT TTA ; Color(63, 63, 63) bright white
+  TCA                         ; SAVE
+  GAA AGG GGA                 ; Circle 10
+  GAA CTC AGA                 ; Rotate 60
+  GAA TTT GAA TTT GAA TGG TTA ; Color(63, 63, 45) warm white
+  GAA AGG GGA                 ; Circle 10
+  GAA CTC AGA                 ; Rotate 60
+  GAA TGG GAA TTT GAA TTT TTA ; Color(45, 63, 63) cool white
+  GAA AGG GGA                 ; Circle 10
+  GAA CTC AGA                 ; Rotate 60
+  GAA TTT GAA TTT GAA TTT TTA ; Color(63, 63, 63) white
+  GAA AGG GGA                 ; Circle 10
+  GAA CTC AGA                 ; Rotate 60
+  GAA TTT GAA TGG GAA TTT TTA ; Color(63, 45, 63) pink-white
+  GAA AGG GGA                 ; Circle 10
+  GAA CTC AGA                 ; Rotate 60
+  GAA TTT GAA TTT GAA TTT TTA ; Color(63, 63, 63) white
+  GAA AGG GGA                 ; Circle 10
 
 TAA

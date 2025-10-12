@@ -1,129 +1,94 @@
-; Wavy Lines - Advanced Showcase
-; Flowing wave pattern with color gradient and smooth curves
-; Difficulty: advanced-showcase
-; Concepts: transforms, colors, composition, line-art, systematic-rotation
-; Visual: Undulating wave pattern with rainbow gradient
-; Good for mutations: silent, rotation parameter changes
+; Wavy Lines - Showcase
+; Flowing curves creating wave-like patterns through layered circles
+; Difficulty: showcase
+; Concepts: curves, rhythm, flow, gradients
+; Visual: Wave-like bands of overlapping circles with color gradient
+; Good for mutations: silent (preserves flow), missense (color shift)
 
 ATG
-  ; Wave 1 - Red (top wave)
-  GAA AAA GAA TTT GAA CTT TTA ; Color(0, 63, 31) red
-  TCA                         ; SAVE_STATE at origin
-  GAA AAA GAA GGC ACA          ; Translate(0, 30) - move down
-  GAA CCC AAA                 ; Push 21, line
-  GAA AAT AGA                 ; Rotate 3 degrees
-  GAA CCC AAA                 ; Line
-  GAA AAT AGA                 ; Rotate 3
-  GAA CCC AAA                 ; Line
-  GAA AAT AGA                 ; Rotate 3
-  GAA CCC AAA                 ; Line
-  GAA TCC AGA                 ; Rotate -53 (reset + continue wave)
-  GAA CCC AAA                 ; Line
-  GAA AAT AGA                 ; Rotate 3
-  GAA CCC AAA                 ; Line
-  GAA AAT AGA                 ; Rotate 3
-  GAA CCC AAA                 ; Line
-  GAA AAT AGA                 ; Rotate 3
-  GAA CCC AAA                 ; Line
+  ; Wave 1 - Red to orange gradient
+  GAA AAA GAA TTT GAA GCC TTA ; Color(0, 63, 37) red
+  TCA                         ; SAVE
+  GAA TGG GGA                 ; Circle 45
+  GAA AGG AGA                 ; Rotate 10 (small steps create flow)
+  GAA AAT GAA TTT GAA GCC TTA ; Color(3, 63, 37) red-orange
+  GAA TGG GGA                 ; Circle 45
+  GAA AGG AGA                 ; Rotate 10
+  GAA TTT GAA TTT GAA GCC TTA ; Color(63, 63, 37) yellow
+  GAA TGG GGA                 ; Circle 45
+  GAA AGG AGA                 ; Rotate 10
+  GAA ATT GAA TTT GAA GCC TTA ; Color(15, 63, 37) orange
+  GAA TGG GGA                 ; Circle 45
+  GAA AGG AGA                 ; Rotate 10
+  GAA CCC GAA TTT GAA GCC TTA ; Color(21, 63, 37) yellow-orange
+  GAA TGG GGA                 ; Circle 45
+  GAA AGG AGA                 ; Rotate 10
+  GAA TCC GAA TTT GAA GCC TTA ; Color(53, 63, 37) gold
+  GAA TGG GGA                 ; Circle 45
 
-  ; Wave 2 - Orange (middle-top)
-  TCA                         ; SAVE_STATE to origin
-  GAA AAA GAA GGT ACA          ; Translate(0, 35)
-  GAA AGG GAA TTT GAA GCC TTA ; Color(10, 63, 37) orange
-  GAA CCC AAA                 ; Line
-  GAA AAT AGA                 ; Rotate 3
-  GAA CCC AAA                 ; Line
-  GAA AAT AGA                 ; Rotate 3
-  GAA CCC AAA                 ; Line
-  GAA AAT AGA                 ; Rotate 3
-  GAA CCC AAA                 ; Line
-  GAA TCC AGA                 ; Rotate -53
-  GAA CCC AAA                 ; Line
-  GAA AAT AGA                 ; Rotate 3
-  GAA CCC AAA                 ; Line
-  GAA AAT AGA                 ; Rotate 3
-  GAA CCC AAA                 ; Line
-  GAA AAT AGA                 ; Rotate 3
-  GAA CCC AAA                 ; Line
+  ; Wave 2 - Green to cyan gradient
+  GAA TTT GAA AGG GAA GCC TTA ; Color(63, 10, 37) lime
+  TCA                         ; SAVE
+  GAA GCC GGA                 ; Circle 37
+  GAA ATT AGA                 ; Rotate 45
+  GAA TCC GAA AGG GAA GCC TTA ; Color(53, 10, 37) green
+  GAA GCC GGA                 ; Circle 37
+  GAA ATT AGA                 ; Rotate 45
+  GAA CCC GAA AGG GAA GCC TTA ; Color(21, 10, 37) dark green
+  GAA GCC GGA                 ; Circle 37
+  GAA ATT AGA                 ; Rotate 45
+  GAA AGG GAA CCC GAA GCC TTA ; Color(10, 21, 37) teal
+  GAA GCC GGA                 ; Circle 37
+  GAA ATT AGA                 ; Rotate 45
+  GAA AGG GAA GCC GAA GCC TTA ; Color(10, 37, 37) cyan-green
+  GAA GCC GGA                 ; Circle 37
+  GAA ATT AGA                 ; Rotate 45
+  GAA AGG GAA TTT GAA TCC TTA ; Color(10, 63, 53) cyan
+  GAA GCC GGA                 ; Circle 37
+  GAA ATT AGA                 ; Rotate 45
+  GAA ATT GAA TTT GAA TCC TTA ; Color(15, 63, 53) light blue
+  GAA GCC GGA                 ; Circle 37
+  GAA ATT AGA                 ; Rotate 45
+  GAA CCC GAA TTT GAA TCC TTA ; Color(21, 63, 53) sky blue
+  GAA GCC GGA                 ; Circle 37
 
-  ; Wave 3 - Yellow (middle)
-  TCA                         ; SAVE_STATE
-  GAA AAA GAA TCC ACA          ; Translate(0, 40)
-  GAA CCC GAA TTT GAA GCC TTA ; Color(21, 63, 37) yellow
-  GAA CCC AAA                 ; Line
-  GAA AAT AGA                 ; Rotate 3
-  GAA CCC AAA                 ; Line
-  GAA AAT AGA                 ; Rotate 3
-  GAA CCC AAA                 ; Line
-  GAA AAT AGA                 ; Rotate 3
-  GAA CCC AAA                 ; Line
-  GAA TCC AGA                 ; Rotate -53
-  GAA CCC AAA                 ; Line
-  GAA AAT AGA                 ; Rotate 3
-  GAA CCC AAA                 ; Line
-  GAA AAT AGA                 ; Rotate 3
-  GAA CCC AAA                 ; Line
-  GAA AAT AGA                 ; Rotate 3
-  GAA CCC AAA                 ; Line
+  ; Wave 3 - Blue to purple gradient
+  GAA GCC GAA TTT GAA TCC TTA ; Color(37, 63, 53) blue
+  TCA                         ; SAVE
+  GAA CCC GGA                 ; Circle 21
+  GAA GGC AGA                 ; Rotate 30
+  GAA TGG GAA TTT GAA TCC TTA ; Color(45, 63, 53) blue-purple
+  GAA CCC GGA                 ; Circle 21
+  GAA GGC AGA                 ; Rotate 30
+  GAA TTT GAA TTT GAA TCC TTA ; Color(63, 63, 53) purple
+  GAA CCC GGA                 ; Circle 21
+  GAA GGC AGA                 ; Rotate 30
+  GAA TTT GAA TCC GAA TCC TTA ; Color(63, 53, 53) magenta
+  GAA CCC GGA                 ; Circle 21
+  GAA GGC AGA                 ; Rotate 30
+  GAA TTT GAA GCC GAA TCC TTA ; Color(63, 37, 53) pink
+  GAA CCC GGA                 ; Circle 21
+  GAA GGC AGA                 ; Rotate 30
+  GAA TTT GAA CCC GAA TCC TTA ; Color(63, 21, 53) hot pink
+  GAA CCC GGA                 ; Circle 21
+  GAA GGC AGA                 ; Rotate 30
+  GAA TTT GAA AGG GAA TCC TTA ; Color(63, 10, 53) bright pink
+  GAA CCC GGA                 ; Circle 21
+  GAA GGC AGA                 ; Rotate 30
+  GAA TCC GAA AAA GAA TCC TTA ; Color(53, 0, 53) deep magenta
+  GAA CCC GGA                 ; Circle 21
+  GAA GGC AGA                 ; Rotate 30
+  GAA GCC GAA AAA GAA TCC TTA ; Color(37, 0, 53) purple-magenta
+  GAA CCC GGA                 ; Circle 21
+  GAA GGC AGA                 ; Rotate 30
+  GAA CCC GAA AAA GAA TCC TTA ; Color(21, 0, 53) dark purple
+  GAA CCC GGA                 ; Circle 21
+  GAA GGC AGA                 ; Rotate 30
+  GAA AGG GAA AAA GAA TCC TTA ; Color(10, 0, 53) very dark purple
+  GAA CCC GGA                 ; Circle 21
 
-  ; Wave 4 - Green (middle-bottom)
-  TCA                         ; SAVE_STATE
-  GAA AAA GAA TGG ACA          ; Translate(0, 45)
-  GAA GCC GAA TTT GAA GCC TTA ; Color(37, 63, 37) green
-  GAA CCC AAA                 ; Line
-  GAA AAT AGA                 ; Rotate 3
-  GAA CCC AAA                 ; Line
-  GAA AAT AGA                 ; Rotate 3
-  GAA CCC AAA                 ; Line
-  GAA AAT AGA                 ; Rotate 3
-  GAA CCC AAA                 ; Line
-  GAA TCC AGA                 ; Rotate -53
-  GAA CCC AAA                 ; Line
-  GAA AAT AGA                 ; Rotate 3
-  GAA CCC AAA                 ; Line
-  GAA AAT AGA                 ; Rotate 3
-  GAA CCC AAA                 ; Line
-  GAA AAT AGA                 ; Rotate 3
-  GAA CCC AAA                 ; Line
-
-  ; Wave 5 - Cyan (bottom)
-  TCA                         ; SAVE_STATE
-  GAA AAA GAA TTT ACA          ; Translate(0, 50)
-  GAA TGG GAA TTT GAA GCC TTA ; Color(57, 63, 37) cyan
-  GAA CCC AAA                 ; Line
-  GAA AAT AGA                 ; Rotate 3
-  GAA CCC AAA                 ; Line
-  GAA AAT AGA                 ; Rotate 3
-  GAA CCC AAA                 ; Line
-  GAA AAT AGA                 ; Rotate 3
-  GAA CCC AAA                 ; Line
-  GAA TCC AGA                 ; Rotate -53
-  GAA CCC AAA                 ; Line
-  GAA AAT AGA                 ; Rotate 3
-  GAA CCC AAA                 ; Line
-  GAA AAT AGA                 ; Rotate 3
-  GAA CCC AAA                 ; Line
-  GAA AAT AGA                 ; Rotate 3
-  GAA CCC AAA                 ; Line
-
-  ; Wave 6 - Blue (deep bottom)
-  TCA                         ; SAVE_STATE
-  GAA AAA GAA TGT ACA          ; Translate(0, 55)
-  GAA TTT GAA CCC GAA GCC TTA ; Color(63, 21, 37) blue
-  GAA CCC AAA                 ; Line
-  GAA AAT AGA                 ; Rotate 3
-  GAA CCC AAA                 ; Line
-  GAA AAT AGA                 ; Rotate 3
-  GAA CCC AAA                 ; Line
-  GAA AAT AGA                 ; Rotate 3
-  GAA CCC AAA                 ; Line
-  GAA TCC AGA                 ; Rotate -53
-  GAA CCC AAA                 ; Line
-  GAA AAT AGA                 ; Rotate 3
-  GAA CCC AAA                 ; Line
-  GAA AAT AGA                 ; Rotate 3
-  GAA CCC AAA                 ; Line
-  GAA AAT AGA                 ; Rotate 3
-  GAA CCC AAA                 ; Line
+  ; Center - White focal point
+  GAA TTT GAA TTT GAA TTT TTA ; Color(63, 63, 63) white
+  GAA AGG GGA                 ; Circle 10
 
 TAA
