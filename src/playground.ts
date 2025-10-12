@@ -22,6 +22,9 @@ import { initializeTutorial } from './tutorial-ui';
 import './tutorial-ui.css';
 import { TimelineScrubber, injectTimelineStyles } from './timeline-scrubber';
 import { ThemeManager } from './theme-manager';
+import { AchievementEngine } from './achievement-engine';
+import { AchievementUI } from './achievement-ui';
+import './achievement-ui.css';
 
 // Get DOM elements
 const editor = document.getElementById('editor') as HTMLTextAreaElement;
@@ -97,6 +100,10 @@ let timelineVisible = false;
 // Initialize theme manager
 const themeManager = new ThemeManager();
 
+// Initialize achievement system
+const achievementEngine = new AchievementEngine();
+const achievementUI = new AchievementUI(achievementEngine, 'achievementContainer');
+
 // Update theme button text
 function updateThemeButton() {
   const icon = themeManager.getThemeIcon();
@@ -118,9 +125,51 @@ function updateStats(codons: number, instructions: number) {
   instructionCount.textContent = `Instructions: ${instructions}`;
 }
 
+// Track drawing operations from executed tokens
+function trackDrawingOperations(tokens: { text: string }[]) {
+  const allUnlocked: any[] = [];
+
+  for (const token of tokens) {
+    const codon = token.text;
+
+    // Track shapes (CIRCLE, RECT, LINE, TRIANGLE, ELLIPSE)
+    if (['GGA', 'GGC', 'GGG', 'GGT'].includes(codon)) {
+      allUnlocked.push(...achievementEngine.trackShapeDrawn('CIRCLE'));
+    } else if (['CCA', 'CCC', 'CCG', 'CCT'].includes(codon)) {
+      allUnlocked.push(...achievementEngine.trackShapeDrawn('RECT'));
+    } else if (['AAA', 'AAC', 'AAG', 'AAT'].includes(codon)) {
+      allUnlocked.push(...achievementEngine.trackShapeDrawn('LINE'));
+    } else if (['GCA', 'GCC', 'GCG', 'GCT'].includes(codon)) {
+      allUnlocked.push(...achievementEngine.trackShapeDrawn('TRIANGLE'));
+    } else if (['GTA', 'GTC', 'GTG', 'GTT'].includes(codon)) {
+      allUnlocked.push(...achievementEngine.trackShapeDrawn('ELLIPSE'));
+    }
+
+    // Track color usage (COLOR opcode)
+    else if (['TTA', 'TTC', 'TTG', 'TTT'].includes(codon)) {
+      allUnlocked.push(...achievementEngine.trackColorUsed());
+    }
+
+    // Track transforms (TRANSLATE, ROTATE, SCALE)
+    else if (['ACA', 'ACC', 'ACG', 'ACT'].includes(codon)) {
+      allUnlocked.push(...achievementEngine.trackTransformApplied('TRANSLATE'));
+    } else if (['AGA', 'AGC', 'AGG', 'AGT'].includes(codon)) {
+      allUnlocked.push(...achievementEngine.trackTransformApplied('ROTATE'));
+    } else if (['CGA', 'CGC', 'CGG', 'CGT'].includes(codon)) {
+      allUnlocked.push(...achievementEngine.trackTransformApplied('SCALE'));
+    }
+  }
+
+  return allUnlocked;
+}
+
 async function runProgram() {
   try {
     const source = editor.value;
+
+    // Track genome created
+    const unlocked1 = achievementEngine.trackGenomeCreated(source.replace(/\s+/g, '').length);
+    achievementUI.handleUnlocks(unlocked1);
 
     // Tokenize
     const tokens = lexer.tokenize(source);
@@ -156,6 +205,12 @@ async function runProgram() {
 
       updateStats(tokens.length, audioVM.state.instructionCount);
       setStatus(`♪ Playing ${audioVM.state.instructionCount} audio instructions`, 'success');
+
+      // Track genome execution and drawing operations
+      const opcodes = tokens.map(t => t.text);
+      const unlocked2 = achievementEngine.trackGenomeExecuted(opcodes);
+      const unlocked3 = trackDrawingOperations(tokens);
+      achievementUI.handleUnlocks([...unlocked2, ...unlocked3]);
     } else if (renderMode === 'visual') {
       // Visual only mode: use Canvas2DRenderer
       vm.reset();
@@ -164,6 +219,12 @@ async function runProgram() {
 
       updateStats(tokens.length, vm.state.instructionCount);
       setStatus(`Executed ${vm.state.instructionCount} instructions successfully`, 'success');
+
+      // Track genome execution and drawing operations
+      const opcodes = tokens.map(t => t.text);
+      const unlocked2 = achievementEngine.trackGenomeExecuted(opcodes);
+      const unlocked3 = trackDrawingOperations(tokens);
+      achievementUI.handleUnlocks([...unlocked2, ...unlocked3]);
     } else {
       // Both mode: run both renderers simultaneously
       const audioVM = new CodonVM(audioRenderer);
@@ -188,6 +249,12 @@ async function runProgram() {
 
       updateStats(tokens.length, vm.state.instructionCount);
       setStatus(`♪🎨 Playing ${audioVM.state.instructionCount} audio + visual instructions`, 'success');
+
+      // Track genome execution and drawing operations
+      const opcodes = tokens.map(t => t.text);
+      const unlocked2 = achievementEngine.trackGenomeExecuted(opcodes);
+      const unlocked3 = trackDrawingOperations(tokens);
+      achievementUI.handleUnlocks([...unlocked2, ...unlocked3]);
     }
 
   } catch (error) {
@@ -688,6 +755,10 @@ function applyMutation(type: MutationType) {
 
     // Update editor with mutated genome
     editor.value = result.mutated;
+
+    // Track mutation applied
+    const unlocked = achievementEngine.trackMutationApplied();
+    achievementUI.handleUnlocks(unlocked);
 
     // Auto-run to show effect
     runProgram();
