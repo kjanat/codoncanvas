@@ -1,5 +1,5 @@
 import { describe, it, expect, beforeEach, vi } from 'vitest';
-import { TutorialManager, helloCircleTutorial } from './tutorial';
+import { TutorialManager, helloCircleTutorial, mutationTutorial } from './tutorial';
 
 // Mock localStorage
 const localStorageMock = (() => {
@@ -224,5 +224,129 @@ describe('helloCircleTutorial', () => {
     // Check that code steps have expected codes
     const startStep = helloCircleTutorial.steps.find(s => s.id === 'start-codon');
     expect(startStep?.expectedCode).toBe('ATG');
+  });
+});
+
+describe('mutationTutorial', () => {
+  it('should have 6 steps', () => {
+    expect(mutationTutorial.steps).toHaveLength(6);
+  });
+
+  it('should have correct step order', () => {
+    const stepIds = mutationTutorial.steps.map(s => s.id);
+    expect(stepIds).toEqual([
+      'welcome',
+      'silent-mutation',
+      'missense-mutation',
+      'nonsense-mutation',
+      'frameshift-mutation',
+      'complete'
+    ]);
+  });
+
+  it('should have custom validation functions', () => {
+    const stepsWithValidation = mutationTutorial.steps.filter(s => s.validationFn);
+    expect(stepsWithValidation.length).toBeGreaterThan(0);
+  });
+
+  describe('silent mutation validation', () => {
+    let manager: TutorialManager;
+
+    beforeEach(() => {
+      localStorage.clear();
+      manager = new TutorialManager('test_mutation');
+      manager.start(mutationTutorial);
+      manager.nextStep(''); // Skip welcome
+    });
+
+    it('should validate GGC codon', () => {
+      const result = manager.validateStep('ATG GAA AGG GGC TAA');
+      expect(result).toBe(true);
+    });
+
+    it('should reject if missing GGC', () => {
+      const result = manager.validateStep('ATG GAA AGG GGA TAA');
+      expect(result).toBe(false);
+    });
+  });
+
+  describe('missense mutation validation', () => {
+    let manager: TutorialManager;
+
+    beforeEach(() => {
+      localStorage.clear();
+      manager = new TutorialManager('test_mutation');
+      manager.start(mutationTutorial);
+      manager.nextStep(''); // Skip welcome
+      manager.nextStep('ATG GAA AGG GGC TAA'); // Complete silent
+    });
+
+    it('should validate GCA codon', () => {
+      const result = manager.validateStep('ATG GAA AGG GCA TAA');
+      expect(result).toBe(true);
+    });
+
+    it('should reject if has GGC instead', () => {
+      const result = manager.validateStep('ATG GAA AGG GGC TAA');
+      expect(result).toBe(false);
+    });
+  });
+
+  describe('nonsense mutation validation', () => {
+    let manager: TutorialManager;
+
+    beforeEach(() => {
+      localStorage.clear();
+      manager = new TutorialManager('test_mutation');
+      manager.start(mutationTutorial);
+      manager.nextStep(''); // welcome
+      manager.nextStep('ATG GAA AGG GGC TAA'); // silent
+      manager.nextStep('ATG GAA AGG GCA TAA'); // missense
+    });
+
+    it('should validate premature TAA', () => {
+      const result = manager.validateStep('ATG GAA AGG TAA');
+      expect(result).toBe(true);
+    });
+
+    it('should reject if still has GCA', () => {
+      const result = manager.validateStep('ATG GAA AGG GCA TAA');
+      expect(result).toBe(false);
+    });
+  });
+
+  describe('frameshift mutation validation', () => {
+    let manager: TutorialManager;
+
+    beforeEach(() => {
+      localStorage.clear();
+      manager = new TutorialManager('test_mutation');
+      manager.start(mutationTutorial);
+      // Navigate to frameshift step
+      manager.nextStep(''); // welcome
+      manager.nextStep('ATG GAA AGG GGC TAA'); // silent
+      manager.nextStep('ATG GAA AGG GCA TAA'); // missense
+      manager.nextStep('ATG GAA AGG TAA'); // nonsense
+    });
+
+    it('should validate frameshift (length not divisible by 3)', () => {
+      const result = manager.validateStep('ATG GA AGG GGA TAA');
+      expect(result).toBe(true);
+    });
+
+    it('should reject if still in frame', () => {
+      const result = manager.validateStep('ATG GAA AGG GGA TAA');
+      expect(result).toBe(false);
+    });
+
+    it('should accept deletion of one base', () => {
+      const result = manager.validateStep('ATG GAA GG GGA TAA');
+      expect(result).toBe(true);
+    });
+
+    it('should accept insertion of one base', () => {
+      const result = manager.validateStep('ATG GAAA AGG GGA TAA');
+      expect(result).toBe(true);
+    });
   });
 });

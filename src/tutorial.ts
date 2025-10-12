@@ -263,3 +263,153 @@ Ready to explore on your own?`,
     },
   ],
 };
+
+/**
+ * Mutation tutorial: Learn genetic mutation concepts
+ */
+export const mutationTutorial: TutorialConfig = {
+  id: 'mutation-concepts',
+  title: 'Understanding Genetic Mutations',
+  description: 'Learn how different mutation types affect your programs',
+  steps: [
+    {
+      id: 'welcome',
+      title: 'Welcome to Mutation Concepts! 🧬',
+      content: `In genetics, <strong>mutations</strong> are changes to DNA sequences. Some have no effect, some change function, and some break everything.
+
+CodonCanvas lets you explore these concepts visually!
+
+We'll start with a simple "Hello Circle" program and apply different mutations to see their effects.
+
+<strong>The Base Program:</strong>
+<code>ATG GAA AGG GGA TAA</code>
+
+This draws a circle. Let's see what happens when we mutate it!`,
+      targetElement: '#editor',
+    },
+    {
+      id: 'silent-mutation',
+      title: 'Silent Mutation: Same Result',
+      content: `A <strong>silent mutation</strong> changes the codon but keeps the same function (synonymous codons).
+
+<strong>Try this change:</strong>
+Change <code>GGA</code> → <code>GGC</code>
+
+Both codons mean CIRCLE, so the output stays identical!
+
+<strong>Edit your code to:</strong>
+<code>ATG GAA AGG GGC TAA</code>
+
+This is like changing DNA without changing the protein - the "phenotype" (visual output) is unchanged! ✅`,
+      targetElement: '#editor',
+      expectedCode: 'ATG GAA AGG GGC TAA',
+      hint: 'Change GGA to GGC',
+      validationFn: (code: string) => {
+        const normalized = code.replace(/\s+/g, ' ').trim().toUpperCase();
+        return normalized.includes('GGC') && normalized.includes('ATG') && normalized.includes('TAA');
+      },
+    },
+    {
+      id: 'missense-mutation',
+      title: 'Missense Mutation: Changed Function',
+      content: `A <strong>missense mutation</strong> changes the codon to a different operation (different function).
+
+<strong>Try this change:</strong>
+Change <code>GGC</code> → <code>GCA</code>
+
+GCA means TRIANGLE instead of CIRCLE!
+
+<strong>Edit your code to:</strong>
+<code>ATG GAA AGG GCA TAA</code>
+
+Watch the output change shape. The "phenotype" is visibly different! 🔺
+
+This is like a mutation that changes the protein's function.`,
+      targetElement: '#canvasCurrent',
+      expectedCode: 'ATG GAA AGG GCA TAA',
+      hint: 'Change GGC to GCA',
+      validationFn: (code: string) => {
+        const normalized = code.replace(/\s+/g, ' ').trim().toUpperCase();
+        return normalized.includes('GCA') && normalized.includes('ATG') && normalized.includes('TAA');
+      },
+    },
+    {
+      id: 'nonsense-mutation',
+      title: 'Nonsense Mutation: Early Stop',
+      content: `A <strong>nonsense mutation</strong> introduces a premature STOP codon, ending the program early.
+
+<strong>Try this change:</strong>
+Change <code>GCA</code> → <code>TAA</code>
+
+TAA is a STOP codon!
+
+<strong>Edit your code to:</strong>
+<code>ATG GAA AGG TAA TAA</code>
+
+The program stops before drawing anything. The canvas is blank! ⛔
+
+This is like a mutation that creates a truncated, non-functional protein.`,
+      targetElement: '#canvasCurrent',
+      expectedCode: 'ATG GAA AGG TAA',
+      hint: 'Change GCA to TAA',
+      validationFn: (code: string) => {
+        const normalized = code.replace(/\s+/g, ' ').trim().toUpperCase();
+        const parts = normalized.split(/\s+/);
+        const taaCount = parts.filter(p => p === 'TAA').length;
+        return taaCount >= 1 && !normalized.includes('GCA') && !normalized.includes('GGA');
+      },
+    },
+    {
+      id: 'frameshift-mutation',
+      title: 'Frameshift Mutation: Total Scramble',
+      content: `A <strong>frameshift mutation</strong> inserts or deletes bases (not multiples of 3), shifting how codons are read.
+
+Let's reset to: <code>ATG GAA AGG GGA TAA</code>
+
+<strong>Now try this:</strong>
+Delete just the first <code>A</code> from <code>GAA</code>
+
+<strong>Edit your code to:</strong>
+<code>ATG GA AGG GGA TAA</code>
+
+The codons now read as: ATG, **G**AA, **GG**G, **GA**T, **AA** (incomplete!)
+
+Everything downstream is scrambled! 💥 This is the most catastrophic mutation type.
+
+<em>Note: This will likely error since the frame is broken.</em>`,
+      targetElement: '#editor',
+      expectedCode: 'ATG GA AGG',
+      hint: 'Delete one A from GAA',
+      validationFn: (code: string) => {
+        const raw = code.replace(/\s+/g, '').toUpperCase();
+        // Check if total length is NOT divisible by 3 (frameshift)
+        return raw.length % 3 !== 0 && raw.startsWith('ATG');
+      },
+    },
+    {
+      id: 'complete',
+      title: 'Mutation Master! 🏆',
+      content: `Excellent work! You've learned the four main mutation types:
+
+<strong>1. Silent</strong> - No effect (synonymous codons)
+<strong>2. Missense</strong> - Changed function (different operation)
+<strong>3. Nonsense</strong> - Early stop (truncated program)
+<strong>4. Frameshift</strong> - Total scramble (catastrophic)
+
+<strong>Key Insights:</strong>
+• Reading frame matters (triplets)
+• Redundancy protects against some changes
+• Single-base changes can be catastrophic
+• Some mutations are neutral, others break everything
+
+<strong>Next Steps:</strong>
+• Use the mutation buttons to try random mutations
+• Explore more complex genomes
+• Try creating your own patterns
+• Challenge: Can you predict mutation effects before applying them?
+
+Ready to experiment on your own?`,
+      targetElement: '.button-grid',
+    },
+  ],
+};

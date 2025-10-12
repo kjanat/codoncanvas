@@ -307,6 +307,9 @@
     } from './src/mutations.ts';
     import { DiffViewer, injectDiffViewerStyles } from './src/diff-viewer.ts';
     import { ShareSystem, injectShareStyles } from './src/share-system.ts';
+    import { TutorialManager, mutationTutorial } from './src/tutorial.ts';
+    import { TutorialUI } from './src/tutorial-ui.ts';
+    import './src/tutorial-ui.css';
 
     // Inject styles
     injectDiffViewerStyles();
@@ -436,6 +439,32 @@
       // Initial render
       updateVisualizations();
     }
+
+    // Initialize mutation tutorial
+    const tutorialManager = new TutorialManager('codoncanvas_mutation_tutorial_completed');
+    const tutorialUI = new TutorialUI(tutorialManager, {
+      onStepChange: () => {
+        // Re-render when user progresses
+        updateVisualizations();
+      },
+      onComplete: () => {
+        showStatus('Tutorial complete! You\'re now a mutation expert! 🏆', 'success');
+      },
+      getCodeFn: () => editor.value,
+    });
+
+    // Auto-show tutorial for first-time users (after 2 seconds for page load)
+    if (!tutorialManager.isCompleted()) {
+      setTimeout(() => {
+        tutorialUI.show(mutationTutorial);
+      }, 2000);
+    }
+
+    // Add tutorial reset button for testing (hidden in UI, accessible via console)
+    window.resetMutationTutorial = () => {
+      tutorialManager.reset();
+      location.reload();
+    };
   </script>
 </body>
 </html>
