@@ -1,0 +1,278 @@
+/* Tutorial Overlay System */
+
+.tutorial-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.75);
+  z-index: 9998;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: fadeIn 0.3s ease-in;
+}
+
+.tutorial-modal {
+  position: relative;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  max-width: 600px;
+  width: 90%;
+  max-height: 80vh;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  z-index: 9999;
+  animation: slideUp 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.tutorial-header {
+  padding: 24px 32px 16px;
+  border-bottom: 2px solid #e0e0e0;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+}
+
+.tutorial-header h2 {
+  margin: 0 0 8px 0;
+  font-size: 24px;
+  font-weight: 600;
+}
+
+.tutorial-progress {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.tutorial-progress-bar {
+  flex: 1;
+  height: 6px;
+  background: rgba(255, 255, 255, 0.3);
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.tutorial-progress-fill {
+  height: 100%;
+  background: white;
+  transition: width 0.3s ease;
+  border-radius: 3px;
+}
+
+.tutorial-progress-text {
+  font-size: 12px;
+  font-weight: 500;
+  opacity: 0.9;
+}
+
+.tutorial-body {
+  padding: 32px;
+  overflow-y: auto;
+  flex: 1;
+}
+
+.tutorial-step-title {
+  font-size: 20px;
+  font-weight: 600;
+  margin: 0 0 16px 0;
+  color: #333;
+}
+
+.tutorial-step-content {
+  font-size: 16px;
+  line-height: 1.6;
+  color: #555;
+}
+
+.tutorial-step-content code {
+  background: #f5f5f5;
+  padding: 2px 6px;
+  border-radius: 3px;
+  font-family: 'Courier New', monospace;
+  color: #d63384;
+  font-size: 14px;
+}
+
+.tutorial-step-content strong {
+  color: #333;
+  font-weight: 600;
+}
+
+.tutorial-hint {
+  margin-top: 16px;
+  padding: 12px 16px;
+  background: #fff3cd;
+  border-left: 4px solid #ffc107;
+  border-radius: 4px;
+  font-size: 14px;
+  color: #856404;
+}
+
+.tutorial-hint::before {
+  content: "💡 Hint: ";
+  font-weight: 600;
+}
+
+.tutorial-footer {
+  padding: 16px 32px;
+  border-top: 1px solid #e0e0e0;
+  background: #f8f9fa;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+}
+
+.tutorial-button {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.tutorial-button-primary {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+}
+
+.tutorial-button-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+}
+
+.tutorial-button-primary:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.tutorial-button-secondary {
+  background: white;
+  color: #666;
+  border: 1px solid #ddd;
+}
+
+.tutorial-button-secondary:hover {
+  background: #f8f9fa;
+}
+
+.tutorial-button-skip {
+  background: none;
+  border: none;
+  color: #999;
+  font-size: 13px;
+  padding: 8px 12px;
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+.tutorial-button-skip:hover {
+  color: #666;
+}
+
+/* Highlight system */
+.tutorial-highlight {
+  position: relative;
+  z-index: 10000;
+  box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.5), 0 0 0 9999px rgba(0, 0, 0, 0.75);
+  border-radius: 8px;
+  animation: pulse 2s infinite;
+}
+
+/* Success state */
+.tutorial-success {
+  padding: 32px;
+  text-align: center;
+}
+
+.tutorial-success-icon {
+  font-size: 64px;
+  margin-bottom: 16px;
+}
+
+.tutorial-success h3 {
+  font-size: 24px;
+  margin: 0 0 12px 0;
+  color: #333;
+}
+
+.tutorial-success p {
+  font-size: 16px;
+  color: #666;
+  line-height: 1.6;
+  margin-bottom: 24px;
+}
+
+.tutorial-success-actions {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(50px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes pulse {
+  0%, 100% {
+    box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.5), 0 0 0 9999px rgba(0, 0, 0, 0.75);
+  }
+  50% {
+    box-shadow: 0 0 0 8px rgba(102, 126, 234, 0.8), 0 0 0 9999px rgba(0, 0, 0, 0.75);
+  }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .tutorial-modal {
+    width: 95%;
+    max-height: 90vh;
+  }
+
+  .tutorial-header,
+  .tutorial-body,
+  .tutorial-footer {
+    padding: 20px;
+  }
+
+  .tutorial-header h2 {
+    font-size: 20px;
+  }
+
+  .tutorial-step-title {
+    font-size: 18px;
+  }
+
+  .tutorial-footer {
+    flex-direction: column;
+  }
+
+  .tutorial-button {
+    width: 100%;
+  }
+}

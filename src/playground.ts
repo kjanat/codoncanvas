@@ -14,6 +14,9 @@ import {
   type MutationType
 } from './mutations';
 import { ShareSystem, injectShareStyles } from './share-system';
+import { TutorialManager, helloCircleTutorial } from './tutorial';
+import { initializeTutorial } from './tutorial-ui';
+import './tutorial-ui.css';
 
 // Get DOM elements
 const editor = document.getElementById('editor') as HTMLTextAreaElement;
@@ -687,6 +690,15 @@ const shareSystem = new ShareSystem({
   showQRCode: true,
   socialPlatforms: ['twitter', 'reddit', 'email']
 });
+
+// Initialize tutorial system
+const tutorialManager = new TutorialManager();
+tutorialManager.start(helloCircleTutorial);
+const tutorialUI = initializeTutorial(
+  document.body,
+  tutorialManager,
+  editor
+);
 
 // Load genome from URL if present
 const urlGenome = ShareSystem.loadFromURL();
