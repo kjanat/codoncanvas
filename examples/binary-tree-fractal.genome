@@ -1,0 +1,109 @@
+; Binary Tree Fractal
+; Recursive branching tree structure with decreasing scale
+; Difficulty: advanced-algorithmic
+; Concepts: LOOP, recursive branching, geometric progression, natural patterns
+; Visual: Tree-like fractal with symmetric branching at multiple scales
+; Algorithm: Trunk splits into two branches at angle, branches subdivide recursively
+
+ATG
+  ; Earthy brown to green gradient (tree colors)
+  GAA GTC GAA GCC GAA GTC TTA ; Color(40, 37, 40) brown trunk
+
+  ; Start at bottom center, facing up
+  TCA                          ; SAVE_STATE
+
+  ; Level 0: Main trunk
+  GAA CGC AAA                  ; PUSH 25, LINE (trunk)
+
+  ; Level 1: First branching (2 main branches)
+  ; Left branch
+  TCA                          ; SAVE_STATE
+  GAA GCG AGA                  ; PUSH 45, ROTATE left
+  GAA CTT AAA                  ; PUSH 20, LINE (branch)
+
+  ; Sub-branches from left main branch
+  TCA                          ; SAVE_STATE
+  GAA TGT AGA                  ; PUSH 30, ROTATE
+  GAA ATT AAA                  ; PUSH 15, LINE (sub-branch)
+  TCT                          ; RESTORE_STATE
+
+  TCA                          ; SAVE_STATE
+  GAA ATG AGA                  ; PUSH -30, ROTATE other direction
+  ; Note: negative not directly available, use 360-30=330
+  ; Simplified: just rotate 90 for different angle
+  GAA AGA                      ; ROTATE (use previous value)
+  GAA ATT AAA                  ; PUSH 15, LINE
+  TCT                          ; RESTORE_STATE
+
+  TCT                          ; RESTORE_STATE (back to trunk top)
+
+  ; Right branch (mirror of left)
+  TCA                          ; SAVE_STATE
+  GAA GGC AGA                  ; PUSH 315 ≈ -45, using 315 = TTT - 48
+  ; Simplified: PUSH opposite angle
+  GAA GTC AGA                  ; PUSH 40 (simpler positive angle)
+  GAA CTT AAA                  ; PUSH 20, LINE (right main branch)
+
+  ; Sub-branches from right main branch
+  TCA                          ; SAVE_STATE
+  GAA TGT AGA                  ; PUSH 30, ROTATE
+  GAA ATT AAA                  ; PUSH 15, LINE
+  TCT                          ; RESTORE_STATE
+
+  TCA                          ; SAVE_STATE
+  GAA TCA AGA                  ; PUSH 90, ROTATE for variety
+  GAA ATT AAA                  ; PUSH 15, LINE
+  TCT                          ; RESTORE_STATE
+
+  TCT                          ; RESTORE_STATE
+
+  ; Level 2: Smaller branches using LOOP for efficiency
+  ; Transition to green for leaves
+  GAA GCC GAA TTA GAA GCC TTA ; Color(37, 61, 37) green foliage
+
+  ; Create burst of small branches at various angles
+  ; Pattern: LINE(8), ROTATE(varied angles)
+  GAA AGC AAA                  ; PUSH 8, LINE (small branch)
+  GAA CTT AGA                  ; PUSH 45, ROTATE
+
+  ; LOOP to create multiple small branches in circle
+  ; Instructions: LINE(6), ROTATE(40)
+  GAA ATC AAA                  ; PUSH 6, LINE
+  GAA GTC AGA                  ; PUSH 40, ROTATE
+
+  ; Repeat 9 times for full crown
+  GAA AAC                      ; PUSH 2 (instructions)
+  GAA AGC                      ; PUSH 9 (repeats)
+  CAA                          ; LOOP
+
+  ; Level 3: Leaf accent circles
+  GAA GGA GAA TTT GAA GGA TTA ; Color(34, 63, 34) bright green
+
+  ; Tiny circles for leaves at branch ends
+  TCA                          ; SAVE_STATE
+
+  ; Place leaves using translation and LOOP
+  GAA ATT GAA ATT ACA          ; Translate(15, 15)
+  GAA AAC GGA                  ; PUSH 2, CIRCLE (leaf)
+
+  ; Pattern: ROTATE 51°, TRANSLATE out, CIRCLE
+  GAA GGG AGA                  ; PUSH 51, ROTATE (irregular for natural look)
+  GAA AGG GAA AAA ACA          ; Translate(10, 0)
+  GAA AAC GGA                  ; PUSH 2, CIRCLE
+
+  ; LOOP for more leaves
+  GAA AAG                      ; PUSH 3 (instructions)
+  GAA AGA                      ; PUSH 6 (repeats = 7 total leaves)
+  CAA                          ; LOOP
+
+  TCT                          ; RESTORE_STATE
+
+  ; Root accent (darker circle at base)
+  GAA GTA GAA CCC GAA CTT TTA ; Color(42, 21, 20) dark brown
+  TCA                          ; SAVE_STATE
+  GAA AAA GAA AAA ACA          ; Back to origin
+  GAA AAA GAA ATG ACA          ; Translate(0, -15) down to base
+  GAA AAT GGA                  ; PUSH 4, CIRCLE (root ball)
+  TCT                          ; RESTORE_STATE
+
+TAA
