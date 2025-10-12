@@ -1,21 +1,58 @@
-// Base types
+/**
+ * @fileoverview Type definitions for CodonCanvas genetic programming language.
+ * Defines core types, opcodes, VM state, and codon-to-opcode mapping.
+ */
+
+/**
+ * Valid DNA base character (Adenine, Cytosine, Guanine, Thymine).
+ */
 export type Base = 'A' | 'C' | 'G' | 'T';
+
+/**
+ * Three-character DNA triplet (codon).
+ * Each codon maps to an executable opcode instruction.
+ * @example 'ATG', 'GGA', 'TAA'
+ */
 export type Codon = `${Base}${Base}${Base}`;
 
+/**
+ * Tokenized codon with source location metadata.
+ * Used for error reporting and debugging.
+ */
 export interface CodonToken {
+  /** The three-character codon text */
   text: Codon;
-  position: number;  // Character offset in source
-  line: number;      // Line number (1-indexed)
-}
-
-export interface ParseError {
-  message: string;
+  /** Character offset in cleaned source (whitespace/comments removed) */
   position: number;
-  severity: 'error' | 'warning' | 'info';
-  fix?: string;      // Suggested fix
+  /** Source line number (1-indexed, for error messages) */
+  line: number;
 }
 
-// Opcode enumeration
+/**
+ * Parse or validation error with severity and optional autofix.
+ */
+export interface ParseError {
+  /** Human-readable error description */
+  message: string;
+  /** Character position where error occurred */
+  position: number;
+  /** Error severity level */
+  severity: 'error' | 'warning' | 'info';
+  /** Optional suggested fix for linter UI */
+  fix?: string;
+}
+
+/**
+ * VM instruction opcodes.
+ * Each opcode represents a drawing, transform, or stack operation.
+ *
+ * Families (synonymous codons map to same opcode):
+ * - Control: START, STOP (program flow)
+ * - Drawing: CIRCLE, RECT, LINE, TRIANGLE, ELLIPSE (primitives)
+ * - Transform: TRANSLATE, ROTATE, SCALE, COLOR (state changes)
+ * - Stack: PUSH, DUP, POP, SWAP (data manipulation)
+ * - Utility: NOP, NOISE, SAVE_STATE (special operations)
+ */
 export enum Opcode {
   START,
   STOP,
@@ -37,25 +74,53 @@ export enum Opcode {
   SAVE_STATE,
 }
 
-// VM State
+/**
+ * Virtual Machine execution state.
+ * Captures complete VM state for snapshot/restore and timeline scrubbing.
+ */
 export interface VMState {
   // Drawing state
+  /** Current drawing position (canvas coordinates) */
   position: { x: number; y: number };
-  rotation: number;      // degrees, 0 = right
+  /** Current rotation in degrees (0 = right/east) */
+  rotation: number;
+  /** Current scale factor (1.0 = normal) */
   scale: number;
+  /** Current color in HSL (hue: 0-360, saturation: 0-100, lightness: 0-100) */
   color: { h: number; s: number; l: number };
 
   // Execution state
+  /** Value stack for operations (numeric literals and intermediate values) */
   stack: number[];
+  /** Current instruction index in token array */
   instructionPointer: number;
-  stateStack: VMState[];  // For SAVE_STATE/RESTORE_STATE
+  /** Saved state stack for SAVE_STATE opcode (enables nested transformations) */
+  stateStack: VMState[];
 
   // Metadata
+  /** Total instructions executed (for sandboxing/timeout) */
   instructionCount: number;
+  /** Random seed for NOISE opcode (deterministic rendering) */
   seed: number;
 }
 
-// Codon to Opcode mapping
+/**
+ * Codon to Opcode mapping table.
+ * Defines all 64 possible codon → opcode translations.
+ *
+ * Design principles:
+ * - Synonymous codons (codon families) map to same opcode (models genetic redundancy)
+ * - 4 codons per family (e.g., GG* → CIRCLE) for pedagogical silent mutations
+ * - ATG = START (matches biological start codon)
+ * - TAA/TAG/TGA = STOP (matches biological stop codons)
+ *
+ * @example
+ * ```typescript
+ * CODON_MAP['GGA'] === Opcode.CIRCLE  // true
+ * CODON_MAP['GGC'] === Opcode.CIRCLE  // true (synonymous)
+ * CODON_MAP['ATG'] === Opcode.START   // true (start codon)
+ * ```
+ */
 export const CODON_MAP: Record<string, Opcode> = {
   // Control Flow
   'ATG': Opcode.START,

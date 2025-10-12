@@ -1,16 +1,74 @@
 import { Renderer } from './renderer';
 import { CODON_MAP, CodonToken, Opcode, VMState } from './types';
 
+/**
+ * Virtual Machine interface for CodonCanvas execution.
+ * Stack-based VM with drawing primitives and transform state.
+ */
 export interface VM {
+  /** Current VM execution state (position, rotation, scale, color, stack) */
   state: VMState;
+  /** Renderer for drawing operations */
   renderer: Renderer;
+
+  /**
+   * Execute a single opcode instruction.
+   * @param opcode - The operation to execute
+   * @param codon - The codon string (used for PUSH literal decoding)
+   * @throws Error on stack underflow or invalid operations
+   */
   execute(opcode: Opcode, codon: string): void;
+
+  /**
+   * Run entire genome program.
+   * @param tokens - Array of codon tokens to execute
+   * @returns Array of VM state snapshots (one per instruction) for timeline playback
+   * @throws Error on instruction limit exceeded or execution errors
+   */
   run(tokens: CodonToken[]): VMState[];
+
+  /**
+   * Reset VM to initial state.
+   * Clears stack, resets position/rotation/scale/color, zeroes instruction counter.
+   */
   reset(): void;
+
+  /**
+   * Create snapshot of current VM state.
+   * @returns Deep copy of current state for rewind/step-through
+   */
   snapshot(): VMState;
+
+  /**
+   * Restore VM from a previous snapshot.
+   * @param state - Previously captured VM state
+   */
   restore(state: VMState): void;
 }
 
+/**
+ * CodonCanvas virtual machine implementation.
+ * Executes DNA-like codon programs with stack-based graphics operations.
+ *
+ * Features:
+ * - Stack machine with numeric values
+ * - Drawing primitives (CIRCLE, RECT, LINE, TRIANGLE, ELLIPSE)
+ * - Transform operations (TRANSLATE, ROTATE, SCALE, COLOR)
+ * - Base-4 numeric literal encoding (0-63 range)
+ * - Sandboxing with instruction limit (default: 10,000)
+ * - State snapshot/restore for timeline scrubbing
+ *
+ * @example
+ * ```typescript
+ * const canvas = document.querySelector('canvas');
+ * const renderer = new Canvas2DRenderer(canvas);
+ * const vm = new CodonVM(renderer);
+ *
+ * const lexer = new CodonLexer();
+ * const tokens = lexer.tokenize('ATG GAA CCC GGA TAA'); // PUSH 21, CIRCLE
+ * const states = vm.run(tokens); // Execute and get state history
+ * ```
+ */
 export class CodonVM implements VM {
   state: VMState;
   renderer: Renderer;

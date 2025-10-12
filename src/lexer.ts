@@ -1,16 +1,75 @@
 import { Base, Codon, CodonToken, ParseError } from './types';
 
+/**
+ * Lexer interface for CodonCanvas genome parsing.
+ * Responsible for tokenizing DNA triplets and validating genome structure.
+ */
 export interface Lexer {
+  /**
+   * Tokenize source genome into codons.
+   * @param source - Raw genome string containing DNA bases (A/C/G/T) with optional whitespace and comments
+   * @returns Array of codon tokens with position and line information
+   * @throws Error if invalid characters found or source length not divisible by 3
+   */
   tokenize(source: string): CodonToken[];
+
+  /**
+   * Validate reading frame alignment.
+   * Checks for whitespace breaks within triplets that would disrupt the reading frame.
+   * @param source - Raw genome string to validate
+   * @returns Array of validation errors/warnings
+   */
   validateFrame(source: string): ParseError[];
+
+  /**
+   * Validate structural integrity of tokenized genome.
+   * Checks for proper START/STOP codon placement and unknown opcodes.
+   * @param tokens - Array of codon tokens to validate
+   * @returns Array of structural errors/warnings
+   */
   validateStructure(tokens: CodonToken[]): ParseError[];
 }
 
+/**
+ * CodonCanvas lexer implementation.
+ * Parses DNA-like triplet syntax into executable codon tokens.
+ *
+ * @example
+ * ```typescript
+ * const lexer = new CodonLexer();
+ * const tokens = lexer.tokenize('ATG GAA CCC GGA TAA'); // START, PUSH 21, CIRCLE, STOP
+ * const errors = lexer.validateStructure(tokens);
+ * ```
+ */
 export class CodonLexer implements Lexer {
   private readonly validBases = new Set<string>(['A', 'C', 'G', 'T']);
 
   /**
-   * Tokenize source genome into codons
+   * Tokenize source genome into codons.
+   *
+   * Strips comments (`;` to EOL), removes whitespace, validates base characters,
+   * and chunks into triplets. Tracks line numbers for error reporting.
+   *
+   * @param source - Raw genome string (supports A/C/G/T, whitespace, `;` comments)
+   * @returns Array of codon tokens with position metadata
+   * @throws Error if invalid characters found or length not divisible by 3
+   *
+   * @example
+   * ```typescript
+   * const lexer = new CodonLexer();
+   * const tokens = lexer.tokenize(`
+   *   ATG           ; Start execution
+   *   GAA CCC GGA   ; Push 21, draw circle
+   *   TAA           ; Stop
+   * `);
+   * // Returns: [
+   * //   { text: 'ATG', position: 0, line: 2 },
+   * //   { text: 'GAA', position: 3, line: 3 },
+   * //   { text: 'CCC', position: 6, line: 3 },
+   * //   { text: 'GGA', position: 9, line: 3 },
+   * //   { text: 'TAA', position: 12, line: 4 }
+   * // ]
+   * ```
    */
   tokenize(source: string): CodonToken[] {
     // Track line numbers for error reporting
@@ -55,7 +114,20 @@ export class CodonLexer implements Lexer {
   }
 
   /**
-   * Validate reading frame alignment
+   * Validate reading frame alignment.
+   *
+   * Detects whitespace breaks within triplets that would disrupt codon boundaries.
+   * Useful for linting genome source code for readability vs correctness.
+   *
+   * @param source - Raw genome string to validate
+   * @returns Array of frame alignment warnings
+   *
+   * @example
+   * ```typescript
+   * const lexer = new CodonLexer();
+   * const errors = lexer.validateFrame('ATG GG A CCA'); // Mid-triplet break: "GG A"
+   * // Returns: [{ message: "Mid-triplet break...", severity: 'warning', ... }]
+   * ```
    */
   validateFrame(source: string): ParseError[] {
     const errors: ParseError[] = [];
@@ -90,7 +162,24 @@ export class CodonLexer implements Lexer {
   }
 
   /**
-   * Check for structural issues (START/STOP placement)
+   * Validate structural integrity of tokenized genome.
+   *
+   * Checks for:
+   * - START codon (ATG) at beginning
+   * - Proper STOP codon (TAA/TAG/TGA) placement
+   * - Unknown/unmapped codons
+   * - START after STOP warnings
+   *
+   * @param tokens - Array of codon tokens to validate
+   * @returns Array of structural errors and warnings
+   *
+   * @example
+   * ```typescript
+   * const lexer = new CodonLexer();
+   * const tokens = lexer.tokenize('TAA GGA CCA'); // Missing START, early STOP
+   * const errors = lexer.validateStructure(tokens);
+   * // Returns errors for missing START and STOP before execution
+   * ```
    */
   validateStructure(tokens: CodonToken[]): ParseError[] {
     const errors: ParseError[] = [];

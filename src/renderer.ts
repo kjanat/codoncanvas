@@ -1,6 +1,8 @@
 /**
- * Seeded pseudo-random number generator (Linear Congruential Generator)
- * Returns values in [0, 1) range with reproducible output for same seed
+ * Seeded pseudo-random number generator (Linear Congruential Generator).
+ * Provides deterministic randomness for NOISE opcode.
+ * Returns values in [0, 1) range with reproducible output for same seed.
+ * @internal
  */
 class SeededRandom {
   private state: number;
@@ -16,25 +18,69 @@ class SeededRandom {
   }
 }
 
+/**
+ * Renderer interface for CodonCanvas drawing operations.
+ * Abstraction layer for graphics output (Canvas2D, SVG, WebGL, etc.).
+ */
 export interface Renderer {
+  /** Canvas width in pixels */
   readonly width: number;
+  /** Canvas height in pixels */
   readonly height: number;
 
+  /** Clear entire canvas to background color */
   clear(): void;
+
+  /** Draw circle at current position with given radius */
   circle(radius: number): void;
+
+  /** Draw rectangle at current position with given width and height */
   rect(width: number, height: number): void;
+
+  /** Draw line from current position extending by length at current rotation */
   line(length: number): void;
+
+  /** Draw equilateral triangle at current position with given size */
   triangle(size: number): void;
+
+  /** Draw ellipse at current position with given radii */
   ellipse(rx: number, ry: number): void;
+
+  /** Add visual noise/texture at current position (for artistic effects) */
   noise(seed: number, intensity: number): void;
+
+  /** Move drawing position by (dx, dy) */
   translate(dx: number, dy: number): void;
+
+  /** Rotate drawing direction by degrees */
   rotate(degrees: number): void;
+
+  /** Scale subsequent drawing operations by factor */
   scale(factor: number): void;
+
+  /** Set drawing color (hue: 0-360, saturation: 0-100, lightness: 0-100) */
   setColor(h: number, s: number, l: number): void;
+
+  /** Get current transform state for VM tracking */
   getCurrentTransform(): { x: number; y: number; rotation: number; scale: number };
+
+  /** Export canvas as data URL (for image download) */
   toDataURL(): string;
 }
 
+/**
+ * Canvas 2D rendering implementation.
+ * Renders CodonCanvas programs to HTML5 Canvas with full transform support.
+ *
+ * @example
+ * ```typescript
+ * const canvas = document.querySelector('canvas');
+ * const renderer = new Canvas2DRenderer(canvas);
+ * renderer.clear();
+ * renderer.setColor(200, 80, 50);
+ * renderer.circle(50); // Draw blue circle
+ * ```
+ */
 export class Canvas2DRenderer implements Renderer {
   private ctx: CanvasRenderingContext2D;
   private currentX: number = 0;
