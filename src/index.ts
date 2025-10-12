@@ -7,3 +7,5 @@ export type { VM } from './vm';
 export { CodonVM } from './vm';
 export { GeneticAlgorithm } from './genetic-algorithm';
 export type { GAIndividual, GAGenerationStats, GAOptions, FitnessFunction, SelectionStrategy, CrossoverStrategy } from './genetic-algorithm';
+export { ResearchMetrics } from './research-metrics';
+export type { ResearchSession, MutationEvent, ExecutionEvent, FeatureEvent, ResearchMetricsOptions } from './research-metrics';

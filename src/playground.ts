@@ -28,6 +28,7 @@ import { AchievementUI } from './achievement-ui';
 import './achievement-ui.css';
 import { AssessmentEngine } from './assessment-engine';
 import { AssessmentUI } from './assessment-ui';
+import { ResearchMetrics } from './research-metrics';
 
 // Get DOM elements
 const editor = document.getElementById('editor') as HTMLTextAreaElement;
@@ -122,6 +123,9 @@ const achievementUI = new AchievementUI(achievementEngine, 'achievementContainer
 const assessmentEngine = new AssessmentEngine();
 let assessmentUI: AssessmentUI | null = null; // Initialize on first use
 
+// Initialize research metrics (opt-in, disabled by default)
+const researchMetrics = new ResearchMetrics({ enabled: false });
+
 // Update theme button text
 function updateThemeButton() {
   const icon = themeManager.getThemeIcon();
@@ -189,6 +193,9 @@ async function runProgram() {
     const unlocked1 = achievementEngine.trackGenomeCreated(source.replace(/\s+/g, '').length);
     achievementUI.handleUnlocks(unlocked1);
 
+    // Research metrics tracking
+    researchMetrics.trackGenomeCreated(source.replace(/\s+/g, '').length);
+
     // Tokenize
     const tokens = lexer.tokenize(source);
     updateStats(tokens.length, 0);
@@ -224,6 +231,15 @@ async function runProgram() {
       updateStats(tokens.length, audioVM.state.instructionCount);
       setStatus(`♪ Playing ${audioVM.state.instructionCount} audio instructions`, 'success');
 
+      // Research metrics: track execution
+      researchMetrics.trackGenomeExecuted({
+        timestamp: Date.now(),
+        renderMode: 'audio',
+        genomeLength: tokens.length,
+        instructionCount: audioVM.state.instructionCount,
+        success: true
+      });
+
       // Track genome execution and drawing operations
       const opcodes = tokens.map(t => t.text);
       const unlocked2 = achievementEngine.trackGenomeExecuted(opcodes);
@@ -237,6 +253,15 @@ async function runProgram() {
 
       updateStats(tokens.length, vm.state.instructionCount);
       setStatus(`Executed ${vm.state.instructionCount} instructions successfully`, 'success');
+
+      // Research metrics: track execution
+      researchMetrics.trackGenomeExecuted({
+        timestamp: Date.now(),
+        renderMode: 'visual',
+        genomeLength: tokens.length,
+        instructionCount: vm.state.instructionCount,
+        success: true
+      });
 
       // Track genome execution and drawing operations
       const opcodes = tokens.map(t => t.text);
@@ -268,6 +293,15 @@ async function runProgram() {
       updateStats(tokens.length, vm.state.instructionCount);
       setStatus(`♪🎨 Playing ${audioVM.state.instructionCount} audio + visual instructions`, 'success');
 
+      // Research metrics: track execution
+      researchMetrics.trackGenomeExecuted({
+        timestamp: Date.now(),
+        renderMode: 'both',
+        genomeLength: tokens.length,
+        instructionCount: audioVM.state.instructionCount,
+        success: true
+      });
+
       // Track genome execution and drawing operations
       const opcodes = tokens.map(t => t.text);
       const unlocked2 = achievementEngine.trackGenomeExecuted(opcodes);
@@ -278,11 +312,14 @@ async function runProgram() {
   } catch (error) {
     if (error instanceof Error) {
       setStatus(`Error: ${error.message}`, 'error');
+      researchMetrics.trackError('execution', error.message);
     } else if (Array.isArray(error)) {
       // ParseError array
       setStatus(`Error: ${error[0].message}`, 'error');
+      researchMetrics.trackError('parse', error[0].message);
     } else {
       setStatus('Unknown error occurred', 'error');
+      researchMetrics.trackError('unknown', 'Unknown error occurred');
     }
   }
 }
