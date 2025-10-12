@@ -16,6 +16,21 @@ CodonCanvas is an educational programming language that uses DNA-like triplets (
 - **Save & Share**: Export/import genomes in .genome file format with metadata
 - **Animation Export**: Export timeline animations as GIF files for sharing
 
+## Live Demo
+
+Try CodonCanvas online (no installation required):
+
+**[https://yourusername.github.io/codoncanvas/](https://yourusername.github.io/codoncanvas/)**
+
+### All Demos
+- **[Main Playground](https://yourusername.github.io/codoncanvas/)** - Interactive editor with 18 examples
+- **[Mutation Demos](https://yourusername.github.io/codoncanvas/demos.html)** - See all mutation types in action
+- **[Mutation Lab](https://yourusername.github.io/codoncanvas/mutation-demo.html)** - Side-by-side genome comparison
+- **[Timeline Scrubber](https://yourusername.github.io/codoncanvas/timeline-demo.html)** - Step-by-step execution viewer
+- **[Evolution Lab](https://yourusername.github.io/codoncanvas/evolution-demo.html)** - Directed evolution through selection
+
+> **Note:** Replace `yourusername` with your GitHub username after deployment. See [DEPLOYMENT.md](DEPLOYMENT.md) for setup instructions.
+
 ## Screenshots
 
 ### Main Playground
@@ -30,7 +45,7 @@ CodonCanvas is an educational programming language that uses DNA-like triplets (
 ![Timeline Scrubber](screenshot_timeline.png)
 *Step through execution instruction-by-instruction with state visualization*
 
-## Quick Start
+## Quick Start (Local Development)
 
 ```bash
 # Install dependencies
@@ -409,10 +424,31 @@ CodonCanvas teaches:
 
 - RESTORE_STATE opcode (requires codon reallocation)
 - Audio backend for sound synthesis
-- Evolutionary mode with fitness selection
 - Alternative alphabets (U for RNA)
 - Enhanced linter with stack depth analysis
 - Visual regression testing infrastructure
+
+## Deployment
+
+Deploy CodonCanvas to GitHub Pages for public access:
+
+```bash
+# 1. Create GitHub repo and add remote
+git remote add origin https://github.com/YOUR_USERNAME/codoncanvas.git
+git push -u origin master
+
+# 2. Enable GitHub Pages (Settings → Pages → Source: GitHub Actions)
+
+# 3. Automatic deployment on every push to master
+
+# Live at: https://YOUR_USERNAME.github.io/codoncanvas/
+```
+
+See [DEPLOYMENT.md](DEPLOYMENT.md) for complete instructions including:
+- Social sharing optimization (Open Graph tags)
+- Custom domain setup
+- Troubleshooting guide
+- Local production testing
 
 ## License
 
