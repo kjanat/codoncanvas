@@ -43,34 +43,6 @@ ATG
   GAA TTT GAA TCC GAA TCC TTA ; Color(63, 53, 53) magenta
   GAA TCC GAA CCC GTA          ; Ellipse 53×21
 
-  ; Middle ring - 8 medium circles overlapping
-  GAA TTT GAA GCC GAA TCC TTA ; Color(63, 37, 53) pink
-  TCA                         ; SAVE
-  GAA ATT AGA                 ; Rotate 45 (offset)
-  GAA GCC GGA                 ; Circle 37
-  GAA ATT AGA                 ; Rotate 45
-  GAA TTT GAA CCC GAA TCC TTA ; Color(63, 21, 53) hot pink
-  GAA GCC GGA                 ; Circle 37
-  GAA ATT AGA                 ; Rotate 45
-  GAA TTT GAA AGG GAA TCC TTA ; Color(63, 10, 53) bright pink
-  GAA GCC GGA                 ; Circle 37
-  GAA ATT AGA                 ; Rotate 45
-  GAA TCC GAA AAA GAA TCC TTA ; Color(53, 0, 53) deep magenta
-  GAA GCC GGA                 ; Circle 37
-  GAA ATT AGA                 ; Rotate 45
-  GAA GCC GAA AAA GAA TCC TTA ; Color(37, 0, 53) purple-magenta
-  GAA GCC GGA                 ; Circle 37
-  GAA ATT AGA                 ; Rotate 45
-  GAA CCC GAA AAA GAA TCC TTA ; Color(21, 0, 53) dark purple
-  GAA GCC GGA                 ; Circle 37
-  GAA ATT AGA                 ; Rotate 45
-  GAA AGG GAA AAA GAA GCC TTA ; Color(10, 0, 37) very dark
-  GAA GCC GGA                 ; Circle 37
-  GAA ATT AGA                 ; Rotate 45
-  GAA AAA GAA AAA GAA GCC TTA ; Color(0, 0, 37) almost black
-  GAA GCC GGA                 ; Circle 37
-  TCG                         ; RESTORE
-
   ; Center - Bright white core
   GAA TTT GAA TTT GAA TTT TTA ; Color(63, 63, 63) white
   GAA CCC GGA                 ; Circle 21
