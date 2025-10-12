@@ -25,13 +25,14 @@ Try CodonCanvas online (no installation required):
 **[https://yourusername.github.io/codoncanvas/](https://yourusername.github.io/codoncanvas/)**
 
 ### All Demos
+- **[Interactive Tutorial](https://yourusername.github.io/codoncanvas/tutorial.html)** ⭐ **NEW** - Step-by-step guided learning (start here!)
 - **[Main Playground](https://yourusername.github.io/codoncanvas/)** - Interactive editor with 27 examples
 - **[Mutation Demos](https://yourusername.github.io/codoncanvas/demos.html)** - See all mutation types in action
 - **[Mutation Lab](https://yourusername.github.io/codoncanvas/mutation-demo.html)** - Side-by-side genome comparison
 - **[Timeline Scrubber](https://yourusername.github.io/codoncanvas/timeline-demo.html)** - Step-by-step execution viewer
 - **[Evolution Lab](https://yourusername.github.io/codoncanvas/evolution-demo.html)** - Directed evolution through selection
 - **[Population Genetics](https://yourusername.github.io/codoncanvas/population-genetics-demo.html)** - Observe genetic drift across populations
-- **[Genetic Algorithm](https://yourusername.github.io/codoncanvas/genetic-algorithm-demo.html)** ⭐ **NEW** - Automated fitness-driven evolution
+- **[Genetic Algorithm](https://yourusername.github.io/codoncanvas/genetic-algorithm-demo.html)** - Automated fitness-driven evolution
 
 > **Note:** Replace `yourusername` with your GitHub username after deployment. See [DEPLOYMENT.md](DEPLOYMENT.md) for setup instructions.
 
