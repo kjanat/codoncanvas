@@ -1,6 +1,6 @@
 # CodonCanvas Example Programs
 
-This directory contains 18 ready-to-use genome files for CodonCanvas.
+This directory contains 25 ready-to-use genome files for CodonCanvas.
 
 ## Usage
 
@@ -33,6 +33,16 @@ This directory contains 18 ready-to-use genome files for CodonCanvas.
 - **nestedFrames.genome** - Nested Frames with State
 - **gridPattern.genome** - Grid Pattern
 - **mandala.genome** - Mandala Pattern
+
+### Advanced Showcase (7 examples) - NEW!
+Intricate compositions demonstrating full system capabilities:
+- **fractalFlower.genome** - Fractal Flower (multi-layer petals, ellipses, NOISE)
+- **geometricMosaic.genome** - Geometric Mosaic (gradient grid, mixed shapes)
+- **starfield.genome** - Starfield (textured stars, NOISE effects, depth)
+- **recursiveCircles.genome** - Recursive Circles (nested rings, rotational symmetry)
+- **kaleidoscope.genome** - Kaleidoscope (6-fold symmetry, multi-shape)
+- **wavyLines.genome** - Wavy Lines (flowing waves, rainbow gradient)
+- **cosmicWheel.genome** - Cosmic Wheel (radial mandala, textures, complexity)
 
 ## Mutation Experiments
 

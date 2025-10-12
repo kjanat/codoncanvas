@@ -1,0 +1,118 @@
+; Cosmic Wheel - Advanced Showcase
+; Radial mandala with texture, state preservation, and gradient colors
+; Difficulty: advanced-showcase
+; Concepts: advanced-opcodes, state-management, composition, colors, NOISE, symmetry
+; Visual: Elaborate cosmic wheel with textured regions and radiating spokes
+; Good for mutations: nonsense (incomplete wheel), NOISE variations
+
+ATG
+  ; Background texture - cosmic dust
+  GAA AAA GAA AAA GAA TCC TTA ; Color(0, 0, 53) deep blue
+  GAA TTT GGA                 ; Push 63, background circle
+  GAA AAA GAA ATT CTA          ; NOISE(0, 15) cosmic dust texture
+
+  ; Outer ring - 12 textured arcs (purple nebula)
+  GAA CTT GAA AAA GAA TCC TTA ; Color(31, 0, 53) purple
+  TCA                         ; SAVE_STATE at origin
+  GAA TCC GAA AAA ACA          ; Translate(53, 0) far from center
+  GAA ATT GAA AAT GTA          ; Push 15, push 3, ellipse arc
+  GAA CCC GAA AGG CTA          ; NOISE(21, 10) texture
+  GAA GGC AGA                 ; Rotate 30 degrees
+  GAA TCC GAA AAA ACA          ; Translate(53, 0)
+  GAA ATT GAA AAT GTA          ; Ellipse
+  GAA CCC GAA AGG CTA          ; NOISE(21, 10)
+  GAA GGC AGA                 ; Rotate 30
+  GAA TCC GAA AAA ACA          ; Translate(53, 0)
+  GAA ATT GAA AAT GTA          ; Ellipse
+  GAA CCC GAA AGG CTA          ; NOISE(21, 10)
+  GAA GGC AGA                 ; Rotate 30
+  GAA TCC GAA AAA ACA          ; Translate(53, 0)
+  GAA ATT GAA AAT GTA          ; Ellipse
+  GAA CCC GAA AGG CTA          ; NOISE(21, 10)
+  GAA GGC AGA                 ; Rotate 30
+  GAA TCC GAA AAA ACA          ; Translate(53, 0)
+  GAA ATT GAA AAT GTA          ; Ellipse
+  GAA CCC GAA AGG CTA          ; NOISE(21, 10)
+  GAA GGC AGA                 ; Rotate 30
+  GAA TCC GAA AAA ACA          ; Translate(53, 0)
+  GAA ATT GAA AAT GTA          ; Ellipse
+  GAA CCC GAA AGG CTA          ; NOISE(21, 10)
+  GAA GGC AGA                 ; Rotate 30
+  GAA TCC GAA AAA ACA          ; Translate(53, 0)
+  GAA ATT GAA AAT GTA          ; Ellipse
+  GAA CCC GAA AGG CTA          ; NOISE(21, 10)
+  GAA GGC AGA                 ; Rotate 30
+  GAA TCC GAA AAA ACA          ; Translate(53, 0)
+  GAA ATT GAA AAT GTA          ; Ellipse
+  GAA CCC GAA AGG CTA          ; NOISE(21, 10)
+  GAA GGC AGA                 ; Rotate 30
+  GAA TCC GAA AAA ACA          ; Translate(53, 0)
+  GAA ATT GAA AAT GTA          ; Ellipse
+  GAA CCC GAA AGG CTA          ; NOISE(21, 10)
+  GAA GGC AGA                 ; Rotate 30
+  GAA TCC GAA AAA ACA          ; Translate(53, 0)
+  GAA ATT GAA AAT GTA          ; Ellipse
+  GAA CCC GAA AGG CTA          ; NOISE(21, 10)
+  GAA GGC AGA                 ; Rotate 30
+  GAA TCC GAA AAA ACA          ; Translate(53, 0)
+  GAA ATT GAA AAT GTA          ; Ellipse
+  GAA CCC GAA AGG CTA          ; NOISE(21, 10)
+  GAA GGC AGA                 ; Rotate 30
+  GAA TCC GAA AAA ACA          ; Translate(53, 0)
+  GAA ATT GAA AAT GTA          ; Ellipse
+  GAA CCC GAA AGG CTA          ; NOISE(21, 10)
+
+  ; Middle ring - 8 glowing spokes (cyan)
+  TCA                         ; SAVE_STATE to origin
+  GAA AAA GAA TTT GAA GCC TTA ; Color(0, 63, 37) cyan glow
+  GAA ATT AGA                 ; Rotate 45/2 offset
+  GAA GCC AAA                 ; Push 37, radial line
+  GAA ATT AGA                 ; Rotate 45
+  GAA GCC AAA                 ; Line
+  GAA ATT AGA                 ; Rotate 45
+  GAA GCC AAA                 ; Line
+  GAA ATT AGA                 ; Rotate 45
+  GAA GCC AAA                 ; Line
+  GAA ATT AGA                 ; Rotate 45
+  GAA GCC AAA                 ; Line
+  GAA ATT AGA                 ; Rotate 45
+  GAA GCC AAA                 ; Line
+  GAA ATT AGA                 ; Rotate 45
+  GAA GCC AAA                 ; Line
+  GAA ATT AGA                 ; Rotate 45
+  GAA GCC AAA                 ; Line
+
+  ; Inner ring - 6 bright circles (yellow-white)
+  TCA                         ; SAVE_STATE
+  GAA TTT GAA TTT GAA CCC TTA ; Color(63, 63, 21) bright yellow
+  GAA CCC GAA AAA ACA          ; Translate(21, 0)
+  GAA AAT GGA                 ; Push 3, circle
+  GAA CTC AGA                 ; Rotate 60
+  GAA CCC GAA AAA ACA          ; Translate(21, 0)
+  GAA AAT GGA                 ; Circle
+  GAA CTC AGA                 ; Rotate 60
+  GAA CCC GAA AAA ACA          ; Translate(21, 0)
+  GAA AAT GGA                 ; Circle
+  GAA CTC AGA                 ; Rotate 60
+  GAA CCC GAA AAA ACA          ; Translate(21, 0)
+  GAA AAT GGA                 ; Circle
+  GAA CTC AGA                 ; Rotate 60
+  GAA CCC GAA AAA ACA          ; Translate(21, 0)
+  GAA AAT GGA                 ; Circle
+  GAA CTC AGA                 ; Rotate 60
+  GAA CCC GAA AAA ACA          ; Translate(21, 0)
+  GAA AAT GGA                 ; Circle
+
+  ; Core - Textured center with gradient
+  TCA                         ; SAVE_STATE
+  GAA TTT GAA TTT GAA TTT TTA ; Color(63, 63, 63) white
+  GAA CCC GGA                 ; Push 21, large core
+  GAA AGG GAA ATT CTA          ; NOISE(10, 15) core texture
+  GAA TTT GAA GCC GAA TCC TTA ; Color(63, 37, 53) pink overlay
+  GAA AGG GGA                 ; Push 10, medium
+  GAA ATT GAA CCC CTA          ; NOISE(15, 21) more texture
+  GAA TTT GAA AAA GAA TTT TTA ; Color(63, 0, 63) magenta center
+  GAA AAT GGA                 ; Push 3, bright core
+  GAA CCC GAA AAT CTA          ; NOISE(21, 3) subtle twinkle
+
+TAA

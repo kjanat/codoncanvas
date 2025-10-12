@@ -2,7 +2,7 @@
  * Built-in example genomes for the playground
  */
 
-export type DifficultyLevel = 'beginner' | 'intermediate' | 'advanced';
+export type DifficultyLevel = 'beginner' | 'intermediate' | 'advanced' | 'advanced-showcase';
 export type Concept =
   | 'drawing'
   | 'transforms'

@@ -159,7 +159,8 @@ function updateExampleDropdown() {
   const grouped = {
     beginner: [] as Array<[ExampleKey, ExampleMetadata]>,
     intermediate: [] as Array<[ExampleKey, ExampleMetadata]>,
-    advanced: [] as Array<[ExampleKey, ExampleMetadata]>
+    advanced: [] as Array<[ExampleKey, ExampleMetadata]>,
+    'advanced-showcase': [] as Array<[ExampleKey, ExampleMetadata]>
   };
 
   filtered.forEach(([key, ex]) => {
@@ -203,6 +204,19 @@ function updateExampleDropdown() {
       advancedGroup.appendChild(option);
     });
     exampleSelect.appendChild(advancedGroup);
+  }
+
+  // Add advanced showcase examples
+  if (grouped['advanced-showcase'].length > 0) {
+    const showcaseGroup = document.createElement('optgroup');
+    showcaseGroup.label = '✨ Advanced Showcase';
+    grouped['advanced-showcase'].forEach(([key, ex]) => {
+      const option = document.createElement('option');
+      option.value = key;
+      option.textContent = ex.title;
+      showcaseGroup.appendChild(option);
+    });
+    exampleSelect.appendChild(showcaseGroup);
   }
 
   // Update count

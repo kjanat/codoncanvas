@@ -1,0 +1,71 @@
+; Starfield - Advanced Showcase
+; Generative star pattern with noise texture and varied sizes
+; Difficulty: advanced-showcase
+; Concepts: advanced-opcodes, composition, colors, NOISE, pseudo-random positioning
+; Visual: Night sky with textured stars of varying brightness
+; Good for mutations: silent, NOISE parameter changes
+
+ATG
+  ; Background - dark blue with subtle noise
+  GAA AAA GAA AAA GAA TCC TTA ; Color(0, 0, 53) deep blue
+  GAA TTT GGA                 ; Push 63, large circle (background)
+  GAA AAA GAA AAT CTA          ; NOISE(0, 3) subtle texture
+
+  ; Large bright stars (white)
+  GAA TTT GAA TTT GAA TTT TTA ; Color(63, 63, 63) white
+  TCA                         ; SAVE_STATE
+  GAA ATT GAA CCC ACA          ; Translate(15, 21) - star position 1
+  GAA AAT GGA                 ; Push 3, circle
+  GAA AGG GAA AAT CTA          ; NOISE(10, 3) twinkle
+  GAA GCC GAA ATT ACA          ; Translate(37, 15) - star position 2
+  GAA AAT GGA                 ; Circle
+  GAA ATT GAA AAA ACA          ; Translate(15, 0) - star position 3
+  GAA AAT GGA                 ; Circle
+  GAA CCC GAA GCC ACA          ; Translate(21, 37) - star position 4
+  GAA AAT GGA                 ; Circle
+  GAA ATT GAA AAT CTA          ; NOISE(15, 3)
+
+  ; Medium stars (light yellow)
+  GAA TTT GAA TTT GAA CCC TTA ; Color(63, 63, 21) light yellow
+  TCA                         ; SAVE_STATE
+  GAA CCC GAA ATT ACA          ; Translate(21, 15)
+  GAA AAC GGA                 ; Push 1, small circle
+  GAA TCC GAA CCC ACA          ; Translate(53, 21)
+  GAA AAC GGA                 ; Circle
+  GAA AGG GAA TCC ACA          ; Translate(10, 53)
+  GAA AAC GGA                 ; Circle
+  GAA GCC GAA AGG ACA          ; Translate(37, 10)
+  GAA AAC GGA                 ; Circle
+  GAA ATT GAA GCC ACA          ; Translate(15, 37)
+  GAA AAC GGA                 ; Circle
+  GAA CCC GAA AAT CTA          ; NOISE(21, 3)
+
+  ; Small distant stars (dim white)
+  GAA GCC GAA GCC GAA GCC TTA ; Color(37, 37, 37) dim white
+  TCA                         ; SAVE_STATE
+  GAA AAT GAA AGG ACA          ; Translate(3, 10)
+  GAA AAC GGA                 ; Tiny circle
+  GAA TCC GAA AAT ACA          ; Translate(53, 3)
+  GAA AAC GGA                 ; Circle
+  GAA ATT GAA TCC ACA          ; Translate(15, 53)
+  GAA AAC GGA                 ; Circle
+  GAA CGC GAA CCC ACA          ; Translate(25, 21)
+  GAA AAC GGA                 ; Circle
+  GAA AAT GAA CGC ACA          ; Translate(3, 25)
+  GAA AAC GGA                 ; Circle
+  GAA TCC GAA GCC ACA          ; Translate(53, 37)
+  GAA AAC GGA                 ; Circle
+  GAA GCC GAA TCC ACA          ; Translate(37, 53)
+  GAA AAC GGA                 ; Circle
+  GAA AGG GAA AAT ACA          ; Translate(10, 3)
+  GAA AAC GGA                 ; Circle
+  GAA CGC GAA ATT ACA          ; Translate(25, 15)
+  GAA AAC GGA                 ; Circle
+
+  ; Nebula effect - colored noise regions
+  GAA CTT GAA AAA GAA TCC TTA ; Color(31, 0, 53) purple nebula
+  GAA CCC GAA ATT CTA          ; NOISE(21, 15) nebula texture
+  GAA AAA GAA CTT GAA TCC TTA ; Color(0, 31, 53) blue nebula
+  GAA GCC GAA CCC CTA          ; NOISE(37, 21) nebula texture
+
+TAA

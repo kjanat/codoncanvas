@@ -1,0 +1,106 @@
+; Kaleidoscope - Advanced Showcase
+; Symmetric pattern with multiple shape types and vibrant colors
+; Difficulty: advanced-showcase
+; Concepts: composition, transforms, colors, symmetry, state-management
+; Visual: Intricate kaleidoscope with 6-fold rotational symmetry
+; Good for mutations: frameshift (asymmetry), missense (shape variety)
+
+ATG
+  ; Setup center point and initial state
+  TCA                         ; SAVE_STATE at origin
+
+  ; Section 1 - Purple diamond (repeated 6x with 60° rotation)
+  GAA CTT GAA AAA GAA TCC TTA ; Color(31, 0, 53) purple
+  GAA CCC GAA AAA ACA          ; Translate(21, 0)
+  GAA ATT AGA                 ; Rotate 45 (diamond orientation)
+  GAA AGG GAA AGG CCA          ; Push 10, push 10, rectangle (diamond)
+  GAA AGG AGA                 ; Rotate back -10 (reset)
+  GAA GGC AGA                 ; Rotate 60 degrees (next symmetry position)
+  GAA CCC GAA AAA ACA          ; Translate(21, 0)
+  GAA ATT AGA                 ; Rotate 45
+  GAA AGG GAA AGG CCA          ; Rectangle
+  GAA GGC AGA                 ; Rotate 60
+  GAA CCC GAA AAA ACA          ; Translate(21, 0)
+  GAA ATT AGA                 ; Rotate 45
+  GAA AGG GAA AGG CCA          ; Rectangle
+  GAA GGC AGA                 ; Rotate 60
+  GAA CCC GAA AAA ACA          ; Translate(21, 0)
+  GAA ATT AGA                 ; Rotate 45
+  GAA AGG GAA AGG CCA          ; Rectangle
+  GAA GGC AGA                 ; Rotate 60
+  GAA CCC GAA AAA ACA          ; Translate(21, 0)
+  GAA ATT AGA                 ; Rotate 45
+  GAA AGG GAA AGG CCA          ; Rectangle
+  GAA GGC AGA                 ; Rotate 60
+  GAA CCC GAA AAA ACA          ; Translate(21, 0)
+  GAA ATT AGA                 ; Rotate 45
+  GAA AGG GAA AGG CCA          ; Rectangle
+
+  ; Section 2 - Cyan triangles (6x, offset 30°)
+  TCA                         ; SAVE_STATE back to origin
+  GAA GGC AGA                 ; Rotate 30 (offset from section 1)
+  GAA AAA GAA TTT GAA GCC TTA ; Color(0, 63, 37) cyan
+  GAA GCC GAA AAA ACA          ; Translate(37, 0)
+  GAA AAT GCA                 ; Push 3, triangle
+  GAA CTC AGA                 ; Rotate 60
+  GAA GCC GAA AAA ACA          ; Translate(37, 0)
+  GAA AAT GCA                 ; Triangle
+  GAA CTC AGA                 ; Rotate 60
+  GAA GCC GAA AAA ACA          ; Translate(37, 0)
+  GAA AAT GCA                 ; Triangle
+  GAA CTC AGA                 ; Rotate 60
+  GAA GCC GAA AAA ACA          ; Translate(37, 0)
+  GAA AAT GCA                 ; Triangle
+  GAA CTC AGA                 ; Rotate 60
+  GAA GCC GAA AAA ACA          ; Translate(37, 0)
+  GAA AAT GCA                 ; Triangle
+  GAA CTC AGA                 ; Rotate 60
+  GAA GCC GAA AAA ACA          ; Translate(37, 0)
+  GAA AAT GCA                 ; Triangle
+
+  ; Section 3 - Yellow ellipses (6x, back to 0° offset)
+  TCA                         ; SAVE_STATE to origin
+  GAA TTT GAA TTT GAA AGG TTA ; Color(63, 63, 10) yellow
+  GAA TCC GAA AAA ACA          ; Translate(53, 0)
+  GAA ATT GAA AAT GTA          ; Push 15, push 3, ellipse (15x3)
+  GAA CTC AGA                 ; Rotate 60
+  GAA TCC GAA AAA ACA          ; Translate(53, 0)
+  GAA ATT GAA AAT GTA          ; Ellipse
+  GAA CTC AGA                 ; Rotate 60
+  GAA TCC GAA AAA ACA          ; Translate(53, 0)
+  GAA ATT GAA AAT GTA          ; Ellipse
+  GAA CTC AGA                 ; Rotate 60
+  GAA TCC GAA AAA ACA          ; Translate(53, 0)
+  GAA ATT GAA AAT GTA          ; Ellipse
+  GAA CTC AGA                 ; Rotate 60
+  GAA TCC GAA AAA ACA          ; Translate(53, 0)
+  GAA ATT GAA AAT GTA          ; Ellipse
+  GAA CTC AGA                 ; Rotate 60
+  GAA TCC GAA AAA ACA          ; Translate(53, 0)
+  GAA ATT GAA AAT GTA          ; Ellipse
+
+  ; Section 4 - Pink lines (6x, radial from center)
+  TCA                         ; SAVE_STATE to origin
+  GAA TTT GAA CCC GAA TCC TTA ; Color(63, 21, 53) pink
+  GAA GCC AAA                 ; Push 37, line (radial)
+  GAA CTC AGA                 ; Rotate 60
+  GAA GCC AAA                 ; Line
+  GAA CTC AGA                 ; Rotate 60
+  GAA GCC AAA                 ; Line
+  GAA CTC AGA                 ; Rotate 60
+  GAA GCC AAA                 ; Line
+  GAA CTC AGA                 ; Rotate 60
+  GAA GCC AAA                 ; Line
+  GAA CTC AGA                 ; Rotate 60
+  GAA GCC AAA                 ; Line
+
+  ; Center ornament - Multi-colored core
+  TCA                         ; SAVE_STATE to origin
+  GAA TTT GAA TTT GAA TTT TTA ; Color(63, 63, 63) white
+  GAA CCC GGA                 ; Push 21, large center circle
+  GAA TTT GAA AAA GAA AAA TTA ; Color(63, 0, 0) red
+  GAA AGG GGA                 ; Push 10, medium circle
+  GAA AAA GAA AAA GAA TTT TTA ; Color(0, 0, 63) blue
+  GAA AAT GGA                 ; Push 3, small circle
+
+TAA

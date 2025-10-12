@@ -1,0 +1,83 @@
+; Recursive Circles - Advanced Showcase
+; Self-similar circular pattern with state preservation
+; Difficulty: advanced-showcase
+; Concepts: advanced-opcodes, state-management, composition, transforms, colors
+; Visual: Nested circles with rotational offsets creating depth illusion
+; Good for mutations: nonsense (truncates pattern), missense (shape variation)
+
+ATG
+  ; Layer 1 - Outermost ring (8 large circles)
+  GAA TCC GAA AAA GAA AAA TTA ; Color(53, 0, 0) red
+  TCA                         ; SAVE_STATE at origin
+  GAA TGG GAA AAA ACA          ; Translate(57, 0) far from center
+  GAA ATT GGA                 ; Push 15, circle
+  GAA ATT AGA                 ; Rotate 45 degrees
+  GAA TGG GAA AAA ACA          ; Translate(57, 0)
+  GAA ATT GGA                 ; Circle
+  GAA ATT AGA                 ; Rotate 45
+  GAA TGG GAA AAA ACA          ; Translate(57, 0)
+  GAA ATT GGA                 ; Circle
+  GAA ATT AGA                 ; Rotate 45
+  GAA TGG GAA AAA ACA          ; Translate(57, 0)
+  GAA ATT GGA                 ; Circle
+  GAA ATT AGA                 ; Rotate 45
+  GAA TGG GAA AAA ACA          ; Translate(57, 0)
+  GAA ATT GGA                 ; Circle
+  GAA ATT AGA                 ; Rotate 45
+  GAA TGG GAA AAA ACA          ; Translate(57, 0)
+  GAA ATT GGA                 ; Circle
+  GAA ATT AGA                 ; Rotate 45
+  GAA TGG GAA AAA ACA          ; Translate(57, 0)
+  GAA ATT GGA                 ; Circle
+  GAA ATT AGA                 ; Rotate 45
+  GAA TGG GAA AAA ACA          ; Translate(57, 0)
+  GAA ATT GGA                 ; Circle
+
+  ; Layer 2 - Middle ring (6 medium circles, rotated offset)
+  GAA TTT GAA GCC GAA AAA TTA ; Color(63, 37, 0) orange
+  TCA                         ; SAVE_STATE at origin
+  GAA GGC AGA                 ; Rotate 30 degrees (offset from layer 1)
+  GAA GCC GAA AAA ACA          ; Translate(37, 0) closer
+  GAA AGG GGA                 ; Push 10, circle
+  GAA CTC AGA                 ; Rotate 60 degrees
+  GAA GCC GAA AAA ACA          ; Translate(37, 0)
+  GAA AGG GGA                 ; Circle
+  GAA CTC AGA                 ; Rotate 60
+  GAA GCC GAA AAA ACA          ; Translate(37, 0)
+  GAA AGG GGA                 ; Circle
+  GAA CTC AGA                 ; Rotate 60
+  GAA GCC GAA AAA ACA          ; Translate(37, 0)
+  GAA AGG GGA                 ; Circle
+  GAA CTC AGA                 ; Rotate 60
+  GAA GCC GAA AAA ACA          ; Translate(37, 0)
+  GAA AGG GGA                 ; Circle
+  GAA CTC AGA                 ; Rotate 60
+  GAA GCC GAA AAA ACA          ; Translate(37, 0)
+  GAA AGG GGA                 ; Circle
+
+  ; Layer 3 - Inner ring (4 small circles)
+  GAA TTT GAA TTT GAA AAA TTA ; Color(63, 63, 0) yellow
+  TCA                         ; SAVE_STATE at origin
+  GAA ATT AGA                 ; Rotate 45 degrees (different offset)
+  GAA CCC GAA AAA ACA          ; Translate(21, 0) even closer
+  GAA AAT GGA                 ; Push 3, tiny circle
+  GAA TGG AGA                 ; Rotate 90 degrees
+  GAA CCC GAA AAA ACA          ; Translate(21, 0)
+  GAA AAT GGA                 ; Circle
+  GAA TGG AGA                 ; Rotate 90
+  GAA CCC GAA AAA ACA          ; Translate(21, 0)
+  GAA AAT GGA                 ; Circle
+  GAA TGG AGA                 ; Rotate 90
+  GAA CCC GAA AAA ACA          ; Translate(21, 0)
+  GAA AAT GGA                 ; Circle
+
+  ; Center - Large core with gradient effect
+  GAA TTT GAA TTT GAA CCC TTA ; Color(63, 63, 21) bright yellow
+  TCA                         ; SAVE_STATE at origin
+  GAA CCC GGA                 ; Push 21, large center circle
+  GAA TTT GAA AGG GAA GCC TTA ; Color(63, 10, 37) orange-pink
+  GAA AGG GGA                 ; Push 10, medium overlay
+  GAA TTT GAA AAA GAA TTT TTA ; Color(63, 0, 63) white center
+  GAA AAT GGA                 ; Push 3, bright core
+
+TAA
