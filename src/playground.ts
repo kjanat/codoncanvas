@@ -1,6 +1,7 @@
 import { ExampleKey, examples, type DifficultyLevel, type Concept, ExampleMetadata } from './examples';
 import { CodonLexer } from './lexer';
-import { Canvas2DRenderer } from './renderer';
+import { Canvas2DRenderer, type Renderer } from './renderer';
+import { AudioRenderer } from './audio-renderer';
 import { CodonVM } from './vm';
 import { downloadGenomeFile, readGenomeFile } from './genome-io';
 import {
@@ -57,9 +58,14 @@ const linterToggle = document.getElementById('linterToggle') as HTMLButtonElemen
 const linterMessages = document.getElementById('linterMessages') as HTMLDivElement;
 const fixAllBtn = document.getElementById('fixAllBtn') as HTMLButtonElement;
 
+// Audio elements
+const audioToggleBtn = document.getElementById('audioToggleBtn') as HTMLButtonElement;
+
 // Initialize lexer, renderer, and VM
 const lexer = new CodonLexer();
 const renderer = new Canvas2DRenderer(canvas);
+const audioRenderer = new AudioRenderer();
+let audioMode = false; // Start with visual mode
 const vm = new CodonVM(renderer);
 
 function setStatus(message: string, type: 'info' | 'error' | 'success') {
@@ -72,7 +78,7 @@ function updateStats(codons: number, instructions: number) {
   instructionCount.textContent = `Instructions: ${instructions}`;
 }
 
-function runProgram() {
+async function runProgram() {
   try {
     const source = editor.value;
 
@@ -95,12 +101,28 @@ function runProgram() {
       setStatus(`Warning: ${frameErrors[0].message}`, 'error');
     }
 
-    // Execute
-    vm.reset();
-    const snapshots = vm.run(tokens);
+    // Execute with appropriate renderer
+    if (audioMode) {
+      // Audio mode: use AudioRenderer
+      const audioVM = new CodonVM(audioRenderer);
+      audioRenderer.clear();
 
-    updateStats(tokens.length, vm.state.instructionCount);
-    setStatus(`Executed ${vm.state.instructionCount} instructions successfully`, 'success');
+      // Start recording for potential export
+      audioRenderer.startRecording();
+
+      audioVM.reset();
+      const snapshots = audioVM.run(tokens);
+
+      updateStats(tokens.length, audioVM.state.instructionCount);
+      setStatus(`♪ Playing ${audioVM.state.instructionCount} audio instructions`, 'success');
+    } else {
+      // Visual mode: use Canvas2DRenderer
+      vm.reset();
+      const snapshots = vm.run(tokens);
+
+      updateStats(tokens.length, vm.state.instructionCount);
+      setStatus(`Executed ${vm.state.instructionCount} instructions successfully`, 'success');
+    }
 
   } catch (error) {
     if (error instanceof Error) {
@@ -616,9 +638,32 @@ function applyMutation(type: MutationType) {
   }
 }
 
+// Audio toggle handler
+async function toggleAudio() {
+  audioMode = !audioMode;
+
+  if (audioMode) {
+    // Initialize audio context (requires user interaction)
+    try {
+      await audioRenderer.initialize();
+      audioToggleBtn.textContent = '🔊 Audio On';
+      audioToggleBtn.setAttribute('aria-label', 'Audio mode enabled');
+      setStatus('Audio mode enabled - genomes will play as sound', 'info');
+    } catch (error) {
+      audioMode = false;
+      setStatus('Error initializing audio: ' + (error as Error).message, 'error');
+    }
+  } else {
+    audioToggleBtn.textContent = '🔇 Audio Off';
+    audioToggleBtn.setAttribute('aria-label', 'Audio mode disabled');
+    setStatus('Visual mode - genomes render to canvas', 'info');
+  }
+}
+
 // Event listeners
 runBtn.addEventListener('click', runProgram);
 clearBtn.addEventListener('click', clearCanvas);
+audioToggleBtn.addEventListener('click', toggleAudio);
 exampleSelect.addEventListener('change', loadExample);
 exportBtn.addEventListener('click', exportImage);
 saveGenomeBtn.addEventListener('click', saveGenome);
