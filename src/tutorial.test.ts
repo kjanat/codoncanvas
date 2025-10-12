@@ -1,5 +1,5 @@
 import { describe, it, expect, beforeEach, vi } from 'vitest';
-import { TutorialManager, helloCircleTutorial, mutationTutorial, timelineTutorial } from './tutorial';
+import { TutorialManager, helloCircleTutorial, mutationTutorial, timelineTutorial, evolutionTutorial } from './tutorial';
 
 // Mock localStorage
 const localStorageMock = (() => {
@@ -471,5 +471,93 @@ describe('Timeline Tutorial', () => {
       const completeStep = timelineTutorial.steps.find(s => s.id === 'complete');
       expect(completeStep?.content.toLowerCase()).toContain('next steps');
     });
+  });
+});
+
+describe('evolutionTutorial', () => {
+  it('should have correct structure', () => {
+    expect(evolutionTutorial.id).toBe('evolution-lab');
+    expect(evolutionTutorial.title).toContain('Evolution');
+    expect(evolutionTutorial.steps.length).toBeGreaterThan(4);
+  });
+
+  it('should start with welcome step', () => {
+    const firstStep = evolutionTutorial.steps[0];
+    expect(firstStep.id).toBe('welcome');
+    expect(firstStep.title.toLowerCase()).toContain('welcome');
+  });
+
+  it('should include key evolution concepts', () => {
+    const allContent = evolutionTutorial.steps.map(s => s.content).join(' ').toLowerCase();
+    
+    // Natural selection concepts
+    expect(allContent).toContain('fitness');
+    expect(allContent).toContain('generation');
+    expect(allContent).toContain('selection');
+    expect(allContent).toContain('mutation');
+  });
+
+  it('should explain candidate generation', () => {
+    const genStep = evolutionTutorial.steps.find(s => s.id === 'generate-candidates');
+    expect(genStep).toBeTruthy();
+    expect(genStep?.content.toLowerCase()).toContain('candidate');
+    expect(genStep?.content.toLowerCase()).toContain('generate');
+  });
+
+  it('should explain visual comparison', () => {
+    const compareStep = evolutionTutorial.steps.find(s => s.id === 'visual-comparison');
+    expect(compareStep).toBeTruthy();
+    expect(compareStep?.content.toLowerCase()).toContain('candidate');
+    expect(compareStep?.content.toLowerCase()).toContain('look');
+    expect(compareStep?.targetElement).toBe('#candidatesGrid');
+  });
+
+  it('should explain selection process', () => {
+    const selectStep = evolutionTutorial.steps.find(s => s.id === 'selection');
+    expect(selectStep).toBeTruthy();
+    expect(selectStep?.content.toLowerCase()).toContain('fittest');
+    expect(selectStep?.content.toLowerCase()).toContain('selection');
+  });
+
+  it('should explain multi-generation evolution', () => {
+    const multiGenStep = evolutionTutorial.steps.find(s => s.id === 'multi-generation');
+    expect(multiGenStep).toBeTruthy();
+    expect(multiGenStep?.content.toLowerCase()).toContain('generation');
+    expect(multiGenStep?.content.toLowerCase()).toContain('lineage');
+  });
+
+  it('should have completion step', () => {
+    const completeStep = evolutionTutorial.steps.find(s => s.id === 'complete');
+    expect(completeStep).toBeTruthy();
+    expect(completeStep?.title.toLowerCase()).toContain('master');
+  });
+
+  it('should mention natural selection metaphor', () => {
+    const completeStep = evolutionTutorial.steps.find(s => s.id === 'complete');
+    expect(completeStep?.content.toLowerCase()).toContain('natural selection');
+  });
+
+  it('should provide challenges in completion', () => {
+    const completeStep = evolutionTutorial.steps.find(s => s.id === 'complete');
+    expect(completeStep?.content.toLowerCase()).toContain('challenge');
+  });
+
+  it('should target correct DOM elements', () => {
+    expect(evolutionTutorial.steps[0].targetElement).toBe('#evolutionPanel');
+    
+    const genStep = evolutionTutorial.steps.find(s => s.id === 'generate-candidates');
+    expect(genStep?.targetElement).toBe('#generateBtn');
+  });
+});
+
+describe('evolution tutorial isolation', () => {
+  it('should have separate storage key', () => {
+    const evolutionManager = new TutorialManager('codoncanvas_evolution_tutorial_completed');
+    const mutationManager = new TutorialManager('codoncanvas_mutation_tutorial_completed');
+
+    evolutionManager.markCompleted();
+
+    expect(evolutionManager.isCompleted()).toBe(true);
+    expect(mutationManager.isCompleted()).toBe(false);
   });
 });

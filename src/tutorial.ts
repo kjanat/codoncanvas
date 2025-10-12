@@ -545,3 +545,146 @@ Just like a ribosome reads mRNA codon-by-codon to build proteins, the CodonCanva
     },
   ],
 };
+
+/**
+ * Evolution Lab Tutorial: Understanding Natural Selection
+ */
+export const evolutionTutorial: TutorialConfig = {
+  id: 'evolution-lab',
+  title: 'Evolution Lab: Natural Selection in Action',
+  description: 'Learn how small mutations accumulate across generations through directed selection',
+  steps: [
+    {
+      id: 'welcome',
+      title: 'Welcome to the Evolution Lab! 🧬',
+      content: `The <strong>Evolution Lab</strong> demonstrates natural selection through code!
+
+You'll act as the <strong>fitness function</strong> - selecting which genomes survive to reproduce.
+
+<strong>How it works:</strong>
+• Generate 6 mutated candidates from a parent genome
+• You select the "fittest" based on visual output
+• Selected genome becomes the parent for the next generation
+• Repeat to evolve toward a target pattern!
+
+Let's evolve a simple circle into something more complex!`,
+      targetElement: '#evolutionPanel',
+    },
+    {
+      id: 'generate-candidates',
+      title: 'Step 1: Generate Candidates',
+      content: `First, let's create the first generation of mutants.
+
+<strong>Click the "🧬 Generate Candidates" button</strong>
+
+You'll see 6 candidate genomes appear, each with:
+• A visual preview (phenotype)
+• Mutation information (what changed)
+• Unique ID for tracking
+
+Each candidate has 1-2 random mutations from the parent genome.
+
+This is like natural genetic variation in a population! 🎲`,
+      targetElement: '#generateBtn',
+      hint: 'Click "🧬 Generate Candidates"',
+      validationFn: (code: string) => {
+        // Manual progression for evolution tutorial
+        return true;
+      },
+    },
+    {
+      id: 'visual-comparison',
+      title: 'Step 2: Visual Comparison',
+      content: `Now look at all 6 candidates carefully.
+
+<strong>Imagine you want to evolve toward a specific target</strong> (maybe more circles, different colors, or specific shapes).
+
+<strong>For this tutorial, let's aim for:</strong>
+"More visual complexity" (more shapes, transformations, or colors)
+
+Look at each candidate:
+• Which has the most interesting variation?
+• Which moves closer to your imagined goal?
+• Which would make a good parent for future generations?
+
+<strong>Remember:</strong> You are the fitness function! Your preference determines which traits survive.
+
+Take your time evaluating the phenotypes. 👁️`,
+      targetElement: '#candidatesGrid',
+      hint: 'Visually compare all 6 candidates',
+    },
+    {
+      id: 'selection',
+      title: 'Step 4: Selection (Survival of the Fittest)',
+      content: `Time to apply selection pressure!
+
+<strong>Click on the candidate you think is "fittest"</strong> (most interesting, closest to your goal, or most promising for future generations).
+
+When you click:
+• The card gets a green border (selected)
+• This genome becomes the parent for Generation 2
+• It's the ONLY genome that survives to reproduce!
+
+<strong>Natural Selection in Action:</strong>
+In nature, organisms with favorable traits are more likely to reproduce. Here, only your selected genome reproduces - the other 5 "die out"!
+
+This is how evolution creates cumulative change over time. 🏆`,
+      targetElement: '#candidatesGrid',
+      hint: 'Click your favorite candidate',
+    },
+    {
+      id: 'multi-generation',
+      title: 'Step 5: Multi-Generation Evolution',
+      content: `Excellent! You've completed Generation 1.
+
+Notice:
+• The <strong>Lineage panel</strong> appeared showing your evolutionary path
+• Generation counter increased to 2
+• Your selected genome is now the parent
+
+<strong>Click "🧬 Generate Candidates" again</strong>
+
+You'll see 6 NEW mutants - all descendants of your Generation 1 selection!
+
+<strong>Key insight:</strong>
+Mutations from Generation 1 are now "fixed" (permanent in the lineage). New mutations stack ON TOP of the old ones!
+
+This is cumulative evolution - small changes accumulate into big differences! 🔄
+
+<strong>Keep evolving:</strong> Generate and select 2-3 more times to see the pattern emerge.`,
+      targetElement: '#generateBtn',
+      hint: 'Generate and select 2-3 more generations',
+    },
+    {
+      id: 'complete',
+      title: 'Evolution Master! 🏆',
+      content: `Congratulations! You've mastered directed evolution:
+
+<strong>You learned:</strong>
+• 🧬 Generation: Creating mutated candidates
+• 👁️ Evaluation: Visual phenotype comparison
+• ✅ Selection: Choosing fittest for reproduction
+• 📜 Lineage: Tracking cumulative mutations
+• 🔄 Multi-Generation: Watching traits accumulate
+
+<strong>The Natural Selection Metaphor:</strong>
+Just like evolution in nature, favorable variations are selected and passed to offspring. Over many generations, this creates complex adaptations!
+
+<strong>Key Differences from Nature:</strong>
+• <strong>Directed:</strong> You choose (vs. environmental fitness)
+• <strong>Fast:</strong> Generations in seconds (vs. years/millennia)
+• <strong>Visual:</strong> Immediate phenotype feedback
+
+<strong>Try These Challenges:</strong>
+• Evolve toward a specific target (draw it first, then evolve to match)
+• See how many generations to reach a goal
+• Try starting from different base genomes (Mandala, Spiral, etc.)
+• Compare different evolutionary paths from the same start
+
+<strong>Pro tip:</strong> Use the Share button to export your evolved genome and challenge friends to match or exceed your result!
+
+Happy evolving! 🚀`,
+      targetElement: '#evolutionPanel',
+    },
+  ],
+};

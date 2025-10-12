@@ -11,6 +11,7 @@ CodonCanvas is an educational programming language that uses DNA-like triplets (
 - **Visual output**: Stack-based VM produces graphics on HTML5 canvas
 - **Mutation demonstration**: Silent, missense, nonsense, and frameshift mutations
 - **Directed evolution**: Evolve genomes toward target phenotypes through natural selection
+- **Interactive tutorials**: Step-by-step guided learning for all major features
 - **Live playground**: Web-based editor with instant visual feedback
 - **Save & Share**: Export/import genomes in .genome file format with metadata
 - **Animation Export**: Export timeline animations as GIF files for sharing
@@ -237,6 +238,18 @@ The Evolution Lab demonstrates:
 - **Genetic drift vs selection**: See how random mutations become fixed through selection
 
 This hands-on experience makes abstract evolutionary concepts tangible and playful!
+
+### Interactive Tutorial
+
+First-time visitors to the Evolution Lab will see an **interactive tutorial** that guides them through:
+1. Welcome to natural selection concepts
+2. Generating the first set of 6 mutated candidates
+3. Visual comparison and fitness evaluation
+4. Selection process (clicking the fittest candidate)
+5. Multi-generation evolution and lineage tracking
+6. Completion with challenges and next steps
+
+The tutorial uses localStorage to remember completion status. Reset with `window.resetEvolutionTutorial()` in console.
 
 ## Mutation Demonstration
 

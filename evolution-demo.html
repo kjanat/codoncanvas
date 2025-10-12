@@ -387,6 +387,7 @@
     import { CodonVM } from './src/vm.ts';
     import { EvolutionEngine } from './src/evolution-engine.ts';
     import { ShareSystem, injectShareStyles } from './src/share-system.ts';
+    import { TutorialManager, TutorialUI, evolutionTutorial } from './src/tutorial.ts';
 
     injectShareStyles();
 
@@ -592,6 +593,28 @@
       updateStats();
       showStatus('Loaded genome from share link', 'success');
     }
+
+    // Tutorial integration
+    const tutorialManager = new TutorialManager('codoncanvas_evolution_tutorial_completed');
+    const tutorialUI = new TutorialUI(tutorialManager);
+
+    // Show tutorial on first visit
+    if (!tutorialManager.isCompleted()) {
+      setTimeout(() => {
+        tutorialUI.show(evolutionTutorial);
+      }, 2000); // 2 second delay for page to settle
+    }
+
+    // Tutorial callbacks
+    tutorialManager.onCompleteCallback(() => {
+      console.log('Evolution tutorial completed! 🏆');
+    });
+
+    // Global function to reset tutorial (for testing)
+    window.resetEvolutionTutorial = function() {
+      tutorialManager.reset();
+      console.log('Evolution tutorial reset. Reload page to see it again.');
+    };
   </script>
 </body>
 </html>
