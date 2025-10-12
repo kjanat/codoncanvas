@@ -14,6 +14,7 @@ export default defineConfig({
         mutation: resolve(__dirname, 'mutation-demo.html'),
         timeline: resolve(__dirname, 'timeline-demo.html'),
         evolution: resolve(__dirname, 'evolution-demo.html'),
+        population: resolve(__dirname, 'population-genetics-demo.html'),
       }
     }
   },

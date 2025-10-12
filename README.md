@@ -25,11 +25,12 @@ Try CodonCanvas online (no installation required):
 **[https://yourusername.github.io/codoncanvas/](https://yourusername.github.io/codoncanvas/)**
 
 ### All Demos
-- **[Main Playground](https://yourusername.github.io/codoncanvas/)** - Interactive editor with 25 examples
+- **[Main Playground](https://yourusername.github.io/codoncanvas/)** - Interactive editor with 27 examples
 - **[Mutation Demos](https://yourusername.github.io/codoncanvas/demos.html)** - See all mutation types in action
 - **[Mutation Lab](https://yourusername.github.io/codoncanvas/mutation-demo.html)** - Side-by-side genome comparison
 - **[Timeline Scrubber](https://yourusername.github.io/codoncanvas/timeline-demo.html)** - Step-by-step execution viewer
 - **[Evolution Lab](https://yourusername.github.io/codoncanvas/evolution-demo.html)** - Directed evolution through selection
+- **[Population Genetics](https://yourusername.github.io/codoncanvas/population-genetics-demo.html)** - Observe genetic drift across populations
 
 > **Note:** Replace `yourusername` with your GitHub username after deployment. See [DEPLOYMENT.md](DEPLOYMENT.md) for setup instructions.
 
@@ -37,7 +38,7 @@ Try CodonCanvas online (no installation required):
 
 ### Main Playground
 ![CodonCanvas Playground](screenshot_playground.png)
-*Interactive editor with live canvas preview, 18 built-in examples, and codon reference chart*
+*Interactive editor with live canvas preview, 27 built-in examples, and codon reference chart*
 
 ### Mutation Lab
 ![Mutation Laboratory](screenshot_mutations.png)
@@ -114,7 +115,8 @@ Then open in browser:
 - **Mutation demos: `http://localhost:5173/demos.html`** ⭐ Start here to see mutation effects!
 - Mutation lab: `http://localhost:5173/mutation-demo.html`
 - Timeline demo: `http://localhost:5173/timeline-demo.html`
-- **Evolution lab: `http://localhost:5173/evolution-demo.html`** ⭐ NEW: Directed evolution through natural selection!
+- Evolution lab: `http://localhost:5173/evolution-demo.html` - Directed evolution through natural selection
+- **Population genetics: `http://localhost:5173/population-genetics-demo.html`** ⭐ NEW: Watch genetic drift in action!
 
 ## Example: Hello Circle
 
