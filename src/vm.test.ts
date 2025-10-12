@@ -36,6 +36,10 @@ class MockRenderer implements Renderer {
 		this.operations.push(`ellipse(${rx}, ${ry})`);
 	}
 
+	noise(seed: number, intensity: number): void {
+		this.operations.push(`noise(${seed}, ${intensity})`);
+	}
+
 	translate(dx: number, dy: number): void {
 		this.transform.x += dx;
 		this.transform.y += dy;
