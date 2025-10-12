@@ -158,6 +158,140 @@ TAA`
   GAA AAA GAA CGC GAA CCC TTA ; Color(0, 25, 21) cool
   CTA                ; NOISE(26, 15) - lighter texture
 TAA`
+  },
+
+  spiralPattern: {
+    title: 'Spiral Pattern',
+    description: 'Geometric spiral using iterative rotation and translation',
+    genome: `ATG
+  GAA AAT GGA        ; Push 3, draw circle
+  GAA ATT AGA        ; Push 15, rotate 15 degrees
+  GAA AAT GAA AAA ACA ; Push 3, push 0, translate(3, 0)
+  GAA AAT GGA        ; Draw circle
+  GAA ATT AGA        ; Rotate 15 degrees
+  GAA AGG GAA AAA ACA ; Push 10, push 0, translate(10, 0)
+  GAA AAT GGA        ; Draw circle
+  GAA ATT AGA        ; Rotate 15 degrees
+  GAA AGG GAA AAA ACA ; Push 10, push 0, translate(10, 0)
+  GAA AAT GGA        ; Draw circle
+  GAA ATT AGA        ; Rotate 15 degrees
+  GAA CCC GAA AAA ACA ; Push 21, push 0, translate(21, 0)
+  GAA AAT GGA        ; Draw circle
+TAA`
+  },
+
+  nestedFrames: {
+    title: 'Nested Frames with State',
+    description: 'SAVE_STATE for complex layered compositions',
+    genome: `ATG
+  GAA CTT GAA CTT GAA CTT TTA ; Color(31, 31, 31) bright
+  GAA TCC GGA        ; Push 53, draw outer circle
+  TCA                ; SAVE_STATE - preserve outer position
+  GAA GCC GAA GCC TTA ; Color(37, 37, 0) yellow
+  GAA GCC GGA        ; Push 37, draw middle circle
+  TCA                ; SAVE_STATE - preserve middle position
+  GAA CCC GAA CCC TTA ; Color(21, 21, 0) darker yellow
+  GAA CCC GGA        ; Push 21, draw inner circle
+  TCA                ; SAVE_STATE - preserve inner position
+  GAA AAA GAA AGG TTA ; Color(0, 10, 0) dark
+  GAA AGG GGA        ; Push 10, draw core circle
+TAA`
+  },
+
+  colorGradient: {
+    title: 'Color Gradient',
+    description: 'Systematic color manipulation for gradient effect',
+    genome: `ATG
+  GAA AAA GAA AAA GAA AAA TTA ; Color(0, 0, 0) black
+  GAA AGG GGA        ; Push 10, draw circle
+  GAA AGG GAA AAA ACA ; Push 10, push 0, translate(10, 0)
+  GAA AAA GAA AAA GAA AGG TTA ; Color(0, 0, 10) dark gray
+  GAA AGG GGA        ; Draw circle
+  GAA AGG GAA AAA ACA ; Translate(10, 0)
+  GAA AAA GAA AAA GAA CCC TTA ; Color(0, 0, 21) medium gray
+  GAA AGG GGA        ; Draw circle
+  GAA AGG GAA AAA ACA ; Translate(10, 0)
+  GAA AAA GAA AAA GAA CGC TTA ; Color(0, 0, 25) light gray
+  GAA AGG GGA        ; Draw circle
+  GAA AGG GAA AAA ACA ; Translate(10, 0)
+  GAA AAA GAA AAA GAA GCC TTA ; Color(0, 0, 37) lighter
+  GAA AGG GGA        ; Draw circle
+TAA`
+  },
+
+  silentMutation: {
+    title: 'Silent Mutation Demo',
+    description: 'Pedagogical: GGA vs GGC (synonymous CIRCLE codons)',
+    genome: `ATG
+  GAA CCC GAA CTT GAA AAA TTA ; Color(21, 31, 0) green
+  GAA CGC GGA        ; Push 25, CIRCLE using GGA
+  GAA GCC GAA AAA ACA ; Push 37, push 0, translate(37, 0)
+  GAA CCC GAA CTT GAA AAA TTA ; Color(21, 31, 0) same green
+  GAA CGC GGC        ; Push 25, CIRCLE using GGC (synonymous!)
+TAA
+; Note: Both circles identical - demonstrates silent mutation`
+  },
+
+  gridPattern: {
+    title: 'Grid Pattern',
+    description: 'Systematic positioning with TRANSLATE for grid layout',
+    genome: `ATG
+  GAA AAT GCA        ; Push 3, draw triangle
+  GAA AGG GAA AAA ACA ; Push 10, push 0, translate(10, 0)
+  GAA AAT GCA        ; Draw triangle
+  GAA AGG GAA AAA ACA ; Translate(10, 0)
+  GAA AAT GCA        ; Draw triangle
+  GAA AAA GAA AGG ACA ; Push 0, push 10, translate(0, 10) - down
+  GAA AAT GCA        ; Draw triangle
+  GAA AAA GAA AAA     ; Push 0, push 0 (prepare negative)
+  GAA CCC TAT ACA     ; Push 21, POP (discard), translate(0, 0) - reset x
+  GAA AGG GAA AAA ACA ; Translate(10, 0)
+  GAA AAT GCA        ; Draw triangle
+TAA`
+  },
+
+  mandala: {
+    title: 'Mandala Pattern',
+    description: 'Complex radial symmetry with multiple transforms',
+    genome: `ATG
+  GAA CCC            ; Push 21
+  GAA AAA GAA AAA TTA ; Color(0, 0, 0) black
+  GAA AGG GGA        ; Push 10, draw center circle
+  GAA GGA AGA        ; Push 26, rotate 26 degrees
+  GAA CCC GAA AAA ACA ; Push 21, push 0, translate(21, 0)
+  GAA ATT GAA CGC TTA ; Color(15, 25, 0) petal color
+  GAA AAT GCA        ; Push 3, draw small triangle
+  GAA GGA AGA        ; Rotate 26 degrees
+  GAA CCC GAA AAA ACA ; Translate(21, 0)
+  GAA AAT GCA        ; Draw triangle
+  GAA GGA AGA        ; Rotate 26 degrees
+  GAA CCC GAA AAA ACA ; Translate(21, 0)
+  GAA AAT GCA        ; Draw triangle
+  GAA GGA AGA        ; Rotate 26 degrees
+  GAA CCC GAA AAA ACA ; Translate(21, 0)
+  GAA AAT GCA        ; Draw triangle
+TAA`
+  },
+
+  stackCleanup: {
+    title: 'Stack Cleanup with POP',
+    description: 'Demonstrates POP for stack management and cleanup',
+    genome: `ATG
+  GAA CCC            ; Push 21
+  GAA CGC            ; Push 25
+  GAA ATT            ; Push 15
+  TAT                ; POP - remove 15
+  TCA                ; POP - remove 25
+  ; Now stack has only 21
+  GAA CCC GAA CCC GAA CCC TTA ; Color(21, 21, 21) using that 21
+  GAA AGG GGA        ; Push 10, draw circle
+  GAA GCC            ; Push 37
+  GAA CCC            ; Push 21
+  TGT                ; SWAP → stack: [21, 37]
+  TAC                ; POP 37
+  ; Stack now has 21 for radius
+  GGA                ; Draw circle with radius 21
+TAA`
   }
 };
 

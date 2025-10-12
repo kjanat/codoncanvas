@@ -43,8 +43,9 @@ ATG GAA AAT GGA TAA
 
 ## Built-in Examples
 
-The playground includes **11 pedagogical examples** demonstrating all features:
+The playground includes **18 pedagogical examples** demonstrating all features:
 
+### Basic Shapes & Transforms (7)
 1. **Hello Circle** - Minimal example with single circle
 2. **Two Shapes** - Circle and rectangle composition
 3. **Colorful Pattern** - Multiple colored shapes with rotation
@@ -52,10 +53,23 @@ The playground includes **11 pedagogical examples** demonstrating all features:
 5. **Triangle Demo** - TRIANGLE primitive with different sizes
 6. **Ellipse Gallery** - ELLIPSE with various aspect ratios
 7. **Scale Transform** - SCALE opcode demonstration
+
+### Stack & Composition (4)
 8. **Stack Operations** - DUP and SWAP for efficient stack management
 9. **Rosette Pattern** - Complex composition with rotation and color
 10. **Simple Face** - Combines primitives to draw a smiley face
-11. **Textured Circle** - NOISE opcode for artistic texture effects
+11. **Stack Cleanup** - POP opcode for stack management
+
+### Advanced Features (4)
+12. **Textured Circle** - NOISE opcode for artistic texture effects
+13. **Spiral Pattern** - Geometric spiral using iterative transforms
+14. **Nested Frames** - SAVE_STATE for layered compositions
+15. **Mandala Pattern** - Complex radial symmetry
+
+### Educational Demonstrations (3)
+16. **Silent Mutation Demo** - Pedagogical comparison of synonymous codons (GGA vs GGC)
+17. **Color Gradient** - Systematic color manipulation
+18. **Grid Pattern** - Systematic positioning with TRANSLATE
 
 ## Codon Map Quick Reference
 
@@ -298,9 +312,10 @@ CodonCanvas teaches:
   - Mutation Lab (`mutation-demo.html`)
   - Timeline Demo (`timeline-demo.html`)
 - **Example Library** (`src/examples.ts`)
-  - 11 pedagogical examples demonstrating all features
+  - 18 pedagogical examples demonstrating all features
   - Progressive complexity from simple to advanced
   - All drawing primitives, transforms, stack operations, and noise
+  - Pedagogical mutation demonstrations and educational showcases
 - **NOISE Opcode Implementation**
   - Seeded pseudo-random number generator (reproducible)
   - Artistic texture effects with circular stippling
