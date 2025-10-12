@@ -17,6 +17,8 @@ CodonCanvas is an educational programming language that uses DNA-like triplets (
 - **Live playground**: Web-based editor with instant visual feedback
 - **Save & Share**: Export/import genomes in .genome file format with metadata
 - **Animation Export**: Export timeline animations as GIF files for sharing
+- **Teacher Dashboard**: Classroom analytics with student progress tracking and at-risk detection
+- **Research Metrics**: Detailed engagement analytics for educational assessment and research
 
 ## Live Demo
 
@@ -25,6 +27,8 @@ Try CodonCanvas online (no installation required):
 **[https://kjanat.github.io/codoncanvas/](https://kjanat.github.io/codoncanvas/)**
 
 ### All Demos
+
+**For Students:**
 - **[Learning Paths](https://kjanat.github.io/codoncanvas/learning-paths.html)** 🎓 **NEW** - Curated learning journeys from DNA basics to mathematical beauty
 - **[Interactive Tutorial](https://kjanat.github.io/codoncanvas/tutorial.html)** ⭐ - Step-by-step guided learning (start here!)
 - **[Example Gallery](https://kjanat.github.io/codoncanvas/gallery.html)** 🎨 - Browse 48 examples with filters and live preview
@@ -35,6 +39,10 @@ Try CodonCanvas online (no installation required):
 - **[Evolution Lab](https://kjanat.github.io/codoncanvas/evolution-demo.html)** - Directed evolution through selection
 - **[Population Genetics](https://kjanat.github.io/codoncanvas/population-genetics-demo.html)** - Observe genetic drift across populations
 - **[Genetic Algorithm](https://kjanat.github.io/codoncanvas/genetic-algorithm-demo.html)** - Automated fitness-driven evolution
+
+**For Teachers:**
+- **[Teacher Dashboard](https://kjanat.github.io/codoncanvas/teacher-dashboard.html)** 📊 **NEW** - Classroom analytics and student progress tracking
+- **[Research Metrics Dashboard](https://kjanat.github.io/codoncanvas/research-dashboard.html)** 📈 - Detailed engagement metrics and analysis
 
 > **Note:** Replace `kjanat` with your GitHub username after deployment. See [DEPLOYMENT.md](DEPLOYMENT.md) for setup instructions.
 
@@ -495,6 +503,32 @@ CodonCanvas teaches:
 - **Mutation types**: Silent, missense, nonsense, frameshift
 - **Computational thinking**: Stack-based programming, sequential execution
 - **Systems thinking**: Small changes → large effects (frameshift)
+
+### For Educators
+
+CodonCanvas provides comprehensive classroom support tools:
+
+**📊 Teacher Dashboard** ([teacher-dashboard.html](https://kjanat.github.io/codoncanvas/teacher-dashboard.html))
+- **Classroom Analytics**: View aggregate metrics across all students (engagement distribution, average sessions/duration/genomes)
+- **Student Progress Tracking**: Monitor individual tutorial completion and research metrics
+- **At-Risk Detection**: Identify students needing intervention with color-coded severity levels
+- **Export Capabilities**: Generate CSV grading summaries or JSON data exports for further analysis
+- **Privacy-Preserving**: All data handled client-side with no server transmission (FERPA-compliant)
+
+**Workflow:**
+1. Students complete activities and click "📊 Export Progress" button in playground
+2. Students save their progress file (JSON format) and submit to teacher
+3. Teacher opens Teacher Dashboard and imports multiple student files via drag-and-drop
+4. Dashboard displays comprehensive analytics: stats grid, at-risk alerts, completion matrix, engagement metrics
+5. Teacher exports grading summary (CSV) or detailed classroom data (JSON) as needed
+
+**📈 Research Metrics** ([research-dashboard.html](https://kjanat.github.io/codoncanvas/research-dashboard.html))
+- **Session Analytics**: Deep-dive into individual learning sessions with timestamps and actions
+- **Engagement Patterns**: Track genomes created, mutations applied, tutorial progress, time-to-first-artifact
+- **Educational Research**: Support pedagogical studies with detailed interaction data
+- **Visual Analysis**: Interactive visualizations of engagement trends and learning trajectories
+
+See [EDUCATORS.md](EDUCATORS.md) for complete lesson plans, assessment rubrics, and classroom activities.
 
 ## Implementation Status
 

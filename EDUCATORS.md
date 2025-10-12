@@ -18,8 +18,9 @@
 5. [Lesson Plan Templates](#lesson-plan-templates)
 6. [Assessment Rubrics](#assessment-rubrics)
 7. [Example Activities](#example-activities)
-8. [Troubleshooting Guide](#troubleshooting-guide)
-9. [FAQ](#faq)
+8. [**Teacher Dashboard & Analytics** (NEW)](#teacher-dashboard--analytics)
+9. [Troubleshooting Guide](#troubleshooting-guide)
+10. [FAQ](#faq)
 
 ---
 
@@ -61,6 +62,8 @@ CodonCanvas is an educational programming language that uses **DNA-like triplets
 ✅ **Mutation Tools**: One-click demonstration of 7 mutation types
 ✅ **Save/Load**: Students can save work and submit .genome files
 ✅ **Offline-capable**: Can run locally without internet after initial setup
+✅ **📊 Teacher Dashboard**: Classroom analytics with student progress tracking and at-risk detection ⭐ **NEW!**
+✅ **📈 Research Metrics**: Detailed engagement analytics for assessment and pedagogical research ⭐ **NEW!**
 
 ---
 
@@ -598,6 +601,208 @@ ATG GAA AAT ACA TAA  ; TRANSLATE needs 2 values
    - Tay-Sachs (nonsense mutation → truncated protein)
 
 **Differentiation:** Advanced students research their own cases
+
+---
+
+## Teacher Dashboard & Analytics
+
+### Overview
+
+CodonCanvas provides two powerful analytics tools for classroom assessment and educational research:
+
+1. **Teacher Dashboard** (`teacher-dashboard.html`) - Classroom-level analytics and student progress tracking
+2. **Research Metrics Dashboard** (`research-dashboard.html`) - Deep-dive session analytics for research
+
+Both tools are **privacy-preserving** and work entirely client-side with no data transmission to servers (FERPA-compliant).
+
+---
+
+### Teacher Dashboard
+
+**Purpose**: Monitor classroom engagement, track student progress, identify at-risk learners
+
+**Access**: [https://kjanat.github.io/codoncanvas/teacher-dashboard.html](https://kjanat.github.io/codoncanvas/teacher-dashboard.html)
+
+#### Features
+
+**📊 Classroom Statistics Grid**
+- **Total Students**: Count of imported student progress files
+- **Engagement Distribution**: High/medium/low/at-risk student counts
+- **Average Sessions**: Mean learning session count across classroom
+- **Average Duration**: Mean total learning time per student
+- **Average Genomes**: Mean artifacts created per student
+- **Average Mutations**: Mean mutations applied per student
+
+**⚠️ At-Risk Student Alerts**
+- **High Severity** (Red): No first artifact, no sessions, no tutorials started, or no genomes created
+- **Medium Severity** (Yellow): Only 1 session or low completion rate (<25%)
+- **Low Severity** (Blue): Minor engagement concerns
+- Sorted by severity level with specific intervention reasons listed
+
+**📈 Engagement Metrics Table**
+- Student-by-student breakdown with progress bars
+- Tutorial completion rates (started/completed counts)
+- Session counts and total learning time
+- Genomes created and mutations applied
+- Sortable by any metric (click column headers)
+
+**🎓 Tutorial Completion Matrix**
+- Visual grid showing which students completed which tutorials
+- ✅ = Completed, ⏳ = In Progress, ⬜ = Not Started
+- Helps identify popular tutorials and struggling students
+
+**💾 Export Capabilities**
+- **CSV Export**: Grading summary with key metrics for gradebook import
+- **JSON Export**: Complete classroom data for further analysis or backup
+
+#### Workflow: Student Progress Export
+
+**Step 1: Students Export Their Progress**
+
+Students work in the main playground and click the **"📊 Export Progress"** button (located in toolbar next to "Load .genome").
+
+This captures:
+- Tutorial progress (which tutorials started/completed, timestamps, current step)
+- Research metrics sessions (all learning activity with timestamps)
+- Aggregate metrics (total sessions, duration, genomes, mutations)
+
+Students save the generated JSON file and submit it to you via:
+- LMS (Canvas, Google Classroom, Moodle)
+- Email attachment
+- Shared drive (Google Drive, OneDrive)
+- USB drive (for air-gapped labs)
+
+**Step 2: Teacher Imports Student Files**
+
+Open Teacher Dashboard and import files using:
+- **Drag-and-drop**: Drag multiple .json files onto the import zone
+- **File picker**: Click "Import Student Progress Files" button and select files
+
+Dashboard immediately displays aggregated classroom analytics.
+
+**Step 3: Review Analytics**
+
+- **Check at-risk alerts**: Prioritize students with high/medium severity flags
+- **Review engagement metrics**: Identify struggling students or disengaged learners
+- **Examine tutorial completion**: See which lessons resonate and which don't
+- **Compare performance**: Sort by metrics to identify outliers
+
+**Step 4: Export for Grading**
+
+- **For gradebooks**: Click "Export CSV" for spreadsheet-compatible grading data
+- **For records**: Click "Export JSON" to save complete classroom snapshot
+
+#### Formative Assessment Use Cases
+
+1. **Early Intervention**: At-risk alerts flag students needing support before they fall behind
+2. **Tutorial Effectiveness**: Completion matrix reveals which lessons need improvement
+3. **Engagement Monitoring**: Session counts and duration show participation levels
+4. **Differentiation**: High performers can be challenged with advanced examples
+5. **Parent Communication**: Export individual student data for progress reports
+
+#### Demo Mode
+
+Dashboard includes "Load Demo Data" button with 12 sample students showing:
+- High engagement (completed multiple tutorials, many sessions)
+- Medium engagement (partial progress, moderate activity)
+- Low engagement (minimal activity, few genomes)
+- At-risk patterns (no artifacts, single session, etc.)
+
+Use demo mode to:
+- Learn dashboard features before student submissions
+- Train teaching assistants on analytics interpretation
+- Test export functionality with realistic data
+
+---
+
+### Research Metrics Dashboard
+
+**Purpose**: Detailed session-level analytics for educational research and deep assessment
+
+**Access**: [https://kjanat.github.io/codoncanvas/research-dashboard.html](https://kjanat.github.io/codoncanvas/research-dashboard.html)
+
+#### Features
+
+**📊 Aggregate Metrics**
+- Total sessions, unique days, total learning time
+- Time to first artifact (median, min, max)
+- Genomes created, mutations applied, tutorials completed
+- Session frequency distribution
+
+**📈 Session Timeline**
+- Chronological list of all learning sessions
+- Timestamps, duration, genomes/mutations per session
+- Tutorial progress snapshots per session
+- Click to expand for detailed action logs
+
+**🔍 Detailed Session Analysis**
+- Action-by-action logs (genome created, mutation applied, tutorial step completed)
+- Timestamps for temporal analysis
+- Genome content and metadata
+- Tutorial interaction patterns
+
+**📉 Visualizations**
+- Session duration over time (line chart)
+- Genomes per session (bar chart)
+- Tutorial completion funnel
+- Engagement trends and patterns
+
+#### Research Applications
+
+1. **Learning Analytics Studies**: Temporal patterns, engagement trajectories, dropout prediction
+2. **Pedagogical Assessment**: Tutorial effectiveness, optimal lesson sequencing, cognitive load analysis
+3. **Comparative Studies**: Intervention A vs B, cohort comparisons, longitudinal tracking
+4. **Qualitative Research**: Session vignettes, case studies, learning narratives
+5. **System Evaluation**: Feature usage patterns, UI bottlenecks, performance issues
+
+#### Privacy & Ethics
+
+**Data Minimization**:
+- No personally identifiable information (PII) collected
+- Student chooses ID/name when exporting
+- No tracking cookies or analytics scripts
+- No backend database or cloud storage
+
+**Informed Consent**:
+- Students must explicitly click "Export Progress" to share data
+- Exported file remains on student's device until submitted
+- Students can inspect JSON file contents before sharing
+
+**Data Security**:
+- All processing happens client-side in browser
+- No network transmission during analysis
+- Teachers control data storage (local device or secure drive)
+- Easy deletion (remove imported files)
+
+**IRB Compliance**:
+- Tool designed for exempt or expedited IRB review
+- Educational setting with minimal risk
+- Student autonomy preserved (opt-in export)
+- See [ACADEMIC_RESEARCH_PACKAGE.md](ACADEMIC_RESEARCH_PACKAGE.md) for research templates
+
+---
+
+### Best Practices
+
+**For Classroom Teachers**:
+- Set clear expectations: "Export your progress at end of each class"
+- Standardize naming: "Lastname_Firstname_Date.json"
+- Regular check-ins: Review dashboard weekly to catch issues early
+- Share aggregate stats: "Class average is 3 sessions, great job!"
+- Celebrate progress: Public recognition for high engagement (with permission)
+
+**For Researchers**:
+- Obtain IRB approval before data collection
+- Provide clear consent forms and information sheets
+- Secure data storage on encrypted drives
+- De-identify before analysis and publication
+- Share aggregated findings with participants
+
+**For Both**:
+- Test workflow with pilot students before full rollout
+- Keep backup copies of imported data (export JSON periodically)
+- Document your process for reproducibility
+- Respect student privacy and data sovereignty
 
 ---
 
