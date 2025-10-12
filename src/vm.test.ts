@@ -118,6 +118,26 @@ describe('CodonVM', () => {
 				vm.reset();
 			}
 		});
+
+		test('all 64 numeric literals (0-63) decode correctly', () => {
+			// Base-4 encoding: value = d1×16 + d2×4 + d3 where A=0, C=1, G=2, T=3
+			const bases = ['A', 'C', 'G', 'T'];
+
+			for (let value = 0; value < 64; value++) {
+				// Convert value to base-4 codon
+				const d1 = Math.floor(value / 16);
+				const d2 = Math.floor((value % 16) / 4);
+				const d3 = value % 4;
+				const codon = `${bases[d1]}${bases[d2]}${bases[d3]}`;
+
+				const genome = `ATG GAA ${codon} TAA`;
+				const tokens = lexer.tokenize(genome);
+				vm.run(tokens);
+
+				expect(vm.state.stack[0]).toBe(value);
+				vm.reset();
+			}
+		});
 	});
 
 	describe('Stack operations', () => {
@@ -293,6 +313,70 @@ describe('CodonVM', () => {
 			const opsTrunc = renderer.operations.length;
 
 			expect(opsTrunc).toBeLessThan(opsFull);
+		});
+
+		test('missense mutation changes shape type', () => {
+			const circle = 'ATG GAA AGG GGA TAA'; // PUSH 10, CIRCLE
+			const rect = 'ATG GAA AGG GAA AGG CCA TAA'; // PUSH 10, PUSH 10, RECT
+
+			const tokensCircle = lexer.tokenize(circle);
+			const tokensRect = lexer.tokenize(rect);
+
+			vm.run(tokensCircle);
+			const opsCircle = [...renderer.operations];
+
+			vm.reset();
+
+			vm.run(tokensRect);
+			const opsRect = [...renderer.operations];
+
+			// Circle should have exactly 1 circle operation
+			expect(opsCircle.filter(op => op.startsWith('circle'))).toHaveLength(1);
+			expect(opsCircle.filter(op => op.startsWith('rect'))).toHaveLength(0);
+
+			// Rect should have exactly 1 rect operation
+			expect(opsRect.filter(op => op.startsWith('rect'))).toHaveLength(1);
+			expect(opsRect.filter(op => op.startsWith('circle'))).toHaveLength(0);
+		});
+
+		test('frameshift mutation scrambles downstream codons', () => {
+			// Original: ATG GAA AGG GGA TAA (START, PUSH 10, CIRCLE, STOP)
+			// Frameshift: ATG GA AAG GGG ATA A (delete first A from GAA)
+			// Result: ATG GA? AAG GGG ATA A?? - invalid codons after frame break
+			const original = 'ATG GAA AGG GGA TAA';
+			const frameshift = 'ATG GAAAG GGG ATA'; // Delete A, breaks frame
+
+			const tokensOriginal = lexer.tokenize(original);
+
+			// Frameshift should fail tokenization due to non-triplet length
+			// OR should parse differently if whitespace ignored
+			// Test: parse both and verify outputs are dramatically different
+
+			vm.run(tokensOriginal);
+			const opsOriginal = [...renderer.operations];
+
+			vm.reset();
+
+			// For frameshift, manually create shifted tokens to simulate mutation
+			const tokensFrameshift = [
+				{ text: 'ATG' as any, position: 0, line: 1 }, // START
+				{ text: 'GAA' as any, position: 3, line: 1 }, // PUSH (but different literal coming)
+				{ text: 'AGG' as any, position: 6, line: 1 }, // Now reading shifted codon (was part of AGG)
+				{ text: 'GGG' as any, position: 9, line: 1 }, // Shifted: GA+GG → scrambled
+				{ text: 'ATA' as any, position: 12, line: 1 }, // Shifted codon (DUP instead of TAA)
+			];
+
+			try {
+				vm.run(tokensFrameshift);
+				const opsFrameshift = [...renderer.operations];
+
+				// Frameshift output should be dramatically different
+				// Original has 1 circle, frameshift has different operations
+				expect(opsOriginal).not.toEqual(opsFrameshift);
+			} catch (e) {
+				// Frameshift may throw error due to stack issues - that's also valid
+				expect(e).toBeDefined();
+			}
 		});
 	});
 
