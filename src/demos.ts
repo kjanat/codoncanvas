@@ -1,0 +1,259 @@
+/**
+ * Mutation Demonstrations
+ *
+ * Renders side-by-side comparisons of mutation effects for educational purposes.
+ * Shows before/after visualizations of silent, missense, nonsense, and frameshift mutations.
+ */
+
+import { CodonLexer } from './lexer';
+import { Canvas2DRenderer } from './renderer';
+import { CodonVM } from './vm';
+import {
+  applySilentMutation,
+  applyMissenseMutation,
+  applyNonsenseMutation,
+  applyFrameshiftMutation
+} from './mutations';
+
+// Demo genome examples
+const DEMO_GENOMES = {
+  // Simple enough to see clear effects, complex enough to be interesting
+  silent: 'ATG GAA AGG GGA GAA CCC GAA AAA ACA GAA AGG GGA TAA',
+  missense: 'ATG GAA AGG GGA GAA CCC GAA AAA ACA GAA AGG CCA TAA',
+  nonsense: 'ATG GAA AGG GGA GAA CCC GAA AAA ACA GAA AGG GGA GAA AGG CCA TAA',
+  frameshift: 'ATG GAA AGG GGA GAA CCC ACA GAA AGG CCA TAA'
+};
+
+/**
+ * Highlight specific codons in the genome display
+ */
+function highlightGenome(genome: string, mutatedIndices: number[], affectedIndices: number[] = []): string {
+  const codons = genome.split(/\s+/).filter(c => c.length > 0);
+
+  return codons.map((codon, idx) => {
+    let className = 'codon';
+
+    // Special highlighting for START/STOP
+    if (codon === 'ATG') {
+      className += ' start';
+    } else if (codon === 'TAA' || codon === 'TAG' || codon === 'TGA') {
+      className += ' stop';
+    }
+
+    // Mutation highlighting
+    if (mutatedIndices.includes(idx)) {
+      className += ' mutated';
+    } else if (affectedIndices.includes(idx)) {
+      className += ' affected';
+    }
+
+    return `<span class="${className}">${codon}</span>`;
+  }).join(' ');
+}
+
+/**
+ * Render a genome to a canvas
+ */
+function renderGenome(genome: string, canvasId: string): void {
+  const canvas = document.getElementById(canvasId) as HTMLCanvasElement;
+  if (!canvas) {
+    console.error(`Canvas ${canvasId} not found`);
+    return;
+  }
+
+  const lexer = new CodonLexer();
+  const renderer = new Canvas2DRenderer(canvas);
+  const vm = new CodonVM(renderer);
+
+  try {
+    const tokens = lexer.tokenize(genome);
+    vm.reset();
+    vm.run(tokens);
+  } catch (error) {
+    console.error(`Error rendering genome for ${canvasId}:`, error);
+    // Draw error indicator on canvas
+    const ctx = canvas.getContext('2d');
+    if (ctx) {
+      ctx.fillStyle = '#f48771';
+      ctx.font = '12px monospace';
+      ctx.fillText('Render Error', 10, 100);
+    }
+  }
+}
+
+/**
+ * Setup Silent Mutation Demo
+ */
+function setupSilentDemo(): void {
+  const original = DEMO_GENOMES.silent;
+
+  // Apply silent mutation (should change codon but not effect)
+  const result = applySilentMutation(original);
+  const mutated = result.mutated;
+
+  // Find which codon changed
+  const originalCodons = original.split(/\s+/).filter(c => c.length > 0);
+  const mutatedCodons = mutated.split(/\s+/).filter(c => c.length > 0);
+  const mutatedIndex = originalCodons.findIndex((c, i) => c !== mutatedCodons[i]);
+
+  // Display code with highlighting
+  const originalDisplay = document.getElementById('silent-original');
+  const mutatedDisplay = document.getElementById('silent-mutated');
+
+  if (originalDisplay) {
+    originalDisplay.innerHTML = highlightGenome(original, []);
+  }
+
+  if (mutatedDisplay) {
+    mutatedDisplay.innerHTML = highlightGenome(mutated, [mutatedIndex]);
+  }
+
+  // Render canvases
+  renderGenome(original, 'canvas-silent-original');
+  renderGenome(mutated, 'canvas-silent-mutated');
+}
+
+/**
+ * Setup Missense Mutation Demo
+ */
+function setupMissenseDemo(): void {
+  const original = DEMO_GENOMES.missense;
+
+  // Apply missense mutation (should change shape)
+  const result = applyMissenseMutation(original);
+  const mutated = result.mutated;
+
+  // Find which codon changed
+  const originalCodons = original.split(/\s+/).filter(c => c.length > 0);
+  const mutatedCodons = mutated.split(/\s+/).filter(c => c.length > 0);
+  const mutatedIndex = originalCodons.findIndex((c, i) => c !== mutatedCodons[i]);
+
+  // Display code with highlighting
+  const originalDisplay = document.getElementById('missense-original');
+  const mutatedDisplay = document.getElementById('missense-mutated');
+
+  if (originalDisplay) {
+    originalDisplay.innerHTML = highlightGenome(original, []);
+  }
+
+  if (mutatedDisplay) {
+    mutatedDisplay.innerHTML = highlightGenome(mutated, [mutatedIndex]);
+  }
+
+  // Render canvases
+  renderGenome(original, 'canvas-missense-original');
+  renderGenome(mutated, 'canvas-missense-mutated');
+}
+
+/**
+ * Setup Nonsense Mutation Demo
+ */
+function setupNonsenseDemo(): void {
+  const original = DEMO_GENOMES.nonsense;
+
+  // Apply nonsense mutation (should introduce early STOP)
+  const result = applyNonsenseMutation(original);
+  const mutated = result.mutated;
+
+  // Find which codon changed to STOP
+  const originalCodons = original.split(/\s+/).filter(c => c.length > 0);
+  const mutatedCodons = mutated.split(/\s+/).filter(c => c.length > 0);
+  const mutatedIndex = originalCodons.findIndex((c, i) => c !== mutatedCodons[i]);
+
+  // All codons after the STOP are affected (never executed)
+  const affectedIndices = Array.from(
+    { length: mutatedCodons.length - mutatedIndex - 1 },
+    (_, i) => mutatedIndex + i + 1
+  );
+
+  // Display code with highlighting
+  const originalDisplay = document.getElementById('nonsense-original');
+  const mutatedDisplay = document.getElementById('nonsense-mutated');
+
+  if (originalDisplay) {
+    originalDisplay.innerHTML = highlightGenome(original, []);
+  }
+
+  if (mutatedDisplay) {
+    mutatedDisplay.innerHTML = highlightGenome(mutated, [mutatedIndex], affectedIndices);
+  }
+
+  // Render canvases
+  renderGenome(original, 'canvas-nonsense-original');
+  renderGenome(mutated, 'canvas-nonsense-mutated');
+}
+
+/**
+ * Setup Frameshift Mutation Demo
+ */
+function setupFrameshiftDemo(): void {
+  const original = DEMO_GENOMES.frameshift;
+
+  // Apply frameshift mutation (should scramble everything downstream)
+  const result = applyFrameshiftMutation(original);
+  const mutated = result.mutated;
+
+  // Find where the frameshift occurred by comparing sequences
+  const originalBases = original.replace(/\s/g, '');
+  const mutatedBases = mutated.replace(/\s/g, '');
+
+  // Find first difference in base sequence
+  let frameshiftPosition = 0;
+  for (let i = 0; i < Math.min(originalBases.length, mutatedBases.length); i++) {
+    if (originalBases[i] !== mutatedBases[i]) {
+      frameshiftPosition = i;
+      break;
+    }
+  }
+
+  // Convert base position to codon index
+  const frameshiftCodonIndex = Math.floor(frameshiftPosition / 3);
+
+  // All codons from frameshift onwards are affected
+  const originalCodons = original.split(/\s+/).filter(c => c.length > 0);
+  const mutatedCodons = mutated.split(/\s+/).filter(c => c.length > 0);
+
+  const affectedIndices = Array.from(
+    { length: mutatedCodons.length - frameshiftCodonIndex },
+    (_, i) => frameshiftCodonIndex + i
+  );
+
+  // Display code with highlighting
+  const originalDisplay = document.getElementById('frameshift-original');
+  const mutatedDisplay = document.getElementById('frameshift-mutated');
+
+  if (originalDisplay) {
+    originalDisplay.innerHTML = highlightGenome(original, []);
+  }
+
+  if (mutatedDisplay) {
+    mutatedDisplay.innerHTML = highlightGenome(mutated, [], affectedIndices);
+  }
+
+  // Render canvases
+  renderGenome(original, 'canvas-frameshift-original');
+  renderGenome(mutated, 'canvas-frameshift-mutated');
+}
+
+/**
+ * Initialize all demos
+ */
+function initializeDemos(): void {
+  try {
+    setupSilentDemo();
+    setupMissenseDemo();
+    setupNonsenseDemo();
+    setupFrameshiftDemo();
+
+    console.log('✅ All mutation demos initialized successfully');
+  } catch (error) {
+    console.error('❌ Error initializing demos:', error);
+  }
+}
+
+// Initialize when DOM is ready
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', initializeDemos);
+} else {
+  initializeDemos();
+}

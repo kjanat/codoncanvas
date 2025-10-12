@@ -39,6 +39,7 @@ npm run dev
 
 Then open in browser:
 - Main playground: `http://localhost:5173`
+- **Mutation demos: `http://localhost:5173/demos.html`** ⭐ Start here to see mutation effects!
 - Mutation lab: `http://localhost:5173/mutation-demo.html`
 - Timeline demo: `http://localhost:5173/timeline-demo.html`
 

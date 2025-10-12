@@ -57,6 +57,7 @@ CodonCanvas is an educational programming language that uses **DNA-like triplets
 ✅ **Visual Reference**: Print-ready codon chart poster (`codon-chart.svg`)
 ✅ **18 Built-in Examples**: Progressive difficulty (beginner → advanced)
 ✅ **Distribution Package**: Example genomes ZIP for LMS deployment (`codoncanvas-examples.zip`)
+✅ **🎯 Interactive Mutation Demos** (`demos.html`): Visual before/after comparisons of all mutation types ⭐ **NEW!**
 ✅ **Mutation Tools**: One-click demonstration of 7 mutation types
 ✅ **Save/Load**: Students can save work and submit .genome files
 ✅ **Offline-capable**: Can run locally without internet after initial setup

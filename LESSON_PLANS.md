@@ -22,6 +22,11 @@ This lesson sequence introduces genetic concepts through creative coding. Studen
 - **Low barrier:** No prior programming required
 - **High ceiling:** Advanced students can create complex artworks
 
+**🎯 Teaching Resources:**
+- **[Interactive Mutation Demos](demos.html)** - Visual before/after comparisons of all 4 mutation types (silent, missense, nonsense, frameshift). Perfect for projecting during Lesson 2! ⭐ **RECOMMENDED**
+- **[Student Worksheets](worksheets/)** - Structured exercises for all 3 lessons
+- **[Assessment Framework](ASSESSMENTS.md)** - Pre/post tests and rubrics
+
 ---
 
 ## Lesson Sequence Summary
