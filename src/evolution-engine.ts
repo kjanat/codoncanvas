@@ -10,7 +10,7 @@ import {
   applyInsertion,
   applyDeletion,
   type MutationResult
-} from './mutations.ts';
+} from './mutations.js';
 
 export interface EvolutionCandidate {
   /** Genome string */

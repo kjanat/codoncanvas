@@ -3,7 +3,7 @@
  */
 
 import { describe, test, expect, beforeEach } from 'vitest';
-import { EvolutionEngine } from './evolution-engine.ts';
+import { EvolutionEngine } from './evolution-engine.js';
 
 describe('EvolutionEngine', () => {
   const testGenome = 'ATG GAA AAT GGA TAA';

@@ -10,6 +10,7 @@ CodonCanvas is an educational programming language that uses DNA-like triplets (
 - **Genetic redundancy**: Multiple codons map to the same operation (synonymous codons)
 - **Visual output**: Stack-based VM produces graphics on HTML5 canvas
 - **Mutation demonstration**: Silent, missense, nonsense, and frameshift mutations
+- **Directed evolution**: Evolve genomes toward target phenotypes through natural selection
 - **Live playground**: Web-based editor with instant visual feedback
 - **Save & Share**: Export/import genomes in .genome file format with metadata
 - **Animation Export**: Export timeline animations as GIF files for sharing
@@ -43,6 +44,7 @@ Then open in browser:
 - **Mutation demos: `http://localhost:5173/demos.html`** ⭐ Start here to see mutation effects!
 - Mutation lab: `http://localhost:5173/mutation-demo.html`
 - Timeline demo: `http://localhost:5173/timeline-demo.html`
+- **Evolution lab: `http://localhost:5173/evolution-demo.html`** ⭐ NEW: Directed evolution through natural selection!
 
 ## Example: Hello Circle
 
@@ -195,6 +197,46 @@ Share your `.genome` files with others to:
 - Submit homework assignments
 - Demonstrate mutation effects
 - Build a gallery of student work
+
+## Directed Evolution Lab
+
+The **Evolution Lab** (`evolution-demo.html`) implements natural selection for genomes. This is a core pedagogical feature demonstrating how directed evolution works:
+
+### How It Works
+
+1. **Start with a genome**: Choose from built-in examples or use a custom genome
+2. **Generate candidates**: Each generation creates 6 mutated variants
+3. **Select the fittest**: Click on the candidate closest to your target phenotype
+4. **Iterate**: Selected candidate becomes parent for next generation
+5. **Observe lineage**: Watch your genome evolve across generations
+
+### Evolution Workflow
+
+```
+Generation 1: Parent → 6 mutated candidates
+              ↓ User selects fittest
+Generation 2: Selected candidate → 6 new mutated candidates
+              ↓ User selects fittest
+Generation 3: ...continues...
+```
+
+### Key Features
+
+- **Visual fitness selection**: User acts as fitness function by choosing fittest candidate
+- **Mutation variety**: Uses point, silent, missense, insertion, and deletion mutations
+- **Lineage tracking**: See evolutionary history from original to current genome
+- **Export evolved genomes**: Share your evolved creations
+- **Generation statistics**: Track generation number, total mutations, lineage length
+
+### Educational Value
+
+The Evolution Lab demonstrates:
+- **Natural selection**: Only the fittest candidates reproduce
+- **Cumulative change**: Small mutations accumulate into large phenotypic differences
+- **Directed evolution**: Selection pressure (user choice) guides evolutionary trajectory
+- **Genetic drift vs selection**: See how random mutations become fixed through selection
+
+This hands-on experience makes abstract evolutionary concepts tangible and playful!
 
 ## Mutation Demonstration
 
