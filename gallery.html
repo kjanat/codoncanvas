@@ -254,6 +254,49 @@
       line-height: 1.4;
     }
 
+    .concept-tags {
+      display: flex;
+      gap: 0.4rem;
+      flex-wrap: wrap;
+      margin-top: 0.5rem;
+    }
+
+    .concept-tag {
+      padding: 0.2rem 0.6rem;
+      background: #f0f0f0;
+      color: #555;
+      border-radius: 10px;
+      font-size: 0.7rem;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .concept-tag:hover {
+      background: #667eea;
+      color: white;
+    }
+
+    .sort-control {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .sort-control label {
+      font-size: 0.9rem;
+      color: #666;
+      margin: 0;
+    }
+
+    .sort-control select {
+      padding: 0.5rem 0.75rem;
+      border: 2px solid #e0e0e0;
+      border-radius: 8px;
+      font-size: 0.9rem;
+      cursor: pointer;
+      background: white;
+    }
+
     /* Modal */
     .modal {
       display: none;
@@ -427,8 +470,19 @@
           </div>
         </div>
       </div>
-      <div class="stats">
-        Showing <span id="visibleCount">30</span> of <span id="totalCount">30</span> examples
+      <div class="filter-row" style="margin-top: 1rem; justify-content: space-between;">
+        <div class="sort-control">
+          <label for="sortBy">Sort by:</label>
+          <select id="sortBy">
+            <option value="default">Default Order</option>
+            <option value="name">Name (A-Z)</option>
+            <option value="difficulty">Difficulty (Easy to Hard)</option>
+            <option value="difficulty-desc">Difficulty (Hard to Easy)</option>
+          </select>
+        </div>
+        <div class="stats">
+          Showing <span id="visibleCount">30</span> of <span id="totalCount">30</span> examples
+        </div>
       </div>
     </div>
 
@@ -503,6 +557,15 @@
     let currentFilter = 'all';
     let searchQuery = '';
     let currentExample = null;
+    let currentSort = 'default';
+
+    // Difficulty ordering for sorting
+    const difficultyOrder = {
+      'beginner': 1,
+      'intermediate': 2,
+      'advanced': 3,
+      'advanced-showcase': 4
+    };
 
     // Initialize
     renderGallery();
@@ -523,8 +586,14 @@
       });
     });
 
+    // Sort functionality
+    document.getElementById('sortBy').addEventListener('change', (e) => {
+      currentSort = e.target.value;
+      renderGallery();
+    });
+
     function renderGallery() {
-      const filtered = examples.filter(ex => {
+      let filtered = examples.filter(ex => {
         const matchesDifficulty = currentFilter === 'all' || ex.difficulty === currentFilter;
         const matchesSearch = !searchQuery ||
           ex.name.toLowerCase().includes(searchQuery) ||
@@ -532,6 +601,16 @@
           ex.description.toLowerCase().includes(searchQuery);
         return matchesDifficulty && matchesSearch;
       });
+
+      // Apply sorting
+      if (currentSort === 'name') {
+        filtered.sort((a, b) => a.name.localeCompare(b.name));
+      } else if (currentSort === 'difficulty') {
+        filtered.sort((a, b) => difficultyOrder[a.difficulty] - difficultyOrder[b.difficulty]);
+      } else if (currentSort === 'difficulty-desc') {
+        filtered.sort((a, b) => difficultyOrder[b.difficulty] - difficultyOrder[a.difficulty]);
+      }
+      // 'default' preserves original array order
 
       const grid = document.getElementById('galleryGrid');
       grid.innerHTML = '';
@@ -557,6 +636,9 @@
       const difficultyClass = example.difficulty.replace('-', '');
       const difficultyLabel = example.difficulty.replace('-', ' ');
 
+      // Parse concept tags
+      const conceptTags = example.concepts.split(',').map(c => c.trim()).slice(0, 4); // Max 4 tags
+
       card.innerHTML = `
         <div class="card-thumbnail" id="thumb-${example.id}">
           ${example.screenshot ?
@@ -569,6 +651,9 @@
             <span class="badge badge-${difficultyClass}">${difficultyLabel}</span>
           </div>
           <div class="card-concepts">${example.description}</div>
+          <div class="concept-tags">
+            ${conceptTags.map(tag => `<span class="concept-tag" onclick="filterByConcept('${tag}'); event.stopPropagation();">${tag}</span>`).join('')}
+          </div>
         </div>
       `;
 
@@ -628,6 +713,13 @@
         document.getElementById('modalCode').textContent = 'Error loading example';
       }
     }
+
+    window.filterByConcept = function(concept) {
+      document.getElementById('search').value = concept;
+      searchQuery = concept.toLowerCase();
+      renderGallery();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    };
 
     window.closeModal = function() {
       document.getElementById('previewModal').classList.remove('active');
