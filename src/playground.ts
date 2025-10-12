@@ -17,6 +17,7 @@ import {
   type MutationType
 } from './mutations';
 import { ShareSystem, injectShareStyles } from './share-system';
+import { DiffViewer, injectDiffViewerStyles } from './diff-viewer';
 import { TutorialManager, helloCircleTutorial } from './tutorial';
 import { initializeTutorial } from './tutorial-ui';
 import './tutorial-ui.css';
@@ -68,6 +69,12 @@ const linterPanel = document.getElementById('linterPanel') as HTMLDivElement;
 const linterToggle = document.getElementById('linterToggle') as HTMLButtonElement;
 const linterMessages = document.getElementById('linterMessages') as HTMLDivElement;
 const fixAllBtn = document.getElementById('fixAllBtn') as HTMLButtonElement;
+
+// DiffViewer elements
+const diffViewerPanel = document.getElementById('diffViewerPanel') as HTMLDivElement;
+const diffViewerToggle = document.getElementById('diffViewerToggle') as HTMLButtonElement;
+const diffViewerClearBtn = document.getElementById('diffViewerClearBtn') as HTMLButtonElement;
+const diffViewerContainer = document.getElementById('diffViewerContainer') as HTMLDivElement;
 
 // Audio elements
 const audioToggleBtn = document.getElementById('audioToggleBtn') as HTMLButtonElement;
@@ -637,6 +644,29 @@ function toggleLinter(): void {
   }
 }
 
+function toggleDiffViewer(): void {
+  const contentContainer = diffViewerContainer.parentElement;
+  if (!contentContainer) return;
+
+  const isHidden = contentContainer.style.display === 'none';
+
+  if (isHidden) {
+    contentContainer.style.display = 'block';
+    diffViewerToggle.textContent = 'Hide';
+    diffViewerToggle.setAttribute('aria-expanded', 'true');
+  } else {
+    contentContainer.style.display = 'none';
+    diffViewerToggle.textContent = 'Show';
+    diffViewerToggle.setAttribute('aria-expanded', 'false');
+  }
+}
+
+function clearDiffViewer(): void {
+  diffViewer.clear();
+  diffViewerPanel.style.display = 'none';
+  originalGenomeBeforeMutation = '';
+}
+
 function loadExample() {
   const key = exampleSelect.value as ExampleKey;
   if (key && examples[key]) {
@@ -736,6 +766,9 @@ function applyMutation(type: MutationType) {
       return;
     }
 
+    // Store original genome before mutation
+    originalGenomeBeforeMutation = genome;
+
     let result;
 
     switch (type) {
@@ -770,6 +803,13 @@ function applyMutation(type: MutationType) {
     // Track mutation applied
     const unlocked = achievementEngine.trackMutationApplied();
     achievementUI.handleUnlocks(unlocked);
+
+    // Show DiffViewer with comparison
+    diffViewer.renderMutation(result);
+    diffViewerPanel.style.display = 'block';
+
+    // Scroll DiffViewer into view (smooth scroll)
+    diffViewerPanel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
 
     // Auto-run to show effect
     runProgram();
@@ -929,6 +969,10 @@ searchInput.addEventListener('input', updateExampleDropdown);
 linterToggle.addEventListener('click', toggleLinter);
 fixAllBtn.addEventListener('click', fixAllErrors);
 
+// DiffViewer listeners
+diffViewerToggle.addEventListener('click', toggleDiffViewer);
+diffViewerClearBtn.addEventListener('click', clearDiffViewer);
+
 // Debounced linter on editor input
 let linterTimeout: number | null = null;
 editor.addEventListener('input', () => {
@@ -992,6 +1036,9 @@ injectShareStyles();
 // Initialize timeline scrubber styles
 injectTimelineStyles();
 
+// Initialize DiffViewer styles
+injectDiffViewerStyles();
+
 const shareSystem = new ShareSystem({
   containerElement: shareContainer,
   getGenome: () => editor.value.trim(),
@@ -999,6 +1046,18 @@ const shareSystem = new ShareSystem({
   showQRCode: true,
   socialPlatforms: ['twitter', 'reddit', 'email']
 });
+
+// Initialize DiffViewer
+const diffViewer = new DiffViewer({
+  containerElement: diffViewerContainer,
+  showCanvas: true,
+  highlightColor: '#ff6b6b',
+  canvasWidth: 300,
+  canvasHeight: 300
+});
+
+// Track original genome for comparison
+let originalGenomeBeforeMutation: string = '';
 
 // Initialize tutorial system
 const tutorialManager = new TutorialManager();
