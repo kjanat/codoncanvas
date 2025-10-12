@@ -15,6 +15,7 @@ export default defineConfig({
         timeline: resolve(__dirname, 'timeline-demo.html'),
         evolution: resolve(__dirname, 'evolution-demo.html'),
         population: resolve(__dirname, 'population-genetics-demo.html'),
+        genetic: resolve(__dirname, 'genetic-algorithm-demo.html'),
       }
     }
   },

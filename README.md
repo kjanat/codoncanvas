@@ -31,6 +31,7 @@ Try CodonCanvas online (no installation required):
 - **[Timeline Scrubber](https://yourusername.github.io/codoncanvas/timeline-demo.html)** - Step-by-step execution viewer
 - **[Evolution Lab](https://yourusername.github.io/codoncanvas/evolution-demo.html)** - Directed evolution through selection
 - **[Population Genetics](https://yourusername.github.io/codoncanvas/population-genetics-demo.html)** - Observe genetic drift across populations
+- **[Genetic Algorithm](https://yourusername.github.io/codoncanvas/genetic-algorithm-demo.html)** ⭐ **NEW** - Automated fitness-driven evolution
 
 > **Note:** Replace `yourusername` with your GitHub username after deployment. See [DEPLOYMENT.md](DEPLOYMENT.md) for setup instructions.
 
