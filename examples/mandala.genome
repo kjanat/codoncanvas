@@ -1,0 +1,24 @@
+; Mandala Pattern
+; Complex radial symmetry with multiple transforms
+; Difficulty: advanced
+; Concepts: composition, colors, transforms
+; Good for mutations: silent, missense, frameshift
+
+ATG
+  GAA CCC            ; Push 21
+  GAA AAA GAA AAA TTA ; Color(0, 0, 0) black
+  GAA AGG GGA        ; Push 10, draw center circle
+  GAA GGA AGA        ; Push 26, rotate 26 degrees
+  GAA CCC GAA AAA ACA ; Push 21, push 0, translate(21, 0)
+  GAA ATT GAA CGC TTA ; Color(15, 25, 0) petal color
+  GAA AAT GCA        ; Push 3, draw small triangle
+  GAA GGA AGA        ; Rotate 26 degrees
+  GAA CCC GAA AAA ACA ; Translate(21, 0)
+  GAA AAT GCA        ; Draw triangle
+  GAA GGA AGA        ; Rotate 26 degrees
+  GAA CCC GAA AAA ACA ; Translate(21, 0)
+  GAA AAT GCA        ; Draw triangle
+  GAA GGA AGA        ; Rotate 26 degrees
+  GAA CCC GAA AAA ACA ; Translate(21, 0)
+  GAA AAT GCA        ; Draw triangle
+TAA

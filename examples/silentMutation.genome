@@ -1,0 +1,14 @@
+; Silent Mutation Demo
+; Pedagogical: GGA vs GGC (synonymous CIRCLE codons)
+; Difficulty: beginner
+; Concepts: drawing, colors
+; Good for mutations: silent
+
+ATG
+  GAA CCC GAA CTT GAA AAA TTA ; Color(21, 31, 0) green
+  GAA CGC GGA        ; Push 25, CIRCLE using GGA
+  GAA GCC GAA AAA ACA ; Push 37, push 0, translate(37, 0)
+  GAA CCC GAA CTT GAA AAA TTA ; Color(21, 31, 0) same green
+  GAA CGC GGC        ; Push 25, CIRCLE using GGC (synonymous!)
+TAA
+; Note: Both circles identical - demonstrates silent mutation

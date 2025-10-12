@@ -1,0 +1,15 @@
+; Triangle Demo
+; Uses TRIANGLE primitive with different sizes
+; Difficulty: beginner
+; Concepts: drawing, transforms
+; Good for mutations: missense, nonsense
+
+ATG
+  GAA AAT GCA        ; Push 3, draw small triangle
+  GAA AGG            ; Push 10
+  GAA AAA ACA        ; Push 0, translate(10, 0)
+  GAA AGG GCA        ; Push 10, draw medium triangle
+  GAA AGG            ; Push 10
+  GAA AAA ACA        ; Push 0, translate(10, 0)
+  GAA CGC GCA        ; Push 25, draw large triangle
+TAA

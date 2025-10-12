@@ -1,0 +1,22 @@
+; Color Gradient
+; Systematic color manipulation for gradient effect
+; Difficulty: intermediate
+; Concepts: colors, drawing, transforms, composition
+; Good for mutations: silent, frameshift
+
+ATG
+  GAA AAA GAA AAA GAA AAA TTA ; Color(0, 0, 0) black
+  GAA AGG GGA        ; Push 10, draw circle
+  GAA AGG GAA AAA ACA ; Push 10, push 0, translate(10, 0)
+  GAA AAA GAA AAA GAA AGG TTA ; Color(0, 0, 10) dark gray
+  GAA AGG GGA        ; Draw circle
+  GAA AGG GAA AAA ACA ; Translate(10, 0)
+  GAA AAA GAA AAA GAA CCC TTA ; Color(0, 0, 21) medium gray
+  GAA AGG GGA        ; Draw circle
+  GAA AGG GAA AAA ACA ; Translate(10, 0)
+  GAA AAA GAA AAA GAA CGC TTA ; Color(0, 0, 25) light gray
+  GAA AGG GGA        ; Draw circle
+  GAA AGG GAA AAA ACA ; Translate(10, 0)
+  GAA AAA GAA AAA GAA GCC TTA ; Color(0, 0, 37) lighter
+  GAA AGG GGA        ; Draw circle
+TAA

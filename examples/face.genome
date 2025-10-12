@@ -1,0 +1,17 @@
+; Simple Face
+; Combines primitives to draw a smiley face
+; Difficulty: intermediate
+; Concepts: composition, drawing, transforms
+; Good for mutations: missense, nonsense
+
+ATG
+  GAA CGC GGA        ; Push 25, draw head (large circle)
+  GAA AAA GAA ATT ACA ; Push 0, push 15, translate(0, 15)
+  GAA AAT GGA        ; Push 3, draw left eye
+  GAA AGG GAA AAA ACA ; Push 10, push 0, translate(10, 0)
+  GAA AAT GGA        ; Push 3, draw right eye
+  GAA AAA GAA ATT ACA ; Push 0, push 15, translate(0, 15) - below eyes
+  GAA AGG            ; Push 10
+  GAA AAT            ; Push 3
+  CCA                ; Draw mouth (10x3 rect)
+TAA

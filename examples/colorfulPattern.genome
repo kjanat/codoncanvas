@@ -1,0 +1,16 @@
+; Colorful Pattern
+; Multiple colored shapes with rotation
+; Difficulty: intermediate
+; Concepts: drawing, colors, transforms, composition
+; Good for mutations: silent, missense
+
+ATG
+  GAA CCC GAA AAA GAA AAA TTA  ; Set color (21, 0, 0) - red
+  GAA CAC GGA                   ; Push 25, draw circle
+  GAA ATT AGA                   ; Push 15, rotate 15 degrees
+  GAA CCC GAA CCC GAA CCC TTA  ; Set color (21, 21, 21) - green
+  GAA CAC GGA                   ; Push 25, draw circle
+  GAA ATT AGA                   ; Push 15, rotate 15 degrees
+  GAA AAA GAA AAA GAA GCC TTA  ; Set color (0, 0, 37) - blue
+  GAA CAC GGA                   ; Push 25, draw circle
+TAA

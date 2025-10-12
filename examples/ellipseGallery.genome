@@ -1,0 +1,16 @@
+; Ellipse Gallery
+; ELLIPSE primitive with various aspect ratios
+; Difficulty: intermediate
+; Concepts: drawing, transforms
+; Good for mutations: silent, missense
+
+ATG
+  GAA AGG            ; Push 10 (rx)
+  GAA ATT            ; Push 15 (ry)
+  GTA                ; Draw ellipse (wide)
+  GAA CCC            ; Push 21
+  GAA AAA ACA        ; Push 0, translate(21, 0)
+  GAA ATT            ; Push 15 (rx)
+  GAA AGG            ; Push 10 (ry)
+  GTA                ; Draw ellipse (tall)
+TAA

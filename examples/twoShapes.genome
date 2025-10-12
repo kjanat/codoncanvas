@@ -1,0 +1,13 @@
+; Two Shapes
+; Circle and rectangle side by side
+; Difficulty: beginner
+; Concepts: drawing, transforms
+; Good for mutations: missense, frameshift
+
+ATG
+  GAA AAT GGA        ; Push 3, draw small circle
+  GAA CCC            ; Push 21
+  GAA AAA            ; Push 0
+  ACA                ; Translate(21, 0) - move right
+  GAA AGG GAA AGG CCA ; Push 10, push 10, draw rect
+TAA

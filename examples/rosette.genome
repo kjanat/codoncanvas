@@ -1,0 +1,20 @@
+; Rosette Pattern
+; Complex composition with rotation and color
+; Difficulty: advanced
+; Concepts: composition, colors, transforms
+; Good for mutations: silent, missense, frameshift
+
+ATG
+  GAA AGG            ; Push 10 (radius)
+  GAA CTT GAA AAA GAA AAA TTA  ; Color(31, 0, 0) red
+  GAA AGG GGA        ; Draw circle
+  GAA GGA AGA        ; Rotate 26 degrees
+  GAA AAA GAA CCC GAA CCC TTA  ; Color(0, 21, 21) cyan
+  GAA AGG GGA        ; Draw circle
+  GAA GGA AGA        ; Rotate 26 degrees
+  GAA CCC GAA AAA GAA CCC TTA  ; Color(21, 0, 21) magenta
+  GAA AGG GGA        ; Draw circle
+  GAA GGA AGA        ; Rotate 26 degrees
+  GAA CCC GAA CCC GAA AAA TTA  ; Color(21, 21, 0) yellow
+  GAA AGG GGA        ; Draw circle
+TAA

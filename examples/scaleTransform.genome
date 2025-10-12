@@ -1,0 +1,13 @@
+; Scale Transform
+; Demonstrates SCALE opcode for sizing
+; Difficulty: intermediate
+; Concepts: transforms, drawing
+; Good for mutations: frameshift, missense
+
+ATG
+  GAA AAT GGA        ; Push 3, draw tiny circle
+  GAA ACC CGA        ; Push 11, scale by 1.7x
+  GAA AAT GGA        ; Push 3, draw scaled circle (appears larger)
+  GAA ACC CGA        ; Push 11, scale by 1.7x again
+  GAA AAT GGA        ; Push 3, draw even larger
+TAA

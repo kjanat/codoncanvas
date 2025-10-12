@@ -1,0 +1,19 @@
+; Nested Frames with State
+; SAVE_STATE for complex layered compositions
+; Difficulty: advanced
+; Concepts: advanced-opcodes, composition, colors
+; Good for mutations: nonsense, missense
+
+ATG
+  GAA CTT GAA CTT GAA CTT TTA ; Color(31, 31, 31) bright
+  GAA TCC GGA        ; Push 53, draw outer circle
+  TCA                ; SAVE_STATE - preserve outer position
+  GAA GCC GAA GCC TTA ; Color(37, 37, 0) yellow
+  GAA GCC GGA        ; Push 37, draw middle circle
+  TCA                ; SAVE_STATE - preserve middle position
+  GAA CCC GAA CCC TTA ; Color(21, 21, 0) darker yellow
+  GAA CCC GGA        ; Push 21, draw inner circle
+  TCA                ; SAVE_STATE - preserve inner position
+  GAA AAA GAA AGG TTA ; Color(0, 10, 0) dark
+  GAA AGG GGA        ; Push 10, draw core circle
+TAA

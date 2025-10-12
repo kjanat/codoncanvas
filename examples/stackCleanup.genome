@@ -1,0 +1,22 @@
+; Stack Cleanup with POP
+; Demonstrates POP for stack management and cleanup
+; Difficulty: intermediate
+; Concepts: stack, drawing
+; Good for mutations: nonsense, frameshift
+
+ATG
+  GAA CCC            ; Push 21
+  GAA CGC            ; Push 25
+  GAA ATT            ; Push 15
+  TAT                ; POP - remove 15
+  TCA                ; POP - remove 25
+  ; Now stack has only 21
+  GAA CCC GAA CCC GAA CCC TTA ; Color(21, 21, 21) using that 21
+  GAA AGG GGA        ; Push 10, draw circle
+  GAA GCC            ; Push 37
+  GAA CCC            ; Push 21
+  TGT                ; SWAP → stack: [21, 37]
+  TAC                ; POP 37
+  ; Stack now has 21 for radius
+  GGA                ; Draw circle with radius 21
+TAA

@@ -1,0 +1,17 @@
+; Stack Operations
+; DUP and SWAP for efficient stack management
+; Difficulty: intermediate
+; Concepts: stack, drawing
+; Good for mutations: frameshift, nonsense
+
+ATG
+  GAA AGG            ; Push 10
+  ATA                ; DUP → stack: [10, 10]
+  CCA                ; Draw rect(10, 10) - square
+  GAA CCC            ; Push 21
+  GAA AAA ACA        ; Push 0, translate(21, 0)
+  GAA AAT            ; Push 3
+  GAA AGG            ; Push 10
+  TGG                ; SWAP → stack: [10, 3]
+  CCA                ; Draw rect(10, 3) - horizontal bar
+TAA

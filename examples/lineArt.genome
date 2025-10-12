@@ -1,0 +1,15 @@
+; Line Art
+; Demonstrates LINE primitive with rotation
+; Difficulty: beginner
+; Concepts: drawing, transforms
+; Good for mutations: silent, frameshift
+
+ATG
+  GAA GCC AAA        ; Push 37, draw line
+  GAA GGA AGA        ; Push 26, rotate 26 degrees
+  GAA GCC AAA        ; Push 37, draw line
+  GAA GGA AGA        ; Push 26, rotate 26 degrees
+  GAA GCC AAA        ; Push 37, draw line
+  GAA GGA AGA        ; Push 26, rotate 26 degrees
+  GAA GCC AAA        ; Push 37, draw line
+TAA

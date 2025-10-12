@@ -1,0 +1,21 @@
+; Spiral Pattern
+; Geometric spiral using iterative rotation and translation
+; Difficulty: advanced
+; Concepts: composition, transforms, drawing
+; Good for mutations: silent, frameshift
+
+ATG
+  GAA AAT GGA        ; Push 3, draw circle
+  GAA ATT AGA        ; Push 15, rotate 15 degrees
+  GAA AAT GAA AAA ACA ; Push 3, push 0, translate(3, 0)
+  GAA AAT GGA        ; Draw circle
+  GAA ATT AGA        ; Rotate 15 degrees
+  GAA AGG GAA AAA ACA ; Push 10, push 0, translate(10, 0)
+  GAA AAT GGA        ; Draw circle
+  GAA ATT AGA        ; Rotate 15 degrees
+  GAA AGG GAA AAA ACA ; Push 10, push 0, translate(10, 0)
+  GAA AAT GGA        ; Draw circle
+  GAA ATT AGA        ; Rotate 15 degrees
+  GAA CCC GAA AAA ACA ; Push 21, push 0, translate(21, 0)
+  GAA AAT GGA        ; Draw circle
+TAA
