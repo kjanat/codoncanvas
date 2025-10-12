@@ -14,6 +14,7 @@ import {
   applyNonsenseMutation,
   applyFrameshiftMutation
 } from './mutations';
+import { ShareSystem, injectShareStyles } from './share-system';
 
 // Demo genome examples
 const DEMO_GENOMES = {
@@ -246,9 +247,51 @@ function initializeDemos(): void {
     setupFrameshiftDemo();
 
     console.log('✅ All mutation demos initialized successfully');
+
+    // Initialize share system
+    initializeShareSystem();
   } catch (error) {
     console.error('❌ Error initializing demos:', error);
   }
+}
+
+/**
+ * Initialize share system for demos page
+ */
+function initializeShareSystem(): void {
+  const shareContainer = document.getElementById('shareContainer');
+  if (!shareContainer) {
+    console.warn('Share container not found');
+    return;
+  }
+
+  injectShareStyles();
+
+  // Create a simple genome getter that returns all demo genomes as a formatted string
+  const getAllDemoGenomes = (): string => {
+    return `; CodonCanvas Mutation Demonstrations
+; Four mutation types with visual examples
+
+; 1. Silent Mutation (synonymous codon change)
+${DEMO_GENOMES.silent}
+
+; 2. Missense Mutation (different opcode)
+${DEMO_GENOMES.missense}
+
+; 3. Nonsense Mutation (early STOP)
+${DEMO_GENOMES.nonsense}
+
+; 4. Frameshift Mutation (reading frame shift)
+${DEMO_GENOMES.frameshift}`;
+  };
+
+  new ShareSystem({
+    containerElement: shareContainer,
+    getGenome: getAllDemoGenomes,
+    appTitle: 'CodonCanvas Mutation Demos',
+    showQRCode: true,
+    socialPlatforms: ['twitter', 'reddit', 'email']
+  });
 }
 
 // Initialize when DOM is ready

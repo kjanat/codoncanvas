@@ -13,6 +13,7 @@ import {
   applyFrameshiftMutation,
   type MutationType
 } from './mutations';
+import { ShareSystem, injectShareStyles } from './share-system';
 
 // Get DOM elements
 const editor = document.getElementById('editor') as HTMLTextAreaElement;
@@ -37,6 +38,9 @@ const frameshiftMutationBtn = document.getElementById('frameshiftMutationBtn') a
 const pointMutationBtn = document.getElementById('pointMutationBtn') as HTMLButtonElement;
 const insertionMutationBtn = document.getElementById('insertionMutationBtn') as HTMLButtonElement;
 const deletionMutationBtn = document.getElementById('deletionMutationBtn') as HTMLButtonElement;
+
+// Share system
+const shareContainer = document.getElementById('shareContainer') as HTMLDivElement;
 
 // Example filter elements
 const difficultyFilter = document.getElementById('difficultyFilter') as HTMLSelectElement;
@@ -673,8 +677,28 @@ document.addEventListener('keydown', (e) => {
   }
 });
 
-// Auto-run on load if there's content
-if (editor.value.trim()) {
+// Initialize share system
+injectShareStyles();
+
+const shareSystem = new ShareSystem({
+  containerElement: shareContainer,
+  getGenome: () => editor.value.trim(),
+  appTitle: 'CodonCanvas Playground',
+  showQRCode: true,
+  socialPlatforms: ['twitter', 'reddit', 'email']
+});
+
+// Load genome from URL if present
+const urlGenome = ShareSystem.loadFromURL();
+if (urlGenome) {
+  editor.value = urlGenome;
+  setStatus('Loaded genome from share link', 'success');
+  setTimeout(() => {
+    runProgram();
+    runLinter(urlGenome);
+  }, 100);
+} else if (editor.value.trim()) {
+  // Auto-run on load if there's content
   setTimeout(() => {
     runProgram();
     runLinter(editor.value);
