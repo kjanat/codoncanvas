@@ -1,0 +1,22 @@
+; Audio Mutation Pedagogy Demo
+; Base melody that students can mutate to hear effects
+; Try: Silent (GGA→GGC = same sound)
+;      Missense (GGA→GCA = sine→triangle timbre change)
+;      Nonsense (GGA→TAA = melody cuts short)
+;      Frameshift (delete one base = complete scramble)
+
+ATG
+
+; Simple 4-note melody
+GAA CGC GGA    ; Tone 1: 470Hz sine
+GAA CCC GGA    ; Tone 2: 421Hz sine
+GAA AGG GGA    ; Tone 3: 340Hz sine
+GAA CGC GGA    ; Tone 4: 470Hz sine (repeat)
+
+TAA
+
+; MUTATION EXERCISES:
+; 1. Change first GGA to GGC (silent - should sound identical)
+; 2. Change second GGA to CCA (missense - sine→square wave)
+; 3. Change third GGA to TAA (nonsense - melody truncates)
+; 4. Delete the 'A' after first GAA (frameshift - chaos!)

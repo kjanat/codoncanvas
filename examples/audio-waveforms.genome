@@ -1,0 +1,21 @@
+; Waveform Comparison Demo
+; Demonstrates different waveforms at same pitch
+; Shows how shape mutations change timbre
+
+ATG
+
+GAA CGC       ; Push 25 (frequency ~470Hz)
+
+; CIRCLE → Sine wave (smooth, pure)
+GGA
+
+; TRIANGLE → Triangle wave (mellow)
+GCA
+
+; RECT with equal w,h → Square wave (bright, hollow)
+GAA CGC GAA CGC CCA
+
+; LINE → Sawtooth (bright, buzzy)
+GAA CCC AAA
+
+TAA

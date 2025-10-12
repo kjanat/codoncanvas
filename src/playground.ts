@@ -26,6 +26,7 @@ const runBtn = document.getElementById('runBtn') as HTMLButtonElement;
 const clearBtn = document.getElementById('clearBtn') as HTMLButtonElement;
 const exampleSelect = document.getElementById('exampleSelect') as HTMLSelectElement;
 const exportBtn = document.getElementById('exportBtn') as HTMLButtonElement;
+const exportAudioBtn = document.getElementById('exportAudioBtn') as HTMLButtonElement;
 const saveGenomeBtn = document.getElementById('saveGenomeBtn') as HTMLButtonElement;
 const loadGenomeBtn = document.getElementById('loadGenomeBtn') as HTMLButtonElement;
 const genomeFileInput = document.getElementById('genomeFileInput') as HTMLInputElement;
@@ -648,6 +649,8 @@ async function toggleAudio() {
       await audioRenderer.initialize();
       audioToggleBtn.textContent = '🔊 Audio On';
       audioToggleBtn.setAttribute('aria-label', 'Audio mode enabled');
+      exportBtn.style.display = 'none'; // Hide PNG export in audio mode
+      exportAudioBtn.style.display = 'inline-block'; // Show audio export
       setStatus('Audio mode enabled - genomes will play as sound', 'info');
     } catch (error) {
       audioMode = false;
@@ -656,7 +659,25 @@ async function toggleAudio() {
   } else {
     audioToggleBtn.textContent = '🔇 Audio Off';
     audioToggleBtn.setAttribute('aria-label', 'Audio mode disabled');
+    exportBtn.style.display = 'inline-block'; // Show PNG export
+    exportAudioBtn.style.display = 'none'; // Hide audio export
     setStatus('Visual mode - genomes render to canvas', 'info');
+  }
+}
+
+// Audio export handler
+async function exportAudio() {
+  try {
+    const blob = await audioRenderer.exportWAV();
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `codoncanvas-audio-${Date.now()}.webm`;
+    a.click();
+    URL.revokeObjectURL(url);
+    setStatus('Audio exported successfully', 'success');
+  } catch (error) {
+    setStatus('Error exporting audio: ' + (error as Error).message, 'error');
   }
 }
 
@@ -666,6 +687,7 @@ clearBtn.addEventListener('click', clearCanvas);
 audioToggleBtn.addEventListener('click', toggleAudio);
 exampleSelect.addEventListener('change', loadExample);
 exportBtn.addEventListener('click', exportImage);
+exportAudioBtn.addEventListener('click', exportAudio);
 saveGenomeBtn.addEventListener('click', saveGenome);
 loadGenomeBtn.addEventListener('click', loadGenome);
 genomeFileInput.addEventListener('change', handleFileLoad);

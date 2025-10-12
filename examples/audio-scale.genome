@@ -1,0 +1,20 @@
+; Audio Scale Demo
+; Plays ascending musical scale using CIRCLE (sine wave)
+; Each CIRCLE generates a tone at increasing frequency
+
+ATG
+
+; Push frequencies for musical notes (A4 to A5)
+; Using base-4 encoding: frequencies mapped to 0-63 range
+; Frequency formula: 220 + (value/64) * 660 Hz
+
+GAA AAA GGA    ; 0 → 220 Hz (A3)
+GAA AGT GGA    ; 11 → 334 Hz (E4)
+GAA ATT GGA    ; 15 → 374 Hz (F#4)
+GAA CGG GGA    ; 26 → 488 Hz (B4)
+GAA CTT GGA    ; 31 → 540 Hz (C#5)
+GAA GCT GGA    ; 37 → 600 Hz (D#5)
+GAA GTT GGA    ; 47 → 706 Hz (F5)
+GAA TTT GGA    ; 63 → 880 Hz (A5)
+
+TAA
