@@ -136,17 +136,17 @@ program
       }
     }
 
+    const valid = results.filter(r => r.valid).length;
+    const invalid = results.filter(r => !r.valid).length;
+
     if (options.json) {
       console.log(JSON.stringify({
         total: results.length,
-        valid: results.filter(r => r.valid).length,
-        invalid: results.filter(r => !r.valid).length,
+        valid,
+        invalid,
         results
       }, null, 2));
     } else {
-      const valid = results.filter(r => r.valid).length;
-      const invalid = results.filter(r => !r.valid).length;
-
       console.log(chalk.bold(`\nValidation Summary:`));
       console.log(chalk.green(`  ✓ Valid: ${valid}`));
       console.log(chalk.red(`  ✗ Invalid: ${invalid}`));
