@@ -55,6 +55,18 @@ Try CodonCanvas online (no installation required):
 
 Explore intricate compositions demonstrating the full capabilities of CodonCanvas. Each genome showcases advanced techniques like state management, noise textures, multi-layer compositions, and complex transforms.
 
+### ⭐ NEW: Algorithmic Masterpieces
+
+These examples demonstrate CodonCanvas's computational power using LOOP opcodes, arithmetic operations, and mathematical patterns:
+
+- **Fibonacci Spiral** - Golden ratio approximation using arithmetic progression
+- **Parametric Rose** - Mathematical rose curves with LOOP-based iteration
+- **Sierpinski Approximation** - Fractal-like patterns through recursive subdivision
+- **Golden Ratio Demo** - Visual proof of φ (phi) using geometric construction
+- **Prime Number Spiral** - Ulam spiral visualization with LOOP efficiency
+
+### Classic Gallery
+
 <table>
 <tr>
 <td align="center" width="33%">

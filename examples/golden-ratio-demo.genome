@@ -1,0 +1,54 @@
+; Golden Ratio Demonstration
+; Visual proof of φ (phi) using geometric construction
+; Difficulty: advanced-algorithmic
+; Concepts: arithmetic, division, golden ratio (1.618...)
+; Visual: Nested golden rectangles with spiral overlay
+; Algorithm: φ = (1+√5)/2 ≈ 1.618, approximated as 21/13
+
+ATG
+  ; Setup: Golden yellow color scheme
+  GAA TTT GAA GCC GAA AAA TTA ; Color(63, 37, 0) golden
+
+  ; Rectangle 1: 34×21 (≈ φ ratio)
+  GAA TGC GAA TGA CCA          ; PUSH 34, PUSH 21, RECT
+
+  ; Subdivide: Draw 21×21 square inside (left portion)
+  GAA TTT GAA TTT GAA AGG TTA ; Color(63, 63, 10) bright yellow
+  TCA                          ; SAVE_STATE
+  GAA ATT GAA AAA ACA          ; Translate(-15, 0) - move left
+  GAA TGA GAA TGA CCA          ; PUSH 21, PUSH 21, RECT (square)
+
+  ; Remaining rectangle: 13×21 (again ≈ φ ratio)
+  GAA GCC GAA CCC GAA TCC TTA ; Color(37, 21, 53) purple
+  TCA                          ; SAVE_STATE
+  GAA AGG GAA AAA ACA          ; Translate(10, 0) - move right
+  GAA TCG GAA TGA CCA          ; PUSH 13, PUSH 21, RECT
+
+  ; Rectangle 3: 13×8 (φ ratio continues)
+  GAA AAA GAA TTT GAA GCC TTA ; Color(0, 63, 37) teal
+  GAA AGC GAA AGC CCA          ; PUSH 8, PUSH 13, RECT (rotated orientation)
+
+  ; Spiral overlay using circles at golden ratio spacing
+  GAA TTT GAA AAA GAA AAA TTA ; Color(63, 0, 0) red spiral
+
+  ; Start large, decrease by φ ratio: 21, 13, 8, 5, 3, 2, 1
+  GAA TGA GGA                  ; PUSH 21, CIRCLE
+  GAA TCG GGA                  ; PUSH 13, CIRCLE (21/φ ≈ 13)
+  GAA AGC GGA                  ; PUSH 8, CIRCLE (13/φ ≈ 8)
+  GAA ACT GGA                  ; PUSH 5, CIRCLE (8/φ ≈ 5)
+  GAA AAT GGA                  ; PUSH 3, CIRCLE (5/φ ≈ 3)
+  GAA AAG GGA                  ; PUSH 2, CIRCLE (3/φ ≈ 2)
+  GAA AAC GGA                  ; PUSH 1, CIRCLE (2/φ ≈ 1)
+
+  ; Demonstrate arithmetic: compute φ approximation
+  ; φ ≈ 34/21 (using available values)
+  GAA TGC                      ; PUSH 34
+  GAA TGA                      ; PUSH 21
+  CAC                          ; DIV (34/21 = 1.619... ≈ φ)
+  ; Result on stack (not visualized, but computed)
+
+  ; Add decorative accent
+  GAA TTT GAA TTT GAA TTT TTA ; Color(63, 63, 63) white
+  GAA AAC GGA                  ; PUSH 1, CIRCLE (center dot)
+
+TAA

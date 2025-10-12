@@ -1,0 +1,43 @@
+; Parametric Rose Curve - Mathematical Art
+; Creates rose pattern using LOOP with parametric equations
+; Difficulty: advanced-algorithmic
+; Concepts: LOOP, arithmetic, rotation, mathematical curves
+; Visual: Beautiful rose with 8 petals formed algorithmically
+; Algorithm: r = a*cos(k*θ), iterate θ in steps
+
+ATG
+  ; Setup: Pink/red color for rose
+  GAA TTT GAA CCC GAA GCC TTA ; Color(63, 21, 37) rose pink
+
+  ; Rose curve with k=4 (8 petals when k=4 for sin)
+  ; We'll approximate by drawing 16 circles at different angles
+  ; Each circle's distance from center varies with angle
+
+  ; Iteration 1: θ=0° (radius = max)
+  TCA                          ; SAVE_STATE
+  GAA CCC GAA AAA ACA          ; Translate(21, 0)
+  GAA AAT GGA                  ; PUSH 3, CIRCLE
+
+  ; Setup for LOOP: Draw 15 more circles with rotation
+  ; We'll use LOOP to repeat: RESTORE, ROTATE, TRANSLATE, CIRCLE
+  GAA CCC                      ; PUSH 21 (translation distance)
+  GAA AAA                      ; PUSH 0 (dy)
+  ACA                          ; TRANSLATE
+  GAA CCG                      ; PUSH 23 (rotation ≈ 22.5°)
+  AGA                          ; ROTATE
+  GAA AAT                      ; PUSH 3 (radius)
+  GGA                          ; CIRCLE
+
+  ; LOOP: repeat above 6 instructions, 14 more times
+  GAA ACA                      ; PUSH 6 (instruction count)
+  GAA TGA                      ; PUSH 14 (repeat count)
+  CAA                          ; LOOP
+
+  ; Add center decoration
+  TCA                          ; RESTORE to origin
+  GAA TTT GAA TTT GAA AAA TTA ; Color(63, 63, 0) yellow center
+  GAA AGG GGA                  ; PUSH 10, CIRCLE (large center)
+  GAA TTT GAA AAA GAA AAA TTA ; Color(63, 0, 0) red
+  GAA AAT GGA                  ; PUSH 3, CIRCLE (small center)
+
+TAA

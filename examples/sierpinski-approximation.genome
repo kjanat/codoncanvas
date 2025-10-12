@@ -1,0 +1,55 @@
+; Sierpinski Triangle Approximation
+; Creates fractal-like pattern using iterative subdivision
+; Difficulty: advanced-algorithmic
+; Concepts: LOOP, recursion patterns, geometric progression
+; Visual: Fractal triangle with self-similar structure
+; Algorithm: Draw triangles at 1/2 scale in nested pattern
+
+ATG
+  ; Setup: Purple color for fractal
+  GAA GCC GAA AAA GAA TCC TTA ; Color(37, 0, 53) deep purple
+
+  ; Level 0: Large central triangle (size = 63)
+  GAA TTT GCA                  ; PUSH 63, TRIANGLE
+
+  ; Level 1: Three medium triangles (size = 31 ≈ 63/2)
+  TCA                          ; SAVE_STATE
+  GAA GGC GAA AAA ACA          ; Translate(30, 0) - move right
+  GAA GGC AGA                  ; Rotate(30)
+  GAA TGT GCA                  ; PUSH 31, TRIANGLE
+  GAA CTC AGA                  ; Rotate(60)
+  GAA GGC GAA AAA ACA          ; Translate(30, 0)
+  GAA TGT GCA                  ; PUSH 31, TRIANGLE
+  GAA CTC AGA                  ; Rotate(60)
+  GAA GGC GAA AAA ACA          ; Translate(30, 0)
+  GAA TGT GCA                  ; PUSH 31, TRIANGLE
+
+  ; Level 2: Nine small triangles (size = 15 ≈ 31/2)
+  ; Use LOOP to create pattern
+  GAA TTT GAA CCC GAA TCC TTA ; Color(63, 21, 53) lighter purple
+
+  ; Position for first small triangle
+  TCA                          ; SAVE_STATE
+  GAA ATT GAA AAA ACA          ; Translate(15, 0)
+  GAA AGG GCA                  ; PUSH 10, TRIANGLE
+
+  ; Create pattern with LOOP
+  ; Instructions: ROTATE 40°, TRANSLATE 15, TRIANGLE
+  GAA GTC                      ; PUSH 40 (rotation)
+  AGA                          ; ROTATE
+  GAA ATT                      ; PUSH 15 (translation)
+  GAA AAA                      ; PUSH 0
+  ACA                          ; TRANSLATE
+  GAA AGG                      ; PUSH 10
+  GCA                          ; TRIANGLE
+
+  ; LOOP: repeat 5 instructions, 8 more times (9 total)
+  GAA ACT                      ; PUSH 5 (instruction count)
+  GAA AGC                      ; PUSH 8 (repeat count)
+  CAA                          ; LOOP
+
+  ; Add accent circles at vertices
+  GAA TTT GAA TTT GAA CCC TTA ; Color(63, 63, 21) yellow accents
+  GAA AAC GGA                  ; PUSH 1, CIRCLE (tiny dots)
+
+TAA

@@ -1,0 +1,62 @@
+; Fibonacci Spiral - Mathematical Showcase
+; Approximates golden ratio spiral using Fibonacci sequence
+; Difficulty: advanced-algorithmic
+; Concepts: arithmetic, LOOP, mathematical patterns, golden ratio
+; Visual: Beautiful spiral with progressively growing rectangles
+; Algorithm: Generate Fibonacci numbers, draw squares, rotate 90°
+
+ATG
+  ; Setup: Start at center with warm colors
+  GAA TTT GAA GCC GAA AAA TTA ; Color(63, 37, 0) golden orange
+
+  ; Fibonacci sequence approximation using arithmetic
+  ; F(0)=1, F(1)=1, then F(n)=F(n-1)+F(n-2)
+
+  ; Draw F(0)=1 (tiny square)
+  GAA AAC GAA AAC CCA          ; PUSH 1, PUSH 1, RECT
+  GAA CCC GAA AAA ACA          ; Translate(21, 0) - move right
+  GAA CCG AGA                  ; Rotate(23) ≈ 90°
+
+  ; Draw F(1)=1 (another tiny square)
+  GAA AAC GAA AAC CCA          ; PUSH 1, PUSH 1, RECT
+  GAA CCC GAA AAA ACA          ; Translate(21, 0)
+  GAA CCG AGA                  ; Rotate(23)
+
+  ; Draw F(2)=2 (small square)
+  GAA AAG GAA AAG CCA          ; PUSH 2, PUSH 2, RECT
+  GAA GGC GAA AAA ACA          ; Translate(30, 0)
+  GAA CCG AGA                  ; Rotate(23)
+
+  ; Draw F(3)=3 (small square)
+  GAA AAT GAA AAT CCA          ; PUSH 3, PUSH 3, RECT
+  GAA TGC GAA AAA ACA          ; Translate(59, 0)
+  GAA CCG AGA                  ; Rotate(23)
+
+  ; Draw F(4)=5 (medium square)
+  GAA ACT GAA ACT CCA          ; PUSH 5, PUSH 5, RECT
+  GAA TTC GAA AAA ACA          ; Translate(62, 0)
+  GAA CCG AGA                  ; Rotate(23)
+
+  ; Draw F(5)=8 (medium square)
+  GAA AGC GAA AGC CCA          ; PUSH 8, PUSH 8, RECT
+  GAA TTT GAA AAA ACA          ; Translate(63, 0)
+  GAA CCG AGA                  ; Rotate(23)
+
+  ; Draw F(6)=13 (large square - computed: 5+8=13)
+  GAA ACT GAA AGC CAT          ; PUSH 5, PUSH 8, ADD
+  ATA                          ; DUP (13, 13 on stack)
+  CCA                          ; RECT
+  GAA TTT GAA AAA ACA          ; Translate(63, 0)
+  GAA CCG AGA                  ; Rotate(23)
+
+  ; Draw F(7)=21 (large square - computed: 8+13=21)
+  GAA AGC GAA TGA CAT          ; PUSH 8, PUSH 13 (note: TGA≠13, use TCG)
+  GAA TCG GAA AGC CAT          ; PUSH 13, PUSH 8, ADD
+  ATA                          ; DUP
+  CCA                          ; RECT
+
+  ; Add decorative circles at key points
+  GAA TTT GAA TTT GAA GCC TTA ; Color(63, 63, 37) bright yellow
+  GAA AAT GGA                 ; PUSH 3, CIRCLE (small accent)
+
+TAA

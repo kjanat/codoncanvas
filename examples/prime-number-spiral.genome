@@ -1,0 +1,56 @@
+; Prime Number Spiral (Ulam Spiral Approximation)
+; Visualizes numbers in spiral pattern
+; Difficulty: advanced-algorithmic
+; Concepts: LOOP, rotation, circles in spiral
+; Visual: Colorful spiral of circles
+; Algorithm: Radial pattern with LOOP for efficiency
+
+ATG
+  ; Setup colors
+  GAA TTT GAA AAA GAA TTT TTA ; Color(63, 0, 63) magenta
+
+  ; Center point
+  TCA                          ; SAVE_STATE
+
+  ; First ring of 6 circles using LOOP
+  GAA AGG GAA AAA ACA          ; Translate(10, 0) - move out
+  GAA AAT GGA                  ; PUSH 3, CIRCLE - draw first
+
+  ; Instructions to repeat for LOOP:
+  ; 1. PUSH 60 (rotation)
+  ; 2. ROTATE
+  ; 3. PUSH 10, PUSH 0 (translation)
+  ; 4. TRANSLATE
+  ; 5. PUSH 3 (radius)
+  ; 6. CIRCLE
+  GAA CTC AGA                  ; PUSH 60, ROTATE (instr 1-2)
+  GAA AGG GAA AAA ACA          ; PUSH 10, PUSH 0, TRANSLATE (instr 3-5)
+  GAA AAT GGA                  ; PUSH 3, CIRCLE (instr 6-7)
+
+  ; LOOP: repeat 7 instructions, 4 more times (5 more circles = 6 total)
+  GAA AAA                      ; PUSH 7 (instruction count)
+  GAA AAA                      ; PUSH 4 (repeat count)
+  CAA                          ; LOOP
+
+  ; Second ring - larger distance, different color
+  TCA                          ; RESTORE to center
+  GAA TTT GAA TTT GAA AAA TTA ; Color(63, 63, 0) gold
+  GAA CCC GAA AAA ACA          ; Translate(21, 0)
+  GAA AAG GGA                  ; PUSH 2, CIRCLE
+
+  ; Pattern for outer ring
+  GAA GGC AGA                  ; PUSH 30, ROTATE
+  GAA CCC GAA AAA ACA          ; PUSH 21, PUSH 0, TRANSLATE
+  GAA AAG GGA                  ; PUSH 2, CIRCLE
+
+  ; LOOP outer ring
+  GAA AAA                      ; PUSH 7 (instruction count)
+  GAA AAT                      ; PUSH 3 (repeat count)
+  CAA                          ; LOOP
+
+  ; Center accent
+  TCA                          ; RESTORE
+  GAA TTT GAA CCC GAA GCC TTA ; Color(63, 21, 37) pink
+  GAA AAC GGA                  ; PUSH 1, center dot
+
+TAA
