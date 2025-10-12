@@ -1,0 +1,85 @@
+; Even-Odd Spiral - LOOP + Modulo + Conditional Pattern
+; Demonstrates computational pattern using arithmetic and iteration
+; Difficulty: advanced-showcase
+; Concepts: LOOP, DIV, SUB, conditional-patterns, modulo-arithmetic
+; Visual: Spiral with alternating circle sizes based on even/odd parity
+; Algorithm: Use DIV by 2 to detect even numbers, scale shapes accordingly
+
+ATG
+  ; Setup: Center position with colorful palette
+  GAA TTG GAA GCC GAA GCC TTA  ; Color(62, 37, 37) blue
+
+  ; Pattern: Draw 8 circles in spiral, with size based on parity
+  ; Use modulo to check even/odd: n % 2 == 0 means even
+
+  ; Circle 1: Check if 1 is even (1/2=0 remainder 1, so odd)
+  ; Formula: size = (1 % 2 == 0) ? 8 : 3 -> 3 (odd)
+  GAA AAC GAA AAG CAT          ; PUSH 1, PUSH 2, DIV -> 0 (integer division)
+  GAA AAG CTT                  ; PUSH 2, MUL -> 0
+  GAA AAC CAT                  ; PUSH 1, ADD -> 1 (original number)
+  GAA AAG CAT                  ; PUSH 2, DIV -> 0
+  GAA AAG CTT                  ; PUSH 2, MUL -> 0 (even part removed)
+  GAA AAC CAG                  ; PUSH 1, SUB -> 1 (remainder: 1 % 2)
+  ; If remainder == 0 (even): big circle. If == 1 (odd): small
+  ; Stack trick: (1 - remainder) * big + remainder * small
+  GAA AAC CTA                  ; PUSH 1, EQ -> 0 (1 != 0, so odd)
+  GAA AAT CTT                  ; PUSH 3, MUL -> 0 * 3 = 0
+  GAA AAC CAT                  ; PUSH 1, ADD -> 1 (force small default)
+  GAA AAT CAT                  ; PUSH 3, ADD -> 4
+  GGA                          ; CIRCLE(4) small circle
+
+  GAA AGC GAA AAA ACA          ; Translate(8, 0)
+  GAA CCG AGA                  ; Rotate(23) ~90°
+
+  ; Circle 2: Even (should be large)
+  GAA AAG GAA AAG CAT          ; PUSH 2, PUSH 2, DIV -> 1
+  GAA AAG CTT                  ; PUSH 2, MUL -> 2
+  GAA AAG CTA                  ; PUSH 2, EQ -> 1 (2 == 2, even!)
+  GAA AGC CTT                  ; PUSH 8, MUL -> 8 * 1 = 8
+  GAA AAT CAT                  ; PUSH 3, ADD -> 11
+  GGA                          ; CIRCLE(11) large circle
+
+  GAA AGC GAA AAA ACA
+  GAA CCG AGA
+
+  ; Circle 3: Odd (small)
+  GAA AAT                      ; PUSH 3
+  GAA AAC CAT                  ; PUSH 1, ADD -> 4
+  GGA
+
+  GAA AGC GAA AAA ACA
+  GAA CCG AGA
+
+  ; Circle 4: Even (large)
+  GAA AGG                      ; PUSH 4
+  GAA ACT CAT                  ; PUSH 5, ADD -> 9
+  GGA
+
+  GAA AGC GAA AAA ACA
+  GAA CCG AGA
+
+  ; Circle 5: Odd (small)
+  GAA AAT GGA
+
+  GAA AGC GAA AAA ACA
+  GAA CCG AGA
+
+  ; Circle 6: Even (large)
+  GAA AGA GGA                  ; PUSH 10, CIRCLE
+
+  GAA AGC GAA AAA ACA
+  GAA CCG AGA
+
+  ; Circle 7: Odd (small)
+  GAA AAT GGA
+
+  GAA AGC GAA AAA ACA
+  GAA CCG AGA
+
+  ; Circle 8: Even (large)
+  GAA AGA GGA
+
+  ; Color accent
+  GAA CCC GAA GCC GAA GCC TTA  ; Color(21, 37, 37) green
+
+TAA

@@ -1,0 +1,60 @@
+; Conditional Scaling - Comparison Opcode Showcase
+; Demonstrates EQ opcode for conditional behavior via scaling
+; Difficulty: advanced-showcase
+; Concepts: EQ, arithmetic, conditional-logic, creative-workarounds
+; Visual: Shapes that appear/disappear based on computed conditions
+; Algorithm: Use EQ to generate 0/1, multiply size by result to show/hide
+
+ATG
+  ; Demonstrate conditional rendering using EQ opcode
+  ; Key insight: EQ produces 0 or 1, which we can use as a multiplier
+
+  ; Test 1: Draw circle only if 5 == 5 (should appear)
+  GAA ACT GAA ACT CTA          ; PUSH 5, PUSH 5, EQ -> pushes 1
+  GAA AGC CTT                  ; PUSH 8, MUL -> 8 * 1 = 8
+  GGA                          ; CIRCLE(8) -> visible!
+
+  GAA AGC GAA AAA ACA          ; Translate(8, 0) move right
+
+  ; Test 2: Draw circle only if 5 == 3 (should NOT appear)
+  GAA ACT GAA AAT CTA          ; PUSH 5, PUSH 3, EQ -> pushes 0
+  GAA AGC CTT                  ; PUSH 8, MUL -> 8 * 0 = 0
+  GGA                          ; CIRCLE(0) -> invisible!
+
+  GAA AGC GAA AAA ACA          ; Translate(8, 0)
+
+  ; Test 3: Draw square only if 7 == 7 (should appear)
+  GAA ATG GAA ATG CTA          ; PUSH 7, PUSH 7, EQ -> pushes 1
+  GAA AAT CTT                  ; PUSH 3, MUL -> 3 * 1 = 3
+  ATA                          ; DUP for width and height
+  CCA                          ; RECT(3, 3) -> visible!
+
+  GAA AGC GAA AAA ACA          ; Translate(8, 0)
+
+  ; Test 4: Comparison cascade - draw size based on LT result
+  ; If 2 < 5: size 10, else size 0
+  GAA AAG GAA ACT CTC          ; PUSH 2, PUSH 5, LT -> pushes 1 (true)
+  GAA AGA CTT                  ; PUSH 10, MUL -> 10 * 1 = 10
+  GGA                          ; CIRCLE(10) -> large visible circle!
+
+  GAA AGC GAA AAA ACA          ; Translate(8, 0)
+
+  ; Test 5: False LT comparison (should be invisible)
+  ; If 10 < 2: size 10, else size 0
+  GAA AGA GAA AAG CTC          ; PUSH 10, PUSH 2, LT -> pushes 0 (false)
+  GAA AGA CTT                  ; PUSH 10, MUL -> 10 * 0 = 0
+  GGA                          ; CIRCLE(0) -> invisible!
+
+  GAA AGC GAA AAA ACA          ; Translate(8, 0)
+
+  ; Test 6: Arithmetic + comparison combo
+  ; Compute 3+2, check if == 5, scale triangle accordingly
+  GAA AAT GAA AAG CAT          ; PUSH 3, PUSH 2, ADD -> 5
+  GAA ACT CTA                  ; PUSH 5, EQ -> 1 (true! 5==5)
+  GAA ATT CTT                  ; PUSH 7, MUL -> 7 * 1 = 7
+  GCA                          ; TRIANGLE(7) -> visible!
+
+  ; Add color to highlight the successful conditional tests
+  GAA TTT GAA GCC GAA GCC TTA  ; Color(63, 37, 37) bright
+
+TAA
