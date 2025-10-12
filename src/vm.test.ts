@@ -261,6 +261,45 @@ describe("CodonVM", () => {
 			const snapshot = vm.state.stateStack[0];
 			expect(snapshot.position.x).not.toBe(200); // Position changed from center
 		});
+
+		test("RESTORE_STATE pops state from stack", () => {
+			const genome = "ATG TCA TCG TAA"; // SAVE_STATE, RESTORE_STATE
+			const tokens = lexer.tokenize(genome);
+			vm.run(tokens);
+
+			// State stack should be empty after restore
+			expect(vm.state.stateStack.length).toBe(0);
+		});
+
+		test("RESTORE_STATE restores transform state", () => {
+			const genome = "ATG TCA GAA CCC GAA AAA ACA TCG TAA"; // SAVE_STATE, TRANSLATE(21, 0), RESTORE_STATE
+			const tokens = lexer.tokenize(genome);
+			vm.run(tokens);
+
+			// Position should be back to center (200, 200)
+			expect(vm.state.position.x).toBe(200);
+			expect(vm.state.position.y).toBe(200);
+		});
+
+		test("RESTORE_STATE with empty stack throws error", () => {
+			const genome = "ATG TCG TAA"; // RESTORE_STATE without SAVE_STATE
+			const tokens = lexer.tokenize(genome);
+
+			expect(() => vm.run(tokens)).toThrow("RESTORE_STATE with empty state stack");
+		});
+
+		test("Nested save/restore for complex compositions", () => {
+			// SAVE_STATE → translate → SAVE_STATE → translate → RESTORE_STATE → RESTORE_STATE
+			const genome = "ATG TCA GAA AAT GAA AAA ACA TCA GAA AAT GAA AAA ACA TCG TCG TAA";
+			const tokens = lexer.tokenize(genome);
+			vm.run(tokens);
+
+			// Both states should be restored (empty stack)
+			expect(vm.state.stateStack.length).toBe(0);
+			// Position back to original
+			expect(vm.state.position.x).toBe(200);
+			expect(vm.state.position.y).toBe(200);
+		});
 	});
 
 	describe("Mutation testing", () => {

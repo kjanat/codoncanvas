@@ -9,7 +9,8 @@ export type Concept =
   | 'colors'
   | 'stack'
   | 'composition'
-  | 'advanced-opcodes';
+  | 'advanced-opcodes'
+  | 'state-management';
 export type MutationType = 'silent' | 'missense' | 'nonsense' | 'frameshift';
 
 export interface ExampleMetadata {
@@ -250,22 +251,32 @@ TAA`,
 
   nestedFrames: {
     title: 'Nested Frames with State',
-    description: 'SAVE_STATE for complex layered compositions',
+    description: 'SAVE_STATE/RESTORE_STATE for complex layered compositions',
     genome: `ATG
+  ; Draw concentric circles with state preservation
   GAA CTT GAA CTT GAA CTT TTA ; Color(31, 31, 31) bright
   GAA TCC GGA        ; Push 53, draw outer circle
-  TCA                ; SAVE_STATE - preserve outer position
+
+  TCA                ; SAVE_STATE - checkpoint outer
+  GAA AAT GAA AAT ACA ; TRANSLATE(3, 3) - offset for middle
   GAA GCC GAA GCC TTA ; Color(37, 37, 0) yellow
   GAA GCC GGA        ; Push 37, draw middle circle
-  TCA                ; SAVE_STATE - preserve middle position
+
+  TCA                ; SAVE_STATE - checkpoint middle
+  GAA AAT GAA AAT ACA ; TRANSLATE(3, 3) - offset for inner
   GAA CCC GAA CCC TTA ; Color(21, 21, 0) darker yellow
   GAA CCC GGA        ; Push 21, draw inner circle
-  TCA                ; SAVE_STATE - preserve inner position
-  GAA AAA GAA AGG TTA ; Color(0, 10, 0) dark
-  GAA AGG GGA        ; Push 10, draw core circle
+  TCG                ; RESTORE_STATE - back to middle
+
+  GAA ATT GAA AAA ACA ; TRANSLATE(6, 0) - draw adjacent
+  GAA CCC GGA        ; Push 21, another circle
+  TCG                ; RESTORE_STATE - back to outer
+
+  GAA CGC GAA AAA ACA ; TRANSLATE(25, 0) - draw adjacent
+  GAA TCC GGA        ; Push 53, another outer circle
 TAA`,
     difficulty: 'advanced',
-    concepts: ['advanced-opcodes', 'composition', 'colors'],
+    concepts: ['advanced-opcodes', 'composition', 'colors', 'state-management'],
     goodForMutations: ['nonsense', 'missense'],
     keywords: ['nested', 'layers', 'state', 'save', 'advanced']
   },

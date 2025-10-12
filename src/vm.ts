@@ -256,6 +256,19 @@ export class CodonVM implements VM {
         break;
       }
 
+      case Opcode.RESTORE_STATE: {
+        if (this.state.stateStack.length === 0) {
+          throw new Error('RESTORE_STATE with empty state stack');
+        }
+        const savedState = this.state.stateStack.pop()!;
+        // Restore transform state (position, rotation, scale, color)
+        this.state.position = { ...savedState.position };
+        this.state.rotation = savedState.rotation;
+        this.state.scale = savedState.scale;
+        this.state.color = { ...savedState.color };
+        break;
+      }
+
       default:
         throw new Error(`Unknown opcode: ${opcode}`);
     }
