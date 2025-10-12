@@ -1,0 +1,46 @@
+; Branching Tree - Recursive tree structure mimicking biological branching
+; Demonstrates: LOOP, recursive branching, ROTATE, SCALE, LINE
+; Biological concept: Fractal branching in trees, blood vessels, neurons
+; Difficulty: Advanced
+; Instructions: 48 codons
+; Author: CodonCanvas Autonomous Session 85
+
+ATG
+  ; Setup: Position at bottom center, scale for tree size
+  GAA AAA GAA TCG ACA        ; PUSH 0, PUSH 52(-12), TRANSLATE (0, -80) move down
+  GAA TTT TTA                ; PUSH 63, COLOR (brown trunk: 30, 60, 40)
+  GAA CGA GAA TGG TTA
+
+  ; Main trunk
+  GAA TCC CGA                ; PUSH 57, SCALE (0.9)
+  GAA CAG AAA                ; PUSH 26, LINE (trunk upward)
+  GAA AAA GAA CAG ACA        ; PUSH 0, PUSH 26, TRANSLATE (0, 26) move to trunk tip
+
+  ; Left branch system (6 branches)
+  GAA AAC TCA                ; PUSH 3, LOOP (begin branch loop)
+    TGG                      ; SAVE_STATE (preserve position/rotation)
+    GAA TGA AGA              ; PUSH 56(-8), ROTATE (-45° left branch)
+    GAA CGT CGA              ; PUSH 29, SCALE (0.45)
+    GAA AGT AAA             ; PUSH 9, LINE (branch)
+    GAA AAA GAA AGT ACA      ; PUSH 0, PUSH 9, TRANSLATE (0, 9)
+    GAA AAT GGA              ; PUSH 3, CIRCLE (leaf bud)
+    TGT                      ; RESTORE_STATE
+  TCT                        ; End loop
+
+  ; Right branch system (6 branches)
+  GAA AAC TCA                ; PUSH 3, LOOP
+    TGG                      ; SAVE_STATE
+    GAA AGT AGA              ; PUSH 9, ROTATE (45° right branch)
+    GAA CGT CGA              ; PUSH 29, SCALE (0.45)
+    GAA AGT AAA             ; PUSH 9, LINE (branch)
+    GAA AAA GAA AGT ACA      ; PUSH 0, PUSH 9, TRANSLATE (0, 9)
+    GAA AAT GGA              ; PUSH 3, CIRCLE (leaf bud)
+    TGT                      ; RESTORE_STATE
+  TCT                        ; End loop
+
+  ; Top branches (asymmetric)
+  GAA TGC AGA                ; PUSH 60, ROTATE (-4° slight left)
+  GAA AAG AAA                ; PUSH 5, LINE (top segment)
+  GAA CCC GGA                ; PUSH 21, CIRCLE (top leaf cluster)
+
+TAA

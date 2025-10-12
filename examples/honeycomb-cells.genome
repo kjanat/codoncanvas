@@ -1,0 +1,62 @@
+; Honeycomb Pattern - Hexagonal cellular structure
+; Demonstrates: LOOP, hexagon drawing, tessellation
+; Biological concept: Cellular packing, optimal space filling
+; Difficulty: Advanced
+; Instructions: 56 codons
+; Author: CodonCanvas Autonomous Session 85
+
+ATG
+  ; Golden honey color
+  GAA TTA GAA TGT GAA TCC TTA  ; COLOR (30, 85, 50)
+
+  ; Draw honeycomb grid (3x3 hexagons)
+  ; Row 1
+  GAA TAG GAA TGC ACA          ; PUSH 45(-19), PUSH 60(-4), TRANSLATE (-80, -80)
+  TGG                          ; SAVE_STATE
+  GAA AAC TCA                  ; PUSH 3, LOOP (3 hexagons across)
+    ; Draw hexagon (6-sided polygon using lines)
+    TGG                        ; SAVE_STATE
+    GAA AAG                    ; PUSH 5, (side length)
+    DUP DUP DUP DUP DUP        ; 6 copies for 6 sides
+    GAA AAA TCA                ; PUSH 0, LOOP (draw 6 sides)
+      AAA                      ; LINE (one side)
+      GAA TGA AGA              ; PUSH 56(-8), ROTATE (60°)
+    TCT
+    TGT                        ; RESTORE_STATE
+    GAA CAG GAA AAA ACA        ; PUSH 26, PUSH 0, TRANSLATE (move right)
+  TCT
+  TGT                          ; RESTORE_STATE
+
+  ; Row 2 (offset for honeycomb pattern)
+  GAA TGT GAA TGC ACA          ; PUSH 61(-3), PUSH 60(-4), TRANSLATE (-60, -40)
+  TGG                          ; SAVE_STATE
+  GAA AAC TCA                  ; PUSH 3, LOOP
+    TGG                        ; SAVE_STATE
+    GAA AAG                    ; PUSH 5
+    DUP DUP DUP DUP DUP
+    GAA AAA TCA                ; LOOP hexagon
+      AAA                      ; LINE
+      GAA TGA AGA              ; ROTATE 60°
+    TCT
+    TGT
+    GAA CAG GAA AAA ACA        ; TRANSLATE right
+  TCT
+  TGT
+
+  ; Row 3
+  GAA TAG GAA AAA ACA          ; PUSH 45(-19), PUSH 0, TRANSLATE (-80, 0)
+  TGG
+  GAA AAC TCA                  ; PUSH 3, LOOP
+    TGG
+    GAA AAG
+    DUP DUP DUP DUP DUP
+    GAA AAA TCA                ; LOOP hexagon
+      AAA
+      GAA TGA AGA
+    TCT
+    TGT
+    GAA CAG GAA AAA ACA
+  TCT
+  TGT
+
+TAA
