@@ -3,6 +3,16 @@ import { CodonLexer } from './lexer';
 import { Canvas2DRenderer } from './renderer';
 import { CodonVM } from './vm';
 import { downloadGenomeFile, readGenomeFile } from './genome-io';
+import {
+  applySilentMutation,
+  applyMissenseMutation,
+  applyNonsenseMutation,
+  applyPointMutation,
+  applyInsertion,
+  applyDeletion,
+  applyFrameshiftMutation,
+  type MutationType
+} from './mutations';
 
 // Get DOM elements
 const editor = document.getElementById('editor') as HTMLTextAreaElement;
@@ -18,6 +28,15 @@ const statusMessage = document.getElementById('statusMessage') as HTMLSpanElemen
 const codonCount = document.getElementById('codonCount') as HTMLSpanElement;
 const instructionCount = document.getElementById('instructionCount') as HTMLSpanElement;
 const statusBar = document.querySelector('.status-bar') as HTMLDivElement;
+
+// Mutation buttons
+const silentMutationBtn = document.getElementById('silentMutationBtn') as HTMLButtonElement;
+const missenseMutationBtn = document.getElementById('missenseMutationBtn') as HTMLButtonElement;
+const nonsenseMutationBtn = document.getElementById('nonsenseMutationBtn') as HTMLButtonElement;
+const frameshiftMutationBtn = document.getElementById('frameshiftMutationBtn') as HTMLButtonElement;
+const pointMutationBtn = document.getElementById('pointMutationBtn') as HTMLButtonElement;
+const insertionMutationBtn = document.getElementById('insertionMutationBtn') as HTMLButtonElement;
+const deletionMutationBtn = document.getElementById('deletionMutationBtn') as HTMLButtonElement;
 
 // Initialize lexer, renderer, and VM
 const lexer = new CodonLexer();
@@ -171,6 +190,61 @@ async function handleFileLoad(event: Event) {
   }
 }
 
+function applyMutation(type: MutationType) {
+  try {
+    const genome = editor.value.trim();
+
+    if (!genome) {
+      setStatus('No genome to mutate', 'error');
+      return;
+    }
+
+    let result;
+
+    switch (type) {
+      case 'silent':
+        result = applySilentMutation(genome);
+        break;
+      case 'missense':
+        result = applyMissenseMutation(genome);
+        break;
+      case 'nonsense':
+        result = applyNonsenseMutation(genome);
+        break;
+      case 'point':
+        result = applyPointMutation(genome);
+        break;
+      case 'insertion':
+        result = applyInsertion(genome);
+        break;
+      case 'deletion':
+        result = applyDeletion(genome);
+        break;
+      case 'frameshift':
+        result = applyFrameshiftMutation(genome);
+        break;
+      default:
+        throw new Error(`Unknown mutation type: ${type}`);
+    }
+
+    // Update editor with mutated genome
+    editor.value = result.mutated;
+
+    // Auto-run to show effect
+    runProgram();
+
+    // Show mutation info
+    setStatus(`🧬 ${result.description}`, 'success');
+
+  } catch (error) {
+    if (error instanceof Error) {
+      setStatus(`Mutation failed: ${error.message}`, 'error');
+    } else {
+      setStatus('Mutation failed', 'error');
+    }
+  }
+}
+
 // Event listeners
 runBtn.addEventListener('click', runProgram);
 clearBtn.addEventListener('click', clearCanvas);
@@ -179,6 +253,15 @@ exportBtn.addEventListener('click', exportImage);
 saveGenomeBtn.addEventListener('click', saveGenome);
 loadGenomeBtn.addEventListener('click', loadGenome);
 genomeFileInput.addEventListener('change', handleFileLoad);
+
+// Mutation button listeners
+silentMutationBtn.addEventListener('click', () => applyMutation('silent'));
+missenseMutationBtn.addEventListener('click', () => applyMutation('missense'));
+nonsenseMutationBtn.addEventListener('click', () => applyMutation('nonsense'));
+frameshiftMutationBtn.addEventListener('click', () => applyMutation('frameshift'));
+pointMutationBtn.addEventListener('click', () => applyMutation('point'));
+insertionMutationBtn.addEventListener('click', () => applyMutation('insertion'));
+deletionMutationBtn.addEventListener('click', () => applyMutation('deletion'));
 
 // Keyboard shortcut: Cmd/Ctrl + Enter to run
 editor.addEventListener('keydown', (e) => {

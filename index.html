@@ -164,6 +164,75 @@
       gap: 1rem;
       font-size: 0.75rem;
     }
+
+    /* Mutation button styling */
+    .mutation-btn {
+      font-size: 0.75rem;
+      padding: 0.4rem 0.8rem;
+    }
+
+    .mutation-btn.silent {
+      background: #4ec9b0;
+      color: #1e1e1e;
+    }
+
+    .mutation-btn.silent:hover {
+      background: #5ed9c0;
+    }
+
+    .mutation-btn.missense {
+      background: #ce9178;
+      color: #1e1e1e;
+    }
+
+    .mutation-btn.missense:hover {
+      background: #dea188;
+    }
+
+    .mutation-btn.nonsense {
+      background: #f48771;
+      color: #1e1e1e;
+    }
+
+    .mutation-btn.nonsense:hover {
+      background: #ff9781;
+    }
+
+    .mutation-btn.frameshift {
+      background: #c586c0;
+      color: #1e1e1e;
+    }
+
+    .mutation-btn.frameshift:hover {
+      background: #d596d0;
+    }
+
+    .mutation-btn.point {
+      background: #569cd6;
+      color: #1e1e1e;
+    }
+
+    .mutation-btn.point:hover {
+      background: #66ace6;
+    }
+
+    .mutation-btn.insertion {
+      background: #89d185;
+      color: #1e1e1e;
+    }
+
+    .mutation-btn.insertion:hover {
+      background: #99e195;
+    }
+
+    .mutation-btn.deletion {
+      background: #dcdcaa;
+      color: #1e1e1e;
+    }
+
+    .mutation-btn.deletion:hover {
+      background: #ececba;
+    }
   </style>
 </head>
 <body>
@@ -202,6 +271,16 @@
         <button id="saveGenomeBtn" class="secondary">💾 Save .genome</button>
         <button id="loadGenomeBtn" class="secondary">📂 Load .genome</button>
         <input type="file" id="genomeFileInput" accept=".genome,.json" style="display: none;">
+      </div>
+      <div class="toolbar" style="border-top: 1px solid #3e3e42;">
+        <span style="color: #858585; align-self: center; font-size: 0.75rem;">🧬 Mutations:</span>
+        <button id="silentMutationBtn" class="mutation-btn silent" title="Change codon to synonymous variant (same opcode)">Silent</button>
+        <button id="missenseMutationBtn" class="mutation-btn missense" title="Change codon to different opcode">Missense</button>
+        <button id="nonsenseMutationBtn" class="mutation-btn nonsense" title="Introduce STOP codon (early termination)">Nonsense</button>
+        <button id="frameshiftMutationBtn" class="mutation-btn frameshift" title="Insert/delete base (reading frame shift)">Frameshift</button>
+        <button id="pointMutationBtn" class="mutation-btn point" title="Random single base change">Point</button>
+        <button id="insertionMutationBtn" class="mutation-btn insertion" title="Insert 1-3 bases">Insertion</button>
+        <button id="deletionMutationBtn" class="mutation-btn deletion" title="Delete 1-3 bases">Deletion</button>
       </div>
       <textarea id="editor" spellcheck="false" placeholder="Enter your genome here...
 Example:
