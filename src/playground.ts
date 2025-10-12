@@ -44,6 +44,11 @@ const conceptFilter = document.getElementById('conceptFilter') as HTMLSelectElem
 const searchInput = document.getElementById('searchInput') as HTMLInputElement;
 const exampleInfo = document.getElementById('exampleInfo') as HTMLDivElement;
 
+// Linter elements
+const linterPanel = document.getElementById('linterPanel') as HTMLDivElement;
+const linterToggle = document.getElementById('linterToggle') as HTMLButtonElement;
+const linterMessages = document.getElementById('linterMessages') as HTMLDivElement;
+
 // Initialize lexer, renderer, and VM
 const lexer = new CodonLexer();
 const renderer = new Canvas2DRenderer(canvas);
@@ -226,12 +231,74 @@ function showExampleInfo(key: ExampleKey) {
   exampleInfo.style.display = 'block';
 }
 
+function runLinter(source: string): void {
+  try {
+    // Try to tokenize first
+    const tokens = lexer.tokenize(source);
+
+    // Get validation errors
+    const frameErrors = lexer.validateFrame(source);
+    const structErrors = lexer.validateStructure(tokens);
+    const allErrors = [...frameErrors, ...structErrors];
+
+    displayLinterErrors(allErrors);
+  } catch (error) {
+    // Tokenization failed - show parse error
+    if (Array.isArray(error)) {
+      displayLinterErrors(error);
+    } else if (error instanceof Error) {
+      displayLinterErrors([{
+        message: error.message,
+        position: 0,
+        severity: 'error' as const
+      }]);
+    } else {
+      displayLinterErrors([{
+        message: 'Unknown error during linting',
+        position: 0,
+        severity: 'error' as const
+      }]);
+    }
+  }
+}
+
+function displayLinterErrors(errors: Array<{ message: string; position: number; severity: 'error' | 'warning' | 'info' }>): void {
+  if (errors.length === 0) {
+    linterMessages.innerHTML = '<div style="color: #89d185;">✅ No errors found</div>';
+  } else {
+    const errorHTML = errors.map(err => {
+      const icon = err.severity === 'error' ? '🔴' : err.severity === 'warning' ? '🟡' : 'ℹ️';
+      const color = err.severity === 'error' ? '#f48771' : err.severity === 'warning' ? '#dcdcaa' : '#4ec9b0';
+      return `<div style="margin-bottom: 8px; padding: 6px 8px; border-left: 3px solid ${color}; background: rgba(255,255,255,0.03);">
+        <span style="margin-right: 8px;">${icon}</span>
+        <span style="color: ${color}; font-weight: 500;">${err.severity.toUpperCase()}</span>
+        <span style="color: #d4d4d4; margin-left: 8px;">${err.message}</span>
+        ${err.position !== undefined ? `<span style="color: #858585; margin-left: 8px; font-size: 0.9em;">(pos: ${err.position})</span>` : ''}
+      </div>`;
+    }).join('');
+    linterMessages.innerHTML = errorHTML;
+  }
+}
+
+function toggleLinter(): void {
+  const isHidden = linterPanel.style.display === 'none';
+
+  if (isHidden) {
+    linterPanel.style.display = 'block';
+    linterToggle.textContent = 'Hide';
+  } else {
+    linterPanel.style.display = 'none';
+    linterToggle.textContent = 'Show';
+  }
+}
+
 function loadExample() {
   const key = exampleSelect.value as ExampleKey;
   if (key && examples[key]) {
     editor.value = examples[key].genome;
     setStatus(`Loaded: ${examples[key].title}`, 'info');
     showExampleInfo(key);
+    runLinter(examples[key].genome);
     exampleSelect.value = '';
   }
 }
@@ -393,6 +460,20 @@ difficultyFilter.addEventListener('change', updateExampleDropdown);
 conceptFilter.addEventListener('change', updateExampleDropdown);
 searchInput.addEventListener('input', updateExampleDropdown);
 
+// Linter listeners
+linterToggle.addEventListener('click', toggleLinter);
+
+// Debounced linter on editor input
+let linterTimeout: number | null = null;
+editor.addEventListener('input', () => {
+  if (linterTimeout) {
+    clearTimeout(linterTimeout);
+  }
+  linterTimeout = setTimeout(() => {
+    runLinter(editor.value);
+  }, 300) as unknown as number;
+});
+
 // Initialize example dropdown with all examples
 updateExampleDropdown();
 
@@ -406,7 +487,10 @@ editor.addEventListener('keydown', (e) => {
 
 // Auto-run on load if there's content
 if (editor.value.trim()) {
-  setTimeout(runProgram, 100);
+  setTimeout(() => {
+    runProgram();
+    runLinter(editor.value);
+  }, 100);
 }
 
 console.log('🧬 CodonCanvas Playground loaded');
