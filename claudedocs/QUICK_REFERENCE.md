@@ -50,6 +50,26 @@ TTA, TTC, TTG, TTT = COLOR [hue, saturation, lightness]
 GAA, GAC, GAG, GAT = PUSH [value]  (load a number)
 ATA, ATC, ATT      = DUP           (duplicate top value)
 TAC, TAT, TGC      = POP           (remove top value)
+TGG, TGT           = SWAP          (swap top two values)
+```
+
+### Arithmetic (New!)
+```
+CTG = ADD  [a, b → a+b]
+CAG = SUB  [a, b → a-b]
+CTT = MUL  [a, b → a*b]
+CAT = DIV  [a, b → a/b]
+```
+
+### Comparison (New!)
+```
+CTA = EQ   [a, b → 1 if a==b, else 0]
+CTC = LT   [a, b → 1 if a<b, else 0]
+```
+
+### Control Flow (New!)
+```
+CAA = LOOP [count]  (repeat next opcodes count times)
 ```
 
 ---
@@ -177,6 +197,33 @@ PUSH 45
 ROTATE          ; Rotate 45 degrees
 PUSH 10
 LINE            ; Diagonal line
+```
+
+### Arithmetic
+```
+PUSH 5
+PUSH 3
+ADD             ; 5 + 3 = 8
+CIRCLE          ; Draw circle with radius 8
+```
+
+### Loops
+```
+PUSH 10
+LOOP            ; Repeat 10 times:
+  PUSH 5 CIRCLE ;   Draw circle
+  PUSH 10 PUSH 0 TRANSLATE  ;   Move right
+```
+
+### Conditionals (Creative Pattern)
+```
+; Draw circle ONLY if 5 == 5
+PUSH 5
+PUSH 5
+EQ              ; Returns 1 (true)
+PUSH 10
+MUL             ; 10 * 1 = 10
+CIRCLE          ; Visible circle (radius 10)
 ```
 
 ---
@@ -341,7 +388,8 @@ TAA
 ## Resources
 
 - **Interactive Tutorials**: Step-by-step guided lessons
-- **Example Library**: 25 genomes from simple to complex
+- **Example Gallery**: 38+ genomes from simple to advanced-showcase
+- **Opcode Reference**: Complete OPCODES.md with all 27 opcodes
 - **Timeline Scrubber**: Debug by stepping through execution
 - **Evolution Lab**: Simulate natural selection
 - **Full Docs**: Technical specification and API reference
