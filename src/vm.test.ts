@@ -194,54 +194,10 @@ describe('CodonVM', () => {
 	});
 
 	describe('Advanced operations', () => {
-		test('NOISE pops seed and intensity values', () => {
-			const genome = 'ATG GAA CCC GAA AGG CTA TAA'; // PUSH 21 (seed), PUSH 10 (intensity), NOISE
-			const tokens = lexer.tokenize(genome);
-			vm.run(tokens);
-
-			// Should call noise with seed=21, intensity=10
-			expect(renderer.operations).toContain('noise(21, 10)');
-
-			// Stack should be empty after NOISE
-			expect(vm.state.stack.length).toBe(0);
-		});
-
-		test('NOISE with different seeds produces different patterns', () => {
-			const genome1 = 'ATG GAA CCC GAA AGG CTA TAA'; // seed=21
-			const genome2 = 'ATG GAA CGC GAA AGG CTA TAA'; // seed=25
-
-			const tokens1 = lexer.tokenize(genome1);
-			const tokens2 = lexer.tokenize(genome2);
-
-			vm.run(tokens1);
-			const ops1 = [...renderer.operations];
-
-			vm.reset();
-
-			vm.run(tokens2);
-			const ops2 = [...renderer.operations];
-
-			// Different seeds = different noise calls
-			expect(ops1).toContain('noise(21, 10)');
-			expect(ops2).toContain('noise(25, 10)');
-		});
-
-		test('NOISE with same seed is reproducible', () => {
-			const genome = 'ATG GAA CCC GAA AGG CTA TAA'; // seed=21, intensity=10
-
-			const tokens1 = lexer.tokenize(genome);
-			const tokens2 = lexer.tokenize(genome);
-
-			vm.run(tokens1);
-			const ops1 = [...renderer.operations];
-
-			vm.reset();
-
-			vm.run(tokens2);
-			const ops2 = [...renderer.operations];
-
-			// Same genome = same operations
-			expect(ops1).toEqual(ops2);
+		test('Note: NOISE opcode removed in favor of comparison opcodes (EQ, LT)', () => {
+			// NOISE (CTA, CTC) was repurposed for comparison opcodes
+			// This test exists to document the change
+			expect(true).toBe(true);
 		});
 
 		test('SAVE_STATE pushes state to stack', () => {
@@ -565,6 +521,60 @@ describe('CodonVM', () => {
 			const genome = 'ATG GAA ACT GAA TTT CAA TAA';
 			const tokens = lexer.tokenize(genome);
 			expect(() => vm.run(tokens)).toThrow('exceeds history length');
+		});
+	});
+
+	describe('Comparison opcodes', () => {
+		test('EQ returns 1 when values are equal', () => {
+			const genome = 'ATG GAA AAT GAA AAT CTA TAA'; // PUSH 5, PUSH 5, EQ
+			const tokens = lexer.tokenize(genome);
+			vm.run(tokens);
+			expect(vm.state.stack).toEqual([1]); // 5 == 5 → true (1)
+		});
+
+		test('EQ returns 0 when values are not equal', () => {
+			const genome = 'ATG GAA AGC GAA ATA CTA TAA'; // PUSH 3, PUSH 7, EQ
+			const tokens = lexer.tokenize(genome);
+			vm.run(tokens);
+			expect(vm.state.stack).toEqual([0]); // 3 == 7 → false (0)
+		});
+
+		test('LT returns 1 when first value is less than second', () => {
+			const genome = 'ATG GAA AGC GAA ATA CTC TAA'; // PUSH 3, PUSH 7, LT
+			const tokens = lexer.tokenize(genome);
+			vm.run(tokens);
+			expect(vm.state.stack).toEqual([1]); // 3 < 7 → true (1)
+		});
+
+		test('LT returns 0 when first value is not less than second', () => {
+			const genome = 'ATG GAA ATA GAA AGC CTC TAA'; // PUSH 7, PUSH 3, LT
+			const tokens = lexer.tokenize(genome);
+			vm.run(tokens);
+			expect(vm.state.stack).toEqual([0]); // 7 < 3 → false (0)
+		});
+
+		test('LT returns 0 when values are equal', () => {
+			const genome = 'ATG GAA AAT GAA AAT CTC TAA'; // PUSH 5, PUSH 5, LT
+			const tokens = lexer.tokenize(genome);
+			vm.run(tokens);
+			expect(vm.state.stack).toEqual([0]); // 5 < 5 → false (0)
+		});
+
+		test('Comparison results can be used in arithmetic', () => {
+			// Test: (5 == 5) * 10 = 1 * 10 = 10
+			const genome = 'ATG GAA AAT GAA AAT CTA GAA AGG CTT TAA'; // PUSH 5, PUSH 5, EQ, PUSH 10, MUL
+			const tokens = lexer.tokenize(genome);
+			vm.run(tokens);
+			expect(vm.state.stack).toEqual([10]); // 1 * 10 = 10
+		});
+
+		test('Chained comparisons work correctly', () => {
+			// Test: (3 < 7) and (5 == 5) using multiplication (AND-like)
+			const genome = 'ATG GAA AGC GAA ATA CTC GAA AAT GAA AAT CTA CTT TAA';
+			// PUSH 3, PUSH 7, LT (→1), PUSH 5, PUSH 5, EQ (→1), MUL (1*1=1)
+			const tokens = lexer.tokenize(genome);
+			vm.run(tokens);
+			expect(vm.state.stack).toEqual([1]); // true AND true = 1
 		});
 	});
 

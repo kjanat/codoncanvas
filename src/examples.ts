@@ -11,7 +11,9 @@ export type Concept =
   | 'composition'
   | 'advanced-opcodes'
   | 'state-management'
-  | 'arithmetic';
+  | 'arithmetic'
+  | 'comparison'
+  | 'logic';
 export type MutationType = 'silent' | 'missense' | 'nonsense' | 'frameshift';
 
 export interface ExampleMetadata {
@@ -1040,6 +1042,67 @@ TAA`,
     concepts: ['arithmetic', 'drawing', 'transforms', 'colors', 'composition'],
     goodForMutations: ['silent', 'missense'],
     keywords: ['parametric', 'star', 'rose', 'curve', 'mathematical', 'trigonometric', 'rainbow', 'colorful', 'masterpiece']
+  },
+
+  comparisonDemo: {
+    title: 'Comparison Logic',
+    description: 'Demonstrates EQ (equality) and LT (less than) comparison opcodes producing boolean results',
+    genome: `; Comparison opcodes: EQ and LT
+; Stack convention: comparisons push 1 (true) or 0 (false)
+ATG
+  ; Test 1: Equality - draw circle if 5 == 5 (true)
+  GAA AAT            ; PUSH 5
+  GAA AAT            ; PUSH 5
+  CTA                ; EQ → pushes 1 (true)
+  ; Result on stack: [1]
+  ; Multiply by 10 to get visible radius
+  GAA AGG            ; PUSH 10
+  CTT                ; MUL → 1 × 10 = 10
+  GGA                ; CIRCLE(10) - visible because result was 1
+
+  ; Move right for next test
+  GAA CCC GAA AAA ACA ; TRANSLATE(21, 0)
+
+  ; Test 2: Inequality - draw circle if 3 == 7 (false)
+  GAA AGC            ; PUSH 3
+  GAA ATA            ; PUSH 7
+  CTA                ; EQ → pushes 0 (false)
+  ; Result on stack: [0]
+  GAA AGG            ; PUSH 10
+  CTT                ; MUL → 0 × 10 = 0
+  GGA                ; CIRCLE(0) - invisible because result was 0
+
+  ; Move right for next test
+  GAA CCC GAA AAA ACA ; TRANSLATE(21, 0)
+
+  ; Test 3: Less than - draw circle if 3 < 7 (true)
+  GAA AGC            ; PUSH 3
+  GAA ATA            ; PUSH 7
+  CTC                ; LT → pushes 1 (true)
+  ; Result on stack: [1]
+  GAA AGG            ; PUSH 10
+  CTT                ; MUL → 1 × 10 = 10
+  GGA                ; CIRCLE(10) - visible because result was 1
+
+  ; Move right for next test
+  GAA CCC GAA AAA ACA ; TRANSLATE(21, 0)
+
+  ; Test 4: Not less than - draw circle if 7 < 3 (false)
+  GAA ATA            ; PUSH 7
+  GAA AGC            ; PUSH 3
+  CTC                ; LT → pushes 0 (false)
+  ; Result on stack: [0]
+  GAA AGG            ; PUSH 10
+  CTT                ; MUL → 0 × 10 = 0
+  GGA                ; CIRCLE(0) - invisible because result was 0
+
+  ; Demonstrates: EQ produces 1 or 0, LT produces 1 or 0
+  ; Pattern: visible circle = true, invisible = false
+TAA`,
+    difficulty: 'advanced',
+    concepts: ['comparison', 'logic', 'arithmetic', 'drawing', 'stack'],
+    goodForMutations: ['missense'],
+    keywords: ['comparison', 'equality', 'less-than', 'boolean', 'logic', 'conditional', 'true', 'false', 'EQ', 'LT']
   }
 };
 

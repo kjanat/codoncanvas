@@ -248,13 +248,6 @@ export class CodonVM implements VM {
         // No operation
         break;
 
-      case Opcode.NOISE: {
-        const intensity = this.pop();
-        const seed = this.pop();
-        this.renderer.noise(seed, intensity);
-        break;
-      }
-
       case Opcode.SAVE_STATE: {
         const snapshot = this.snapshot();
         this.state.stateStack.push(snapshot);
@@ -345,6 +338,22 @@ export class CodonVM implements VM {
             }
           }
         }
+        break;
+      }
+
+      case Opcode.EQ: {
+        // Equality comparison: [a, b] → [1 if a==b else 0]
+        const b = this.pop();
+        const a = this.pop();
+        this.push(a === b ? 1 : 0);
+        break;
+      }
+
+      case Opcode.LT: {
+        // Less than comparison: [a, b] → [1 if a<b else 0]
+        const b = this.pop();
+        const a = this.pop();
+        this.push(a < b ? 1 : 0);
         break;
       }
 

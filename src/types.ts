@@ -76,7 +76,6 @@ export enum Opcode {
   POP,
   SWAP,
   NOP,
-  NOISE,
   SAVE_STATE,
   RESTORE_STATE,
   ADD,
@@ -84,6 +83,8 @@ export enum Opcode {
   MUL,
   DIV,
   LOOP,
+  EQ,   // Comparison: equal
+  LT,   // Comparison: less than
 }
 
 /**
@@ -165,7 +166,6 @@ export const CODON_MAP: Record<string, Opcode> = {
 
   // Advanced Operations
   'TGG': Opcode.SWAP, 'TGT': Opcode.SWAP,
-  'CTA': Opcode.NOISE, 'CTC': Opcode.NOISE,
   'TCA': Opcode.SAVE_STATE, 'TCC': Opcode.SAVE_STATE,
   'TCG': Opcode.RESTORE_STATE, 'TCT': Opcode.RESTORE_STATE,
 
@@ -174,6 +174,10 @@ export const CODON_MAP: Record<string, Opcode> = {
   'CAG': Opcode.SUB,
   'CTT': Opcode.MUL,
   'CAT': Opcode.DIV,
+
+  // Comparison Operations
+  'CTA': Opcode.EQ,  // Equality comparison [a, b] → [1 if a==b else 0]
+  'CTC': Opcode.LT,  // Less than comparison [a, b] → [1 if a<b else 0]
 
   // Control Flow Operations
   'CAA': Opcode.LOOP,

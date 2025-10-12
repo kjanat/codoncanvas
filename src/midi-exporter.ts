@@ -190,13 +190,10 @@ export class MIDIExporter {
       case Opcode.STOP:
         break;
 
-      case Opcode.NOISE:
-        // White noise → chromatic cluster
-        events.push(
-          ...this.createNoteEvents(48, velocity, time, this.NOTE_DURATION_TICKS / 2, channel),
-          ...this.createNoteEvents(49, velocity, time, this.NOTE_DURATION_TICKS / 2, channel),
-          ...this.createNoteEvents(50, velocity, time, this.NOTE_DURATION_TICKS / 2, channel)
-        );
+      case Opcode.EQ:
+      case Opcode.LT:
+        // Comparison opcodes → short high note (data operations)
+        events.push(...this.createNoteEvents(84, velocity, time, this.NOTE_DURATION_TICKS / 4, channel));
         break;
     }
 

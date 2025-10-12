@@ -67,7 +67,10 @@ const OPCODE_FAMILIES = {
   drawing: [Opcode.CIRCLE, Opcode.RECT, Opcode.LINE, Opcode.TRIANGLE, Opcode.ELLIPSE],
   transform: [Opcode.TRANSLATE, Opcode.ROTATE, Opcode.SCALE, Opcode.COLOR],
   stack: [Opcode.PUSH, Opcode.DUP, Opcode.POP, Opcode.SWAP],
-  utility: [Opcode.NOP, Opcode.NOISE, Opcode.SAVE_STATE, Opcode.RESTORE_STATE],
+  utility: [Opcode.NOP, Opcode.SAVE_STATE, Opcode.RESTORE_STATE],
+  comparison: [Opcode.EQ, Opcode.LT],
+  arithmetic: [Opcode.ADD, Opcode.SUB, Opcode.MUL, Opcode.DIV],
+  iteration: [Opcode.LOOP],
 };
 
 /**
