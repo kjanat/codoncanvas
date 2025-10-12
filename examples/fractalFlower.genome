@@ -12,7 +12,7 @@ ATG
   ; Layer 1 - Outer petals (8 petals, large, blue-purple)
   GAA TTT GAA CCC GAA CCC TTA ; Color(63, 21, 21) purple
   TCA                         ; SAVE_STATE
-  GAA TCC GTA                 ; Push 53, draw ellipse (will use 53 for both rx, ry initially - needs 2 values)
+  GAA TCC GAA CCC GTA          ; Push 53, push 21, draw ellipse (53x21)
   GAA CGC GAA AAA ACA          ; Translate(25, 0)
   GAA ATT AGA                 ; Rotate 45 degrees
   TCA                         ; SAVE_STATE

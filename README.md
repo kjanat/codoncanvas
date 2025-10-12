@@ -23,7 +23,7 @@ Try CodonCanvas online (no installation required):
 **[https://yourusername.github.io/codoncanvas/](https://yourusername.github.io/codoncanvas/)**
 
 ### All Demos
-- **[Main Playground](https://yourusername.github.io/codoncanvas/)** - Interactive editor with 18 examples
+- **[Main Playground](https://yourusername.github.io/codoncanvas/)** - Interactive editor with 25 examples
 - **[Mutation Demos](https://yourusername.github.io/codoncanvas/demos.html)** - See all mutation types in action
 - **[Mutation Lab](https://yourusername.github.io/codoncanvas/mutation-demo.html)** - Side-by-side genome comparison
 - **[Timeline Scrubber](https://yourusername.github.io/codoncanvas/timeline-demo.html)** - Step-by-step execution viewer
@@ -44,6 +44,58 @@ Try CodonCanvas online (no installation required):
 ### Timeline Scrubber
 ![Timeline Scrubber](screenshot_timeline.png)
 *Step through execution instruction-by-instruction with state visualization*
+
+## Visual Showcase
+
+Explore intricate compositions demonstrating the full capabilities of CodonCanvas. Each genome showcases advanced techniques like state management, noise textures, multi-layer compositions, and complex transforms.
+
+<table>
+<tr>
+<td align="center" width="33%">
+<img src="examples/screenshots/fractalFlower.png" width="200" alt="Fractal Flower"><br>
+<b>Fractal Flower</b><br>
+<sub>Nested petals with color gradients</sub>
+</td>
+<td align="center" width="33%">
+<img src="examples/screenshots/cosmicWheel.png" width="200" alt="Cosmic Wheel"><br>
+<b>Cosmic Wheel</b><br>
+<sub>Textured radial composition</sub>
+</td>
+<td align="center" width="33%">
+<img src="examples/screenshots/kaleidoscope.png" width="200" alt="Kaleidoscope"><br>
+<b>Kaleidoscope</b><br>
+<sub>6-fold radial symmetry</sub>
+</td>
+</tr>
+<tr>
+<td align="center" width="33%">
+<img src="examples/screenshots/starfield.png" width="200" alt="Starfield"><br>
+<b>Starfield</b><br>
+<sub>Night sky with noise textures</sub>
+</td>
+<td align="center" width="33%">
+<img src="examples/screenshots/geometricMosaic.png" width="200" alt="Geometric Mosaic"><br>
+<b>Geometric Mosaic</b><br>
+<sub>Grid layout with rainbow gradient</sub>
+</td>
+<td align="center" width="33%">
+<img src="examples/screenshots/recursiveCircles.png" width="200" alt="Recursive Circles"><br>
+<b>Recursive Circles</b><br>
+<sub>Concentric rings with rotation</sub>
+</td>
+</tr>
+<tr>
+<td align="center">
+<img src="examples/screenshots/wavyLines.png" width="200" alt="Wavy Lines"><br>
+<b>Wavy Lines</b><br>
+<sub>Flowing wave pattern</sub>
+</td>
+<td colspan="2" align="center">
+<i>All showcase genomes available in <code>examples/</code> directory</i><br>
+<i>Generate screenshots: <code>npm run generate-screenshots</code></i>
+</td>
+</tr>
+</table>
 
 ## Quick Start (Local Development)
 
@@ -77,7 +129,7 @@ ATG GAA AAT GGA TAA
 
 ## Built-in Examples
 
-The playground includes **18 pedagogical examples** demonstrating all features:
+The playground includes **25 pedagogical examples** demonstrating all features:
 
 ### Basic Shapes & Transforms (7)
 1. **Hello Circle** - Minimal example with single circle
@@ -104,6 +156,17 @@ The playground includes **18 pedagogical examples** demonstrating all features:
 16. **Silent Mutation Demo** - Pedagogical comparison of synonymous codons (GGA vs GGC)
 17. **Color Gradient** - Systematic color manipulation
 18. **Grid Pattern** - Systematic positioning with TRANSLATE
+
+### Advanced Showcase (7)
+19. **Fractal Flower** - Intricate nested petals with multi-layer color gradients
+20. **Geometric Mosaic** - Grid-based tiled composition with rainbow gradient
+21. **Starfield** - Night sky with textured stars and nebula effects using NOISE
+22. **Recursive Circles** - Concentric rings with systematic rotational offsets
+23. **Kaleidoscope** - 6-fold radial symmetry with mixed shape primitives
+24. **Wavy Lines** - Flowing wave pattern demonstrating systematic rotation
+25. **Cosmic Wheel** - Elaborate textured composition showcasing maximum system capabilities
+
+> **Note:** The Advanced Showcase examples demonstrate the full artistic and technical depth of CodonCanvas. Each genome ranges from 960-1,620 codons (2,880-4,860 bases) and showcases advanced techniques like SAVE_STATE, NOISE textures, multi-layer compositions, and complex transform orchestration.
 
 ## Codon Map Quick Reference
 
