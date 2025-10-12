@@ -589,6 +589,141 @@
       outline-offset: 2px;
       border-radius: 4px;
     }
+
+    /* Tutorial Onboarding Banner */
+    .tutorial-banner {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      padding: 1.5rem 2rem;
+      border-radius: 8px;
+      margin-bottom: 1rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 4px 12px rgba(102, 126, 234, 0.2);
+      animation: slideInFromTop 0.5s ease-out;
+    }
+
+    @keyframes slideInFromTop {
+      from {
+        opacity: 0;
+        transform: translateY(-20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .tutorial-banner-content {
+      flex: 1;
+    }
+
+    .tutorial-banner-title {
+      font-size: 1.25rem;
+      font-weight: 600;
+      margin: 0 0 0.5rem 0;
+    }
+
+    .tutorial-banner-description {
+      font-size: 0.95rem;
+      opacity: 0.95;
+      margin: 0;
+    }
+
+    .tutorial-banner-actions {
+      display: flex;
+      gap: 1rem;
+      align-items: center;
+    }
+
+    .tutorial-banner-btn {
+      padding: 0.75rem 1.5rem;
+      border-radius: 6px;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      border: none;
+      transition: all 0.2s ease;
+      text-decoration: none;
+      display: inline-block;
+    }
+
+    .tutorial-banner-btn.primary {
+      background: white;
+      color: #667eea;
+    }
+
+    .tutorial-banner-btn.primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(255, 255, 255, 0.3);
+    }
+
+    .tutorial-banner-btn.secondary {
+      background: transparent;
+      color: white;
+      border: 2px solid rgba(255, 255, 255, 0.5);
+    }
+
+    .tutorial-banner-btn.secondary:hover {
+      background: rgba(255, 255, 255, 0.1);
+      border-color: white;
+    }
+
+    .tutorial-banner-dismiss {
+      background: none;
+      border: none;
+      color: white;
+      opacity: 0.7;
+      cursor: pointer;
+      font-size: 1.5rem;
+      padding: 0.25rem 0.5rem;
+      margin-left: 1rem;
+      transition: opacity 0.2s;
+    }
+
+    .tutorial-banner-dismiss:hover {
+      opacity: 1;
+    }
+
+    .tutorial-banner.hidden {
+      display: none;
+    }
+
+    /* Responsive: Stack banner on mobile */
+    @media (max-width: 768px) {
+      .tutorial-banner {
+        flex-direction: column;
+        gap: 1.5rem;
+        padding: 1.25rem 1rem;
+        text-align: center;
+      }
+
+      .tutorial-banner-actions {
+        width: 100%;
+        flex-direction: column;
+        gap: 0.75rem;
+      }
+
+      .tutorial-banner-btn {
+        width: 100%;
+      }
+
+      .tutorial-banner-dismiss {
+        position: absolute;
+        top: 0.5rem;
+        right: 0.5rem;
+        margin: 0;
+      }
+
+      .tutorial-banner-title {
+        font-size: 1.1rem;
+      }
+
+      .tutorial-banner-description {
+        font-size: 0.875rem;
+      }
+    }
   </style>
 </head>
 <body>
@@ -618,6 +753,18 @@
         </div>
       </div>
     </header>
+
+    <!-- Tutorial Onboarding Banner -->
+    <div id="tutorialBanner" class="tutorial-banner" role="region" aria-label="Tutorial onboarding">
+      <div class="tutorial-banner-content">
+        <h2 class="tutorial-banner-title">🎓 New to CodonCanvas?</h2>
+        <p class="tutorial-banner-description">Start with our interactive tutorial! Learn DNA-inspired programming step-by-step with 10 guided lessons.</p>
+      </div>
+      <div class="tutorial-banner-actions">
+        <a href="tutorial.html" class="tutorial-banner-btn primary">Start Tutorial →</a>
+        <button id="dismissTutorialBanner" class="tutorial-banner-dismiss" aria-label="Dismiss tutorial banner" title="Don't show this again">✕</button>
+      </div>
+    </div>
 
     <div id="playgroundContainer" style="display: contents;">
     <main id="main-content" class="editor-panel">
@@ -772,5 +919,24 @@ ATG GAA AAT GGA TAA
   </div>
 
   <script type="module" src="/src/playground.ts"></script>
+
+  <!-- Tutorial Banner Dismiss Logic -->
+  <script>
+    // Check if user has dismissed the tutorial banner
+    const tutorialBanner = document.getElementById('tutorialBanner');
+    const dismissBtn = document.getElementById('dismissTutorialBanner');
+    const BANNER_DISMISSED_KEY = 'codoncanvas-tutorial-banner-dismissed';
+
+    // Hide banner if previously dismissed
+    if (localStorage.getItem(BANNER_DISMISSED_KEY) === 'true') {
+      tutorialBanner?.classList.add('hidden');
+    }
+
+    // Handle dismiss button click
+    dismissBtn?.addEventListener('click', () => {
+      localStorage.setItem(BANNER_DISMISSED_KEY, 'true');
+      tutorialBanner?.classList.add('hidden');
+    });
+  </script>
 </body>
 </html>
