@@ -872,6 +872,174 @@ TAA`,
     concepts: ['drawing', 'transforms', 'stack'],
     goodForMutations: ['missense', 'frameshift'],
     keywords: ['loop', 'grid', 'pattern', 'row', 'repetition', 'translate']
+  },
+
+  fibonacciSpiral: {
+    title: 'Fibonacci Spiral',
+    description: 'Mathematical golden ratio spiral using arithmetic and LOOP for elegant composition',
+    genome: `; Fibonacci-inspired spiral: each square grows following 1,1,2,3,5,8,13...
+; Using approximation within 0-63 literal range
+ATG
+  ; Square 1: size 3
+  GAA AAT            ; PUSH 3
+  ATA                ; DUP for rect
+  CCA                ; RECT(3, 3)
+  GAA CGG AGA        ; PUSH 26, ROTATE ~90° (quarter turn)
+  GAA AAT GAA AAA ACA ; PUSH 3, PUSH 0, TRANSLATE(3, 0)
+
+  ; Square 2: size 3 (Fibonacci: 1+1=2, but using 3 for visibility)
+  GAA AAT ATA CCA    ; PUSH 3, DUP, RECT(3, 3)
+  GAA CGG AGA        ; ROTATE 90°
+  GAA AAT GAA AAA ACA ; TRANSLATE(3, 0)
+
+  ; Square 3: size 6 (Fibonacci: 3+3=6)
+  GAA ACG            ; PUSH 6
+  ATA CCA            ; DUP, RECT(6, 6)
+  GAA CGG AGA        ; ROTATE 90°
+  GAA ACG GAA AAA ACA ; TRANSLATE(6, 0)
+
+  ; Square 4: size 9 (3+6=9)
+  GAA AGC            ; PUSH 9
+  ATA CCA            ; DUP, RECT(9, 9)
+  GAA CGG AGA        ; ROTATE 90°
+  GAA AGC GAA AAA ACA ; TRANSLATE(9, 0)
+
+  ; Square 5: size 15 (6+9=15)
+  GAA ATT            ; PUSH 15
+  ATA CCA            ; DUP, RECT(15, 15)
+  GAA CGG AGA        ; ROTATE 90°
+  GAA ATT GAA AAA ACA ; TRANSLATE(15, 0)
+
+  ; Square 6: size 24 (9+15=24) - computed
+  GAA ATT            ; PUSH 15
+  GAA AGC            ; PUSH 9
+  CTG                ; ADD → 24
+  ATA CCA            ; DUP, RECT(24, 24)
+
+TAA`,
+    difficulty: 'advanced-showcase',
+    concepts: ['arithmetic', 'drawing', 'transforms', 'composition', 'stack'],
+    goodForMutations: ['missense'],
+    keywords: ['fibonacci', 'spiral', 'golden', 'ratio', 'mathematical', 'elegant', 'sequence', 'masterpiece']
+  },
+
+  goldenMandala: {
+    title: 'Golden Mandala',
+    description: 'Multi-layered sacred geometry using LOOP and computed golden ratio proportions',
+    genome: `; Golden ratio mandala with phi-proportioned layers
+; Inner circle radius = 10, middle = 16 (~10×1.6), outer = 26 (~16×1.6)
+ATG
+  ; Layer 1: Center circle (black core)
+  GAA AAA GAA AAA GAA AAA TTA ; COLOR(0, 0, 0) black
+  GAA AGG            ; PUSH 10
+  GGA                ; CIRCLE(10)
+
+  ; Layer 2: Middle ring with 8 petals (golden-proportioned radius)
+  GAA AGG            ; PUSH 10 (base)
+  GAA ACG            ; PUSH 6
+  CTG                ; ADD → 16 (~golden ratio)
+  GAA CTT GAA CTT GAA AAA TTA ; COLOR(31, 31, 0) gold
+
+  ; Petal + rotate pattern for LOOP
+  GAA ATT            ; PUSH 16 (offset distance)
+  GAA AAA ACA        ; PUSH 0, TRANSLATE(16, 0)
+  GAA AAT            ; PUSH 3 (petal size)
+  GCA                ; TRIANGLE
+  GAA GTC            ; PUSH 45 (360/8 degrees)
+  AGA                ; ROTATE
+
+  ; Loop 7 more times (8 total petals)
+  GAA ACG            ; PUSH 6 (instructions: PUSH+PUSH+TRANSLATE+PUSH+TRIANGLE+PUSH+ROTATE)
+  GAA AAC            ; PUSH 7 (loop count)
+  CAA                ; LOOP
+
+  ; Layer 3: Outer ring with 12 dots (golden-proportioned radius)
+  GAA ATT            ; PUSH 15
+  GAA AGG            ; PUSH 10
+  CTG                ; ADD → 25 (outer radius)
+  GAA AAC            ; PUSH 1
+  CTG                ; ADD → 26
+  GAA CCC GAA AAA GAA CCC TTA ; COLOR(21, 0, 21) purple
+
+  ; Dot + rotate pattern
+  GAA CGG            ; PUSH 26 (offset)
+  GAA AAA ACA        ; PUSH 0, TRANSLATE(26, 0)
+  GAA AAC            ; PUSH 1 (tiny dot)
+  GGA                ; CIRCLE
+  GAA CTG            ; PUSH 30 (360/12 degrees)
+  AGA                ; ROTATE
+
+  ; Loop 11 more times (12 total dots)
+  GAA ACG            ; PUSH 6 (instructions)
+  GAA AGT            ; PUSH 11 (loop count)
+  CAA                ; LOOP
+TAA`,
+    difficulty: 'advanced-showcase',
+    concepts: ['arithmetic', 'drawing', 'transforms', 'colors', 'composition', 'stack'],
+    goodForMutations: ['silent', 'missense'],
+    keywords: ['mandala', 'golden', 'ratio', 'sacred', 'geometry', 'layers', 'phi', 'radial', 'masterpiece']
+  },
+
+  parametricStar: {
+    title: 'Parametric Star',
+    description: 'Mathematical star curve using LOOP with computed radius variations',
+    genome: `; Parametric star with varying radius (r = base + amplitude × sin-like pattern)
+; Approximating sine with discrete 8-point pattern: 0, 7, 10, 7, 0, -7, -10, -7
+ATG
+  ; Base radius = 20, amplitude = 10 (radius varies 10-30)
+  ; Point 1: r = 20 + 10 = 30 (peak)
+  GAA CTG            ; PUSH 30
+  GAA CTT GAA AAA GAA AAA TTA ; COLOR(31, 0, 0) red
+  GGA                ; CIRCLE(30)
+  GAA GTC            ; PUSH 45 (360/8 degrees)
+  AGA                ; ROTATE
+
+  ; Point 2: r = 20 + 7 = 27 (descending)
+  GAA CGT            ; PUSH 27
+  GAA CTT GAA CGC GAA AAA TTA ; COLOR(31, 25, 0) orange
+  GGA                ; CIRCLE(27)
+  GAA GTC AGA        ; ROTATE 45°
+
+  ; Point 3: r = 20 + 0 = 20 (valley)
+  GAA CCA            ; PUSH 20
+  GAA CTT GAA CTT GAA AAA TTA ; COLOR(31, 31, 0) yellow
+  GGA                ; CIRCLE(20)
+  GAA GTC AGA        ; ROTATE 45°
+
+  ; Point 4: r = 20 - 7 = 13 (deep valley)
+  GAA ATC            ; PUSH 13
+  GAA AAA GAA CTT GAA AAA TTA ; COLOR(0, 31, 0) green
+  GGA                ; CIRCLE(13)
+  GAA GTC AGA        ; ROTATE 45°
+
+  ; Point 5: r = 20 - 10 = 10 (deepest)
+  GAA AGG            ; PUSH 10
+  GAA AAA GAA CTT GAA CCC TTA ; COLOR(0, 31, 21) cyan
+  GGA                ; CIRCLE(10)
+  GAA GTC AGA        ; ROTATE 45°
+
+  ; Point 6: r = 20 - 7 = 13 (ascending)
+  GAA ATC            ; PUSH 13
+  GAA AAA GAA AAA GAA CTT TTA ; COLOR(0, 0, 31) blue
+  GGA                ; CIRCLE(13)
+  GAA GTC AGA        ; ROTATE 45°
+
+  ; Point 7: r = 20 + 0 = 20 (mid)
+  GAA CCA            ; PUSH 20
+  GAA CCC GAA AAA GAA CCC TTA ; COLOR(21, 0, 21) purple
+  GGA                ; CIRCLE(20)
+  GAA GTC AGA        ; ROTATE 45°
+
+  ; Point 8: r = 20 + 7 = 27 (peak approach)
+  GAA CGT            ; PUSH 27
+  GAA CTT GAA AAA GAA CCC TTA ; COLOR(31, 0, 21) magenta
+  GGA                ; CIRCLE(27)
+  GAA GTC AGA        ; ROTATE 45° (completes circle)
+TAA`,
+    difficulty: 'advanced-showcase',
+    concepts: ['arithmetic', 'drawing', 'transforms', 'colors', 'composition'],
+    goodForMutations: ['silent', 'missense'],
+    keywords: ['parametric', 'star', 'rose', 'curve', 'mathematical', 'trigonometric', 'rainbow', 'colorful', 'masterpiece']
   }
 };
 
