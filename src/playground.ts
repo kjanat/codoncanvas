@@ -262,21 +262,109 @@ function runLinter(source: string): void {
   }
 }
 
+/**
+ * Check if an error can be auto-fixed
+ */
+function canAutoFix(errorMessage: string): boolean {
+  const fixablePatterns = [
+    /Program should begin with START codon/,
+    /Program should end with STOP codon/,
+    /Mid-triplet break detected/,
+    /Source length \d+ is not divisible by 3/
+  ];
+  return fixablePatterns.some(pattern => pattern.test(errorMessage));
+}
+
+/**
+ * Auto-fix a linter error
+ */
+function autoFixError(errorMessage: string, source: string): string | null {
+  // Missing START codon
+  if (/Program should begin with START codon/.test(errorMessage)) {
+    return 'ATG ' + source.trim();
+  }
+
+  // Missing STOP codon
+  if (/Program should end with STOP codon/.test(errorMessage)) {
+    return source.trim() + ' TAA';
+  }
+
+  // Mid-triplet break - remove all whitespace and re-space by triplets
+  if (/Mid-triplet break detected/.test(errorMessage)) {
+    const cleaned = source.replace(/\s+/g, '');
+    const triplets: string[] = [];
+    for (let i = 0; i < cleaned.length; i += 3) {
+      triplets.push(cleaned.slice(i, i + 3));
+    }
+    return triplets.join(' ');
+  }
+
+  // Non-triplet length - pad with 'A' or truncate
+  if (/Source length (\d+) is not divisible by 3/.test(errorMessage)) {
+    const match = errorMessage.match(/Missing (\d+) bases/);
+    if (match) {
+      const missing = parseInt(match[1]);
+      return source.trim() + 'A'.repeat(missing);
+    }
+  }
+
+  return null;
+}
+
+/**
+ * Apply auto-fix to editor
+ */
+function applyAutoFix(errorMessage: string): void {
+  const source = editor.value;
+  const fixed = autoFixError(errorMessage, source);
+
+  if (fixed) {
+    editor.value = fixed;
+    setStatus('Applied auto-fix', 'success');
+    runLinter(fixed);
+  } else {
+    setStatus('Could not auto-fix this error', 'error');
+  }
+}
+
 function displayLinterErrors(errors: Array<{ message: string; position: number; severity: 'error' | 'warning' | 'info' }>): void {
   if (errors.length === 0) {
     linterMessages.innerHTML = '<div style="color: #89d185;">✅ No errors found</div>';
   } else {
-    const errorHTML = errors.map(err => {
+    const errorHTML = errors.map((err, idx) => {
       const icon = err.severity === 'error' ? '🔴' : err.severity === 'warning' ? '🟡' : 'ℹ️';
       const color = err.severity === 'error' ? '#f48771' : err.severity === 'warning' ? '#dcdcaa' : '#4ec9b0';
-      return `<div style="margin-bottom: 8px; padding: 6px 8px; border-left: 3px solid ${color}; background: rgba(255,255,255,0.03);">
+      const fixable = canAutoFix(err.message);
+      const fixButton = fixable
+        ? `<button
+             class="fix-button"
+             data-error-msg="${err.message.replace(/"/g, '&quot;')}"
+             style="margin-left: 12px; padding: 2px 8px; background: #4ec9b0; color: #1e1e1e; border: none; border-radius: 3px; cursor: pointer; font-size: 0.85em; font-weight: 500;"
+             onmouseover="this.style.background='#6dd3bb'"
+             onmouseout="this.style.background='#4ec9b0'">
+             Fix
+           </button>`
+        : '';
+      return `<div style="margin-bottom: 8px; padding: 6px 8px; border-left: 3px solid ${color}; background: rgba(255,255,255,0.03); display: flex; align-items: center;">
         <span style="margin-right: 8px;">${icon}</span>
         <span style="color: ${color}; font-weight: 500;">${err.severity.toUpperCase()}</span>
-        <span style="color: #d4d4d4; margin-left: 8px;">${err.message}</span>
+        <span style="color: #d4d4d4; margin-left: 8px; flex: 1;">${err.message}</span>
         ${err.position !== undefined ? `<span style="color: #858585; margin-left: 8px; font-size: 0.9em;">(pos: ${err.position})</span>` : ''}
+        ${fixButton}
       </div>`;
     }).join('');
     linterMessages.innerHTML = errorHTML;
+
+    // Attach click handlers to Fix buttons
+    const fixButtons = linterMessages.querySelectorAll('.fix-button');
+    fixButtons.forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        const errorMsg = (e.target as HTMLElement).getAttribute('data-error-msg');
+        if (errorMsg) {
+          applyAutoFix(errorMsg);
+        }
+      });
+    });
   }
 }
 
