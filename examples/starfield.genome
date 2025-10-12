@@ -1,93 +1,67 @@
 ; Starfield - Showcase
-; Scattered stars creating night sky effect through overlapping circles
+; Scattered stars at various positions using simple translate
 ; Difficulty: showcase
-; Concepts: layering, color variation, composition
-; Visual: Multiple small bright circles creating starfield illusion
+; Concepts: positioning, composition
+; Visual: Stars scattered across canvas with varied sizes
 ; Good for mutations: silent (safe), missense (color shifts)
 
 ATG
-  ; Layer 1 - Large dim background stars (8 positions)
-  GAA TGG GAA TGG GAA GCC TTA ; Color(45, 45, 37) dim gray
-  TCA                         ; SAVE
-  GAA GCC GGA                 ; Circle 37
-  GAA ATT AGA                 ; Rotate 45
-  GAA TGG GAA TCC GAA GCC TTA ; Color(45, 53, 37) dim greenish
-  GAA GCC GGA                 ; Circle 37
-  GAA ATT AGA                 ; Rotate 45
-  GAA TCC GAA TGG GAA GCC TTA ; Color(53, 45, 37) dim brownish
-  GAA GCC GGA                 ; Circle 37
-  GAA ATT AGA                 ; Rotate 45
-  GAA TGG GAA TGG GAA TCC TTA ; Color(45, 45, 53) dim purple
-  GAA GCC GGA                 ; Circle 37
-  GAA ATT AGA                 ; Rotate 45
-  GAA TCC GAA TCC GAA GCC TTA ; Color(53, 53, 37) dim olive
-  GAA GCC GGA                 ; Circle 37
-  GAA ATT AGA                 ; Rotate 45
-  GAA TGG GAA GCC GAA GCC TTA ; Color(45, 37, 37) dim red
-  GAA GCC GGA                 ; Circle 37
-  GAA ATT AGA                 ; Rotate 45
-  GAA GCC GAA TGG GAA TCC TTA ; Color(37, 45, 53) dim blue
-  GAA GCC GGA                 ; Circle 37
-  GAA ATT AGA                 ; Rotate 45
-  GAA TGG GAA TGG GAA GCC TTA ; Color(45, 45, 37) dim gray
-  GAA GCC GGA                 ; Circle 37
+  ; Upper right cluster
+  GAA TTT GAA TTT GAA TTT TTA ; Color(63, 63, 63) white
+  GAA TCC GAA AGG ACA          ; Translate(35, 10)
+  GAA ATT GGA                 ; Circle 15
 
-  ; Layer 2 - Medium bright stars (12 positions)
-  GAA TTT GAA TTT GAA TGG TTA ; Color(63, 63, 45) pale yellow
-  TCA                         ; SAVE
-  GAA CCC GGA                 ; Circle 21
-  GAA GGC AGA                 ; Rotate 30
   GAA TTT GAA TGG GAA TTT TTA ; Color(63, 45, 63) pale purple
-  GAA CCC GGA                 ; Circle 21
-  GAA GGC AGA                 ; Rotate 30
-  GAA TGG GAA TTT GAA TTT TTA ; Color(45, 63, 63) pale cyan
-  GAA CCC GGA                 ; Circle 21
-  GAA GGC AGA                 ; Rotate 30
-  GAA TTT GAA TTT GAA TTT TTA ; Color(63, 63, 63) white
-  GAA CCC GGA                 ; Circle 21
-  GAA GGC AGA                 ; Rotate 30
-  GAA TTT GAA TCC GAA TGG TTA ; Color(63, 53, 45) cream
-  GAA CCC GGA                 ; Circle 21
-  GAA GGC AGA                 ; Rotate 30
-  GAA TCC GAA TTT GAA TTT TTA ; Color(53, 63, 63) light cyan
-  GAA CCC GGA                 ; Circle 21
-  GAA GGC AGA                 ; Rotate 30
-  GAA TTT GAA TTT GAA TGG TTA ; Color(63, 63, 45) pale yellow
-  GAA CCC GGA                 ; Circle 21
-  GAA GGC AGA                 ; Rotate 30
-  GAA TGG GAA TGG GAA TTT TTA ; Color(45, 45, 63) lavender
-  GAA CCC GGA                 ; Circle 21
-  GAA GGC AGA                 ; Rotate 30
-  GAA TTT GAA TGG GAA TGG TTA ; Color(63, 45, 45) peach
-  GAA CCC GGA                 ; Circle 21
-  GAA GGC AGA                 ; Rotate 30
-  GAA TGG GAA TTT GAA TGG TTA ; Color(45, 63, 45) mint
-  GAA CCC GGA                 ; Circle 21
-  GAA GGC AGA                 ; Rotate 30
-  GAA TTT GAA TTT GAA TTT TTA ; Color(63, 63, 63) white
-  GAA CCC GGA                 ; Circle 21
-  GAA GGC AGA                 ; Rotate 30
-  GAA TCC GAA TGG GAA TGG TTA ; Color(53, 45, 45) rose
-  GAA CCC GGA                 ; Circle 21
+  GAA TTT GAA TTT ACA          ; Translate(5, 5)
+  GAA TTT GGA                 ; Circle 5
 
-  ; Layer 3 - Small bright core stars
-  GAA TTT GAA TTT GAA TTT TTA ; Color(63, 63, 63) bright white
-  TCA                         ; SAVE
+  GAA TGG GAA TTT GAA TTT TTA ; Color(45, 63, 63) pale cyan
+  GAA TTT GAA AGG ACA          ; Translate(5, 10)
   GAA AGG GGA                 ; Circle 10
-  GAA CTC AGA                 ; Rotate 60
-  GAA TTT GAA TTT GAA TGG TTA ; Color(63, 63, 45) warm white
+
+  ; Upper left cluster
+  GAA TTT GAA TTT GAA TGG TTA ; Color(63, 63, 45) pale yellow
+  GAA AAA GAA TCC ACA          ; Translate(0, -35) - move up
+  GAA ATT GGA                 ; Circle 15
+
+  GAA TTT GAA TGG GAA TGG TTA ; Color(63, 45, 45) warm white
+  GAA TTT GAA TTT ACA          ; Translate(5, 5)
+  GAA TTT GGA                 ; Circle 5
+
+  ; Center-left cluster
+  GAA TGG GAA TGG GAA TTT TTA ; Color(45, 45, 63) cool white
+  GAA AAA GAA ATT ACA          ; Translate(0, 15)
   GAA AGG GGA                 ; Circle 10
-  GAA CTC AGA                 ; Rotate 60
-  GAA TGG GAA TTT GAA TTT TTA ; Color(45, 63, 63) cool white
-  GAA AGG GGA                 ; Circle 10
-  GAA CTC AGA                 ; Rotate 60
+
   GAA TTT GAA TTT GAA TTT TTA ; Color(63, 63, 63) white
+  GAA TTT GAA TTT ACA          ; Translate(5, 5)
+  GAA TTT GGA                 ; Circle 5
+
+  ; Lower right cluster
+  GAA TGG GAA TTT GAA TGG TTA ; Color(45, 63, 45) greenish white
+  GAA GCC GAA AAA ACA          ; Translate(37, 0)
   GAA AGG GGA                 ; Circle 10
-  GAA CTC AGA                 ; Rotate 60
-  GAA TTT GAA TGG GAA TTT TTA ; Color(63, 45, 63) pink-white
-  GAA AGG GGA                 ; Circle 10
-  GAA CTC AGA                 ; Rotate 60
+
+  GAA TTT GAA TGG GAA TGG TTA ; Color(63, 45, 45) reddish white
+  GAA ATT GAA TTT ACA          ; Translate(15, 5)
+  GAA ATT GGA                 ; Circle 15
+
   GAA TTT GAA TTT GAA TTT TTA ; Color(63, 63, 63) white
+  GAA AAA GAA AGG ACA          ; Translate(0, 10)
+  GAA TTT GGA                 ; Circle 5
+
+  ; Lower left cluster
+  GAA TGG GAA TGG GAA TTT TTA ; Color(45, 45, 63) pale blue
+  GAA AAA GAA CCC ACA          ; Translate(0, -22) - move up-left from current
   GAA AGG GGA                 ; Circle 10
+
+  GAA TTT GAA TTT GAA TGG TTA ; Color(63, 63, 45) warm tint
+  GAA TTT GAA ATT ACA          ; Translate(5, 15)
+  GAA TTT GGA                 ; Circle 5
+
+  ; Center star (large)
+  GAA TTT GAA TTT GAA TTT TTA ; Color(63, 63, 63) white
+  GAA AAA GAA AAA ACA          ; Translate(0, 0) - stay at current
+  GAA CCC GGA                 ; Circle 21
 
 TAA

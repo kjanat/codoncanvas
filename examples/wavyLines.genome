@@ -1,93 +1,79 @@
 ; Wavy Lines - Showcase
-; Flowing curves creating wave-like patterns through layered circles
+; Flowing wave pattern using LINE primitives with small rotation steps
 ; Difficulty: showcase
-; Concepts: curves, rhythm, flow, gradients
-; Visual: Wave-like bands of overlapping circles with color gradient
+; Concepts: lines, rotation, wave simulation, gradients
+; Visual: Undulating lines creating wave-like flow
 ; Good for mutations: silent (preserves flow), missense (color shift)
 
 ATG
-  ; Wave 1 - Red to orange gradient
+  ; Wave 1 - Red to yellow flowing lines (small rotation steps)
   GAA AAA GAA TTT GAA GCC TTA ; Color(0, 63, 37) red
-  TCA                         ; SAVE
-  GAA TGG GGA                 ; Circle 45
-  GAA AGG AGA                 ; Rotate 10 (small steps create flow)
-  GAA AAT GAA TTT GAA GCC TTA ; Color(3, 63, 37) red-orange
-  GAA TGG GGA                 ; Circle 45
-  GAA AGG AGA                 ; Rotate 10
-  GAA TTT GAA TTT GAA GCC TTA ; Color(63, 63, 37) yellow
-  GAA TGG GGA                 ; Circle 45
-  GAA AGG AGA                 ; Rotate 10
+  GAA TGG ATA                 ; Line 45
+  GAA TTT AGA                 ; Rotate 5
   GAA ATT GAA TTT GAA GCC TTA ; Color(15, 63, 37) orange
-  GAA TGG GGA                 ; Circle 45
-  GAA AGG AGA                 ; Rotate 10
+  GAA TGG ATA                 ; Line 45
+  GAA TTT AGA                 ; Rotate 5
   GAA CCC GAA TTT GAA GCC TTA ; Color(21, 63, 37) yellow-orange
-  GAA TGG GGA                 ; Circle 45
-  GAA AGG AGA                 ; Rotate 10
+  GAA TGG ATA                 ; Line 45
+  GAA TTT AGA                 ; Rotate 5
   GAA TCC GAA TTT GAA GCC TTA ; Color(53, 63, 37) gold
-  GAA TGG GGA                 ; Circle 45
+  GAA TGG ATA                 ; Line 45
+  GAA TTT AGA                 ; Rotate 5
+  GAA TTT GAA TTT GAA GCC TTA ; Color(63, 63, 37) yellow
+  GAA TGG ATA                 ; Line 45
 
-  ; Wave 2 - Green to cyan gradient
+  ; Wave 2 - Yellow to cyan (continuing rotation)
+  GAA TTT AGA                 ; Rotate 5
+  GAA TTT GAA TCC GAA GCC TTA ; Color(63, 53, 37) yellow-green
+  GAA GCC ATA                 ; Line 37
+  GAA TTT AGA                 ; Rotate 5
   GAA TTT GAA AGG GAA GCC TTA ; Color(63, 10, 37) lime
-  TCA                         ; SAVE
-  GAA GCC GGA                 ; Circle 37
-  GAA ATT AGA                 ; Rotate 45
+  GAA GCC ATA                 ; Line 37
+  GAA TTT AGA                 ; Rotate 5
   GAA TCC GAA AGG GAA GCC TTA ; Color(53, 10, 37) green
-  GAA GCC GGA                 ; Circle 37
-  GAA ATT AGA                 ; Rotate 45
+  GAA GCC ATA                 ; Line 37
+  GAA TTT AGA                 ; Rotate 5
   GAA CCC GAA AGG GAA GCC TTA ; Color(21, 10, 37) dark green
-  GAA GCC GGA                 ; Circle 37
-  GAA ATT AGA                 ; Rotate 45
-  GAA AGG GAA CCC GAA GCC TTA ; Color(10, 21, 37) teal
-  GAA GCC GGA                 ; Circle 37
-  GAA ATT AGA                 ; Rotate 45
-  GAA AGG GAA GCC GAA GCC TTA ; Color(10, 37, 37) cyan-green
-  GAA GCC GGA                 ; Circle 37
-  GAA ATT AGA                 ; Rotate 45
+  GAA GCC ATA                 ; Line 37
+  GAA TTT AGA                 ; Rotate 5
   GAA AGG GAA TTT GAA TCC TTA ; Color(10, 63, 53) cyan
-  GAA GCC GGA                 ; Circle 37
-  GAA ATT AGA                 ; Rotate 45
+  GAA GCC ATA                 ; Line 37
+
+  ; Wave 3 - Cyan to purple
+  GAA TTT AGA                 ; Rotate 5
   GAA ATT GAA TTT GAA TCC TTA ; Color(15, 63, 53) light blue
-  GAA GCC GGA                 ; Circle 37
-  GAA ATT AGA                 ; Rotate 45
+  GAA CCC ATA                 ; Line 21
+  GAA TTT AGA                 ; Rotate 5
   GAA CCC GAA TTT GAA TCC TTA ; Color(21, 63, 53) sky blue
-  GAA GCC GGA                 ; Circle 37
-
-  ; Wave 3 - Blue to purple gradient
+  GAA CCC ATA                 ; Line 21
+  GAA TTT AGA                 ; Rotate 5
   GAA GCC GAA TTT GAA TCC TTA ; Color(37, 63, 53) blue
-  TCA                         ; SAVE
-  GAA CCC GGA                 ; Circle 21
-  GAA GGC AGA                 ; Rotate 30
+  GAA CCC ATA                 ; Line 21
+  GAA TTT AGA                 ; Rotate 5
   GAA TGG GAA TTT GAA TCC TTA ; Color(45, 63, 53) blue-purple
-  GAA CCC GGA                 ; Circle 21
-  GAA GGC AGA                 ; Rotate 30
+  GAA CCC ATA                 ; Line 21
+  GAA TTT AGA                 ; Rotate 5
   GAA TTT GAA TTT GAA TCC TTA ; Color(63, 63, 53) purple
-  GAA CCC GGA                 ; Circle 21
-  GAA GGC AGA                 ; Rotate 30
-  GAA TTT GAA TCC GAA TCC TTA ; Color(63, 53, 53) magenta
-  GAA CCC GGA                 ; Circle 21
-  GAA GGC AGA                 ; Rotate 30
-  GAA TTT GAA GCC GAA TCC TTA ; Color(63, 37, 53) pink
-  GAA CCC GGA                 ; Circle 21
-  GAA GGC AGA                 ; Rotate 30
-  GAA TTT GAA CCC GAA TCC TTA ; Color(63, 21, 53) hot pink
-  GAA CCC GGA                 ; Circle 21
-  GAA GGC AGA                 ; Rotate 30
-  GAA TTT GAA AGG GAA TCC TTA ; Color(63, 10, 53) bright pink
-  GAA CCC GGA                 ; Circle 21
-  GAA GGC AGA                 ; Rotate 30
-  GAA TCC GAA AAA GAA TCC TTA ; Color(53, 0, 53) deep magenta
-  GAA CCC GGA                 ; Circle 21
-  GAA GGC AGA                 ; Rotate 30
-  GAA GCC GAA AAA GAA TCC TTA ; Color(37, 0, 53) purple-magenta
-  GAA CCC GGA                 ; Circle 21
-  GAA GGC AGA                 ; Rotate 30
-  GAA CCC GAA AAA GAA TCC TTA ; Color(21, 0, 53) dark purple
-  GAA CCC GGA                 ; Circle 21
-  GAA GGC AGA                 ; Rotate 30
-  GAA AGG GAA AAA GAA TCC TTA ; Color(10, 0, 53) very dark purple
-  GAA CCC GGA                 ; Circle 21
+  GAA CCC ATA                 ; Line 21
 
-  ; Center - White focal point
+  ; Wave 4 - Purple to magenta
+  GAA TTT AGA                 ; Rotate 5
+  GAA TTT GAA TCC GAA TCC TTA ; Color(63, 53, 53) magenta
+  GAA ATT ATA                 ; Line 15
+  GAA TTT AGA                 ; Rotate 5
+  GAA TTT GAA GCC GAA TCC TTA ; Color(63, 37, 53) pink
+  GAA ATT ATA                 ; Line 15
+  GAA TTT AGA                 ; Rotate 5
+  GAA TTT GAA CCC GAA TCC TTA ; Color(63, 21, 53) hot pink
+  GAA ATT ATA                 ; Line 15
+  GAA TTT AGA                 ; Rotate 5
+  GAA TTT GAA AGG GAA TCC TTA ; Color(63, 10, 53) bright pink
+  GAA ATT ATA                 ; Line 15
+  GAA TTT AGA                 ; Rotate 5
+  GAA TCC GAA AAA GAA TCC TTA ; Color(53, 0, 53) deep magenta
+  GAA ATT ATA                 ; Line 15
+
+  ; Center accent
   GAA TTT GAA TTT GAA TTT TTA ; Color(63, 63, 63) white
   GAA AGG GGA                 ; Circle 10
 
