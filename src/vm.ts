@@ -272,6 +272,20 @@ export class CodonVM implements VM {
         break;
       }
 
+      case Opcode.ADD: {
+        const b = this.pop();
+        const a = this.pop();
+        this.push(a + b);
+        break;
+      }
+
+      case Opcode.MUL: {
+        const b = this.pop();
+        const a = this.pop();
+        this.push(a * b);
+        break;
+      }
+
       default:
         throw new Error(`Unknown opcode: ${opcode}`);
     }

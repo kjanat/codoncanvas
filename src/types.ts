@@ -55,6 +55,7 @@ export interface ParseError {
  * - Drawing: CIRCLE, RECT, LINE, TRIANGLE, ELLIPSE (primitives)
  * - Transform: TRANSLATE, ROTATE, SCALE, COLOR (state changes)
  * - Stack: PUSH, DUP, POP, SWAP (data manipulation)
+ * - Arithmetic: ADD, MUL (computational operations)
  * - Utility: NOP, NOISE, SAVE_STATE, RESTORE_STATE (special operations)
  */
 export enum Opcode {
@@ -77,6 +78,8 @@ export enum Opcode {
   NOISE,
   SAVE_STATE,
   RESTORE_STATE,
+  ADD,
+  MUL,
 }
 
 /**
@@ -158,7 +161,11 @@ export const CODON_MAP: Record<string, Opcode> = {
 
   // Advanced Operations
   'TGG': Opcode.SWAP, 'TGT': Opcode.SWAP,
-  'CTA': Opcode.NOISE, 'CTC': Opcode.NOISE, 'CTG': Opcode.NOISE, 'CTT': Opcode.NOISE,
+  'CTA': Opcode.NOISE, 'CTC': Opcode.NOISE,
   'TCA': Opcode.SAVE_STATE, 'TCC': Opcode.SAVE_STATE,
   'TCG': Opcode.RESTORE_STATE, 'TCT': Opcode.RESTORE_STATE,
+
+  // Arithmetic Operations
+  'CTG': Opcode.ADD,
+  'CTT': Opcode.MUL,
 };

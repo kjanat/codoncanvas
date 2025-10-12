@@ -340,6 +340,81 @@ describe('CodonVM', () => {
 		});
 	});
 
+	describe('Arithmetic operations', () => {
+		test('ADD operation', () => {
+			const genome = 'ATG GAA AAC GAA AAT CTG TAA'; // PUSH 1, PUSH 3, ADD → 4
+			const tokens = lexer.tokenize(genome);
+			const states = vm.run(tokens);
+
+			expect(vm.state.stack).toHaveLength(1);
+			expect(vm.state.stack[0]).toBe(4);
+		});
+
+		test('MUL operation', () => {
+			const genome = 'ATG GAA AAC GAA ATT CTT TAA'; // PUSH 1, PUSH 15, MUL → 15
+			const tokens = lexer.tokenize(genome);
+			const states = vm.run(tokens);
+
+			expect(vm.state.stack).toHaveLength(1);
+			expect(vm.state.stack[0]).toBe(15);
+		});
+
+		test('ADD with larger values', () => {
+			const genome = 'ATG GAA CCC GAA AGG CTG TAA'; // PUSH 21, PUSH 10, ADD → 31
+			const tokens = lexer.tokenize(genome);
+			vm.run(tokens);
+
+			expect(vm.state.stack).toHaveLength(1);
+			expect(vm.state.stack[0]).toBe(31);
+		});
+
+		test('MUL with larger values', () => {
+			const genome = 'ATG GAA AAT GAA ACT CTT TAA'; // PUSH 3, PUSH 7, MUL → 21
+			const tokens = lexer.tokenize(genome);
+			vm.run(tokens);
+
+			expect(vm.state.stack).toHaveLength(1);
+			expect(vm.state.stack[0]).toBe(21);
+		});
+
+		test('computed circle radius with ADD', () => {
+			const genome = 'ATG GAA AAC GAA AAT CTG GGA TAA'; // PUSH 1, PUSH 3, ADD (=4), CIRCLE
+			const tokens = lexer.tokenize(genome);
+			vm.run(tokens);
+
+			expect(renderer.operations).toHaveLength(1);
+			expect(renderer.operations[0]).toContain('circle(');
+			// Circle should have radius based on 4/64 * 400 = 25
+			expect(renderer.operations[0]).toContain('25');
+		});
+
+		test('computed circle radius with MUL', () => {
+			const genome = 'ATG GAA AAT GAA AAT CTT GGA TAA'; // PUSH 3, PUSH 3, MUL (=9), CIRCLE
+			const tokens = lexer.tokenize(genome);
+			vm.run(tokens);
+
+			expect(renderer.operations).toHaveLength(1);
+			expect(renderer.operations[0]).toContain('circle(');
+			// Circle should have radius based on 9/64 * 400 = 56.25
+		});
+
+		test('arithmetic underflow throws error', () => {
+			const genome = 'ATG GAA AAC CTG TAA'; // PUSH 1, ADD (no second value)
+			const tokens = lexer.tokenize(genome);
+
+			expect(() => vm.run(tokens)).toThrow('Stack underflow');
+		});
+
+		test('chained arithmetic operations', () => {
+			const genome = 'ATG GAA AAC GAA AAT CTG GAA ACT CTT TAA'; // PUSH 1, PUSH 3, ADD (=4), PUSH 7, MUL (=28)
+			const tokens = lexer.tokenize(genome);
+			vm.run(tokens);
+
+			expect(vm.state.stack).toHaveLength(1);
+			expect(vm.state.stack[0]).toBe(28);
+		});
+	});
+
 	describe('Error handling', () => {
 		test('throws on unknown codon', () => {
 			const tokens = [

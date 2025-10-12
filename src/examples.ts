@@ -10,7 +10,8 @@ export type Concept =
   | 'stack'
   | 'composition'
   | 'advanced-opcodes'
-  | 'state-management';
+  | 'state-management'
+  | 'arithmetic';
 export type MutationType = 'silent' | 'missense' | 'nonsense' | 'frameshift';
 
 export interface ExampleMetadata {
@@ -615,6 +616,79 @@ TAA`,
     concepts: ['state-management', 'composition', 'colors', 'transforms'],
     goodForMutations: ['missense', 'nonsense'],
     keywords: ['flower', 'garden', 'nature', 'composition', 'multiple', 'colorful']
+  }
+,
+
+  parametricCircles: {
+    title: 'Parametric Circles',
+    description: 'Computed circle sizes using ADD and MUL arithmetic operations',
+    genome: `; Demonstrate arithmetic operations for parametric design
+ATG
+  ; Small circle with computed radius (1 + 5 = 6)
+  GAA AAC            ; PUSH 1
+  GAA ACT            ; PUSH 5
+  CTG                ; ADD → 6
+  GGA                ; CIRCLE(6) - radius computed!
+
+  ; Move right
+  GAA CCC GAA AAA ACA ; PUSH 21, PUSH 0, TRANSLATE
+
+  ; Medium circle with multiplication (3 × 3 = 9)
+  GAA AAT            ; PUSH 3
+  GAA AAT            ; PUSH 3
+  CTT                ; MUL → 9
+  GGA                ; CIRCLE(9) - scaled by multiplication
+
+  ; Move right again
+  GAA CCC GAA AAA ACA ; PUSH 21, PUSH 0, TRANSLATE
+
+  ; Large circle with chained operations ((5 + 3) × 5 = 40)
+  GAA ACT            ; PUSH 5
+  GAA AAT            ; PUSH 3
+  CTG                ; ADD → 8
+  GAA ACT            ; PUSH 5
+  CTT                ; MUL → 40
+  GGA                ; CIRCLE(40) - computed from chain
+TAA`,
+    difficulty: 'intermediate',
+    concepts: ['arithmetic', 'drawing', 'transforms', 'stack'],
+    goodForMutations: ['missense'],
+    keywords: ['arithmetic', 'computation', 'parametric', 'add', 'multiply', 'computed', 'math']
+  },
+
+  geometricSeries: {
+    title: 'Geometric Series',
+    description: 'Growing circles using multiplication to create exponential patterns',
+    genome: `; Geometric progression using MUL opcode
+ATG
+  ; Circle 1: base size 5
+  GAA ACT            ; PUSH 5
+  ATA                ; DUP (keep for computation)
+  GGA                ; CIRCLE(5)
+
+  ; Move down
+  GAA AAA GAA AGG ACA ; PUSH 0, PUSH 10, TRANSLATE
+
+  ; Circle 2: size × 2 = 10
+  GAA ACT            ; PUSH 5
+  ATA                ; DUP base
+  GAA ACT            ; PUSH 5
+  CTT                ; MUL → 25
+  GGA                ; CIRCLE(25)
+
+  ; Move down
+  GAA AAA GAA CCC ACA ; PUSH 0, PUSH 21, TRANSLATE
+
+  ; Circle 3: exponential growth
+  GAA ACT            ; PUSH 5
+  GAA ATT            ; PUSH 7
+  CTT                ; MUL → 35
+  GGA                ; CIRCLE(35)
+TAA`,
+    difficulty: 'intermediate',
+    concepts: ['arithmetic', 'drawing', 'transforms', 'stack'],
+    goodForMutations: ['missense'],
+    keywords: ['geometric', 'series', 'exponential', 'growth', 'multiply', 'pattern', 'math']
   }
 };
 
