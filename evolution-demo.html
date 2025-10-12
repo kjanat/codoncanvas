@@ -378,6 +378,14 @@
         <div id="shareContainer"></div>
       </div>
     </div>
+
+    <!-- Achievement System -->
+    <div id="achievementPanel" class="panel">
+      <div class="panel-header">🏆 Achievements</div>
+      <div class="panel-content">
+        <div id="achievementContainer"></div>
+      </div>
+    </div>
   </div>
 
   <script type="module">
@@ -390,12 +398,19 @@
     import { TutorialManager, evolutionTutorial } from './src/tutorial.ts';
     import { TutorialUI } from './src/tutorial-ui.ts';
     import './src/tutorial-ui.css';
+    import { AchievementEngine } from './src/achievement-engine.ts';
+    import { AchievementUI } from './src/achievement-ui.ts';
+    import './src/achievement-ui.css';
 
     injectShareStyles();
 
     const lexer = new CodonLexer();
     let engine = null;
     let currentCandidates = [];
+
+    // Initialize achievement system
+    const achievementEngine = new AchievementEngine();
+    const achievementUI = new AchievementUI(achievementEngine, 'achievementContainer');
 
     const statusContainer = document.getElementById('statusContainer');
     const startPanel = document.getElementById('startPanel');
@@ -553,6 +568,10 @@
 
       try {
         engine.selectCandidate(candidateId);
+
+        // Track evolution generation for achievement
+        const unlocked = achievementEngine.trackEvolutionGeneration();
+        achievementUI.handleUnlocks(unlocked);
 
         // Visual feedback
         document.querySelectorAll('.candidate-card').forEach(card => {

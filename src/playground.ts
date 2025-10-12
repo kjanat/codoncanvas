@@ -785,6 +785,9 @@ async function toggleAudio() {
   if ((nextMode === 'audio' || nextMode === 'both') && renderMode === 'visual') {
     try {
       await audioRenderer.initialize();
+      // Track audio synthesis achievement
+      const unlocked = achievementEngine.trackAudioSynthesis();
+      achievementUI.handleUnlocks(unlocked);
     } catch (error) {
       setStatus('Error initializing audio: ' + (error as Error).message, 'error');
       return;

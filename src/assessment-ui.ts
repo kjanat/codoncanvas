@@ -16,6 +16,8 @@
 
 import { AssessmentEngine, Challenge, AssessmentResult, DifficultyLevel } from './assessment-engine';
 import { MutationType } from './mutations';
+import { AchievementEngine } from './achievement-engine';
+import { AchievementUI } from './achievement-ui';
 
 /**
  * UI manager for assessment mode.
@@ -27,6 +29,8 @@ export class AssessmentUI {
   private currentChallenge: Challenge | null = null;
   private results: AssessmentResult[] = [];
   private difficulty: DifficultyLevel = 'easy';
+  private achievementEngine?: AchievementEngine;
+  private achievementUI?: AchievementUI;
 
   // UI Elements (created dynamically)
   private challengeSection!: HTMLDivElement;
@@ -39,9 +43,16 @@ export class AssessmentUI {
   private nextChallengeBtn!: HTMLButtonElement;
   private difficultySelect!: HTMLSelectElement;
 
-  constructor(engine: AssessmentEngine, container: HTMLElement) {
+  constructor(
+    engine: AssessmentEngine,
+    container: HTMLElement,
+    achievementEngine?: AchievementEngine,
+    achievementUI?: AchievementUI
+  ) {
     this.engine = engine;
     this.container = container;
+    this.achievementEngine = achievementEngine;
+    this.achievementUI = achievementUI;
     this.answerButtons = new Map();
     this.createUI();
   }
@@ -222,6 +233,15 @@ export class AssessmentUI {
     const result = this.engine.scoreResponse(this.currentChallenge, answer);
     this.results.push(result);
 
+    // Track challenge completion for achievements
+    if (this.achievementEngine && this.achievementUI) {
+      const unlocked = this.achievementEngine.trackChallengeCompleted(
+        result.correct,
+        this.currentChallenge.correctAnswer
+      );
+      this.achievementUI.handleUnlocks(unlocked);
+    }
+
     // Display feedback
     this.displayFeedback(result);
 
@@ -265,6 +285,12 @@ export class AssessmentUI {
    */
   private updateProgress(): void {
     const progress = this.engine.calculateProgress(this.results);
+
+    // Track perfect score achievement
+    if (this.achievementEngine && this.achievementUI && progress.accuracy === 100) {
+      const unlocked = this.achievementEngine.trackPerfectScore();
+      this.achievementUI.handleUnlocks(unlocked);
+    }
 
     const accuracyColor = progress.accuracy >= 80 ? '#28a745' :
                          progress.accuracy >= 60 ? '#ffc107' : '#dc3545';
