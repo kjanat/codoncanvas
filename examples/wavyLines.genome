@@ -7,7 +7,7 @@
 
 ATG
   ; Wave 1 - Red (top wave)
-  GAA TCC GAA AAA GAA AAA TTA ; Color(53, 0, 0) red
+  GAA AAA GAA TTT GAA CTT TTA ; Color(0, 63, 31) red
   TCA                         ; SAVE_STATE at origin
   GAA AAA GAA GGC ACA          ; Translate(0, 30) - move down
   GAA CCC AAA                 ; Push 21, line
@@ -29,7 +29,7 @@ ATG
   ; Wave 2 - Orange (middle-top)
   TCA                         ; SAVE_STATE to origin
   GAA AAA GAA GGT ACA          ; Translate(0, 35)
-  GAA TTT GAA CCC GAA AAA TTA ; Color(63, 21, 0) orange
+  GAA AGG GAA TTT GAA GCC TTA ; Color(10, 63, 37) orange
   GAA CCC AAA                 ; Line
   GAA AAT AGA                 ; Rotate 3
   GAA CCC AAA                 ; Line
@@ -48,8 +48,8 @@ ATG
 
   ; Wave 3 - Yellow (middle)
   TCA                         ; SAVE_STATE
-  GAA AAA GAA TAT ACA          ; Translate(0, 40)
-  GAA TTT GAA TTT GAA AAA TTA ; Color(63, 63, 0) yellow
+  GAA AAA GAA TCC ACA          ; Translate(0, 40)
+  GAA CCC GAA TTT GAA GCC TTA ; Color(21, 63, 37) yellow
   GAA CCC AAA                 ; Line
   GAA AAT AGA                 ; Rotate 3
   GAA CCC AAA                 ; Line
@@ -68,8 +68,8 @@ ATG
 
   ; Wave 4 - Green (middle-bottom)
   TCA                         ; SAVE_STATE
-  GAA AAA GAA TCT ACA          ; Translate(0, 45)
-  GAA AAA GAA TTT GAA AAA TTA ; Color(0, 63, 0) green
+  GAA AAA GAA TGG ACA          ; Translate(0, 45)
+  GAA GCC GAA TTT GAA GCC TTA ; Color(37, 63, 37) green
   GAA CCC AAA                 ; Line
   GAA AAT AGA                 ; Rotate 3
   GAA CCC AAA                 ; Line
@@ -88,8 +88,8 @@ ATG
 
   ; Wave 5 - Cyan (bottom)
   TCA                         ; SAVE_STATE
-  GAA AAA GAA TGG ACA          ; Translate(0, 50)
-  GAA AAA GAA TTT GAA GCC TTA ; Color(0, 63, 37) cyan
+  GAA AAA GAA TTT ACA          ; Translate(0, 50)
+  GAA TGG GAA TTT GAA GCC TTA ; Color(57, 63, 37) cyan
   GAA CCC AAA                 ; Line
   GAA AAT AGA                 ; Rotate 3
   GAA CCC AAA                 ; Line
@@ -106,10 +106,10 @@ ATG
   GAA AAT AGA                 ; Rotate 3
   GAA CCC AAA                 ; Line
 
-  ; Wave 6 - Blue (lowest)
+  ; Wave 6 - Blue (deep bottom)
   TCA                         ; SAVE_STATE
-  GAA AAA GAA TTT ACA          ; Translate(0, 55)
-  GAA AAA GAA AAA GAA TTT TTA ; Color(0, 0, 63) blue
+  GAA AAA GAA TGT ACA          ; Translate(0, 55)
+  GAA TTT GAA CCC GAA GCC TTA ; Color(63, 21, 37) blue
   GAA CCC AAA                 ; Line
   GAA AAT AGA                 ; Rotate 3
   GAA CCC AAA                 ; Line

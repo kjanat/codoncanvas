@@ -57,7 +57,7 @@ class NodeCanvasRenderer implements Renderer {
   }
 
   circle(radius: number): void {
-    const scaledRadius = radius * this._scale * (this.width / 64);
+    const scaledRadius = radius * this._scale;  // radius already scaled by VM
     this.ctx.save();
     this.ctx.translate(this._x, this._y);
     this.ctx.rotate((this._rotation * Math.PI) / 180);
@@ -69,8 +69,8 @@ class NodeCanvasRenderer implements Renderer {
   }
 
   rect(width: number, height: number): void {
-    const scaledW = width * this._scale * (this.width / 64);
-    const scaledH = height * this._scale * (this.height / 64);
+    const scaledW = width * this._scale;  // already scaled by VM
+    const scaledH = height * this._scale;  // already scaled by VM
     this.ctx.save();
     this.ctx.translate(this._x, this._y);
     this.ctx.rotate((this._rotation * Math.PI) / 180);
@@ -80,7 +80,7 @@ class NodeCanvasRenderer implements Renderer {
   }
 
   line(length: number): void {
-    const scaledLength = length * this._scale * (this.width / 64);
+    const scaledLength = length * this._scale;  // already scaled by VM
     const rad = (this._rotation * Math.PI) / 180;
     const endX = this._x + Math.cos(rad) * scaledLength;
     const endY = this._y + Math.sin(rad) * scaledLength;
@@ -91,7 +91,7 @@ class NodeCanvasRenderer implements Renderer {
   }
 
   triangle(size: number): void {
-    const scaledSize = size * this._scale * (this.width / 64);
+    const scaledSize = size * this._scale;  // already scaled by VM
     const height = (scaledSize * Math.sqrt(3)) / 2;
     this.ctx.save();
     this.ctx.translate(this._x, this._y);
@@ -107,8 +107,8 @@ class NodeCanvasRenderer implements Renderer {
   }
 
   ellipse(rx: number, ry: number): void {
-    const scaledRx = rx * this._scale * (this.width / 64);
-    const scaledRy = ry * this._scale * (this.height / 64);
+    const scaledRx = rx * this._scale;  // already scaled by VM
+    const scaledRy = ry * this._scale;  // already scaled by VM
     this.ctx.save();
     this.ctx.translate(this._x, this._y);
     this.ctx.rotate((this._rotation * Math.PI) / 180);
@@ -142,10 +142,9 @@ class NodeCanvasRenderer implements Renderer {
   }
 
   translate(dx: number, dy: number): void {
-    const scaledDx = dx * (this.width / 64);
-    const scaledDy = dy * (this.height / 64);
-    this._x += scaledDx;
-    this._y += scaledDy;
+    // dx and dy already scaled by VM
+    this._x += dx;
+    this._y += dy;
   }
 
   setPosition(x: number, y: number): void {

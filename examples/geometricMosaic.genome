@@ -1,68 +1,32 @@
-; Geometric Mosaic - Advanced Showcase
-; Tiled geometric shapes with color gradients and precise positioning
-; Difficulty: advanced-showcase
-; Concepts: composition, transforms, colors, grid-layout, state-management
-; Visual: Intricate mosaic of triangles and rectangles in gradient colors
-; Good for mutations: frameshift (dramatic pattern change)
-
+; Geometric Mosaic - Simple radial test
 ATG
-  ; Row 1 - Red to Orange gradient
-  GAA TCC GAA AAA GAA AAA TTA ; Color(53, 0, 0) deep red
-  TCA                         ; SAVE_STATE (0, 0)
-  GAA ATT GAA ATT CCA          ; Push 15, push 15, rectangle
-  GAA TCC GAA AAA ACA          ; Translate(53, 0)
-  GAA TGG GAA AAA GAA AAA TTA ; Color(57, 0, 0) red-orange
-  GAA ATT GAA ATT CCA          ; Rectangle 15x15
-  GAA TCC GAA AAA ACA          ; Translate(53, 0)
-  GAA TTT GAA AAA GAA AAA TTA ; Color(63, 0, 0) bright orange
-  GAA ATT GAA ATT CCA          ; Rectangle 15x15
+  ; Draw shapes in a simple radial pattern
+  GAA AAA GAA TTT GAA GCC TTA ; Color(0, 63, 37) red
+  GAA CGC GAA AAA ACA          ; Translate(25, 0)
+  GAA AGG GGA                 ; Circle 10
 
-  ; Row 2 - Orange to Yellow gradient (triangles)
-  GAA AAA GAA TCC ACA          ; Translate(0, 53) - new row
-  GAA TTT GAA AGG GAA AAA TTA ; Color(63, 10, 0) yellow-orange
-  TCA                         ; SAVE_STATE
-  GAA ATT GCA                 ; Push 15, triangle
-  GAA TCC GAA AAA ACA          ; Translate(53, 0)
-  GAA TTT GAA CCC GAA AAA TTA ; Color(63, 21, 0) yellow
-  GAA ATT GCA                 ; Triangle
-  GAA TCC GAA AAA ACA          ; Translate(53, 0)
-  GAA TTT GAA CTT GAA AAA TTA ; Color(63, 31, 0) bright yellow
-  GAA ATT GCA                 ; Triangle
+  GAA ATT GAA TTT GAA GCC TTA ; Color(15, 63, 37) orange
+  GAA AAA GAA CGC ACA          ; Translate(0, 25)
+  GAA AGG GGA                 ; Circle 10
 
-  ; Row 3 - Yellow to Green gradient (mix)
-  GAA AAA GAA TCC ACA          ; Translate(0, 53)
-  GAA CTT GAA TTT GAA AAA TTA ; Color(31, 63, 0) yellow-green
-  TCA                         ; SAVE_STATE
-  GAA ATT GAA ATT CCA          ; Rectangle
-  GAA TCC GAA AAA ACA          ; Translate(53, 0)
-  GAA CCC GAA TTT GAA AAA TTA ; Color(21, 63, 0) green
-  GAA ATT GCA                 ; Triangle
-  GAA TCC GAA AAA ACA          ; Translate(53, 0)
-  GAA AGG GAA TTT GAA AAA TTA ; Color(10, 63, 0) bright green
-  GAA ATT GAA ATT CCA          ; Rectangle
+  GAA CCC GAA TTT GAA GCC TTA ; Color(21, 63, 37) yellow-orange
+  GAA AAA GAA CGC ACA          ; Translate(0, 25)
+  GAA AGG GGA                 ; Circle 10
 
-  ; Row 4 - Green to Cyan gradient
-  GAA AAA GAA TCC ACA          ; Translate(0, 53)
-  GAA AAA GAA TTT GAA CCC TTA ; Color(0, 63, 21) cyan-green
-  TCA                         ; SAVE_STATE
-  GAA ATT GCA                 ; Triangle
-  GAA TCC GAA AAA ACA          ; Translate(53, 0)
-  GAA AAA GAA TTT GAA GCC TTA ; Color(0, 63, 37) cyan
-  GAA ATT GAA ATT CCA          ; Rectangle
-  GAA TCC GAA AAA ACA          ; Translate(53, 0)
-  GAA AAA GAA TTT GAA TCC TTA ; Color(0, 63, 53) bright cyan
-  GAA ATT GCA                 ; Triangle
+  GAA TTT GAA TTT GAA GCC TTA ; Color(63, 63, 37) yellow
+  GAA AAA GAA CGC ACA          ; Translate(0, 25)
+  GAA AGG GGA                 ; Circle 10
 
-  ; Row 5 - Cyan to Blue gradient
-  GAA AAA GAA TCC ACA          ; Translate(0, 53)
-  GAA AAA GAA GCC GAA TTT TTA ; Color(0, 37, 63) blue-cyan
-  TCA                         ; SAVE_STATE
-  GAA ATT GAA ATT CCA          ; Rectangle
-  GAA TCC GAA AAA ACA          ; Translate(53, 0)
-  GAA AAA GAA CCC GAA TTT TTA ; Color(0, 21, 63) blue
-  GAA ATT GCA                 ; Triangle
-  GAA TCC GAA AAA ACA          ; Translate(53, 0)
-  GAA AAA GAA AGG GAA TTT TTA ; Color(0, 10, 63) deep blue
-  GAA ATT GAA ATT CCA          ; Rectangle
+  GAA AGG GAA TTT GAA TCC TTA ; Color(10, 63, 53) cyan
+  GAA AAA GAA CGC ACA          ; Translate(0, 25)
+  GAA AGG GGA                 ; Circle 10
+
+  GAA TTT GAA TTT GAA TCC TTA ; Color(63, 63, 53) purple
+  GAA AAA GAA CGC ACA          ; Translate(0, 25)
+  GAA AGG GGA                 ; Circle 10
+
+  GAA TTT GAA GCC GAA TCC TTA ; Color(63, 37, 53) pink
+  GAA AAA GAA CGC ACA          ; Translate(0, 25)
+  GAA AGG GGA                 ; Circle 10
 
 TAA
