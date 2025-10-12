@@ -19,7 +19,8 @@
     "generate-screenshots": "tsx scripts/generate-screenshots.ts",
     "cli": "tsx cli.ts",
     "research:analyze": "tsx scripts/research-data-analyzer.ts",
-    "research:generate-data": "tsx scripts/generate-sample-data.ts"
+    "research:generate-data": "tsx scripts/generate-sample-data.ts",
+    "metrics:analyze": "tsx scripts/metrics-analyzer.ts"
   },
   "bin": {
     "codoncanvas": "./cli.ts"
