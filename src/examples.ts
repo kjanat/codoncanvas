@@ -2,11 +2,35 @@
  * Built-in example genomes for the playground
  */
 
-export const examples = {
+export type DifficultyLevel = 'beginner' | 'intermediate' | 'advanced';
+export type Concept =
+  | 'drawing'
+  | 'transforms'
+  | 'colors'
+  | 'stack'
+  | 'composition'
+  | 'advanced-opcodes';
+export type MutationType = 'silent' | 'missense' | 'nonsense' | 'frameshift';
+
+export interface ExampleMetadata {
+  title: string;
+  description: string;
+  genome: string;
+  difficulty: DifficultyLevel;
+  concepts: Concept[];
+  goodForMutations: MutationType[];
+  keywords: string[];
+}
+
+export const examples: Record<string, ExampleMetadata> = {
   helloCircle: {
     title: 'Hello Circle',
     description: 'Minimal example - draws a single circle',
-    genome: `ATG GAA AAT GGA TAA`
+    genome: `ATG GAA AAT GGA TAA`,
+    difficulty: 'beginner',
+    concepts: ['drawing'],
+    goodForMutations: ['silent', 'missense', 'nonsense'],
+    keywords: ['simple', 'intro', 'first', 'basic', 'circle']
   },
 
   twoShapes: {
@@ -18,7 +42,11 @@ export const examples = {
   GAA AAA            ; Push 0
   ACA                ; Translate(21, 0) - move right
   GAA AGG GAA AGG CCA ; Push 10, push 10, draw rect
-TAA`
+TAA`,
+    difficulty: 'beginner',
+    concepts: ['drawing', 'transforms'],
+    goodForMutations: ['missense', 'frameshift'],
+    keywords: ['shapes', 'translate', 'position', 'rectangle']
   },
 
   colorfulPattern: {
@@ -33,7 +61,11 @@ TAA`
   GAA ATT AGA                   ; Push 15, rotate 15 degrees
   GAA AAA GAA AAA GAA GCC TTA  ; Set color (0, 0, 37) - blue
   GAA CAC GGA                   ; Push 25, draw circle
-TAA`
+TAA`,
+    difficulty: 'intermediate',
+    concepts: ['drawing', 'colors', 'transforms', 'composition'],
+    goodForMutations: ['silent', 'missense'],
+    keywords: ['color', 'rotation', 'pattern', 'multiple']
   },
 
   lineArt: {
@@ -47,7 +79,11 @@ TAA`
   GAA GCC AAA        ; Push 37, draw line
   GAA GGA AGA        ; Push 26, rotate 26 degrees
   GAA GCC AAA        ; Push 37, draw line
-TAA`
+TAA`,
+    difficulty: 'beginner',
+    concepts: ['drawing', 'transforms'],
+    goodForMutations: ['silent', 'frameshift'],
+    keywords: ['line', 'rotation', 'repetition', 'angles']
   },
 
   triangleDemo: {
@@ -61,7 +97,11 @@ TAA`
   GAA AGG            ; Push 10
   GAA AAA ACA        ; Push 0, translate(10, 0)
   GAA CGC GCA        ; Push 25, draw large triangle
-TAA`
+TAA`,
+    difficulty: 'beginner',
+    concepts: ['drawing', 'transforms'],
+    goodForMutations: ['missense', 'nonsense'],
+    keywords: ['triangle', 'sizes', 'scaling', 'shapes']
   },
 
   ellipseGallery: {
@@ -76,7 +116,11 @@ TAA`
   GAA ATT            ; Push 15 (rx)
   GAA AGG            ; Push 10 (ry)
   GTA                ; Draw ellipse (tall)
-TAA`
+TAA`,
+    difficulty: 'intermediate',
+    concepts: ['drawing', 'transforms'],
+    goodForMutations: ['silent', 'missense'],
+    keywords: ['ellipse', 'oval', 'aspect', 'ratio']
   },
 
   scaleTransform: {
@@ -88,7 +132,11 @@ TAA`
   GAA AAT GGA        ; Push 3, draw scaled circle (appears larger)
   GAA ACC CGA        ; Push 11, scale by 1.7x again
   GAA AAT GGA        ; Push 3, draw even larger
-TAA`
+TAA`,
+    difficulty: 'intermediate',
+    concepts: ['transforms', 'drawing'],
+    goodForMutations: ['frameshift', 'missense'],
+    keywords: ['scale', 'size', 'transform', 'magnify']
   },
 
   stackOperations: {
@@ -104,7 +152,11 @@ TAA`
   GAA AGG            ; Push 10
   TGG                ; SWAP → stack: [10, 3]
   CCA                ; Draw rect(10, 3) - horizontal bar
-TAA`
+TAA`,
+    difficulty: 'intermediate',
+    concepts: ['stack', 'drawing'],
+    goodForMutations: ['frameshift', 'nonsense'],
+    keywords: ['stack', 'dup', 'swap', 'pop', 'operations']
   },
 
   rosette: {
@@ -123,7 +175,11 @@ TAA`
   GAA GGA AGA        ; Rotate 26 degrees
   GAA CCC GAA CCC GAA AAA TTA  ; Color(21, 21, 0) yellow
   GAA AGG GGA        ; Draw circle
-TAA`
+TAA`,
+    difficulty: 'advanced',
+    concepts: ['composition', 'colors', 'transforms'],
+    goodForMutations: ['silent', 'missense', 'frameshift'],
+    keywords: ['rosette', 'flower', 'radial', 'colorful', 'pattern']
   },
 
   face: {
@@ -139,7 +195,11 @@ TAA`
   GAA AGG            ; Push 10
   GAA AAT            ; Push 3
   CCA                ; Draw mouth (10x3 rect)
-TAA`
+TAA`,
+    difficulty: 'intermediate',
+    concepts: ['composition', 'drawing', 'transforms'],
+    goodForMutations: ['missense', 'nonsense'],
+    keywords: ['face', 'smiley', 'fun', 'combine', 'shapes']
   },
 
   texturedCircle: {
@@ -157,7 +217,11 @@ TAA`
   GAA ATT            ; Push 15 (lower intensity)
   GAA AAA GAA CGC GAA CCC TTA ; Color(0, 25, 21) cool
   CTA                ; NOISE(26, 15) - lighter texture
-TAA`
+TAA`,
+    difficulty: 'advanced',
+    concepts: ['advanced-opcodes', 'colors', 'drawing'],
+    goodForMutations: ['missense', 'frameshift'],
+    keywords: ['noise', 'texture', 'artistic', 'advanced', 'effects']
   },
 
   spiralPattern: {
@@ -177,7 +241,11 @@ TAA`
   GAA ATT AGA        ; Rotate 15 degrees
   GAA CCC GAA AAA ACA ; Push 21, push 0, translate(21, 0)
   GAA AAT GGA        ; Draw circle
-TAA`
+TAA`,
+    difficulty: 'advanced',
+    concepts: ['composition', 'transforms', 'drawing'],
+    goodForMutations: ['silent', 'frameshift'],
+    keywords: ['spiral', 'geometric', 'iteration', 'pattern']
   },
 
   nestedFrames: {
@@ -195,7 +263,11 @@ TAA`
   TCA                ; SAVE_STATE - preserve inner position
   GAA AAA GAA AGG TTA ; Color(0, 10, 0) dark
   GAA AGG GGA        ; Push 10, draw core circle
-TAA`
+TAA`,
+    difficulty: 'advanced',
+    concepts: ['advanced-opcodes', 'composition', 'colors'],
+    goodForMutations: ['nonsense', 'missense'],
+    keywords: ['nested', 'layers', 'state', 'save', 'advanced']
   },
 
   colorGradient: {
@@ -216,7 +288,11 @@ TAA`
   GAA AGG GAA AAA ACA ; Translate(10, 0)
   GAA AAA GAA AAA GAA GCC TTA ; Color(0, 0, 37) lighter
   GAA AGG GGA        ; Draw circle
-TAA`
+TAA`,
+    difficulty: 'intermediate',
+    concepts: ['colors', 'drawing', 'transforms', 'composition'],
+    goodForMutations: ['silent', 'frameshift'],
+    keywords: ['gradient', 'color', 'progression', 'smooth']
   },
 
   silentMutation: {
@@ -229,7 +305,11 @@ TAA`
   GAA CCC GAA CTT GAA AAA TTA ; Color(21, 31, 0) same green
   GAA CGC GGC        ; Push 25, CIRCLE using GGC (synonymous!)
 TAA
-; Note: Both circles identical - demonstrates silent mutation`
+; Note: Both circles identical - demonstrates silent mutation`,
+    difficulty: 'beginner',
+    concepts: ['drawing', 'colors'],
+    goodForMutations: ['silent'],
+    keywords: ['silent', 'mutation', 'pedagogical', 'demo', 'synonymous']
   },
 
   gridPattern: {
@@ -247,7 +327,11 @@ TAA
   GAA CCC TAT ACA     ; Push 21, POP (discard), translate(0, 0) - reset x
   GAA AGG GAA AAA ACA ; Translate(10, 0)
   GAA AAT GCA        ; Draw triangle
-TAA`
+TAA`,
+    difficulty: 'advanced',
+    concepts: ['composition', 'transforms', 'stack'],
+    goodForMutations: ['frameshift', 'nonsense'],
+    keywords: ['grid', 'layout', 'systematic', 'positioning']
   },
 
   mandala: {
@@ -270,7 +354,11 @@ TAA`
   GAA GGA AGA        ; Rotate 26 degrees
   GAA CCC GAA AAA ACA ; Translate(21, 0)
   GAA AAT GCA        ; Draw triangle
-TAA`
+TAA`,
+    difficulty: 'advanced',
+    concepts: ['composition', 'colors', 'transforms'],
+    goodForMutations: ['silent', 'missense', 'frameshift'],
+    keywords: ['mandala', 'radial', 'symmetry', 'complex', 'artistic']
   },
 
   stackCleanup: {
@@ -291,7 +379,11 @@ TAA`
   TAC                ; POP 37
   ; Stack now has 21 for radius
   GGA                ; Draw circle with radius 21
-TAA`
+TAA`,
+    difficulty: 'intermediate',
+    concepts: ['stack', 'drawing'],
+    goodForMutations: ['nonsense', 'frameshift'],
+    keywords: ['stack', 'cleanup', 'pop', 'management', 'operations']
   }
 };
 

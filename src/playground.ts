@@ -1,4 +1,4 @@
-import { ExampleKey, examples } from './examples';
+import { ExampleKey, examples, type DifficultyLevel, type Concept, ExampleMetadata } from './examples';
 import { CodonLexer } from './lexer';
 import { Canvas2DRenderer } from './renderer';
 import { CodonVM } from './vm';
@@ -37,6 +37,12 @@ const frameshiftMutationBtn = document.getElementById('frameshiftMutationBtn') a
 const pointMutationBtn = document.getElementById('pointMutationBtn') as HTMLButtonElement;
 const insertionMutationBtn = document.getElementById('insertionMutationBtn') as HTMLButtonElement;
 const deletionMutationBtn = document.getElementById('deletionMutationBtn') as HTMLButtonElement;
+
+// Example filter elements
+const difficultyFilter = document.getElementById('difficultyFilter') as HTMLSelectElement;
+const conceptFilter = document.getElementById('conceptFilter') as HTMLSelectElement;
+const searchInput = document.getElementById('searchInput') as HTMLInputElement;
+const exampleInfo = document.getElementById('exampleInfo') as HTMLDivElement;
 
 // Initialize lexer, renderer, and VM
 const lexer = new CodonLexer();
@@ -102,11 +108,130 @@ function clearCanvas() {
   updateStats(0, 0);
 }
 
+function getFilteredExamples(): Array<[ExampleKey, ExampleMetadata]> {
+  const difficulty = difficultyFilter.value as DifficultyLevel | '';
+  const concept = conceptFilter.value as Concept | '';
+  const search = searchInput.value.toLowerCase().trim();
+
+  return Object.entries(examples).filter(([key, ex]) => {
+    // Difficulty filter
+    if (difficulty && ex.difficulty !== difficulty) return false;
+
+    // Concept filter
+    if (concept && !ex.concepts.includes(concept)) return false;
+
+    // Search filter
+    if (search) {
+      const searchableText = [
+        ex.title,
+        ex.description,
+        ...ex.keywords,
+        ...ex.concepts
+      ].join(' ').toLowerCase();
+
+      if (!searchableText.includes(search)) return false;
+    }
+
+    return true;
+  }) as Array<[ExampleKey, ExampleMetadata]>;
+}
+
+function updateExampleDropdown() {
+  const filtered = getFilteredExamples();
+
+  // Clear existing options (except first)
+  exampleSelect.innerHTML = '<option value="">Load Example...</option>';
+
+  // Group by difficulty for better UX
+  const grouped = {
+    beginner: [] as Array<[ExampleKey, ExampleMetadata]>,
+    intermediate: [] as Array<[ExampleKey, ExampleMetadata]>,
+    advanced: [] as Array<[ExampleKey, ExampleMetadata]>
+  };
+
+  filtered.forEach(([key, ex]) => {
+    grouped[ex.difficulty].push([key, ex]);
+  });
+
+  // Add beginner examples
+  if (grouped.beginner.length > 0) {
+    const beginnerGroup = document.createElement('optgroup');
+    beginnerGroup.label = '🌱 Beginner';
+    grouped.beginner.forEach(([key, ex]) => {
+      const option = document.createElement('option');
+      option.value = key;
+      option.textContent = ex.title;
+      beginnerGroup.appendChild(option);
+    });
+    exampleSelect.appendChild(beginnerGroup);
+  }
+
+  // Add intermediate examples
+  if (grouped.intermediate.length > 0) {
+    const intermediateGroup = document.createElement('optgroup');
+    intermediateGroup.label = '🌿 Intermediate';
+    grouped.intermediate.forEach(([key, ex]) => {
+      const option = document.createElement('option');
+      option.value = key;
+      option.textContent = ex.title;
+      intermediateGroup.appendChild(option);
+    });
+    exampleSelect.appendChild(intermediateGroup);
+  }
+
+  // Add advanced examples
+  if (grouped.advanced.length > 0) {
+    const advancedGroup = document.createElement('optgroup');
+    advancedGroup.label = '🌳 Advanced';
+    grouped.advanced.forEach(([key, ex]) => {
+      const option = document.createElement('option');
+      option.value = key;
+      option.textContent = ex.title;
+      advancedGroup.appendChild(option);
+    });
+    exampleSelect.appendChild(advancedGroup);
+  }
+
+  // Update count
+  const totalCount = Object.keys(examples).length;
+  const filteredCount = filtered.length;
+
+  if (filteredCount < totalCount) {
+    exampleSelect.options[0].textContent = `Load Example... (${filteredCount} of ${totalCount})`;
+  }
+}
+
+function showExampleInfo(key: ExampleKey) {
+  const ex = examples[key];
+  if (!ex) {
+    exampleInfo.style.display = 'none';
+    return;
+  }
+
+  exampleInfo.innerHTML = `
+    <div style="margin-bottom: 8px;">
+      <strong>${ex.title}</strong>
+      <span style="float: right; font-size: 0.85em; opacity: 0.7;">
+        ${ex.difficulty}
+      </span>
+    </div>
+    <div style="font-size: 0.9em; margin-bottom: 8px;">
+      ${ex.description}
+    </div>
+    <div style="font-size: 0.85em; opacity: 0.7;">
+      <div><strong>Concepts:</strong> ${ex.concepts.join(', ')}</div>
+      <div><strong>Good for mutations:</strong> ${ex.goodForMutations.join(', ')}</div>
+    </div>
+  `;
+  exampleInfo.style.display = 'block';
+}
+
 function loadExample() {
   const key = exampleSelect.value as ExampleKey;
   if (key && examples[key]) {
     editor.value = examples[key].genome;
     setStatus(`Loaded: ${examples[key].title}`, 'info');
+    showExampleInfo(key);
     exampleSelect.value = '';
   }
 }
@@ -262,6 +387,14 @@ frameshiftMutationBtn.addEventListener('click', () => applyMutation('frameshift'
 pointMutationBtn.addEventListener('click', () => applyMutation('point'));
 insertionMutationBtn.addEventListener('click', () => applyMutation('insertion'));
 deletionMutationBtn.addEventListener('click', () => applyMutation('deletion'));
+
+// Example filter listeners
+difficultyFilter.addEventListener('change', updateExampleDropdown);
+conceptFilter.addEventListener('change', updateExampleDropdown);
+searchInput.addEventListener('input', updateExampleDropdown);
+
+// Initialize example dropdown with all examples
+updateExampleDropdown();
 
 // Keyboard shortcut: Cmd/Ctrl + Enter to run
 editor.addEventListener('keydown', (e) => {

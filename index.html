@@ -57,6 +57,16 @@
       display: flex;
       gap: 0.5rem;
       flex-wrap: wrap;
+      align-items: center;
+    }
+
+    .example-filters {
+      display: flex;
+      gap: 0.5rem;
+      align-items: center;
+      padding: 0 0.5rem;
+      border-left: 1px solid #3e3e42;
+      margin-left: auto;
     }
 
     button {
@@ -246,26 +256,41 @@
       <div class="toolbar">
         <button id="runBtn">▶ Run</button>
         <button id="clearBtn" class="secondary">Clear Canvas</button>
+
+        <div class="example-filters">
+          <input
+            type="text"
+            id="searchInput"
+            placeholder="🔍 Search examples..."
+            style="width: 150px; padding: 6px 8px; border: 1px solid #3c3c3c; background: #1e1e1e; color: #d4d4d4; border-radius: 4px; font-size: 13px;"
+          />
+
+          <select
+            id="difficultyFilter"
+            style="padding: 6px 8px; border: 1px solid #3c3c3c; background: #1e1e1e; color: #d4d4d4; border-radius: 4px; font-size: 13px;"
+          >
+            <option value="">All Difficulties</option>
+            <option value="beginner">🌱 Beginner</option>
+            <option value="intermediate">🌿 Intermediate</option>
+            <option value="advanced">🌳 Advanced</option>
+          </select>
+
+          <select
+            id="conceptFilter"
+            style="padding: 6px 8px; border: 1px solid #3c3c3c; background: #1e1e1e; color: #d4d4d4; border-radius: 4px; font-size: 13px;"
+          >
+            <option value="">All Concepts</option>
+            <option value="drawing">Drawing</option>
+            <option value="transforms">Transforms</option>
+            <option value="colors">Colors</option>
+            <option value="stack">Stack</option>
+            <option value="composition">Composition</option>
+            <option value="advanced-opcodes">Advanced Opcodes</option>
+          </select>
+        </div>
+
         <select id="exampleSelect">
           <option value="">Load Example...</option>
-          <option value="helloCircle">Hello Circle</option>
-          <option value="twoShapes">Two Shapes</option>
-          <option value="colorfulPattern">Colorful Pattern</option>
-          <option value="lineArt">Line Art</option>
-          <option value="triangleDemo">Triangle Demo</option>
-          <option value="ellipseGallery">Ellipse Gallery</option>
-          <option value="scaleTransform">Scale Transform</option>
-          <option value="stackOperations">Stack Operations</option>
-          <option value="rosette">Rosette Pattern</option>
-          <option value="face">Simple Face</option>
-          <option value="texturedCircle">Textured Circle (Noise)</option>
-          <option value="spiralPattern">Spiral Pattern</option>
-          <option value="nestedFrames">Nested Frames (State)</option>
-          <option value="colorGradient">Color Gradient</option>
-          <option value="silentMutation">Silent Mutation Demo</option>
-          <option value="gridPattern">Grid Pattern</option>
-          <option value="mandala">Mandala Pattern</option>
-          <option value="stackCleanup">Stack Cleanup (POP)</option>
         </select>
         <button id="exportBtn" class="secondary">Export PNG</button>
         <button id="saveGenomeBtn" class="secondary">💾 Save .genome</button>
@@ -291,6 +316,11 @@ ATG GAA AAT GGA TAA
 ; GAA AAT = PUSH 3
 ; GGA = CIRCLE
 ; TAA = STOP">ATG GAA AAT GGA TAA</textarea>
+
+      <div
+        id="exampleInfo"
+        style="display: none; margin-top: 12px; padding: 12px; background: #2d2d30; border: 1px solid #3c3c3c; border-radius: 4px; font-size: 13px; line-height: 1.6;"
+      ></div>
     </div>
 
     <div class="canvas-panel">
