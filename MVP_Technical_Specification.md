@@ -1,8 +1,27 @@
 # CodonCanvas MVP Technical Specification
 
-**Version:** 1.0.0  
-**Target:** Phase A-B Implementation  
+**Version:** 1.0.0
+**Target:** Phase A-B Implementation
 **Date:** October 2025
+**Status:** 📜 HISTORICAL REFERENCE
+
+> **⚠️ IMPLEMENTATION HAS EVOLVED BEYOND THIS SPECIFICATION**
+>
+> This document reflects the **original MVP design** from October 2025. The implementation has successfully delivered all Phase A and Phase B requirements, but has **intentionally evolved** to include additional computational features for enhanced pedagogical value.
+>
+> **Key Changes from Original Spec:**
+> - ✅ Phase A (MVP Core): Complete + exceeded
+> - ✅ Phase B (Pedagogy Tools): Complete + exceeded
+> - 🔄 **Opcode Evolution**: NOISE removed, added Arithmetic (ADD/SUB/MUL/DIV), Comparison (EQ/LT), and LOOP
+> - 📈 **Enhanced Features**: 48 examples (vs 3 spec), audio mode, research tools, teacher dashboard
+>
+> **For Current Implementation Details:**
+> - [OPCODES.md](./OPCODES.md) - Complete current opcode reference
+> - [README.md](./README.md) - Getting started guide
+> - [EDUCATORS.md](./EDUCATORS.md) - Comprehensive pedagogical documentation
+> - [claudedocs/SPEC_COMPLIANCE_AUDIT.md](./claudedocs/SPEC_COMPLIANCE_AUDIT.md) - Detailed compliance analysis
+>
+> **Rationale for Evolution**: Added computational features (arithmetic, comparison, loops) enable algorithmic art, computational thinking pedagogy, and research applications. The codon count remains 64 (complete DNA triplet coverage maintained).
 
 ---
 
