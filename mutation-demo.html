@@ -281,6 +281,14 @@
 
       <div id="diffContainer"></div>
     </div>
+
+    <!-- Share System Section -->
+    <div class="panel" style="margin-top: 1rem;">
+      <div class="panel-header">Share & Export</div>
+      <div class="panel-content">
+        <div id="shareContainer"></div>
+      </div>
+    </div>
   </div>
 
   <script type="module">
@@ -298,15 +306,18 @@
       applyFrameshiftMutation
     } from './src/mutations.ts';
     import { DiffViewer, injectDiffViewerStyles } from './src/diff-viewer.ts';
+    import { ShareSystem, injectShareStyles } from './src/share-system.ts';
 
-    // Inject diff viewer styles
+    // Inject styles
     injectDiffViewerStyles();
+    injectShareStyles();
 
     const editor = document.getElementById('editor');
     const canvasOriginal = document.getElementById('canvasOriginal');
     const canvasCurrent = document.getElementById('canvasCurrent');
     const diffContainer = document.getElementById('diffContainer');
     const statusContainer = document.getElementById('statusContainer');
+    const shareContainer = document.getElementById('shareContainer');
 
     const lexer = new CodonLexer();
     const rendererOriginal = new Canvas2DRenderer(canvasOriginal);
@@ -314,6 +325,15 @@
     const vmOriginal = new CodonVM(rendererOriginal);
     const vmCurrent = new CodonVM(rendererCurrent);
     const diffViewer = new DiffViewer({ containerElement: diffContainer, showCanvas: false });
+
+    // Initialize share system
+    const shareSystem = new ShareSystem({
+      containerElement: shareContainer,
+      getGenome: () => editor.value.trim(),
+      appTitle: 'CodonCanvas Mutation Lab',
+      showQRCode: true,
+      socialPlatforms: ['twitter', 'reddit', 'email']
+    });
 
     let originalGenome = editor.value;
 
@@ -403,8 +423,19 @@
       showStatus('Diff cleared - current genome is now the original', 'info');
     };
 
-    // Initial render
-    updateVisualizations();
+    // Load genome from URL if present
+    const urlGenome = ShareSystem.loadFromURL();
+    if (urlGenome) {
+      editor.value = urlGenome;
+      originalGenome = urlGenome;
+      showStatus('Loaded genome from share link', 'success');
+      setTimeout(() => {
+        updateVisualizations();
+      }, 100);
+    } else {
+      // Initial render
+      updateVisualizations();
+    }
   </script>
 </body>
 </html>

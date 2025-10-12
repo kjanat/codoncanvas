@@ -224,20 +224,40 @@
           <div id="timelineContainer"></div>
         </div>
       </div>
+
+      <!-- Share System Section -->
+      <div class="panel" style="margin-top: 1rem;">
+        <div class="panel-header">Share & Export</div>
+        <div class="panel-content">
+          <div id="shareContainer"></div>
+        </div>
+      </div>
     </div>
   </div>
 
   <script type="module">
     import { examples } from './src/examples.ts';
     import { TimelineScrubber, injectTimelineStyles } from './src/timeline-scrubber.ts';
+    import { ShareSystem, injectShareStyles } from './src/share-system.ts';
 
-    // Inject timeline styles
+    // Inject styles
     injectTimelineStyles();
+    injectShareStyles();
 
     const editor = document.getElementById('editor');
     const canvas = document.getElementById('canvas');
     const timelineContainer = document.getElementById('timelineContainer');
     const statusContainer = document.getElementById('statusContainer');
+    const shareContainer = document.getElementById('shareContainer');
+
+    // Initialize share system
+    const shareSystem = new ShareSystem({
+      containerElement: shareContainer,
+      getGenome: () => editor.value.trim(),
+      appTitle: 'CodonCanvas Timeline Demo',
+      showQRCode: true,
+      socialPlatforms: ['twitter', 'reddit', 'email']
+    });
 
     let timeline = null;
 
@@ -295,8 +315,18 @@
       showStatus('Canvas and timeline cleared', 'success');
     };
 
-    // Auto-load on start
-    window.loadAndExecute();
+    // Load genome from URL if present, otherwise auto-load default
+    const urlGenome = ShareSystem.loadFromURL();
+    if (urlGenome) {
+      editor.value = urlGenome;
+      showStatus('Loaded genome from share link', 'success');
+      setTimeout(() => {
+        window.loadAndExecute();
+      }, 100);
+    } else {
+      // Auto-load on start
+      window.loadAndExecute();
+    }
   </script>
 </body>
 </html>
