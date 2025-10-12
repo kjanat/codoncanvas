@@ -20,7 +20,8 @@
     "cli": "tsx cli.ts",
     "research:analyze": "tsx scripts/research-data-analyzer.ts",
     "research:generate-data": "tsx scripts/generate-sample-data.ts",
-    "metrics:analyze": "tsx scripts/metrics-analyzer.ts"
+    "metrics:analyze": "tsx scripts/metrics-analyzer.ts",
+    "metrics:generate-sample": "tsx scripts/generate-metrics-sample.ts"
   },
   "bin": {
     "codoncanvas": "./cli.ts"
