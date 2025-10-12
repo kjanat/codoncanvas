@@ -25,6 +25,8 @@ import { ThemeManager } from './theme-manager';
 import { AchievementEngine } from './achievement-engine';
 import { AchievementUI } from './achievement-ui';
 import './achievement-ui.css';
+import { AssessmentEngine } from './assessment-engine';
+import { AssessmentUI } from './assessment-ui';
 
 // Get DOM elements
 const editor = document.getElementById('editor') as HTMLTextAreaElement;
@@ -78,6 +80,11 @@ const timelineContainer = document.getElementById('timelineContainer') as HTMLDi
 // Theme elements
 const themeToggleBtn = document.getElementById('themeToggleBtn') as HTMLButtonElement;
 
+// Mode toggle elements
+const modeToggleBtns = document.querySelectorAll('input[name="mode"]') as NodeListOf<HTMLInputElement>;
+const playgroundContainer = document.getElementById('playgroundContainer') as HTMLDivElement;
+const assessmentContainer = document.getElementById('assessmentContainer') as HTMLDivElement;
+
 // Initialize lexer, renderer, and VM
 const lexer = new CodonLexer();
 const renderer = new Canvas2DRenderer(canvas);
@@ -103,6 +110,10 @@ const themeManager = new ThemeManager();
 // Initialize achievement system
 const achievementEngine = new AchievementEngine();
 const achievementUI = new AchievementUI(achievementEngine, 'achievementContainer');
+
+// Initialize assessment system
+const assessmentEngine = new AssessmentEngine();
+let assessmentUI: AssessmentUI | null = null; // Initialize on first use
 
 // Update theme button text
 function updateThemeButton() {
@@ -1015,5 +1026,39 @@ if (urlGenome) {
   }, 100);
 }
 
+// Mode switching logic
+function switchMode(mode: 'playground' | 'assessment') {
+  if (mode === 'playground') {
+    playgroundContainer.style.display = 'grid';
+    assessmentContainer.style.display = 'none';
+  } else {
+    playgroundContainer.style.display = 'none';
+    assessmentContainer.style.display = 'block';
+
+    // Initialize assessment UI on first access
+    if (!assessmentUI) {
+      assessmentUI = new AssessmentUI(
+        assessmentEngine,
+        assessmentContainer,
+        achievementEngine,
+        achievementUI
+      );
+    }
+    assessmentUI.show();
+  }
+}
+
+// Setup mode toggle listeners
+modeToggleBtns.forEach(btn => {
+  btn.addEventListener('change', (e) => {
+    const mode = (e.target as HTMLInputElement).value as 'playground' | 'assessment';
+    switchMode(mode);
+  });
+});
+
+// Initialize in playground mode
+switchMode('playground');
+
 console.log('🧬 CodonCanvas Playground loaded');
 console.log('Press Cmd/Ctrl + Enter to run your genome');
+console.log('💡 Switch to Assessment mode to test your mutation knowledge');
