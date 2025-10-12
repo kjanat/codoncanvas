@@ -48,6 +48,7 @@ const exampleInfo = document.getElementById('exampleInfo') as HTMLDivElement;
 const linterPanel = document.getElementById('linterPanel') as HTMLDivElement;
 const linterToggle = document.getElementById('linterToggle') as HTMLButtonElement;
 const linterMessages = document.getElementById('linterMessages') as HTMLDivElement;
+const fixAllBtn = document.getElementById('fixAllBtn') as HTMLButtonElement;
 
 // Initialize lexer, renderer, and VM
 const lexer = new CodonLexer();
@@ -327,6 +328,67 @@ function applyAutoFix(errorMessage: string): void {
   }
 }
 
+/**
+ * Fix all auto-fixable errors iteratively
+ */
+function fixAllErrors(): void {
+  let source = editor.value;
+  let iterations = 0;
+  const maxIterations = 10; // Prevent infinite loops
+  let fixedCount = 0;
+
+  // Keep fixing until no more fixable errors or max iterations
+  while (iterations < maxIterations) {
+    try {
+      const tokens = lexer.tokenize(source);
+      const frameErrors = lexer.validateFrame(source);
+      const structErrors = lexer.validateStructure(tokens);
+      const allErrors = [...frameErrors, ...structErrors];
+
+      // Find first fixable error
+      const fixableError = allErrors.find(err => canAutoFix(err.message));
+
+      if (!fixableError) {
+        // No more fixable errors
+        break;
+      }
+
+      // Apply fix
+      const fixed = autoFixError(fixableError.message, source);
+      if (fixed && fixed !== source) {
+        source = fixed;
+        fixedCount++;
+      } else {
+        // Fix didn't work, avoid infinite loop
+        break;
+      }
+    } catch (error) {
+      // Tokenization errors need fixing too
+      if (error instanceof Error) {
+        const fixed = autoFixError(error.message, source);
+        if (fixed && fixed !== source) {
+          source = fixed;
+          fixedCount++;
+        } else {
+          break;
+        }
+      } else {
+        break;
+      }
+    }
+
+    iterations++;
+  }
+
+  if (fixedCount > 0) {
+    editor.value = source;
+    setStatus(`Fixed ${fixedCount} error${fixedCount > 1 ? 's' : ''}`, 'success');
+    runLinter(source);
+  } else {
+    setStatus('No auto-fixable errors found', 'info');
+  }
+}
+
 function displayLinterErrors(errors: Array<{ message: string; position: number; severity: 'error' | 'warning' | 'info' }>): void {
   if (errors.length === 0) {
     linterMessages.innerHTML = '<div style="color: #89d185;">✅ No errors found</div>';
@@ -550,6 +612,7 @@ searchInput.addEventListener('input', updateExampleDropdown);
 
 // Linter listeners
 linterToggle.addEventListener('click', toggleLinter);
+fixAllBtn.addEventListener('click', fixAllErrors);
 
 // Debounced linter on editor input
 let linterTimeout: number | null = null;
