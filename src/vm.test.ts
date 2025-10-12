@@ -413,6 +413,121 @@ describe('CodonVM', () => {
 			expect(vm.state.stack).toHaveLength(1);
 			expect(vm.state.stack[0]).toBe(28);
 		});
+
+		test('SUB operation', () => {
+			const genome = 'ATG GAA AGG GAA AAT CAG TAA'; // PUSH 10, PUSH 3, SUB → 7
+			const tokens = lexer.tokenize(genome);
+			vm.run(tokens);
+
+			expect(vm.state.stack).toHaveLength(1);
+			expect(vm.state.stack[0]).toBe(7);
+		});
+
+		test('DIV operation', () => {
+			const genome = 'ATG GAA CGC GAA AGA CAT TAA'; // PUSH 25, PUSH 8, DIV → 3
+			const tokens = lexer.tokenize(genome);
+			vm.run(tokens);
+
+			expect(vm.state.stack).toHaveLength(1);
+			expect(vm.state.stack[0]).toBe(3);
+		});
+
+		test('SUB with larger values', () => {
+			const genome = 'ATG GAA TGG GAA ATT CAG TAA'; // PUSH 58, PUSH 15, SUB → 43
+			const tokens = lexer.tokenize(genome);
+			vm.run(tokens);
+
+			expect(vm.state.stack).toHaveLength(1);
+			expect(vm.state.stack[0]).toBe(43);
+		});
+
+		test('DIV with larger values', () => {
+			const genome = 'ATG GAA TCC GAA ATC CAT TAA'; // PUSH 53, PUSH 13, DIV → 4
+			const tokens = lexer.tokenize(genome);
+			vm.run(tokens);
+
+			expect(vm.state.stack).toHaveLength(1);
+			expect(vm.state.stack[0]).toBe(4);
+		});
+
+		test('SUB resulting in negative', () => {
+			const genome = 'ATG GAA ACT GAA AGG CAG TAA'; // PUSH 7, PUSH 10, SUB → -3
+			const tokens = lexer.tokenize(genome);
+			vm.run(tokens);
+
+			expect(vm.state.stack).toHaveLength(1);
+			expect(vm.state.stack[0]).toBe(-3);
+		});
+
+		test('DIV with floor division', () => {
+			const genome = 'ATG GAA AGG GAA AAT CAT TAA'; // PUSH 10, PUSH 3, DIV → 3 (10/3 = 3.33 → floor to 3)
+			const tokens = lexer.tokenize(genome);
+			vm.run(tokens);
+
+			expect(vm.state.stack).toHaveLength(1);
+			expect(vm.state.stack[0]).toBe(3);
+		});
+
+		test('DIV by zero throws error', () => {
+			const genome = 'ATG GAA AGG GAA AAA CAT TAA'; // PUSH 10, PUSH 0, DIV → error
+			const tokens = lexer.tokenize(genome);
+
+			expect(() => vm.run(tokens)).toThrow('Division by zero');
+		});
+
+		test('DIV resulting in zero', () => {
+			const genome = 'ATG GAA AAG GAA ACT CAT TAA'; // PUSH 2, PUSH 7, DIV → 0 (2/7 = 0.28 → floor to 0)
+			const tokens = lexer.tokenize(genome);
+			vm.run(tokens);
+
+			expect(vm.state.stack).toHaveLength(1);
+			expect(vm.state.stack[0]).toBe(0);
+		});
+
+		test('SUB underflow throws error', () => {
+			const genome = 'ATG GAA AAC CAG TAA'; // PUSH 1, SUB (no second value)
+			const tokens = lexer.tokenize(genome);
+
+			expect(() => vm.run(tokens)).toThrow('Stack underflow');
+		});
+
+		test('DIV underflow throws error', () => {
+			const genome = 'ATG GAA AAC CAT TAA'; // PUSH 1, DIV (no second value)
+			const tokens = lexer.tokenize(genome);
+
+			expect(() => vm.run(tokens)).toThrow('Stack underflow');
+		});
+
+		test('computed circle radius via SUB', () => {
+			const genome = 'ATG GAA TCC GAA AGG CAG GGA TAA'; // PUSH 52, PUSH 10, SUB (=42), CIRCLE
+			const tokens = lexer.tokenize(genome);
+			vm.run(tokens);
+			const renderer = vm.renderer as MockRenderer;
+
+			expect(renderer.operations).toHaveLength(1);
+			expect(renderer.operations[0]).toContain('circle(');
+			// Circle should have radius based on 42/64 * 400 = 262.5
+		});
+
+		test('computed circle radius via DIV', () => {
+			const genome = 'ATG GAA TCC GAA AAG CAT GGA TAA'; // PUSH 52, PUSH 2, DIV (=26), CIRCLE
+			const tokens = lexer.tokenize(genome);
+			vm.run(tokens);
+			const renderer = vm.renderer as MockRenderer;
+
+			expect(renderer.operations).toHaveLength(1);
+			expect(renderer.operations[0]).toContain('circle(');
+			// Circle should have radius based on 26/64 * 400 = 162.5
+		});
+
+		test('complex arithmetic formula', () => {
+			const genome = 'ATG GAA CGC GAA ACT CTG GAA CGC GAA AGA CAT CAG TAA'; // PUSH 25, PUSH 7, ADD (=32), PUSH 25, PUSH 8, DIV (=3), SUB (=29)
+			const tokens = lexer.tokenize(genome);
+			vm.run(tokens);
+
+			expect(vm.state.stack).toHaveLength(1);
+			expect(vm.state.stack[0]).toBe(29);
+		});
 	});
 
 	describe('Error handling', () => {

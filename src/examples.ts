@@ -689,6 +689,119 @@ TAA`,
     concepts: ['arithmetic', 'drawing', 'transforms', 'stack'],
     goodForMutations: ['missense'],
     keywords: ['geometric', 'series', 'exponential', 'growth', 'multiply', 'pattern', 'math']
+  },
+
+  proportionalSizing: {
+    title: 'Proportional Sizing',
+    description: 'Circles with ratios computed using division for proportional design',
+    genome: `; Demonstrate proportional sizing with DIV opcode
+ATG
+  ; Large circle: base size 40
+  GAA TCA            ; PUSH 40
+  GGA                ; CIRCLE(40) - full size
+
+  ; Move right
+  GAA TCC GAA AAA ACA ; PUSH 52, PUSH 0, TRANSLATE
+
+  ; Medium circle: half size (40 / 2 = 20)
+  GAA TCA            ; PUSH 40
+  GAA AAG            ; PUSH 2
+  CAT                ; DIV → 20
+  GGA                ; CIRCLE(20) - half radius
+
+  ; Move right again
+  GAA TCC GAA AAA ACA ; PUSH 52, PUSH 0, TRANSLATE
+
+  ; Small circle: quarter size (40 / 4 = 10)
+  GAA TCA            ; PUSH 40
+  GAA AGA            ; PUSH 4
+  CAT                ; DIV → 10
+  GGA                ; CIRCLE(10) - quarter radius
+TAA`,
+    difficulty: 'intermediate',
+    concepts: ['arithmetic', 'drawing', 'transforms', 'stack'],
+    goodForMutations: ['missense'],
+    keywords: ['proportions', 'ratios', 'division', 'scaling', 'relative', 'fractions', 'math']
+  },
+
+  relativeSizes: {
+    title: 'Relative Sizes',
+    description: 'Descending circle sizes using subtraction for gradients',
+    genome: `; Demonstrate relative sizing with SUB opcode
+ATG
+  ; Circle 1: base size 35
+  GAA TGT            ; PUSH 35
+  GGA                ; CIRCLE(35) - largest
+
+  ; Move down
+  GAA AAA GAA AGG ACA ; PUSH 0, PUSH 10, TRANSLATE
+
+  ; Circle 2: base - 5 = 30
+  GAA TGT            ; PUSH 35
+  GAA ACT            ; PUSH 5
+  CAG                ; SUB → 30
+  GGA                ; CIRCLE(30)
+
+  ; Move down
+  GAA AAA GAA AGG ACA ; PUSH 0, PUSH 10, TRANSLATE
+
+  ; Circle 3: base - 10 = 25
+  GAA TGT            ; PUSH 35
+  GAA AGG            ; PUSH 10
+  CAG                ; SUB → 25
+  GGA                ; CIRCLE(25)
+
+  ; Move down
+  GAA AAA GAA AGG ACA ; PUSH 0, PUSH 10, TRANSLATE
+
+  ; Circle 4: base - 15 = 20
+  GAA TGT            ; PUSH 35
+  GAA ATT            ; PUSH 15
+  CAG                ; SUB → 20
+  GGA                ; CIRCLE(20) - smallest
+TAA`,
+    difficulty: 'intermediate',
+    concepts: ['arithmetic', 'drawing', 'transforms', 'stack'],
+    goodForMutations: ['missense'],
+    keywords: ['subtraction', 'differences', 'offsets', 'relative', 'gradients', 'pattern', 'math']
+  },
+
+  centeredComposition: {
+    title: 'Centered Composition',
+    description: 'Symmetrical design using division to compute center positions',
+    genome: `; Center a composition using DIV for coordinate calculation
+ATG
+  ; Compute center x (canvas assumed 400 wide → 200 center)
+  ; Using literal 32 (= 200 in canvas coords: 32/64 * 400 = 200)
+
+  ; Draw center circle
+  GAA CGC            ; PUSH 50 (diameter)
+  GAA AAG            ; PUSH 2
+  CAT                ; DIV → 25 (radius)
+  GGA                ; CIRCLE(25) at center
+
+  ; Offset for smaller circles (compute spacing)
+  GAA TGT            ; PUSH 35
+  GAA AAG            ; PUSH 2
+  CAT                ; DIV → 17 (half spacing)
+
+  ; Move right by computed offset
+  GAA AAA ACA        ; PUSH 0, [offset on stack], TRANSLATE
+
+  GAA ATT            ; PUSH 15
+  GGA                ; CIRCLE(15) - right accent
+
+  ; Return to center and go left
+  GAA AAA GAA TGT CAG ; PUSH 0, PUSH 35, SUB → -35
+  ACA                ; TRANSLATE(-35, 0)
+
+  GAA ATT            ; PUSH 15
+  GGA                ; CIRCLE(15) - left accent (symmetry)
+TAA`,
+    difficulty: 'advanced',
+    concepts: ['arithmetic', 'drawing', 'transforms', 'stack', 'composition'],
+    goodForMutations: ['missense'],
+    keywords: ['centering', 'symmetry', 'division', 'composition', 'layout', 'coordinates', 'math']
   }
 };
 

@@ -286,6 +286,23 @@ export class CodonVM implements VM {
         break;
       }
 
+      case Opcode.SUB: {
+        const b = this.pop();
+        const a = this.pop();
+        this.push(a - b);
+        break;
+      }
+
+      case Opcode.DIV: {
+        const b = this.pop();
+        const a = this.pop();
+        if (b === 0) {
+          throw new Error(`Division by zero at instruction ${this.state.instructionPointer}`);
+        }
+        this.push(Math.floor(a / b));
+        break;
+      }
+
       default:
         throw new Error(`Unknown opcode: ${opcode}`);
     }
