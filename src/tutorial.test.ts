@@ -1,5 +1,5 @@
 import { describe, it, expect, beforeEach, vi } from 'vitest';
-import { TutorialManager, helloCircleTutorial, mutationTutorial } from './tutorial';
+import { TutorialManager, helloCircleTutorial, mutationTutorial, timelineTutorial } from './tutorial';
 
 // Mock localStorage
 const localStorageMock = (() => {
@@ -347,6 +347,129 @@ describe('mutationTutorial', () => {
     it('should accept insertion of one base', () => {
       const result = manager.validateStep('ATG GAAA AGG GGA TAA');
       expect(result).toBe(true);
+    });
+  });
+});
+
+describe('Timeline Tutorial', () => {
+  it('should have correct number of steps', () => {
+    expect(timelineTutorial.steps).toHaveLength(6);
+  });
+
+  it('should have correct step order', () => {
+    const stepIds = timelineTutorial.steps.map(s => s.id);
+    expect(stepIds).toEqual([
+      'welcome',
+      'play-pause',
+      'step-forward',
+      'observe-stack',
+      'state-changes',
+      'complete'
+    ]);
+  });
+
+  it('should have validation functions for interactive steps', () => {
+    const playPauseStep = timelineTutorial.steps.find(s => s.id === 'play-pause');
+    expect(playPauseStep?.validationFn).toBeDefined();
+  });
+
+  describe('play-pause step validation', () => {
+    let manager: TutorialManager;
+
+    beforeEach(() => {
+      localStorage.clear();
+      manager = new TutorialManager('test_timeline');
+      manager.start(timelineTutorial);
+      manager.nextStep(''); // welcome
+    });
+
+    it('should allow manual progression (always true)', () => {
+      const result = manager.validateStep('ATG GAA AGG GGA TAA');
+      expect(result).toBe(true);
+    });
+
+    it('should allow empty code for timeline interactions', () => {
+      const result = manager.validateStep('');
+      expect(result).toBe(true);
+    });
+  });
+
+  describe('timeline tutorial progression', () => {
+    let manager: TutorialManager;
+
+    beforeEach(() => {
+      localStorage.clear();
+      manager = new TutorialManager('test_timeline');
+    });
+
+    it('should start at welcome step', () => {
+      manager.start(timelineTutorial);
+      const step = manager.getCurrentStep();
+      expect(step?.id).toBe('welcome');
+    });
+
+    it('should progress through all steps', () => {
+      manager.start(timelineTutorial);
+
+      expect(manager.nextStep('')).toBe(true); // welcome -> play-pause
+      expect(manager.getCurrentStep()?.id).toBe('play-pause');
+
+      expect(manager.nextStep('')).toBe(true); // play-pause -> step-forward
+      expect(manager.getCurrentStep()?.id).toBe('step-forward');
+
+      expect(manager.nextStep('')).toBe(true); // step-forward -> observe-stack
+      expect(manager.getCurrentStep()?.id).toBe('observe-stack');
+
+      expect(manager.nextStep('')).toBe(true); // observe-stack -> state-changes
+      expect(manager.getCurrentStep()?.id).toBe('state-changes');
+
+      expect(manager.nextStep('')).toBe(true); // state-changes -> complete
+      expect(manager.getCurrentStep()?.id).toBe('complete');
+    });
+
+    it('should mark as completed after final step', () => {
+      manager.start(timelineTutorial);
+
+      // Go through all steps
+      timelineTutorial.steps.forEach(() => {
+        manager.nextStep('');
+      });
+
+      expect(manager.isCompleted()).toBe(true);
+    });
+
+    it('should use separate storage key from other tutorials', () => {
+      const timelineManager = new TutorialManager('codoncanvas_timeline_tutorial_completed');
+      const mutationManager = new TutorialManager('codoncanvas_mutation_tutorial_completed');
+
+      timelineManager.markCompleted();
+
+      expect(timelineManager.isCompleted()).toBe(true);
+      expect(mutationManager.isCompleted()).toBe(false);
+    });
+  });
+
+  describe('timeline tutorial content', () => {
+    it('should mention ribosome metaphor', () => {
+      const welcomeStep = timelineTutorial.steps[0];
+      expect(welcomeStep.content.toLowerCase()).toContain('ribosome');
+    });
+
+    it('should explain stack concept', () => {
+      const stackStep = timelineTutorial.steps.find(s => s.id === 'observe-stack');
+      expect(stackStep?.content.toLowerCase()).toContain('stack');
+      expect(stackStep?.content.toLowerCase()).toContain('storage');
+    });
+
+    it('should explain VM state', () => {
+      const stateStep = timelineTutorial.steps.find(s => s.id === 'state-changes');
+      expect(stateStep?.content.toLowerCase()).toContain('position');
+      expect(stateStep?.content.toLowerCase()).toContain('rotation');
+    });
+
+    it('should provide next steps in completion', () => {
+      const completeStep = timelineTutorial.steps.find(s => s.id === 'complete');
+      expect(completeStep?.content.toLowerCase()).toContain('next steps');
     });
   });
 });

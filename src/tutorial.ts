@@ -413,3 +413,135 @@ Ready to experiment on your own?`,
     },
   ],
 };
+
+/**
+ * Timeline tutorial: Learn step-by-step execution visualization
+ */
+export const timelineTutorial: TutorialConfig = {
+  id: 'timeline-execution',
+  title: 'Understanding Step-by-Step Execution',
+  description: 'Learn how your genome executes like a ribosome reading DNA',
+  steps: [
+    {
+      id: 'welcome',
+      title: 'Welcome to the Timeline! 🎬',
+      content: `The <strong>Timeline Scrubber</strong> lets you watch your genome execute instruction-by-instruction, just like a ribosome reading DNA!
+
+You can see:
+• Each codon as it's processed
+• The stack changing in real-time
+• The canvas updating step-by-step
+• VM state (position, rotation, color)
+
+Let's explore how your "Hello Circle" program executes!`,
+      targetElement: '#timelineContainer',
+    },
+    {
+      id: 'play-pause',
+      title: 'Play & Pause Controls',
+      content: `First, let's learn the basic controls.
+
+<strong>Try clicking the ▶️ Play button</strong> (or press spacebar)
+
+Watch as the timeline advances automatically! The current instruction is highlighted and the canvas updates in real-time.
+
+<strong>Now click ⏸ Pause</strong> to stop playback.
+
+You're in control - you decide the pace of execution!`,
+      targetElement: '#timelineContainer',
+      hint: 'Click the Play button, then Pause',
+      validationFn: (code: string) => {
+        // For timeline tutorial, we validate user interactions differently
+        // This is a manual progression step
+        return true;
+      },
+    },
+    {
+      id: 'step-forward',
+      title: 'Single-Step Execution',
+      content: `Now let's execute one instruction at a time.
+
+<strong>Click the "Step →" button</strong>
+
+Watch carefully:
+• The timeline marker advances one codon
+• The instruction panel shows what's executing
+• The stack updates (if it's a PUSH)
+• The canvas draws (if it's a shape command)
+
+<strong>Try stepping through multiple times</strong> to see each instruction's effect.
+
+This is like watching the ribosome move codon-by-codon! 🧬`,
+      targetElement: '#timelineContainer',
+      hint: 'Click "Step →" to advance one instruction',
+    },
+    {
+      id: 'observe-stack',
+      title: 'Watch the Stack',
+      content: `The <strong>stack</strong> is where numbers are stored before being used.
+
+Look at the "Current State" panel while stepping:
+
+<strong>Step to the PUSH instruction (GAA AGG)</strong>
+
+You'll see:
+• GAA AGG executes
+• The number 10 appears in the stack: <code>[10]</code>
+• Nothing draws yet (just storing the value)
+
+<strong>Step to the CIRCLE instruction (GGA)</strong>
+
+You'll see:
+• GGA executes
+• The stack becomes empty: <code>[]</code>
+• The circle draws using radius 10!
+
+The stack is temporary storage for drawing commands. 📦`,
+      targetElement: '#timelineContainer',
+      hint: 'Watch the stack change as you step through',
+    },
+    {
+      id: 'state-changes',
+      title: 'VM State Tracking',
+      content: `The VM (Virtual Machine) tracks the "state" of your program:
+
+<strong>Current State shows:</strong>
+• <strong>Position:</strong> Where on the canvas (x, y)
+• <strong>Rotation:</strong> Current angle (for shapes)
+• <strong>Scale:</strong> Size multiplier (default 1.0)
+• <strong>Color:</strong> Current HSL color values
+
+<strong>Try the "Reset" button</strong> to go back to the beginning and watch how state changes as you step through!
+
+Each instruction can modify the state (TRANSLATE changes position, ROTATE changes angle, etc.)
+
+This is how complex patterns are built! 🎨`,
+      targetElement: '#timelineContainer',
+      hint: 'Reset and observe state changes',
+    },
+    {
+      id: 'complete',
+      title: 'Timeline Master! 🏆',
+      content: `Excellent work! You've mastered timeline execution:
+
+<strong>You learned:</strong>
+• ▶️ Play/Pause for automatic playback
+• Step → for single-instruction execution
+• Stack observation (temporary storage)
+• VM state tracking (position, rotation, scale, color)
+• Reset to replay from the beginning
+
+<strong>The Ribosome Metaphor:</strong>
+Just like a ribosome reads mRNA codon-by-codon to build proteins, the CodonCanvas VM reads your genome triplet-by-triplet to build visuals!
+
+<strong>Next Steps:</strong>
+• Try loading "Two Shapes" or "Colorful Pattern" examples
+• Step through to see how complex patterns build up
+• Use different playback speeds (1x, 2x, 4x)
+• Experiment with your own genomes!
+
+<strong>Pro tip:</strong> Timeline is perfect for debugging - step through to find exactly where things go wrong!`,
+      targetElement: '#timelineContainer',
+    },
+  ],
+};

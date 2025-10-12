@@ -239,6 +239,8 @@
     import { examples } from './src/examples.ts';
     import { TimelineScrubber, injectTimelineStyles } from './src/timeline-scrubber.ts';
     import { ShareSystem, injectShareStyles } from './src/share-system.ts';
+    import { TutorialManager, TutorialUI, timelineTutorial } from './src/tutorial.ts';
+    import './src/tutorial-ui.css';
 
     // Inject styles
     injectTimelineStyles();
@@ -327,6 +329,28 @@
       // Auto-load on start
       window.loadAndExecute();
     }
+
+    // Initialize tutorial system
+    const tutorialManager = new TutorialManager('codoncanvas_timeline_tutorial_completed');
+    const tutorialUI = new TutorialUI(tutorialManager);
+
+    // Show tutorial on first visit
+    if (!tutorialManager.isCompleted()) {
+      setTimeout(() => {
+        tutorialUI.show(timelineTutorial);
+      }, 2000); // 2 second delay for page to settle
+    }
+
+    // Tutorial callbacks
+    tutorialManager.onCompleteCallback(() => {
+      console.log('Timeline tutorial completed! 🏆');
+    });
+
+    // Global function to reset tutorial (for testing)
+    window.resetTimelineTutorial = function() {
+      tutorialManager.reset();
+      console.log('Timeline tutorial reset. Reload page to see it again.');
+    };
   </script>
 </body>
 </html>
