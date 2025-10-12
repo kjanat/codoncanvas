@@ -1,3 +1,21 @@
+/**
+ * Seeded pseudo-random number generator (Linear Congruential Generator)
+ * Returns values in [0, 1) range with reproducible output for same seed
+ */
+class SeededRandom {
+  private state: number;
+
+  constructor(seed: number) {
+    this.state = seed % 2147483647;
+    if (this.state <= 0) this.state += 2147483646;
+  }
+
+  next(): number {
+    this.state = (this.state * 48271) % 2147483647;
+    return (this.state - 1) / 2147483646;
+  }
+}
+
 export interface Renderer {
   readonly width: number;
   readonly height: number;
@@ -8,6 +26,7 @@ export interface Renderer {
   line(length: number): void;
   triangle(size: number): void;
   ellipse(rx: number, ry: number): void;
+  noise(seed: number, intensity: number): void;
   translate(dx: number, dy: number): void;
   rotate(degrees: number): void;
   scale(factor: number): void;
@@ -105,6 +124,34 @@ export class Canvas2DRenderer implements Renderer {
     this.ctx.ellipse(0, 0, rx, ry, 0, 0, Math.PI * 2);
     this.ctx.fill();
     this.ctx.stroke();
+    this.restoreTransform();
+  }
+
+  noise(seed: number, intensity: number): void {
+    // Convert intensity to pixel radius (0-63 → 0-canvas_width)
+    const radius = (intensity / 64) * this.width;
+
+    // Number of dots scales with intensity (more intense = more dots)
+    const dotCount = Math.floor(intensity * 5) + 10; // 10-325 dots
+
+    // Create seeded random generator for reproducibility
+    const rng = new SeededRandom(seed);
+
+    this.applyTransform();
+
+    // Draw random dots within circular region
+    for (let i = 0; i < dotCount; i++) {
+      // Random point in circle using rejection sampling
+      let px, py;
+      do {
+        px = (rng.next() * 2 - 1) * radius;
+        py = (rng.next() * 2 - 1) * radius;
+      } while (px * px + py * py > radius * radius);
+
+      // Draw small dot
+      this.ctx.fillRect(px, py, 1, 1);
+    }
+
     this.restoreTransform();
   }
 

@@ -185,11 +185,12 @@ export class CodonVM implements VM {
         // No operation
         break;
 
-      case Opcode.NOISE:
-        // Not implemented in MVP
-        this.pop(); // intensity
-        this.pop(); // seed
+      case Opcode.NOISE: {
+        const intensity = this.pop();
+        const seed = this.pop();
+        this.renderer.noise(seed, intensity);
         break;
+      }
 
       case Opcode.SAVE_STATE: {
         const snapshot = this.snapshot();

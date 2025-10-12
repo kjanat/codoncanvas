@@ -140,6 +140,24 @@ TAA`
   GAA AAT            ; Push 3
   CCA                ; Draw mouth (10x3 rect)
 TAA`
+  },
+
+  texturedCircle: {
+    title: 'Textured Circle with Noise',
+    description: 'Demonstrates NOISE opcode for artistic texture effects',
+    genome: `ATG
+  GAA TCC            ; Push 53 (radius)
+  GAA AAA GAA AAA TTA ; Color(0, 0, 0) black
+  GGA                ; Draw circle
+  GAA CCC            ; Push 21 (seed)
+  GAA CGC            ; Push 25 (intensity)
+  GAA CTT GAA CCC GAA CCC TTA ; Color(31, 21, 21) warm
+  CTA                ; NOISE(21, 25) - textured effect
+  GAA CGT            ; Push 26 (different seed)
+  GAA ATT            ; Push 15 (lower intensity)
+  GAA AAA GAA CGC GAA CCC TTA ; Color(0, 25, 21) cool
+  CTA                ; NOISE(26, 15) - lighter texture
+TAA`
   }
 };
 

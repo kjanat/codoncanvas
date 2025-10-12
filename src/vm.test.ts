@@ -189,6 +189,76 @@ describe("CodonVM", () => {
 		});
 	});
 
+	describe("Advanced operations", () => {
+		test("NOISE pops seed and intensity values", () => {
+			const genome = "ATG GAA CCC GAA AGG CTA TAA"; // PUSH 21 (seed), PUSH 10 (intensity), NOISE
+			const tokens = lexer.tokenize(genome);
+			vm.run(tokens);
+
+			// Should call noise with seed=21, intensity=10
+			expect(renderer.operations).toContain("noise(21, 10)");
+
+			// Stack should be empty after NOISE
+			expect(vm.state.stack.length).toBe(0);
+		});
+
+		test("NOISE with different seeds produces different patterns", () => {
+			const genome1 = "ATG GAA CCC GAA AGG CTA TAA"; // seed=21
+			const genome2 = "ATG GAA CGC GAA AGG CTA TAA"; // seed=25
+
+			const tokens1 = lexer.tokenize(genome1);
+			const tokens2 = lexer.tokenize(genome2);
+
+			vm.run(tokens1);
+			const ops1 = [...renderer.operations];
+
+			vm.reset();
+
+			vm.run(tokens2);
+			const ops2 = [...renderer.operations];
+
+			// Different seeds = different noise calls
+			expect(ops1).toContain("noise(21, 10)");
+			expect(ops2).toContain("noise(25, 10)");
+		});
+
+		test("NOISE with same seed is reproducible", () => {
+			const genome = "ATG GAA CCC GAA AGG CTA TAA"; // seed=21, intensity=10
+
+			const tokens1 = lexer.tokenize(genome);
+			const tokens2 = lexer.tokenize(genome);
+
+			vm.run(tokens1);
+			const ops1 = [...renderer.operations];
+
+			vm.reset();
+
+			vm.run(tokens2);
+			const ops2 = [...renderer.operations];
+
+			// Same genome = same operations
+			expect(ops1).toEqual(ops2);
+		});
+
+		test("SAVE_STATE pushes state to stack", () => {
+			const genome = "ATG TCA TAA"; // SAVE_STATE
+			const tokens = lexer.tokenize(genome);
+			vm.run(tokens);
+
+			// State stack should have one snapshot
+			expect(vm.state.stateStack.length).toBe(1);
+		});
+
+		test("SAVE_STATE preserves transform state", () => {
+			const genome = "ATG GAA CCC GAA AAA ACA TCA TAA"; // TRANSLATE(21, 0), SAVE_STATE
+			const tokens = lexer.tokenize(genome);
+			vm.run(tokens);
+
+			const snapshot = vm.state.stateStack[0];
+			expect(snapshot.position.x).not.toBe(200); // Position changed from center
+		});
+	});
+
 	describe("Mutation testing", () => {
 		test("silent mutation produces identical output", () => {
 			const genome1 = "ATG GAA AGG GGA TAA";

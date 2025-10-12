@@ -43,7 +43,7 @@ ATG GAA AAT GGA TAA
 
 ## Built-in Examples
 
-The playground includes **10 pedagogical examples** demonstrating all features:
+The playground includes **11 pedagogical examples** demonstrating all features:
 
 1. **Hello Circle** - Minimal example with single circle
 2. **Two Shapes** - Circle and rectangle composition
@@ -55,6 +55,7 @@ The playground includes **10 pedagogical examples** demonstrating all features:
 8. **Stack Operations** - DUP and SWAP for efficient stack management
 9. **Rosette Pattern** - Complex composition with rotation and color
 10. **Simple Face** - Combines primitives to draw a smiley face
+11. **Textured Circle** - NOISE opcode for artistic texture effects
 
 ## Codon Map Quick Reference
 
@@ -88,8 +89,12 @@ The playground includes **10 pedagogical examples** demonstrating all features:
 ### Utility
 
 - `CA*` - NOP
-- `CT*` - NOISE
+
+### Advanced Operations
+
+- `CT*` - NOISE (seed, intensity)
 - `TC*` - SAVE_STATE
+- `TG*` (TGG, TGT) - SWAP
 
 **Note:** `*` means all 4 bases create synonymous codons
 
@@ -262,10 +267,10 @@ CodonCanvas teaches:
 
 - Lexer with comment stripping and validation
 - VM with all 9 opcode families (64 codons)
-- Canvas2D renderer with all drawing primitives
+- Canvas2D renderer with all drawing primitives + noise
 - Base-4 numeric literal encoding (0-63 range)
 - Interactive playground UI with examples
-- Comprehensive test suite (30+ tests)
+- Comprehensive test suite (60+ tests)
 
 ✅ **Phase B: Pedagogy Tools (Completed)**
 
@@ -293,12 +298,18 @@ CodonCanvas teaches:
   - Mutation Lab (`mutation-demo.html`)
   - Timeline Demo (`timeline-demo.html`)
 - **Example Library** (`src/examples.ts`)
-  - 10 pedagogical examples demonstrating all features
+  - 11 pedagogical examples demonstrating all features
   - Progressive complexity from simple to advanced
-  - All drawing primitives, transforms, and stack operations
+  - All drawing primitives, transforms, stack operations, and noise
+- **NOISE Opcode Implementation**
+  - Seeded pseudo-random number generator (reproducible)
+  - Artistic texture effects with circular stippling
+  - Intensity-based dot count and radius scaling
+  - Full integration with transform system
 
 🚧 **Phase C: Extensions (Future)**
 
+- RESTORE_STATE opcode (requires codon reallocation)
 - Audio backend for sound synthesis
 - Evolutionary mode with fitness selection
 - Alternative alphabets (U for RNA)
