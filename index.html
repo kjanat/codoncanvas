@@ -555,6 +555,40 @@
     .mutation-btn.deletion:hover {
       background: #ececba;
     }
+
+    /* Mode toggle styles */
+    input[type="radio"][name="mode"] {
+      appearance: none;
+      -webkit-appearance: none;
+      position: absolute;
+      opacity: 0;
+    }
+
+    input[type="radio"][name="mode"] + span {
+      transition: all 0.2s;
+    }
+
+    input[type="radio"][name="mode"]:checked + span {
+      background: var(--color-button-primary);
+      color: white;
+      font-weight: 600;
+      border-radius: 4px;
+      padding: 0.5rem 0.75rem;
+      margin: -0.5rem -0.75rem;
+    }
+
+    input[type="radio"][name="mode"]:not(:checked) + span:hover {
+      background: var(--color-button-secondary-hover);
+      border-radius: 4px;
+      padding: 0.5rem 0.75rem;
+      margin: -0.5rem -0.75rem;
+    }
+
+    input[type="radio"][name="mode"]:focus-visible + span {
+      outline: 2px solid var(--color-focus);
+      outline-offset: 2px;
+      border-radius: 4px;
+    }
   </style>
 </head>
 <body>
@@ -567,12 +601,25 @@
           <h1>🧬 CodonCanvas</h1>
           <div class="subtitle">DNA-Inspired Visual Programming Language</div>
         </div>
-        <button id="themeToggleBtn" class="secondary" aria-label="Cycle through themes: dark, light, high contrast" title="Change theme">
-          🌙 Dark
-        </button>
+        <div style="display: flex; gap: 1rem; align-items: center;">
+          <div role="group" aria-label="Application mode" style="display: flex; gap: 0.5rem; background: var(--color-bg-tertiary); padding: 0.25rem; border-radius: 6px;">
+            <label style="display: flex; align-items: center; gap: 0.25rem; padding: 0.5rem 0.75rem; border-radius: 4px; cursor: pointer; font-size: 0.875rem; transition: background 0.2s;">
+              <input type="radio" name="mode" value="playground" checked style="margin: 0;">
+              <span>🧪 Playground</span>
+            </label>
+            <label style="display: flex; align-items: center; gap: 0.25rem; padding: 0.5rem 0.75rem; border-radius: 4px; cursor: pointer; font-size: 0.875rem; transition: background 0.2s;">
+              <input type="radio" name="mode" value="assessment" style="margin: 0;">
+              <span>🎓 Assessment</span>
+            </label>
+          </div>
+          <button id="themeToggleBtn" class="secondary" aria-label="Cycle through themes: dark, light, high contrast" title="Change theme">
+            🌙 Dark
+          </button>
+        </div>
       </div>
     </header>
 
+    <div id="playgroundContainer" style="display: contents;">
     <main id="main-content" class="editor-panel">
       <nav class="toolbar" role="toolbar" aria-label="Main controls">
         <button id="runBtn" aria-label="Run genome program (Ctrl+Enter)">▶ Run</button>
@@ -718,6 +765,10 @@ ATG GAA AAT GGA TAA
         <span id="instructionCount" aria-label="Number of instructions executed">Instructions: 0</span>
       </div>
     </footer>
+    </div>
+
+    <!-- Assessment Mode Container -->
+    <div id="assessmentContainer" style="display: none; grid-column: 1 / -1; overflow-y: auto;"></div>
   </div>
 
   <script type="module" src="/src/playground.ts"></script>
