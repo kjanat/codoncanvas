@@ -17,6 +17,7 @@ export default defineConfig({
         population: resolve(__dirname, 'population-genetics-demo.html'),
         genetic: resolve(__dirname, 'genetic-algorithm-demo.html'),
         tutorial: resolve(__dirname, 'tutorial.html'),
+        gallery: resolve(__dirname, 'gallery.html'),
       }
     }
   },

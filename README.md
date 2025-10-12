@@ -26,6 +26,7 @@ Try CodonCanvas online (no installation required):
 
 ### All Demos
 - **[Interactive Tutorial](https://yourusername.github.io/codoncanvas/tutorial.html)** ⭐ **NEW** - Step-by-step guided learning (start here!)
+- **[Example Gallery](https://yourusername.github.io/codoncanvas/gallery.html)** 🎨 **NEW** - Browse 30 examples with filters and live preview
 - **[Main Playground](https://yourusername.github.io/codoncanvas/)** - Interactive editor with 27 examples
 - **[Mutation Demos](https://yourusername.github.io/codoncanvas/demos.html)** - See all mutation types in action
 - **[Mutation Lab](https://yourusername.github.io/codoncanvas/mutation-demo.html)** - Side-by-side genome comparison
