@@ -10,6 +10,7 @@ CodonCanvas is an educational programming language that uses DNA-like triplets (
 - **DNA/RNA support**: Write genomes in DNA (T) or RNA (U) notation for biological accuracy
 - **Genetic redundancy**: Multiple codons map to the same operation (synonymous codons)
 - **Visual output**: Stack-based VM produces graphics on HTML5 canvas
+- **Timeline Scrubber**: Step-through execution like watching a ribosome translate code
 - **Mutation demonstration**: Silent, missense, nonsense, and frameshift mutations
 - **Directed evolution**: Evolve genomes toward target phenotypes through natural selection
 - **Interactive tutorials**: Step-by-step guided learning for all major features

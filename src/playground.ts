@@ -20,6 +20,7 @@ import { ShareSystem, injectShareStyles } from './share-system';
 import { TutorialManager, helloCircleTutorial } from './tutorial';
 import { initializeTutorial } from './tutorial-ui';
 import './tutorial-ui.css';
+import { TimelineScrubber, injectTimelineStyles } from './timeline-scrubber';
 
 // Get DOM elements
 const editor = document.getElementById('editor') as HTMLTextAreaElement;
@@ -65,6 +66,11 @@ const fixAllBtn = document.getElementById('fixAllBtn') as HTMLButtonElement;
 // Audio elements
 const audioToggleBtn = document.getElementById('audioToggleBtn') as HTMLButtonElement;
 
+// Timeline elements
+const timelineToggleBtn = document.getElementById('timelineToggleBtn') as HTMLButtonElement;
+const timelinePanel = document.getElementById('timelinePanel') as HTMLDivElement;
+const timelineContainer = document.getElementById('timelineContainer') as HTMLDivElement;
+
 // Initialize lexer, renderer, and VM
 const lexer = new CodonLexer();
 const renderer = new Canvas2DRenderer(canvas);
@@ -74,6 +80,15 @@ type RenderMode = 'visual' | 'audio' | 'both';
 let renderMode: RenderMode = 'visual'; // Start with visual mode
 const vm = new CodonVM(renderer);
 let lastSnapshots: VMState[] = []; // Store last execution snapshots for MIDI export
+
+// Initialize timeline scrubber
+const timelineScrubber = new TimelineScrubber({
+  containerElement: timelineContainer,
+  canvasElement: canvas,
+  autoPlay: false,
+  playbackSpeed: 500,
+});
+let timelineVisible = false;
 
 function setStatus(message: string, type: 'info' | 'error' | 'success') {
   statusMessage.textContent = message;
@@ -754,10 +769,32 @@ function exportMidi() {
   }
 }
 
+// Timeline toggle function
+function toggleTimeline() {
+  timelineVisible = !timelineVisible;
+  if (timelineVisible) {
+    timelinePanel.style.display = 'block';
+    timelineToggleBtn.textContent = '⏱️ Hide Timeline';
+    // Load current genome into timeline
+    const source = editor.value.trim();
+    if (source) {
+      try {
+        timelineScrubber.loadGenome(source);
+      } catch (error) {
+        setStatus(`Timeline error: ${error instanceof Error ? error.message : 'Unknown error'}`, 'error');
+      }
+    }
+  } else {
+    timelinePanel.style.display = 'none';
+    timelineToggleBtn.textContent = '⏱️ Timeline';
+  }
+}
+
 // Event listeners
 runBtn.addEventListener('click', runProgram);
 clearBtn.addEventListener('click', clearCanvas);
 audioToggleBtn.addEventListener('click', toggleAudio);
+timelineToggleBtn.addEventListener('click', toggleTimeline);
 exampleSelect.addEventListener('change', loadExample);
 exportBtn.addEventListener('click', exportImage);
 exportAudioBtn.addEventListener('click', exportAudio);
@@ -843,6 +880,9 @@ document.addEventListener('keydown', (e) => {
 
 // Initialize share system
 injectShareStyles();
+
+// Initialize timeline scrubber styles
+injectTimelineStyles();
 
 const shareSystem = new ShareSystem({
   containerElement: shareContainer,
