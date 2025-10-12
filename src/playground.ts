@@ -436,9 +436,11 @@ function toggleLinter(): void {
   if (isHidden) {
     linterPanel.style.display = 'block';
     linterToggle.textContent = 'Hide';
+    linterToggle.setAttribute('aria-expanded', 'true');
   } else {
     linterPanel.style.display = 'none';
     linterToggle.textContent = 'Show';
+    linterToggle.setAttribute('aria-expanded', 'false');
   }
 }
 
@@ -628,11 +630,46 @@ editor.addEventListener('input', () => {
 // Initialize example dropdown with all examples
 updateExampleDropdown();
 
-// Keyboard shortcut: Cmd/Ctrl + Enter to run
+// Keyboard shortcuts
 editor.addEventListener('keydown', (e) => {
+  // Ctrl/Cmd + Enter: Run program
   if ((e.metaKey || e.ctrlKey) && e.key === 'Enter') {
     e.preventDefault();
     runProgram();
+  }
+  // Ctrl/Cmd + K: Clear canvas
+  else if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
+    e.preventDefault();
+    clearCanvas();
+  }
+  // Ctrl/Cmd + S: Save genome
+  else if ((e.metaKey || e.ctrlKey) && e.key === 's') {
+    e.preventDefault();
+    saveGenome();
+  }
+  // Ctrl/Cmd + E: Export PNG
+  else if ((e.metaKey || e.ctrlKey) && e.key === 'e') {
+    e.preventDefault();
+    exportImage();
+  }
+  // Ctrl/Cmd + L: Toggle linter
+  else if ((e.metaKey || e.ctrlKey) && e.key === 'l') {
+    e.preventDefault();
+    toggleLinter();
+  }
+});
+
+// Global keyboard shortcuts (not just in editor)
+document.addEventListener('keydown', (e) => {
+  // Esc: Hide linter or example info
+  if (e.key === 'Escape') {
+    if (linterPanel.style.display !== 'none') {
+      linterPanel.style.display = 'none';
+      linterToggle.textContent = 'Show';
+      linterToggle.setAttribute('aria-expanded', 'false');
+    } else if (exampleInfo.style.display !== 'none') {
+      exampleInfo.style.display = 'none';
+    }
   }
 });
 

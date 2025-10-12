@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>CodonCanvas - DNA-Inspired Visual Programming</title>
+  <meta name="description" content="Educational DNA-inspired visual programming language for learning genetic concepts through code">
   <style>
     * {
       margin: 0;
@@ -40,7 +41,7 @@
 
     .subtitle {
       font-size: 0.875rem;
-      color: #858585;
+      color: #a0a0a0; /* WCAG AA compliant: 5.2:1 contrast ratio */
       margin-top: 0.25rem;
     }
 
@@ -112,8 +113,49 @@
       line-height: 1.5;
       border: none;
       resize: none;
-      outline: none;
       overflow-y: auto;
+    }
+
+    /* Accessibility: Visible focus indicators */
+    *:focus {
+      outline: 2px solid #007acc;
+      outline-offset: 2px;
+    }
+
+    button:focus,
+    select:focus,
+    input:focus {
+      outline: 2px solid #007acc;
+      outline-offset: 2px;
+    }
+
+    /* Skip to content link */
+    .skip-link {
+      position: absolute;
+      top: -40px;
+      left: 0;
+      background: #007acc;
+      color: white;
+      padding: 8px;
+      text-decoration: none;
+      z-index: 100;
+    }
+
+    .skip-link:focus {
+      top: 0;
+    }
+
+    /* Visually hidden but screen reader accessible */
+    .sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border-width: 0;
     }
 
     .canvas-panel {
@@ -246,27 +288,33 @@
   </style>
 </head>
 <body>
+  <a href="#main-content" class="skip-link">Skip to main content</a>
+
   <div class="container">
-    <header>
+    <header role="banner">
       <h1>🧬 CodonCanvas</h1>
       <div class="subtitle">DNA-Inspired Visual Programming Language</div>
     </header>
 
-    <div class="editor-panel">
-      <div class="toolbar">
-        <button id="runBtn">▶ Run</button>
-        <button id="clearBtn" class="secondary">Clear Canvas</button>
+    <main id="main-content" class="editor-panel">
+      <nav class="toolbar" role="toolbar" aria-label="Main controls">
+        <button id="runBtn" aria-label="Run genome program (Ctrl+Enter)">▶ Run</button>
+        <button id="clearBtn" class="secondary" aria-label="Clear canvas output">Clear Canvas</button>
 
         <div class="example-filters">
+          <label for="searchInput" class="sr-only">Search examples</label>
           <input
             type="text"
             id="searchInput"
             placeholder="🔍 Search examples..."
+            aria-label="Search examples by name or description"
             style="width: 150px; padding: 6px 8px; border: 1px solid #3c3c3c; background: #1e1e1e; color: #d4d4d4; border-radius: 4px; font-size: 13px;"
           />
 
+          <label for="difficultyFilter" class="sr-only">Filter by difficulty</label>
           <select
             id="difficultyFilter"
+            aria-label="Filter examples by difficulty level"
             style="padding: 6px 8px; border: 1px solid #3c3c3c; background: #1e1e1e; color: #d4d4d4; border-radius: 4px; font-size: 13px;"
           >
             <option value="">All Difficulties</option>
@@ -275,8 +323,10 @@
             <option value="advanced">🌳 Advanced</option>
           </select>
 
+          <label for="conceptFilter" class="sr-only">Filter by concept</label>
           <select
             id="conceptFilter"
+            aria-label="Filter examples by programming concept"
             style="padding: 6px 8px; border: 1px solid #3c3c3c; background: #1e1e1e; color: #d4d4d4; border-radius: 4px; font-size: 13px;"
           >
             <option value="">All Concepts</option>
@@ -289,25 +339,33 @@
           </select>
         </div>
 
-        <select id="exampleSelect">
+        <label for="exampleSelect" class="sr-only">Load example genome</label>
+        <select id="exampleSelect" aria-label="Select example genome to load">
           <option value="">Load Example...</option>
         </select>
-        <button id="exportBtn" class="secondary">Export PNG</button>
-        <button id="saveGenomeBtn" class="secondary">💾 Save .genome</button>
-        <button id="loadGenomeBtn" class="secondary">📂 Load .genome</button>
-        <input type="file" id="genomeFileInput" accept=".genome,.json" style="display: none;">
-      </div>
-      <div class="toolbar" style="border-top: 1px solid #3e3e42;">
-        <span style="color: #858585; align-self: center; font-size: 0.75rem;">🧬 Mutations:</span>
-        <button id="silentMutationBtn" class="mutation-btn silent" title="Change codon to synonymous variant (same opcode)">Silent</button>
-        <button id="missenseMutationBtn" class="mutation-btn missense" title="Change codon to different opcode">Missense</button>
-        <button id="nonsenseMutationBtn" class="mutation-btn nonsense" title="Introduce STOP codon (early termination)">Nonsense</button>
-        <button id="frameshiftMutationBtn" class="mutation-btn frameshift" title="Insert/delete base (reading frame shift)">Frameshift</button>
-        <button id="pointMutationBtn" class="mutation-btn point" title="Random single base change">Point</button>
-        <button id="insertionMutationBtn" class="mutation-btn insertion" title="Insert 1-3 bases">Insertion</button>
-        <button id="deletionMutationBtn" class="mutation-btn deletion" title="Delete 1-3 bases">Deletion</button>
-      </div>
-      <textarea id="editor" spellcheck="false" placeholder="Enter your genome here...
+        <button id="exportBtn" class="secondary" aria-label="Export canvas as PNG image">Export PNG</button>
+        <button id="saveGenomeBtn" class="secondary" aria-label="Save current genome to file">💾 Save .genome</button>
+        <button id="loadGenomeBtn" class="secondary" aria-label="Load genome from file">📂 Load .genome</button>
+        <label for="genomeFileInput" class="sr-only">Choose genome file</label>
+        <input type="file" id="genomeFileInput" accept=".genome,.json" aria-label="Choose genome file to load" style="position: absolute; left: -9999px;">
+      </nav>
+      <nav class="toolbar" role="toolbar" aria-label="Mutation tools" style="border-top: 1px solid #3e3e42;">
+        <span style="color: #a0a0a0; align-self: center; font-size: 0.75rem;" aria-hidden="true">🧬 Mutations:</span>
+        <button id="silentMutationBtn" class="mutation-btn silent" title="Change codon to synonymous variant (same opcode)" aria-label="Apply silent mutation - change codon to synonymous variant">Silent</button>
+        <button id="missenseMutationBtn" class="mutation-btn missense" title="Change codon to different opcode" aria-label="Apply missense mutation - change codon to different opcode">Missense</button>
+        <button id="nonsenseMutationBtn" class="mutation-btn nonsense" title="Introduce STOP codon (early termination)" aria-label="Apply nonsense mutation - introduce early STOP codon">Nonsense</button>
+        <button id="frameshiftMutationBtn" class="mutation-btn frameshift" title="Insert/delete base (reading frame shift)" aria-label="Apply frameshift mutation - insert or delete single base">Frameshift</button>
+        <button id="pointMutationBtn" class="mutation-btn point" title="Random single base change" aria-label="Apply point mutation - random single base change">Point</button>
+        <button id="insertionMutationBtn" class="mutation-btn insertion" title="Insert 1-3 bases" aria-label="Apply insertion mutation - insert 1 to 3 bases">Insertion</button>
+        <button id="deletionMutationBtn" class="mutation-btn deletion" title="Delete 1-3 bases" aria-label="Apply deletion mutation - delete 1 to 3 bases">Deletion</button>
+      </nav>
+      <label for="editor" class="sr-only">Genome code editor</label>
+      <textarea
+        id="editor"
+        spellcheck="false"
+        aria-label="Genome code editor. Enter DNA codons using bases A, C, G, T. Press Ctrl+Enter to run."
+        aria-describedby="editor-help"
+        placeholder="Enter your genome here...
 Example:
 ATG GAA AAT GGA TAA
 
@@ -316,40 +374,58 @@ ATG GAA AAT GGA TAA
 ; GAA AAT = PUSH 3
 ; GGA = CIRCLE
 ; TAA = STOP">ATG GAA AAT GGA TAA</textarea>
+      <div id="editor-help" class="sr-only">
+        DNA codon editor. Use bases A, C, G, and T to create triplet codons.
+        Start programs with ATG (START) and end with TAA, TAG, or TGA (STOP).
+        Semicolons begin comments. Press Ctrl+Enter to run the program.
+      </div>
 
-      <div id="linterPanel" style="margin-top: 12px; background: #2d2d30; border: 1px solid #3c3c3c; border-radius: 4px;">
+      <section id="linterPanel" role="region" aria-labelledby="linter-heading" style="margin-top: 12px; background: #2d2d30; border: 1px solid #3c3c3c; border-radius: 4px;">
         <div style="display: flex; justify-content: space-between; align-items: center; padding: 8px 12px; background: #252526; border-bottom: 1px solid #3c3c3c; border-radius: 4px 4px 0 0;">
-          <h3 style="font-size: 13px; font-weight: 600; color: #4ec9b0;">Linter</h3>
+          <h3 id="linter-heading" style="font-size: 13px; font-weight: 600; color: #4ec9b0;">Linter</h3>
           <div style="display: flex; gap: 8px;">
-            <button id="fixAllBtn" style="padding: 4px 10px; font-size: 11px; background: #4ec9b0; color: #1e1e1e; font-weight: 500; border: none; border-radius: 3px; cursor: pointer;">Fix All</button>
-            <button id="linterToggle" style="padding: 4px 8px; font-size: 11px; background: #3e3e42;">Hide</button>
+            <button id="fixAllBtn" aria-label="Fix all auto-fixable errors" style="padding: 4px 10px; font-size: 11px; background: #4ec9b0; color: #1e1e1e; font-weight: 500; border: none; border-radius: 3px; cursor: pointer;">Fix All</button>
+            <button id="linterToggle" aria-label="Toggle linter panel visibility" aria-expanded="true" style="padding: 4px 8px; font-size: 11px; background: #3e3e42;">Hide</button>
           </div>
         </div>
-        <div id="linterMessages" style="padding: 12px; font-size: 12px; line-height: 1.6; max-height: 150px; overflow-y: auto;">
-          <div style="color: #858585;">Linter ready. Type or load an example to validate.</div>
+        <div id="linterMessages" role="log" aria-live="polite" aria-atomic="false" style="padding: 12px; font-size: 12px; line-height: 1.6; max-height: 150px; overflow-y: auto;">
+          <div style="color: #a0a0a0;">Linter ready. Type or load an example to validate.</div>
         </div>
-      </div>
+      </section>
 
-      <div
+      <section
         id="exampleInfo"
+        role="region"
+        aria-labelledby="example-info-heading"
+        aria-live="polite"
         style="display: none; margin-top: 12px; padding: 12px; background: #2d2d30; border: 1px solid #3c3c3c; border-radius: 4px; font-size: 13px; line-height: 1.6;"
-      ></div>
-    </div>
+      >
+        <h3 id="example-info-heading" class="sr-only">Example Information</h3>
+      </section>
+    </main>
 
-    <div class="canvas-panel">
-      <div class="canvas-header">Output Canvas</div>
+    <aside class="canvas-panel" role="complementary" aria-labelledby="canvas-heading">
+      <div class="canvas-header">
+        <h2 id="canvas-heading" style="font-weight: bold; font-size: 1rem;">Output Canvas</h2>
+      </div>
       <div class="canvas-container">
-        <canvas id="canvas" width="400" height="400"></canvas>
+        <canvas
+          id="canvas"
+          width="400"
+          height="400"
+          role="img"
+          aria-label="Visual output of genome program. Canvas displays graphics generated by executing DNA codons."
+        ></canvas>
       </div>
-    </div>
+    </aside>
 
-    <div class="status-bar info">
+    <footer class="status-bar info" role="status" aria-live="polite" aria-atomic="true">
       <span id="statusMessage">Ready</span>
-      <div class="stats">
-        <span id="codonCount">Codons: 0</span>
-        <span id="instructionCount">Instructions: 0</span>
+      <div class="stats" aria-label="Program statistics">
+        <span id="codonCount" aria-label="Number of codons">Codons: 0</span>
+        <span id="instructionCount" aria-label="Number of instructions executed">Instructions: 0</span>
       </div>
-    </div>
+    </footer>
   </div>
 
   <script type="module" src="/src/playground.ts"></script>
