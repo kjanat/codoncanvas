@@ -1,77 +1,64 @@
 ; Wavy Lines - Showcase
-; Flowing wave pattern using LINE primitives with small rotation steps
+; Flowing lines radiating from center with color gradient
 ; Difficulty: showcase
-; Concepts: lines, rotation, wave simulation, gradients
-; Visual: Undulating lines creating wave-like flow
+; Concepts: lines, rotation, gradients, flow
+; Visual: Fan of colored lines creating wave-like flow pattern
 ; Good for mutations: silent (preserves flow), missense (color shift)
 
 ATG
-  ; Wave 1 - Red to yellow flowing lines (small rotation steps)
+  ; Red to orange lines
   GAA AAA GAA TTT GAA GCC TTA ; Color(0, 63, 37) red
-  GAA TGG ATA                 ; Line 45
-  GAA TTT AGA                 ; Rotate 5
-  GAA ATT GAA TTT GAA GCC TTA ; Color(15, 63, 37) orange
-  GAA TGG ATA                 ; Line 45
-  GAA TTT AGA                 ; Rotate 5
-  GAA CCC GAA TTT GAA GCC TTA ; Color(21, 63, 37) yellow-orange
-  GAA TGG ATA                 ; Line 45
-  GAA TTT AGA                 ; Rotate 5
-  GAA TCC GAA TTT GAA GCC TTA ; Color(53, 63, 37) gold
-  GAA TGG ATA                 ; Line 45
-  GAA TTT AGA                 ; Rotate 5
-  GAA TTT GAA TTT GAA GCC TTA ; Color(63, 63, 37) yellow
-  GAA TGG ATA                 ; Line 45
-
-  ; Wave 2 - Yellow to cyan (continuing rotation)
-  GAA TTT AGA                 ; Rotate 5
-  GAA TTT GAA TCC GAA GCC TTA ; Color(63, 53, 37) yellow-green
   GAA GCC ATA                 ; Line 37
-  GAA TTT AGA                 ; Rotate 5
+  GAA AGG AGA                 ; Rotate 10
+  GAA ATT GAA TTT GAA GCC TTA ; Color(15, 63, 37) orange
+  GAA GCC ATA                 ; Line 37
+  GAA AGG AGA                 ; Rotate 10
+  GAA CCC GAA TTT GAA GCC TTA ; Color(21, 63, 37) yellow-orange
+  GAA GCC ATA                 ; Line 37
+  GAA AGG AGA                 ; Rotate 10
+
+  ; Yellow to green lines
+  GAA TTT GAA TTT GAA GCC TTA ; Color(63, 63, 37) yellow
+  GAA GCC ATA                 ; Line 37
+  GAA AGG AGA                 ; Rotate 10
   GAA TTT GAA AGG GAA GCC TTA ; Color(63, 10, 37) lime
   GAA GCC ATA                 ; Line 37
-  GAA TTT AGA                 ; Rotate 5
+  GAA AGG AGA                 ; Rotate 10
   GAA TCC GAA AGG GAA GCC TTA ; Color(53, 10, 37) green
   GAA GCC ATA                 ; Line 37
-  GAA TTT AGA                 ; Rotate 5
-  GAA CCC GAA AGG GAA GCC TTA ; Color(21, 10, 37) dark green
-  GAA GCC ATA                 ; Line 37
-  GAA TTT AGA                 ; Rotate 5
+  GAA AGG AGA                 ; Rotate 10
+
+  ; Cyan to blue lines
   GAA AGG GAA TTT GAA TCC TTA ; Color(10, 63, 53) cyan
   GAA GCC ATA                 ; Line 37
-
-  ; Wave 3 - Cyan to purple
-  GAA TTT AGA                 ; Rotate 5
+  GAA AGG AGA                 ; Rotate 10
   GAA ATT GAA TTT GAA TCC TTA ; Color(15, 63, 53) light blue
-  GAA CCC ATA                 ; Line 21
-  GAA TTT AGA                 ; Rotate 5
+  GAA GCC ATA                 ; Line 37
+  GAA AGG AGA                 ; Rotate 10
   GAA CCC GAA TTT GAA TCC TTA ; Color(21, 63, 53) sky blue
-  GAA CCC ATA                 ; Line 21
-  GAA TTT AGA                 ; Rotate 5
-  GAA GCC GAA TTT GAA TCC TTA ; Color(37, 63, 53) blue
-  GAA CCC ATA                 ; Line 21
-  GAA TTT AGA                 ; Rotate 5
-  GAA TGG GAA TTT GAA TCC TTA ; Color(45, 63, 53) blue-purple
-  GAA CCC ATA                 ; Line 21
-  GAA TTT AGA                 ; Rotate 5
-  GAA TTT GAA TTT GAA TCC TTA ; Color(63, 63, 53) purple
-  GAA CCC ATA                 ; Line 21
+  GAA GCC ATA                 ; Line 37
+  GAA AGG AGA                 ; Rotate 10
 
-  ; Wave 4 - Purple to magenta
-  GAA TTT AGA                 ; Rotate 5
+  ; Blue to purple lines
+  GAA GCC GAA TTT GAA TCC TTA ; Color(37, 63, 53) blue
+  GAA GCC ATA                 ; Line 37
+  GAA AGG AGA                 ; Rotate 10
+  GAA TTT GAA TTT GAA TCC TTA ; Color(63, 63, 53) purple
+  GAA GCC ATA                 ; Line 37
+  GAA AGG AGA                 ; Rotate 10
   GAA TTT GAA TCC GAA TCC TTA ; Color(63, 53, 53) magenta
-  GAA ATT ATA                 ; Line 15
-  GAA TTT AGA                 ; Rotate 5
+  GAA GCC ATA                 ; Line 37
+  GAA AGG AGA                 ; Rotate 10
+
+  ; Pink to red lines (complete circle)
   GAA TTT GAA GCC GAA TCC TTA ; Color(63, 37, 53) pink
-  GAA ATT ATA                 ; Line 15
-  GAA TTT AGA                 ; Rotate 5
+  GAA GCC ATA                 ; Line 37
+  GAA AGG AGA                 ; Rotate 10
   GAA TTT GAA CCC GAA TCC TTA ; Color(63, 21, 53) hot pink
-  GAA ATT ATA                 ; Line 15
-  GAA TTT AGA                 ; Rotate 5
-  GAA TTT GAA AGG GAA TCC TTA ; Color(63, 10, 53) bright pink
-  GAA ATT ATA                 ; Line 15
-  GAA TTT AGA                 ; Rotate 5
+  GAA GCC ATA                 ; Line 37
+  GAA AGG AGA                 ; Rotate 10
   GAA TCC GAA AAA GAA TCC TTA ; Color(53, 0, 53) deep magenta
-  GAA ATT ATA                 ; Line 15
+  GAA GCC ATA                 ; Line 37
 
   ; Center accent
   GAA TTT GAA TTT GAA TTT TTA ; Color(63, 63, 63) white

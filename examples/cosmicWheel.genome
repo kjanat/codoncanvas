@@ -1,14 +1,13 @@
 ; Cosmic Wheel - Advanced Showcase
-; Radial mandala with textured core and radiating patterns
+; Radial wheel with 12 ellipse spokes radiating outward
 ; Difficulty: advanced-showcase
-; Concepts: radial-symmetry, texture, layering, composition
-; Visual: Mandala-like wheel with textured center and colorful spokes
+; Concepts: radial-symmetry, ellipses, layering, composition
+; Visual: Mandala-like wheel with colorful radiating spokes
 ; Good for mutations: missense (color variations), silent (preserves structure)
 
 ATG
-  ; Outer spokes - 12 elongated ellipses radiating outward
+  ; Outer spokes - 12 large elongated ellipses (rainbow gradient)
   GAA AAA GAA TTT GAA GCC TTA ; Color(0, 63, 37) red
-  TCA                         ; SAVE
   GAA TCC GAA CCC GTA          ; Ellipse 53×21
   GAA GGC AGA                 ; Rotate 30
   GAA ATT GAA TTT GAA GCC TTA ; Color(15, 63, 37) orange
@@ -44,9 +43,10 @@ ATG
   GAA TTT GAA TCC GAA TCC TTA ; Color(63, 53, 53) magenta
   GAA TCC GAA CCC GTA          ; Ellipse 53×21
 
-  ; Middle ring - 8 medium circles
+  ; Middle ring - 8 medium circles overlapping
   GAA TTT GAA GCC GAA TCC TTA ; Color(63, 37, 53) pink
   TCA                         ; SAVE
+  GAA ATT AGA                 ; Rotate 45 (offset)
   GAA GCC GGA                 ; Circle 37
   GAA ATT AGA                 ; Rotate 45
   GAA TTT GAA CCC GAA TCC TTA ; Color(63, 21, 53) hot pink
@@ -69,30 +69,10 @@ ATG
   GAA ATT AGA                 ; Rotate 45
   GAA AAA GAA AAA GAA GCC TTA ; Color(0, 0, 37) almost black
   GAA GCC GGA                 ; Circle 37
+  TCG                         ; RESTORE
 
-  ; Inner ring - 6 small bright accents
-  GAA TTT GAA TTT GAA TTT TTA ; Color(63, 63, 63) white
-  TCA                         ; SAVE
-  GAA CCC GGA                 ; Circle 21
-  GAA CTC AGA                 ; Rotate 60
-  GAA TTT GAA TTT GAA TGG TTA ; Color(63, 63, 45) cream
-  GAA CCC GGA                 ; Circle 21
-  GAA CTC AGA                 ; Rotate 60
-  GAA TTT GAA TGG GAA TTT TTA ; Color(63, 45, 63) lavender
-  GAA CCC GGA                 ; Circle 21
-  GAA CTC AGA                 ; Rotate 60
-  GAA TGG GAA TTT GAA TTT TTA ; Color(45, 63, 63) pale cyan
-  GAA CCC GGA                 ; Circle 21
-  GAA CTC AGA                 ; Rotate 60
+  ; Center - Bright white core
   GAA TTT GAA TTT GAA TTT TTA ; Color(63, 63, 63) white
   GAA CCC GGA                 ; Circle 21
-  GAA CTC AGA                 ; Rotate 60
-  GAA TGG GAA TGG GAA TTT TTA ; Color(45, 45, 63) periwinkle
-  GAA CCC GGA                 ; Circle 21
-
-  ; Center - Textured core
-  GAA TTT GAA TTT GAA CTT TTA ; Color(63, 63, 31) bright yellow-white
-  GAA ATT GGA                 ; Circle 15
-  GAA AGG GAA ATT CTA          ; NOISE texture (seed 10, intensity 15)
 
 TAA

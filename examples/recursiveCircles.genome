@@ -1,82 +1,41 @@
 ; Recursive Circles - Showcase
-; Nested circles with rotational offsets creating depth illusion
+; Nested circles with proper size progression and gradient
 ; Difficulty: showcase
-; Concepts: nesting, scaling, rotation, depth
-; Visual: Concentric circles with gradient colors
+; Concepts: layering, size progression, depth illusion
+; Visual: Concentric circles creating depth through color gradient
 ; Good for mutations: silent (safe), missense (color progression)
 
 ATG
-  ; Layer 1 - Outermost rings (large, dark)
+  ; Outermost circle - very dark
   GAA AAA GAA AAA GAA CCC TTA ; Color(0, 0, 21) very dark
-  TCA                         ; SAVE
   GAA TTT GGA                 ; Circle 63 (largest)
-  GAA CTC AGA                 ; Rotate 60
+
+  ; Large circles - dark gradient
   GAA AAA GAA AGG GAA CCC TTA ; Color(0, 10, 21) dark blue-gray
   GAA TGG GGA                 ; Circle 45
-  GAA CTC AGA                 ; Rotate 60
-  GAA AAA GAA CCC GAA CCC TTA ; Color(0, 21, 21) dark teal
-  GAA TGG GGA                 ; Circle 45
-  GAA CTC AGA                 ; Rotate 60
+
   GAA AGG GAA CCC GAA CCC TTA ; Color(10, 21, 21) dark cyan
-  GAA TGG GGA                 ; Circle 45
-  GAA CTC AGA                 ; Rotate 60
-  GAA CCC GAA CCC GAA CCC TTA ; Color(21, 21, 21) dark gray
-  GAA TGG GGA                 ; Circle 45
-  GAA CTC AGA                 ; Rotate 60
-  GAA CCC GAA AGG GAA CCC TTA ; Color(21, 10, 21) dark purple
-  GAA TGG GGA                 ; Circle 45
+  GAA GCC GGA                 ; Circle 37
 
-  ; Layer 2 - Middle rings (medium, transitional)
+  ; Medium circles - transitional
   GAA CCC GAA CCC GAA GCC TTA ; Color(21, 21, 37) medium gray
-  TCA                         ; SAVE
-  GAA GCC GGA                 ; Circle 37
-  GAA ATT AGA                 ; Rotate 45
+  GAA GGC GGA                 ; Circle 30
+
   GAA CCC GAA GCC GAA GCC TTA ; Color(21, 37, 37) medium teal
-  GAA GCC GGA                 ; Circle 37
-  GAA ATT AGA                 ; Rotate 45
+  GAA TGA GGA                 ; Circle 25
+
   GAA GCC GAA GCC GAA GCC TTA ; Color(37, 37, 37) medium gray
-  GAA GCC GGA                 ; Circle 37
-  GAA ATT AGA                 ; Rotate 45
-  GAA GCC GAA CCC GAA GCC TTA ; Color(37, 21, 37) medium purple
-  GAA GCC GGA                 ; Circle 37
-  GAA ATT AGA                 ; Rotate 45
-  GAA TCC GAA GCC GAA GCC TTA ; Color(53, 37, 37) medium red-gray
-  GAA GCC GGA                 ; Circle 37
-  GAA ATT AGA                 ; Rotate 45
-  GAA GCC GAA TCC GAA GCC TTA ; Color(37, 53, 37) medium green-gray
-  GAA GCC GGA                 ; Circle 37
-  GAA ATT AGA                 ; Rotate 45
-  GAA GCC GAA GCC GAA TCC TTA ; Color(37, 37, 53) medium blue-gray
-  GAA GCC GGA                 ; Circle 37
-  GAA ATT AGA                 ; Rotate 45
-  GAA TCC GAA TCC GAA GCC TTA ; Color(53, 53, 37) medium olive
-  GAA GCC GGA                 ; Circle 37
-
-  ; Layer 3 - Inner rings (bright)
-  GAA TCC GAA TCC GAA TCC TTA ; Color(53, 53, 53) light gray
-  TCA                         ; SAVE
-  GAA CCC GGA                 ; Circle 21
-  GAA GGC AGA                 ; Rotate 30
-  GAA TCC GAA TTT GAA TCC TTA ; Color(53, 63, 53) light green
-  GAA CCC GGA                 ; Circle 21
-  GAA GGC AGA                 ; Rotate 30
-  GAA TTT GAA TCC GAA TCC TTA ; Color(63, 53, 53) light red
-  GAA CCC GGA                 ; Circle 21
-  GAA GGC AGA                 ; Rotate 30
-  GAA TCC GAA TCC GAA TTT TTA ; Color(53, 53, 63) light blue
-  GAA CCC GGA                 ; Circle 21
-  GAA GGC AGA                 ; Rotate 30
-  GAA TTT GAA TTT GAA TCC TTA ; Color(63, 63, 53) light yellow
-  GAA CCC GGA                 ; Circle 21
-  GAA GGC AGA                 ; Rotate 30
-  GAA TTT GAA TCC GAA TTT TTA ; Color(63, 53, 63) light magenta
-  GAA CCC GGA                 ; Circle 21
-  GAA GGC AGA                 ; Rotate 30
-  GAA TCC GAA TTT GAA TTT TTA ; Color(53, 63, 63) light cyan
   GAA CCC GGA                 ; Circle 21
 
-  ; Center - Brightest core
-  GAA TTT GAA TTT GAA TTT TTA ; Color(63, 63, 63) white
+  ; Smaller circles - lighter
+  GAA GCC GAA TCC GAA GCC TTA ; Color(37, 53, 37) light gray-green
   GAA AGG GGA                 ; Circle 10
+
+  GAA TCC GAA TCC GAA TCC TTA ; Color(53, 53, 53) light gray
+  GAA TTT GGA                 ; Circle 5
+
+  ; Center - brightest
+  GAA TTT GAA TTT GAA TTT TTA ; Color(63, 63, 63) white
+  GAA AAT GGA                 ; Circle 3
 
 TAA

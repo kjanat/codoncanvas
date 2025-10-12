@@ -1,139 +1,107 @@
 ; Geometric Mosaic - Advanced Showcase
-; Radial arrangement of rectangles, triangles, and circles at different positions
+; Grid of varied shapes (rectangles, triangles, circles) creating mosaic pattern
 ; Difficulty: advanced-showcase
-; Concepts: transforms, colors, composition, shape variety
-; Visual: Colorful mosaic of varied geometric shapes radiating outward
-; Good for mutations: missense (color variations), frameshift (chaos)
+; Concepts: transforms, positioning, shape variety, composition
+; Visual: Colorful geometric shapes arranged in scattered pattern
+; Good for mutations: missense (color variations), frameshift (interesting chaos)
 
 ATG
-  ; Outer ring - 8 rectangles at radius 35
+  ; Top row - rectangles in 3 positions
   GAA AAA GAA TTT GAA GCC TTA ; Color(0, 63, 37) red
-  TCA                         ; SAVE origin
-  GAA TCC GAA AAA ACA          ; Translate(35, 0)
-  GAA AGG GAA ATT CCA          ; Rectangle 10×15
-  TCG                         ; RESTORE to origin
+  TCA                         ; SAVE
+  GAA GCC GAA AAA ACA          ; Translate(37, 0) - right
+  GAA AGG GAA AGG CCA          ; Rectangle 10×10
+  TCG                         ; RESTORE
 
-  GAA ATT AGA                 ; Rotate 45
+  GAA CCA AGA                 ; Rotate 180 (face left)
+  TCA                         ; SAVE
+  GAA GCC GAA AAA ACA          ; Translate(37, 0) - actually goes left
   GAA ATT GAA TTT GAA GCC TTA ; Color(15, 63, 37) orange
-  TCA                         ; SAVE
-  GAA TCC GAA AAA ACA          ; Translate(35, 0) in rotated direction
-  GAA AGG GAA ATT CCA          ; Rectangle 10×15
+  GAA AGG GAA AGG CCA          ; Rectangle 10×10
   TCG                         ; RESTORE
 
-  GAA ATT AGA                 ; Rotate 45 more
+  GAA GGA AGA                 ; Rotate 90 more (270 total, face up)
+  TCA                         ; SAVE
+  GAA GCC GAA AAA ACA          ; Translate(37, 0) - actually goes up
   GAA CCC GAA TTT GAA GCC TTA ; Color(21, 63, 37) yellow-orange
-  TCA                         ; SAVE
-  GAA TCC GAA AAA ACA          ; Translate(35, 0)
-  GAA AGG GAA ATT CCA          ; Rectangle
+  GAA AGG GAA AGG CCA          ; Rectangle 10×10
   TCG                         ; RESTORE
 
-  GAA ATT AGA                 ; Rotate 45 more
+  ; Middle positions - triangles
+  GAA GGA AGA                 ; Rotate 90 more (0 total, reset to right)
   GAA TTT GAA TTT GAA GCC TTA ; Color(63, 63, 37) yellow
   TCA                         ; SAVE
-  GAA TCC GAA AAA ACA          ; Translate(35, 0)
-  GAA AGG GAA ATT CCA          ; Rectangle
+  GAA CCC GAA AAA ACA          ; Translate(22, 0) - right
+  GAA AGG GCA                 ; Triangle 10
   TCG                         ; RESTORE
 
-  GAA ATT AGA                 ; Rotate 45 more
+  GAA CCA AGA                 ; Rotate 180 (left)
+  TCA                         ; SAVE
+  GAA CCC GAA AAA ACA          ; Translate(22, 0) - left
   GAA TTT GAA AGG GAA GCC TTA ; Color(63, 10, 37) lime
-  TCA                         ; SAVE
-  GAA TCC GAA AAA ACA          ; Translate(35, 0)
-  GAA AGG GAA ATT CCA          ; Rectangle
+  GAA AGG GCA                 ; Triangle 10
   TCG                         ; RESTORE
 
-  GAA ATT AGA                 ; Rotate 45 more
+  GAA GGA AGA                 ; Rotate 90 (270 total, up)
+  TCA                         ; SAVE
+  GAA CCC GAA AAA ACA          ; Translate(22, 0) - up
   GAA TCC GAA AGG GAA GCC TTA ; Color(53, 10, 37) green
-  TCA                         ; SAVE
-  GAA TCC GAA AAA ACA          ; Translate(35, 0)
-  GAA AGG GAA ATT CCA          ; Rectangle
+  GAA AGG GCA                 ; Triangle 10
   TCG                         ; RESTORE
 
-  GAA ATT AGA                 ; Rotate 45 more
+  GAA GGA AGA                 ; Rotate 90 (0/360, right)
+  GAA GGA AGA                 ; Rotate 90 (90, down)
+  TCA                         ; SAVE
+  GAA CCC GAA AAA ACA          ; Translate(22, 0) - down
   GAA AGG GAA TTT GAA TCC TTA ; Color(10, 63, 53) cyan
-  TCA                         ; SAVE
-  GAA TCC GAA AAA ACA          ; Translate(35, 0)
-  GAA AGG GAA ATT CCA          ; Rectangle
+  GAA AGG GCA                 ; Triangle 10
   TCG                         ; RESTORE
 
-  GAA ATT AGA                 ; Rotate 45 more
+  ; Corner positions - circles
+  GAA ATT AGA                 ; Rotate 45
+  TCA                         ; SAVE
+  GAA TCC GAA AAA ACA          ; Translate(35, 0) - diagonal
   GAA ATT GAA TTT GAA TCC TTA ; Color(15, 63, 53) light blue
-  TCA                         ; SAVE
-  GAA TCC GAA AAA ACA          ; Translate(35, 0)
-  GAA AGG GAA ATT CCA          ; Rectangle
-  TCG                         ; RESTORE
-
-  ; Middle ring - 6 triangles at radius 22
-  GAA GCC GAA TTT GAA TCC TTA ; Color(37, 63, 53) blue
-  TCA                         ; SAVE
-  GAA CCC GAA AAA ACA          ; Translate(22, 0)
-  GAA AGG GCA                 ; Triangle 10
-  TCG                         ; RESTORE
-
-  GAA CTC AGA                 ; Rotate 60
-  GAA TTT GAA TTT GAA TCC TTA ; Color(63, 63, 53) purple
-  TCA                         ; SAVE
-  GAA CCC GAA AAA ACA          ; Translate(22, 0)
-  GAA AGG GCA                 ; Triangle 10
-  TCG                         ; RESTORE
-
-  GAA CTC AGA                 ; Rotate 60 more
-  GAA TTT GAA TCC GAA TCC TTA ; Color(63, 53, 53) magenta
-  TCA                         ; SAVE
-  GAA CCC GAA AAA ACA          ; Translate(22, 0)
-  GAA AGG GCA                 ; Triangle 10
-  TCG                         ; RESTORE
-
-  GAA CTC AGA                 ; Rotate 60 more
-  GAA TTT GAA GCC GAA TCC TTA ; Color(63, 37, 53) pink
-  TCA                         ; SAVE
-  GAA CCC GAA AAA ACA          ; Translate(22, 0)
-  GAA AGG GCA                 ; Triangle 10
-  TCG                         ; RESTORE
-
-  GAA CTC AGA                 ; Rotate 60 more
-  GAA TTT GAA CCC GAA TCC TTA ; Color(63, 21, 53) hot pink
-  TCA                         ; SAVE
-  GAA CCC GAA AAA ACA          ; Translate(22, 0)
-  GAA AGG GCA                 ; Triangle 10
-  TCG                         ; RESTORE
-
-  GAA CTC AGA                 ; Rotate 60 more
-  GAA TTT GAA AGG GAA TCC TTA ; Color(63, 10, 53) bright pink
-  TCA                         ; SAVE
-  GAA CCC GAA AAA ACA          ; Translate(22, 0)
-  GAA AGG GCA                 ; Triangle 10
-  TCG                         ; RESTORE
-
-  ; Inner ring - 4 small circles at radius 12
-  GAA TCC GAA AAA GAA TCC TTA ; Color(53, 0, 53) deep magenta
-  TCA                         ; SAVE
-  GAA AGC GAA AAA ACA          ; Translate(12, 0)
   GAA AGG GGA                 ; Circle 10
   TCG                         ; RESTORE
 
   GAA GGA AGA                 ; Rotate 90
-  GAA GCC GAA AAA GAA TCC TTA ; Color(37, 0, 53) purple-magenta
   TCA                         ; SAVE
-  GAA AGC GAA AAA ACA          ; Translate(12, 0)
+  GAA TCC GAA AAA ACA          ; Translate(35, 0) - diagonal
+  GAA CCC GAA TTT GAA TCC TTA ; Color(21, 63, 53) sky blue
   GAA AGG GGA                 ; Circle 10
   TCG                         ; RESTORE
 
-  GAA GGA AGA                 ; Rotate 90 more
-  GAA CCC GAA AAA GAA TCC TTA ; Color(21, 0, 53) dark purple
+  GAA GGA AGA                 ; Rotate 90
   TCA                         ; SAVE
-  GAA AGC GAA AAA ACA          ; Translate(12, 0)
+  GAA TCC GAA AAA ACA          ; Translate(35, 0) - diagonal
+  GAA GCC GAA TTT GAA TCC TTA ; Color(37, 63, 53) blue
   GAA AGG GGA                 ; Circle 10
   TCG                         ; RESTORE
 
-  GAA GGA AGA                 ; Rotate 90 more
-  GAA AGG GAA AAA GAA TCC TTA ; Color(10, 0, 53) very dark purple
+  GAA GGA AGA                 ; Rotate 90
   TCA                         ; SAVE
-  GAA AGC GAA AAA ACA          ; Translate(12, 0)
+  GAA TCC GAA AAA ACA          ; Translate(35, 0) - diagonal
+  GAA TTT GAA TTT GAA TCC TTA ; Color(63, 63, 53) purple
   GAA AGG GGA                 ; Circle 10
   TCG                         ; RESTORE
 
-  ; Center - Bright yellow core
-  GAA TTT GAA TTT GAA CTT TTA ; Color(63, 63, 31) bright yellow
+  ; Near-center positions - small shapes
+  GAA TTT GAA TCC GAA TCC TTA ; Color(63, 53, 53) magenta
+  TCA                         ; SAVE
+  GAA AGG GAA AAA ACA          ; Translate(10, 0)
+  GAA TTT GCA                 ; Triangle 5
+  TCG                         ; RESTORE
+
+  GAA GGA AGA                 ; Rotate 90
+  TCA                         ; SAVE
+  GAA AGG GAA AAA ACA          ; Translate(10, 0)
+  GAA TTT GAA GCC GAA TCC TTA ; Color(63, 37, 53) pink
+  GAA TTT GGA                 ; Circle 5
+  TCG                         ; RESTORE
+
+  ; Center - bright focal point
+  GAA TTT GAA TTT GAA TTT TTA ; Color(63, 63, 63) white
   GAA ATT GGA                 ; Circle 15
 
 TAA

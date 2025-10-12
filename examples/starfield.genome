@@ -1,67 +1,131 @@
 ; Starfield - Showcase
-; Scattered stars at various positions using simple translate
+; Scattered stars across canvas using rotate+translate pattern
 ; Difficulty: showcase
-; Concepts: positioning, composition
-; Visual: Stars scattered across canvas with varied sizes
+; Concepts: positioning, variation, composition
+; Visual: Stars scattered in 8 directions with varied sizes
 ; Good for mutations: silent (safe), missense (color shifts)
 
 ATG
-  ; Upper right cluster
+  ; Direction 0° (right) - 3 stars
   GAA TTT GAA TTT GAA TTT TTA ; Color(63, 63, 63) white
-  GAA TCC GAA AGG ACA          ; Translate(35, 10)
+  TCA                         ; SAVE
+  GAA CCC GAA AAA ACA          ; Translate(22, 0)
   GAA ATT GGA                 ; Circle 15
+  TCG                         ; RESTORE
 
+  TCA                         ; SAVE
+  GAA TCC GAA AAA ACA          ; Translate(35, 0)
+  GAA TTT GGA                 ; Circle 5
+  TCG                         ; RESTORE
+
+  TCA                         ; SAVE
+  GAA TGG GAA AAA ACA          ; Translate(45, 0)
+  GAA AGG GGA                 ; Circle 10
+  TCG                         ; RESTORE
+
+  ; Direction 45° - 2 stars
   GAA TTT GAA TGG GAA TTT TTA ; Color(63, 45, 63) pale purple
-  GAA TTT GAA TTT ACA          ; Translate(5, 5)
-  GAA TTT GGA                 ; Circle 5
+  GAA ATT AGA                 ; Rotate 45
+  TCA                         ; SAVE
+  GAA CCC GAA AAA ACA          ; Translate(22, 0)
+  GAA AGG GGA                 ; Circle 10
+  TCG                         ; RESTORE
 
+  TCA                         ; SAVE
+  GAA GCC GAA AAA ACA          ; Translate(37, 0)
+  GAA TTT GGA                 ; Circle 5
+  TCG                         ; RESTORE
+
+  ; Direction 90° (down) - 3 stars
   GAA TGG GAA TTT GAA TTT TTA ; Color(45, 63, 63) pale cyan
-  GAA TTT GAA AGG ACA          ; Translate(5, 10)
-  GAA AGG GGA                 ; Circle 10
+  GAA ATT AGA                 ; Rotate 45 more (90 total)
+  TCA                         ; SAVE
+  GAA CCC GAA AAA ACA          ; Translate(22, 0)
+  GAA TTT GGA                 ; Circle 5
+  TCG                         ; RESTORE
 
-  ; Upper left cluster
-  GAA TTT GAA TTT GAA TGG TTA ; Color(63, 63, 45) pale yellow
-  GAA AAA GAA TCC ACA          ; Translate(0, -35) - move up
+  TCA                         ; SAVE
+  GAA TCC GAA AAA ACA          ; Translate(35, 0)
   GAA ATT GGA                 ; Circle 15
+  TCG                         ; RESTORE
 
-  GAA TTT GAA TGG GAA TGG TTA ; Color(63, 45, 45) warm white
-  GAA TTT GAA TTT ACA          ; Translate(5, 5)
-  GAA TTT GGA                 ; Circle 5
-
-  ; Center-left cluster
-  GAA TGG GAA TGG GAA TTT TTA ; Color(45, 45, 63) cool white
-  GAA AAA GAA ATT ACA          ; Translate(0, 15)
+  TCA                         ; SAVE
+  GAA TGG GAA AAA ACA          ; Translate(45, 0)
   GAA AGG GGA                 ; Circle 10
+  TCG                         ; RESTORE
 
-  GAA TTT GAA TTT GAA TTT TTA ; Color(63, 63, 63) white
-  GAA TTT GAA TTT ACA          ; Translate(5, 5)
+  ; Direction 135° - 2 stars
+  GAA TTT GAA TTT GAA TGG TTA ; Color(63, 63, 45) pale yellow
+  GAA ATT AGA                 ; Rotate 45 more (135 total)
+  TCA                         ; SAVE
+  GAA CCC GAA AAA ACA          ; Translate(22, 0)
+  GAA ATT GGA                 ; Circle 15
+  TCG                         ; RESTORE
+
+  TCA                         ; SAVE
+  GAA TGG GAA AAA ACA          ; Translate(45, 0)
   GAA TTT GGA                 ; Circle 5
+  TCG                         ; RESTORE
 
-  ; Lower right cluster
-  GAA TGG GAA TTT GAA TGG TTA ; Color(45, 63, 45) greenish white
+  ; Direction 180° (left) - 3 stars
+  GAA TTT GAA TGG GAA TGG TTA ; Color(63, 45, 45) warm white
+  GAA ATT AGA                 ; Rotate 45 more (180 total)
+  TCA                         ; SAVE
+  GAA CCC GAA AAA ACA          ; Translate(22, 0)
+  GAA AGG GGA                 ; Circle 10
+  TCG                         ; RESTORE
+
+  TCA                         ; SAVE
+  GAA TCC GAA AAA ACA          ; Translate(35, 0)
+  GAA TTT GGA                 ; Circle 5
+  TCG                         ; RESTORE
+
+  TCA                         ; SAVE
+  GAA TGG GAA AAA ACA          ; Translate(45, 0)
+  GAA ATT GGA                 ; Circle 15
+  TCG                         ; RESTORE
+
+  ; Direction 225° - 2 stars
+  GAA TGG GAA TGG GAA TTT TTA ; Color(45, 45, 63) cool white
+  GAA ATT AGA                 ; Rotate 45 more (225 total)
+  TCA                         ; SAVE
+  GAA CCC GAA AAA ACA          ; Translate(22, 0)
+  GAA TTT GGA                 ; Circle 5
+  TCG                         ; RESTORE
+
+  TCA                         ; SAVE
   GAA GCC GAA AAA ACA          ; Translate(37, 0)
   GAA AGG GGA                 ; Circle 10
+  TCG                         ; RESTORE
 
-  GAA TTT GAA TGG GAA TGG TTA ; Color(63, 45, 45) reddish white
-  GAA ATT GAA TTT ACA          ; Translate(15, 5)
+  ; Direction 270° (up) - 2 stars
+  GAA TGG GAA TTT GAA TGG TTA ; Color(45, 63, 45) greenish white
+  GAA ATT AGA                 ; Rotate 45 more (270 total)
+  TCA                         ; SAVE
+  GAA TCC GAA AAA ACA          ; Translate(35, 0)
   GAA ATT GGA                 ; Circle 15
+  TCG                         ; RESTORE
 
-  GAA TTT GAA TTT GAA TTT TTA ; Color(63, 63, 63) white
-  GAA AAA GAA AGG ACA          ; Translate(0, 10)
+  TCA                         ; SAVE
+  GAA TGG GAA AAA ACA          ; Translate(45, 0)
   GAA TTT GGA                 ; Circle 5
+  TCG                         ; RESTORE
 
-  ; Lower left cluster
-  GAA TGG GAA TGG GAA TTT TTA ; Color(45, 45, 63) pale blue
-  GAA AAA GAA CCC ACA          ; Translate(0, -22) - move up-left from current
+  ; Direction 315° - 2 stars
+  GAA TTT GAA TTT GAA TTT TTA ; Color(63, 63, 63) white
+  GAA ATT AGA                 ; Rotate 45 more (315 total)
+  TCA                         ; SAVE
+  GAA CCC GAA AAA ACA          ; Translate(22, 0)
   GAA AGG GGA                 ; Circle 10
+  TCG                         ; RESTORE
 
-  GAA TTT GAA TTT GAA TGG TTA ; Color(63, 63, 45) warm tint
-  GAA TTT GAA ATT ACA          ; Translate(5, 15)
+  TCA                         ; SAVE
+  GAA TGG GAA AAA ACA          ; Translate(45, 0)
   GAA TTT GGA                 ; Circle 5
+  TCG                         ; RESTORE
 
-  ; Center star (large)
+  ; Center star (bright)
   GAA TTT GAA TTT GAA TTT TTA ; Color(63, 63, 63) white
-  GAA AAA GAA AAA ACA          ; Translate(0, 0) - stay at current
   GAA CCC GGA                 ; Circle 21
 
 TAA
