@@ -2,6 +2,7 @@ import { ExampleKey, examples } from './examples';
 import { CodonLexer } from './lexer';
 import { Canvas2DRenderer } from './renderer';
 import { CodonVM } from './vm';
+import { downloadGenomeFile, readGenomeFile } from './genome-io';
 
 // Get DOM elements
 const editor = document.getElementById('editor') as HTMLTextAreaElement;
@@ -10,6 +11,9 @@ const runBtn = document.getElementById('runBtn') as HTMLButtonElement;
 const clearBtn = document.getElementById('clearBtn') as HTMLButtonElement;
 const exampleSelect = document.getElementById('exampleSelect') as HTMLSelectElement;
 const exportBtn = document.getElementById('exportBtn') as HTMLButtonElement;
+const saveGenomeBtn = document.getElementById('saveGenomeBtn') as HTMLButtonElement;
+const loadGenomeBtn = document.getElementById('loadGenomeBtn') as HTMLButtonElement;
+const genomeFileInput = document.getElementById('genomeFileInput') as HTMLInputElement;
 const statusMessage = document.getElementById('statusMessage') as HTMLSpanElement;
 const codonCount = document.getElementById('codonCount') as HTMLSpanElement;
 const instructionCount = document.getElementById('instructionCount') as HTMLSpanElement;
@@ -101,11 +105,80 @@ function exportImage() {
   }
 }
 
+function saveGenome() {
+  try {
+    const genome = editor.value.trim();
+    if (!genome) {
+      setStatus('No genome to save', 'error');
+      return;
+    }
+
+    // Generate filename with timestamp
+    const timestamp = new Date().toISOString().slice(0, 10);
+    const filename = `codoncanvas-${timestamp}`;
+
+    // Use the genome content as title (first line or first 30 chars)
+    const firstLine = genome.split('\n')[0].replace(/;.*$/, '').trim();
+    const title = firstLine.slice(0, 30) || 'CodonCanvas Genome';
+
+    downloadGenomeFile(genome, filename, {
+      description: 'Created with CodonCanvas Playground',
+      author: 'CodonCanvas User'
+    });
+
+    setStatus('Genome saved successfully', 'success');
+  } catch (error) {
+    setStatus('Failed to save genome', 'error');
+  }
+}
+
+function loadGenome() {
+  // Trigger hidden file input
+  genomeFileInput.click();
+}
+
+async function handleFileLoad(event: Event) {
+  try {
+    const input = event.target as HTMLInputElement;
+    const file = input.files?.[0];
+
+    if (!file) {
+      return;
+    }
+
+    const genomeFile = await readGenomeFile(file);
+
+    // Load genome into editor
+    editor.value = genomeFile.genome;
+
+    // Show success with metadata
+    const info = genomeFile.title + (genomeFile.author ? ` by ${genomeFile.author}` : '');
+    setStatus(`Loaded: ${info}`, 'success');
+
+    // Reset file input
+    input.value = '';
+
+  } catch (error) {
+    if (error instanceof Error) {
+      setStatus(`Failed to load genome: ${error.message}`, 'error');
+    } else {
+      setStatus('Failed to load genome', 'error');
+    }
+
+    // Reset file input
+    const input = event.target as HTMLInputElement;
+    input.value = '';
+  }
+}
+
 // Event listeners
 runBtn.addEventListener('click', runProgram);
 clearBtn.addEventListener('click', clearCanvas);
 exampleSelect.addEventListener('change', loadExample);
 exportBtn.addEventListener('click', exportImage);
+saveGenomeBtn.addEventListener('click', saveGenome);
+loadGenomeBtn.addEventListener('click', loadGenome);
+genomeFileInput.addEventListener('change', handleFileLoad);
 
 // Keyboard shortcut: Cmd/Ctrl + Enter to run
 editor.addEventListener('keydown', (e) => {

@@ -11,6 +11,7 @@ CodonCanvas is an educational programming language that uses DNA-like triplets (
 - **Visual output**: Stack-based VM produces graphics on HTML5 canvas
 - **Mutation demonstration**: Silent, missense, nonsense, and frameshift mutations
 - **Live playground**: Web-based editor with instant visual feedback
+- **Save & Share**: Export/import genomes in .genome file format with metadata
 
 ## Quick Start
 
@@ -109,6 +110,45 @@ Examples:
 
 Values are scaled: `pixel_value = (codon_value / 64) × canvas_width`
 
+## Saving & Loading Genomes
+
+The playground now supports saving and loading genomes in the `.genome` file format:
+
+### Saving Your Work
+
+Click the **💾 Save .genome** button in the playground toolbar to download your genome as a JSON file containing:
+
+- Your genome sequence
+- Title (auto-generated from first line)
+- Creation timestamp
+- Metadata (description, author)
+
+### Loading Genomes
+
+Click the **📂 Load .genome** button to import a previously saved genome file. The file will be validated and loaded into the editor.
+
+### File Format Example
+
+```json
+{
+  "version": "1.0.0",
+  "title": "My Beautiful Pattern",
+  "description": "Created with CodonCanvas Playground",
+  "author": "CodonCanvas User",
+  "created": "2025-10-12T10:30:00.000Z",
+  "genome": "ATG GAA AAT GGA TAA",
+  "metadata": {}
+}
+```
+
+### Sharing Genomes
+
+Share your `.genome` files with others to:
+- Exchange creative patterns
+- Submit homework assignments
+- Demonstrate mutation effects
+- Build a gallery of student work
+
 ## Mutation Demonstration
 
 ### Silent Mutation (No Change)
@@ -155,11 +195,13 @@ codoncanvas/
 │   ├── mutations.ts          # Mutation tools (7 types)
 │   ├── diff-viewer.ts        # Genome comparison component
 │   ├── timeline-scrubber.ts  # Step-through execution
+│   ├── genome-io.ts          # Import/export .genome files
 │   ├── examples.ts           # Built-in example genomes
 │   ├── playground.ts         # Main playground UI logic
 │   ├── lexer.test.ts         # Lexer tests (13 tests)
 │   ├── vm.test.ts            # VM tests (17 tests)
-│   └── mutations.test.ts     # Mutation tests (15 tests)
+│   ├── mutations.test.ts     # Mutation tests (15 tests)
+│   └── genome-io.test.ts     # Genome I/O tests (11 tests)
 ├── index.html                # Main playground interface
 ├── mutation-demo.html        # Mutation laboratory
 ├── timeline-demo.html        # Timeline scrubber demo
@@ -246,6 +288,7 @@ CodonCanvas teaches:
   - Export genomes to .genome format (JSON)
   - Import and validate .genome files
   - Download and file upload utilities
+  - Integrated into main playground UI with save/load buttons
 - **Interactive Demos**
   - Mutation Lab (`mutation-demo.html`)
   - Timeline Demo (`timeline-demo.html`)
