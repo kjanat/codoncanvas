@@ -29,6 +29,7 @@ import './achievement-ui.css';
 import { AssessmentEngine } from './assessment-engine';
 import { AssessmentUI } from './assessment-ui';
 import { ResearchMetrics } from './research-metrics';
+import { analyzeCodonUsage, formatAnalysis, type CodonAnalysis } from './codon-analyzer';
 
 // Get DOM elements
 const editor = document.getElementById('editor') as HTMLTextAreaElement;
@@ -76,6 +77,12 @@ const diffViewerPanel = document.getElementById('diffViewerPanel') as HTMLDivEle
 const diffViewerToggle = document.getElementById('diffViewerToggle') as HTMLButtonElement;
 const diffViewerClearBtn = document.getElementById('diffViewerClearBtn') as HTMLButtonElement;
 const diffViewerContainer = document.getElementById('diffViewerContainer') as HTMLDivElement;
+
+// Analyzer elements
+const analyzeBtn = document.getElementById('analyzeBtn') as HTMLButtonElement;
+const analyzerPanel = document.getElementById('analyzerPanel') as HTMLDivElement;
+const analyzerToggle = document.getElementById('analyzerToggle') as HTMLButtonElement;
+const analyzerContent = document.getElementById('analyzerContent') as HTMLDivElement;
 
 // Audio elements
 const audioToggleBtn = document.getElementById('audioToggleBtn') as HTMLButtonElement;
@@ -997,6 +1004,121 @@ pointMutationBtn.addEventListener('click', () => applyMutation('point'));
 insertionMutationBtn.addEventListener('click', () => applyMutation('insertion'));
 deletionMutationBtn.addEventListener('click', () => applyMutation('deletion'));
 
+// Codon Analyzer functions
+let currentAnalysis: CodonAnalysis | null = null;
+
+function runAnalyzer() {
+  try {
+    const genome = editor.value.trim();
+
+    if (!genome) {
+      setStatus('No genome to analyze', 'error');
+      return;
+    }
+
+    // Tokenize genome
+    const tokens = lexer.tokenize(genome);
+
+    if (tokens.length === 0) {
+      setStatus('No valid codons to analyze', 'error');
+      return;
+    }
+
+    // Analyze codon usage
+    currentAnalysis = analyzeCodonUsage(tokens);
+
+    // Render analysis
+    renderAnalysis(currentAnalysis);
+
+    // Show panel
+    analyzerPanel.style.display = 'block';
+
+    // Scroll into view
+    analyzerPanel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+
+    setStatus(`📊 Analyzed ${currentAnalysis.totalCodons} codons`, 'success');
+
+  } catch (error) {
+    if (error instanceof Error) {
+      setStatus(`Analysis failed: ${error.message}`, 'error');
+    } else {
+      setStatus('Analysis failed', 'error');
+    }
+  }
+}
+
+function renderAnalysis(analysis: CodonAnalysis) {
+  const html: string[] = [];
+
+  // Summary stats (compact grid)
+  html.push('<div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 16px;">');
+  html.push(`<div style="background: #1e1e1e; padding: 8px; border-radius: 4px; border-left: 3px solid #4ec9b0;"><div style="color: #a0a0a0; font-size: 11px;">Total Codons</div><div style="font-weight: 600; font-size: 16px; color: #4ec9b0;">${analysis.totalCodons}</div></div>`);
+  html.push(`<div style="background: #1e1e1e; padding: 8px; border-radius: 4px; border-left: 3px solid #569cd6;"><div style="color: #a0a0a0; font-size: 11px;">GC Content</div><div style="font-weight: 600; font-size: 16px; color: #569cd6;">${analysis.gcContent.toFixed(1)}%</div></div>`);
+  html.push(`<div style="background: #1e1e1e; padding: 8px; border-radius: 4px; border-left: 3px solid #dcdcaa;"><div style="color: #a0a0a0; font-size: 11px;">Complexity</div><div style="font-weight: 600; font-size: 16px; color: #dcdcaa;">${(analysis.signature.complexity * 100).toFixed(1)}%</div></div>`);
+  html.push('</div>');
+
+  // Top codons
+  html.push('<div style="margin-bottom: 16px;">');
+  html.push('<div style="color: #4ec9b0; font-weight: 600; margin-bottom: 8px;">Top 5 Codons</div>');
+  html.push('<div style="display: flex; flex-direction: column; gap: 4px;">');
+  for (const { codon, count, percentage } of analysis.topCodons) {
+    html.push(`<div style="display: flex; justify-content: space-between; align-items: center; padding: 4px 8px; background: #1e1e1e; border-radius: 3px;">` +
+      `<span style="font-family: 'Courier New', monospace; font-weight: 600; color: #dcdcaa;">${codon}</span>` +
+      `<span style="color: #a0a0a0; font-size: 11px;">${count}× (${percentage.toFixed(1)}%)</span>` +
+      `<div style="width: 80px; height: 6px; background: #2d2d30; border-radius: 3px; overflow: hidden;"><div style="width: ${percentage}%; height: 100%; background: #4ec9b0;"></div></div>` +
+      `</div>`);
+  }
+  html.push('</div></div>');
+
+  // Opcode families (visual bars)
+  html.push('<div style="margin-bottom: 16px;">');
+  html.push('<div style="color: #4ec9b0; font-weight: 600; margin-bottom: 8px;">Opcode Family Distribution</div>');
+  html.push('<div style="display: flex; flex-direction: column; gap: 6px;">');
+
+  const families = [
+    { name: 'Control', value: analysis.opcodeFamilies.control, color: '#c586c0' },
+    { name: 'Drawing', value: analysis.opcodeFamilies.drawing, color: '#4ec9b0' },
+    { name: 'Transform', value: analysis.opcodeFamilies.transform, color: '#569cd6' },
+    { name: 'Stack', value: analysis.opcodeFamilies.stack, color: '#dcdcaa' },
+    { name: 'Utility', value: analysis.opcodeFamilies.utility, color: '#a0a0a0' },
+  ];
+
+  for (const family of families) {
+    html.push(`<div style="display: flex; align-items: center; gap: 8px;">` +
+      `<span style="width: 80px; color: #d4d4d4; font-size: 11px;">${family.name}</span>` +
+      `<div style="flex: 1; height: 16px; background: #2d2d30; border-radius: 3px; overflow: hidden; position: relative;">` +
+      `<div style="width: ${family.value}%; height: 100%; background: ${family.color}; transition: width 0.3s;"></div>` +
+      `</div>` +
+      `<span style="width: 45px; text-align: right; color: #a0a0a0; font-size: 11px; font-weight: 600;">${family.value.toFixed(1)}%</span>` +
+      `</div>`);
+  }
+  html.push('</div></div>');
+
+  // Genome signature
+  html.push('<div style="margin-bottom: 16px;">');
+  html.push('<div style="color: #4ec9b0; font-weight: 600; margin-bottom: 8px;">Genome Signature</div>');
+  html.push('<div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px;">');
+  html.push(`<div style="background: #1e1e1e; padding: 8px; border-radius: 4px;"><div style="color: #a0a0a0; font-size: 11px;">Drawing Density</div><div style="color: #4ec9b0; font-weight: 600;">${analysis.signature.drawingDensity.toFixed(1)}%</div></div>`);
+  html.push(`<div style="background: #1e1e1e; padding: 8px; border-radius: 4px;"><div style="color: #a0a0a0; font-size: 11px;">Transform Density</div><div style="color: #569cd6; font-weight: 600;">${analysis.signature.transformDensity.toFixed(1)}%</div></div>`);
+  html.push(`<div style="background: #1e1e1e; padding: 8px; border-radius: 4px;"><div style="color: #a0a0a0; font-size: 11px;">Redundancy</div><div style="color: #dcdcaa; font-weight: 600;">${analysis.signature.redundancy.toFixed(2)}</div></div>`);
+  html.push(`<div style="background: #1e1e1e; padding: 8px; border-radius: 4px;"><div style="color: #a0a0a0; font-size: 11px;">AT Content</div><div style="color: #c586c0; font-weight: 600;">${analysis.atContent.toFixed(1)}%</div></div>`);
+  html.push('</div></div>');
+
+  // Info note
+  html.push('<div style="padding: 8px; background: #1e1e1e; border-left: 3px solid #569cd6; border-radius: 3px; font-size: 11px; color: #a0a0a0; line-height: 1.5;">');
+  html.push('💡 <strong style="color: #569cd6;">Bioinformatics Insight:</strong> GC content and codon usage bias are real genomic metrics used in computational biology. This analysis connects programming to actual research techniques!');
+  html.push('</div>');
+
+  analyzerContent.innerHTML = html.join('');
+}
+
+function toggleAnalyzer() {
+  const isVisible = analyzerPanel.style.display !== 'none';
+  analyzerPanel.style.display = isVisible ? 'none' : 'block';
+  analyzerToggle.textContent = isVisible ? 'Show' : 'Hide';
+  analyzerToggle.setAttribute('aria-expanded', (!isVisible).toString());
+}
+
 // Example filter listeners
 difficultyFilter.addEventListener('change', updateExampleDropdown);
 conceptFilter.addEventListener('change', updateExampleDropdown);
@@ -1009,6 +1131,10 @@ fixAllBtn.addEventListener('click', fixAllErrors);
 // DiffViewer listeners
 diffViewerToggle.addEventListener('click', toggleDiffViewer);
 diffViewerClearBtn.addEventListener('click', clearDiffViewer);
+
+// Analyzer listeners
+analyzeBtn.addEventListener('click', runAnalyzer);
+analyzerToggle.addEventListener('click', toggleAnalyzer);
 
 // Debounced linter on editor input
 let linterTimeout: number | null = null;
