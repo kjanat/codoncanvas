@@ -1,107 +1,73 @@
 ; Geometric Mosaic - Advanced Showcase
-; Grid of varied shapes (rectangles, triangles, circles) creating mosaic pattern
+; Varied ellipse sizes and rotations creating mosaic-like pattern
 ; Difficulty: advanced-showcase
-; Concepts: transforms, positioning, shape variety, composition
-; Visual: Colorful geometric shapes arranged in scattered pattern
-; Good for mutations: missense (color variations), frameshift (interesting chaos)
+; Concepts: ellipses, rotation, size variation, composition
+; Visual: Colorful ellipses in mosaic arrangement
+; Good for mutations: missense (color variations), frameshift (chaos)
 
 ATG
-  ; Top row - rectangles in 3 positions
+  ; Outer ring - 8 large ellipses (red to cyan gradient)
   GAA AAA GAA TTT GAA GCC TTA ; Color(0, 63, 37) red
-  TCA                         ; SAVE
-  GAA GCC GAA AAA ACA          ; Translate(37, 0) - right
-  GAA AGG GAA AGG CCA          ; Rectangle 10×10
-  TCG                         ; RESTORE
-
-  GAA CCA AGA                 ; Rotate 180 (face left)
-  TCA                         ; SAVE
-  GAA GCC GAA AAA ACA          ; Translate(37, 0) - actually goes left
-  GAA ATT GAA TTT GAA GCC TTA ; Color(15, 63, 37) orange
-  GAA AGG GAA AGG CCA          ; Rectangle 10×10
-  TCG                         ; RESTORE
-
-  GAA GGA AGA                 ; Rotate 90 more (270 total, face up)
-  TCA                         ; SAVE
-  GAA GCC GAA AAA ACA          ; Translate(37, 0) - actually goes up
-  GAA CCC GAA TTT GAA GCC TTA ; Color(21, 63, 37) yellow-orange
-  GAA AGG GAA AGG CCA          ; Rectangle 10×10
-  TCG                         ; RESTORE
-
-  ; Middle positions - triangles
-  GAA GGA AGA                 ; Rotate 90 more (0 total, reset to right)
-  GAA TTT GAA TTT GAA GCC TTA ; Color(63, 63, 37) yellow
-  TCA                         ; SAVE
-  GAA CCC GAA AAA ACA          ; Translate(22, 0) - right
-  GAA AGG GCA                 ; Triangle 10
-  TCG                         ; RESTORE
-
-  GAA CCA AGA                 ; Rotate 180 (left)
-  TCA                         ; SAVE
-  GAA CCC GAA AAA ACA          ; Translate(22, 0) - left
-  GAA TTT GAA AGG GAA GCC TTA ; Color(63, 10, 37) lime
-  GAA AGG GCA                 ; Triangle 10
-  TCG                         ; RESTORE
-
-  GAA GGA AGA                 ; Rotate 90 (270 total, up)
-  TCA                         ; SAVE
-  GAA CCC GAA AAA ACA          ; Translate(22, 0) - up
-  GAA TCC GAA AGG GAA GCC TTA ; Color(53, 10, 37) green
-  GAA AGG GCA                 ; Triangle 10
-  TCG                         ; RESTORE
-
-  GAA GGA AGA                 ; Rotate 90 (0/360, right)
-  GAA GGA AGA                 ; Rotate 90 (90, down)
-  TCA                         ; SAVE
-  GAA CCC GAA AAA ACA          ; Translate(22, 0) - down
-  GAA AGG GAA TTT GAA TCC TTA ; Color(10, 63, 53) cyan
-  GAA AGG GCA                 ; Triangle 10
-  TCG                         ; RESTORE
-
-  ; Corner positions - circles
+  GAA TCC GAA CCC GTA          ; Ellipse 53×21
   GAA ATT AGA                 ; Rotate 45
-  TCA                         ; SAVE
-  GAA TCC GAA AAA ACA          ; Translate(35, 0) - diagonal
+  GAA ATT GAA TTT GAA GCC TTA ; Color(15, 63, 37) orange
+  GAA TCC GAA CCC GTA          ; Ellipse 53×21
+  GAA ATT AGA                 ; Rotate 45
+  GAA CCC GAA TTT GAA GCC TTA ; Color(21, 63, 37) yellow-orange
+  GAA TCC GAA CCC GTA          ; Ellipse 53×21
+  GAA ATT AGA                 ; Rotate 45
+  GAA TTT GAA TTT GAA GCC TTA ; Color(63, 63, 37) yellow
+  GAA TCC GAA CCC GTA          ; Ellipse 53×21
+  GAA ATT AGA                 ; Rotate 45
+  GAA TTT GAA AGG GAA GCC TTA ; Color(63, 10, 37) lime
+  GAA TCC GAA CCC GTA          ; Ellipse 53×21
+  GAA ATT AGA                 ; Rotate 45
+  GAA TCC GAA AGG GAA GCC TTA ; Color(53, 10, 37) green
+  GAA TCC GAA CCC GTA          ; Ellipse 53×21
+  GAA ATT AGA                 ; Rotate 45
+  GAA AGG GAA TTT GAA TCC TTA ; Color(10, 63, 53) cyan
+  GAA TCC GAA CCC GTA          ; Ellipse 53×21
+  GAA ATT AGA                 ; Rotate 45
   GAA ATT GAA TTT GAA TCC TTA ; Color(15, 63, 53) light blue
-  GAA AGG GGA                 ; Circle 10
-  TCG                         ; RESTORE
+  GAA TCC GAA CCC GTA          ; Ellipse 53×21
 
-  GAA GGA AGA                 ; Rotate 90
+  ; Middle ring - 6 medium ellipses offset (cyan to purple)
   TCA                         ; SAVE
-  GAA TCC GAA AAA ACA          ; Translate(35, 0) - diagonal
+  GAA GGC AGA                 ; Rotate 30 (offset)
   GAA CCC GAA TTT GAA TCC TTA ; Color(21, 63, 53) sky blue
-  GAA AGG GGA                 ; Circle 10
-  TCG                         ; RESTORE
-
-  GAA GGA AGA                 ; Rotate 90
-  TCA                         ; SAVE
-  GAA TCC GAA AAA ACA          ; Translate(35, 0) - diagonal
+  GAA GCC GAA ATT GTA          ; Ellipse 37×15
+  GAA CTC AGA                 ; Rotate 60
   GAA GCC GAA TTT GAA TCC TTA ; Color(37, 63, 53) blue
-  GAA AGG GGA                 ; Circle 10
-  TCG                         ; RESTORE
-
-  GAA GGA AGA                 ; Rotate 90
-  TCA                         ; SAVE
-  GAA TCC GAA AAA ACA          ; Translate(35, 0) - diagonal
+  GAA GCC GAA ATT GTA          ; Ellipse 37×15
+  GAA CTC AGA                 ; Rotate 60
+  GAA TGG GAA TTT GAA TCC TTA ; Color(45, 63, 53) blue-purple
+  GAA GCC GAA ATT GTA          ; Ellipse 37×15
+  GAA CTC AGA                 ; Rotate 60
   GAA TTT GAA TTT GAA TCC TTA ; Color(63, 63, 53) purple
-  GAA AGG GGA                 ; Circle 10
-  TCG                         ; RESTORE
-
-  ; Near-center positions - small shapes
+  GAA GCC GAA ATT GTA          ; Ellipse 37×15
+  GAA CTC AGA                 ; Rotate 60
   GAA TTT GAA TCC GAA TCC TTA ; Color(63, 53, 53) magenta
-  TCA                         ; SAVE
-  GAA AGG GAA AAA ACA          ; Translate(10, 0)
-  GAA TTT GCA                 ; Triangle 5
-  TCG                         ; RESTORE
-
-  GAA GGA AGA                 ; Rotate 90
-  TCA                         ; SAVE
-  GAA AGG GAA AAA ACA          ; Translate(10, 0)
+  GAA GCC GAA ATT GTA          ; Ellipse 37×15
+  GAA CTC AGA                 ; Rotate 60
   GAA TTT GAA GCC GAA TCC TTA ; Color(63, 37, 53) pink
-  GAA TTT GGA                 ; Circle 5
+  GAA GCC GAA ATT GTA          ; Ellipse 37×15
   TCG                         ; RESTORE
 
-  ; Center - bright focal point
-  GAA TTT GAA TTT GAA TTT TTA ; Color(63, 63, 63) white
+  ; Inner accents - 4 small ellipses
+  GAA TTT GAA CCC GAA TCC TTA ; Color(63, 21, 53) hot pink
+  GAA CCC GAA AGG GTA          ; Ellipse 21×10
+  GAA GGA AGA                 ; Rotate 90
+  GAA TTT GAA AGG GAA TCC TTA ; Color(63, 10, 53) bright pink
+  GAA CCC GAA AGG GTA          ; Ellipse 21×10
+  GAA GGA AGA                 ; Rotate 90
+  GAA TCC GAA AAA GAA TCC TTA ; Color(53, 0, 53) deep magenta
+  GAA CCC GAA AGG GTA          ; Ellipse 21×10
+  GAA GGA AGA                 ; Rotate 90
+  GAA GCC GAA AAA GAA TCC TTA ; Color(37, 0, 53) purple-magenta
+  GAA CCC GAA AGG GTA          ; Ellipse 21×10
+
+  ; Center - yellow focal point
+  GAA TTT GAA TTT GAA CTT TTA ; Color(63, 63, 31) bright yellow
   GAA ATT GGA                 ; Circle 15
 
 TAA
