@@ -395,6 +395,198 @@ TAA`,
     concepts: ['stack', 'drawing'],
     goodForMutations: ['nonsense', 'frameshift'],
     keywords: ['stack', 'cleanup', 'pop', 'management', 'operations']
+  },
+
+  fractalTree: {
+    title: 'Fractal Tree',
+    description: 'Branching tree structure using SAVE/RESTORE_STATE for recursion',
+    genome: `ATG
+  ; Setup: rotate to vertical, set brown color for trunk
+  GAA GGA AGA        ; Push 26, rotate 90 degrees (vertical)
+  GAA AAA GAA AAA GAA ATT TTA ; Color(0, 0, 15) brown
+  GAA CCC AAA        ; Push 21, draw trunk LINE
+
+  ; Left main branch
+  TCA                ; SAVE_STATE - checkpoint trunk
+  GAA AAA GAA AAA GAA CCC TTA ; Color(0, 0, 21) green
+  GAA CTT AGA        ; Push 31, rotate -30° (left)
+  GAA AGG GAA AAA ACA ; Push 10, push 0, translate forward
+  GAA AGG AAA        ; Push 10, draw branch LINE
+
+  ; Left sub-branch 1
+  TCA                ; SAVE_STATE - checkpoint left branch
+  GAA CCC AGA        ; Push 21, rotate more left
+  GAA ATT GAA AAA ACA ; Push 15, push 0, translate
+  GAA AAT AAA        ; Push 3, draw tiny branch
+  TCG                ; RESTORE_STATE - back to left branch
+
+  ; Left sub-branch 2
+  TCA                ; SAVE_STATE
+  GAA CCC AGA        ; Push 21, rotate right
+  GAA ATT GAA AAA ACA ; Push 15, push 0, translate
+  GAA AAT AAA        ; Push 3, draw tiny branch
+  TCG                ; RESTORE_STATE
+
+  TCG                ; RESTORE_STATE - back to trunk
+
+  ; Right main branch
+  TCA                ; SAVE_STATE - checkpoint trunk again
+  GAA AAA GAA AAA GAA CCC TTA ; Color(0, 0, 21) green
+  GAA ATT AGA        ; Push 15, rotate +30° (right)
+  GAA AGG GAA AAA ACA ; Push 10, push 0, translate forward
+  GAA AGG AAA        ; Push 10, draw branch LINE
+
+  ; Right sub-branch 1
+  TCA                ; SAVE_STATE - checkpoint right branch
+  GAA AGG AGA        ; Push 10, rotate left
+  GAA ATT GAA AAA ACA ; Push 15, push 0, translate
+  GAA AAT AAA        ; Push 3, draw tiny branch
+  TCG                ; RESTORE_STATE - back to right branch
+
+  ; Right sub-branch 2
+  TCA                ; SAVE_STATE
+  GAA CCC AGA        ; Push 21, rotate right
+  GAA ATT GAA AAA ACA ; Push 15, push 0, translate
+  GAA AAT AAA        ; Push 3, draw tiny branch
+  TCG                ; RESTORE_STATE
+
+  TCG                ; RESTORE_STATE - back to trunk
+TAA`,
+    difficulty: 'advanced',
+    concepts: ['state-management', 'composition', 'colors', 'transforms'],
+    goodForMutations: ['nonsense', 'missense'],
+    keywords: ['fractal', 'tree', 'branching', 'recursion', 'nature', 'nested']
+  },
+
+  snowflake: {
+    title: 'Snowflake Pattern',
+    description: 'Six-fold radial symmetry using state preservation',
+    genome: `ATG
+  ; Center dot
+  GAA AAA GAA AAA GAA TCC TTA ; Color(0, 0, 53) light blue
+  GAA AAT GGA        ; Push 3, draw center circle
+
+  ; Arm 1
+  TCA                ; SAVE_STATE
+  GAA AAA GAA AAA GAA CTT TTA ; Color(0, 0, 31) white
+  GAA CCC GAA AAA ACA ; Push 21, push 0, translate outward
+  GAA AGG AAA        ; Push 10, draw arm LINE
+  GAA AAT GAA AAT ACA ; Push 3, push 3, translate to tip
+  GAA AAT GCA        ; Push 3, draw tip TRIANGLE
+  TCG                ; RESTORE_STATE
+
+  ; Arm 2
+  TCA                ; SAVE_STATE
+  GAA GCC AGA        ; Push 37, rotate 60°
+  GAA CCC GAA AAA ACA ; Push 21, push 0, translate
+  GAA AGG AAA        ; Push 10, draw arm
+  GAA AAT GAA AAT ACA ; Push 3, push 3, translate
+  GAA AAT GCA        ; Push 3, draw tip
+  TCG                ; RESTORE_STATE
+
+  ; Arm 3
+  TCA                ; SAVE_STATE
+  GAA GCC AGA        ; Rotate 60° more
+  GAA GCC AGA        ; Total 120°
+  GAA CCC GAA AAA ACA ; Push 21, push 0, translate
+  GAA AGG AAA        ; Draw arm
+  GAA AAT GAA AAT ACA ; Translate
+  GAA AAT GCA        ; Draw tip
+  TCG                ; RESTORE_STATE
+
+  ; Arm 4
+  TCA                ; SAVE_STATE
+  GAA GCC AGA GAA GCC AGA GAA GCC AGA ; Rotate 180°
+  GAA CCC GAA AAA ACA ; Translate
+  GAA AGG AAA        ; Draw arm
+  GAA AAT GAA AAT ACA ; Translate
+  GAA AAT GCA        ; Draw tip
+  TCG                ; RESTORE_STATE
+
+  ; Arm 5
+  TCA                ; SAVE_STATE
+  GAA GCC AGA GAA GCC AGA GAA GCC AGA GAA GCC AGA ; Rotate 240°
+  GAA CCC GAA AAA ACA ; Translate
+  GAA AGG AAA        ; Draw arm
+  GAA AAT GAA AAT ACA ; Translate
+  GAA AAT GCA        ; Draw tip
+  TCG                ; RESTORE_STATE
+
+  ; Arm 6
+  TCA                ; SAVE_STATE
+  GAA GCC AGA GAA GCC AGA GAA GCC AGA GAA GCC AGA GAA GCC AGA ; Rotate 300°
+  GAA CCC GAA AAA ACA ; Translate
+  GAA AGG AAA        ; Draw arm
+  GAA AAT GAA AAT ACA ; Translate
+  GAA AAT GCA        ; Draw tip
+  TCG                ; RESTORE_STATE
+TAA`,
+    difficulty: 'advanced',
+    concepts: ['state-management', 'composition', 'colors', 'transforms'],
+    goodForMutations: ['nonsense', 'frameshift'],
+    keywords: ['snowflake', 'radial', 'symmetry', 'winter', 'pattern', 'six-fold']
+  },
+
+  flowerGarden: {
+    title: 'Flower Garden',
+    description: 'Multiple flowers using state isolation for composition',
+    genome: `ATG
+  ; Flower 1 (red, left position)
+  TCA                ; SAVE_STATE - main canvas state
+  GAA AAA GAA CCC ACA ; Push 0, push 21, translate left
+  GAA CTT GAA AAA GAA AAA TTA ; Color(31, 0, 0) red
+  GAA AGG GGA        ; Push 10, draw center circle
+
+  ; Petals for flower 1
+  TCA                ; SAVE_STATE - flower center
+  GAA AAA GAA AGG ACA ; Push 0, push 10, translate up
+  GAA AAT GCA        ; Push 3, draw petal TRIANGLE
+  TCG                ; RESTORE_STATE
+  TCA GAA AGG GAA AAA ACA GAA AAT GCA TCG ; Right petal
+  TCA GAA AAA GAA AGG ACA GAA AAT GCA TCG ; Down petal (negative y)
+
+  ; Stem for flower 1
+  GAA AAA GAA AAA GAA AGG TTA ; Color(0, 0, 10) dark green
+  GAA AAA GAA AGG ACA ; Push 0, push 10, translate down
+  GAA AGG AAA        ; Push 10, draw stem LINE
+  TCG                ; RESTORE_STATE - back to main
+
+  ; Flower 2 (yellow, center)
+  TCA                ; SAVE_STATE
+  GAA CCC GAA AAA ACA ; Push 21, push 0, translate center
+  GAA CTT GAA CTT GAA AAA TTA ; Color(31, 31, 0) yellow
+  GAA AGG GGA        ; Push 10, draw center
+
+  ; Petals for flower 2
+  TCA GAA AAA GAA AGG ACA GAA AAT GCA TCG ; Up
+  TCA GAA AGG GAA AAA ACA GAA AAT GCA TCG ; Right
+  TCA GAA AAA GAA AGG ACA GAA AAT GCA TCG ; Down
+  TCA GAA AGG GAA AAA ACA GAA AAT GCA TCG ; Left (negative x)
+
+  ; Stem
+  GAA AAA GAA AAA GAA AGG TTA ; Green
+  GAA AAA GAA AGG ACA GAA AGG AAA TCG ; Stem
+  TCG                ; RESTORE_STATE
+
+  ; Flower 3 (purple, right)
+  TCA                ; SAVE_STATE
+  GAA GCC GAA AAA ACA ; Push 37, push 0, translate right
+  GAA CCC GAA AAA GAA CCC TTA ; Color(21, 0, 21) purple
+  GAA AGG GGA        ; Draw center
+
+  ; Petals
+  TCA GAA AAA GAA AGG ACA GAA AAT GCA TCG
+  TCA GAA AGG GAA AAA ACA GAA AAT GCA TCG
+
+  ; Stem
+  GAA AAA GAA AAA GAA AGG TTA ; Green
+  GAA AAA GAA AGG ACA GAA AGG AAA TCG
+  TCG                ; RESTORE_STATE
+TAA`,
+    difficulty: 'advanced',
+    concepts: ['state-management', 'composition', 'colors', 'transforms'],
+    goodForMutations: ['missense', 'nonsense'],
+    keywords: ['flower', 'garden', 'nature', 'composition', 'multiple', 'colorful']
   }
 };
 
