@@ -30,6 +30,7 @@ import { AssessmentEngine } from './assessment-engine';
 import { AssessmentUI } from './assessment-ui';
 import { ResearchMetrics } from './research-metrics';
 import { analyzeCodonUsage, formatAnalysis, type CodonAnalysis } from './codon-analyzer';
+import { predictMutationImpact, type MutationPrediction, type ImpactLevel } from './mutation-predictor';
 
 // Get DOM elements
 const editor = document.getElementById('editor') as HTMLTextAreaElement;
@@ -870,6 +871,449 @@ function applyMutation(type: MutationType) {
   }
 }
 
+// Mutation preview modal functions
+function injectPreviewModalStyles() {
+  const style = document.createElement('style');
+  style.textContent = `
+    .preview-modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.75);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 10000;
+      animation: fadeIn 0.2s ease-in;
+    }
+
+    .preview-modal-overlay.active {
+      display: flex;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    .preview-modal {
+      background: var(--bg-secondary, #1e1e1e);
+      border: 2px solid var(--accent-primary, #4a90e2);
+      border-radius: 12px;
+      padding: 24px;
+      max-width: 700px;
+      max-height: 90vh;
+      overflow-y: auto;
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+      animation: slideIn 0.3s ease-out;
+    }
+
+    @keyframes slideIn {
+      from { transform: translateY(-20px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+
+    .preview-modal h3 {
+      margin: 0 0 16px 0;
+      color: var(--text-primary, #f0f0f0);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .preview-comparison {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin: 16px 0;
+    }
+
+    .preview-canvas-container {
+      text-align: center;
+    }
+
+    .preview-canvas-container h4 {
+      margin: 0 0 8px 0;
+      font-size: 0.9em;
+      color: var(--text-secondary, #ccc);
+    }
+
+    .preview-canvas {
+      border: 2px solid var(--border-color, #444);
+      border-radius: 8px;
+      max-width: 100%;
+      height: auto;
+      background: var(--canvas-bg, #fff);
+    }
+
+    .preview-impact-badge {
+      display: inline-block;
+      padding: 6px 12px;
+      border-radius: 6px;
+      font-weight: 600;
+      font-size: 0.9em;
+      margin: 8px 0;
+    }
+
+    .preview-impact-badge.SILENT {
+      background: #22c55e;
+      color: #fff;
+    }
+
+    .preview-impact-badge.LOCAL {
+      background: #eab308;
+      color: #000;
+    }
+
+    .preview-impact-badge.MAJOR {
+      background: #f97316;
+      color: #fff;
+    }
+
+    .preview-impact-badge.CATASTROPHIC {
+      background: #ef4444;
+      color: #fff;
+    }
+
+    .preview-confidence {
+      margin: 8px 0;
+      color: var(--text-secondary, #ccc);
+    }
+
+    .preview-confidence-stars {
+      color: #fbbf24;
+      font-size: 1.2em;
+    }
+
+    .preview-description {
+      margin: 12px 0;
+      padding: 12px;
+      background: var(--bg-tertiary, #2a2a2a);
+      border-radius: 6px;
+      font-size: 0.95em;
+      line-height: 1.5;
+      color: var(--text-primary, #f0f0f0);
+    }
+
+    .preview-stats {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 8px;
+      margin: 12px 0;
+      font-size: 0.85em;
+    }
+
+    .preview-stat {
+      background: var(--bg-tertiary, #2a2a2a);
+      padding: 8px;
+      border-radius: 4px;
+      color: var(--text-secondary, #ccc);
+    }
+
+    .preview-actions {
+      display: flex;
+      gap: 12px;
+      margin-top: 20px;
+      justify-content: flex-end;
+    }
+
+    .preview-btn {
+      padding: 10px 20px;
+      border: none;
+      border-radius: 6px;
+      font-size: 1em;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .preview-btn-apply {
+      background: var(--accent-primary, #4a90e2);
+      color: #fff;
+    }
+
+    .preview-btn-apply:hover {
+      background: var(--accent-hover, #3a7bc8);
+      transform: translateY(-1px);
+    }
+
+    .preview-btn-cancel {
+      background: var(--bg-tertiary, #2a2a2a);
+      color: var(--text-primary, #f0f0f0);
+    }
+
+    .preview-btn-cancel:hover {
+      background: var(--bg-secondary, #3a3a3a);
+    }
+  `;
+  document.head.appendChild(style);
+}
+
+function createPreviewModal() {
+  const overlay = document.createElement('div');
+  overlay.className = 'preview-modal-overlay';
+  overlay.id = 'previewModalOverlay';
+  overlay.innerHTML = `
+    <div class="preview-modal" role="dialog" aria-labelledby="previewModalTitle" aria-modal="true">
+      <h3 id="previewModalTitle">🔮 Mutation Preview</h3>
+
+      <div class="preview-comparison">
+        <div class="preview-canvas-container">
+          <h4>Original</h4>
+          <img id="previewOriginalCanvas" class="preview-canvas" alt="Original genome rendering">
+        </div>
+        <div class="preview-canvas-container">
+          <h4>After Mutation</h4>
+          <img id="previewMutatedCanvas" class="preview-canvas" alt="Mutated genome rendering">
+        </div>
+      </div>
+
+      <div style="text-align: center;">
+        <div class="preview-impact-badge" id="previewImpactBadge">SILENT</div>
+        <div class="preview-confidence">
+          Confidence: <span class="preview-confidence-stars" id="previewConfidenceStars">⭐⭐⭐</span>
+          <span id="previewConfidencePercent">(95%)</span>
+        </div>
+      </div>
+
+      <div class="preview-description" id="previewDescription">
+        Minimal visual change - outputs nearly identical
+      </div>
+
+      <div class="preview-stats">
+        <div class="preview-stat">
+          <strong>Pixel Difference:</strong> <span id="previewPixelDiff">2.3%</span>
+        </div>
+        <div class="preview-stat">
+          <strong>Shape Changes:</strong> <span id="previewShapeChanges">0</span>
+        </div>
+        <div class="preview-stat">
+          <strong>Color Changes:</strong> <span id="previewColorChanges">No</span>
+        </div>
+        <div class="preview-stat">
+          <strong>Position Changes:</strong> <span id="previewPositionChanges">No</span>
+        </div>
+      </div>
+
+      <div class="preview-actions">
+        <button class="preview-btn preview-btn-cancel" id="previewCancelBtn">Cancel</button>
+        <button class="preview-btn preview-btn-apply" id="previewApplyBtn">Apply Mutation</button>
+      </div>
+    </div>
+  `;
+  document.body.appendChild(overlay);
+
+  // Close on overlay click
+  overlay.addEventListener('click', (e) => {
+    if (e.target === overlay) {
+      closePreviewModal();
+    }
+  });
+
+  // Cancel button
+  const cancelBtn = document.getElementById('previewCancelBtn') as HTMLButtonElement;
+  cancelBtn.addEventListener('click', closePreviewModal);
+
+  // Apply button
+  const applyBtn = document.getElementById('previewApplyBtn') as HTMLButtonElement;
+  applyBtn.addEventListener('click', applyPredictedMutation);
+
+  // Escape key to close
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && overlay.classList.contains('active')) {
+      closePreviewModal();
+    }
+  });
+}
+
+function showPreviewModal(prediction: MutationPrediction, mutationType: MutationType) {
+  currentPrediction = prediction;
+  currentMutationType = mutationType;
+
+  const overlay = document.getElementById('previewModalOverlay') as HTMLDivElement;
+  const originalCanvas = document.getElementById('previewOriginalCanvas') as HTMLImageElement;
+  const mutatedCanvas = document.getElementById('previewMutatedCanvas') as HTMLImageElement;
+  const impactBadge = document.getElementById('previewImpactBadge') as HTMLDivElement;
+  const confidenceStars = document.getElementById('previewConfidenceStars') as HTMLSpanElement;
+  const confidencePercent = document.getElementById('previewConfidencePercent') as HTMLSpanElement;
+  const description = document.getElementById('previewDescription') as HTMLDivElement;
+  const pixelDiff = document.getElementById('previewPixelDiff') as HTMLSpanElement;
+  const shapeChanges = document.getElementById('previewShapeChanges') as HTMLSpanElement;
+  const colorChanges = document.getElementById('previewColorChanges') as HTMLSpanElement;
+  const positionChanges = document.getElementById('previewPositionChanges') as HTMLSpanElement;
+
+  // Set preview images
+  originalCanvas.src = prediction.originalPreview;
+  mutatedCanvas.src = prediction.mutatedPreview;
+
+  // Set impact badge
+  impactBadge.textContent = `${getImpactIcon(prediction.impact)} ${prediction.impact}`;
+  impactBadge.className = `preview-impact-badge ${prediction.impact}`;
+
+  // Set confidence
+  const stars = getConfidenceStars(prediction.confidence);
+  confidenceStars.textContent = stars;
+  confidencePercent.textContent = `(${Math.round(prediction.confidence * 100)}%)`;
+
+  // Set description
+  description.textContent = prediction.description;
+
+  // Set stats
+  pixelDiff.textContent = `${prediction.pixelDiffPercent.toFixed(1)}%`;
+  shapeChanges.textContent = prediction.analysis.shapeChanges.toString();
+  colorChanges.textContent = prediction.analysis.colorChanges ? 'Yes' : 'No';
+  positionChanges.textContent = prediction.analysis.positionChanges ? 'Yes' : 'No';
+
+  // Show modal
+  overlay.classList.add('active');
+}
+
+function closePreviewModal() {
+  const overlay = document.getElementById('previewModalOverlay') as HTMLDivElement;
+  overlay.classList.remove('active');
+  currentPrediction = null;
+  currentMutationType = null;
+}
+
+function applyPredictedMutation() {
+  if (!currentMutationType) {
+    return;
+  }
+
+  closePreviewModal();
+
+  // Apply the mutation (reuse existing logic)
+  applyMutation(currentMutationType);
+}
+
+function getImpactIcon(impact: ImpactLevel): string {
+  switch (impact) {
+    case 'SILENT': return '🟢';
+    case 'LOCAL': return '🟡';
+    case 'MAJOR': return '🟠';
+    case 'CATASTROPHIC': return '🔴';
+  }
+}
+
+function getConfidenceStars(confidence: number): string {
+  if (confidence >= 0.85) return '⭐⭐⭐';
+  if (confidence >= 0.60) return '⭐⭐';
+  return '⭐';
+}
+
+async function previewMutation(type: MutationType) {
+  try {
+    const genome = editor.value.trim();
+
+    if (!genome) {
+      setStatus('No genome to preview', 'error');
+      return;
+    }
+
+    let result;
+
+    switch (type) {
+      case 'silent':
+        result = applySilentMutation(genome);
+        break;
+      case 'missense':
+        result = applyMissenseMutation(genome);
+        break;
+      case 'nonsense':
+        result = applyNonsenseMutation(genome);
+        break;
+      case 'point':
+        result = applyPointMutation(genome);
+        break;
+      case 'insertion':
+        result = applyInsertion(genome);
+        break;
+      case 'deletion':
+        result = applyDeletion(genome);
+        break;
+      case 'frameshift':
+        result = applyFrameshiftMutation(genome);
+        break;
+      default:
+        throw new Error(`Unknown mutation type: ${type}`);
+    }
+
+    // Predict impact
+    const prediction = predictMutationImpact(genome, result, 300, 300);
+
+    // Show modal
+    showPreviewModal(prediction, type);
+
+  } catch (error) {
+    if (error instanceof Error) {
+      setStatus(`Preview failed: ${error.message}`, 'error');
+    } else {
+      setStatus('Preview failed', 'error');
+    }
+  }
+}
+
+function addPreviewButtons() {
+  // Add "🔮 Preview All" button before mutation buttons
+  const mutationToolbar = silentMutationBtn.parentElement;
+  if (!mutationToolbar) return;
+
+  // Create preview all button
+  const previewAllBtn = document.createElement('button');
+  previewAllBtn.className = 'secondary';
+  previewAllBtn.textContent = '🔮 Preview';
+  previewAllBtn.title = 'Preview mutation effects before applying';
+  previewAllBtn.setAttribute('aria-label', 'Preview mutation effects before applying');
+  previewAllBtn.style.marginLeft = 'auto';
+  previewAllBtn.style.fontWeight = '600';
+
+  // Create dropdown for selecting mutation type to preview
+  const previewContainer = document.createElement('span');
+  previewContainer.style.display = 'inline-flex';
+  previewContainer.style.gap = '0.25rem';
+  previewContainer.style.marginLeft = 'auto';
+
+  previewAllBtn.addEventListener('click', () => {
+    // Show menu to select mutation type
+    const mutationType = prompt('Select mutation type to preview:\n1. Silent\n2. Missense\n3. Nonsense\n4. Frameshift\n5. Point\n6. Insertion\n7. Deletion\n\nEnter number (1-7):');
+    if (!mutationType) return;
+
+    const types: MutationType[] = ['silent', 'missense', 'nonsense', 'frameshift', 'point', 'insertion', 'deletion'];
+    const index = parseInt(mutationType) - 1;
+    if (index >= 0 && index < types.length) {
+      previewMutation(types[index]);
+    }
+  });
+
+  previewContainer.appendChild(previewAllBtn);
+  mutationToolbar.appendChild(previewContainer);
+
+  // Add right-click preview to each mutation button
+  const mutationButtons = [
+    { btn: silentMutationBtn, type: 'silent' as MutationType },
+    { btn: missenseMutationBtn, type: 'missense' as MutationType },
+    { btn: nonsenseMutationBtn, type: 'nonsense' as MutationType },
+    { btn: frameshiftMutationBtn, type: 'frameshift' as MutationType },
+    { btn: pointMutationBtn, type: 'point' as MutationType },
+    { btn: insertionMutationBtn, type: 'insertion' as MutationType },
+    { btn: deletionMutationBtn, type: 'deletion' as MutationType }
+  ];
+
+  mutationButtons.forEach(({ btn, type }) => {
+    // Right-click to preview
+    btn.addEventListener('contextmenu', (e) => {
+      e.preventDefault();
+      previewMutation(type);
+    });
+
+    // Update tooltip to mention right-click
+    const currentTitle = btn.getAttribute('title') || '';
+    btn.setAttribute('title', `${currentTitle}\nRight-click to preview`);
+  });
+}
+
 // Audio toggle handler - cycles through visual → audio → both → visual
 async function toggleAudio() {
   const modes: RenderMode[] = ['visual', 'audio', 'both'];
@@ -1202,6 +1646,11 @@ injectTimelineStyles();
 // Initialize DiffViewer styles
 injectDiffViewerStyles();
 
+// Initialize mutation preview modal
+injectPreviewModalStyles();
+createPreviewModal();
+addPreviewButtons();
+
 const shareSystem = new ShareSystem({
   containerElement: shareContainer,
   getGenome: () => editor.value.trim(),
@@ -1221,6 +1670,10 @@ const diffViewer = new DiffViewer({
 
 // Track original genome for comparison
 let originalGenomeBeforeMutation: string = '';
+
+// Track current prediction for preview modal
+let currentPrediction: MutationPrediction | null = null;
+let currentMutationType: MutationType | null = null;
 
 // Initialize tutorial system
 const tutorialManager = new TutorialManager();
