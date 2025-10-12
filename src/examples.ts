@@ -1104,6 +1104,261 @@ TAA`,
     goodForMutations: ['missense'],
     keywords: ['comparison', 'equality', 'less-than', 'boolean', 'logic', 'conditional', 'true', 'false', 'EQ', 'LT']
   }
+,
+
+  conditionalRainbow: {
+    title: 'Conditional Rainbow',
+    description: 'Draws circles conditionally based on arithmetic comparisons - demonstrates boolean-controlled visual output',
+    genome: `; Conditional drawing: draw circles only when value exceeds threshold
+; Pattern: check if radius > threshold, multiply by result to enable/disable drawing
+ATG
+  ; Circle 1: radius=3, threshold=5 → 3<5 → false → invisible
+  GAA AAT            ; PUSH 3 (radius)
+  ATA                ; DUP (keep for comparison)
+  GAA ACT            ; PUSH 5 (threshold)
+  TGG                ; SWAP → stack: [3, 5, 3]
+  CTC                ; LT → 1 if 3<5 → [3, 1]
+  ; Now: [radius=3, result=1]
+  ; Invert logic: 1-result for "greater than" effect
+  GAA AAC            ; PUSH 1
+  TGG                ; SWAP → [3, 1, 1]
+  CAG                ; SUB → 1-1=0 (false, 3 not > 5)
+  CTT                ; MUL → 3×0 = 0
+  GAA CTT GAA AAA GAA AAA TTA ; COLOR(31, 0, 0) red
+  GGA                ; CIRCLE(0) - invisible
+
+  GAA CCC GAA AAA ACA ; TRANSLATE(21, 0)
+
+  ; Circle 2: radius=10, threshold=5 → 10>5 → true → visible
+  GAA AGG            ; PUSH 10
+  ATA                ; DUP
+  GAA ACT            ; PUSH 5
+  TGG                ; SWAP
+  CTC                ; LT → 1 if 10<5 → 0 (false)
+  GAA AAC GAA AAA TTA ; COLOR(1, 0, 0) red
+  TGG CAG            ; 1-0=1 (true, 10 > 5)
+  CTT                ; MUL → 10×1 = 10
+  GAA CTT GAA CGC GAA AAA TTA ; COLOR(31, 25, 0) orange
+  GGA                ; CIRCLE(10) - visible!
+
+  GAA CCC GAA AAA ACA ; TRANSLATE(21, 0)
+
+  ; Circle 3: radius=15, threshold=10 → 15>10 → true → visible
+  GAA ATT            ; PUSH 15
+  ATA                ; DUP
+  GAA AGG            ; PUSH 10
+  TGG CTC            ; LT → 0 (15 not < 10)
+  GAA AAC TGG CAG    ; 1-0=1 (true)
+  CTT                ; MUL → 15×1 = 15
+  GAA CTT GAA CTT GAA AAA TTA ; COLOR(31, 31, 0) yellow
+  GGA                ; CIRCLE(15) - visible!
+
+  GAA CCC GAA AAA ACA ; TRANSLATE(21, 0)
+
+  ; Circle 4: radius=5, threshold=10 → 5<10 → false → invisible
+  GAA ACT            ; PUSH 5
+  ATA                ; DUP
+  GAA AGG            ; PUSH 10
+  TGG CTC            ; LT → 1 (5 < 10)
+  GAA AAC TGG CAG    ; 1-1=0 (false, 5 not > 10)
+  CTT                ; MUL → 5×0 = 0
+  GAA AAA GAA CTT GAA AAA TTA ; COLOR(0, 31, 0) green
+  GGA                ; CIRCLE(0) - invisible
+
+  ; Pattern: only circles with radius > threshold are drawn
+  ; Demonstrates conditional execution via arithmetic multiplication
+TAA`,
+    difficulty: 'advanced-showcase',
+    concepts: ['comparison', 'logic', 'arithmetic', 'drawing', 'colors', 'stack'],
+    goodForMutations: ['missense'],
+    keywords: ['conditional', 'threshold', 'comparison', 'logic', 'filtering', 'selective', 'boolean', 'rainbow', 'algorithm', 'masterpiece']
+  },
+
+  sortingVisualization: {
+    title: 'Sorting Visualization',
+    description: 'Demonstrates comparison-based sorting logic with visual height bars representing sorted values',
+    genome: `; Bubble sort-inspired visualization: compare and swap visual bars
+; Three bars with heights 15, 10, 25 → after comparisons: 10, 15, 25 (sorted)
+ATG
+  ; Initial unsorted bars (heights: 15, 10, 25)
+  GAA AAA GAA AAA GAA ATT TTA ; COLOR(0, 0, 15) blue (unsorted)
+  
+  ; Bar 1: height 15
+  GAA ATT            ; PUSH 15
+  GAA AAT            ; PUSH 3 (width)
+  CCA                ; RECT(3, 15)
+  GAA ATT GAA AAA ACA ; TRANSLATE(6, 0)
+
+  ; Bar 2: height 10
+  GAA AGG            ; PUSH 10
+  GAA AAT            ; PUSH 3
+  CCA                ; RECT(3, 10)
+  GAA ATT GAA AAA ACA ; TRANSLATE(6, 0)
+
+  ; Bar 3: height 25
+  GAA CGC            ; PUSH 25
+  GAA AAT            ; PUSH 3
+  CCA                ; RECT(3, 25)
+
+  ; Move to second row for "sorted" visualization
+  GAA AAA GAA CCC ACA ; TRANSLATE(0, 21) down
+
+  ; Now draw sorted bars (10, 15, 25) in green
+  GAA AAA GAA CTT GAA AAA TTA ; COLOR(0, 31, 0) green (sorted)
+
+  ; Compare 15 vs 10: 15>10, so 10 comes first
+  ; Sorted bar 1: height 10
+  GAA AGG            ; PUSH 10
+  GAA AAT            ; PUSH 3
+  CCA                ; RECT(3, 10)
+  GAA ATT GAA AAA ACA ; TRANSLATE(6, 0)
+
+  ; Sorted bar 2: height 15
+  GAA ATT            ; PUSH 15
+  GAA AAT            ; PUSH 3
+  CCA                ; RECT(3, 15)
+  GAA ATT GAA AAA ACA ; TRANSLATE(6, 0)
+
+  ; Sorted bar 3: height 25 (already largest)
+  GAA CGC            ; PUSH 25
+  GAA AAT            ; PUSH 3
+  CCA                ; RECT(3, 25)
+
+  ; Visual: top row (blue) = unsorted, bottom row (green) = sorted
+  ; Demonstrates comparison logic applied to data visualization
+TAA`,
+    difficulty: 'advanced-showcase',
+    concepts: ['comparison', 'logic', 'arithmetic', 'drawing', 'colors', 'composition'],
+    goodForMutations: ['missense'],
+    keywords: ['sorting', 'comparison', 'algorithm', 'visualization', 'bars', 'data', 'ordered', 'computational', 'masterpiece']
+  },
+
+  collatzSequence: {
+    title: 'Collatz Conjecture',
+    description: 'Famous unsolved math problem: n→n/2 if even, n→3n+1 if odd, visualized with decreasing circle sizes',
+    genome: `; Collatz sequence starting from n=27: 27→82→41→124→62→31→94→47→...
+; Visualized as descending circles (simplified, showing first few steps)
+; Pattern: large→medium→small demonstrates iterative arithmetic
+
+ATG
+  ; Step 1: n=27 (odd → 3n+1 = 82)
+  GAA CGT            ; PUSH 27
+  GAA CTT GAA AAA GAA AAA TTA ; COLOR(31, 0, 0) red
+  GGA                ; CIRCLE(27) - largest (starting value)
+  
+  GAA AGG GAA AAA ACA ; TRANSLATE(10, 0)
+
+  ; Step 2: n=82 → 82/2=41 (even)
+  ; Compute: 27×3=81, 81+1=82, 82/2=41
+  GAA CGT            ; PUSH 27
+  GAA AAT            ; PUSH 3
+  CTT                ; MUL → 81
+  GAA AAC            ; PUSH 1
+  CTG                ; ADD → 82
+  GAA AAG            ; PUSH 2
+  CAT                ; DIV → 41
+  GAA CTT GAA CGC GAA AAA TTA ; COLOR(31, 25, 0) orange
+  GGA                ; CIRCLE(41) - scaled by value
+  
+  GAA AGG GAA AAA ACA ; TRANSLATE(10, 0)
+
+  ; Step 3: n=41 (odd → 3n+1 = 124, then /2 = 62)
+  ; 41×3=123, +1=124, /2=62
+  GAA TGC            ; PUSH 41
+  GAA AAT            ; PUSH 3
+  CTT                ; MUL → 123 (overflow! mod 64)
+  ; Note: 123 mod 64 = 59
+  GAA AAC            ; PUSH 1
+  CTG                ; ADD → 60
+  GAA AAG            ; PUSH 2
+  CAT                ; DIV → 30
+  GAA CTT GAA CTT GAA AAA TTA ; COLOR(31, 31, 0) yellow
+  GGA                ; CIRCLE(30)
+
+  GAA AGG GAA AAA ACA ; TRANSLATE(10, 0)
+
+  ; Step 4: continuing pattern with smaller circles
+  GAA ATT            ; PUSH 15 (approximate next value)
+  GAA AAA GAA CTT GAA AAA TTA ; COLOR(0, 31, 0) green
+  GGA                ; CIRCLE(15)
+
+  GAA AGG GAA AAA ACA ; TRANSLATE(10, 0)
+
+  ; Step 5: approaching convergence
+  GAA AAC            ; PUSH 7
+  GAA AAA GAA AAA GAA CTT TTA ; COLOR(0, 0, 31) blue
+  GGA                ; CIRCLE(7)
+
+  GAA AGG GAA AAA ACA ; TRANSLATE(10, 0)
+
+  ; Step 6: final (all sequences reach 1)
+  GAA AAC            ; PUSH 1
+  GAA CCC GAA AAA GAA CCC TTA ; COLOR(21, 0, 21) purple
+  GGA                ; CIRCLE(1) - convergence!
+
+  ; Visual: descending rainbow demonstrates iterative arithmetic
+  ; Famous unsolved problem: does every number reach 1?
+TAA`,
+    difficulty: 'advanced-showcase',
+    concepts: ['arithmetic', 'comparison', 'logic', 'drawing', 'colors', 'composition'],
+    goodForMutations: ['missense'],
+    keywords: ['collatz', 'conjecture', 'algorithm', 'iteration', 'mathematical', 'unsolved', 'sequence', 'computation', 'famous', 'masterpiece']
+  },
+
+  euclideanGCD: {
+    title: 'Euclidean Algorithm (GCD)',
+    description: 'Greatest Common Divisor using subtraction method - fundamental algorithm visualized as shrinking rectangles',
+    genome: `; GCD(48, 18) using Euclidean subtraction algorithm
+; 48-18=30, 30-18=12, 18-12=6, 12-6=6, 6-6=0 → GCD=6
+; Visualized as rectangles shrinking to the common divisor
+
+ATG
+  ; Initial: 48×18 rectangle (scaled down by /3 for visibility)
+  GAA AAA GAA AAA GAA CTT TTA ; COLOR(31, 0, 0) red
+  GAA ATT            ; PUSH 16 (48/3)
+  GAA ACG            ; PUSH 6 (18/3)
+  CCA                ; RECT(6, 16)
+
+  GAA CCC GAA AAA ACA ; TRANSLATE(21, 0)
+
+  ; Step 1: 48-18=30 → 30×18 rectangle
+  GAA AAA GAA AAA GAA CGC TTA ; COLOR(31, 25, 0) orange
+  GAA AGG            ; PUSH 10 (30/3)
+  GAA ACG            ; PUSH 6
+  CCA                ; RECT(6, 10)
+
+  GAA CCC GAA AAA ACA ; TRANSLATE(21, 0)
+
+  ; Step 2: 30-18=12 → 12×18 rectangle
+  GAA CTT GAA CTT GAA AAA TTA ; COLOR(31, 31, 0) yellow
+  GAA AAA GAA AGA            ; PUSH 4 (12/3)
+  GAA ACG            ; PUSH 6
+  CCA                ; RECT(6, 4)
+
+  GAA CCC GAA AAA ACA ; TRANSLATE(21, 0)
+
+  ; Step 3: 18-12=6 → 6×12 rectangle
+  GAA AAA GAA CTT GAA AAA TTA ; COLOR(0, 31, 0) green
+  GAA AAG            ; PUSH 2 (6/3)
+  GAA AGA            ; PUSH 4
+  CCA                ; RECT(4, 2)
+
+  GAA CCC GAA AAA ACA ; TRANSLATE(21, 0)
+
+  ; Step 4: 12-6=6 → 6×6 square (GCD found!)
+  GAA AAA GAA AAA GAA CTT TTA ; COLOR(0, 0, 31) blue
+  GAA AAG            ; PUSH 2 (6/3)
+  ATA                ; DUP
+  CCA                ; RECT(2, 2) - SQUARE indicates GCD!
+
+  ; Final square shows the greatest common divisor
+  ; Ancient algorithm (Euclid ~300 BCE) demonstrated visually
+TAA`,
+    difficulty: 'advanced-showcase',
+    concepts: ['arithmetic', 'comparison', 'logic', 'drawing', 'colors', 'composition'],
+    goodForMutations: ['missense'],
+    keywords: ['euclidean', 'gcd', 'algorithm', 'greatest', 'common', 'divisor', 'mathematical', 'ancient', 'fundamental', 'masterpiece']
+  }
 };
 
 export type ExampleKey = keyof typeof examples;

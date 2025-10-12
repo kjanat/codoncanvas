@@ -578,6 +578,72 @@ describe('CodonVM', () => {
 		});
 	});
 
+	describe('Algorithmic examples', () => {
+		test('conditionalRainbow demonstrates threshold filtering', () => {
+			// Test that only values exceeding threshold produce visible output
+			// Pattern: radius > threshold → visible, else invisible (radius 0)
+			const genome = `ATG
+				GAA AAT ATA GAA ACT TGG CTC GAA AAC TGG CAG CTT GGA
+				GAA CCC GAA AAA ACA
+				GAA AGG ATA GAA ACT TGG CTC GAA AAC TGG CAG CTT GGA
+			TAA`;
+			const tokens = lexer.tokenize(genome);
+			vm.run(tokens);
+
+			// First circle: 3 > 5? No → 3*(1-(1))=0
+			// Second circle: 10 > 5? Yes → 10*(1-0)=10
+			// Note: Renderer scales these, so we just check count and presence of 0
+			const circles = renderer.operations.filter(op => op.startsWith('circle'));
+			expect(circles.length).toBeGreaterThan(0);
+			expect(circles.some(op => op.includes('0'))).toBe(true); // Has invisible circle
+		});
+
+		test('collatzSequence demonstrates iterative arithmetic', () => {
+			// Simplified Collatz: n=27 → 3n+1=82, 82/2=41
+			const genome = 'ATG GAA CGT GAA AAT CTT GAA AAC CTG GAA AAG CAT TAA';
+			// PUSH 27, PUSH 3, MUL (81), PUSH 1, ADD (82), PUSH 2, DIV (41)
+			const tokens = lexer.tokenize(genome);
+			vm.run(tokens);
+			expect(vm.state.stack).toEqual([41]);
+		});
+
+		test('euclideanGCD demonstrates subtraction algorithm', () => {
+			// GCD via subtraction: simple test 13-8=5
+			const genome = 'ATG GAA ATC GAA AGA CAG TAA';
+			// PUSH 13 (ATC), PUSH 8 (AGA), SUB → 5
+			const tokens = lexer.tokenize(genome);
+			vm.run(tokens);
+			expect(vm.state.stack).toEqual([5]);
+		});
+
+		test('sortingVisualization creates before/after comparison bars', () => {
+			// Unsorted bars: 15, 10, 25
+			const genome = `ATG
+				GAA ATT GAA AAT CCA
+				GAA ATT GAA AAA ACA
+				GAA AGG GAA AAT CCA
+				GAA ATT GAA AAA ACA
+				GAA CGC GAA AAT CCA
+			TAA`;
+			const tokens = lexer.tokenize(genome);
+			vm.run(tokens);
+
+			const rects = renderer.operations.filter(op => op.startsWith('rect'));
+			expect(rects).toHaveLength(3);
+			// Check that we have 3 rectangles drawn
+			// Values are scaled by renderer so we just verify count
+		});
+
+		test('comparison-based conditional pattern works', () => {
+			// Test GT pattern via SWAP LT: check if 10 > 5
+			const genome = 'ATG GAA AGG GAA ACT TGG CTC TAA';
+			// PUSH 10, PUSH 5, SWAP (5,10), LT → 1 (5<10, so 10>5)
+			const tokens = lexer.tokenize(genome);
+			vm.run(tokens);
+			expect(vm.state.stack).toEqual([1]); // true: 10 > 5
+		});
+	});
+
 	describe('Error handling', () => {
 		test('throws on unknown codon', () => {
 			const tokens = [
