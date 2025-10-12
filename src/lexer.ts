@@ -2,12 +2,12 @@ import { Base, Codon, CodonToken, ParseError } from './types';
 
 /**
  * Lexer interface for CodonCanvas genome parsing.
- * Responsible for tokenizing DNA triplets and validating genome structure.
+ * Responsible for tokenizing DNA/RNA triplets and validating genome structure.
  */
 export interface Lexer {
   /**
    * Tokenize source genome into codons.
-   * @param source - Raw genome string containing DNA bases (A/C/G/T) with optional whitespace and comments
+   * @param source - Raw genome string containing DNA/RNA bases (A/C/G/T/U) with optional whitespace and comments
    * @returns Array of codon tokens with position and line information
    * @throws Error if invalid characters found or source length not divisible by 3
    */
@@ -32,43 +32,42 @@ export interface Lexer {
 
 /**
  * CodonCanvas lexer implementation.
- * Parses DNA-like triplet syntax into executable codon tokens.
+ * Parses DNA/RNA-like triplet syntax into executable codon tokens.
+ * Supports both DNA (T) and RNA (U) notation.
  *
  * @example
  * ```typescript
  * const lexer = new CodonLexer();
- * const tokens = lexer.tokenize('ATG GAA CCC GGA TAA'); // START, PUSH 21, CIRCLE, STOP
- * const errors = lexer.validateStructure(tokens);
+ * // DNA notation
+ * const tokens1 = lexer.tokenize('ATG GAA CCC GGA TAA');
+ * // RNA notation
+ * const tokens2 = lexer.tokenize('AUG GAA CCC GGA UAA');
+ * // Both produce identical results
+ * const errors = lexer.validateStructure(tokens1);
  * ```
  */
 export class CodonLexer implements Lexer {
-  private readonly validBases = new Set<string>(['A', 'C', 'G', 'T']);
+  private readonly validBases = new Set<string>(['A', 'C', 'G', 'T', 'U']);
 
   /**
    * Tokenize source genome into codons.
    *
    * Strips comments (`;` to EOL), removes whitespace, validates base characters,
    * and chunks into triplets. Tracks line numbers for error reporting.
+   * Supports both DNA (T) and RNA (U) notation - U is normalized to T internally.
    *
-   * @param source - Raw genome string (supports A/C/G/T, whitespace, `;` comments)
+   * @param source - Raw genome string (supports A/C/G/T/U, whitespace, `;` comments)
    * @returns Array of codon tokens with position metadata
    * @throws Error if invalid characters found or length not divisible by 3
    *
    * @example
    * ```typescript
    * const lexer = new CodonLexer();
-   * const tokens = lexer.tokenize(`
-   *   ATG           ; Start execution
-   *   GAA CCC GGA   ; Push 21, draw circle
-   *   TAA           ; Stop
-   * `);
-   * // Returns: [
-   * //   { text: 'ATG', position: 0, line: 2 },
-   * //   { text: 'GAA', position: 3, line: 3 },
-   * //   { text: 'CCC', position: 6, line: 3 },
-   * //   { text: 'GGA', position: 9, line: 3 },
-   * //   { text: 'TAA', position: 12, line: 4 }
-   * // ]
+   * // DNA notation
+   * const tokens1 = lexer.tokenize('ATG GAA CCC GGA TAA');
+   * // RNA notation (U→T normalized)
+   * const tokens2 = lexer.tokenize('AUG GAA CCC GGA UAA');
+   * // Both produce identical results
    * ```
    */
   tokenize(source: string): CodonToken[] {
@@ -86,7 +85,9 @@ export class CodonLexer implements Lexer {
       for (let charIdx = 0; charIdx < codeLine.length; charIdx++) {
         const char = codeLine[charIdx];
         if (this.validBases.has(char)) {
-          cleanedSource += char;
+          // Normalize U→T (RNA to DNA notation)
+          const normalizedChar = char === 'U' ? 'T' : char;
+          cleanedSource += normalizedChar;
           positionMap.push({ line: lineIdx + 1, column: charIdx });
         } else if (char.trim() !== '') {
           throw new Error(`Invalid character '${char}' at line ${lineIdx + 1}, column ${charIdx}`);

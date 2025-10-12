@@ -1,0 +1,30 @@
+; RNA Composition
+; More complex RNA example with multiple shapes
+; RNA notation (U instead of T) demonstrating biological transcription
+; Difficulty: intermediate
+; Concepts: RNA alphabet, composition, transforms
+
+; START (AUG = RNA start codon)
+AUG
+
+; Draw first circle
+GAA AAU GGA        ; Push 3, draw small circle
+
+; Move right
+GAA CCC            ; Push 21 (dx)
+GAA AAA            ; Push 0 (dy)
+ACA                ; Translate(21, 0)
+
+; Draw rectangle
+GAA AGG GAA AGG CCA ; Push 10, push 10, draw rect
+
+; Move down
+GAA AAA            ; Push 0 (dx)
+GAA CCC            ; Push 21 (dy)
+ACA                ; Translate(0, 21)
+
+; Draw triangle
+GAA AGG GCA        ; Push 10, draw triangle
+
+; STOP (UAA = RNA stop codon)
+UAA

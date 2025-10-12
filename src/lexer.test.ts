@@ -46,6 +46,35 @@ describe('CodonLexer', () => {
       const genome = 'ATG GG';
       expect(() => lexer.tokenize(genome)).toThrow('not divisible by 3');
     });
+
+    test('accepts RNA notation (U instead of T)', () => {
+      const rnaGenome = 'AUG GGA UAA';
+      const tokens = lexer.tokenize(rnaGenome);
+
+      expect(tokens).toHaveLength(3);
+      expect(tokens[0].text).toBe('ATG'); // U→T normalized
+      expect(tokens[1].text).toBe('GGA');
+      expect(tokens[2].text).toBe('TAA'); // U→T normalized
+    });
+
+    test('handles mixed DNA and RNA notation', () => {
+      const mixedGenome = 'ATG GGA UAA'; // DNA start, RNA stop
+      const tokens = lexer.tokenize(mixedGenome);
+
+      expect(tokens).toHaveLength(3);
+      expect(tokens[0].text).toBe('ATG');
+      expect(tokens[2].text).toBe('TAA'); // U→T normalized
+    });
+
+    test('RNA genome produces same result as DNA equivalent', () => {
+      const dnaGenome = 'ATG GAA AAT GGA TAA';
+      const rnaGenome = 'AUG GAA AAU GGA UAA';
+
+      const dnaTokens = lexer.tokenize(dnaGenome);
+      const rnaTokens = lexer.tokenize(rnaGenome);
+
+      expect(rnaTokens).toEqual(dnaTokens);
+    });
   });
 
   describe('validateFrame', () => {

@@ -1,0 +1,15 @@
+; RNA Hello Circle
+; RNA notation example using U (Uracil) instead of T (Thymine)
+; Demonstrates biological accuracy: RNA uses U in transcription
+; Difficulty: beginner
+; Concepts: RNA alphabet, drawing primitives
+; Educationally equivalent to helloCircle.genome
+
+; START (AUG = RNA start codon, like ATG in DNA)
+AUG
+
+; PUSH 3, draw small circle
+GAA AAU GGA
+
+; STOP (UAA = RNA stop codon, like TAA in DNA)
+UAA

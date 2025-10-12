@@ -34,6 +34,34 @@ export const examples: Record<string, ExampleMetadata> = {
     keywords: ['simple', 'intro', 'first', 'basic', 'circle']
   },
 
+  rnaHello: {
+    title: 'RNA Hello',
+    description: 'RNA notation (U instead of T) demonstrating biological transcription',
+    genome: `; RNA notation using U (Uracil) instead of T (Thymine)
+AUG GAA AAU GGA UAA`,
+    difficulty: 'beginner',
+    concepts: ['drawing'],
+    goodForMutations: ['silent', 'missense', 'nonsense'],
+    keywords: ['rna', 'uracil', 'transcription', 'biology', 'simple']
+  },
+
+  rnaComposition: {
+    title: 'RNA Composition',
+    description: 'Complex RNA example with multiple shapes',
+    genome: `; RNA notation demonstrating composition
+AUG
+  GAA AAU GGA        ; Push 3, draw circle
+  GAA CCC GAA AAA ACA ; Push 21, push 0, translate
+  GAA AGG GAA AGG CCA ; Push 10, push 10, draw rect
+  GAA AAA GAA CCC ACA ; Push 0, push 21, translate
+  GAA AGG GCA        ; Push 10, draw triangle
+UAA`,
+    difficulty: 'intermediate',
+    concepts: ['drawing', 'transforms', 'composition'],
+    goodForMutations: ['missense', 'frameshift'],
+    keywords: ['rna', 'uracil', 'composition', 'multiple', 'shapes']
+  },
+
   twoShapes: {
     title: 'Two Shapes',
     description: 'Circle and rectangle side by side',

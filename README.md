@@ -7,6 +7,7 @@ CodonCanvas is an educational programming language that uses DNA-like triplets (
 ## Features
 
 - **Triplet-based syntax**: All instructions are 3-letter codons (e.g., `ATG`, `GGA`, `TAA`)
+- **DNA/RNA support**: Write genomes in DNA (T) or RNA (U) notation for biological accuracy
 - **Genetic redundancy**: Multiple codons map to the same operation (synonymous codons)
 - **Visual output**: Stack-based VM produces graphics on HTML5 canvas
 - **Mutation demonstration**: Silent, missense, nonsense, and frameshift mutations
@@ -116,55 +117,65 @@ Then open in browser:
 
 ## Example: Hello Circle
 
+**DNA Notation:**
 ```dna
 ATG GAA AAT GGA TAA
 ```
 
+**RNA Notation (biologically accurate):**
+```rna
+AUG GAA AAU GGA UAA
+```
+
 **Explanation:**
 
-- `ATG` - START (begin execution)
-- `GAA AAT` - PUSH 3 (push value 3 to stack)
+- `ATG`/`AUG` - START (begin execution)
+- `GAA AAT`/`AAU` - PUSH 3 (push value 3 to stack)
 - `GGA` - CIRCLE (draw circle with radius from stack)
-- `TAA` - STOP (end execution)
+- `TAA`/`UAA` - STOP (end execution)
+
+> **Note:** CodonCanvas supports both DNA (T) and RNA (U) notation. U and T are treated as synonyms - you can mix both in the same genome for educational demonstrations of transcription.
 
 ## Built-in Examples
 
-The playground includes **25 pedagogical examples** demonstrating all features:
+The playground includes **27 pedagogical examples** demonstrating all features:
 
-### Basic Shapes & Transforms (7)
+### Basic Shapes & Transforms (9)
 1. **Hello Circle** - Minimal example with single circle
-2. **Two Shapes** - Circle and rectangle composition
-3. **Colorful Pattern** - Multiple colored shapes with rotation
-4. **Line Art** - LINE primitive with rotation patterns
-5. **Triangle Demo** - TRIANGLE primitive with different sizes
-6. **Ellipse Gallery** - ELLIPSE with various aspect ratios
-7. **Scale Transform** - SCALE opcode demonstration
+2. **RNA Hello** - RNA notation (U instead of T) demonstrating biological transcription
+3. **RNA Composition** - More complex RNA example with multiple shapes
+4. **Two Shapes** - Circle and rectangle composition
+5. **Colorful Pattern** - Multiple colored shapes with rotation
+6. **Line Art** - LINE primitive with rotation patterns
+7. **Triangle Demo** - TRIANGLE primitive with different sizes
+8. **Ellipse Gallery** - ELLIPSE with various aspect ratios
+9. **Scale Transform** - SCALE opcode demonstration
 
 ### Stack & Composition (4)
-8. **Stack Operations** - DUP and SWAP for efficient stack management
-9. **Rosette Pattern** - Complex composition with rotation and color
-10. **Simple Face** - Combines primitives to draw a smiley face
-11. **Stack Cleanup** - POP opcode for stack management
+10. **Stack Operations** - DUP and SWAP for efficient stack management
+11. **Rosette Pattern** - Complex composition with rotation and color
+12. **Simple Face** - Combines primitives to draw a smiley face
+13. **Stack Cleanup** - POP opcode for stack management
 
 ### Advanced Features (4)
-12. **Textured Circle** - NOISE opcode for artistic texture effects
-13. **Spiral Pattern** - Geometric spiral using iterative transforms
-14. **Nested Frames** - SAVE_STATE for layered compositions
-15. **Mandala Pattern** - Complex radial symmetry
+14. **Textured Circle** - NOISE opcode for artistic texture effects
+15. **Spiral Pattern** - Geometric spiral using iterative transforms
+16. **Nested Frames** - SAVE_STATE for layered compositions
+17. **Mandala Pattern** - Complex radial symmetry
 
 ### Educational Demonstrations (3)
-16. **Silent Mutation Demo** - Pedagogical comparison of synonymous codons (GGA vs GGC)
-17. **Color Gradient** - Systematic color manipulation
-18. **Grid Pattern** - Systematic positioning with TRANSLATE
+18. **Silent Mutation Demo** - Pedagogical comparison of synonymous codons (GGA vs GGC)
+19. **Color Gradient** - Systematic color manipulation
+20. **Grid Pattern** - Systematic positioning with TRANSLATE
 
 ### Advanced Showcase (7)
-19. **Fractal Flower** - Intricate nested petals with multi-layer color gradients
-20. **Geometric Mosaic** - Grid-based tiled composition with rainbow gradient
-21. **Starfield** - Night sky with textured stars and nebula effects using NOISE
-22. **Recursive Circles** - Concentric rings with systematic rotational offsets
-23. **Kaleidoscope** - 6-fold radial symmetry with mixed shape primitives
-24. **Wavy Lines** - Flowing wave pattern demonstrating systematic rotation
-25. **Cosmic Wheel** - Elaborate textured composition showcasing maximum system capabilities
+21. **Fractal Flower** - Intricate nested petals with multi-layer color gradients
+22. **Geometric Mosaic** - Grid-based tiled composition with rainbow gradient
+23. **Starfield** - Night sky with textured stars and nebula effects using NOISE
+24. **Recursive Circles** - Concentric rings with systematic rotational offsets
+25. **Kaleidoscope** - 6-fold radial symmetry with mixed shape primitives
+26. **Wavy Lines** - Flowing wave pattern demonstrating systematic rotation
+27. **Cosmic Wheel** - Elaborate textured composition showcasing maximum system capabilities
 
 > **Note:** The Advanced Showcase examples demonstrate the full artistic and technical depth of CodonCanvas. Each genome ranges from 960-1,620 codons (2,880-4,860 bases) and showcases advanced techniques like SAVE_STATE, NOISE textures, multi-layer compositions, and complex transform orchestration.
 

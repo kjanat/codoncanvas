@@ -4,14 +4,18 @@
  */
 
 /**
- * Valid DNA base character (Adenine, Cytosine, Guanine, Thymine).
+ * Valid DNA/RNA base character.
+ * - DNA: Adenine, Cytosine, Guanine, Thymine
+ * - RNA: Adenine, Cytosine, Guanine, Uracil
+ * Note: U and T are treated as synonyms (both map to same codons).
  */
-export type Base = 'A' | 'C' | 'G' | 'T';
+export type Base = 'A' | 'C' | 'G' | 'T' | 'U';
 
 /**
- * Three-character DNA triplet (codon).
+ * Three-character DNA/RNA triplet (codon).
  * Each codon maps to an executable opcode instruction.
- * @example 'ATG', 'GGA', 'TAA'
+ * Supports both DNA (T) and RNA (U) notation.
+ * @example 'ATG', 'GGA', 'TAA' (DNA) or 'AUG', 'GGA', 'UAA' (RNA)
  */
 export type Codon = `${Base}${Base}${Base}`;
 
