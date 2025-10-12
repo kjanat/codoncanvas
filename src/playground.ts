@@ -31,6 +31,7 @@ import { AssessmentUI } from './assessment-ui';
 import { ResearchMetrics } from './research-metrics';
 import { analyzeCodonUsage, formatAnalysis, type CodonAnalysis } from './codon-analyzer';
 import { predictMutationImpact, type MutationPrediction, type ImpactLevel } from './mutation-predictor';
+import { compareGenomesDetailed, type GenomeComparisonResult } from './genome-comparison';
 
 // Get DOM elements
 const editor = document.getElementById('editor') as HTMLTextAreaElement;
@@ -84,6 +85,9 @@ const analyzeBtn = document.getElementById('analyzeBtn') as HTMLButtonElement;
 const analyzerPanel = document.getElementById('analyzerPanel') as HTMLDivElement;
 const analyzerToggle = document.getElementById('analyzerToggle') as HTMLButtonElement;
 const analyzerContent = document.getElementById('analyzerContent') as HTMLDivElement;
+
+// Comparison button (will be injected)
+let compareBtn: HTMLButtonElement;
 
 // Audio elements
 const audioToggleBtn = document.getElementById('audioToggleBtn') as HTMLButtonElement;
@@ -1734,6 +1738,524 @@ modeToggleBtns.forEach(btn => {
 // Initialize in playground mode
 switchMode('playground');
 
+// ========================================
+// GENOME COMPARISON LAB
+// ========================================
+
+/**
+ * Inject styles for comparison modal
+ */
+function injectComparisonModalStyles(): void {
+  if (document.getElementById('comparison-modal-styles')) {
+    return;
+  }
+
+  const style = document.createElement('style');
+  style.id = 'comparison-modal-styles';
+  style.textContent = `
+    .comparison-modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.85);
+      backdrop-filter: blur(8px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 10000;
+      animation: fadeIn 0.2s ease-out;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    .comparison-modal {
+      background: var(--color-bg-secondary);
+      border: 1px solid var(--color-border);
+      border-radius: 8px;
+      max-width: 900px;
+      max-height: 90vh;
+      width: 90%;
+      overflow-y: auto;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+      animation: slideIn 0.3s ease-out;
+    }
+
+    @keyframes slideIn {
+      from {
+        opacity: 0;
+        transform: translateY(-20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .comparison-modal-header {
+      padding: 1.5rem;
+      border-bottom: 1px solid var(--color-border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .comparison-modal-title {
+      font-size: 1.25rem;
+      font-weight: 600;
+      color: var(--color-text-primary);
+      margin: 0;
+    }
+
+    .comparison-modal-close {
+      background: none;
+      border: none;
+      color: var(--color-text-secondary);
+      font-size: 1.5rem;
+      cursor: pointer;
+      padding: 0.25rem 0.5rem;
+      border-radius: 4px;
+      transition: all 0.2s;
+    }
+
+    .comparison-modal-close:hover {
+      background: var(--color-bg-tertiary);
+      color: var(--color-text-primary);
+    }
+
+    .comparison-modal-body {
+      padding: 1.5rem;
+    }
+
+    .comparison-inputs {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .comparison-input-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .comparison-input-label {
+      font-size: 0.875rem;
+      font-weight: 600;
+      color: var(--color-text-primary);
+    }
+
+    .comparison-textarea {
+      width: 100%;
+      min-height: 120px;
+      padding: 0.75rem;
+      background: var(--color-bg-primary);
+      border: 1px solid var(--color-border);
+      border-radius: 4px;
+      color: var(--color-text-primary);
+      font-family: 'Monaco', 'Menlo', 'Courier New', monospace;
+      font-size: 0.875rem;
+      resize: vertical;
+    }
+
+    .comparison-textarea:focus {
+      outline: none;
+      border-color: var(--color-focus);
+    }
+
+    .comparison-actions {
+      display: flex;
+      gap: 0.75rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .comparison-btn {
+      padding: 0.75rem 1.5rem;
+      border: none;
+      border-radius: 4px;
+      font-size: 0.875rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .comparison-btn-primary {
+      background: var(--color-button-primary);
+      color: white;
+    }
+
+    .comparison-btn-primary:hover {
+      background: var(--color-button-primary-hover);
+      transform: translateY(-1px);
+    }
+
+    .comparison-btn-secondary {
+      background: var(--color-button-secondary);
+      color: var(--color-text-primary);
+    }
+
+    .comparison-btn-secondary:hover {
+      background: var(--color-button-secondary-hover);
+    }
+
+    .comparison-results {
+      display: none;
+      margin-top: 1.5rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid var(--color-border);
+    }
+
+    .comparison-results.show {
+      display: block;
+    }
+
+    .comparison-canvases {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .comparison-canvas-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .comparison-canvas-label {
+      font-size: 0.875rem;
+      font-weight: 600;
+      color: var(--color-text-secondary);
+    }
+
+    .comparison-canvas {
+      border: 1px solid var(--color-border);
+      border-radius: 4px;
+      max-width: 100%;
+    }
+
+    .comparison-metrics {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .comparison-metric {
+      background: var(--color-bg-tertiary);
+      padding: 1rem;
+      border-radius: 6px;
+      border: 1px solid var(--color-border);
+    }
+
+    .comparison-metric-label {
+      font-size: 0.75rem;
+      color: var(--color-text-secondary);
+      margin-bottom: 0.25rem;
+    }
+
+    .comparison-metric-value {
+      font-size: 1.5rem;
+      font-weight: 600;
+      color: var(--color-text-primary);
+    }
+
+    .comparison-metric-unit {
+      font-size: 0.875rem;
+      color: var(--color-text-secondary);
+      margin-left: 0.25rem;
+    }
+
+    .comparison-analysis {
+      background: var(--color-bg-tertiary);
+      padding: 1.25rem;
+      border-radius: 6px;
+      border: 1px solid var(--color-border);
+      margin-bottom: 1rem;
+    }
+
+    .comparison-analysis-description {
+      font-size: 0.9375rem;
+      color: var(--color-text-primary);
+      line-height: 1.6;
+      margin-bottom: 1rem;
+    }
+
+    .comparison-insights {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .comparison-insight {
+      font-size: 0.875rem;
+      color: var(--color-text-secondary);
+      line-height: 1.5;
+    }
+
+    .comparison-similarity-badge {
+      display: inline-block;
+      padding: 0.25rem 0.75rem;
+      border-radius: 12px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+    }
+
+    .similarity-identical { background: #22c55e; color: #1e1e1e; }
+    .similarity-very-similar { background: #86efac; color: #1e1e1e; }
+    .similarity-similar { background: #eab308; color: #1e1e1e; }
+    .similarity-different { background: #f97316; color: #1e1e1e; }
+    .similarity-very-different { background: #ef4444; color: #ffffff; }
+
+    @media (max-width: 768px) {
+      .comparison-inputs,
+      .comparison-canvases {
+        grid-template-columns: 1fr;
+      }
+
+      .comparison-metrics {
+        grid-template-columns: 1fr;
+      }
+
+      .comparison-modal {
+        width: 95%;
+        max-height: 95vh;
+      }
+    }
+  `;
+  document.head.appendChild(style);
+}
+
+/**
+ * Create comparison modal DOM structure
+ */
+function createComparisonModal(): HTMLElement {
+  const overlay = document.createElement('div');
+  overlay.className = 'comparison-modal-overlay';
+  overlay.style.display = 'none';
+
+  overlay.innerHTML = `
+    <div class="comparison-modal">
+      <div class="comparison-modal-header">
+        <h2 class="comparison-modal-title">🧬 Genome Comparison Lab</h2>
+        <button class="comparison-modal-close" aria-label="Close comparison modal">✕</button>
+      </div>
+      <div class="comparison-modal-body">
+        <div class="comparison-inputs">
+          <div class="comparison-input-group">
+            <label class="comparison-input-label">Genome A</label>
+            <textarea id="comparisonGenomeA" class="comparison-textarea" placeholder="Paste first genome here...
+Example:
+ATG GAA CCC GGA TAA"></textarea>
+            <button id="loadCurrentA" class="comparison-btn comparison-btn-secondary">Load Current →</button>
+          </div>
+          <div class="comparison-input-group">
+            <label class="comparison-input-label">Genome B</label>
+            <textarea id="comparisonGenomeB" class="comparison-textarea" placeholder="Paste second genome here..."></textarea>
+            <button id="loadCurrentB" class="comparison-btn comparison-btn-secondary">Load Current →</button>
+          </div>
+        </div>
+        <div class="comparison-actions">
+          <button id="compareGenomesBtn" class="comparison-btn comparison-btn-primary">🔬 Compare Genomes</button>
+          <button id="clearComparisonBtn" class="comparison-btn comparison-btn-secondary">Clear</button>
+        </div>
+        <div id="comparisonResults" class="comparison-results">
+          <div id="comparisonSimilarity"></div>
+          <div class="comparison-canvases">
+            <div class="comparison-canvas-container">
+              <span class="comparison-canvas-label">Genome A Output</span>
+              <img id="comparisonCanvasA" class="comparison-canvas" alt="Genome A visual output">
+            </div>
+            <div class="comparison-canvas-container">
+              <span class="comparison-canvas-label">Genome B Output</span>
+              <img id="comparisonCanvasB" class="comparison-canvas" alt="Genome B visual output">
+            </div>
+          </div>
+          <div class="comparison-metrics" id="comparisonMetrics"></div>
+          <div class="comparison-analysis" id="comparisonAnalysis"></div>
+        </div>
+      </div>
+    </div>
+  `;
+
+  // Close modal on overlay click
+  overlay.addEventListener('click', (e) => {
+    if (e.target === overlay) {
+      closeComparisonModal();
+    }
+  });
+
+  // Close button
+  overlay.querySelector('.comparison-modal-close')!.addEventListener('click', closeComparisonModal);
+
+  // Load current genome buttons
+  overlay.querySelector('#loadCurrentA')!.addEventListener('click', () => {
+    const textarea = document.getElementById('comparisonGenomeA') as HTMLTextAreaElement;
+    textarea.value = editor.value;
+  });
+
+  overlay.querySelector('#loadCurrentB')!.addEventListener('click', () => {
+    const textarea = document.getElementById('comparisonGenomeB') as HTMLTextAreaElement;
+    textarea.value = editor.value;
+  });
+
+  // Compare button
+  overlay.querySelector('#compareGenomesBtn')!.addEventListener('click', performComparison);
+
+  // Clear button
+  overlay.querySelector('#clearComparisonBtn')!.addEventListener('click', () => {
+    (document.getElementById('comparisonGenomeA') as HTMLTextAreaElement).value = '';
+    (document.getElementById('comparisonGenomeB') as HTMLTextAreaElement).value = '';
+    (document.getElementById('comparisonResults') as HTMLDivElement).classList.remove('show');
+  });
+
+  // ESC key to close
+  overlay.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+      closeComparisonModal();
+    }
+  });
+
+  return overlay;
+}
+
+let comparisonModal: HTMLElement;
+
+/**
+ * Open comparison modal
+ */
+function openComparisonModal(): void {
+  if (!comparisonModal) {
+    comparisonModal = createComparisonModal();
+    document.body.appendChild(comparisonModal);
+  }
+  comparisonModal.style.display = 'flex';
+  (document.getElementById('comparisonGenomeA') as HTMLTextAreaElement).focus();
+}
+
+/**
+ * Close comparison modal
+ */
+function closeComparisonModal(): void {
+  if (comparisonModal) {
+    comparisonModal.style.display = 'none';
+  }
+}
+
+/**
+ * Perform genome comparison
+ */
+function performComparison(): void {
+  const genomeA = (document.getElementById('comparisonGenomeA') as HTMLTextAreaElement).value.trim();
+  const genomeB = (document.getElementById('comparisonGenomeB') as HTMLTextAreaElement).value.trim();
+
+  if (!genomeA || !genomeB) {
+    setStatus('Please enter both genomes to compare', 'error');
+    return;
+  }
+
+  try {
+    setStatus('Comparing genomes...', 'info');
+
+    // Perform comparison
+    const result = compareGenomesDetailed(genomeA, genomeB);
+
+    // Display results
+    displayComparisonResults(result);
+
+    setStatus('Comparison complete', 'success');
+  } catch (error) {
+    setStatus(`Comparison error: ${(error as Error).message}`, 'error');
+    console.error('Comparison error:', error);
+  }
+}
+
+/**
+ * Display comparison results
+ */
+function displayComparisonResults(result: GenomeComparisonResult): void {
+  const resultsDiv = document.getElementById('comparisonResults') as HTMLDivElement;
+  resultsDiv.classList.add('show');
+
+  // Similarity badge
+  const similarityDiv = document.getElementById('comparisonSimilarity') as HTMLDivElement;
+  const badgeClass = `similarity-${result.analysis.similarity}`;
+  const similarityLabel = result.analysis.similarity.replace(/-/g, ' ').toUpperCase();
+  similarityDiv.innerHTML = `<span class="comparison-similarity-badge ${badgeClass}">${similarityLabel}</span>`;
+
+  // Canvases
+  const canvasA = document.getElementById('comparisonCanvasA') as HTMLImageElement;
+  const canvasB = document.getElementById('comparisonCanvasB') as HTMLImageElement;
+  canvasA.src = result.visual.originalCanvas;
+  canvasB.src = result.visual.mutatedCanvas;
+
+  // Metrics
+  const metricsDiv = document.getElementById('comparisonMetrics') as HTMLDivElement;
+  metricsDiv.innerHTML = `
+    <div class="comparison-metric">
+      <div class="comparison-metric-label">Pixel Difference</div>
+      <div class="comparison-metric-value">
+        ${result.metrics.pixelDifferencePercent.toFixed(1)}<span class="comparison-metric-unit">%</span>
+      </div>
+    </div>
+    <div class="comparison-metric">
+      <div class="comparison-metric-label">Codon Difference</div>
+      <div class="comparison-metric-value">
+        ${result.metrics.codonDifferencePercent.toFixed(1)}<span class="comparison-metric-unit">%</span>
+      </div>
+    </div>
+    <div class="comparison-metric">
+      <div class="comparison-metric-label">Hamming Distance</div>
+      <div class="comparison-metric-value">
+        ${result.metrics.hammingDistance}<span class="comparison-metric-unit">codons</span>
+      </div>
+    </div>
+    <div class="comparison-metric">
+      <div class="comparison-metric-label">Length Difference</div>
+      <div class="comparison-metric-value">
+        ${result.metrics.lengthDifference > 0 ? '+' : ''}${result.metrics.lengthDifference}<span class="comparison-metric-unit">codons</span>
+      </div>
+    </div>
+  `;
+
+  // Analysis
+  const analysisDiv = document.getElementById('comparisonAnalysis') as HTMLDivElement;
+  analysisDiv.innerHTML = `
+    <p class="comparison-analysis-description">${result.analysis.description}</p>
+    <div class="comparison-insights">
+      ${result.analysis.insights.map(insight => `<div class="comparison-insight">${insight}</div>`).join('')}
+    </div>
+  `;
+}
+
+/**
+ * Add Compare button to toolbar
+ */
+function addCompareButton(): void {
+  // Find the analyze button and insert compare button after it
+  compareBtn = document.createElement('button');
+  compareBtn.id = 'compareBtn';
+  compareBtn.className = 'secondary';
+  compareBtn.setAttribute('aria-label', 'Compare two genomes side-by-side');
+  compareBtn.textContent = '🔬 Compare';
+  compareBtn.addEventListener('click', openComparisonModal);
+
+  // Insert after analyze button
+  analyzeBtn.insertAdjacentElement('afterend', compareBtn);
+}
+
+// Initialize comparison lab
+injectComparisonModalStyles();
+addCompareButton();
+
 console.log('🧬 CodonCanvas Playground loaded');
 console.log('Press Cmd/Ctrl + Enter to run your genome');
 console.log('💡 Switch to Assessment mode to test your mutation knowledge');
+console.log('🔬 Use Compare to analyze differences between two genomes');
