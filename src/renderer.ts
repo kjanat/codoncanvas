@@ -54,11 +54,20 @@ export interface Renderer {
   /** Move drawing position by (dx, dy) */
   translate(dx: number, dy: number): void;
 
+  /** Set absolute drawing position */
+  setPosition(x: number, y: number): void;
+
   /** Rotate drawing direction by degrees */
   rotate(degrees: number): void;
 
+  /** Set absolute rotation */
+  setRotation(degrees: number): void;
+
   /** Scale subsequent drawing operations by factor */
   scale(factor: number): void;
+
+  /** Set absolute scale factor */
+  setScale(scale: number): void;
 
   /** Set drawing color (hue: 0-360, saturation: 0-100, lightness: 0-100) */
   setColor(h: number, s: number, l: number): void;

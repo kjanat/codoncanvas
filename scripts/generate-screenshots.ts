@@ -148,12 +148,25 @@ class NodeCanvasRenderer implements Renderer {
     this._y += scaledDy;
   }
 
+  setPosition(x: number, y: number): void {
+    this._x = x;
+    this._y = y;
+  }
+
   rotate(degrees: number): void {
     this._rotation += degrees;
   }
 
+  setRotation(degrees: number): void {
+    this._rotation = degrees;
+  }
+
   scale(factor: number): void {
     this._scale *= factor;
+  }
+
+  setScale(scale: number): void {
+    this._scale = scale;
   }
 
   setColor(h: number, s: number, l: number): void {

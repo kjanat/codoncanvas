@@ -213,8 +213,8 @@ export class CodonVM implements VM {
       }
 
       case Opcode.COLOR: {
-        const l = this.pop();
-        const s = this.pop();
+        const l = this.pop() * (100 / 64); // Map 0-63 to 0-100%
+        const s = this.pop() * (100 / 64); // Map 0-63 to 0-100%
         const h = this.pop() * (360 / 64); // Map 0-63 to 0-360
         this.renderer.setColor(h, s, l);
         this.state.color = { h, s, l };
@@ -264,6 +264,11 @@ export class CodonVM implements VM {
         this.state.rotation = savedState.rotation;
         this.state.scale = savedState.scale;
         this.state.color = { ...savedState.color };
+        // Actually apply the restored transform to the renderer
+        this.renderer.setPosition(savedState.position.x, savedState.position.y);
+        this.renderer.setRotation(savedState.rotation);
+        this.renderer.setScale(savedState.scale);
+        this.renderer.setColor(savedState.color.h, savedState.color.s, savedState.color.l);
         break;
       }
 

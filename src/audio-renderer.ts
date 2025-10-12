@@ -301,6 +301,11 @@ export class AudioRenderer implements Renderer {
     }
   }
 
+  setPosition(x: number, y: number): void {
+    // For audio rendering, position maps to time offset
+    this.currentTime = x / 100; // Normalize to reasonable time range
+  }
+
   /**
    * ROTATE → Filter cutoff frequency sweep
    * Degrees = filter cutoff (0-360 → 200-20000 Hz)
@@ -314,12 +319,22 @@ export class AudioRenderer implements Renderer {
     }
   }
 
+  setRotation(degrees: number): void {
+    // Rotation maps to filter frequency
+    this.currentFilterFreq = 200 + degrees * 20; // Map degrees to frequency range
+  }
+
   /**
    * SCALE → Volume/amplitude
    * Factor = gain multiplier (0.5 = half volume, 2 = double volume)
    */
   scale(factor: number): void {
     this.currentGain = Math.max(0.01, Math.min(1, this.currentGain * factor));
+  }
+
+  setScale(scale: number): void {
+    // Scale maps to gain/volume
+    this.currentGain = Math.max(0, Math.min(1, scale));
   }
 
   /**
