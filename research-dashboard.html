@@ -274,6 +274,7 @@
         <button onclick="refreshData()">🔄 Refresh Data</button>
         <button onclick="exportJSON()">📊 Export JSON</button>
         <button onclick="exportCSV()">📋 Export CSV</button>
+        <button onclick="analyzeData()">📈 Analyze Data</button>
         <button onclick="clearData()">🗑️ Clear All Data</button>
       </div>
 
@@ -361,12 +362,19 @@
             </table>
           </div>
         </div>
+
+        <!-- Statistical Analysis Section -->
+        <div id="analysisSection" class="section" style="display: none;">
+          <h2 class="section-title">📊 Statistical Analysis</h2>
+          <div id="analysisResults" style="background: white; padding: 20px; border-radius: 8px; font-family: 'Courier New', monospace; white-space: pre-wrap; font-size: 0.9em; line-height: 1.6;"></div>
+        </div>
       </div>
     </div>
   </div>
 
   <script type="module">
     import { ResearchMetrics } from './src/research-metrics.ts';
+    import { MetricsAnalyzer, parseCSVContent, formatDuration as formatDurationAnalyzer } from './src/metrics-analyzer-core.ts';
 
     const metrics = new ResearchMetrics({ enabled: false }); // Read-only mode
 
@@ -511,10 +519,123 @@
       }
     }
 
+    function analyzeData() {
+      const sessions = metrics.getAllSessions();
+
+      if (sessions.length === 0) {
+        showStatus('No data to analyze. Collect some research data first.', 'warning');
+        return;
+      }
+
+      try {
+        // Get CSV data and parse it
+        const csvData = metrics.exportCSV();
+        const parsedSessions = parseCSVContent(csvData);
+
+        // Create analyzer and generate report
+        const analyzer = new MetricsAnalyzer(parsedSessions);
+        const report = analyzer.generateReport();
+
+        // Format report for display
+        let output = '═══════════════════════════════════════════════════════════════════\n';
+        output += '           CODONCANVAS STATISTICAL ANALYSIS REPORT\n';
+        output += '═══════════════════════════════════════════════════════════════════\n\n';
+
+        // 1. Engagement Metrics
+        output += '───────────────────────────────────────────────────────────────────\n';
+        output += '1. ENGAGEMENT METRICS\n';
+        output += '───────────────────────────────────────────────────────────────────\n\n';
+        output += `Total Sessions:              ${report.engagement.totalSessions}\n`;
+        output += `Average Session Duration:    ${formatDurationAnalyzer(report.engagement.avgSessionDuration.mean)}\n`;
+        output += `  (SD = ${formatDurationAnalyzer(report.engagement.avgSessionDuration.sd)}, Range: ${formatDurationAnalyzer(report.engagement.avgSessionDuration.min)} - ${formatDurationAnalyzer(report.engagement.avgSessionDuration.max)})\n\n`;
+        output += `Total Genomes Created:       ${report.engagement.totalGenomesCreated}\n`;
+        output += `Avg Genomes per Session:     ${report.engagement.avgGenomesPerSession.mean.toFixed(1)}\n`;
+        output += `  (SD = ${report.engagement.avgGenomesPerSession.sd.toFixed(1)})\n`;
+        output += `Genome Execution Rate:       ${report.engagement.genomesExecutedRate.toFixed(1)}%\n\n`;
+
+        // 2. Learning Velocity
+        output += '───────────────────────────────────────────────────────────────────\n';
+        output += '2. LEARNING VELOCITY\n';
+        output += '───────────────────────────────────────────────────────────────────\n\n';
+        output += `Time to First Artifact:\n`;
+        output += `  Mean:     ${formatDurationAnalyzer(report.velocity.timeToFirstArtifact.mean)}\n`;
+        output += `  Median:   ${formatDurationAnalyzer(report.velocity.timeToFirstArtifact.median)}\n`;
+        output += `  SD:       ${formatDurationAnalyzer(report.velocity.timeToFirstArtifact.sd)}\n`;
+        output += `  Range:    ${formatDurationAnalyzer(report.velocity.timeToFirstArtifact.min)} - ${formatDurationAnalyzer(report.velocity.timeToFirstArtifact.max)}\n\n`;
+        output += `Learner Distribution:\n`;
+        output += `  Fast (<5 min):       ${report.velocity.fastLearners} (${((report.velocity.fastLearners / report.engagement.totalSessions) * 100).toFixed(1)}%)\n`;
+        output += `  Moderate (5-15 min): ${report.velocity.moderateLearners} (${((report.velocity.moderateLearners / report.engagement.totalSessions) * 100).toFixed(1)}%)\n`;
+        output += `  Slow (>15 min):      ${report.velocity.slowLearners} (${((report.velocity.slowLearners / report.engagement.totalSessions) * 100).toFixed(1)}%)\n`;
+        output += `  No Artifact:         ${report.velocity.noArtifact} (${((report.velocity.noArtifact / report.engagement.totalSessions) * 100).toFixed(1)}%)\n\n`;
+
+        // 3. Tool Adoption
+        output += '───────────────────────────────────────────────────────────────────\n';
+        output += '3. TOOL ADOPTION\n';
+        output += '───────────────────────────────────────────────────────────────────\n\n';
+        output += formatToolRow('Diff Viewer', report.tools.diffViewer, report.engagement.totalSessions);
+        output += formatToolRow('Timeline Scrubber', report.tools.timeline, report.engagement.totalSessions);
+        output += formatToolRow('Evolution Lab', report.tools.evolution, report.engagement.totalSessions);
+        output += formatToolRow('Assessment System', report.tools.assessment, report.engagement.totalSessions);
+        output += formatToolRow('Export Features', report.tools.export, report.engagement.totalSessions);
+        output += '\n';
+
+        // 4. Render Mode Preferences
+        output += '───────────────────────────────────────────────────────────────────\n';
+        output += '4. RENDER MODE PREFERENCES\n';
+        output += '───────────────────────────────────────────────────────────────────\n\n';
+        output += `Visual Only:         ${report.renderMode.visualOnly.percentage.toFixed(1)}% (${report.renderMode.visualOnly.sessions} executions)\n`;
+        output += `Audio Only:          ${report.renderMode.audioOnly.percentage.toFixed(1)}% (${report.renderMode.audioOnly.sessions} executions)\n`;
+        output += `Multi-Sensory:       ${report.renderMode.multiSensory.percentage.toFixed(1)}% (${report.renderMode.multiSensory.sessions} executions)\n\n`;
+
+        // 5. Mutation Patterns
+        output += '───────────────────────────────────────────────────────────────────\n';
+        output += '5. MUTATION PATTERNS\n';
+        output += '───────────────────────────────────────────────────────────────────\n\n';
+        output += `Total Mutations Applied: ${report.mutations.totalMutations}\n\n`;
+        output += `Mutation Type Distribution:\n`;
+        output += formatMutationRow('Silent', report.mutations.silent, report.mutations.totalMutations);
+        output += formatMutationRow('Missense', report.mutations.missense, report.mutations.totalMutations);
+        output += formatMutationRow('Nonsense', report.mutations.nonsense, report.mutations.totalMutations);
+        output += formatMutationRow('Frameshift', report.mutations.frameshift, report.mutations.totalMutations);
+        output += formatMutationRow('Point', report.mutations.point, report.mutations.totalMutations);
+        output += formatMutationRow('Insertion', report.mutations.insertion, report.mutations.totalMutations);
+        output += formatMutationRow('Deletion', report.mutations.deletion, report.mutations.totalMutations);
+        output += '\n';
+
+        output += '═══════════════════════════════════════════════════════════════════\n';
+        output += '                         END OF REPORT\n';
+        output += '═══════════════════════════════════════════════════════════════════\n';
+
+        // Display results
+        document.getElementById('analysisResults').textContent = output;
+        document.getElementById('analysisSection').style.display = 'block';
+
+        // Scroll to results
+        document.getElementById('analysisSection').scrollIntoView({ behavior: 'smooth' });
+
+        showStatus('Analysis complete! Results displayed below.', 'success');
+      } catch (error) {
+        console.error('Analysis error:', error);
+        showStatus(`Analysis failed: ${error.message}`, 'warning');
+      }
+    }
+
+    function formatToolRow(name, toolData, totalSessions) {
+      const adoptionRate = totalSessions > 0 ? (toolData.users / totalSessions) * 100 : 0;
+      return `${name.padEnd(20)} ${adoptionRate.toFixed(1).padStart(6)}% adoption  (avg ${toolData.avgUsage.toFixed(1)} uses/session)\n`;
+    }
+
+    function formatMutationRow(name, stats, totalMutations) {
+      const total = stats.mean * stats.n;
+      const percentage = totalMutations > 0 ? (total / totalMutations) * 100 : 0;
+      return `  ${name.padEnd(12)} M=${stats.mean.toFixed(1).padStart(5)}, SD=${stats.sd.toFixed(1).padStart(4)}  (${percentage.toFixed(1).padStart(5)}% of total)\n`;
+    }
+
     // Make functions global
     window.refreshData = refreshData;
     window.exportJSON = exportJSON;
     window.exportCSV = exportCSV;
+    window.analyzeData = analyzeData;
     window.clearData = clearData;
 
     // Initial load
