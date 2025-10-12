@@ -113,10 +113,18 @@ export function validateGenomeFile(content: string): { valid: boolean; errors: s
   try {
     const parsed = JSON.parse(content);
 
-    if (!parsed.version) errors.push('Missing required field: version');
-    if (!parsed.title) errors.push('Missing required field: title');
-    if (!parsed.genome) errors.push('Missing required field: genome');
-    if (parsed.genome && typeof parsed.genome !== 'string') errors.push('Field "genome" must be a string');
+    if (!parsed.version) {
+errors.push('Missing required field: version');
+}
+    if (!parsed.title) {
+errors.push('Missing required field: title');
+}
+    if (!parsed.genome) {
+errors.push('Missing required field: genome');
+}
+    if (parsed.genome && typeof parsed.genome !== 'string') {
+errors.push('Field "genome" must be a string');
+}
 
     // Check genome contains valid bases (only if genome exists)
     if (parsed.genome && typeof parsed.genome === 'string') {

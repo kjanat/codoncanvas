@@ -27,7 +27,7 @@ export const examples: Record<string, ExampleMetadata> = {
   helloCircle: {
     title: 'Hello Circle',
     description: 'Minimal example - draws a single circle',
-    genome: `ATG GAA AAT GGA TAA`,
+    genome: 'ATG GAA AAT GGA TAA',
     difficulty: 'beginner',
     concepts: ['drawing'],
     goodForMutations: ['silent', 'missense', 'nonsense'],

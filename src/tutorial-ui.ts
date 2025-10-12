@@ -44,7 +44,9 @@ export class TutorialUI {
     this.cleanup();
 
     const step = this.manager.getCurrentStep();
-    if (!step) return;
+    if (!step) {
+return;
+}
 
     // Create overlay
     this.overlayElement = document.createElement('div');
@@ -110,7 +112,9 @@ export class TutorialUI {
   }
 
   private attachEventListeners(): void {
-    if (!this.overlayElement) return;
+    if (!this.overlayElement) {
+return;
+}
 
     // Next button
     const nextBtn = this.overlayElement.querySelector('[data-action="next"]') as HTMLButtonElement;
@@ -140,12 +144,16 @@ export class TutorialUI {
 
   private handleNext(): void {
     const step = this.manager.getCurrentStep();
-    if (!step) return;
+    if (!step) {
+return;
+}
 
     if (step.expectedCode) {
       // Need code validation
       const editor = document.querySelector('textarea') as HTMLTextAreaElement;
-      if (!editor) return;
+      if (!editor) {
+return;
+}
 
       const success = this.manager.nextStep(editor.value);
       if (!success) {
@@ -170,10 +178,14 @@ export class TutorialUI {
 
   private showValidationError(): void {
     const modal = this.overlayElement?.querySelector('.tutorial-modal');
-    if (!modal) return;
+    if (!modal) {
+return;
+}
 
     const step = this.manager.getCurrentStep();
-    if (!step?.hint) return;
+    if (!step?.hint) {
+return;
+}
 
     // Shake animation
     modal.classList.add('shake');
@@ -222,7 +234,9 @@ export class TutorialUI {
         this.cleanup();
         // Trigger example selector focus
         const selector = document.querySelector('.example-selector') as HTMLSelectElement;
-        if (selector) selector.focus();
+        if (selector) {
+selector.focus();
+}
       });
     }
 
@@ -240,7 +254,9 @@ export class TutorialUI {
    */
   private highlightElement(selector: string): void {
     const element = document.querySelector(selector) as HTMLElement;
-    if (!element) return;
+    if (!element) {
+return;
+}
 
     // Store original classes
     const originalClasses = element.className;
@@ -255,13 +271,19 @@ export class TutorialUI {
    * Enable/disable next button based on code validation
    */
   validateAndUpdateButton(code: string): void {
-    if (!this.overlayElement) return;
+    if (!this.overlayElement) {
+return;
+}
 
     const step = this.manager.getCurrentStep();
-    if (!step?.expectedCode) return;
+    if (!step?.expectedCode) {
+return;
+}
 
     const nextBtn = this.overlayElement.querySelector('[data-action="next"]') as HTMLButtonElement;
-    if (!nextBtn) return;
+    if (!nextBtn) {
+return;
+}
 
     const isValid = this.manager.validateStep(code);
     nextBtn.disabled = !isValid;

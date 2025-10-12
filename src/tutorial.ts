@@ -88,7 +88,9 @@ export class TutorialManager {
    */
   validateStep(code: string): boolean {
     const step = this.getCurrentStep();
-    if (!step) return false;
+    if (!step) {
+return false;
+}
 
     if (step.validationFn) {
       return step.validationFn(code);

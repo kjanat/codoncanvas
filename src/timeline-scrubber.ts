@@ -148,7 +148,9 @@ export class TimelineScrubber {
    * Render a specific step
    */
   private renderStep(step: number): void {
-    if (step < 0 || step >= this.snapshots.length) return;
+    if (step < 0 || step >= this.snapshots.length) {
+return;
+}
 
     const snapshot = this.snapshots[step];
     this.vm.restore(snapshot);
@@ -168,7 +170,9 @@ export class TimelineScrubber {
    * Update UI elements
    */
   private updateUI(): void {
-    if (!this.controls.slider || !this.controls.stepDisplay) return;
+    if (!this.controls.slider || !this.controls.stepDisplay) {
+return;
+}
 
     this.controls.slider.max = String(Math.max(0, this.snapshots.length - 1));
     this.controls.slider.value = String(this.currentStep);
@@ -201,7 +205,9 @@ export class TimelineScrubber {
    */
   private renderMarkers(): void {
     const markersContainer = this.container.querySelector('#timeline-markers');
-    if (!markersContainer || this.tokens.length === 0) return;
+    if (!markersContainer || this.tokens.length === 0) {
+return;
+}
 
     const markers = this.tokens.map((token, i) => {
       const position = (i / (this.tokens.length - 1)) * 100;
@@ -215,14 +221,18 @@ export class TimelineScrubber {
    * Event handlers
    */
   private onSliderChange(): void {
-    if (!this.controls.slider) return;
+    if (!this.controls.slider) {
+return;
+}
     this.currentStep = parseInt(this.controls.slider.value);
     this.renderStep(this.currentStep);
     this.updateUI();
   }
 
   private onSpeedChange(): void {
-    if (!this.controls.speedSelect) return;
+    if (!this.controls.speedSelect) {
+return;
+}
     this.playbackSpeed = parseInt(this.controls.speedSelect.value);
   }
 
@@ -351,7 +361,9 @@ export class TimelineScrubber {
  * Inject timeline scrubber styles
  */
 export function injectTimelineStyles(): void {
-  if (document.getElementById('timeline-scrubber-styles')) return;
+  if (document.getElementById('timeline-scrubber-styles')) {
+return;
+}
 
   const style = document.createElement('style');
   style.id = 'timeline-scrubber-styles';

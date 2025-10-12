@@ -280,7 +280,9 @@ export class ShareSystem {
    */
   private showFeedback(message: string, type: 'success' | 'error' | 'info' = 'info'): void {
     const feedback = this.container.querySelector('#share-feedback');
-    if (!feedback) return;
+    if (!feedback) {
+return;
+}
 
     feedback.className = `share-feedback ${type}`;
     feedback.textContent = message;
@@ -296,7 +298,9 @@ export class ShareSystem {
    */
   private showModal(title: string, content: string): void {
     const modal = this.container.querySelector('#share-modal');
-    if (!modal) return;
+    if (!modal) {
+return;
+}
 
     modal.innerHTML = `
       <div class="modal-overlay" onclick="this.parentElement.classList.add('hidden')">
@@ -355,7 +359,9 @@ export class ShareSystem {
     const params = new URLSearchParams(window.location.search);
     const encoded = params.get('genome');
 
-    if (!encoded) return null;
+    if (!encoded) {
+return null;
+}
 
     return ShareSystem.decodeGenome(encoded);
   }
@@ -365,7 +371,9 @@ export class ShareSystem {
  * Inject share system styles
  */
 export function injectShareStyles(): void {
-  if (document.getElementById('share-system-styles')) return;
+  if (document.getElementById('share-system-styles')) {
+return;
+}
 
   const style = document.createElement('style');
   style.id = 'share-system-styles';

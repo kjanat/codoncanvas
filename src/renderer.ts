@@ -9,7 +9,9 @@ class SeededRandom {
 
   constructor(seed: number) {
     this.state = seed % 2147483647;
-    if (this.state <= 0) this.state += 2147483646;
+    if (this.state <= 0) {
+this.state += 2147483646;
+}
   }
 
   next(): number {

@@ -128,10 +128,14 @@ function getFilteredExamples(): Array<[ExampleKey, ExampleMetadata]> {
 
   return Object.entries(examples).filter(([key, ex]) => {
     // Difficulty filter
-    if (difficulty && ex.difficulty !== difficulty) return false;
+    if (difficulty && ex.difficulty !== difficulty) {
+return false;
+}
 
     // Concept filter
-    if (concept && !ex.concepts.includes(concept)) return false;
+    if (concept && !ex.concepts.includes(concept)) {
+return false;
+}
 
     // Search filter
     if (search) {
@@ -142,7 +146,9 @@ function getFilteredExamples(): Array<[ExampleKey, ExampleMetadata]> {
         ...ex.concepts
       ].join(' ').toLowerCase();
 
-      if (!searchableText.includes(search)) return false;
+      if (!searchableText.includes(search)) {
+return false;
+}
     }
 
     return true;

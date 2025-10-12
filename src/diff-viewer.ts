@@ -130,7 +130,9 @@ export class DiffViewer {
       const originalCanvas = this.container.querySelector('#diff-canvas-original') as HTMLCanvasElement;
       const mutatedCanvas = this.container.querySelector('#diff-canvas-mutated') as HTMLCanvasElement;
 
-      if (!originalCanvas || !mutatedCanvas) return;
+      if (!originalCanvas || !mutatedCanvas) {
+return;
+}
 
       // Render original
       const originalRenderer = new Canvas2DRenderer(originalCanvas);
@@ -181,7 +183,9 @@ export class DiffViewer {
  * Default styles for diff viewer (inject into document head)
  */
 export function injectDiffViewerStyles(): void {
-  if (document.getElementById('diff-viewer-styles')) return;
+  if (document.getElementById('diff-viewer-styles')) {
+return;
+}
 
   const style = document.createElement('style');
   style.id = 'diff-viewer-styles';

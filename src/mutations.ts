@@ -48,7 +48,9 @@ const STOP_CODONS: Set<Codon> = new Set(['TAA' as Codon, 'TAG' as Codon, 'TGA' a
  */
 function getSynonymousCodons(codon: Codon): Codon[] {
   const opcode = CODON_MAP[codon];
-  if (opcode === undefined) return [];
+  if (opcode === undefined) {
+return [];
+}
 
   return Object.entries(CODON_MAP)
     .filter(([c, op]) => op === opcode && c !== codon)
@@ -64,7 +66,9 @@ function getSynonymousCodons(codon: Codon): Codon[] {
  */
 function getMissenseCodons(codon: Codon): Codon[] {
   const opcode = CODON_MAP[codon];
-  if (opcode === undefined) return [];
+  if (opcode === undefined) {
+return [];
+}
 
   return Object.entries(CODON_MAP)
     .filter(([c, op]) => op !== opcode && !STOP_CODONS.has(c as Codon) && c !== codon)
