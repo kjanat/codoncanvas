@@ -66,7 +66,8 @@ const audioToggleBtn = document.getElementById('audioToggleBtn') as HTMLButtonEl
 const lexer = new CodonLexer();
 const renderer = new Canvas2DRenderer(canvas);
 const audioRenderer = new AudioRenderer();
-let audioMode = false; // Start with visual mode
+type RenderMode = 'visual' | 'audio' | 'both';
+let renderMode: RenderMode = 'visual'; // Start with visual mode
 const vm = new CodonVM(renderer);
 
 function setStatus(message: string, type: 'info' | 'error' | 'success') {
@@ -102,9 +103,9 @@ async function runProgram() {
       setStatus(`Warning: ${frameErrors[0].message}`, 'error');
     }
 
-    // Execute with appropriate renderer
-    if (audioMode) {
-      // Audio mode: use AudioRenderer
+    // Execute with appropriate renderer(s)
+    if (renderMode === 'audio') {
+      // Audio only mode: use AudioRenderer
       const audioVM = new CodonVM(audioRenderer);
       audioRenderer.clear();
 
@@ -116,13 +117,36 @@ async function runProgram() {
 
       updateStats(tokens.length, audioVM.state.instructionCount);
       setStatus(`♪ Playing ${audioVM.state.instructionCount} audio instructions`, 'success');
-    } else {
-      // Visual mode: use Canvas2DRenderer
+    } else if (renderMode === 'visual') {
+      // Visual only mode: use Canvas2DRenderer
       vm.reset();
       const snapshots = vm.run(tokens);
 
       updateStats(tokens.length, vm.state.instructionCount);
       setStatus(`Executed ${vm.state.instructionCount} instructions successfully`, 'success');
+    } else {
+      // Both mode: run both renderers simultaneously
+      const audioVM = new CodonVM(audioRenderer);
+
+      // Clear both renderers
+      renderer.clear();
+      audioRenderer.clear();
+
+      // Start audio recording
+      audioRenderer.startRecording();
+
+      // Run both VMs in parallel (audio starts first for timing)
+      audioVM.reset();
+      vm.reset();
+
+      // Execute both simultaneously
+      const [audioSnapshots, visualSnapshots] = await Promise.all([
+        Promise.resolve(audioVM.run(tokens)),
+        Promise.resolve(vm.run(tokens))
+      ]);
+
+      updateStats(tokens.length, vm.state.instructionCount);
+      setStatus(`♪🎨 Playing ${audioVM.state.instructionCount} audio + visual instructions`, 'success');
     }
 
   } catch (error) {
@@ -639,29 +663,46 @@ function applyMutation(type: MutationType) {
   }
 }
 
-// Audio toggle handler
+// Audio toggle handler - cycles through visual → audio → both → visual
 async function toggleAudio() {
-  audioMode = !audioMode;
+  const modes: RenderMode[] = ['visual', 'audio', 'both'];
+  const currentIndex = modes.indexOf(renderMode);
+  const nextMode = modes[(currentIndex + 1) % modes.length];
 
-  if (audioMode) {
-    // Initialize audio context (requires user interaction)
+  // If switching to audio or both mode, initialize AudioContext
+  if ((nextMode === 'audio' || nextMode === 'both') && renderMode === 'visual') {
     try {
       await audioRenderer.initialize();
-      audioToggleBtn.textContent = '🔊 Audio On';
-      audioToggleBtn.setAttribute('aria-label', 'Audio mode enabled');
-      exportBtn.style.display = 'none'; // Hide PNG export in audio mode
-      exportAudioBtn.style.display = 'inline-block'; // Show audio export
-      setStatus('Audio mode enabled - genomes will play as sound', 'info');
     } catch (error) {
-      audioMode = false;
       setStatus('Error initializing audio: ' + (error as Error).message, 'error');
+      return;
     }
-  } else {
-    audioToggleBtn.textContent = '🔇 Audio Off';
-    audioToggleBtn.setAttribute('aria-label', 'Audio mode disabled');
-    exportBtn.style.display = 'inline-block'; // Show PNG export
-    exportAudioBtn.style.display = 'none'; // Hide audio export
+  }
+
+  renderMode = nextMode;
+
+  // Update UI based on mode
+  if (renderMode === 'visual') {
+    audioToggleBtn.textContent = '🎨 Visual';
+    audioToggleBtn.setAttribute('aria-label', 'Visual mode - click for audio');
+    exportBtn.style.display = 'inline-block';
+    exportAudioBtn.style.display = 'none';
+    canvas.style.display = 'block';
     setStatus('Visual mode - genomes render to canvas', 'info');
+  } else if (renderMode === 'audio') {
+    audioToggleBtn.textContent = '🔊 Audio';
+    audioToggleBtn.setAttribute('aria-label', 'Audio mode - click for both');
+    exportBtn.style.display = 'none';
+    exportAudioBtn.style.display = 'inline-block';
+    canvas.style.display = 'none'; // Hide canvas in audio-only mode
+    setStatus('Audio mode - genomes play as sound', 'info');
+  } else {
+    audioToggleBtn.textContent = '🎨🔊 Both';
+    audioToggleBtn.setAttribute('aria-label', 'Both modes - click for visual only');
+    exportBtn.style.display = 'inline-block';
+    exportAudioBtn.style.display = 'inline-block';
+    canvas.style.display = 'block';
+    setStatus('Multi-sensory mode - audio + visual simultaneously', 'info');
   }
 }
 

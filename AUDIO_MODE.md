@@ -18,9 +18,12 @@ Audio Mode transforms CodonCanvas into a **musical programming language** where 
 
 ## Quick Start
 
-1. **Enable Audio Mode**: Click `🔇 Audio Off` button in toolbar
-2. **Run a Genome**: Click `▶ Run` to play as sound
-3. **Export Audio**: Click `🎵 Export Audio` to save as .webm file
+1. **Select Mode**: Click `🎨 Visual` button to cycle through modes:
+   - `🎨 Visual`: Traditional canvas rendering (default)
+   - `🔊 Audio`: Sound synthesis only
+   - `🎨🔊 Both`: **Multi-sensory mode** (audio + visual simultaneously)
+2. **Run a Genome**: Click `▶ Run` to execute with selected mode
+3. **Export**: In "Both" mode, both PNG and Audio export buttons appear
 4. **Try Examples**: Load `examples/audio-scale.genome` or `audio-mutation-demo.genome`
 
 ---
@@ -191,10 +194,35 @@ TAA
 
 ---
 
+## Multi-Sensory Mode (NEW in v1.1)
+
+### Dual-Mode Rendering
+**Status**: ✅ **IMPLEMENTED**
+
+The "Both" mode enables **simultaneous audio and visual rendering**, bringing multi-sensory learning theory into practice:
+
+**How to Use:**
+1. Click mode button twice: `🎨 Visual` → `🔊 Audio` → `🎨🔊 Both`
+2. Run genome with `▶ Run`
+3. Watch canvas draw while audio plays simultaneously
+4. Both PNG and Audio export buttons available
+
+**Pedagogical Impact:**
+- **Dual-Coding Theory** (Paivio, 1971): Visual + auditory encoding → stronger memory
+- **Multi-Sensory Integration**: Cross-modal reinforcement strengthens understanding
+- **Research Enabled**: Multi-sensory effectiveness studies now possible
+
+**Technical Implementation:**
+- Parallel VM execution (Canvas2DRenderer + AudioRenderer)
+- Synchronized timing (audio starts with visual execution)
+- Both export options available in "Both" mode
+
+---
+
 ## Future Enhancements
 
 ### Phase C Extensions
-- **Dual-mode rendering**: Visual + audio simultaneously
+- ✅ ~~Dual-mode rendering~~ **COMPLETE** (v1.1)
 - **Timeline scrubber**: Scrub through audio like visual timeline
 - **Polyphonic synthesis**: Multiple "genetic voices" at once
 - **MIDI export**: Export as MIDI file for music software integration
