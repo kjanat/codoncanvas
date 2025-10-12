@@ -1,5 +1,5 @@
 import { Renderer } from './renderer';
-import { CODON_MAP, CodonToken, Opcode, VMState } from './types';
+import { CODON_MAP, CodonToken, Opcode, VMState, Codon } from './types';
 
 /**
  * Virtual Machine interface for CodonCanvas execution.
@@ -73,6 +73,7 @@ export class CodonVM implements VM {
   state: VMState;
   renderer: Renderer;
   private maxInstructions: number = 10000;
+  private instructionHistory: { opcode: Opcode; codon: Codon; pushValue?: number }[] = [];
 
   constructor(renderer: Renderer) {
     this.renderer = renderer;
@@ -96,6 +97,7 @@ export class CodonVM implements VM {
   reset(): void {
     this.state = this.createInitialState();
     this.renderer.clear();
+    this.instructionHistory = [];
   }
 
   snapshot(): VMState {
@@ -303,6 +305,49 @@ export class CodonVM implements VM {
         break;
       }
 
+      case Opcode.LOOP: {
+        // Stack: [..., instructionCount, loopCount]
+        // Replays the last N instructions M times
+        const loopCount = this.pop();
+        const instructionCount = this.pop();
+
+        // Validate loop parameters
+        if (loopCount < 0 || instructionCount < 0) {
+          throw new Error(`LOOP requires non-negative parameters (count: ${loopCount}, instructions: ${instructionCount})`);
+        }
+
+        if (instructionCount > this.instructionHistory.length) {
+          throw new Error(`LOOP instruction count (${instructionCount}) exceeds history length (${this.instructionHistory.length})`);
+        }
+
+        // Get the instructions to replay
+        // Note: The last 2 instructions in history are the PUSH operations for loop parameters
+        // We want to replay instructions BEFORE those parameter PUSHes
+        const historyBeforeParams = this.instructionHistory.length - 2;
+        const startIdx = historyBeforeParams - instructionCount;
+        const instructionsToRepeat = this.instructionHistory.slice(startIdx, historyBeforeParams);
+
+        // Execute the loop body loopCount times
+        for (let iteration = 0; iteration < loopCount; iteration++) {
+          for (const { opcode: loopOpcode, codon: loopCodon, pushValue } of instructionsToRepeat) {
+            // Check instruction limit
+            this.state.instructionCount++;
+            if (this.state.instructionCount > this.maxInstructions) {
+              throw new Error(`Instruction limit exceeded (${this.maxInstructions})`);
+            }
+
+            // Handle PUSH specially - use stored value instead of executing
+            if (loopOpcode === Opcode.PUSH && pushValue !== undefined) {
+              this.push(pushValue);
+            } else {
+              // Execute other instructions normally (don't add to history - avoid infinite growth)
+              this.execute(loopOpcode, loopCodon);
+            }
+          }
+        }
+        break;
+      }
+
       default:
         throw new Error(`Unknown opcode: ${opcode}`);
     }
@@ -332,12 +377,17 @@ export class CodonVM implements VM {
         const literalCodon = tokens[i].text;
         const value = this.decodeNumericLiteral(literalCodon);
         this.push(value);
+        this.instructionHistory.push({ opcode: Opcode.PUSH, codon: token.text, pushValue: value });
         snapshots.push(this.snapshot());
       } else if (opcode === Opcode.STOP) {
         // Stop execution
         snapshots.push(this.snapshot());
         break;
       } else {
+        // Add non-LOOP instructions to history (LOOP doesn't get added to prevent recursion issues)
+        if (opcode !== Opcode.LOOP) {
+          this.instructionHistory.push({ opcode, codon: token.text });
+        }
         this.execute(opcode, token.text);
         snapshots.push(this.snapshot());
       }

@@ -56,6 +56,7 @@ export interface ParseError {
  * - Transform: TRANSLATE, ROTATE, SCALE, COLOR (state changes)
  * - Stack: PUSH, DUP, POP, SWAP (data manipulation)
  * - Arithmetic: ADD, SUB, MUL, DIV (computational operations)
+ * - Control: LOOP (iteration)
  * - Utility: NOP, NOISE, SAVE_STATE, RESTORE_STATE (special operations)
  */
 export enum Opcode {
@@ -82,6 +83,7 @@ export enum Opcode {
   SUB,
   MUL,
   DIV,
+  LOOP,
 }
 
 /**
@@ -158,7 +160,7 @@ export const CODON_MAP: Record<string, Opcode> = {
   'ATA': Opcode.DUP, 'ATC': Opcode.DUP, 'ATT': Opcode.DUP,
 
   // Utility
-  'CAA': Opcode.NOP, 'CAC': Opcode.NOP,
+  'CAC': Opcode.NOP,
   'TAC': Opcode.POP, 'TAT': Opcode.POP, 'TGC': Opcode.POP,
 
   // Advanced Operations
@@ -172,4 +174,7 @@ export const CODON_MAP: Record<string, Opcode> = {
   'CAG': Opcode.SUB,
   'CTT': Opcode.MUL,
   'CAT': Opcode.DIV,
+
+  // Control Flow Operations
+  'CAA': Opcode.LOOP,
 };

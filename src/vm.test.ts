@@ -530,6 +530,44 @@ describe('CodonVM', () => {
 		});
 	});
 
+	describe('LOOP opcode', () => {
+		test('basic loop - 3 circles total', () => {
+			// PUSH 10, CIRCLE, PUSH 2 (instr count=PUSH+CIRCLE), PUSH 2 (loop 2 more times), LOOP
+			const genome = 'ATG GAA AGG GGA GAA AAG GAA AAG CAA TAA';
+			const tokens = lexer.tokenize(genome);
+			vm.run(tokens);
+			expect(renderer.operations.filter((op) => op.startsWith('circle'))).toHaveLength(3);
+		});
+
+		test('loop with zero count', () => {
+			// PUSH 10, CIRCLE, PUSH 2, PUSH 0, LOOP (no additional loops)
+			const genome = 'ATG GAA AGG GGA GAA AAG GAA AAA CAA TAA';
+			const tokens = lexer.tokenize(genome);
+			vm.run(tokens);
+			expect(renderer.operations.filter((op) => op.startsWith('circle'))).toHaveLength(1);
+		});
+
+		test('loop stack underflow throws error', () => {
+			const genome = 'ATG CAA TAA';
+			const tokens = lexer.tokenize(genome);
+			expect(() => vm.run(tokens)).toThrow('Stack underflow');
+		});
+
+		test('loop with negative count throws error', () => {
+			// PUSH 0, PUSH 5, SUB (=-5), PUSH 1, LOOP
+			const genome = 'ATG GAA AAA GAA ACT CAG GAA AAC CAA TAA';
+			const tokens = lexer.tokenize(genome);
+			expect(() => vm.run(tokens)).toThrow('non-negative parameters');
+		});
+
+		test('loop exceeding history throws error', () => {
+			// PUSH 5, PUSH 100, LOOP (tries to loop 100 instructions)
+			const genome = 'ATG GAA ACT GAA TTT CAA TAA';
+			const tokens = lexer.tokenize(genome);
+			expect(() => vm.run(tokens)).toThrow('exceeds history length');
+		});
+	});
+
 	describe('Error handling', () => {
 		test('throws on unknown codon', () => {
 			const tokens = [

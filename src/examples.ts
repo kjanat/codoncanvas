@@ -802,6 +802,76 @@ TAA`,
     concepts: ['arithmetic', 'drawing', 'transforms', 'stack', 'composition'],
     goodForMutations: ['missense'],
     keywords: ['centering', 'symmetry', 'division', 'composition', 'layout', 'coordinates', 'math']
+  },
+
+  loopRosette: {
+    title: 'Loop Rosette',
+    description: 'Radial flower pattern using LOOP opcode for efficient repetition',
+    genome: `; Rosette with 8 petals using LOOP opcode
+ATG
+  ; Draw one petal and rotate - this sequence will be looped
+  GAA AGG            ; PUSH 10 (radius)
+  GGA                ; CIRCLE (1 petal)
+  GAA TCA            ; PUSH 45 (360/8 degrees per petal)
+  AGA                ; ROTATE
+
+  ; Loop the above 4 instructions (PUSH, CIRCLE, PUSH, ROTATE) 7 more times
+  GAA ATT            ; PUSH 4 (instruction count)
+  GAA AAC            ; PUSH 7 (loop count = 7 more petals, 8 total)
+  CAA                ; LOOP
+TAA`,
+    difficulty: 'intermediate',
+    concepts: ['drawing', 'transforms', 'stack', 'arithmetic'],
+    goodForMutations: ['missense', 'frameshift'],
+    keywords: ['loop', 'iteration', 'rosette', 'radial', 'pattern', 'repetition', 'efficiency']
+  },
+
+  loopSpiral: {
+    title: 'Loop Spiral',
+    description: 'Expanding spiral pattern using LOOP with arithmetic',
+    genome: `; Spiral using LOOP to repeat circle + translate pattern
+ATG
+  ; Initial small circle with offset
+  GAA AAT            ; PUSH 3 (initial radius)
+  GGA                ; CIRCLE
+  GAA ACT            ; PUSH 5 (step distance)
+  GAA AAA            ; PUSH 0 (dy)
+  ACA                ; TRANSLATE(5, 0)
+
+  ; Loop the pattern (PUSH, CIRCLE, PUSH, PUSH, TRANSLATE) 10 times
+  GAA ACT            ; PUSH 5 (instruction count)
+  GAA AGG            ; PUSH 10 (loop count)
+  CAA                ; LOOP
+
+  ; Result: 11 circles in a line (1 + 10 loops)
+TAA`,
+    difficulty: 'intermediate',
+    concepts: ['drawing', 'transforms', 'stack', 'arithmetic'],
+    goodForMutations: ['missense'],
+    keywords: ['loop', 'spiral', 'iteration', 'translate', 'pattern', 'growth']
+  },
+
+  loopGrid: {
+    title: 'Loop Grid',
+    description: 'Grid of shapes created with efficient LOOP patterns',
+    genome: `; Simple row of circles using LOOP
+ATG
+  ; Draw circle and move right
+  GAA ACT            ; PUSH 5 (radius)
+  GGA                ; CIRCLE
+  GAA AGG            ; PUSH 10 (spacing)
+  GAA AAA            ; PUSH 0 (dy)
+  ACA                ; TRANSLATE(10, 0)
+
+  ; Repeat the pattern 6 times (7 circles total in a row)
+  GAA ACT            ; PUSH 5 (instruction count: PUSH+CIRCLE+PUSH+PUSH+TRANSLATE)
+  GAA AAC            ; PUSH 6 (loop count)
+  CAA                ; LOOP
+TAA`,
+    difficulty: 'intermediate',
+    concepts: ['drawing', 'transforms', 'stack'],
+    goodForMutations: ['missense', 'frameshift'],
+    keywords: ['loop', 'grid', 'pattern', 'row', 'repetition', 'translate']
   }
 };
 
