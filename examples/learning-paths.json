@@ -1,0 +1,257 @@
+{
+  "version": "1.0.0",
+  "paths": [
+    {
+      "id": "dna-basics",
+      "title": "DNA Fundamentals",
+      "description": "Learn core genetic concepts through visual programming: codon redundancy, mutation types, and reading frames.",
+      "difficulty": "beginner",
+      "duration": "20-30 minutes",
+      "learningObjectives": [
+        "Understand codon structure and triplet reading frames",
+        "Recognize silent mutations and genetic redundancy",
+        "Distinguish missense, nonsense, and frameshift mutations",
+        "Visualize how mutations affect phenotype"
+      ],
+      "steps": [
+        {
+          "genome": "helloCircle.genome",
+          "title": "Hello Genome",
+          "concept": "Codon Structure & START/STOP",
+          "narrative": "Every genome begins with ATG (START) and ends with a stop codon (TAA/TAG/TGA). This simple program draws a single circle, showing the basic triplet structure of genetic code.",
+          "keyTakeaway": "Codons are 3-letter instructions, like DNA triplets encoding amino acids.",
+          "tryIt": "Change the PUSH value (AAT → AAC) and observe the radius change."
+        },
+        {
+          "genome": "silentMutation.genome",
+          "title": "Silent Mutations",
+          "concept": "Genetic Redundancy",
+          "narrative": "Multiple codons can encode the same instruction. GGA and GGC both mean CIRCLE - this is genetic redundancy, just like how multiple DNA codons encode the same amino acid.",
+          "keyTakeaway": "Silent mutations change the sequence but not the output (genotype ≠ phenotype).",
+          "tryIt": "Use the 'Silent' mutation button in playground to see identical outputs."
+        },
+        {
+          "genome": "triangleDemo.genome",
+          "title": "Missense Mutations",
+          "concept": "Function Changes",
+          "narrative": "When GGA (CIRCLE) mutates to CCA (RECT), the shape changes - a missense mutation. The program still runs, but the phenotype is different.",
+          "keyTakeaway": "Missense mutations substitute one function for another, changing the result.",
+          "tryIt": "Change GGA → CCA and observe shape transformation."
+        },
+        {
+          "genome": "rosette.genome",
+          "title": "Nonsense Mutations",
+          "concept": "Premature Termination",
+          "narrative": "When a drawing instruction mutates to TAA (STOP), execution halts early. This is like a nonsense mutation creating a premature stop codon in DNA.",
+          "keyTakeaway": "Nonsense mutations cause early termination, producing incomplete outputs.",
+          "tryIt": "Change any instruction to TAA and watch the output truncate."
+        },
+        {
+          "genome": "spiralPattern.genome",
+          "title": "Frameshift Mutations",
+          "concept": "Reading Frame Disruption",
+          "narrative": "Inserting or deleting a single base shifts the reading frame, scrambling all downstream codons. The effect is catastrophic - like reading 'THE CAT ATE' as 'TH ECA TAT E'.",
+          "keyTakeaway": "Frameshifts affect all subsequent instructions, causing dramatic phenotype changes.",
+          "tryIt": "Delete one letter and use the linter to see frame violations."
+        },
+        {
+          "genome": "twoShapes.genome",
+          "title": "Mutation Comparison",
+          "concept": "Comparing Mutation Types",
+          "narrative": "With multiple shapes, you can compare mutation impacts. Try each type and use the DiffViewer to see side-by-side comparisons.",
+          "keyTakeaway": "Different mutations have predictable, characteristic effects on complex genomes.",
+          "tryIt": "Apply each mutation type and observe visual differences in the comparison panel."
+        }
+      ]
+    },
+    {
+      "id": "visual-programming",
+      "title": "Visual Programming Journey",
+      "description": "Master CodonCanvas programming from basic shapes to complex compositions using transforms, state management, and loops.",
+      "difficulty": "beginner-to-intermediate",
+      "duration": "30-45 minutes",
+      "learningObjectives": [
+        "Use drawing primitives (CIRCLE, RECT, LINE, TRIANGLE)",
+        "Apply transforms (TRANSLATE, ROTATE, SCALE)",
+        "Manage state with SAVE_STATE/RESTORE_STATE",
+        "Create loops and patterns with LOOP opcode"
+      ],
+      "steps": [
+        {
+          "genome": "helloCircle.genome",
+          "title": "Basic Shapes",
+          "concept": "Drawing Primitives",
+          "narrative": "Start with the simplest program: PUSH a value, draw a CIRCLE. All visual programs build from these primitive shapes.",
+          "keyTakeaway": "Stack-based VM: push values, then consume them with drawing operations.",
+          "tryIt": "Try other shapes: change GGA (CIRCLE) to CCA (RECT) or GCA (TRIANGLE)."
+        },
+        {
+          "genome": "colorfulPattern.genome",
+          "title": "Color & Position",
+          "concept": "Transforms",
+          "narrative": "TRANSLATE moves your drawing position, COLOR (TT* family) changes hue/saturation/lightness. Combine them to create colorful compositions.",
+          "keyTakeaway": "Transforms modify the drawing context for all subsequent operations.",
+          "tryIt": "Adjust COLOR values (hue 0-360, saturation/lightness 0-100)."
+        },
+        {
+          "genome": "lineArt.genome",
+          "title": "Rotation",
+          "concept": "Directional Transforms",
+          "narrative": "ROTATE changes the drawing direction. When combined with LINE, you can create angled patterns and radial designs.",
+          "keyTakeaway": "Rotation accumulates - each ROTATE adds to the current angle.",
+          "tryIt": "Change rotation degrees and observe directional changes."
+        },
+        {
+          "genome": "nestedFrames.genome",
+          "title": "State Management",
+          "concept": "SAVE_STATE & RESTORE_STATE",
+          "narrative": "Save your current position/rotation/color, draw something, then restore. This enables branching and nested compositions without losing your place.",
+          "keyTakeaway": "State stack allows non-destructive exploration - save, experiment, restore.",
+          "tryIt": "Add SAVE_STATE before a transform, RESTORE_STATE after to see state preservation."
+        },
+        {
+          "genome": "spiralPattern.genome",
+          "title": "Repetition with LOOP",
+          "concept": "Iteration",
+          "narrative": "LOOP repeats the next N instructions M times. Combine with ROTATE for radial patterns, TRANSLATE for grids, or both for spirals.",
+          "keyTakeaway": "LOOP + transforms = powerful pattern generation with minimal code.",
+          "tryIt": "Change LOOP iteration count or nested instructions to create variations."
+        },
+        {
+          "genome": "kaleidoscope.genome",
+          "title": "Complex Composition",
+          "concept": "Combining Techniques",
+          "narrative": "Advanced compositions use all techniques: nested loops, state management, color gradients, and multiple layers. Study how they combine.",
+          "keyTakeaway": "Mastery comes from combining primitives in creative ways.",
+          "tryIt": "Modify one aspect at a time to understand how components interact."
+        }
+      ]
+    },
+    {
+      "id": "biological-patterns",
+      "title": "Nature's Algorithms",
+      "description": "Explore how biological patterns emerge from simple algorithmic rules: fractals, spirals, cellular structures, and growth patterns.",
+      "difficulty": "intermediate",
+      "duration": "25-35 minutes",
+      "learningObjectives": [
+        "Recognize fractal patterns in nature (trees, neurons, blood vessels)",
+        "Understand phyllotaxis and the golden angle (137.5°)",
+        "See how cell division creates hierarchical structures",
+        "Connect algorithmic patterns to biological forms"
+      ],
+      "steps": [
+        {
+          "genome": "branching-tree.genome",
+          "title": "Fractal Branching",
+          "concept": "Recursive Growth",
+          "narrative": "Trees, neurons, and blood vessels all use fractal branching. Each branch splits into smaller branches following the same rule - recursion in nature.",
+          "keyTakeaway": "Complex biological structures emerge from simple recursive algorithms.",
+          "tryIt": "Adjust branch angles or scaling factors to see different tree morphologies."
+        },
+        {
+          "genome": "phyllotaxis-sunflower.genome",
+          "title": "Golden Angle Spirals",
+          "concept": "Phyllotaxis",
+          "narrative": "Sunflower seeds arrange at 137.5° intervals (the golden angle). This creates optimal packing spirals - Fibonacci numbers emerge naturally from this simple rule.",
+          "keyTakeaway": "Mathematical constants (golden ratio) appear in biological growth patterns.",
+          "tryIt": "Change the rotation angle from 137.5° to see spiral patterns degrade."
+        },
+        {
+          "genome": "cell-division.genome",
+          "title": "Cell Division",
+          "concept": "Mitosis & Lineage",
+          "narrative": "One cell becomes two, two become four. Cell division creates hierarchical family trees - every cell has a parent, grandparent, and so on.",
+          "keyTakeaway": "Exponential growth and cellular lineage visualized through nested structure.",
+          "tryIt": "Add more division stages to see population growth accelerate."
+        },
+        {
+          "genome": "honeycomb-cells.genome",
+          "title": "Hexagonal Packing",
+          "concept": "Optimal Structures",
+          "narrative": "Bees build hexagonal cells because hexagons tile perfectly with minimal material. This is optimal packing - mathematics solving biological problems.",
+          "keyTakeaway": "Nature optimizes: hexagons provide maximum storage with minimum wax.",
+          "tryIt": "Try squares or triangles instead - notice wasted space or structural weakness."
+        },
+        {
+          "genome": "dna-helix.genome",
+          "title": "DNA Double Helix",
+          "concept": "Molecular Structure",
+          "narrative": "DNA's double helix has two complementary strands. The helical structure emerges from base pairing constraints - form follows function.",
+          "keyTakeaway": "Molecular structures reflect chemical constraints - complementary pairing creates helical geometry.",
+          "tryIt": "Adjust strand spacing or wave frequency to visualize structural variations."
+        },
+        {
+          "genome": "neuron-network.genome",
+          "title": "Neural Networks",
+          "concept": "Biological Computation",
+          "narrative": "Neurons collect inputs (dendrites), process signals (soma), and send outputs (axon). This is biological computation - input, process, output.",
+          "keyTakeaway": "Biological networks process information through structure: branching inputs, central processing, output distribution.",
+          "tryIt": "Modify dendrite count or axon length to see network topology changes."
+        }
+      ]
+    },
+    {
+      "id": "mathematical-art",
+      "title": "Mathematical Beauty",
+      "description": "Discover mathematical patterns through code: Fibonacci spirals, fractals, parametric curves, and the golden ratio in visual form.",
+      "difficulty": "intermediate-to-advanced",
+      "duration": "30-40 minutes",
+      "learningObjectives": [
+        "Visualize Fibonacci numbers and the golden ratio",
+        "Create fractal patterns through self-similarity",
+        "Generate parametric curves and mathematical roses",
+        "Understand how arithmetic operations enable complex patterns"
+      ],
+      "steps": [
+        {
+          "genome": "fibonacci-spiral.genome",
+          "title": "Fibonacci Spiral",
+          "concept": "Golden Ratio Approximation",
+          "narrative": "Fibonacci numbers (1,1,2,3,5,8...) approximate the golden ratio φ. Stack these as squares and trace their corners to create the iconic spiral.",
+          "keyTakeaway": "Fibonacci sequence converges to φ (1.618...), visible in spiral growth rates.",
+          "tryIt": "Observe how each square's size relates to previous two (F(n) = F(n-1) + F(n-2))."
+        },
+        {
+          "genome": "golden-ratio-demo.genome",
+          "title": "Golden Ratio φ",
+          "concept": "Divine Proportion",
+          "narrative": "φ = 1.618... appears throughout nature and art. Divide a line segment in golden ratio: the ratio of parts equals the ratio of whole to larger part.",
+          "keyTakeaway": "Golden ratio is self-similar: φ/1 = (φ+1)/φ, a recursive proportion.",
+          "tryIt": "Measure segment ratios to verify golden proportion (should be ~1.618)."
+        },
+        {
+          "genome": "parametric-rose.genome",
+          "title": "Rose Curves",
+          "concept": "Parametric Equations",
+          "narrative": "Rose curves use trigonometric functions: r = cos(kθ). Different k values create different petal counts - mathematics defining organic forms.",
+          "keyTakeaway": "Parametric equations (r, θ) create complex curves from simple trigonometric relationships.",
+          "tryIt": "Modify k value to change petal count (k=3 gives 3 petals, k=5 gives 5)."
+        },
+        {
+          "genome": "sierpinski-approximation.genome",
+          "title": "Sierpiński Triangle",
+          "concept": "Fractal Self-Similarity",
+          "narrative": "Sierpiński triangle is infinitely self-similar: zoom in, and you see the same pattern. Each triangle contains three smaller copies of itself.",
+          "keyTakeaway": "Fractals exhibit self-similarity at all scales - the part resembles the whole.",
+          "tryIt": "Increase recursion depth to see finer detail emerge."
+        },
+        {
+          "genome": "prime-number-spiral.genome",
+          "title": "Ulam Prime Spiral",
+          "concept": "Number Theory Visualization",
+          "narrative": "Arrange integers in a spiral, highlight primes. Surprisingly, primes cluster along diagonal lines - revealing hidden structure in their distribution.",
+          "keyTakeaway": "Visual patterns reveal mathematical relationships - primes aren't random, they have structure.",
+          "tryIt": "Extend the spiral to see more diagonal prime clusters emerge."
+        },
+        {
+          "genome": "binary-tree-fractal.genome",
+          "title": "Binary Tree Fractal",
+          "concept": "Recursive Branching",
+          "narrative": "Each branch splits into two smaller branches at fixed angles. Infinite recursion creates fractal complexity from a simple branching rule.",
+          "keyTakeaway": "Recursion + scaling = fractal dimension, complexity from simplicity.",
+          "tryIt": "Adjust branch angle or scale factor to create different fractal trees."
+        }
+      ]
+    }
+  ]
+}

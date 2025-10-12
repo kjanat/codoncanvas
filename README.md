@@ -25,9 +25,10 @@ Try CodonCanvas online (no installation required):
 **[https://kjanat.github.io/codoncanvas/](https://kjanat.github.io/codoncanvas/)**
 
 ### All Demos
-- **[Interactive Tutorial](https://kjanat.github.io/codoncanvas/tutorial.html)** ⭐ **NEW** - Step-by-step guided learning (start here!)
-- **[Example Gallery](https://kjanat.github.io/codoncanvas/gallery.html)** 🎨 **NEW** - Browse 30 examples with filters and live preview
-- **[Main Playground](https://kjanat.github.io/codoncanvas/)** - Interactive editor with 27 examples
+- **[Learning Paths](https://kjanat.github.io/codoncanvas/learning-paths.html)** 🎓 **NEW** - Curated learning journeys from DNA basics to mathematical beauty
+- **[Interactive Tutorial](https://kjanat.github.io/codoncanvas/tutorial.html)** ⭐ - Step-by-step guided learning (start here!)
+- **[Example Gallery](https://kjanat.github.io/codoncanvas/gallery.html)** 🎨 - Browse 48 examples with filters and live preview
+- **[Main Playground](https://kjanat.github.io/codoncanvas/)** - Interactive editor with live canvas preview
 - **[Mutation Demos](https://kjanat.github.io/codoncanvas/demos.html)** - See all mutation types in action
 - **[Mutation Lab](https://kjanat.github.io/codoncanvas/mutation-demo.html)** - Side-by-side genome comparison
 - **[Timeline Scrubber](https://kjanat.github.io/codoncanvas/timeline-demo.html)** - Step-by-step execution viewer
@@ -50,6 +51,36 @@ Try CodonCanvas online (no installation required):
 ### Timeline Scrubber
 ![Timeline Scrubber](screenshot_timeline.png)
 *Step through execution instruction-by-instruction with state visualization*
+
+## 🎓 Learning Paths
+
+**NEW:** Structured learning journeys guide you from genetic fundamentals to advanced mathematical concepts. Each path provides:
+
+- **Curated Example Sequences**: Progress from simple to complex with pedagogical scaffolding
+- **Concept Narratives**: Understand the "why" behind each example and its biological/mathematical significance
+- **Learning Objectives**: Clear goals for each path (DNA basics, visual programming, biological patterns, mathematical art)
+- **Interactive Try-It Activities**: Hands-on experiments to deepen understanding
+- **Progress Tracking**: Visual progress bar shows your journey through each path
+
+**Available Paths:**
+
+1. **DNA Fundamentals** (20-30 min, Beginner)
+   - Codon structure, silent mutations, missense/nonsense mutations, frameshifts
+   - Perfect for biology students learning genetic concepts
+
+2. **Visual Programming Journey** (30-45 min, Beginner→Intermediate)
+   - Drawing primitives, transforms, state management, loops
+   - Ideal for CS students learning stack-based graphics programming
+
+3. **Nature's Algorithms** (25-35 min, Intermediate)
+   - Fractal branching, phyllotaxis, cell division, hexagonal packing, DNA helix, neural networks
+   - Connects biology to algorithmic patterns
+
+4. **Mathematical Beauty** (30-40 min, Intermediate→Advanced)
+   - Fibonacci spirals, golden ratio, rose curves, fractals, prime spirals
+   - Explores mathematical art and computational aesthetics
+
+**[🎓 Start Learning →](https://kjanat.github.io/codoncanvas/learning-paths.html)**
 
 ## Visual Showcase
 
