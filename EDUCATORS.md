@@ -53,7 +53,9 @@ CodonCanvas is an educational programming language that uses **DNA-like triplets
 ✅ **Web-based**: No installation, works on Chromebooks/iPads/laptops
 ✅ **Mobile-responsive**: Portrait and landscape support for tablets
 ✅ **Accessible**: WCAG 2.1 Level AA compliant (screen readers, keyboard navigation)
+✅ **Visual Reference**: Print-ready codon chart poster (`codon-chart.svg`)
 ✅ **18 Built-in Examples**: Progressive difficulty (beginner → advanced)
+✅ **Distribution Package**: Example genomes ZIP for LMS deployment (`codoncanvas-examples.zip`)
 ✅ **Mutation Tools**: One-click demonstration of 7 mutation types
 ✅ **Save/Load**: Students can save work and submit .genome files
 ✅ **Offline-capable**: Can run locally without internet after initial setup
@@ -69,7 +71,7 @@ CodonCanvas is an educational programming language that uses **DNA-like triplets
 1. **Deploy to Static Host** (one-time setup by IT/teacher):
    ```bash
    # Clone repository
-   git clone https://github.com/yourusername/codoncanvas.git
+   git clone https://github.com/codoncanvas/codoncanvas.git
    cd codoncanvas
 
    # Install dependencies
@@ -109,7 +111,7 @@ CodonCanvas is an educational programming language that uses **DNA-like triplets
 1. **Install Node.js 16+** (if not already installed)
 2. **Clone & Run**:
    ```bash
-   git clone https://github.com/yourusername/codoncanvas.git
+   git clone https://github.com/codoncanvas/codoncanvas.git
    cd codoncanvas
    npm install
    npm run dev
@@ -707,7 +709,7 @@ A: Yes! Use the **💾 Save .genome** button to download your code, then share t
 
 ## Contact & Support
 
-**Found a bug?** Report at: [GitHub Issues](https://github.com/yourusername/codoncanvas/issues)
+**Found a bug?** Report at: [GitHub Issues](https://github.com/codoncanvas/codoncanvas/issues)
 **Teaching tips?** Share with: [community forum link]
 **Need help?** Email: [educator-support email]
 

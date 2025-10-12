@@ -217,9 +217,9 @@ codoncanvas/
 │   ├── genome-io.ts          # Import/export .genome files
 │   ├── examples.ts           # Built-in example genomes
 │   ├── playground.ts         # Main playground UI logic
-│   ├── lexer.test.ts         # Lexer tests (13 tests)
-│   ├── vm.test.ts            # VM tests (17 tests)
-│   ├── mutations.test.ts     # Mutation tests (15 tests)
+│   ├── lexer.test.ts         # Lexer tests (11 tests)
+│   ├── vm.test.ts            # VM tests (20 tests)
+│   ├── mutations.test.ts     # Mutation tests (17 tests)
 │   └── genome-io.test.ts     # Genome I/O tests (11 tests)
 ├── index.html                # Main playground interface
 ├── mutation-demo.html        # Mutation laboratory
@@ -284,7 +284,7 @@ CodonCanvas teaches:
 - Canvas2D renderer with all drawing primitives + noise
 - Base-4 numeric literal encoding (0-63 range)
 - Interactive playground UI with examples
-- Comprehensive test suite (60+ tests)
+- Comprehensive test suite (59 tests)
 
 ✅ **Phase B: Pedagogy Tools (Completed)**
 

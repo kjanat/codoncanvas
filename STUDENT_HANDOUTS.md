@@ -122,7 +122,7 @@
 │ ✓ Stack needs enough values for operations                 │
 └─────────────────────────────────────────────────────────────┘
 
-CodonCanvas v1.0 | https://github.com/yourusername/codoncanvas
+CodonCanvas v1.0 | https://github.com/codoncanvas/codoncanvas
 ```
 
 ---
