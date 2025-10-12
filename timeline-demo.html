@@ -230,6 +230,28 @@
         <div class="panel-header">Share & Export</div>
         <div class="panel-content">
           <div id="shareContainer"></div>
+          <div class="button-group" style="margin-top: 1rem; padding-top: 1rem; border-top: 1px solid #3e3e42;">
+            <button onclick="exportGif()">📹 Export Animation as GIF</button>
+            <select id="gifFps" style="background: #3e3e42; color: #d4d4d4; border: 1px solid #505052; padding: 0.5rem; border-radius: 3px;">
+              <option value="2">2 FPS</option>
+              <option value="4" selected>4 FPS</option>
+              <option value="6">6 FPS</option>
+              <option value="8">8 FPS</option>
+              <option value="10">10 FPS</option>
+            </select>
+            <select id="gifQuality" style="background: #3e3e42; color: #d4d4d4; border: 1px solid #505052; padding: 0.5rem; border-radius: 3px;">
+              <option value="5">Best Quality (slow)</option>
+              <option value="10" selected>Good Quality</option>
+              <option value="20">Fast (lower quality)</option>
+            </select>
+          </div>
+          <div id="gifProgress" style="display: none; margin-top: 0.75rem; padding: 0.75rem; background: #1e1e1e; border-radius: 4px; border: 1px solid #3e3e42;">
+            <div style="color: #858585; font-size: 0.875rem; margin-bottom: 0.5rem;">Encoding GIF...</div>
+            <div style="background: #3e3e42; height: 20px; border-radius: 3px; overflow: hidden;">
+              <div id="gifProgressBar" style="background: #0e639c; height: 100%; width: 0%; transition: width 0.3s;"></div>
+            </div>
+            <div id="gifProgressText" style="color: #4ec9b0; font-size: 0.75rem; margin-top: 0.5rem;">0%</div>
+          </div>
         </div>
       </div>
     </div>
@@ -315,6 +337,49 @@
       }
       timelineContainer.innerHTML = '';
       showStatus('Canvas and timeline cleared', 'success');
+    };
+
+    window.exportGif = async function() {
+      if (!timeline) {
+        showStatus('Please load a genome first', 'error');
+        return;
+      }
+
+      try {
+        const fpsSelect = document.getElementById('gifFps');
+        const qualitySelect = document.getElementById('gifQuality');
+        const progressContainer = document.getElementById('gifProgress');
+        const progressBar = document.getElementById('gifProgressBar');
+        const progressText = document.getElementById('gifProgressText');
+
+        const fps = parseInt(fpsSelect.value);
+        const quality = parseInt(qualitySelect.value);
+        const genomeName = 'timeline-animation';
+
+        // Show progress
+        progressContainer.style.display = 'block';
+        progressBar.style.width = '0%';
+        progressText.textContent = '0%';
+
+        await timeline.exportToGif(
+          { fps, quality, genomeName },
+          (progress) => {
+            progressBar.style.width = `${progress.percent}%`;
+            progressText.textContent = `${progress.percent}% (Frame ${progress.currentFrame}/${progress.totalFrames})`;
+          }
+        );
+
+        // Hide progress and show success
+        setTimeout(() => {
+          progressContainer.style.display = 'none';
+          showStatus('GIF exported successfully! 📹', 'success');
+        }, 500);
+
+      } catch (error) {
+        console.error('GIF export error:', error);
+        showStatus(`GIF export failed: ${error.message}`, 'error');
+        document.getElementById('gifProgress').style.display = 'none';
+      }
     };
 
     // Load genome from URL if present, otherwise auto-load default

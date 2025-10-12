@@ -12,6 +12,7 @@ CodonCanvas is an educational programming language that uses DNA-like triplets (
 - **Mutation demonstration**: Silent, missense, nonsense, and frameshift mutations
 - **Live playground**: Web-based editor with instant visual feedback
 - **Save & Share**: Export/import genomes in .genome file format with metadata
+- **Animation Export**: Export timeline animations as GIF files for sharing
 
 ## Screenshots
 
@@ -160,6 +161,18 @@ Click the **💾 Save .genome** button in the playground toolbar to download you
 ### Loading Genomes
 
 Click the **📂 Load .genome** button to import a previously saved genome file. The file will be validated and loaded into the editor.
+
+### Exporting Animations as GIF
+
+In the **Timeline Demo**, you can export the entire execution animation as a GIF file:
+
+1. Load a genome and let the timeline execute
+2. Click **📹 Export Animation as GIF**
+3. Choose FPS (2-10) and quality settings
+4. Watch the progress bar as frames are encoded
+5. The GIF will automatically download when ready
+
+GIF exports capture every step of execution, perfect for sharing on social media or embedding in documentation. Adjust FPS for smoother animation (higher file size) or faster encoding (lower FPS).
 
 ### File Format Example
 

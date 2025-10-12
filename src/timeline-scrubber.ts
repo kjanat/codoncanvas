@@ -7,6 +7,7 @@ import { VMState, CodonToken } from './types';
 import { CodonLexer } from './lexer';
 import { Canvas2DRenderer } from './renderer';
 import { CodonVM } from './vm';
+import { GifExporter } from './gif-exporter';
 
 export interface TimelineOptions {
   containerElement: HTMLElement;
@@ -290,6 +291,57 @@ export class TimelineScrubber {
   /**
    * Clean up resources
    */
+  /**
+   * Export timeline animation as GIF
+   */
+  async exportToGif(
+    options: { fps?: number; quality?: number; genomeName?: string } = {},
+    onProgress?: (progress: { percent: number; currentFrame: number; totalFrames: number }) => void
+  ): Promise<void> {
+    const exporter = new GifExporter({
+      width: this.canvas.width,
+      height: this.canvas.height,
+      fps: options.fps ?? 4,
+      quality: options.quality ?? 10,
+      repeat: 0, // loop once
+    });
+
+    // Capture frames by stepping through timeline
+    const frames: HTMLCanvasElement[] = [];
+    const originalStep = this.currentStep;
+    const wasPlaying = this.isPlaying;
+
+    // Pause if playing
+    if (wasPlaying) {
+      this.pause();
+    }
+
+    // Capture all frames
+    for (let i = 0; i < this.snapshots.length; i++) {
+      this.currentStep = i;
+      this.renderStep(i);
+      const frame = exporter.captureFrame(this.canvas);
+      frames.push(frame);
+    }
+
+    // Restore original position
+    this.currentStep = originalStep;
+    this.renderStep(originalStep);
+    this.updateUI();
+
+    // Export to GIF
+    try {
+      const blob = await exporter.exportFrames(frames, onProgress);
+      const filename = options.genomeName
+        ? `${options.genomeName}-animation.gif`
+        : 'codoncanvas-animation.gif';
+      exporter.downloadGif(blob, filename);
+    } catch (error) {
+      console.error('GIF export failed:', error);
+      throw error;
+    }
+  }
+
   destroy(): void {
     this.pause();
   }
