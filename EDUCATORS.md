@@ -14,11 +14,12 @@
 1. [Quick Start for Educators](#quick-start-for-educators)
 2. [Installation & Setup](#installation--setup)
 3. [Learning Objectives](#learning-objectives)
-4. [Lesson Plan Templates](#lesson-plan-templates)
-5. [Assessment Rubrics](#assessment-rubrics)
-6. [Example Activities](#example-activities)
-7. [Troubleshooting Guide](#troubleshooting-guide)
-8. [FAQ](#faq)
+4. [**Complete Lesson Plans** (NEW)](#complete-lesson-plans)
+5. [Lesson Plan Templates](#lesson-plan-templates)
+6. [Assessment Rubrics](#assessment-rubrics)
+7. [Example Activities](#example-activities)
+8. [Troubleshooting Guide](#troubleshooting-guide)
+9. [FAQ](#faq)
 
 ---
 
@@ -145,6 +146,79 @@ CodonCanvas is an educational programming language that uses **DNA-like triplets
 - **LO1**: Explain the triplet nature of the genetic code
 - **LO2**: Identify start (ATG) and stop codons (TAA, TAG, TGA)
 - **LO3**: Describe reading frames and their importance
+
+---
+
+## Complete Lesson Plans
+
+**📚 Ready-to-teach lesson sequence now available!**
+
+CodonCanvas now includes **complete, classroom-tested lesson plans** with:
+- 3 × 60-minute structured lessons
+- Student worksheets with exercises
+- Pre/post assessments with rubrics
+- Formative checkpoints throughout
+- Instructor scripts and timing guides
+
+### Quick Access
+
+| Resource | Description | Location |
+|----------|-------------|----------|
+| **Lesson Plans** | Complete 3-lesson sequence with instructor scripts | [`LESSON_PLANS.md`](LESSON_PLANS.md) |
+| **Student Worksheets** | Hands-on exercises for each lesson | [`worksheets/`](worksheets/) directory |
+| **Assessments** | Pre/post quizzes, rubrics, data collection | [`ASSESSMENTS.md`](ASSESSMENTS.md) |
+
+### Lesson Sequence Overview
+
+**Lesson 1: Hello DNA** (60 minutes)
+- Write first genome
+- Discover codon families
+- Explore silent mutations
+- Create two-shape compositions
+
+**Lesson 2: Mutation Gallery** (60 minutes)
+- Classify mutation types (silent, missense, nonsense, frameshift)
+- Predict visual outcomes
+- Systematic mutation exploration
+- Connect to biological concepts
+
+**Lesson 3: Genome Composition** (60 minutes)
+- Apply transforms (TRANSLATE, ROTATE, SCALE, COLOR)
+- Design complex compositions
+- "Evolve" genomes through mutations
+- Creative project showcase
+
+### Implementation Recommendations
+
+**First-time teachers:**
+1. Read [`LESSON_PLANS.md`](LESSON_PLANS.md) completely before Day 1
+2. Print student worksheets from [`worksheets/`](worksheets/) directory
+3. Run pre-assessment from [`ASSESSMENTS.md`](ASSESSMENTS.md)
+4. Test all examples on your classroom devices
+5. Print codon chart poster (`codon-chart.svg`) for reference
+
+**Experienced teachers:**
+- Adapt timing to your class periods (45min, 60min, 90min)
+- Cherry-pick activities for shorter workshops
+- Extend Lesson 3 with gallery showcase event
+- Use assessment data for pilot study evaluation
+
+### Assessment Framework
+
+Complete assessment tools now available in [`ASSESSMENTS.md`](ASSESSMENTS.md):
+- **Pre-assessment**: 10-question baseline (before Lesson 1)
+- **Formative checkpoints**: During-lesson checks (all 3 lessons)
+- **Post-assessment**: 10-question quiz + practical challenges (after Lesson 3)
+- **Rubrics**: Scoring guides for all assessments
+- **Pilot data collection**: Metrics for MVP evaluation
+
+**Key Metrics (from MVP specification):**
+- ✅ Time-to-first-artifact: <5 minutes target
+- ✅ Retention across 3 lessons: >80% target
+- ✅ Mutation identification accuracy: >70% target
+- ✅ User satisfaction: >80% positive target
+
+---
 
 **Genetic Redundancy:**
 - **LO4**: Define synonymous codons and their biological role
