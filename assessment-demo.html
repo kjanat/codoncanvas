@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CodonCanvas Assessment Mode - Demo</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      padding: 20px;
+    }
+
+    .page-header {
+      text-align: center;
+      color: white;
+      margin-bottom: 30px;
+    }
+
+    .page-header h1 {
+      font-size: 36px;
+      margin-bottom: 10px;
+      text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+    }
+
+    .page-header p {
+      font-size: 18px;
+      opacity: 0.9;
+    }
+
+    #assessment-container {
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+      overflow: hidden;
+    }
+
+    .export-section {
+      max-width: 900px;
+      margin: 20px auto 0;
+      text-align: center;
+    }
+
+    .export-btn {
+      padding: 12px 24px;
+      background: white;
+      color: #667eea;
+      border: none;
+      border-radius: 6px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .export-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 16px rgba(0,0,0,0.2);
+    }
+
+    .footer {
+      max-width: 900px;
+      margin: 30px auto 0;
+      text-align: center;
+      color: white;
+      opacity: 0.9;
+    }
+
+    .footer a {
+      color: white;
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+  <div class="page-header">
+    <h1>🎓 CodonCanvas Assessment Mode</h1>
+    <p>Test your understanding of genetic mutations with interactive challenges</p>
+  </div>
+
+  <div id="assessment-container"></div>
+
+  <div class="export-section">
+    <button id="export-btn" class="export-btn">
+      📊 Export Results for Educator
+    </button>
+  </div>
+
+  <div class="footer">
+    <p>
+      Part of the <strong>CodonCanvas</strong> educational toolkit ·
+      <a href="index.html">Back to Playground</a>
+    </p>
+  </div>
+
+  <script type="module">
+    import { AssessmentEngine } from './dist/assessment-engine.js';
+    import { AssessmentUI } from './dist/assessment-ui.js';
+
+    // Initialize assessment system
+    const engine = new AssessmentEngine();
+    const container = document.getElementById('assessment-container');
+    const assessmentUI = new AssessmentUI(engine, container);
+
+    // Show assessment UI
+    assessmentUI.show();
+
+    // Setup export button
+    document.getElementById('export-btn').addEventListener('click', () => {
+      const results = assessmentUI.exportResults();
+
+      // Download as JSON file
+      const blob = new Blob([results], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `codoncanvas-assessment-${new Date().toISOString().split('T')[0]}.json`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+
+      alert('✅ Results exported! Check your downloads folder.');
+    });
+  </script>
+</body>
+</html>
