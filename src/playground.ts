@@ -44,6 +44,7 @@ const exportAudioBtn = document.getElementById('exportAudioBtn') as HTMLButtonEl
 const exportMidiBtn = document.getElementById('exportMidiBtn') as HTMLButtonElement;
 const saveGenomeBtn = document.getElementById('saveGenomeBtn') as HTMLButtonElement;
 const loadGenomeBtn = document.getElementById('loadGenomeBtn') as HTMLButtonElement;
+const exportStudentProgressBtn = document.getElementById('exportStudentProgressBtn') as HTMLButtonElement;
 const genomeFileInput = document.getElementById('genomeFileInput') as HTMLInputElement;
 const statusMessage = document.getElementById('statusMessage') as HTMLSpanElement;
 const codonCount = document.getElementById('codonCount') as HTMLSpanElement;
@@ -1404,6 +1405,94 @@ function exportMidi() {
   }
 }
 
+// Student progress export for Teacher Dashboard
+async function exportStudentProgress() {
+  try {
+    // Prompt for student ID and name
+    const studentId = prompt('Enter Student ID (e.g., S12345):');
+    if (!studentId || studentId.trim() === '') {
+      setStatus('Export cancelled - Student ID required', 'info');
+      return;
+    }
+
+    const studentName = prompt('Enter Student Name (optional):');
+
+    // Gather tutorial progress
+    const tutorials: {
+      [tutorialId: string]: {
+        completed: boolean;
+        currentStep: number;
+        totalSteps: number;
+        startedAt: number | null;
+        completedAt: number | null;
+      };
+    } = {};
+
+    // Get all tutorial managers (assuming tutorialManager tracks all tutorials)
+    // For now, use localStorage to gather tutorial progress from TutorialManager's storage
+    const tutorialIds = ['helloCircle', 'mutations', 'timeline', 'evolution'];
+    tutorialIds.forEach(id => {
+      const storageKey = `codoncanvas_tutorial_${id}`;
+      const saved = localStorage.getItem(storageKey);
+      if (saved) {
+        try {
+          const progress = JSON.parse(saved);
+          tutorials[id] = {
+            completed: progress.completed || false,
+            currentStep: progress.currentStep || 0,
+            totalSteps: progress.totalSteps || 6,
+            startedAt: progress.startedAt || null,
+            completedAt: progress.completedAt || null
+          };
+        } catch (e) {
+          // If parsing fails, record as not started
+          tutorials[id] = {
+            completed: false,
+            currentStep: 0,
+            totalSteps: 6,
+            startedAt: null,
+            completedAt: null
+          };
+        }
+      } else {
+        // Not started
+        tutorials[id] = {
+          completed: false,
+          currentStep: 0,
+          totalSteps: 6,
+          startedAt: null,
+          completedAt: null
+        };
+      }
+    });
+
+    // Get research metrics sessions
+    const sessions = researchMetrics.getAllSessions();
+
+    // Import generateStudentExport from teacher-dashboard
+    const { generateStudentExport } = await import('./teacher-dashboard');
+    const exportData = generateStudentExport(
+      studentId.trim(),
+      studentName?.trim() || undefined,
+      tutorials,
+      sessions
+    );
+
+    // Download as JSON file
+    const blob = new Blob([exportData], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `codoncanvas-student-${studentId.trim()}-${Date.now()}.json`;
+    a.click();
+    URL.revokeObjectURL(url);
+
+    setStatus(`Student progress exported for ${studentId}`, 'success');
+  } catch (error) {
+    setStatus('Error exporting student progress: ' + (error as Error).message, 'error');
+  }
+}
+
 // Timeline toggle function
 function toggleTimeline() {
   timelineVisible = !timelineVisible;
@@ -1442,6 +1531,7 @@ exportMidiBtn.addEventListener('click', exportMidi);
 saveGenomeBtn.addEventListener('click', saveGenome);
 loadGenomeBtn.addEventListener('click', loadGenome);
 genomeFileInput.addEventListener('change', handleFileLoad);
+exportStudentProgressBtn.addEventListener('click', exportStudentProgress);
 
 // Mutation button listeners
 silentMutationBtn.addEventListener('click', () => applyMutation('silent'));
