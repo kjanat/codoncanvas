@@ -1,0 +1,597 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CodonCanvas - Evolution Lab</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Monaco', 'Menlo', 'Courier New', monospace;
+      background: #1e1e1e;
+      color: #d4d4d4;
+      padding: 1rem;
+    }
+
+    .container {
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+
+    header {
+      background: #252526;
+      padding: 1.5rem;
+      border-radius: 4px;
+      margin-bottom: 1rem;
+      border: 1px solid #3e3e42;
+    }
+
+    h1 {
+      font-size: 1.75rem;
+      color: #4ec9b0;
+      margin-bottom: 0.5rem;
+    }
+
+    .subtitle {
+      font-size: 0.875rem;
+      color: #858585;
+    }
+
+    .panel {
+      background: #252526;
+      border: 1px solid #3e3e42;
+      border-radius: 4px;
+      margin-bottom: 1rem;
+      overflow: hidden;
+    }
+
+    .panel-header {
+      background: #2d2d30;
+      padding: 0.75rem 1rem;
+      border-bottom: 1px solid #3e3e42;
+      font-weight: bold;
+      font-size: 0.875rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .panel-content {
+      padding: 1rem;
+    }
+
+    .info-box {
+      background: #1e1e1e;
+      border: 1px solid #3e3e42;
+      border-radius: 4px;
+      padding: 1rem;
+      margin-bottom: 1rem;
+    }
+
+    .info-box h3 {
+      color: #4ec9b0;
+      font-size: 1rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .info-box p {
+      font-size: 0.875rem;
+      line-height: 1.6;
+      color: #858585;
+    }
+
+    .controls {
+      display: flex;
+      gap: 0.5rem;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    button {
+      background: #0e639c;
+      color: white;
+      border: none;
+      padding: 0.75rem 1rem;
+      border-radius: 3px;
+      cursor: pointer;
+      font-size: 0.875rem;
+      font-family: inherit;
+      transition: background 0.2s;
+    }
+
+    button:hover:not(:disabled) {
+      background: #1177bb;
+    }
+
+    button:disabled {
+      background: #3e3e42;
+      cursor: not-allowed;
+      opacity: 0.5;
+    }
+
+    button.primary {
+      background: #4ec9b0;
+      color: #1e1e1e;
+      font-weight: bold;
+    }
+
+    button.primary:hover:not(:disabled) {
+      background: #5ed9c0;
+    }
+
+    button.secondary {
+      background: #3e3e42;
+    }
+
+    button.secondary:hover:not(:disabled) {
+      background: #505052;
+    }
+
+    .example-buttons {
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+      margin-bottom: 1rem;
+    }
+
+    .example-buttons button {
+      background: #3e3e42;
+      padding: 0.5rem 0.75rem;
+      font-size: 0.75rem;
+    }
+
+    .stats {
+      display: flex;
+      gap: 2rem;
+      margin-bottom: 1rem;
+      font-size: 0.875rem;
+    }
+
+    .stat-item {
+      display: flex;
+      flex-direction: column;
+      gap: 0.25rem;
+    }
+
+    .stat-label {
+      color: #858585;
+      font-size: 0.75rem;
+    }
+
+    .stat-value {
+      color: #4ec9b0;
+      font-size: 1.25rem;
+      font-weight: bold;
+    }
+
+    #candidatesGrid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 1rem;
+    }
+
+    .candidate-card {
+      background: #1e1e1e;
+      border: 2px solid #3e3e42;
+      border-radius: 4px;
+      padding: 0.75rem;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .candidate-card:hover {
+      border-color: #4ec9b0;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    }
+
+    .candidate-card.selected {
+      border-color: #89d185;
+      background: rgba(137, 209, 133, 0.1);
+    }
+
+    .candidate-header {
+      font-size: 0.75rem;
+      color: #858585;
+      margin-bottom: 0.5rem;
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .candidate-canvas {
+      border: 1px solid #3e3e42;
+      background: white;
+      border-radius: 4px;
+      width: 100%;
+      height: auto;
+      margin-bottom: 0.5rem;
+    }
+
+    .candidate-mutation {
+      font-size: 0.7rem;
+      color: #858585;
+      padding: 0.5rem;
+      background: #252526;
+      border-radius: 3px;
+      margin-top: 0.5rem;
+    }
+
+    .mutation-type {
+      color: #4ec9b0;
+      font-weight: bold;
+    }
+
+    #lineageContainer {
+      display: flex;
+      gap: 0.5rem;
+      overflow-x: auto;
+      padding: 0.5rem 0;
+    }
+
+    .lineage-item {
+      flex-shrink: 0;
+      text-align: center;
+    }
+
+    .lineage-canvas {
+      border: 1px solid #3e3e42;
+      background: white;
+      border-radius: 4px;
+      width: 120px;
+      height: 120px;
+    }
+
+    .lineage-label {
+      font-size: 0.7rem;
+      color: #858585;
+      margin-top: 0.25rem;
+    }
+
+    .lineage-arrow {
+      color: #4ec9b0;
+      font-size: 1.5rem;
+      align-self: center;
+    }
+
+    .status {
+      padding: 0.75rem 1rem;
+      border-radius: 4px;
+      font-size: 0.875rem;
+      margin-bottom: 1rem;
+    }
+
+    .status.success {
+      background: rgba(137, 209, 133, 0.2);
+      border: 1px solid #89d185;
+      color: #89d185;
+    }
+
+    .status.error {
+      background: rgba(255, 107, 107, 0.2);
+      border: 1px solid #ff6b6b;
+      color: #ff6b6b;
+    }
+
+    .status.info {
+      background: rgba(78, 201, 176, 0.2);
+      border: 1px solid #4ec9b0;
+      color: #4ec9b0;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    #startContainer {
+      text-align: center;
+      padding: 2rem;
+    }
+
+    #startContainer h2 {
+      color: #4ec9b0;
+      margin-bottom: 1rem;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>🧬 CodonCanvas Evolution Laboratory</h1>
+      <div class="subtitle">Directed evolution through natural selection - evolve your genome toward a target phenotype</div>
+    </header>
+
+    <div class="info-box">
+      <h3>How Evolution Works:</h3>
+      <p>
+        1. Start with a genome (load example or use custom)<br>
+        2. Generate mutated candidates (6 variations per generation)<br>
+        3. <strong>Select the fittest</strong> candidate (the one closest to your target)<br>
+        4. Selected candidate becomes parent for next generation<br>
+        5. Repeat to evolve toward your desired outcome
+      </p>
+    </div>
+
+    <div id="statusContainer"></div>
+
+    <!-- Start Panel -->
+    <div id="startPanel" class="panel">
+      <div class="panel-header">Start Evolution</div>
+      <div class="panel-content">
+        <div id="startContainer">
+          <h2>Choose Starting Genome</h2>
+          <div class="example-buttons">
+            <button onclick="startEvolution('helloCircle')">Hello Circle</button>
+            <button onclick="startEvolution('twoShapes')">Two Shapes</button>
+            <button onclick="startEvolution('colorfulPattern')">Colorful Pattern</button>
+            <button onclick="startEvolution('mandala')">Mandala</button>
+            <button onclick="startEvolution('spiral')">Spiral</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Evolution Panel -->
+    <div id="evolutionPanel" class="panel hidden">
+      <div class="panel-header">
+        <span>Generation <span id="generationNumber">0</span></span>
+        <div class="controls">
+          <button class="primary" id="generateBtn" onclick="generateGeneration()">🧬 Generate Candidates</button>
+          <button class="secondary" onclick="resetEvolution()">↻ Reset</button>
+        </div>
+      </div>
+      <div class="panel-content">
+        <div class="stats">
+          <div class="stat-item">
+            <div class="stat-label">Generation</div>
+            <div class="stat-value" id="genStat">0</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-label">Total Mutations</div>
+            <div class="stat-value" id="mutationStat">0</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-label">Lineage Length</div>
+            <div class="stat-value" id="lineageStat">1</div>
+          </div>
+        </div>
+        <div id="candidatesGrid"></div>
+      </div>
+    </div>
+
+    <!-- Lineage Panel -->
+    <div id="lineagePanel" class="panel hidden">
+      <div class="panel-header">Evolutionary Lineage</div>
+      <div class="panel-content">
+        <div id="lineageContainer"></div>
+      </div>
+    </div>
+
+    <!-- Share System -->
+    <div id="sharePanel" class="panel hidden">
+      <div class="panel-header">Share Evolution</div>
+      <div class="panel-content">
+        <div id="shareContainer"></div>
+      </div>
+    </div>
+  </div>
+
+  <script type="module">
+    import { examples } from './src/examples.ts';
+    import { CodonLexer } from './src/lexer.ts';
+    import { Canvas2DRenderer } from './src/renderer.ts';
+    import { CodonVM } from './src/vm.ts';
+    import { EvolutionEngine } from './src/evolution-engine.ts';
+    import { ShareSystem, injectShareStyles } from './src/share-system.ts';
+
+    injectShareStyles();
+
+    const lexer = new CodonLexer();
+    let engine = null;
+    let currentCandidates = [];
+
+    const statusContainer = document.getElementById('statusContainer');
+    const startPanel = document.getElementById('startPanel');
+    const evolutionPanel = document.getElementById('evolutionPanel');
+    const lineagePanel = document.getElementById('lineagePanel');
+    const sharePanel = document.getElementById('sharePanel');
+    const candidatesGrid = document.getElementById('candidatesGrid');
+    const lineageContainer = document.getElementById('lineageContainer');
+    const shareContainer = document.getElementById('shareContainer');
+    const generateBtn = document.getElementById('generateBtn');
+
+    // Initialize share system
+    const shareSystem = new ShareSystem({
+      containerElement: shareContainer,
+      getGenome: () => engine?.getCurrentParent() ?? '',
+      appTitle: 'CodonCanvas Evolution Lab',
+      showQRCode: true,
+      socialPlatforms: ['twitter', 'reddit', 'email']
+    });
+
+    function showStatus(message, type = 'info') {
+      statusContainer.innerHTML = `<div class="status ${type}">${message}</div>`;
+      setTimeout(() => {
+        statusContainer.innerHTML = '';
+      }, 5000);
+    }
+
+    function renderGenome(genome, canvas) {
+      try {
+        const renderer = new Canvas2DRenderer(canvas);
+        const vm = new CodonVM(renderer);
+        renderer.clear();
+        const tokens = lexer.tokenize(genome);
+        vm.reset();
+        vm.run(tokens);
+        return true;
+      } catch (error) {
+        console.error('Render error:', error);
+        return false;
+      }
+    }
+
+    function updateStats() {
+      const gen = engine.getCurrentGeneration();
+      const history = engine.getHistory();
+      const totalMutations = history.reduce((sum, record) => sum + record.candidates.length, 0);
+      const lineage = engine.getLineage();
+
+      document.getElementById('generationNumber').textContent = gen;
+      document.getElementById('genStat').textContent = gen;
+      document.getElementById('mutationStat').textContent = totalMutations;
+      document.getElementById('lineageStat').textContent = lineage.length;
+    }
+
+    function updateLineage() {
+      const lineage = engine.getLineage();
+      lineageContainer.innerHTML = '';
+
+      lineage.forEach((genome, index) => {
+        if (index > 0) {
+          const arrow = document.createElement('div');
+          arrow.className = 'lineage-arrow';
+          arrow.textContent = '→';
+          lineageContainer.appendChild(arrow);
+        }
+
+        const item = document.createElement('div');
+        item.className = 'lineage-item';
+
+        const canvas = document.createElement('canvas');
+        canvas.className = 'lineage-canvas';
+        canvas.width = 120;
+        canvas.height = 120;
+        renderGenome(genome, canvas);
+
+        const label = document.createElement('div');
+        label.className = 'lineage-label';
+        label.textContent = index === 0 ? 'Original' : `Gen ${index}`;
+
+        item.appendChild(canvas);
+        item.appendChild(label);
+        lineageContainer.appendChild(item);
+      });
+
+      lineagePanel.classList.remove('hidden');
+    }
+
+    window.startEvolution = function(exampleKey) {
+      const example = examples[exampleKey];
+      if (!example) {
+        showStatus('Example not found', 'error');
+        return;
+      }
+
+      engine = new EvolutionEngine(example.genome, {
+        candidatesPerGeneration: 6,
+        mutationTypes: ['point', 'silent', 'missense', 'insertion', 'deletion']
+      });
+
+      startPanel.classList.add('hidden');
+      evolutionPanel.classList.remove('hidden');
+      sharePanel.classList.remove('hidden');
+
+      updateStats();
+      showStatus(`Evolution started with: ${example.title}`, 'success');
+    };
+
+    window.generateGeneration = function() {
+      if (!engine) return;
+
+      try {
+        currentCandidates = engine.generateGeneration();
+        renderCandidates();
+        generateBtn.disabled = true;
+        updateStats();
+        showStatus(`Generated ${currentCandidates.length} candidates - select the fittest!`, 'info');
+      } catch (error) {
+        showStatus(`Generation failed: ${error.message}`, 'error');
+      }
+    };
+
+    function renderCandidates() {
+      candidatesGrid.innerHTML = '';
+
+      currentCandidates.forEach((candidate, index) => {
+        const card = document.createElement('div');
+        card.className = 'candidate-card';
+        card.onclick = () => selectCandidate(candidate.id);
+
+        const header = document.createElement('div');
+        header.className = 'candidate-header';
+        header.innerHTML = `<span>Candidate ${index + 1}</span><span>${candidate.id}</span>`;
+
+        const canvas = document.createElement('canvas');
+        canvas.className = 'candidate-canvas';
+        canvas.width = 250;
+        canvas.height = 250;
+        renderGenome(candidate.genome, canvas);
+
+        const mutation = document.createElement('div');
+        mutation.className = 'candidate-mutation';
+        if (candidate.mutation) {
+          mutation.innerHTML = `<span class="mutation-type">${candidate.mutation.type}</span>: ${candidate.mutation.description}`;
+        }
+
+        card.appendChild(header);
+        card.appendChild(canvas);
+        card.appendChild(mutation);
+        candidatesGrid.appendChild(card);
+      });
+    }
+
+    window.selectCandidate = function(candidateId) {
+      if (!engine) return;
+
+      try {
+        engine.selectCandidate(candidateId);
+
+        // Visual feedback
+        document.querySelectorAll('.candidate-card').forEach(card => {
+          card.classList.remove('selected');
+          if (card.querySelector('.candidate-header span:last-child').textContent === candidateId) {
+            card.classList.add('selected');
+          }
+        });
+
+        generateBtn.disabled = false;
+        updateStats();
+        updateLineage();
+        showStatus('✓ Candidate selected! Generate next generation to continue evolution.', 'success');
+      } catch (error) {
+        showStatus(`Selection failed: ${error.message}`, 'error');
+      }
+    };
+
+    window.resetEvolution = function() {
+      if (confirm('Reset evolution and start over?')) {
+        engine = null;
+        currentCandidates = [];
+        startPanel.classList.remove('hidden');
+        evolutionPanel.classList.add('hidden');
+        lineagePanel.classList.add('hidden');
+        sharePanel.classList.add('hidden');
+        candidatesGrid.innerHTML = '';
+        lineageContainer.innerHTML = '';
+        showStatus('Evolution reset', 'info');
+      }
+    };
+
+    // Load from URL if present
+    const urlGenome = ShareSystem.loadFromURL();
+    if (urlGenome) {
+      engine = new EvolutionEngine(urlGenome);
+      startPanel.classList.add('hidden');
+      evolutionPanel.classList.remove('hidden');
+      sharePanel.classList.remove('hidden');
+      updateStats();
+      showStatus('Loaded genome from share link', 'success');
+    }
+  </script>
+</body>
+</html>
