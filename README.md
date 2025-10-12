@@ -13,6 +13,20 @@ CodonCanvas is an educational programming language that uses DNA-like triplets (
 - **Live playground**: Web-based editor with instant visual feedback
 - **Save & Share**: Export/import genomes in .genome file format with metadata
 
+## Screenshots
+
+### Main Playground
+![CodonCanvas Playground](screenshot_playground.png)
+*Interactive editor with live canvas preview, 18 built-in examples, and codon reference chart*
+
+### Mutation Lab
+![Mutation Laboratory](screenshot_mutations.png)
+*Compare original and mutated genomes side-by-side with diff visualization*
+
+### Timeline Scrubber
+![Timeline Scrubber](screenshot_timeline.png)
+*Step through execution instruction-by-instruction with state visualization*
+
 ## Quick Start
 
 ```bash
