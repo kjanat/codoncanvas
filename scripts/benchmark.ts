@@ -6,10 +6,10 @@
  * and opcode patterns to establish baseline performance characteristics.
  */
 
-import { createCanvas } from 'canvas';
-import { CodonLexer } from '../src/lexer';
-import { CodonVM } from '../src/vm';
-import { Canvas2DRenderer } from '../src/renderer';
+import { createCanvas } from "canvas";
+import { CodonLexer } from "../src/lexer";
+import { Canvas2DRenderer } from "../src/renderer";
+import { CodonVM } from "../src/vm";
 
 // Benchmark configuration
 const ITERATIONS = 20;
@@ -19,7 +19,7 @@ const GENOME_SIZES = [10, 50, 100, 500, 1000];
 // Test genome generators
 function generateSimpleGenome(numCodeons: number): string {
   // ATG + (PUSH 10 + CIRCLE) * n + TAA
-  const pattern = 'GAA AAT GGA '; // PUSH 10, CIRCLE
+  const pattern = "GAA AAT GGA "; // PUSH 10, CIRCLE
   const body = pattern.repeat(Math.floor((numCodeons - 2) / 2));
   return `ATG ${body}TAA`;
 }
@@ -27,14 +27,14 @@ function generateSimpleGenome(numCodeons: number): string {
 function generateComplexGenome(numCodeons: number): string {
   // Mix of drawing primitives and transforms
   const patterns = [
-    'GAA AAT GGA ', // PUSH 10, CIRCLE
-    'GAA AAT GAA AAT CCA ', // PUSH 10, PUSH 10, RECT
-    'GAA CCC GAA AAA ACA ', // PUSH 21, PUSH 0, TRANSLATE
-    'GAA AGG AGA ', // PUSH 10, ROTATE
-    'GAA AAC CGA ', // PUSH 2, SCALE
+    "GAA AAT GGA ", // PUSH 10, CIRCLE
+    "GAA AAT GAA AAT CCA ", // PUSH 10, PUSH 10, RECT
+    "GAA CCC GAA AAA ACA ", // PUSH 21, PUSH 0, TRANSLATE
+    "GAA AGG AGA ", // PUSH 10, ROTATE
+    "GAA AAC CGA ", // PUSH 2, SCALE
   ];
 
-  let body = '';
+  let body = "";
   let count = 0;
   while (count < numCodeons - 2) {
     const pattern = patterns[count % patterns.length];
@@ -47,7 +47,7 @@ function generateComplexGenome(numCodeons: number): string {
 
 function generateTransformHeavy(numCodeons: number): string {
   // Heavy on transforms and state management
-  const pattern = 'GAA AAT ACA GAA AGG AGA GAA AAC CGA TCA '; // translate, rotate, scale, save_state
+  const pattern = "GAA AAT ACA GAA AGG AGA GAA AAC CGA TCA "; // translate, rotate, scale, save_state
   const body = pattern.repeat(Math.floor((numCodeons - 2) / 10));
   return `ATG ${body}GAA AAT GGA TAA`; // End with a shape
 }
@@ -65,7 +65,8 @@ function calculateStats(times: number[]): BenchmarkStats {
   const sorted = [...times].sort((a, b) => a - b);
   const mean = times.reduce((a, b) => a + b, 0) / times.length;
   const median = sorted[Math.floor(sorted.length / 2)];
-  const variance = times.reduce((sum, t) => sum + Math.pow(t - mean, 2), 0) / times.length;
+  const variance = times.reduce((sum, t) => sum + (t - mean) ** 2, 0) /
+    times.length;
   const stdDev = Math.sqrt(variance);
 
   return {
@@ -131,8 +132,10 @@ function benchmarkEndToEnd(genome: string, iterations: number): number[] {
 }
 
 // Run benchmarks
-console.log('🧬 CodonCanvas Performance Benchmark Suite v1.1.0\n');
-console.log(`Configuration: ${ITERATIONS} iterations, ${WARMUP_ITERATIONS} warmup runs\n`);
+console.log("🧬 CodonCanvas Performance Benchmark Suite v1.1.0\n");
+console.log(
+  `Configuration: ${ITERATIONS} iterations, ${WARMUP_ITERATIONS} warmup runs\n`,
+);
 
 interface BenchmarkResult {
   size: number;
@@ -149,7 +152,7 @@ for (const size of GENOME_SIZES) {
   console.log(`\n📊 Testing genome size: ${size} codons`);
 
   // Test simple genome
-  console.log('  → Simple genome (repeated shapes)...');
+  console.log("  → Simple genome (repeated shapes)...");
   const simple = generateSimpleGenome(size);
   const simpleLexer = new CodonLexer();
   const simpleTokens = simpleLexer.tokenize(simple);
@@ -167,7 +170,7 @@ for (const size of GENOME_SIZES) {
 
   results.push({
     size,
-    type: 'simple',
+    type: "simple",
     lexer: calculateStats(simpleLexerTimes),
     vm: calculateStats(simpleVMTimes),
     endToEnd: calculateStats(simpleE2ETimes),
@@ -175,7 +178,7 @@ for (const size of GENOME_SIZES) {
   });
 
   // Test complex genome
-  console.log('  → Complex genome (mixed opcodes)...');
+  console.log("  → Complex genome (mixed opcodes)...");
   const complex = generateComplexGenome(size);
   const complexLexer = new CodonLexer();
   const complexTokens = complexLexer.tokenize(complex);
@@ -193,55 +196,113 @@ for (const size of GENOME_SIZES) {
 
   results.push({
     size,
-    type: 'complex',
+    type: "complex",
     lexer: calculateStats(complexLexerTimes),
     vm: calculateStats(complexVMTimes),
     endToEnd: calculateStats(complexE2ETimes),
     codonCount: complexCodonCount,
   });
 
-  console.log(`  ✓ Complete (${simpleCodonCount} codons simple, ${complexCodonCount} codons complex)`);
+  console.log(
+    `  ✓ Complete (${simpleCodonCount} codons simple, ${complexCodonCount} codons complex)`,
+  );
 }
 
 // Output results
-console.log('\n\n📈 BENCHMARK RESULTS\n');
-console.log('═══════════════════════════════════════════════════════════════════════════\n');
+console.log("\n\n📈 BENCHMARK RESULTS\n");
+console.log(
+  "═══════════════════════════════════════════════════════════════════════════\n",
+);
 
 for (const result of results) {
-  console.log(`${result.type.toUpperCase()} GENOME (${result.codonCount} codons, target ~${result.size})`);
-  console.log('─────────────────────────────────────────────────────────────────────────');
-  console.log(`  Lexer:      ${result.lexer.mean.toFixed(3)}ms (±${result.lexer.stdDev.toFixed(3)}ms)`);
-  console.log(`  VM:         ${result.vm.mean.toFixed(3)}ms (±${result.vm.stdDev.toFixed(3)}ms)`);
-  console.log(`  End-to-End: ${result.endToEnd.mean.toFixed(3)}ms (±${result.endToEnd.stdDev.toFixed(3)}ms)`);
-  console.log(`  Throughput: ${(result.codonCount / (result.endToEnd.mean / 1000)).toFixed(0)} codons/sec`);
-  console.log('');
+  console.log(
+    `${result.type.toUpperCase()} GENOME (${result.codonCount} codons, target ~${result.size})`,
+  );
+  console.log(
+    "─────────────────────────────────────────────────────────────────────────",
+  );
+  console.log(
+    `  Lexer:      ${result.lexer.mean.toFixed(3)}ms (±${
+      result.lexer.stdDev.toFixed(
+        3,
+      )
+    }ms)`,
+  );
+  console.log(
+    `  VM:         ${result.vm.mean.toFixed(3)}ms (±${
+      result.vm.stdDev.toFixed(
+        3,
+      )
+    }ms)`,
+  );
+  console.log(
+    `  End-to-End: ${result.endToEnd.mean.toFixed(3)}ms (±${
+      result.endToEnd.stdDev.toFixed(
+        3,
+      )
+    }ms)`,
+  );
+  console.log(
+    `  Throughput: ${
+      (
+        result.codonCount / (result.endToEnd.mean / 1000)
+      ).toFixed(0)
+    } codons/sec`,
+  );
+  console.log("");
 }
 
 // Generate markdown table for PERFORMANCE.md
-console.log('\n📝 MARKDOWN TABLE FOR DOCUMENTATION\n');
-console.log('═══════════════════════════════════════════════════════════════════════════\n');
+console.log("\n📝 MARKDOWN TABLE FOR DOCUMENTATION\n");
+console.log(
+  "═══════════════════════════════════════════════════════════════════════════\n",
+);
 
-console.log('## Simple Genomes (Repeated Shapes)\n');
-console.log('| Codons | Lexer (ms) | VM (ms) | End-to-End (ms) | Throughput (codons/sec) |');
-console.log('|--------|------------|---------|-----------------|-------------------------|');
-for (const result of results.filter(r => r.type === 'simple')) {
-  const throughput = Math.round(result.codonCount / (result.endToEnd.mean / 1000));
-  console.log(`| ${result.codonCount} | ${result.lexer.mean.toFixed(2)} | ${result.vm.mean.toFixed(2)} | ${result.endToEnd.mean.toFixed(2)} | ${throughput.toLocaleString()} |`);
+console.log("## Simple Genomes (Repeated Shapes)\n");
+console.log(
+  "| Codons | Lexer (ms) | VM (ms) | End-to-End (ms) | Throughput (codons/sec) |",
+);
+console.log(
+  "|--------|------------|---------|-----------------|-------------------------|",
+);
+for (const result of results.filter((r) => r.type === "simple")) {
+  const throughput = Math.round(
+    result.codonCount / (result.endToEnd.mean / 1000),
+  );
+  console.log(
+    `| ${result.codonCount} | ${result.lexer.mean.toFixed(2)} | ${
+      result.vm.mean.toFixed(
+        2,
+      )
+    } | ${result.endToEnd.mean.toFixed(2)} | ${throughput.toLocaleString()} |`,
+  );
 }
 
-console.log('\n## Complex Genomes (Mixed Opcodes)\n');
-console.log('| Codons | Lexer (ms) | VM (ms) | End-to-End (ms) | Throughput (codons/sec) |');
-console.log('|--------|------------|---------|-----------------|-------------------------|');
-for (const result of results.filter(r => r.type === 'complex')) {
-  const throughput = Math.round(result.codonCount / (result.endToEnd.mean / 1000));
-  console.log(`| ${result.codonCount} | ${result.lexer.mean.toFixed(2)} | ${result.vm.mean.toFixed(2)} | ${result.endToEnd.mean.toFixed(2)} | ${throughput.toLocaleString()} |`);
+console.log("\n## Complex Genomes (Mixed Opcodes)\n");
+console.log(
+  "| Codons | Lexer (ms) | VM (ms) | End-to-End (ms) | Throughput (codons/sec) |",
+);
+console.log(
+  "|--------|------------|---------|-----------------|-------------------------|",
+);
+for (const result of results.filter((r) => r.type === "complex")) {
+  const throughput = Math.round(
+    result.codonCount / (result.endToEnd.mean / 1000),
+  );
+  console.log(
+    `| ${result.codonCount} | ${result.lexer.mean.toFixed(2)} | ${
+      result.vm.mean.toFixed(
+        2,
+      )
+    } | ${result.endToEnd.mean.toFixed(2)} | ${throughput.toLocaleString()} |`,
+  );
 }
 
-console.log('\n\n✅ Benchmark complete! Copy tables above to PERFORMANCE.md\n');
+console.log("\n\n✅ Benchmark complete! Copy tables above to PERFORMANCE.md\n");
 
 // Export results as JSON for further analysis
 const output = {
-  version: '1.1.0',
+  version: "1.1.0",
   timestamp: new Date().toISOString(),
   config: {
     iterations: ITERATIONS,
@@ -251,5 +312,5 @@ const output = {
   results,
 };
 
-console.log('📊 Raw JSON data:');
+console.log("📊 Raw JSON data:");
 console.log(JSON.stringify(output, null, 2));

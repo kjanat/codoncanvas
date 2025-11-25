@@ -7,14 +7,14 @@
  * Output: examples/screenshots/*.png (full size 400x400)
  */
 
-import { createCanvas, Canvas } from 'canvas';
-import { readFileSync, writeFileSync, mkdirSync } from 'fs';
-import { join, dirname } from 'path';
-import { fileURLToPath } from 'url';
-import { CodonLexer } from '../src/lexer';
-import { CodonVM } from '../src/vm';
-import { Renderer } from '../src/renderer';
-import { VMState } from '../src/types';
+import { type Canvas, createCanvas } from "canvas";
+import { mkdirSync, readFileSync, writeFileSync } from "fs";
+import { dirname, join } from "path";
+import { fileURLToPath } from "url";
+import { CodonLexer } from "../src/lexer";
+import type { Renderer } from "../src/renderer";
+import { VMState } from "../src/types";
+import { CodonVM } from "../src/vm";
 
 // ES module equivalents for __dirname
 const __filename = fileURLToPath(import.meta.url);
@@ -34,8 +34,8 @@ class NodeCanvasRenderer implements Renderer {
 
   constructor(width: number = 400, height: number = 400) {
     this.canvas = createCanvas(width, height);
-    this.ctx = this.canvas.getContext('2d');
-    this.ctx.fillStyle = '#ffffff';
+    this.ctx = this.canvas.getContext("2d");
+    this.ctx.fillStyle = "#ffffff";
     this.ctx.fillRect(0, 0, width, height);
   }
 
@@ -48,7 +48,7 @@ class NodeCanvasRenderer implements Renderer {
   }
 
   clear(): void {
-    this.ctx.fillStyle = '#ffffff';
+    this.ctx.fillStyle = "#ffffff";
     this.ctx.fillRect(0, 0, this.width, this.height);
     this._x = this.width / 2;
     this._y = this.height / 2;
@@ -57,7 +57,7 @@ class NodeCanvasRenderer implements Renderer {
   }
 
   circle(radius: number): void {
-    const scaledRadius = radius * this._scale;  // radius already scaled by VM
+    const scaledRadius = radius * this._scale; // radius already scaled by VM
     this.ctx.save();
     this.ctx.translate(this._x, this._y);
     this.ctx.rotate((this._rotation * Math.PI) / 180);
@@ -69,8 +69,8 @@ class NodeCanvasRenderer implements Renderer {
   }
 
   rect(width: number, height: number): void {
-    const scaledW = width * this._scale;  // already scaled by VM
-    const scaledH = height * this._scale;  // already scaled by VM
+    const scaledW = width * this._scale; // already scaled by VM
+    const scaledH = height * this._scale; // already scaled by VM
     this.ctx.save();
     this.ctx.translate(this._x, this._y);
     this.ctx.rotate((this._rotation * Math.PI) / 180);
@@ -80,7 +80,7 @@ class NodeCanvasRenderer implements Renderer {
   }
 
   line(length: number): void {
-    const scaledLength = length * this._scale;  // already scaled by VM
+    const scaledLength = length * this._scale; // already scaled by VM
     const rad = (this._rotation * Math.PI) / 180;
     const endX = this._x + Math.cos(rad) * scaledLength;
     const endY = this._y + Math.sin(rad) * scaledLength;
@@ -91,7 +91,7 @@ class NodeCanvasRenderer implements Renderer {
   }
 
   triangle(size: number): void {
-    const scaledSize = size * this._scale;  // already scaled by VM
+    const scaledSize = size * this._scale; // already scaled by VM
     const height = (scaledSize * Math.sqrt(3)) / 2;
     this.ctx.save();
     this.ctx.translate(this._x, this._y);
@@ -107,8 +107,8 @@ class NodeCanvasRenderer implements Renderer {
   }
 
   ellipse(rx: number, ry: number): void {
-    const scaledRx = rx * this._scale;  // already scaled by VM
-    const scaledRy = ry * this._scale;  // already scaled by VM
+    const scaledRx = rx * this._scale; // already scaled by VM
+    const scaledRy = ry * this._scale; // already scaled by VM
     this.ctx.save();
     this.ctx.translate(this._x, this._y);
     this.ctx.rotate((this._rotation * Math.PI) / 180);
@@ -191,7 +191,7 @@ class NodeCanvasRenderer implements Renderer {
    * Export canvas as PNG buffer.
    */
   toPNG(): Buffer {
-    return this.canvas.toBuffer('image/png');
+    return this.canvas.toBuffer("image/png");
   }
 }
 
@@ -199,13 +199,13 @@ class NodeCanvasRenderer implements Renderer {
  * Showcase genomes to render.
  */
 const SHOWCASE_GENOMES = [
-  'fractalFlower',
-  'geometricMosaic',
-  'starfield',
-  'recursiveCircles',
-  'kaleidoscope',
-  'wavyLines',
-  'cosmicWheel',
+  "fractalFlower",
+  "geometricMosaic",
+  "starfield",
+  "recursiveCircles",
+  "kaleidoscope",
+  "wavyLines",
+  "cosmicWheel",
 ];
 
 /**
@@ -215,7 +215,7 @@ function renderGenome(genomePath: string, outputPath: string): void {
   console.log(`Rendering ${genomePath}...`);
 
   // Read genome source
-  const source = readFileSync(genomePath, 'utf-8');
+  const source = readFileSync(genomePath, "utf-8");
 
   // Tokenize
   const lexer = new CodonLexer();
@@ -239,10 +239,10 @@ function renderGenome(genomePath: string, outputPath: string): void {
  * Main execution.
  */
 function main(): void {
-  console.log('🎨 CodonCanvas Screenshot Generator\n');
+  console.log("🎨 CodonCanvas Screenshot Generator\n");
 
   // Ensure output directory exists
-  const screenshotsDir = join(__dirname, '../examples/screenshots');
+  const screenshotsDir = join(__dirname, "../examples/screenshots");
   mkdirSync(screenshotsDir, { recursive: true });
 
   // Render each showcase genome

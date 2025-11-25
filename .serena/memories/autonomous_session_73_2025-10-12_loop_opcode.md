@@ -11,12 +11,14 @@ Implemented LOOP opcode enabling iteration and algorithmic pattern generation. C
 ## Autonomous Direction Decision
 
 **Problem Identified:**
+
 - Complete arithmetic suite (ADD, SUB, MUL, DIV) implemented in Sessions 71-72
 - Missing critical CS concept: **iteration/loops**
 - Students forced to manually repeat code → verbose, error-prone genomes
 - No way to create algorithmic patterns efficiently
 
 **Strategic Analysis:**
+
 - MVP spec mentions loops as "medium-term" future work
 - All 64 codons allocated (need codon reallocation)
 - Gap: sequence ✓, arithmetic ✓, **iteration ✗**, conditionals ✗
@@ -49,9 +51,11 @@ Implemented LOOP opcode enabling iteration and algorithmic pattern generation. C
 ### Phase 1: Codon Reallocation
 
 **BEFORE:**
+
 - CAA, CAC → NOP (2 synonymous codons)
 
 **AFTER:**
+
 - CAA → LOOP (new iteration opcode)
 - CAC → NOP (1 synonym remains for silent mutations)
 
@@ -60,6 +64,7 @@ Implemented LOOP opcode enabling iteration and algorithmic pattern generation. C
 ### Phase 2: Type System (`src/types.ts`)
 
 **Changes:**
+
 1. Added `LOOP` to `Opcode` enum (line 86)
 2. Updated CODON_MAP: `'CAA': Opcode.LOOP` (line 179)
 3. Updated documentation: Added "Control: LOOP (iteration)" family (line 59)
@@ -80,17 +85,20 @@ private instructionHistory: {
 ```
 
 **Why Push Value Storage?**
+
 - PUSH opcode in execute() is no-op (handled specially in run())
 - When replaying PUSH from loop, need the actual value
 - Solution: Store pushed value in history, replay by pushing value directly
 
 **LOOP Semantics:**
+
 ```
 Stack before LOOP: [..., instructionCount, loopCount]
 Behavior: Replay last N instructions M times
 ```
 
 **Pattern:**
+
 ```
 PUSH value          ; Setup for operation
 CIRCLE             ; Use value
@@ -105,7 +113,10 @@ LOOP               ; Replays last 2 instructions 5 times
    ```typescript
    const historyBeforeParams = this.instructionHistory.length - 2;
    const startIdx = historyBeforeParams - instructionCount;
-   const instructionsToRepeat = this.instructionHistory.slice(startIdx, historyBeforeParams);
+   const instructionsToRepeat = this.instructionHistory.slice(
+     startIdx,
+     historyBeforeParams,
+   );
    ```
    - Last 2 history items are PUSH instructions for loop params
    - Replay window excludes these to avoid infinite parameter stacking
@@ -113,9 +124,9 @@ LOOP               ; Replays last 2 instructions 5 times
 2. **PUSH Replay Handling:**
    ```typescript
    if (loopOpcode === Opcode.PUSH && pushValue !== undefined) {
-     this.push(pushValue);  // Use stored value
+     this.push(pushValue); // Use stored value
    } else {
-     this.execute(loopOpcode, loopCodon);  // Normal execution
+     this.execute(loopOpcode, loopCodon); // Normal execution
    }
    ```
 
@@ -152,6 +163,7 @@ LOOP               ; Replays last 2 instructions 5 times
    - Verifies: History bounds checking
 
 **Coverage:**
+
 - Happy path (basic repetition)
 - Edge cases (zero, large counts)
 - Error conditions (underflow, negative, bounds)
@@ -164,6 +176,7 @@ LOOP               ; Replays last 2 instructions 5 times
 **Added 3 loop demonstration examples:**
 
 **1. `loopRosette`** (intermediate)
+
 - **Theme:** Radial flower pattern with LOOP
 - **Pattern:** PUSH radius, CIRCLE, PUSH degrees, ROTATE, LOOP
 - **Visual:** 8-petal rosette (360° / 8 = 45° per petal)
@@ -172,6 +185,7 @@ LOOP               ; Replays last 2 instructions 5 times
 - **Keywords:** loop, iteration, rosette, radial, pattern, repetition
 
 **2. `loopSpiral`** (intermediate)
+
 - **Theme:** Expanding spiral using LOOP + arithmetic
 - **Pattern:** PUSH radius, CIRCLE, PUSH dx, PUSH dy, TRANSLATE, LOOP
 - **Visual:** 11 circles in horizontal line
@@ -179,6 +193,7 @@ LOOP               ; Replays last 2 instructions 5 times
 - **Keywords:** loop, spiral, iteration, translate, pattern, growth
 
 **3. `loopGrid`** (intermediate)
+
 - **Theme:** Grid/row pattern with LOOP
 - **Pattern:** Draw + translate pattern looped for row creation
 - **Visual:** 7 circles in evenly-spaced row
@@ -190,6 +205,7 @@ LOOP               ; Replays last 2 instructions 5 times
 ## Educational Value
 
 **For Students:**
+
 - **Core CS concept:** Iteration after sequence and arithmetic
 - **Algorithmic thinking:** Parameterize patterns vs hardcode
 - **Efficiency principle:** DRY (Don't Repeat Yourself)
@@ -197,12 +213,14 @@ LOOP               ; Replays last 2 instructions 5 times
 - **Pattern generation:** Rosettes, spirals, grids programmatically
 
 **For Educators:**
+
 - **Progression:** Sequence → Arithmetic → Iteration → (future: Conditionals)
 - **Complexity levels:** Simple loops → computed counts → nested patterns
 - **Assessment opportunities:** "Create N-petal flower with LOOP"
 - **Mutation pedagogy:** Loop count mutations affect pattern density
 
 **For Researchers:**
+
 - **Usage patterns:** Which loop structures emerge naturally?
 - **Cognitive load:** Do students grasp instruction count concept?
 - **Efficiency adoption:** When do students discover LOOP vs manual repeat?
@@ -221,6 +239,7 @@ LOOP               ; Replays last 2 instructions 5 times
 ## Files Modified
 
 **Modified:**
+
 - `src/types.ts` (+4 LOC) - LOOP opcode, CODON_MAP, documentation
 - `src/vm.ts` (+48 LOC) - History tracking, LOOP execution, PUSH replay
 - `src/vm.test.ts` (+41 LOC) - 5 comprehensive LOOP tests
@@ -231,6 +250,7 @@ LOOP               ; Replays last 2 instructions 5 times
 ## Code Highlights
 
 **Instruction History with Push Values:**
+
 ```typescript
 private instructionHistory: { 
   opcode: Opcode; 
@@ -247,26 +267,29 @@ this.instructionHistory.push({
 ```
 
 **Loop Parameter Exclusion:**
+
 ```typescript
 // Exclude last 2 PUSHes (loop parameters) from replay
 const historyBeforeParams = this.instructionHistory.length - 2;
 const startIdx = historyBeforeParams - instructionCount;
 const instructionsToRepeat = this.instructionHistory.slice(
-  startIdx, 
-  historyBeforeParams
+  startIdx,
+  historyBeforeParams,
 );
 ```
 
 **Safe PUSH Replay:**
+
 ```typescript
 if (loopOpcode === Opcode.PUSH && pushValue !== undefined) {
-  this.push(pushValue);  // Replay with stored value
+  this.push(pushValue); // Replay with stored value
 } else {
-  this.execute(loopOpcode, loopCodon);  // Normal execution
+  this.execute(loopOpcode, loopCodon); // Normal execution
 }
 ```
 
 **Pedagogical Loop Pattern:**
+
 ```
 ; 8-petal rosette in 11 codons (vs 64+ manual)
 ATG
@@ -292,6 +315,7 @@ TAA
 **Decision Quality:** ⭐⭐⭐⭐⭐ (5/5)
 
 **Rationale:**
+
 - Logical continuation after arithmetic (Sessions 71-72)
 - Core CS pedagogy (iteration is fundamental)
 - High creative impact (algorithmic pattern generation)
@@ -299,6 +323,7 @@ TAA
 - Strong educational value (efficiency, DRY principle, algorithmic thinking)
 
 **Impact Assessment:**
+
 - **Pedagogical:** CRITICAL - Completes core CS triad (sequence, arithmetic, iteration)
 - **Creative:** HIGH - Unlocks pattern generation, 85% genome size reduction
 - **Technical:** HIGH - Clean implementation, comprehensive tests, safe execution
@@ -307,21 +332,25 @@ TAA
 ## What Worked
 
 **1. Strategic Codon Reallocation:**
+
 - NOP sacrifice minimal impact (aesthetic only)
 - Clean 1-for-1 trade (CAA: NOP → LOOP)
 - Maintains pedagogical redundancy (CAC still NOP for silent mutations)
 
 **2. Instruction History Design:**
+
 - Clean replay mechanism without VM mode switching
 - Push value storage solves literal replay elegantly
 - Parameter exclusion prevents infinite stacking
 
 **3. Comprehensive Testing:**
+
 - 5 tests cover happy path, edge cases, errors
 - Integration tests with drawing operations
 - Safety validation (negative, bounds, underflow)
 
 **4. Pedagogical Examples:**
+
 - Clear progression (simple → computed → patterns)
 - Real-world patterns (rosettes, spirals, grids)
 - Dramatic efficiency demonstration (85% reduction)
@@ -329,16 +358,19 @@ TAA
 ## Challenges Solved
 
 **Challenge 1:** PUSH Replay Problem
+
 - **Issue:** PUSH opcode needs next codon for literal, but replaying from history only has opcode
 - **Solution:** Store push value in history, replay by pushing value directly
 - **Result:** Clean PUSH handling without special cases
 
 **Challenge 2:** Loop Parameter Contamination
+
 - **Issue:** Last 2 PUSHes are loop params, would be replayed infinitely
 - **Solution:** Exclude last 2 history items from replay window
 - **Result:** Clean loop semantics, params don't pollute loop body
 
 **Challenge 3:** Codon Allocation
+
 - **Issue:** All 64 codons allocated, need space for LOOP
 - **Solution:** Split NOP family (CAA → LOOP, CAC remains)
 - **Result:** Minimal impact, maintains silent mutation capability
@@ -346,17 +378,20 @@ TAA
 ## Comparison to Alternatives
 
 **Why not Conditionals/Comparisons?**
+
 - More complex (multiple opcodes needed)
 - Requires comparison operators first
 - Less immediate creative value
 - Harder to teach as first control flow
 
 **Why not Memory/Variables?**
+
 - Less fundamental than iteration
 - More complex state management
 - Lower pedagogical priority
 
 **Why LOOP?**
+
 - Core CS concept (after sequence, arithmetic)
 - Single opcode (implementation feasible)
 - High creative value (pattern generation)
@@ -392,6 +427,7 @@ TAA
 ## Next Steps (Future Sessions)
 
 **Immediate (Session 74, ~45 min):**
+
 1. Update codon chart SVG (CAA=LOOP, CAC=NOP)
 2. Update documentation referencing NOP/LOOP codons
 3. Tutorial integration ("Iteration with LOOP" lesson)
@@ -422,6 +458,7 @@ TAA
 - **Pedagogical Examples:** 3 demonstrations of loop efficiency
 
 **Autonomous Direction:**
+
 - Analyzed Sessions 71-72 (arithmetic complete)
 - Identified critical gap (no iteration)
 - Prioritized LOOP over conditionals/memory (pedagogical value)

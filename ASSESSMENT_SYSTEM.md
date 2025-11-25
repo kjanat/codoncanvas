@@ -61,20 +61,23 @@ The **Assessment System** provides automated challenges and grading for testing 
 To add assessment mode to the main playground:
 
 ```typescript
-import { AssessmentEngine } from './assessment-engine';
-import { AssessmentUI } from './assessment-ui';
+import { AssessmentEngine } from "./assessment-engine";
+import { AssessmentUI } from "./assessment-ui";
 
 // Initialize
 const engine = new AssessmentEngine();
 const assessmentUI = new AssessmentUI(
   engine,
-  document.getElementById('assessment-container')!
+  document.getElementById("assessment-container")!,
 );
 
 // Toggle assessment mode
-document.getElementById('assessment-toggle-btn').addEventListener('click', () => {
-  assessmentUI.show();
-});
+document.getElementById("assessment-toggle-btn").addEventListener(
+  "click",
+  () => {
+    assessmentUI.show();
+  },
+);
 ```
 
 ---
@@ -82,36 +85,42 @@ document.getElementById('assessment-toggle-btn').addEventListener('click', () =>
 ## Mutation Types Reference
 
 ### Silent Mutation
+
 **Definition**: Codon changes but opcode stays the same
 **Example**: `GGA → GGC` (both code for CIRCLE)
 **Visual Effect**: No change in output
 **Common Error**: Students confuse with missense
 
 ### Missense Mutation
+
 **Definition**: Codon changes to different opcode
 **Example**: `GGA → GCA` (CIRCLE → TRIANGLE)
 **Visual Effect**: Different shape/operation
 **Common Error**: Students miss subtle visual differences
 
 ### Nonsense Mutation
+
 **Definition**: Introduces STOP codon early
 **Example**: `GGA → TAA` (CIRCLE → STOP)
 **Visual Effect**: Truncated output
 **Common Error**: Students confuse with deletion
 
 ### Frameshift Mutation
+
 **Definition**: Insert/delete bases (not divisible by 3)
 **Example**: `ATGGGATAAA → ATGGGTAAA` (deleted 1 base)
 **Visual Effect**: Completely scrambled downstream
 **Common Error**: Students don't check length carefully
 
 ### Insertion
+
 **Definition**: Add 3+ bases (no frameshift)
 **Example**: `ATG GGA TAA → ATG GGA CCA TAA` (+3 bases)
 **Visual Effect**: Extra operation added
 **Common Error**: Students confuse with missense
 
 ### Deletion
+
 **Definition**: Remove 3+ bases (no frameshift)
 **Example**: `ATG GGA CCA TAA → ATG GGA TAA` (-3 bases)
 **Visual Effect**: Operation removed
@@ -124,21 +133,25 @@ document.getElementById('assessment-toggle-btn').addEventListener('click', () =>
 ### Recommended Lesson Plan (45 minutes)
 
 **Phase 1: Introduction (10 min)**
+
 1. Review mutation types with examples
 2. Demonstrate assessment interface
 3. Explain difficulty levels
 
 **Phase 2: Guided Practice (15 min)**
+
 1. Students complete 5 "Easy" challenges
 2. Instructor reviews common errors
 3. Discuss identification strategies
 
 **Phase 3: Independent Practice (15 min)**
+
 1. Students progress to "Medium" difficulty
 2. Complete 10 challenges minimum
 3. Aim for 80%+ accuracy
 
 **Phase 4: Assessment (5 min)**
+
 1. Students complete 5 "Hard" challenges
 2. Export results for grading
 3. Review class performance
@@ -149,13 +162,13 @@ document.getElementById('assessment-toggle-btn').addEventListener('click', () =>
 
 ### Suggested Scoring
 
-| Accuracy | Grade | Skill Level |
-|----------|-------|-------------|
-| 90-100% | A | Mastery |
-| 80-89% | B | Proficient |
-| 70-79% | C | Developing |
-| 60-69% | D | Needs Support |
-| <60% | F | Re-teach Required |
+| Accuracy | Grade | Skill Level       |
+| -------- | ----- | ----------------- |
+| 90-100%  | A     | Mastery           |
+| 80-89%   | B     | Proficient        |
+| 70-79%   | C     | Developing        |
+| 60-69%   | D     | Needs Support     |
+| <60%     | F     | Re-teach Required |
 
 ### Performance by Mutation Type
 
@@ -164,15 +177,16 @@ Track student accuracy by mutation type to identify gaps:
 ```json
 {
   "byType": {
-    "silent": { "correct": 8, "total": 10 },    // 80% - Good
-    "missense": { "correct": 7, "total": 10 },  // 70% - Needs practice
-    "nonsense": { "correct": 9, "total": 10 },  // 90% - Excellent
+    "silent": { "correct": 8, "total": 10 }, // 80% - Good
+    "missense": { "correct": 7, "total": 10 }, // 70% - Needs practice
+    "nonsense": { "correct": 9, "total": 10 }, // 90% - Excellent
     "frameshift": { "correct": 4, "total": 10 } // 40% - Re-teach ⚠️
   }
 }
 ```
 
 **Interpretation**:
+
 - Students understand silent, missense, nonsense
 - **Frameshift** needs focused review (40% accuracy)
 
@@ -272,16 +286,19 @@ private generateHint(mutationType: MutationType, difficulty: DifficultyLevel): s
 ## Accessibility Features
 
 ### Keyboard Navigation
+
 - **Tab**: Navigate between buttons
 - **Enter/Space**: Select answer
 - **Escape**: (Future) Return to main menu
 
 ### Screen Reader Support
+
 - All buttons have ARIA labels
 - Challenge text announced clearly
 - Feedback provides detailed explanations
 
 ### High Contrast Mode
+
 - Assessment UI inherits theme from main playground
 - Works with Dark, Light, and High Contrast themes
 
@@ -292,6 +309,7 @@ private generateHint(mutationType: MutationType, difficulty: DifficultyLevel): s
 ### Q: How many challenges should students complete?
 
 **A:** Recommended minimum:
+
 - **Easy**: 5-10 challenges (introduction)
 - **Medium**: 10-15 challenges (practice)
 - **Hard**: 5-10 challenges (assessment)
@@ -307,6 +325,7 @@ private generateHint(mutationType: MutationType, difficulty: DifficultyLevel): s
 ### Q: How do I identify struggling students?
 
 **A:** Look for:
+
 - Accuracy <70% after 10+ attempts
 - Consistent errors on specific mutation types
 - Low accuracy on "Easy" difficulty
@@ -316,6 +335,7 @@ Export results and review `byType` performance to identify gaps.
 ### Q: Can I use this for summative assessment?
 
 **A:** Yes! Recommended approach:
+
 1. Give students practice time (10-15 challenges)
 2. Administer 10 "Hard" challenges as timed assessment
 3. Export results immediately
@@ -324,6 +344,7 @@ Export results and review `byType` performance to identify gaps.
 ### Q: How do I prevent students from guessing?
 
 **A:** The system tracks all attempts. Review `totalAttempts` vs. `correctAnswers`. High attempt counts with low accuracy indicate guessing. Recommend:
+
 - Require written explanations for wrong answers
 - Use assessment mode as formative, not solely summative
 - Combine with visual output analysis
@@ -388,6 +409,7 @@ If you encounter bugs or have feature requests:
 ### Feature Requests
 
 Educators can request features such as:
+
 - Custom challenge sets
 - Multi-student analytics dashboard
 - Integration with specific LMS platforms
@@ -440,6 +462,7 @@ Educators can request features such as:
 ### Version 1.0.0 (2025-10-12)
 
 **Initial Release**:
+
 - ✅ Automated challenge generation (3 difficulty levels)
 - ✅ 6 mutation types supported
 - ✅ Instant feedback with explanations

@@ -3,7 +3,7 @@
  * Renders and manages the interactive tutorial interface
  */
 
-import { TutorialManager, TutorialStep } from './tutorial';
+import type { TutorialManager, TutorialStep } from "./tutorial";
 
 export class TutorialUI {
   private manager: TutorialManager;
@@ -12,7 +12,7 @@ export class TutorialUI {
 
   constructor(
     private container: HTMLElement,
-    manager: TutorialManager
+    manager: TutorialManager,
   ) {
     this.manager = manager;
     this.setupCallbacks();
@@ -45,12 +45,12 @@ export class TutorialUI {
 
     const step = this.manager.getCurrentStep();
     if (!step) {
-return;
-}
+      return;
+    }
 
     // Create overlay
-    this.overlayElement = document.createElement('div');
-    this.overlayElement.className = 'tutorial-overlay';
+    this.overlayElement = document.createElement("div");
+    this.overlayElement.className = "tutorial-overlay";
     this.overlayElement.innerHTML = this.renderModal(step);
 
     document.body.appendChild(this.overlayElement);
@@ -77,7 +77,9 @@ return;
             <div class="tutorial-progress-bar">
               <div class="tutorial-progress-fill" style="width: ${progress.percent}%"></div>
             </div>
-            <span class="tutorial-progress-text">${progress.current + 1}/${progress.total}</span>
+            <span class="tutorial-progress-text">${
+      progress.current + 1
+    }/${progress.total}</span>
           </div>
         </div>
 
@@ -85,7 +87,7 @@ return;
           <div class="tutorial-step-content">
             ${step.content}
           </div>
-          ${step.hint ? `<div class="tutorial-hint">${step.hint}</div>` : ''}
+          ${step.hint ? `<div class="tutorial-hint">${step.hint}</div>` : ""}
         </div>
 
         <div class="tutorial-footer">
@@ -93,17 +95,21 @@ return;
             Skip Tutorial
           </button>
           <div style="display: flex; gap: 12px;">
-            ${!isFirstStep ? `
+            ${
+      !isFirstStep
+        ? `
               <button class="tutorial-button tutorial-button-secondary" data-action="previous">
                 ← Previous
               </button>
-            ` : ''}
+            `
+        : ""
+    }
             <button
               class="tutorial-button tutorial-button-primary"
               data-action="next"
-              ${step.expectedCode ? 'disabled' : ''}
+              ${step.expectedCode ? "disabled" : ""}
             >
-              ${isLastStep ? 'Finish' : 'Next →'}
+              ${isLastStep ? "Finish" : "Next →"}
             </button>
           </div>
         </div>
@@ -113,29 +119,33 @@ return;
 
   private attachEventListeners(): void {
     if (!this.overlayElement) {
-return;
-}
+      return;
+    }
 
     // Next button
-    const nextBtn = this.overlayElement.querySelector('[data-action="next"]') as HTMLButtonElement;
+    const nextBtn = this.overlayElement.querySelector(
+      "[data-action=\"next\"]",
+    ) as HTMLButtonElement;
     if (nextBtn) {
-      nextBtn.addEventListener('click', () => this.handleNext());
+      nextBtn.addEventListener("click", () => this.handleNext());
     }
 
     // Previous button
-    const prevBtn = this.overlayElement.querySelector('[data-action="previous"]');
+    const prevBtn = this.overlayElement.querySelector(
+      "[data-action=\"previous\"]",
+    );
     if (prevBtn) {
-      prevBtn.addEventListener('click', () => this.handlePrevious());
+      prevBtn.addEventListener("click", () => this.handlePrevious());
     }
 
     // Skip button
-    const skipBtn = this.overlayElement.querySelector('[data-action="skip"]');
+    const skipBtn = this.overlayElement.querySelector("[data-action=\"skip\"]");
     if (skipBtn) {
-      skipBtn.addEventListener('click', () => this.handleSkip());
+      skipBtn.addEventListener("click", () => this.handleSkip());
     }
 
     // Prevent closing on overlay click (require explicit action)
-    this.overlayElement.addEventListener('click', (e) => {
+    this.overlayElement.addEventListener("click", (e) => {
       if (e.target === this.overlayElement) {
         e.stopPropagation();
       }
@@ -145,15 +155,15 @@ return;
   private handleNext(): void {
     const step = this.manager.getCurrentStep();
     if (!step) {
-return;
-}
+      return;
+    }
 
     if (step.expectedCode) {
       // Need code validation
-      const editor = document.querySelector('textarea') as HTMLTextAreaElement;
+      const editor = document.querySelector("textarea") as HTMLTextAreaElement;
       if (!editor) {
-return;
-}
+        return;
+      }
 
       const success = this.manager.nextStep(editor.value);
       if (!success) {
@@ -161,7 +171,7 @@ return;
       }
     } else {
       // No validation needed
-      this.manager.nextStep('');
+      this.manager.nextStep("");
     }
   }
 
@@ -170,40 +180,44 @@ return;
   }
 
   private handleSkip(): void {
-    if (confirm('Are you sure you want to skip the tutorial? You can restart it later from the Help menu.')) {
+    if (
+      confirm(
+        "Are you sure you want to skip the tutorial? You can restart it later from the Help menu.",
+      )
+    ) {
       this.manager.skip();
       this.cleanup();
     }
   }
 
   private showValidationError(): void {
-    const modal = this.overlayElement?.querySelector('.tutorial-modal');
+    const modal = this.overlayElement?.querySelector(".tutorial-modal");
     if (!modal) {
-return;
-}
+      return;
+    }
 
     const step = this.manager.getCurrentStep();
     if (!step?.hint) {
-return;
-}
+      return;
+    }
 
     // Shake animation
-    modal.classList.add('shake');
-    setTimeout(() => modal.classList.remove('shake'), 500);
+    modal.classList.add("shake");
+    setTimeout(() => modal.classList.remove("shake"), 500);
 
     // Show hint prominently
-    const hintElement = modal.querySelector('.tutorial-hint');
+    const hintElement = modal.querySelector(".tutorial-hint");
     if (hintElement) {
-      hintElement.classList.add('highlight-hint');
-      setTimeout(() => hintElement.classList.remove('highlight-hint'), 2000);
+      hintElement.classList.add("highlight-hint");
+      setTimeout(() => hintElement.classList.remove("highlight-hint"), 2000);
     }
   }
 
   private showSuccess(): void {
     this.cleanup();
 
-    this.overlayElement = document.createElement('div');
-    this.overlayElement.className = 'tutorial-overlay';
+    this.overlayElement = document.createElement("div");
+    this.overlayElement.className = "tutorial-overlay";
     this.overlayElement.innerHTML = `
       <div class="tutorial-modal">
         <div class="tutorial-body tutorial-success">
@@ -228,23 +242,29 @@ return;
     document.body.appendChild(this.overlayElement);
 
     // Attach success action listeners
-    const exploreBtn = this.overlayElement.querySelector('[data-action="explore"]');
+    const exploreBtn = this.overlayElement.querySelector(
+      "[data-action=\"explore\"]",
+    );
     if (exploreBtn) {
-      exploreBtn.addEventListener('click', () => {
+      exploreBtn.addEventListener("click", () => {
         this.cleanup();
         // Trigger example selector focus
-        const selector = document.querySelector('.example-selector') as HTMLSelectElement;
+        const selector = document.querySelector(
+          ".example-selector",
+        ) as HTMLSelectElement;
         if (selector) {
-selector.focus();
-}
+          selector.focus();
+        }
       });
     }
 
-    const mutationsBtn = this.overlayElement.querySelector('[data-action="mutations"]');
+    const mutationsBtn = this.overlayElement.querySelector(
+      "[data-action=\"mutations\"]",
+    );
     if (mutationsBtn) {
-      mutationsBtn.addEventListener('click', () => {
+      mutationsBtn.addEventListener("click", () => {
         this.cleanup();
-        window.location.href = 'mutation-demo.html';
+        window.location.href = "mutation-demo.html";
       });
     }
   }
@@ -255,12 +275,12 @@ selector.focus();
   private highlightElement(selector: string): void {
     const element = document.querySelector(selector) as HTMLElement;
     if (!element) {
-return;
-}
+      return;
+    }
 
     // Store original classes
     const originalClasses = element.className;
-    element.classList.add('tutorial-highlight');
+    element.classList.add("tutorial-highlight");
     this.highlightedElement = element;
 
     // Restore on cleanup
@@ -272,25 +292,27 @@ return;
    */
   validateAndUpdateButton(code: string): void {
     if (!this.overlayElement) {
-return;
-}
+      return;
+    }
 
     const step = this.manager.getCurrentStep();
     if (!step?.expectedCode) {
-return;
-}
+      return;
+    }
 
-    const nextBtn = this.overlayElement.querySelector('[data-action="next"]') as HTMLButtonElement;
+    const nextBtn = this.overlayElement.querySelector(
+      "[data-action=\"next\"]",
+    ) as HTMLButtonElement;
     if (!nextBtn) {
-return;
-}
+      return;
+    }
 
     const isValid = this.manager.validateStep(code);
     nextBtn.disabled = !isValid;
 
     if (isValid) {
-      nextBtn.classList.add('pulse-success');
-      setTimeout(() => nextBtn.classList.remove('pulse-success'), 1000);
+      nextBtn.classList.add("pulse-success");
+      setTimeout(() => nextBtn.classList.remove("pulse-success"), 1000);
     }
   }
 
@@ -304,7 +326,7 @@ return;
     }
 
     if (this.highlightedElement) {
-      this.highlightedElement.classList.remove('tutorial-highlight');
+      this.highlightedElement.classList.remove("tutorial-highlight");
       const originalClasses = this.highlightedElement.dataset.originalClasses;
       if (originalClasses) {
         this.highlightedElement.className = originalClasses;
@@ -320,7 +342,7 @@ return;
 export function initializeTutorial(
   container: HTMLElement,
   manager: TutorialManager,
-  editor: HTMLTextAreaElement
+  editor: HTMLTextAreaElement,
 ): TutorialUI {
   const ui = new TutorialUI(container, manager);
 
@@ -331,7 +353,7 @@ export function initializeTutorial(
   }
 
   // Listen to editor changes for validation
-  editor.addEventListener('input', () => {
+  editor.addEventListener("input", () => {
     ui.validateAndUpdateButton(editor.value);
   });
 

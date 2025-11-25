@@ -26,22 +26,20 @@ export class TutorialManager {
   private onStepChange?: (step: number) => void;
   private onComplete?: () => void;
 
-  constructor(
-    private storageKey: string = 'codoncanvas_tutorial_completed'
-  ) {}
+  constructor(private storageKey: string = "codoncanvas_tutorial_completed") {}
 
   /**
    * Check if user has completed tutorial
    */
   isCompleted(): boolean {
-    return localStorage.getItem(this.storageKey) === 'true';
+    return localStorage.getItem(this.storageKey) === "true";
   }
 
   /**
    * Mark tutorial as completed
    */
   markCompleted(): void {
-    localStorage.setItem(this.storageKey, 'true');
+    localStorage.setItem(this.storageKey, "true");
     if (this.onComplete) {
       this.onComplete();
     }
@@ -79,7 +77,9 @@ export class TutorialManager {
    */
   getProgress(): { current: number; total: number; percent: number } {
     const total = this.config?.steps.length || 0;
-    const percent = total > 0 ? Math.round((this.currentStep / total) * 100) : 0;
+    const percent = total > 0
+      ? Math.round((this.currentStep / total) * 100)
+      : 0;
     return { current: this.currentStep, total, percent };
   }
 
@@ -89,15 +89,16 @@ export class TutorialManager {
   validateStep(code: string): boolean {
     const step = this.getCurrentStep();
     if (!step) {
-return false;
-}
+      return false;
+    }
 
     if (step.validationFn) {
       return step.validationFn(code);
     }
 
     if (step.expectedCode) {
-      const normalized = (s: string) => s.replace(/\s+/g, ' ').trim().toUpperCase();
+      const normalized = (s: string) =>
+        s.replace(/\s+/g, " ").trim().toUpperCase();
       return normalized(code).includes(normalized(step.expectedCode));
     }
 
@@ -166,37 +167,40 @@ return false;
  * Default tutorial: Create "Hello Circle"
  */
 export const helloCircleTutorial: TutorialConfig = {
-  id: 'hello-circle',
-  title: 'Create Your First CodonCanvas Program',
-  description: 'Learn the basics by drawing a simple circle',
+  id: "hello-circle",
+  title: "Create Your First CodonCanvas Program",
+  description: "Learn the basics by drawing a simple circle",
   steps: [
     {
-      id: 'welcome',
-      title: 'Welcome to CodonCanvas! 🧬',
-      content: `CodonCanvas is a visual programming language that uses DNA-like triplets called <strong>codons</strong>.
+      id: "welcome",
+      title: "Welcome to CodonCanvas! 🧬",
+      content:
+        `CodonCanvas is a visual programming language that uses DNA-like triplets called <strong>codons</strong>.
 
 Each codon is 3 letters from {A, C, G, T} and represents an instruction.
 
 Let's create your first program: a simple circle!`,
-      targetElement: '.editor-container',
+      targetElement: ".editor-container",
     },
     {
-      id: 'start-codon',
-      title: 'Step 1: Begin with START',
-      content: `Every CodonCanvas program begins with the <code>ATG</code> codon (START).
+      id: "start-codon",
+      title: "Step 1: Begin with START",
+      content:
+        `Every CodonCanvas program begins with the <code>ATG</code> codon (START).
 
 <strong>Type this in the editor:</strong>
 <code>ATG</code>
 
 This is like the "start codon" in real DNA - it marks where translation begins!`,
-      targetElement: 'textarea',
-      expectedCode: 'ATG',
-      hint: 'Type: ATG',
+      targetElement: "textarea",
+      expectedCode: "ATG",
+      hint: "Type: ATG",
     },
     {
-      id: 'push-value',
-      title: 'Step 2: Push a Number',
-      content: `To draw a circle, we need to tell it how big to be. We'll push the number 10 onto the stack.
+      id: "push-value",
+      title: "Step 2: Push a Number",
+      content:
+        `To draw a circle, we need to tell it how big to be. We'll push the number 10 onto the stack.
 
 <strong>Add this after ATG:</strong>
 <code>GAA AGG</code>
@@ -206,13 +210,13 @@ This is like the "start codon" in real DNA - it marks where translation begins!`
 
 Your code should now be:
 <code>ATG GAA AGG</code>`,
-      targetElement: 'textarea',
-      expectedCode: 'ATG GAA AGG',
-      hint: 'Type: GAA AGG (after ATG)',
+      targetElement: "textarea",
+      expectedCode: "ATG GAA AGG",
+      hint: "Type: GAA AGG (after ATG)",
     },
     {
-      id: 'draw-circle',
-      title: 'Step 3: Draw the Circle',
+      id: "draw-circle",
+      title: "Step 3: Draw the Circle",
       content: `Now we'll draw the circle using the <code>GGA</code> codon.
 
 <strong>Add this:</strong>
@@ -224,13 +228,13 @@ Your code:
 <code>ATG GAA AGG GGA</code>
 
 Look at the canvas - you should see a circle appear! 🎨`,
-      targetElement: 'canvas',
-      expectedCode: 'ATG GAA AGG GGA',
-      hint: 'Type: GGA',
+      targetElement: "canvas",
+      expectedCode: "ATG GAA AGG GGA",
+      hint: "Type: GGA",
     },
     {
-      id: 'stop-codon',
-      title: 'Step 4: End with STOP',
+      id: "stop-codon",
+      title: "Step 4: End with STOP",
       content: `Every program needs to end properly. Add a STOP codon.
 
 <strong>Add this:</strong>
@@ -242,13 +246,13 @@ TAA is a "stop codon" (just like in real DNA!). It ends the program.
 <code>ATG GAA AGG GGA TAA</code>
 
 Congratulations! You've written your first CodonCanvas program! 🎉`,
-      targetElement: 'textarea',
-      expectedCode: 'ATG GAA AGG GGA TAA',
-      hint: 'Type: TAA',
+      targetElement: "textarea",
+      expectedCode: "ATG GAA AGG GGA TAA",
+      hint: "Type: TAA",
     },
     {
-      id: 'explore',
-      title: 'What\'s Next?',
+      id: "explore",
+      title: "What's Next?",
       content: `Great work! You've learned:
 • How to start a program (ATG)
 • How to push numbers (GAA + value)
@@ -261,7 +265,7 @@ Congratulations! You've written your first CodonCanvas program! 🎉`,
 • Explore the 20 example programs to learn more patterns
 
 Ready to explore on your own?`,
-      targetElement: '.example-selector',
+      targetElement: ".example-selector",
     },
   ],
 };
@@ -270,14 +274,15 @@ Ready to explore on your own?`,
  * Mutation tutorial: Learn genetic mutation concepts
  */
 export const mutationTutorial: TutorialConfig = {
-  id: 'mutation-concepts',
-  title: 'Understanding Genetic Mutations',
-  description: 'Learn how different mutation types affect your programs',
+  id: "mutation-concepts",
+  title: "Understanding Genetic Mutations",
+  description: "Learn how different mutation types affect your programs",
   steps: [
     {
-      id: 'welcome',
-      title: 'Welcome to Mutation Concepts! 🧬',
-      content: `In genetics, <strong>mutations</strong> are changes to DNA sequences. Some have no effect, some change function, and some break everything.
+      id: "welcome",
+      title: "Welcome to Mutation Concepts! 🧬",
+      content:
+        `In genetics, <strong>mutations</strong> are changes to DNA sequences. Some have no effect, some change function, and some break everything.
 
 CodonCanvas lets you explore these concepts visually!
 
@@ -287,12 +292,13 @@ We'll start with a simple "Hello Circle" program and apply different mutations t
 <code>ATG GAA AGG GGA TAA</code>
 
 This draws a circle. Let's see what happens when we mutate it!`,
-      targetElement: '#editor',
+      targetElement: "#editor",
     },
     {
-      id: 'silent-mutation',
-      title: 'Silent Mutation: Same Result',
-      content: `A <strong>silent mutation</strong> changes the codon but keeps the same function (synonymous codons).
+      id: "silent-mutation",
+      title: "Silent Mutation: Same Result",
+      content:
+        `A <strong>silent mutation</strong> changes the codon but keeps the same function (synonymous codons).
 
 <strong>Try this change:</strong>
 Change <code>GGA</code> → <code>GGC</code>
@@ -303,18 +309,23 @@ Both codons mean CIRCLE, so the output stays identical!
 <code>ATG GAA AGG GGC TAA</code>
 
 This is like changing DNA without changing the protein - the "phenotype" (visual output) is unchanged! ✅`,
-      targetElement: '#editor',
-      expectedCode: 'ATG GAA AGG GGC TAA',
-      hint: 'Change GGA to GGC',
+      targetElement: "#editor",
+      expectedCode: "ATG GAA AGG GGC TAA",
+      hint: "Change GGA to GGC",
       validationFn: (code: string) => {
-        const normalized = code.replace(/\s+/g, ' ').trim().toUpperCase();
-        return normalized.includes('GGC') && normalized.includes('ATG') && normalized.includes('TAA');
+        const normalized = code.replace(/\s+/g, " ").trim().toUpperCase();
+        return (
+          normalized.includes("GGC") &&
+          normalized.includes("ATG") &&
+          normalized.includes("TAA")
+        );
       },
     },
     {
-      id: 'missense-mutation',
-      title: 'Missense Mutation: Changed Function',
-      content: `A <strong>missense mutation</strong> changes the codon to a different operation (different function).
+      id: "missense-mutation",
+      title: "Missense Mutation: Changed Function",
+      content:
+        `A <strong>missense mutation</strong> changes the codon to a different operation (different function).
 
 <strong>Try this change:</strong>
 Change <code>GGC</code> → <code>GCA</code>
@@ -327,18 +338,23 @@ GCA means TRIANGLE instead of CIRCLE!
 Watch the output change shape. The "phenotype" is visibly different! 🔺
 
 This is like a mutation that changes the protein's function.`,
-      targetElement: '#canvasCurrent',
-      expectedCode: 'ATG GAA AGG GCA TAA',
-      hint: 'Change GGC to GCA',
+      targetElement: "#canvasCurrent",
+      expectedCode: "ATG GAA AGG GCA TAA",
+      hint: "Change GGC to GCA",
       validationFn: (code: string) => {
-        const normalized = code.replace(/\s+/g, ' ').trim().toUpperCase();
-        return normalized.includes('GCA') && normalized.includes('ATG') && normalized.includes('TAA');
+        const normalized = code.replace(/\s+/g, " ").trim().toUpperCase();
+        return (
+          normalized.includes("GCA") &&
+          normalized.includes("ATG") &&
+          normalized.includes("TAA")
+        );
       },
     },
     {
-      id: 'nonsense-mutation',
-      title: 'Nonsense Mutation: Early Stop',
-      content: `A <strong>nonsense mutation</strong> introduces a premature STOP codon, ending the program early.
+      id: "nonsense-mutation",
+      title: "Nonsense Mutation: Early Stop",
+      content:
+        `A <strong>nonsense mutation</strong> introduces a premature STOP codon, ending the program early.
 
 <strong>Try this change:</strong>
 Change <code>GCA</code> → <code>TAA</code>
@@ -351,20 +367,25 @@ TAA is a STOP codon!
 The program stops before drawing anything. The canvas is blank! ⛔
 
 This is like a mutation that creates a truncated, non-functional protein.`,
-      targetElement: '#canvasCurrent',
-      expectedCode: 'ATG GAA AGG TAA',
-      hint: 'Change GCA to TAA',
+      targetElement: "#canvasCurrent",
+      expectedCode: "ATG GAA AGG TAA",
+      hint: "Change GCA to TAA",
       validationFn: (code: string) => {
-        const normalized = code.replace(/\s+/g, ' ').trim().toUpperCase();
+        const normalized = code.replace(/\s+/g, " ").trim().toUpperCase();
         const parts = normalized.split(/\s+/);
-        const taaCount = parts.filter(p => p === 'TAA').length;
-        return taaCount >= 1 && !normalized.includes('GCA') && !normalized.includes('GGA');
+        const taaCount = parts.filter((p) => p === "TAA").length;
+        return (
+          taaCount >= 1 &&
+          !normalized.includes("GCA") &&
+          !normalized.includes("GGA")
+        );
       },
     },
     {
-      id: 'frameshift-mutation',
-      title: 'Frameshift Mutation: Total Scramble',
-      content: `A <strong>frameshift mutation</strong> inserts or deletes bases (not multiples of 3), shifting how codons are read.
+      id: "frameshift-mutation",
+      title: "Frameshift Mutation: Total Scramble",
+      content:
+        `A <strong>frameshift mutation</strong> inserts or deletes bases (not multiples of 3), shifting how codons are read.
 
 Let's reset to: <code>ATG GAA AGG GGA TAA</code>
 
@@ -379,18 +400,18 @@ The codons now read as: ATG, **G**AA, **GG**G, **GA**T, **AA** (incomplete!)
 Everything downstream is scrambled! 💥 This is the most catastrophic mutation type.
 
 <em>Note: This will likely error since the frame is broken.</em>`,
-      targetElement: '#editor',
-      expectedCode: 'ATG GA AGG',
-      hint: 'Delete one A from GAA',
+      targetElement: "#editor",
+      expectedCode: "ATG GA AGG",
+      hint: "Delete one A from GAA",
       validationFn: (code: string) => {
-        const raw = code.replace(/\s+/g, '').toUpperCase();
+        const raw = code.replace(/\s+/g, "").toUpperCase();
         // Check if total length is NOT divisible by 3 (frameshift)
-        return raw.length % 3 !== 0 && raw.startsWith('ATG');
+        return raw.length % 3 !== 0 && raw.startsWith("ATG");
       },
     },
     {
-      id: 'complete',
-      title: 'Mutation Master! 🏆',
+      id: "complete",
+      title: "Mutation Master! 🏆",
       content: `Excellent work! You've learned the four main mutation types:
 
 <strong>1. Silent</strong> - No effect (synonymous codons)
@@ -411,7 +432,7 @@ Everything downstream is scrambled! 💥 This is the most catastrophic mutation 
 • Challenge: Can you predict mutation effects before applying them?
 
 Ready to experiment on your own?`,
-      targetElement: '.button-grid',
+      targetElement: ".button-grid",
     },
   ],
 };
@@ -420,14 +441,15 @@ Ready to experiment on your own?`,
  * Timeline tutorial: Learn step-by-step execution visualization
  */
 export const timelineTutorial: TutorialConfig = {
-  id: 'timeline-execution',
-  title: 'Understanding Step-by-Step Execution',
-  description: 'Learn how your genome executes like a ribosome reading DNA',
+  id: "timeline-execution",
+  title: "Understanding Step-by-Step Execution",
+  description: "Learn how your genome executes like a ribosome reading DNA",
   steps: [
     {
-      id: 'welcome',
-      title: 'Welcome to the Timeline! 🎬',
-      content: `The <strong>Timeline Scrubber</strong> lets you watch your genome execute instruction-by-instruction, just like a ribosome reading DNA!
+      id: "welcome",
+      title: "Welcome to the Timeline! 🎬",
+      content:
+        `The <strong>Timeline Scrubber</strong> lets you watch your genome execute instruction-by-instruction, just like a ribosome reading DNA!
 
 You can see:
 • Each codon as it's processed
@@ -436,11 +458,11 @@ You can see:
 • VM state (position, rotation, color)
 
 Let's explore how your "Hello Circle" program executes!`,
-      targetElement: '#timelineContainer',
+      targetElement: "#timelineContainer",
     },
     {
-      id: 'play-pause',
-      title: 'Play & Pause Controls',
+      id: "play-pause",
+      title: "Play & Pause Controls",
       content: `First, let's learn the basic controls.
 
 <strong>Try clicking the ▶️ Play button</strong> (or press spacebar)
@@ -450,8 +472,8 @@ Watch as the timeline advances automatically! The current instruction is highlig
 <strong>Now click ⏸ Pause</strong> to stop playback.
 
 You're in control - you decide the pace of execution!`,
-      targetElement: '#timelineContainer',
-      hint: 'Click the Play button, then Pause',
+      targetElement: "#timelineContainer",
+      hint: "Click the Play button, then Pause",
       validationFn: (code: string) => {
         // For timeline tutorial, we validate user interactions differently
         // This is a manual progression step
@@ -459,8 +481,8 @@ You're in control - you decide the pace of execution!`,
       },
     },
     {
-      id: 'step-forward',
-      title: 'Single-Step Execution',
+      id: "step-forward",
+      title: "Single-Step Execution",
       content: `Now let's execute one instruction at a time.
 
 <strong>Click the "Step →" button</strong>
@@ -474,13 +496,14 @@ Watch carefully:
 <strong>Try stepping through multiple times</strong> to see each instruction's effect.
 
 This is like watching the ribosome move codon-by-codon! 🧬`,
-      targetElement: '#timelineContainer',
-      hint: 'Click "Step →" to advance one instruction',
+      targetElement: "#timelineContainer",
+      hint: "Click \"Step →\" to advance one instruction",
     },
     {
-      id: 'observe-stack',
-      title: 'Watch the Stack',
-      content: `The <strong>stack</strong> is where numbers are stored before being used.
+      id: "observe-stack",
+      title: "Watch the Stack",
+      content:
+        `The <strong>stack</strong> is where numbers are stored before being used.
 
 Look at the "Current State" panel while stepping:
 
@@ -499,12 +522,12 @@ You'll see:
 • The circle draws using radius 10!
 
 The stack is temporary storage for drawing commands. 📦`,
-      targetElement: '#timelineContainer',
-      hint: 'Watch the stack change as you step through',
+      targetElement: "#timelineContainer",
+      hint: "Watch the stack change as you step through",
     },
     {
-      id: 'state-changes',
-      title: 'VM State Tracking',
+      id: "state-changes",
+      title: "VM State Tracking",
       content: `The VM (Virtual Machine) tracks the "state" of your program:
 
 <strong>Current State shows:</strong>
@@ -518,12 +541,12 @@ The stack is temporary storage for drawing commands. 📦`,
 Each instruction can modify the state (TRANSLATE changes position, ROTATE changes angle, etc.)
 
 This is how complex patterns are built! 🎨`,
-      targetElement: '#timelineContainer',
-      hint: 'Reset and observe state changes',
+      targetElement: "#timelineContainer",
+      hint: "Reset and observe state changes",
     },
     {
-      id: 'complete',
-      title: 'Timeline Master! 🏆',
+      id: "complete",
+      title: "Timeline Master! 🏆",
       content: `Excellent work! You've mastered timeline execution:
 
 <strong>You learned:</strong>
@@ -543,7 +566,7 @@ Just like a ribosome reads mRNA codon-by-codon to build proteins, the CodonCanva
 • Experiment with your own genomes!
 
 <strong>Pro tip:</strong> Timeline is perfect for debugging - step through to find exactly where things go wrong!`,
-      targetElement: '#timelineContainer',
+      targetElement: "#timelineContainer",
     },
   ],
 };
@@ -552,14 +575,16 @@ Just like a ribosome reads mRNA codon-by-codon to build proteins, the CodonCanva
  * Evolution Lab Tutorial: Understanding Natural Selection
  */
 export const evolutionTutorial: TutorialConfig = {
-  id: 'evolution-lab',
-  title: 'Evolution Lab: Natural Selection in Action',
-  description: 'Learn how small mutations accumulate across generations through directed selection',
+  id: "evolution-lab",
+  title: "Evolution Lab: Natural Selection in Action",
+  description:
+    "Learn how small mutations accumulate across generations through directed selection",
   steps: [
     {
-      id: 'welcome',
-      title: 'Welcome to the Evolution Lab! 🧬',
-      content: `The <strong>Evolution Lab</strong> demonstrates natural selection through code!
+      id: "welcome",
+      title: "Welcome to the Evolution Lab! 🧬",
+      content:
+        `The <strong>Evolution Lab</strong> demonstrates natural selection through code!
 
 You'll act as the <strong>fitness function</strong> - selecting which genomes survive to reproduce.
 
@@ -570,11 +595,11 @@ You'll act as the <strong>fitness function</strong> - selecting which genomes su
 • Repeat to evolve toward a target pattern!
 
 Let's evolve a simple circle into something more complex!`,
-      targetElement: '#evolutionPanel',
+      targetElement: "#evolutionPanel",
     },
     {
-      id: 'generate-candidates',
-      title: 'Step 1: Generate Candidates',
+      id: "generate-candidates",
+      title: "Step 1: Generate Candidates",
       content: `First, let's create the first generation of mutants.
 
 <strong>Click the "🧬 Generate Candidates" button</strong>
@@ -587,16 +612,16 @@ You'll see 6 candidate genomes appear, each with:
 Each candidate has 1-2 random mutations from the parent genome.
 
 This is like natural genetic variation in a population! 🎲`,
-      targetElement: '#generateBtn',
-      hint: 'Click "🧬 Generate Candidates"',
+      targetElement: "#generateBtn",
+      hint: "Click \"🧬 Generate Candidates\"",
       validationFn: (code: string) => {
         // Manual progression for evolution tutorial
         return true;
       },
     },
     {
-      id: 'visual-comparison',
-      title: 'Step 2: Visual Comparison',
+      id: "visual-comparison",
+      title: "Step 2: Visual Comparison",
       content: `Now look at all 6 candidates carefully.
 
 <strong>Imagine you want to evolve toward a specific target</strong> (maybe more circles, different colors, or specific shapes).
@@ -612,12 +637,12 @@ Look at each candidate:
 <strong>Remember:</strong> You are the fitness function! Your preference determines which traits survive.
 
 Take your time evaluating the phenotypes. 👁️`,
-      targetElement: '#candidatesGrid',
-      hint: 'Visually compare all 6 candidates',
+      targetElement: "#candidatesGrid",
+      hint: "Visually compare all 6 candidates",
     },
     {
-      id: 'selection',
-      title: 'Step 4: Selection (Survival of the Fittest)',
+      id: "selection",
+      title: "Step 4: Selection (Survival of the Fittest)",
       content: `Time to apply selection pressure!
 
 <strong>Click on the candidate you think is "fittest"</strong> (most interesting, closest to your goal, or most promising for future generations).
@@ -631,12 +656,12 @@ When you click:
 In nature, organisms with favorable traits are more likely to reproduce. Here, only your selected genome reproduces - the other 5 "die out"!
 
 This is how evolution creates cumulative change over time. 🏆`,
-      targetElement: '#candidatesGrid',
-      hint: 'Click your favorite candidate',
+      targetElement: "#candidatesGrid",
+      hint: "Click your favorite candidate",
     },
     {
-      id: 'multi-generation',
-      title: 'Step 5: Multi-Generation Evolution',
+      id: "multi-generation",
+      title: "Step 5: Multi-Generation Evolution",
       content: `Excellent! You've completed Generation 1.
 
 Notice:
@@ -654,12 +679,12 @@ Mutations from Generation 1 are now "fixed" (permanent in the lineage). New muta
 This is cumulative evolution - small changes accumulate into big differences! 🔄
 
 <strong>Keep evolving:</strong> Generate and select 2-3 more times to see the pattern emerge.`,
-      targetElement: '#generateBtn',
-      hint: 'Generate and select 2-3 more generations',
+      targetElement: "#generateBtn",
+      hint: "Generate and select 2-3 more generations",
     },
     {
-      id: 'complete',
-      title: 'Evolution Master! 🏆',
+      id: "complete",
+      title: "Evolution Master! 🏆",
       content: `Congratulations! You've mastered directed evolution:
 
 <strong>You learned:</strong>
@@ -686,7 +711,7 @@ Just like evolution in nature, favorable variations are selected and passed to o
 <strong>Pro tip:</strong> Use the Share button to export your evolved genome and challenge friends to match or exceed your result!
 
 Happy evolving! 🚀`,
-      targetElement: '#evolutionPanel',
+      targetElement: "#evolutionPanel",
     },
   ],
 };

@@ -19,6 +19,7 @@ Every genome begins with `ATG` (START) and ends with a stop codon (`TAA`, `TAG`,
 ## Essential Opcodes
 
 ### Control
+
 ```
 ATG  = Start execution
 TAA  = Stop execution
@@ -27,6 +28,7 @@ TGA  = Stop (alternative)
 ```
 
 ### Drawing Shapes
+
 ```
 GGA, GGC, GGG, GGT = CIRCLE    [radius]
 CCA, CCC, CCG, CCT = RECT      [width, height]
@@ -35,17 +37,20 @@ GCA, GCC, GCG, GCT = TRIANGLE  [size]
 ```
 
 ### Moving & Rotating
+
 ```
 ACA, ACC, ACG, ACT = TRANSLATE [dx, dy]
 AGA, AGC, AGG, AGT = ROTATE    [degrees]
 ```
 
 ### Colors
+
 ```
 TTA, TTC, TTG, TTT = COLOR [hue, saturation, lightness]
 ```
 
 ### Stack Operations
+
 ```
 GAA, GAC, GAG, GAT = PUSH [value]  (load a number)
 ATA, ATC, ATT      = DUP           (duplicate top value)
@@ -54,6 +59,7 @@ TGG, TGT           = SWAP          (swap top two values)
 ```
 
 ### Arithmetic (New!)
+
 ```
 CTG = ADD  [a, b → a+b]
 CAG = SUB  [a, b → a-b]
@@ -62,12 +68,14 @@ CAT = DIV  [a, b → a/b]
 ```
 
 ### Comparison (New!)
+
 ```
 CTA = EQ   [a, b → 1 if a==b, else 0]
 CTC = LT   [a, b → 1 if a<b, else 0]
 ```
 
 ### Control Flow (New!)
+
 ```
 CAA = LOOP [count]  (repeat next opcodes count times)
 ```
@@ -85,6 +93,7 @@ A = 0    C = 1    G = 2    T = 3
 **Formula**: `value = d1×16 + d2×4 + d3`
 
 **Examples**:
+
 ```
 AAA = 0×16 + 0×4 + 0 = 0
 CCC = 1×16 + 1×4 + 1 = 21
@@ -100,9 +109,11 @@ TTT = 3×16 + 3×4 + 3 = 63
 ## Example Genomes
 
 ### Hello Circle
+
 ```
 ATG GAA AAT GGA TAA
 ```
+
 - `ATG` = START
 - `GAA AAT` = PUSH 3
 - `GGA` = CIRCLE (radius 3)
@@ -113,6 +124,7 @@ ATG GAA AAT GGA TAA
 ---
 
 ### Two Shapes
+
 ```
 ATG
   GAA AGG GGA              ; Circle (radius 10)
@@ -126,6 +138,7 @@ TAA
 ---
 
 ### Colorful Triangle
+
 ```
 ATG
   TTA TTT AAA AAA          ; Color (red: hue=255)
@@ -140,18 +153,22 @@ TAA
 ## Mutation Types
 
 ### Silent Mutation
+
 **Change**: `GGA` → `GGC`
 **Effect**: Same opcode (both CIRCLE) → **no visual change**
 
 ### Missense Mutation
+
 **Change**: `GGA` → `GCA`
 **Effect**: Different opcode (CIRCLE → TRIANGLE) → **shape changes**
 
 ### Nonsense Mutation
+
 **Change**: `GGA` → `TAA`
 **Effect**: Drawing opcode → STOP → **output truncated**
 
 ### Frameshift Mutation
+
 **Change**: Insert `C` after position 9
 **Effect**: All downstream codons shift → **everything breaks**
 
@@ -160,12 +177,14 @@ TAA
 ## Common Patterns
 
 ### Stack Usage
+
 ```
 PUSH value      ; Load number
 CIRCLE          ; Use number (removes from stack)
 ```
 
 Need 2 values? Push twice:
+
 ```
 PUSH 10         ; width
 PUSH 20         ; height
@@ -173,6 +192,7 @@ RECT            ; Uses both (width=10, height=20)
 ```
 
 ### Duplication
+
 ```
 PUSH 15
 DUP             ; Now have two 15s on stack
@@ -181,6 +201,7 @@ CIRCLE          ; Draws another circle (same radius)
 ```
 
 ### Movement
+
 ```
 CIRCLE          ; Draw at (200, 200)
 PUSH 50
@@ -190,6 +211,7 @@ CIRCLE          ; Draw at (250, 200)
 ```
 
 ### Rotation
+
 ```
 PUSH 10
 LINE            ; Horizontal line (length 10)
@@ -200,6 +222,7 @@ LINE            ; Diagonal line
 ```
 
 ### Arithmetic
+
 ```
 PUSH 5
 PUSH 3
@@ -208,6 +231,7 @@ CIRCLE          ; Draw circle with radius 8
 ```
 
 ### Loops
+
 ```
 PUSH 10
 LOOP            ; Repeat 10 times:
@@ -216,6 +240,7 @@ LOOP            ; Repeat 10 times:
 ```
 
 ### Conditionals (Creative Pattern)
+
 ```
 ; Draw circle ONLY if 5 == 5
 PUSH 5
@@ -231,6 +256,7 @@ CIRCLE          ; Visible circle (radius 10)
 ## Tips & Tricks
 
 ### Use Comments
+
 ```
 ATG              ; Start program
   GAA CCC GGA    ; Push 21, draw circle
@@ -240,7 +266,9 @@ TAA              ; End program
 Comments start with `;` and go to end of line.
 
 ### Whitespace is Ignored
+
 These are identical:
+
 ```
 ATGGAAAGGGGATAA
 ATG GAA AGG GGA TAA
@@ -253,7 +281,9 @@ TAA
 Use spacing for readability!
 
 ### Silent Mutations
+
 Any codon in the same family works:
+
 ```
 GGA = GGC = GGG = GGT  (all draw CIRCLE)
 CCA = CCC = CCG = CCT  (all draw RECT)
@@ -262,7 +292,9 @@ CCA = CCC = CCG = CCT  (all draw RECT)
 Change `GGA` to `GGC` → output stays identical.
 
 ### Check Your Frame
+
 Codons must be triplets. This is **broken**:
+
 ```
 ATG GG A CCA TAA
      ↑
@@ -270,6 +302,7 @@ ATG GG A CCA TAA
 ```
 
 Should be:
+
 ```
 ATG GGA CCA TAA
 ```
@@ -279,22 +312,26 @@ ATG GGA CCA TAA
 ## Debugging Checklist
 
 ### Program Doesn't Run
+
 - [ ] Started with `ATG`?
 - [ ] Ended with `TAA`/`TAG`/`TGA`?
 - [ ] All codons are triplets (no mid-codon spaces)?
 - [ ] Only A, C, G, T characters (no typos)?
 
 ### Nothing Draws
+
 - [ ] Did you PUSH values before drawing?
 - [ ] Check stack: CIRCLE needs 1 value, RECT needs 2
 - [ ] Is there a STOP before your drawing opcode?
 
 ### Unexpected Output
+
 - [ ] Use Timeline to step through execution
 - [ ] Check stack contents at each step
 - [ ] Verify PUSH values encode correctly (use calculator)
 
 ### Frameshift Confusion
+
 - [ ] Count bases carefully (should be multiple of 3)
 - [ ] Use comments to mark codon boundaries
 - [ ] Try reading aloud: "A-T-G, G-A-A, A-G-G..."
@@ -304,6 +341,7 @@ ATG GGA CCA TAA
 ## Quick Calculations
 
 ### HSL Colors
+
 ```
 Hue (0-360):
   0   = Red
@@ -325,6 +363,7 @@ Lightness (0-100):
 ```
 
 ### Common Values
+
 ```
 Small:   5-15   (1-3 on codon scale)
 Medium:  20-40  (12-25 on codon scale)
@@ -332,6 +371,7 @@ Large:   60-100 (38-63 on codon scale)
 ```
 
 ### Canvas Coordinates
+
 Default canvas: 400×400 pixels
 Center: (200, 200)
 
@@ -348,6 +388,7 @@ Position Guide:
 ## Advanced: State Stack
 
 Save/restore drawing state:
+
 ```
 TCA, TCC, TCG, TCT = SAVE_STATE
 ```
@@ -355,6 +396,7 @@ TCA, TCC, TCG, TCT = SAVE_STATE
 **Use case**: Draw something, save state, draw elsewhere, restore original position.
 
 Example:
+
 ```
 ATG
   GAA CCC GGA          ; Circle at center
@@ -369,7 +411,7 @@ ATG
 TAA
 ```
 
-*Note: RESTORE_STATE planned for Phase C*
+_Note: RESTORE_STATE planned for Phase C_
 
 ---
 
@@ -407,4 +449,4 @@ TAA
 
 **CodonCanvas** • [URL] • Open Source (MIT License)
 
-*Print this reference for easy access during coding*
+_Print this reference for easy access during coding_

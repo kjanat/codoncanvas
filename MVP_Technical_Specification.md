@@ -10,12 +10,14 @@
 > This document reflects the **original MVP design** from October 2025. The implementation has successfully delivered all Phase A and Phase B requirements, but has **intentionally evolved** to include additional computational features for enhanced pedagogical value.
 >
 > **Key Changes from Original Spec:**
+>
 > - ✅ Phase A (MVP Core): Complete + exceeded
 > - ✅ Phase B (Pedagogy Tools): Complete + exceeded
 > - 🔄 **Opcode Evolution**: NOISE removed, added Arithmetic (ADD/SUB/MUL/DIV), Comparison (EQ/LT), and LOOP
 > - 📈 **Enhanced Features**: 48 examples (vs 3 spec), audio mode, research tools, teacher dashboard
 >
 > **For Current Implementation Details:**
+>
 > - [OPCODES.md](./OPCODES.md) - Complete current opcode reference
 > - [README.md](./README.md) - Getting started guide
 > - [EDUCATORS.md](./EDUCATORS.md) - Comprehensive pedagogical documentation
@@ -83,7 +85,7 @@
 
 When a PUSH opcode executes, the **next codon** is interpreted as a base-4 number:
 
-**Formula:** `value = d1 × 16 + d2 × 4 + d3`  
+**Formula:** `value = d1 × 16 + d2 × 4 + d3`\
 where `d1, d2, d3 ∈ {A:0, C:1, G:2, T:3}`
 
 **Examples:**
@@ -120,20 +122,20 @@ Let me fix TCA:
 
 ```typescript
 // Base types
-type Base = 'A' | 'C' | 'G' | 'T';
+type Base = "A" | "C" | "G" | "T";
 type Codon = `${Base}${Base}${Base}`;
 
 interface CodonToken {
   text: Codon;
-  position: number;  // Character offset in source
-  line: number;      // Line number (1-indexed)
+  position: number; // Character offset in source
+  line: number; // Line number (1-indexed)
 }
 
 interface ParseError {
   message: string;
   position: number;
-  severity: 'error' | 'warning' | 'info';
-  fix?: string;      // Suggested fix (e.g., "Insert 'A' to restore frame")
+  severity: "error" | "warning" | "info";
+  fix?: string; // Suggested fix (e.g., "Insert 'A' to restore frame")
 }
 ```
 
@@ -195,46 +197,46 @@ class CodonLexer implements Lexer {
 interface VMState {
   // Drawing state
   position: { x: number; y: number };
-  rotation: number;      // degrees, 0 = right
+  rotation: number; // degrees, 0 = right
   scale: number;
   color: { h: number; s: number; l: number };
-  
+
   // Execution state
   stack: number[];
   instructionPointer: number;
-  stateStack: VMState[];  // For SAVE_STATE/RESTORE_STATE
-  
+  stateStack: VMState[]; // For SAVE_STATE/RESTORE_STATE
+
   // Metadata
-  instructionCount: number;  // For sandboxing
-  seed: number;              // For RAND reproducibility
+  instructionCount: number; // For sandboxing
+  seed: number; // For RAND reproducibility
 }
 
 interface VM {
   state: VMState;
   renderer: Renderer;
-  
+
   /**
    * Execute a single opcode
    * @throws Error if stack underflow or instruction limit exceeded
    */
   execute(opcode: Opcode, codon: Codon): void;
-  
+
   /**
    * Run entire program
    * @returns array of snapshots (one per instruction) for timeline scrubber
    */
   run(tokens: CodonToken[]): VMState[];
-  
+
   /**
    * Reset VM to initial state
    */
   reset(): void;
-  
+
   /**
    * Create snapshot for rewind/step-through
    */
   snapshot(): VMState;
-  
+
   /**
    * Restore from snapshot
    */
@@ -265,12 +267,12 @@ enum Opcode {
 
 // Codon to Opcode map (hardcoded for v1.0)
 const CODON_MAP: Record<Codon, Opcode> = {
-  'ATG': Opcode.START,
-  'TAA': Opcode.STOP,
-  'TAG': Opcode.STOP,
-  'TGA': Opcode.STOP,
-  'GGA': Opcode.CIRCLE,
-  'GGC': Opcode.CIRCLE,
+  "ATG": Opcode.START,
+  "TAA": Opcode.STOP,
+  "TAG": Opcode.STOP,
+  "TGA": Opcode.STOP,
+  "GGA": Opcode.CIRCLE,
+  "GGC": Opcode.CIRCLE,
   // ... (all 64 mappings)
 };
 ```
@@ -281,12 +283,12 @@ const CODON_MAP: Record<Codon, Opcode> = {
 interface Renderer {
   readonly width: number;
   readonly height: number;
-  
+
   /**
    * Clear canvas
    */
   clear(): void;
-  
+
   /**
    * Drawing primitives (all use current VM state for position/rotation/color/scale)
    */
@@ -295,12 +297,17 @@ interface Renderer {
   line(length: number): void;
   triangle(size: number): void;
   ellipse(rx: number, ry: number): void;
-  
+
   /**
    * State queries (for VM to track position after drawing)
    */
-  getCurrentTransform(): { x: number; y: number; rotation: number; scale: number };
-  
+  getCurrentTransform(): {
+    x: number;
+    y: number;
+    rotation: number;
+    scale: number;
+  };
+
   /**
    * Export
    */
@@ -311,18 +318,18 @@ interface Renderer {
 // Canvas-based implementation
 class Canvas2DRenderer implements Renderer {
   private ctx: CanvasRenderingContext2D;
-  
+
   constructor(canvas: HTMLCanvasElement) {
-    this.ctx = canvas.getContext('2d')!;
+    this.ctx = canvas.getContext("2d")!;
   }
-  
+
   circle(radius: number): void {
     this.ctx.beginPath();
     this.ctx.arc(0, 0, radius, 0, Math.PI * 2);
     this.ctx.fill();
     this.ctx.stroke();
   }
-  
+
   // ... other methods
 }
 ```
@@ -366,7 +373,7 @@ ATG GAA CCC GGA TAA
 3. `GGA` - CIRCLE (draws circle with radius 21, scaled to ~131 pixels)
 4. `TAA` - STOP
 
-**Expected Output:**  
+**Expected Output:**\
 Single circle centered at (200, 200) with radius ~131 pixels.
 
 **Mutation Demos:**
@@ -383,7 +390,7 @@ Single circle centered at (200, 200) with radius ~131 pixels.
 ```
 ATG 
   GAA CCC GGA           ; Push 21, draw circle
-  GAA CTT ACA AAA AAA   ; Push 31, translate by (0, 0)... 
+  GAA CTT ACA AAA AAA   ; Push 31, translate by (0, 0)...
 ```
 
 Wait, TRANSLATE needs 2 values (dx, dy). Let me fix this:
@@ -429,7 +436,7 @@ Let me calculate:
 - CCC: 21 (calculated above)
 - GCC: G=2, C=1, C=1 → 2×16 + 1×4 + 1 = 32 + 4 + 1 = 37
 
-**Expected Output:**  
+**Expected Output:**
 
 - Circle at (200, 200) with radius 53/64×400 = 331 pixels (too big!)
 - Move by (21, 21) pixels = (131, 131) pixels
@@ -456,7 +463,7 @@ Calculations:
 - AAA: 0 (dy = 0)
 - AGG: A=0, G=2, G=2 → 0 + 8 + 2 = 10 (radius 10/64×400 = 62 pixels)
 
-**Expected Output:**  
+**Expected Output:**\
 Two circles side-by-side.
 
 ### 4.3 Example 3: "Mutation Demo" (Pedagogical)
@@ -513,102 +520,102 @@ TAA
 ### 5.1 Core Functionality Tests
 
 ```typescript
-describe('CodonCanvas VM', () => {
-  test('Silent mutation produces identical output', () => {
-    const genome1 = 'ATG GAA AGG GGA TAA';
-    const genome2 = 'ATG GAA AGG GGC TAA';  // GGA → GGC (both CIRCLE)
-    
+describe("CodonCanvas VM", () => {
+  test("Silent mutation produces identical output", () => {
+    const genome1 = "ATG GAA AGG GGA TAA";
+    const genome2 = "ATG GAA AGG GGC TAA"; // GGA → GGC (both CIRCLE)
+
     const output1 = renderGenome(genome1);
     const output2 = renderGenome(genome2);
-    
-    expect(output1).toEqual(output2);  // Pixel-perfect match
+
+    expect(output1).toEqual(output2); // Pixel-perfect match
   });
-  
-  test('Missense mutation changes shape', () => {
-    const circle = 'ATG GAA AGG GGA TAA';
-    const rect = 'ATG GAA AGG GAA AGG CCA TAA';  // Added extra PUSH for RECT
-    
+
+  test("Missense mutation changes shape", () => {
+    const circle = "ATG GAA AGG GGA TAA";
+    const rect = "ATG GAA AGG GAA AGG CCA TAA"; // Added extra PUSH for RECT
+
     const output1 = renderGenome(circle);
     const output2 = renderGenome(rect);
-    
+
     expect(output1).not.toEqual(output2);
-    expect(countShapes(output1, 'circle')).toBe(1);
-    expect(countShapes(output2, 'rect')).toBe(1);
+    expect(countShapes(output1, "circle")).toBe(1);
+    expect(countShapes(output2, "rect")).toBe(1);
   });
-  
-  test('Nonsense mutation truncates output', () => {
-    const full = 'ATG GAA AGG GGA GAA AGG CCA TAA';
-    const truncated = 'ATG GAA AGG GGA TAA CCA TAA';  // Early STOP
-    
+
+  test("Nonsense mutation truncates output", () => {
+    const full = "ATG GAA AGG GGA GAA AGG CCA TAA";
+    const truncated = "ATG GAA AGG GGA TAA CCA TAA"; // Early STOP
+
     const output1 = renderGenome(full);
     const output2 = renderGenome(truncated);
-    
-    expect(countShapes(output1)).toBe(2);  // Circle + rect
-    expect(countShapes(output2)).toBe(1);  // Only circle
+
+    expect(countShapes(output1)).toBe(2); // Circle + rect
+    expect(countShapes(output2)).toBe(1); // Only circle
   });
-  
-  test('Frameshift scrambles downstream', () => {
-    const original = 'ATG GAA AGG GGA TAA';
-    const frameshift = 'ATG GA AAG GGG ATA A';  // Deleted first A
-    
+
+  test("Frameshift scrambles downstream", () => {
+    const original = "ATG GAA AGG GGA TAA";
+    const frameshift = "ATG GA AAG GGG ATA A"; // Deleted first A
+
     const output1 = renderGenome(original);
     const output2 = renderGenome(frameshift);
-    
+
     // Outputs should be dramatically different
     const diff = pixelDifference(output1, output2);
-    expect(diff).toBeGreaterThan(0.8);  // >80% pixels changed
+    expect(diff).toBeGreaterThan(0.8); // >80% pixels changed
   });
 });
 
-describe('Numeric literals', () => {
-  test('All values 0-63 work correctly', () => {
+describe("Numeric literals", () => {
+  test("All values 0-63 work correctly", () => {
     for (let i = 0; i < 64; i++) {
-      const codon = numberToCodon(i);  // Helper to convert 0-63 → base-4 codon
+      const codon = numberToCodon(i); // Helper to convert 0-63 → base-4 codon
       const genome = `ATG GAA ${codon} TAA`;
-      
+
       const vm = new VM();
       vm.run(lexer.tokenize(genome));
-      
+
       expect(vm.state.stack[0]).toBe(i);
     }
   });
-  
-  test('Stack underflow throws error', () => {
-    const genome = 'ATG GGA TAA';  // CIRCLE without PUSH
-    
+
+  test("Stack underflow throws error", () => {
+    const genome = "ATG GGA TAA"; // CIRCLE without PUSH
+
     expect(() => {
       const vm = new VM();
       vm.run(lexer.tokenize(genome));
-    }).toThrow('Stack underflow');
+    }).toThrow("Stack underflow");
   });
 });
 
-describe('Linter', () => {
-  test('Detects mid-triplet break', () => {
-    const source = 'ATG GG A CCA TAA';  // Space in "GGA"
+describe("Linter", () => {
+  test("Detects mid-triplet break", () => {
+    const source = "ATG GG A CCA TAA"; // Space in "GGA"
     const errors = lexer.validateFrame(source);
-    
+
     expect(errors).toHaveLength(1);
-    expect(errors[0].severity).toBe('warning');
-    expect(errors[0].message).toContain('mid-triplet');
+    expect(errors[0].severity).toBe("warning");
+    expect(errors[0].message).toContain("mid-triplet");
   });
-  
-  test('Detects stop before start', () => {
-    const source = 'TAA GGA CCA ATG';
+
+  test("Detects stop before start", () => {
+    const source = "TAA GGA CCA ATG";
     const errors = lexer.validateStructure(lexer.tokenize(source));
-    
+
     expect(errors).toHaveLength(1);
-    expect(errors[0].severity).toBe('error');
-    expect(errors[0].message).toContain('Stop before first Start');
+    expect(errors[0].severity).toBe("error");
+    expect(errors[0].message).toContain("Stop before first Start");
   });
-  
-  test('Warns on start after stop', () => {
-    const source = 'ATG GGA TAA ATG CCA TAA';
+
+  test("Warns on start after stop", () => {
+    const source = "ATG GGA TAA ATG CCA TAA";
     const errors = lexer.validateStructure(lexer.tokenize(source));
-    
+
     expect(errors).toHaveLength(1);
-    expect(errors[0].severity).toBe('warning');
-    expect(errors[0].message).toContain('Start after Stop');
+    expect(errors[0].severity).toBe("warning");
+    expect(errors[0].message).toContain("Start after Stop");
   });
 });
 ```
@@ -616,15 +623,15 @@ describe('Linter', () => {
 ### 5.2 Visual Regression Tests
 
 ```typescript
-describe('Visual outputs', () => {
-  test('Example 1: Hello Circle', () => {
-    const genome = 'ATG GAA AAT GGA TAA';
+describe("Visual outputs", () => {
+  test("Example 1: Hello Circle", () => {
+    const genome = "ATG GAA AAT GGA TAA";
     const output = renderGenome(genome);
-    
-    expect(output).toMatchImageSnapshot('hello-circle.png');
+
+    expect(output).toMatchImageSnapshot("hello-circle.png");
   });
-  
-  test('Example 2: Two Shapes', () => {
+
+  test("Example 2: Two Shapes", () => {
     const genome = `
       ATG 
         GAA AGG GAA AGG GGA
@@ -633,8 +640,8 @@ describe('Visual outputs', () => {
       TAA
     `;
     const output = renderGenome(genome);
-    
-    expect(output).toMatchImageSnapshot('two-shapes.png');
+
+    expect(output).toMatchImageSnapshot("two-shapes.png");
   });
 });
 ```

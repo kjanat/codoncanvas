@@ -11,6 +11,7 @@ Built mutation impact predictor enabling students to preview mutation effects be
 ## What Was Built
 
 **Core Module (src/mutation-predictor.ts, ~380 LOC):**
+
 - `predictMutationImpact()`: Main prediction function
   - Renders both original + mutated genomes (offscreen canvases)
   - Calculates pixel difference percentage (0-100%)
@@ -27,6 +28,7 @@ Built mutation impact predictor enabling students to preview mutation effects be
 - `generateDescription()`: Human-readable impact summaries
 
 **Impact Classification Logic:**
+
 ```
 SILENT:       <5% pixel diff (synonymous codons)
 LOCAL:        5-25% diff (single shape/color change)
@@ -35,6 +37,7 @@ CATASTROPHIC: >60% diff (frameshift scramble)
 ```
 
 **Confidence Scoring:**
+
 ```
 HIGH (0.85-0.95):   Silent, Nonsense mutations (predictable)
 MEDIUM (0.60-0.85): Point, Insertion/Deletion (variable)
@@ -42,6 +45,7 @@ LOW (0.50-0.70):    Frameshift (cascading unpredictability)
 ```
 
 **Test Coverage (src/mutation-predictor.test.ts, ~350 LOC):**
+
 - 31 comprehensive tests, all passing ✅
 - Silent mutations: <5% diff, HIGH confidence
 - Missense mutations: variable impact
@@ -53,6 +57,7 @@ LOW (0.50-0.70):    Frameshift (cascading unpredictability)
 - Edge cases: empty genomes, invalid characters, boundaries
 
 **Technical Innovations:**
+
 1. **Frameshift Handling**: Detects invalid genomes (length % 3 ≠ 0), auto-classifies as CATASTROPHIC (100% diff)
 2. **Error-Tolerant Rendering**: Graceful failures when genomes invalid
 3. **Pixel-Based Comparison**: Objective visual diff (not subjective)
@@ -61,21 +66,25 @@ LOW (0.50-0.70):    Frameshift (cascading unpredictability)
 ## Educational Value
 
 **Scaffolds Learning:**
+
 - **Before**: Trial-and-error frustration (click → surprise → undo → repeat)
 - **After**: Informed experimentation (preview → understand → decide)
 
 **Builds Cause-Effect Reasoning:**
+
 - Silent → "Oh, synonymous codons really ARE identical"
 - Missense → "Shape change but rest stays the same" (locality)
 - Nonsense → "Everything after disappears" (truncation)
 - Frameshift → "Complete scramble downstream" (catastrophic)
 
 **Reduces Cognitive Load:**
+
 - Novices can explore safely with guardrails
 - Experts can quickly assess mutation severity
 - All learners build intuition faster
 
 **Classroom Applications:**
+
 1. **Mutation Prediction Challenge**: Guess impact before revealing prediction
 2. **Confidence Calibration**: Compare student confidence to system confidence
 3. **Impact Spectrum**: Sort mutations by predicted severity
@@ -84,12 +93,14 @@ LOW (0.50-0.70):    Frameshift (cascading unpredictability)
 ## Research Integration
 
 **Enhanced Metrics:**
+
 - **Prediction Accuracy**: Track user predictions vs actual outcomes
 - **Confidence Alignment**: Do users agree with system confidence?
 - **Learning Curves**: Time to accurate mental models
 - **Error Patterns**: Common misconceptions revealed by wrong predictions
 
 **Novel Research Questions:**
+
 - Do predictions accelerate learning or reduce exploration?
 - Optimal confidence threshold for scaffolding (too high = overconfident, too low = confusing)?
 - Does previewing reduce "happy accidents" (serendipitous discoveries)?
@@ -107,11 +118,13 @@ LOW (0.50-0.70):    Frameshift (cascading unpredictability)
 ## Integration Points
 
 **Works With:**
+
 - Existing mutation tools (mutations.ts)
 - Lexer/VM/Renderer (for rendering)
 - Test framework (comprehensive coverage)
 
 **Ready For:**
+
 - Playground UI integration (next session)
 - Mutation buttons (hover preview)
 - Tutorial system (guided predictions)
@@ -120,6 +133,7 @@ LOW (0.50-0.70):    Frameshift (cascading unpredictability)
 ## Next Steps
 
 **Immediate (Session 69, ~90 min):**
+
 1. **Playground UI Integration** (45 min):
    - Add "🔮 Preview" button to mutation panel
    - Side-by-side preview modal (original | mutated)
@@ -163,6 +177,7 @@ LOW (0.50-0.70):    Frameshift (cascading unpredictability)
 ## Impact
 
 **Session 68 Achievement:** ⭐⭐⭐⭐⭐
+
 - Novel pedagogical capability (scaffolding not in 67 sessions)
 - Evidence-based design (pixel diff + confidence)
 - High educational value (reduces frustration, builds reasoning)
@@ -170,6 +185,7 @@ LOW (0.50-0.70):    Frameshift (cascading unpredictability)
 - Research-enabling (prediction accuracy metrics)
 
 **Autonomous Direction Selection:**
+
 - Analyzed 67 sessions of history
 - Identified gap: mutation tools exist but no PREDICTION
 - Chose high-impact, feasible, novel direction

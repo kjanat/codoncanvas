@@ -11,11 +11,13 @@ Implemented comparison opcodes (EQ, LT) by repurposing NOISE codons (CTA, CTC). 
 ## Autonomous Direction Decision
 
 **Context Analysis:**
+
 - Sessions 71-74: Arithmetic (ADD, SUB, MUL, DIV) + LOOP + advanced showcase examples complete
 - Natural progression: arithmetic → comparison → conditional execution
 - All 64 codons allocated → strategic reallocation required
 
 **Strategic Problem:**
+
 - Want: Comparison opcodes (EQ, LT, GT) for logical operations
 - Constraint: All 64 codons allocated, no free space
 - Options: Repurpose low-value opcodes OR extend codon length (breaks metaphor)
@@ -23,6 +25,7 @@ Implemented comparison opcodes (EQ, LT) by repurposing NOISE codons (CTA, CTC). 
 **Decision: Repurpose NOISE (CTA, CTC) for EQ and LT**
 
 **Rationale:**
+
 1. **Priority Ordering:** Logic/conditionals > artistic effects (NOISE)
 2. **Educational Value:** Comparison = fundamental CS concept, NOISE = niche
 3. **Capability Unlock:** Comparisons enable entire conditional execution tier
@@ -30,6 +33,7 @@ Implemented comparison opcodes (EQ, LT) by repurposing NOISE codons (CTA, CTC). 
 5. **Reversible:** NOISE can return in "creative mode" variant later
 
 **Why Not Other Options:**
+
 - Multi-codon sequences: Too complex, breaks 1 codon = 1 instruction elegance
 - Overloading arithmetic: Confusing stack patterns, harder to understand
 - 5-letter codons: Breaks DNA metaphor entirely
@@ -39,16 +43,19 @@ Implemented comparison opcodes (EQ, LT) by repurposing NOISE codons (CTA, CTC). 
 ### Opcode Definitions
 
 **EQ (Equality):**
+
 - **Codon:** CTA (was NOISE)
 - **Stack Effect:** `[a, b] → [1 if a==b else 0]`
 - **Semantics:** Pop two values, push 1 (true) if equal, 0 (false) otherwise
 
 **LT (Less Than):**
+
 - **Codon:** CTC (was NOISE)
 - **Stack Effect:** `[a, b] → [1 if a<b else 0]`
 - **Semantics:** Pop two values, push 1 if a < b, else 0
 
 **GT (Greater Than) - Compositional:**
+
 - **Pattern:** `SWAP LT` (swap operands then less-than)
 - **Educational:** Demonstrates compositionality, reduces opcode count
 - **Example:** To check if 7 > 3: `PUSH 7, PUSH 3, SWAP, LT` → `PUSH 3, PUSH 7, LT` → 1
@@ -56,6 +63,7 @@ Implemented comparison opcodes (EQ, LT) by repurposing NOISE codons (CTA, CTC). 
 ### Code Changes
 
 **Modified Files:**
+
 1. **src/types.ts** (+2 enum members, updated CODON_MAP)
    - Added `Opcode.EQ` and `Opcode.LT` to enum
    - Remapped CTA → EQ, CTC → LT (removed NOISE mappings)
@@ -94,12 +102,14 @@ Implemented comparison opcodes (EQ, LT) by repurposing NOISE codons (CTA, CTC). 
 **Concept:** Visual boolean logic demonstration
 
 **Genome:** 4 side-by-side tests
+
 1. 5 == 5 → true → circle visible (radius 10)
 2. 3 == 7 → false → circle invisible (radius 0)
 3. 3 < 7 → true → circle visible
 4. 7 < 3 → false → circle invisible
 
 **Pattern:**
+
 ```
 PUSH a
 PUSH b
@@ -110,6 +120,7 @@ CIRCLE         ; Draw (visible if true, invisible if false)
 ```
 
 **Educational Value:**
+
 - Demonstrates boolean = numeric (1/0) mapping
 - Shows comparison output can be used arithmetically
 - Visual feedback for abstract logic operations
@@ -125,6 +136,7 @@ CIRCLE         ; Draw (visible if true, invisible if false)
 ## Test Coverage
 
 **New Tests (6):**
+
 1. EQ returns 1 when values equal
 2. EQ returns 0 when values not equal
 3. LT returns 1 when a < b
@@ -133,6 +145,7 @@ CIRCLE         ; Draw (visible if true, invisible if false)
 6. Chained comparisons (AND-like pattern with multiplication)
 
 **Edge Cases Covered:**
+
 - Equal values for both EQ and LT
 - Unequal values in both directions
 - Integration with arithmetic opcodes
@@ -152,6 +165,7 @@ CIRCLE         ; Draw (visible if true, invisible if false)
 ## Code Highlights
 
 **EQ Implementation:**
+
 ```typescript
 case Opcode.EQ: {
   const b = this.pop();
@@ -162,6 +176,7 @@ case Opcode.EQ: {
 ```
 
 **LT Implementation:**
+
 ```typescript
 case Opcode.LT: {
   const b = this.pop();
@@ -172,6 +187,7 @@ case Opcode.LT: {
 ```
 
 **Visual Boolean Demo Pattern:**
+
 ```
 GAA AAT GAA AAT CTA  ; PUSH 5, PUSH 5, EQ → 1
 GAA AGG CTT           ; PUSH 10, MUL → 10
@@ -192,12 +208,14 @@ GGA                   ; CIRCLE(10) - visible!
 **Decision Quality:** ⭐⭐⭐⭐⭐ (5/5)
 
 **Rationale:**
+
 - Unlocks qualitatively new capability tier (logic, conditionals)
 - Natural CS curriculum progression: arithmetic → comparison → conditionals
 - Clean implementation with strong test coverage
 - Minimal disruption (NOISE not widely used in examples)
 
 **Impact Assessment:**
+
 - **Educational:** CRITICAL - Comparison = CS fundamental concept
 - **Research:** HIGH - Boolean logic enables behavioral experiments
 - **Capability:** CRITICAL - Foundation for conditional execution
@@ -206,21 +224,25 @@ GGA                   ; CIRCLE(10) - visible!
 ## What Worked
 
 **1. Strategic Reallocation:**
+
 - NOISE identified as lowest-value opcode (artistic, niche)
 - Comparison identified as highest-value missing capability
 - Clean swap with no major disruption
 
 **2. Compositional Design:**
+
 - GT via `SWAP LT` reduces opcode pressure
 - Educational: demonstrates composition, reuse
 - Elegant: achieves 3 comparisons with 2 opcodes
 
 **3. Test-Driven:**
+
 - 6 comprehensive tests covering edge cases
 - Integration tests (arithmetic, chaining)
 - All 55 tests passing post-refactor
 
 **4. Visual Demo:**
+
 - comparisonDemo uses multiplication trick for visibility
 - Clear true/false pattern (visible vs invisible circles)
 - Pedagogically sound demonstration
@@ -228,20 +250,24 @@ GGA                   ; CIRCLE(10) - visible!
 ## Challenges Solved
 
 **Challenge 1:** Full Codon Space (64/64 allocated)
+
 - **Solution:** Strategic reallocation, removed low-value NOISE
 - **Result:** EQ and LT implemented without extending codon length
 
 **Challenge 2:** GT Implementation
+
 - **Options:** Add 3rd comparison opcode OR compositional pattern
 - **Solution:** `SWAP LT` composition (educational bonus)
 - **Result:** 3 comparisons with 2 opcodes, demonstrates composition
 
 **Challenge 3:** Visual Boolean Demonstration
+
 - **Issue:** Boolean results (1/0) are abstract, hard to see
 - **Solution:** Multiply by 10 for radius → visible/invisible circles
 - **Result:** Clear visual feedback for true/false
 
 **Challenge 4:** NOISE Removal Impact
+
 - **Issue:** Existing NOISE tests and references
 - **Solution:** Systematic removal, updated analyzer/MIDI exporter
 - **Result:** Clean refactor, all tests passing
@@ -251,6 +277,7 @@ GGA                   ; CIRCLE(10) - visible!
 **Immediate Next Steps (Session 76):**
 
 **Option A: Conditional Execution Mechanism**
+
 - **Challenge:** All 64 codons still allocated
 - **Options:**
   1. Repurpose another low-value opcode for SKIP_IF_ZERO
@@ -259,16 +286,19 @@ GGA                   ; CIRCLE(10) - visible!
 - **Recommendation:** Analyze opcode usage frequency, repurpose least-used
 
 **Option B: Documentation & Examples**
+
 - Update MVP_Technical_Specification.md with comparison opcodes
 - Add comparison section to educational materials
 - Create mutation demos showing comparison logic changes
 
 **Option C: Advanced Comparison Patterns**
+
 - Greater-than-or-equal (GTE): `DUP SWAP LT SWAP EQ ADD` → 1 if a>=b
 - Not-equal (NEQ): `EQ PUSH 1 SWAP SUB` → 1 - EQ result
 - Document compositional patterns for complex logic
 
 **Long-Term:**
+
 1. **Conditional Execution:** SKIP_IF_ZERO or conditional jump
 2. **Boolean Algebra:** Document AND (×), OR (via addition/clamping), NOT patterns
 3. **Game Logic Examples:** Collision detection, score thresholds, adaptive patterns
@@ -277,21 +307,25 @@ GGA                   ; CIRCLE(10) - visible!
 ## Comparison to Alternatives
 
 **Why Not Keep NOISE?**
+
 - Artistic effects are niche, not fundamental CS concept
 - Comparison opcodes unlock entire conditional execution tier
 - NOISE can return as plugin/extension in "creative mode"
 
 **Why Not Multi-Codon Sequences?**
+
 - Breaks 1 codon = 1 instruction elegance
 - Complicates lexer/parser significantly
 - Less pedagogically clear
 
 **Why Not 5-Letter Codons for Advanced Tier?**
+
 - Destroys DNA metaphor (triplets are core concept)
 - Confusing to learn (which operations are 3-letter vs 5?)
 - Violates biological inspiration principle
 
 **Why Compositional GT?**
+
 - Teaches composition and reuse (educational win)
 - Reduces opcode pressure (practical win)
 - Elegant solution to constraint (design win)
@@ -333,6 +367,7 @@ GGA                   ; CIRCLE(10) - visible!
 - **Autonomous Success:** Identified constraint, designed solution, delivered cleanly
 
 **Autonomous Direction:**
+
 - Analyzed Sessions 71-74 (arithmetic + LOOP complete)
 - Identified natural progression: arithmetic → comparison → conditionals
 - Solved 64-codon constraint via strategic NOISE reallocation

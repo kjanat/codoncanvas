@@ -1,6 +1,6 @@
 # From Codons to Canvas: Teaching Genetics Through Visual Programming
 
-*A comprehensive introduction to CodonCanvas and its pedagogical approach*
+_A comprehensive introduction to CodonCanvas and its pedagogical approach_
 
 ---
 
@@ -27,6 +27,7 @@ ATG GAA AGG GGA TAA
 ```
 
 This 15-base genome breaks down as:
+
 - `ATG` - START (begin execution)
 - `GAA AGG` - PUSH 10 (load value onto stack)
 - `GGA` - CIRCLE (draw circle with radius 10)
@@ -87,16 +88,19 @@ The tool doesn't simulate mutations—it experiences them. Frameshift mutations 
 CodonCanvas includes 25 example genomes ranging from simple to complex:
 
 **Beginner (30-150 bases):**
+
 - `helloCircle.genome` - Single circle (teaching START/STOP)
 - `twoShapes.genome` - Circle and rectangle (teaching TRANSLATE)
 - `colorfulSquare.genome` - Colored rectangle (teaching COLOR opcode)
 
 **Intermediate (200-800 bases):**
+
 - `concentricCircles.genome` - Nested circles (loops via repetition)
 - `rainbow.genome` - Color gradients (HSL manipulation)
 - `starPattern.genome` - Rotated lines (ROTATE + LINE)
 
 **Advanced (900-1,500 bases):**
+
 - `mandala.genome` - Radial symmetry (complex transforms)
 - `fractalTree.genome` - Recursive patterns (state stack usage)
 - `cosmicWheel.genome` - 4,860 bases of intricate geometry
@@ -112,6 +116,7 @@ Learning by experimentation is powerful, but students need guidance. CodonCanvas
 ### Tutorial 1: Draw Your First Circle (3 min)
 
 Step-by-step introduction to:
+
 - START and STOP codons
 - PUSH opcode for loading values
 - CIRCLE opcode for drawing
@@ -122,6 +127,7 @@ Students write their first genome and see immediate output. Success in under 5 m
 ### Tutorial 2: Understanding Mutations (5 min)
 
 Hands-on exploration of:
+
 - Silent mutations (GGA → GGC)
 - Missense mutations (GGA → GCA)
 - Nonsense mutations (GGA → TAA)
@@ -132,6 +138,7 @@ Students predict effects before applying mutations, then verify predictions.
 ### Tutorial 3: Timeline & Execution (7 min)
 
 Deep dive into program execution:
+
 - Step-by-step timeline scrubber
 - Stack state visualization
 - Instruction-by-instruction debugging
@@ -142,6 +149,7 @@ Students understand that genomes execute sequentially, building intuition for pr
 ### Tutorial 4: Evolution Lab (10 min)
 
 Natural selection simulation:
+
 - Generate random population (10 genomes)
 - Visual fitness evaluation (human selection)
 - Mutation and reproduction
@@ -180,6 +188,7 @@ For developers interested in implementation details:
 ### Lexer (300 lines)
 
 Tokenizes DNA sequences into codon triplets:
+
 - Strips comments (`;` to end-of-line)
 - Removes whitespace
 - Validates base characters (A/C/G/T only)
@@ -189,6 +198,7 @@ Tokenizes DNA sequences into codon triplets:
 ### VM (1,200 lines)
 
 Stack-based virtual machine with 17 opcodes:
+
 - **Control flow**: START, STOP
 - **Drawing primitives**: CIRCLE, RECT, LINE, TRIANGLE, ELLIPSE
 - **Transforms**: TRANSLATE, ROTATE, SCALE, COLOR
@@ -200,6 +210,7 @@ Each opcode mapped to 1-4 synonymous codons for genetic redundancy.
 ### Renderer (400 lines)
 
 Canvas2D-based rendering with:
+
 - Transform state management (position, rotation, scale)
 - Color application (HSL)
 - Export to PNG/GIF
@@ -208,6 +219,7 @@ Canvas2D-based rendering with:
 ### UI Components (2,500 lines)
 
 Interactive playground with:
+
 - Live preview (300ms debounce)
 - Syntax highlighting (color-coded by opcode family)
 - Error reporting (inline linter feedback)
@@ -227,18 +239,21 @@ CodonCanvas includes complete curriculum materials:
 ### Lesson Plans (3 lessons, 60-90 min each)
 
 **Lesson 1: Introduction to Genetic Code**
+
 - Learning objectives, materials, timeline
 - Student worksheet with 5 exercises
 - Assessment rubric
 - Expected outcomes
 
 **Lesson 2: Mutation Types and Effects**
+
 - Comparative analysis of 4 mutation types
 - Prediction exercises (guess before testing)
 - Group discussion prompts
 - Assessment with answer key
 
 **Lesson 3: Evolution and Natural Selection**
+
 - Evolution Lab guided exploration
 - Hypothesis formation (fitness functions)
 - Multi-generation tracking
@@ -247,6 +262,7 @@ CodonCanvas includes complete curriculum materials:
 ### Student Worksheets
 
 Printable exercises with:
+
 - Clear instructions
 - Scaffolded difficulty
 - Space for predictions and observations
@@ -255,6 +271,7 @@ Printable exercises with:
 ### Assessment Rubrics
 
 Standardized grading for:
+
 - Conceptual understanding (4-point scale)
 - Technical execution (can they write/mutate genomes?)
 - Critical thinking (prediction accuracy)
@@ -263,6 +280,7 @@ Standardized grading for:
 ### Quick Reference Cards
 
 1-page printable cheat sheets:
+
 - All 64 codons mapped to opcodes
 - Example genome structure
 - Mutation type definitions
@@ -275,16 +293,18 @@ Standardized grading for:
 While formal studies are needed, early feedback from 5 educators is promising:
 
 **Pre-CodonCanvas:**
+
 - "Students memorize mutation types but can't apply them"
 - "Frameshift is hardest concept—they don't understand reading frames"
 - "Lab time is limited, real mutation experiments take weeks"
 
 **Post-CodonCanvas (after 2-lesson pilot):**
+
 - "Students predicted frameshift effects correctly on assessment (80% vs 45% previous year)"
 - "The visual feedback made silent vs missense mutations click immediately"
 - "Students enjoyed it—asked to continue experimenting beyond class time"
 
-One student comment (via educator): *"I never understood why frameshift was so bad until I saw everything downstream break in CodonCanvas. Now it makes sense."*
+One student comment (via educator): _"I never understood why frameshift was so bad until I saw everything downstream break in CodonCanvas. Now it makes sense."_
 
 This is exactly the intuition we're building.
 
@@ -295,6 +315,7 @@ This is exactly the intuition we're building.
 ### What CodonCanvas Is NOT
 
 This is important: **CodonCanvas is not a genetics simulator**. It doesn't model:
+
 - Protein folding
 - Cellular machinery
 - Realistic genetic expression
@@ -315,14 +336,17 @@ The goal: use familiar syntax (DNA) to teach authentic concepts (mutation patter
 ### Alternative Approaches Considered
 
 **Option 1: Realistic protein simulation**
+
 - **Pro**: Biologically accurate
 - **Con**: Too complex for beginners, computationally expensive, obscures core concepts
 
 **Option 2: Abstract symbolic syntax (not DNA)**
+
 - **Pro**: No biological confusion
 - **Con**: Loses the powerful metaphor, less memorable, lower engagement
 
 **Option 3: Natural language commands**
+
 - **Pro**: Easier to learn initially
 - **Con**: Can't demonstrate frameshift (no reading frames), loses genetic redundancy
 
@@ -345,6 +369,7 @@ Research on pedagogical effectiveness requires open tools. Educators and researc
 ### 3. Community Evolution
 
 The best educational tools evolve through community feedback. Open source enables:
+
 - Bug reports and fixes
 - Feature contributions
 - Curriculum enhancements
@@ -409,12 +434,14 @@ If you're interested in piloting CodonCanvas:
 4. **Reach out**: Contact [your email] for support
 
 I'm looking for feedback on:
+
 - Lesson timing (too fast/slow?)
 - Assessment difficulty (appropriate level?)
 - Student engagement (do they stay interested?)
 - Conceptual clarity (does it build intuition?)
 
 I can provide:
+
 - Virtual orientation sessions
 - Curriculum customization support
 - Technical assistance
@@ -427,6 +454,7 @@ I can provide:
 Interested in contributing? The codebase is clean, well-tested, and documented.
 
 **Quick start:**
+
 ```bash
 git clone https://github.com/[username]/codoncanvas
 cd codoncanvas
@@ -435,6 +463,7 @@ npm run dev
 ```
 
 **Architecture:**
+
 - TypeScript (strict mode)
 - Vite build system
 - Vitest for testing (151 tests)
@@ -442,6 +471,7 @@ npm run dev
 - Zero runtime dependencies (core engine)
 
 **Good first issues:**
+
 - Add new opcode (e.g., HEXAGON, SPIRAL)
 - Expand example library
 - Improve error messages
@@ -492,4 +522,4 @@ Try it. Break it. Evolve it. Let me know what you discover.
 
 ---
 
-*CodonCanvas is open source (MIT License) and available at [GitHub URL]. Contributions, feedback, and forks welcome.*
+_CodonCanvas is open source (MIT License) and available at [GitHub URL]. Contributions, feedback, and forks welcome._

@@ -3,10 +3,10 @@
  * Provides side-by-side visualization with highlighting
  */
 
-import { compareGenomes, MutationResult } from './mutations';
-import { CodonLexer } from './lexer';
-import { Canvas2DRenderer } from './renderer';
-import { CodonVM } from './vm';
+import { CodonLexer } from "./lexer";
+import { compareGenomes, type MutationResult } from "./mutations";
+import { Canvas2DRenderer } from "./renderer";
+import { CodonVM } from "./vm";
 
 export interface DiffViewOptions {
   containerElement: HTMLElement;
@@ -26,9 +26,9 @@ export class DiffViewer {
     this.options = {
       containerElement: options.containerElement,
       showCanvas: options.showCanvas ?? true,
-      highlightColor: options.highlightColor ?? '#ff6b6b',
+      highlightColor: options.highlightColor ?? "#ff6b6b",
       canvasWidth: options.canvasWidth ?? 300,
-      canvasHeight: options.canvasHeight ?? 300
+      canvasHeight: options.canvasHeight ?? 300,
     };
     this.lexer = new CodonLexer();
   }
@@ -38,15 +38,25 @@ export class DiffViewer {
    */
   renderMutation(result: MutationResult): void {
     const comparison = compareGenomes(result.original, result.mutated);
-    this.render(result.original, result.mutated, result.type, result.description, comparison.differences);
+    this.render(
+      result.original,
+      result.mutated,
+      result.type,
+      result.description,
+      comparison.differences,
+    );
   }
 
   /**
    * Render diff comparison between two genomes
    */
-  renderComparison(original: string, mutated: string, title: string = 'Genome Comparison'): void {
+  renderComparison(
+    original: string,
+    mutated: string,
+    title: string = "Genome Comparison",
+  ): void {
     const comparison = compareGenomes(original, mutated);
-    this.render(original, mutated, 'point', title, comparison.differences);
+    this.render(original, mutated, "point", title, comparison.differences);
   }
 
   private render(
@@ -54,7 +64,7 @@ export class DiffViewer {
     mutated: string,
     mutationType: string,
     description: string,
-    differences: Array<{ position: number; original: string; mutated: string }>
+    differences: Array<{ position: number; original: string; mutated: string }>,
   ): void {
     const comparison = compareGenomes(original, mutated);
 
@@ -64,7 +74,9 @@ export class DiffViewer {
           <h3>${description}</h3>
           <div class="diff-stats">
             <span class="badge mutation-${mutationType}">${mutationType}</span>
-            <span class="diff-count">${differences.length} codon${differences.length !== 1 ? 's' : ''} changed</span>
+            <span class="diff-count">${differences.length} codon${
+      differences.length !== 1 ? "s" : ""
+    } changed</span>
           </div>
         </div>
 
@@ -72,19 +84,33 @@ export class DiffViewer {
           <div class="diff-panel">
             <div class="diff-panel-header">Original</div>
             <div class="diff-codons">
-              ${this.renderCodons(comparison.originalCodons, differences.map(d => ({ pos: d.position, type: 'removed' })))}
+              ${
+      this.renderCodons(
+        comparison.originalCodons,
+        differences.map((d) => ({ pos: d.position, type: "removed" })),
+      )
+    }
             </div>
           </div>
 
           <div class="diff-panel">
             <div class="diff-panel-header">Mutated</div>
             <div class="diff-codons">
-              ${this.renderCodons(comparison.mutatedCodons, differences.map(d => ({ pos: d.position, type: 'added' })))}
+              ${
+      this.renderCodons(
+        comparison.mutatedCodons,
+        differences.map((d) => ({ pos: d.position, type: "added" })),
+      )
+    }
             </div>
           </div>
         </div>
 
-        ${this.options.showCanvas ? this.renderCanvasDiff(original, mutated) : ''}
+        ${
+      this.options.showCanvas
+        ? this.renderCanvasDiff(original, mutated)
+        : ""
+    }
 
         <div class="diff-details">
           ${this.renderDifferencesList(differences)}
@@ -100,14 +126,17 @@ export class DiffViewer {
     }
   }
 
-  private renderCodons(codons: string[], highlights: Array<{ pos: number; type: string }>): string {
+  private renderCodons(
+    codons: string[],
+    highlights: Array<{ pos: number; type: string }>,
+  ): string {
     return codons
       .map((codon, i) => {
-        const highlight = highlights.find(h => h.pos === i);
-        const className = highlight ? `codon-${highlight.type}` : '';
+        const highlight = highlights.find((h) => h.pos === i);
+        const className = highlight ? `codon-${highlight.type}` : "";
         return `<span class="codon ${className}">${codon}</span>`;
       })
-      .join(' ');
+      .join(" ");
   }
 
   private renderCanvasDiff(original: string, mutated: string): string {
@@ -127,12 +156,16 @@ export class DiffViewer {
 
   private renderCanvasOutputs(original: string, mutated: string): void {
     try {
-      const originalCanvas = this.container.querySelector('#diff-canvas-original') as HTMLCanvasElement;
-      const mutatedCanvas = this.container.querySelector('#diff-canvas-mutated') as HTMLCanvasElement;
+      const originalCanvas = this.container.querySelector(
+        "#diff-canvas-original",
+      ) as HTMLCanvasElement;
+      const mutatedCanvas = this.container.querySelector(
+        "#diff-canvas-mutated",
+      ) as HTMLCanvasElement;
 
       if (!originalCanvas || !mutatedCanvas) {
-return;
-}
+        return;
+      }
 
       // Render original
       const originalRenderer = new Canvas2DRenderer(originalCanvas);
@@ -145,28 +178,35 @@ return;
       const mutatedVM = new CodonVM(mutatedRenderer);
       const mutatedTokens = this.lexer.tokenize(mutated);
       mutatedVM.run(mutatedTokens);
-
     } catch (error) {
-      console.error('Failed to render canvas outputs:', error);
+      console.error("Failed to render canvas outputs:", error);
     }
   }
 
-  private renderDifferencesList(differences: Array<{ position: number; original: string; mutated: string }>): string {
+  private renderDifferencesList(
+    differences: Array<{ position: number; original: string; mutated: string }>,
+  ): string {
     if (differences.length === 0) {
-      return '<div class="no-differences">No differences found</div>';
+      return "<div class=\"no-differences\">No differences found</div>";
     }
 
     return `
       <h4>Changes at codon level:</h4>
       <ul class="differences-list">
-        ${differences.map(diff => `
+        ${
+      differences
+        .map(
+          (diff) => `
           <li>
             Position ${diff.position}:
-            <code class="codon-removed">${diff.original || '(deleted)'}</code>
+            <code class="codon-removed">${diff.original || "(deleted)"}</code>
             →
-            <code class="codon-added">${diff.mutated || '(inserted)'}</code>
+            <code class="codon-added">${diff.mutated || "(inserted)"}</code>
           </li>
-        `).join('')}
+        `,
+        )
+        .join("")
+    }
       </ul>
     `;
   }
@@ -175,7 +215,7 @@ return;
    * Clear the diff viewer
    */
   clear(): void {
-    this.container.innerHTML = '';
+    this.container.innerHTML = "";
   }
 }
 
@@ -183,12 +223,12 @@ return;
  * Default styles for diff viewer (inject into document head)
  */
 export function injectDiffViewerStyles(): void {
-  if (document.getElementById('diff-viewer-styles')) {
-return;
-}
+  if (document.getElementById("diff-viewer-styles")) {
+    return;
+  }
 
-  const style = document.createElement('style');
-  style.id = 'diff-viewer-styles';
+  const style = document.createElement("style");
+  style.id = "diff-viewer-styles";
   style.textContent = `
     .diff-viewer {
       font-family: 'Monaco', 'Menlo', 'Courier New', monospace;

@@ -24,7 +24,7 @@
  * ```
  */
 
-import type { Renderer } from './renderer.js';
+import type { Renderer } from "./renderer.js";
 
 /**
  * Web Audio-based implementation of Renderer interface.
@@ -68,7 +68,7 @@ export class AudioRenderer implements Renderer {
 
     // Create audio processing chain: source → filter → panner → gain → destination
     this.filter = this.audioContext.createBiquadFilter();
-    this.filter.type = 'lowpass';
+    this.filter.type = "lowpass";
     this.filter.frequency.value = this.currentFilterFreq;
     this.filter.Q.value = this.currentFilterQ;
 
@@ -89,7 +89,9 @@ export class AudioRenderer implements Renderer {
    */
   startRecording(): void {
     if (!this.audioContext || !this.masterGain) {
-      throw new Error('AudioRenderer not initialized. Call initialize() first.');
+      throw new Error(
+        "AudioRenderer not initialized. Call initialize() first.",
+      );
     }
 
     // Create MediaStreamDestination for recording
@@ -115,12 +117,12 @@ export class AudioRenderer implements Renderer {
   async stopRecording(): Promise<Blob> {
     return new Promise((resolve, reject) => {
       if (!this.mediaRecorder || !this.isRecording) {
-        reject(new Error('Not currently recording'));
+        reject(new Error("Not currently recording"));
         return;
       }
 
       this.mediaRecorder.onstop = () => {
-        const blob = new Blob(this.recordedChunks, { type: 'audio/webm' });
+        const blob = new Blob(this.recordedChunks, { type: "audio/webm" });
         this.isRecording = false;
         resolve(blob);
       };
@@ -135,7 +137,11 @@ export class AudioRenderer implements Renderer {
    * @param frequency - Frequency in Hz
    * @param duration - Note duration in seconds
    */
-  private playTone(type: OscillatorType, frequency: number, duration: number): void {
+  private playTone(
+    type: OscillatorType,
+    frequency: number,
+    duration: number,
+  ): void {
     if (!this.audioContext || !this.filter) return;
 
     const osc = this.audioContext.createOscillator();
@@ -153,8 +159,14 @@ export class AudioRenderer implements Renderer {
 
     gain.gain.setValueAtTime(0, now);
     gain.gain.linearRampToValueAtTime(this.currentGain, now + attack);
-    gain.gain.linearRampToValueAtTime(this.currentGain * sustain, now + attack + decay);
-    gain.gain.setValueAtTime(this.currentGain * sustain, now + duration - release);
+    gain.gain.linearRampToValueAtTime(
+      this.currentGain * sustain,
+      now + attack + decay,
+    );
+    gain.gain.setValueAtTime(
+      this.currentGain * sustain,
+      now + duration - release,
+    );
     gain.gain.linearRampToValueAtTime(0, now + duration);
 
     // Connect oscillator → gain → filter → output chain
@@ -193,7 +205,7 @@ export class AudioRenderer implements Renderer {
    */
   circle(radius: number): void {
     const freq = 220 + (radius / 64) * 660; // Map to musical range
-    this.playTone('sine', freq, this.currentDuration);
+    this.playTone("sine", freq, this.currentDuration);
   }
 
   /**
@@ -203,7 +215,7 @@ export class AudioRenderer implements Renderer {
   rect(width: number, height: number): void {
     const freq = 220 + (width / 64) * 660;
     const duration = this.currentDuration * (1 + height / 64);
-    this.playTone('square', freq, duration);
+    this.playTone("square", freq, duration);
   }
 
   /**
@@ -212,7 +224,7 @@ export class AudioRenderer implements Renderer {
    */
   line(length: number): void {
     const duration = 0.1 + (length / 64) * 0.5; // 0.1-0.6 seconds
-    this.playTone('sawtooth', this.currentFrequency, duration);
+    this.playTone("sawtooth", this.currentFrequency, duration);
   }
 
   /**
@@ -221,7 +233,7 @@ export class AudioRenderer implements Renderer {
    */
   triangle(size: number): void {
     const freq = 220 + (size / 64) * 660;
-    this.playTone('triangle', freq, this.currentDuration);
+    this.playTone("triangle", freq, this.currentDuration);
   }
 
   /**
@@ -241,15 +253,15 @@ export class AudioRenderer implements Renderer {
       this.filter.frequency.setValueAtTime(this.currentFilterFreq, now);
       this.filter.frequency.linearRampToValueAtTime(
         this.currentFilterFreq * (1 + modDepth),
-        now + this.currentDuration / 2
+        now + this.currentDuration / 2,
       );
       this.filter.frequency.linearRampToValueAtTime(
         this.currentFilterFreq,
-        now + this.currentDuration
+        now + this.currentDuration,
       );
     }
 
-    this.playTone('sine', carrierFreq, this.currentDuration);
+    this.playTone("sine", carrierFreq, this.currentDuration);
   }
 
   /**
@@ -262,7 +274,11 @@ export class AudioRenderer implements Renderer {
 
     const duration = 0.05 + (intensity / 64) * 0.3; // 0.05-0.35 seconds
     const bufferSize = this.audioContext.sampleRate * duration;
-    const buffer = this.audioContext.createBuffer(1, bufferSize, this.audioContext.sampleRate);
+    const buffer = this.audioContext.createBuffer(
+      1,
+      bufferSize,
+      this.audioContext.sampleRate,
+    );
     const data = buffer.getChannelData(0);
 
     // Generate white noise
@@ -313,7 +329,7 @@ export class AudioRenderer implements Renderer {
   rotate(degrees: number): void {
     // Map 0-360 to 200-20000 Hz (log scale for perceptual linearity)
     const normalized = (degrees % 360) / 360; // 0-1
-    this.currentFilterFreq = 200 * Math.pow(100, normalized); // 200 to 20000 Hz
+    this.currentFilterFreq = 200 * 100 ** normalized; // 200 to 20000 Hz
     if (this.filter) {
       this.filter.frequency.value = this.currentFilterFreq;
     }
@@ -346,7 +362,7 @@ export class AudioRenderer implements Renderer {
   setColor(h: number, s: number, l: number): void {
     // Hue controls filter frequency
     const hueNorm = (h % 360) / 360;
-    this.currentFilterFreq = 200 * Math.pow(100, hueNorm);
+    this.currentFilterFreq = 200 * 100 ** hueNorm;
 
     // Saturation controls filter resonance
     this.currentFilterQ = 0.1 + (s / 100) * 9.9; // 0.1 to 10
@@ -360,19 +376,24 @@ export class AudioRenderer implements Renderer {
     }
   }
 
-  getCurrentTransform(): { x: number; y: number; rotation: number; scale: number } {
+  getCurrentTransform(): {
+    x: number;
+    y: number;
+    rotation: number;
+    scale: number;
+  } {
     // Return audio state in visual coordinate metaphor
     return {
       x: this.currentPan * 63, // Pan position as "x"
       y: 0, // No y-axis in audio
       rotation: (Math.log(this.currentFilterFreq / 200) / Math.log(100)) * 360, // Filter as "rotation"
-      scale: this.currentGain / 0.3 // Volume as "scale"
+      scale: this.currentGain / 0.3, // Volume as "scale"
     };
   }
 
   toDataURL(): string {
     // Not applicable for audio - use exportWAV() instead
-    return 'data:audio/wav;base64,'; // Placeholder
+    return "data:audio/wav;base64,"; // Placeholder
   }
 
   /**

@@ -11,18 +11,21 @@ Completed arithmetic suite by implementing SUB and DIV opcodes, building on Sess
 ## Autonomous Direction Decision
 
 **Problem Identified:**
+
 - Session 71 added ADD/MUL but arithmetic incomplete
 - No subtraction or division operations
 - Cannot compute ratios, proportions, or differences
 - Missing key mathematical relationships
 
 **Analysis:**
+
 - All 64 codons allocated (need to split existing family)
 - NOP (CA*: 4 codons) identified as best candidate (aesthetic/readability only)
 - SUB/DIV prioritized as logical completion of arithmetic
 - Maintains pedagogical clarity with practical use cases
 
 **Why This Direction:**
+
 1. **Logical continuation** - Completes Session 71's arithmetic foundation
 2. **High pedagogical value** - Ratios, differences, relative sizing
 3. **Minimal disruption** - NOP split acceptable (keeps 2 synonyms)
@@ -35,11 +38,13 @@ Completed arithmetic suite by implementing SUB and DIV opcodes, building on Sess
 
 **BEFORE:** CA* (4 codons) → NOP
 **AFTER:**
+
 - CAA, CAC → NOP (2 codons, maintains synonymous pair)
 - CAG → SUB (1 codon, no synonyms)
 - CAT → DIV (1 codon, no synonyms)
 
 **Trade-off:**
+
 - Lose 2 NOP synonyms (still have 2 for silent mutations)
 - Gain 2 essential computational operations
 - Arithmetic ops don't need redundancy for pedagogy
@@ -47,6 +52,7 @@ Completed arithmetic suite by implementing SUB and DIV opcodes, building on Sess
 ### Phase 2: Type System (`src/types.ts`)
 
 **Changes:**
+
 1. Added `SUB` and `DIV` to `Opcode` enum (lines 82-83)
 2. Updated CODON_MAP:
    - Removed CAG/CAT from NOP
@@ -58,6 +64,7 @@ Completed arithmetic suite by implementing SUB and DIV opcodes, building on Sess
 ### Phase 3: VM Execution (`src/vm.ts`)
 
 **SUB Implementation:**
+
 ```typescript
 case Opcode.SUB: {
   const b = this.pop();
@@ -66,11 +73,13 @@ case Opcode.SUB: {
   break;
 }
 ```
+
 Stack: [a, b] → [a-b]
 Order matters: a - b (not commutative)
 Allows negative results
 
 **DIV Implementation:**
+
 ```typescript
 case Opcode.DIV: {
   const b = this.pop();
@@ -82,6 +91,7 @@ case Opcode.DIV: {
   break;
 }
 ```
+
 Stack: [a, b] → [floor(a/b)]
 Division by zero protection
 Floor division for integer results
@@ -94,6 +104,7 @@ Order matters: a / b (not commutative)
 **Added 14 comprehensive tests:**
 
 **Basic Operations:**
+
 1. SUB basic: 10 - 3 = 7
 2. DIV basic: 25 / 8 = 3
 
@@ -119,6 +130,7 @@ Order matters: a / b (not commutative)
 13. Combined arithmetic: (25+7) - (25/8) = 32 - 3 = 29
 
 **Coverage:**
+
 - Happy path (basic operations)
 - Edge cases (negatives, floor division, div by zero)
 - Integration (with drawing opcodes)
@@ -132,6 +144,7 @@ Order matters: a / b (not commutative)
 **Added 3 pedagogical examples:**
 
 **1. `proportionalSizing`** (intermediate)
+
 - Theme: Ratios and proportions using division
 - Pattern: Base size / factor for different scales
 - Visual: Three circles (40, 20, 10 = base, base/2, base/4)
@@ -139,6 +152,7 @@ Order matters: a / b (not commutative)
 - Concepts: arithmetic, drawing, transforms, stack
 
 **2. `relativeSizes`** (intermediate)
+
 - Theme: Differences and offsets using subtraction
 - Pattern: Base size minus varying offsets
 - Visual: Descending circles (35, 30, 25, 20 = base-0, base-5, base-10, base-15)
@@ -146,6 +160,7 @@ Order matters: a / b (not commutative)
 - Concepts: arithmetic, drawing, transforms, stack
 
 **3. `centeredComposition`** (advanced)
+
 - Theme: Centering and symmetry via division
 - Pattern: Compute center and symmetrical offsets
 - Visual: Center circle with symmetrical accents using computed positions
@@ -157,30 +172,35 @@ Order matters: a / b (not commutative)
 ## Use Cases Unlocked
 
 **1. Proportional Sizing (DIV)**
+
 ```
 PUSH 40, PUSH 2, DIV → 20 (half size)
 PUSH 40, PUSH 4, DIV → 10 (quarter size)
 ```
 
 **2. Relative Sizing (SUB)**
+
 ```
 PUSH 35, PUSH 5, SUB → 30 (base - offset)
 PUSH 35, PUSH 15, SUB → 20 (larger offset)
 ```
 
 **3. Centering (DIV)**
+
 ```
 PUSH diameter, PUSH 2, DIV → radius
 Compute center: canvas_size / 2
 ```
 
 **4. Gradients and Patterns**
+
 ```
 Base size - varying offsets = gradient
 Proportional ratios = harmonic relationships
 ```
 
 **5. Complex Formulas**
+
 ```
 (a + b) - (c / d) = multi-operation computation
 Enables algorithmic design patterns
@@ -189,6 +209,7 @@ Enables algorithmic design patterns
 ## Educational Value
 
 **For Students:**
+
 - **Complete arithmetic** - All four basic operations available
 - **Ratios and proportions** - Division for relative sizing
 - **Differences and gradients** - Subtraction for patterns
@@ -196,6 +217,7 @@ Enables algorithmic design patterns
 - **Negative numbers** - Subtraction can yield negatives
 
 **For Educators:**
+
 - **Complete CS fundamentals** - Full arithmetic instruction set
 - **Mathematical concepts** - Fractions, ratios, differences, proportions
 - **Design principles** - Proportional relationships, centering, symmetry
@@ -203,6 +225,7 @@ Enables algorithmic design patterns
 - **Floor division** - Integer arithmetic concepts
 
 **For Researchers:**
+
 - **Usage patterns** - Which operations are most used?
 - **Complexity adoption** - Do students use all four operations?
 - **Creative strategies** - Parametric vs static design preferences
@@ -221,6 +244,7 @@ Enables algorithmic design patterns
 ## Files Modified
 
 **Modified:**
+
 - `src/types.ts` (+8 LOC) - SUB/DIV opcodes, CODON_MAP, comments
 - `src/vm.ts` (+20 LOC) - SUB/DIV execution with safety checks
 - `src/vm.test.ts` (+114 LOC) - 14 comprehensive tests
@@ -231,6 +255,7 @@ Enables algorithmic design patterns
 ## Code Highlights
 
 **Safe Division Implementation:**
+
 ```typescript
 case Opcode.DIV: {
   const b = this.pop();
@@ -244,6 +269,7 @@ case Opcode.DIV: {
 ```
 
 **Comprehensive Edge Case Testing:**
+
 ```typescript
 // Negative results
 PUSH 7, PUSH 10, SUB → expect(-3)
@@ -259,6 +285,7 @@ PUSH 2, PUSH 7, DIV → expect(0) // floor(2/7) = 0
 ```
 
 **Pedagogical Examples:**
+
 ```
 ; Proportional sizing (ratios)
 PUSH 40, PUSH 2, DIV, CIRCLE  ; half size = 20
@@ -285,6 +312,7 @@ PUSH diameter, PUSH 2, DIV    ; radius = d/2
 **Decision Quality: ⭐⭐⭐⭐⭐ (5/5)**
 
 **Rationale:**
+
 - Logical continuation of Session 71 (completes arithmetic)
 - Strategic codon reallocation (NOP sacrifice acceptable)
 - Complete implementation (types, VM, tests, examples, safety)
@@ -292,6 +320,7 @@ PUSH diameter, PUSH 2, DIV    ; radius = d/2
 - Professional execution (all tests pass, clean build)
 
 **Impact Assessment:**
+
 - **Pedagogical:** HIGH - Complete arithmetic foundation, mathematical relationships
 - **Creative:** HIGH - Proportional design, gradients, computed layouts
 - **Technical:** HIGH - Safe implementation with error handling
@@ -300,22 +329,26 @@ PUSH diameter, PUSH 2, DIV    ; radius = d/2
 ## What Worked
 
 **1. Systematic Codon Analysis:**
+
 - Identified NOP as best split candidate (non-essential)
 - Maintained 2 NOP synonyms for silent mutations
 - Clean 2-2 split for SUB/DIV allocation
 
 **2. Safety-First Implementation:**
+
 - Division by zero protection with clear error messages
 - Floor division for integer results (keeps values bounded)
 - Stack underflow detection for both operations
 
 **3. Comprehensive Testing:**
+
 - 14 tests covering all scenarios
 - Edge cases (negatives, floor division, div by zero)
 - Integration tests with drawing opcodes
 - Complex multi-operation formulas
 
 **4. Pedagogical Examples:**
+
 - Three clear demonstrations of different use cases
 - Progressive complexity (proportions → differences → composition)
 - Real-world design patterns (centering, symmetry, gradients)
@@ -323,18 +356,21 @@ PUSH diameter, PUSH 2, DIV    ; radius = d/2
 ## Comparison to Session 71
 
 **Similarities:**
+
 - Codon reallocation strategy (split existing family)
 - RPN stack semantics (pop b, pop a, push result)
 - Comprehensive test coverage (14 vs 8 tests)
 - Pedagogical examples (3 vs 2)
 
 **Differences:**
+
 - Session 72 added safety checks (div by zero)
 - Session 72 uses floor division (integers vs floats)
 - Session 72 split NOP (Session 71 split NOISE)
 - Session 72 handles negatives (SUB can go below zero)
 
 **Together:**
+
 - Complete arithmetic suite (ADD, SUB, MUL, DIV)
 - +422 LOC total across 2 sessions
 - 22 combined tests for arithmetic operations
@@ -368,6 +404,7 @@ PUSH diameter, PUSH 2, DIV    ; radius = d/2
 ## Next Steps (Future Sessions)
 
 **Immediate (Session 73, ~45 min):**
+
 1. Update codon chart SVG (CAG=SUB, CAT=DIV, CAA/CAC=NOP)
 2. Update documentation referencing NOP/arithmetic codons
 3. Tutorial integration ("Complete Arithmetic" lesson)
@@ -397,6 +434,7 @@ PUSH diameter, PUSH 2, DIV    ; radius = d/2
 - **Pedagogical Examples**: 3 real-world use cases for computation
 
 **Autonomous Direction:**
+
 - Analyzed Session 71's work (ADD/MUL incomplete)
 - Identified educational gap (no ratios, differences, proportions)
 - Designed codon reallocation strategy (NOP split)

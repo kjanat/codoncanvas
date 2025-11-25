@@ -14,10 +14,15 @@
  * ```
  */
 
-import { AssessmentEngine, Challenge, AssessmentResult, DifficultyLevel } from './assessment-engine';
-import { MutationType } from './mutations';
-import { AchievementEngine } from './achievement-engine';
-import { AchievementUI } from './achievement-ui';
+import type { AchievementEngine } from "./achievement-engine";
+import type { AchievementUI } from "./achievement-ui";
+import type {
+  AssessmentEngine,
+  AssessmentResult,
+  Challenge,
+  DifficultyLevel,
+} from "./assessment-engine";
+import type { MutationType } from "./mutations";
 
 /**
  * UI manager for assessment mode.
@@ -28,7 +33,7 @@ export class AssessmentUI {
   private container: HTMLElement;
   private currentChallenge: Challenge | null = null;
   private results: AssessmentResult[] = [];
-  private difficulty: DifficultyLevel = 'easy';
+  private difficulty: DifficultyLevel = "easy";
   private achievementEngine?: AchievementEngine;
   private achievementUI?: AchievementUI;
 
@@ -47,7 +52,7 @@ export class AssessmentUI {
     engine: AssessmentEngine,
     container: HTMLElement,
     achievementEngine?: AchievementEngine,
-    achievementUI?: AchievementUI
+    achievementUI?: AchievementUI,
   ) {
     this.engine = engine;
     this.container = container;
@@ -61,7 +66,7 @@ export class AssessmentUI {
    * Show assessment mode UI.
    */
   show(): void {
-    this.container.style.display = 'block';
+    this.container.style.display = "block";
     this.startNewChallenge();
   }
 
@@ -69,7 +74,7 @@ export class AssessmentUI {
    * Hide assessment mode UI.
    */
   hide(): void {
-    this.container.style.display = 'none';
+    this.container.style.display = "none";
   }
 
   /**
@@ -84,11 +89,15 @@ export class AssessmentUI {
    */
   exportResults(): string {
     const progress = this.getProgress();
-    return JSON.stringify({
-      results: this.results,
-      progress,
-      timestamp: new Date().toISOString(),
-    }, null, 2);
+    return JSON.stringify(
+      {
+        results: this.results,
+        progress,
+        timestamp: new Date().toISOString(),
+      },
+      null,
+      2,
+    );
   }
 
   // ============= Private Methods =============
@@ -159,32 +168,49 @@ export class AssessmentUI {
     `;
 
     // Cache element references
-    this.challengeSection = this.container.querySelector('.challenge-section')!;
-    this.originalGenome = document.getElementById('original-genome')! as HTMLDivElement;
-    this.mutatedGenome = document.getElementById('mutated-genome')! as HTMLDivElement;
-    this.hintDisplay = document.getElementById('hint-display')! as HTMLDivElement;
-    this.feedbackDisplay = document.getElementById('feedback-display')! as HTMLDivElement;
-    this.progressDisplay = document.getElementById('progress-display')! as HTMLDivElement;
-    this.nextChallengeBtn = document.getElementById('next-challenge-btn')! as HTMLButtonElement;
-    this.difficultySelect = document.getElementById('difficulty-select')! as HTMLSelectElement;
+    this.challengeSection = this.container.querySelector(".challenge-section")!;
+    this.originalGenome = document.getElementById(
+      "original-genome",
+    )! as HTMLDivElement;
+    this.mutatedGenome = document.getElementById(
+      "mutated-genome",
+    )! as HTMLDivElement;
+    this.hintDisplay = document.getElementById(
+      "hint-display",
+    )! as HTMLDivElement;
+    this.feedbackDisplay = document.getElementById(
+      "feedback-display",
+    )! as HTMLDivElement;
+    this.progressDisplay = document.getElementById(
+      "progress-display",
+    )! as HTMLDivElement;
+    this.nextChallengeBtn = document.getElementById(
+      "next-challenge-btn",
+    )! as HTMLButtonElement;
+    this.difficultySelect = document.getElementById(
+      "difficulty-select",
+    )! as HTMLSelectElement;
 
     // Setup answer buttons
-    const buttons = this.container.querySelectorAll('.answer-btn');
-    buttons.forEach(btn => {
+    const buttons = this.container.querySelectorAll(".answer-btn");
+    buttons.forEach((btn) => {
       const type = (btn as HTMLButtonElement).dataset.type as MutationType;
       this.answerButtons.set(type, btn as HTMLButtonElement);
 
-      btn.addEventListener('click', () => this.submitAnswer(type));
+      btn.addEventListener("click", () => this.submitAnswer(type));
     });
 
     // Setup difficulty selector
-    this.difficultySelect.addEventListener('change', () => {
+    this.difficultySelect.addEventListener("change", () => {
       this.difficulty = this.difficultySelect.value as DifficultyLevel;
       this.startNewChallenge();
     });
 
     // Setup next challenge button
-    this.nextChallengeBtn.addEventListener('click', () => this.startNewChallenge());
+    this.nextChallengeBtn.addEventListener(
+      "click",
+      () => this.startNewChallenge(),
+    );
 
     // Add CSS styles
     this.injectStyles();
@@ -204,21 +230,22 @@ export class AssessmentUI {
 
     // Display hint if available
     if (this.currentChallenge.hint) {
-      this.hintDisplay.innerHTML = `<p>💡 <strong>Hint:</strong> ${this.currentChallenge.hint}</p>`;
-      this.hintDisplay.style.display = 'block';
+      this.hintDisplay.innerHTML =
+        `<p>💡 <strong>Hint:</strong> ${this.currentChallenge.hint}</p>`;
+      this.hintDisplay.style.display = "block";
     } else {
-      this.hintDisplay.style.display = 'none';
+      this.hintDisplay.style.display = "none";
     }
 
     // Reset UI
-    this.feedbackDisplay.innerHTML = '';
-    this.feedbackDisplay.style.display = 'none';
-    this.nextChallengeBtn.style.display = 'none';
+    this.feedbackDisplay.innerHTML = "";
+    this.feedbackDisplay.style.display = "none";
+    this.nextChallengeBtn.style.display = "none";
 
     // Enable answer buttons
-    this.answerButtons.forEach(btn => {
+    this.answerButtons.forEach((btn) => {
       btn.disabled = false;
-      btn.classList.remove('correct', 'incorrect');
+      btn.classList.remove("correct", "incorrect");
     });
   }
 
@@ -237,7 +264,7 @@ export class AssessmentUI {
     if (this.achievementEngine && this.achievementUI) {
       const unlocked = this.achievementEngine.trackChallengeCompleted(
         result.correct,
-        this.currentChallenge.correctAnswer
+        this.currentChallenge.correctAnswer,
       );
       this.achievementUI.handleUnlocks(unlocked);
     }
@@ -249,14 +276,14 @@ export class AssessmentUI {
     this.answerButtons.forEach((btn, type) => {
       btn.disabled = true;
       if (type === this.currentChallenge!.correctAnswer) {
-        btn.classList.add('correct');
+        btn.classList.add("correct");
       } else if (type === answer) {
-        btn.classList.add('incorrect');
+        btn.classList.add("incorrect");
       }
     });
 
     // Show next challenge button
-    this.nextChallengeBtn.style.display = 'inline-block';
+    this.nextChallengeBtn.style.display = "inline-block";
 
     // Update progress
     this.updateProgress();
@@ -267,16 +294,20 @@ export class AssessmentUI {
    * @internal
    */
   private displayFeedback(result: AssessmentResult): void {
-    const icon = result.correct ? '✅' : '❌';
-    const className = result.correct ? 'feedback-correct' : 'feedback-incorrect';
+    const icon = result.correct ? "✅" : "❌";
+    const className = result.correct
+      ? "feedback-correct"
+      : "feedback-incorrect";
 
     this.feedbackDisplay.innerHTML = `
       <div class="${className}">
-        <p><strong>${icon} ${result.correct ? 'Correct!' : 'Incorrect'}</strong></p>
+        <p><strong>${icon} ${
+      result.correct ? "Correct!" : "Incorrect"
+    }</strong></p>
         <p>${result.feedback}</p>
       </div>
     `;
-    this.feedbackDisplay.style.display = 'block';
+    this.feedbackDisplay.style.display = "block";
   }
 
   /**
@@ -287,13 +318,20 @@ export class AssessmentUI {
     const progress = this.engine.calculateProgress(this.results);
 
     // Track perfect score achievement
-    if (this.achievementEngine && this.achievementUI && progress.accuracy === 100) {
+    if (
+      this.achievementEngine &&
+      this.achievementUI &&
+      progress.accuracy === 100
+    ) {
       const unlocked = this.achievementEngine.trackPerfectScore();
       this.achievementUI.handleUnlocks(unlocked);
     }
 
-    const accuracyColor = progress.accuracy >= 80 ? '#28a745' :
-                         progress.accuracy >= 60 ? '#ffc107' : '#dc3545';
+    const accuracyColor = progress.accuracy >= 80
+      ? "#28a745"
+      : progress.accuracy >= 60
+      ? "#ffc107"
+      : "#dc3545";
 
     this.progressDisplay.innerHTML = `
       <div class="progress-summary">
@@ -316,7 +354,7 @@ export class AssessmentUI {
         </div>
       </div>
     `;
-    this.progressDisplay.style.display = 'block';
+    this.progressDisplay.style.display = "block";
   }
 
   /**
@@ -324,10 +362,10 @@ export class AssessmentUI {
    * @internal
    */
   private injectStyles(): void {
-    if (document.getElementById('assessment-ui-styles')) return;
+    if (document.getElementById("assessment-ui-styles")) return;
 
-    const style = document.createElement('style');
-    style.id = 'assessment-ui-styles';
+    const style = document.createElement("style");
+    style.id = "assessment-ui-styles";
     style.textContent = `
       .assessment-container {
         max-width: 900px;

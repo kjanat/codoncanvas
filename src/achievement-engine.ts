@@ -4,7 +4,11 @@
  * Designed to increase engagement and provide measurable learning goals
  */
 
-export type AchievementCategory = 'basics' | 'mastery' | 'exploration' | 'perfection';
+export type AchievementCategory =
+  | "basics"
+  | "mastery"
+  | "exploration"
+  | "perfection";
 
 export interface Achievement {
   id: string;
@@ -68,7 +72,7 @@ export class AchievementEngine {
   private achievements: Achievement[];
   private stats: PlayerStats;
   private unlockedAchievements: Map<string, UnlockedAchievement>;
-  private storageKey = 'codoncanvas_achievements';
+  private storageKey = "codoncanvas_achievements";
 
   constructor() {
     this.achievements = this.defineAchievements();
@@ -83,154 +87,161 @@ export class AchievementEngine {
     return [
       // ===== BASICS (Onboarding) =====
       {
-        id: 'first_genome',
-        name: 'First Genome',
-        description: 'Create and execute your first genome',
-        icon: '🧬',
-        category: 'basics',
-        condition: (stats) => stats.genomesExecuted >= 1
+        id: "first_genome",
+        name: "First Genome",
+        description: "Create and execute your first genome",
+        icon: "🧬",
+        category: "basics",
+        condition: (stats) => stats.genomesExecuted >= 1,
       },
       {
-        id: 'first_draw',
-        name: 'First Draw',
-        description: 'Successfully draw your first shape',
-        icon: '🎨',
-        category: 'basics',
-        condition: (stats) => stats.shapesDrawn >= 1
+        id: "first_draw",
+        name: "First Draw",
+        description: "Successfully draw your first shape",
+        icon: "🎨",
+        category: "basics",
+        condition: (stats) => stats.shapesDrawn >= 1,
       },
       {
-        id: 'first_mutation',
-        name: 'First Mutation',
-        description: 'Apply your first mutation to a genome',
-        icon: '🔄',
-        category: 'basics',
-        condition: (stats) => stats.mutationsApplied >= 1
+        id: "first_mutation",
+        name: "First Mutation",
+        description: "Apply your first mutation to a genome",
+        icon: "🔄",
+        category: "basics",
+        condition: (stats) => stats.mutationsApplied >= 1,
       },
       {
-        id: 'shape_explorer',
-        name: 'Shape Explorer',
-        description: 'Use all 5 shape opcodes (CIRCLE, RECT, LINE, TRIANGLE, ELLIPSE)',
-        icon: '🎭',
-        category: 'basics',
+        id: "shape_explorer",
+        name: "Shape Explorer",
+        description:
+          "Use all 5 shape opcodes (CIRCLE, RECT, LINE, TRIANGLE, ELLIPSE)",
+        icon: "🎭",
+        category: "basics",
         condition: (stats) => {
-          const shapeOpcodes = ['CIRCLE', 'RECT', 'LINE', 'TRIANGLE', 'ELLIPSE'];
-          return shapeOpcodes.every(op => stats.opcodesUsed.has(op));
-        }
+          const shapeOpcodes = [
+            "CIRCLE",
+            "RECT",
+            "LINE",
+            "TRIANGLE",
+            "ELLIPSE",
+          ];
+          return shapeOpcodes.every((op) => stats.opcodesUsed.has(op));
+        },
       },
 
       // ===== MASTERY (Skill Development) =====
       {
-        id: 'mutation_expert',
-        name: 'Mutation Expert',
-        description: 'Correctly identify 10 mutations in assessment mode',
-        icon: '🎯',
-        category: 'mastery',
-        condition: (stats) => stats.challengesCorrect >= 10
+        id: "mutation_expert",
+        name: "Mutation Expert",
+        description: "Correctly identify 10 mutations in assessment mode",
+        icon: "🎯",
+        category: "mastery",
+        condition: (stats) => stats.challengesCorrect >= 10,
       },
       {
-        id: 'perfect_score',
-        name: 'Perfect Score',
-        description: 'Achieve 100% accuracy on an assessment',
-        icon: '🏆',
-        category: 'mastery',
-        condition: (stats) => stats.perfectScores >= 1
+        id: "perfect_score",
+        name: "Perfect Score",
+        description: "Achieve 100% accuracy on an assessment",
+        icon: "🏆",
+        category: "mastery",
+        condition: (stats) => stats.perfectScores >= 1,
       },
       {
-        id: 'pattern_master',
-        name: 'Pattern Master',
-        description: 'Correctly identify all 6 mutation types at least once',
-        icon: '🔬',
-        category: 'mastery',
+        id: "pattern_master",
+        name: "Pattern Master",
+        description: "Correctly identify all 6 mutation types at least once",
+        icon: "🔬",
+        category: "mastery",
         condition: (stats) =>
           stats.silentIdentified >= 1 &&
           stats.missenseIdentified >= 1 &&
           stats.nonsenseIdentified >= 1 &&
           stats.frameshiftIdentified >= 1 &&
           stats.insertionIdentified >= 1 &&
-          stats.deletionIdentified >= 1
+          stats.deletionIdentified >= 1,
       },
       {
-        id: 'speed_runner',
-        name: 'Speed Runner',
-        description: 'Complete 5 assessment challenges in under 5 minutes',
-        icon: '⚡',
-        category: 'mastery',
-        condition: (stats) => stats.consecutiveCorrect >= 5 // Simplified condition
+        id: "speed_runner",
+        name: "Speed Runner",
+        description: "Complete 5 assessment challenges in under 5 minutes",
+        icon: "⚡",
+        category: "mastery",
+        condition: (stats) => stats.consecutiveCorrect >= 5, // Simplified condition
       },
 
       // ===== EXPLORATION (Discovery) =====
       {
-        id: 'color_artist',
-        name: 'Color Artist',
-        description: 'Use the COLOR opcode 10 times',
-        icon: '🌈',
-        category: 'exploration',
-        condition: (stats) => stats.colorsUsed >= 10
+        id: "color_artist",
+        name: "Color Artist",
+        description: "Use the COLOR opcode 10 times",
+        icon: "🌈",
+        category: "exploration",
+        condition: (stats) => stats.colorsUsed >= 10,
       },
       {
-        id: 'mad_scientist',
-        name: 'Mad Scientist',
-        description: 'Apply 100 total mutations across all your work',
-        icon: '🧪',
-        category: 'exploration',
-        condition: (stats) => stats.mutationsApplied >= 100
+        id: "mad_scientist",
+        name: "Mad Scientist",
+        description: "Apply 100 total mutations across all your work",
+        icon: "🧪",
+        category: "exploration",
+        condition: (stats) => stats.mutationsApplied >= 100,
       },
       {
-        id: 'audio_pioneer',
-        name: 'Audio Pioneer',
-        description: 'Experiment with audio synthesis mode',
-        icon: '🎼',
-        category: 'exploration',
-        condition: (stats) => stats.audioSynthesisUsed
+        id: "audio_pioneer",
+        name: "Audio Pioneer",
+        description: "Experiment with audio synthesis mode",
+        icon: "🎼",
+        category: "exploration",
+        condition: (stats) => stats.audioSynthesisUsed,
       },
       {
-        id: 'evolution_master',
-        name: 'Evolution Master',
-        description: 'Run 50 generations in evolution lab',
-        icon: '🧬',
-        category: 'exploration',
-        condition: (stats) => stats.evolutionGenerations >= 50
+        id: "evolution_master",
+        name: "Evolution Master",
+        description: "Run 50 generations in evolution lab",
+        icon: "🧬",
+        category: "exploration",
+        condition: (stats) => stats.evolutionGenerations >= 50,
       },
 
       // ===== PERFECTION (Excellence) =====
       {
-        id: 'flawless',
-        name: 'Flawless',
-        description: 'Get 10 consecutive correct assessments',
-        icon: '💎',
-        category: 'perfection',
-        condition: (stats) => stats.consecutiveCorrect >= 10
+        id: "flawless",
+        name: "Flawless",
+        description: "Get 10 consecutive correct assessments",
+        icon: "💎",
+        category: "perfection",
+        condition: (stats) => stats.consecutiveCorrect >= 10,
       },
       {
-        id: 'professor',
-        name: 'Professor',
-        description: 'Achieve 95%+ accuracy on 50+ assessment challenges',
-        icon: '🎓',
-        category: 'perfection',
+        id: "professor",
+        name: "Professor",
+        description: "Achieve 95%+ accuracy on 50+ assessment challenges",
+        icon: "🎓",
+        category: "perfection",
         condition: (stats) =>
           stats.challengesCompleted >= 50 &&
-          (stats.challengesCorrect / stats.challengesCompleted) >= 0.95
+          stats.challengesCorrect / stats.challengesCompleted >= 0.95,
       },
       {
-        id: 'elite_coder',
-        name: 'Elite Coder',
-        description: 'Create and execute a genome with over 100 codons',
-        icon: '🏅',
-        category: 'perfection',
-        condition: (stats) => stats.longestGenomeLength >= 100
+        id: "elite_coder",
+        name: "Elite Coder",
+        description: "Create and execute a genome with over 100 codons",
+        icon: "🏅",
+        category: "perfection",
+        condition: (stats) => stats.longestGenomeLength >= 100,
       },
       {
-        id: 'legend',
-        name: 'Legend',
-        description: 'Unlock all other achievements',
-        icon: '🌟',
-        category: 'perfection',
+        id: "legend",
+        name: "Legend",
+        description: "Unlock all other achievements",
+        icon: "🌟",
+        category: "perfection",
         condition: (stats) => {
           // Special logic handled in checkAchievements()
           return false; // Will be manually unlocked when all others complete
         },
-        hidden: true
-      }
+        hidden: true,
+      },
     ];
   }
 
@@ -261,7 +272,7 @@ export class AchievementEngine {
       timelineStepThroughs: 0,
       timeSpentMinutes: 0,
       sessionsCount: 0,
-      longestGenomeLength: 0
+      longestGenomeLength: 0,
     };
   }
 
@@ -281,7 +292,7 @@ export class AchievementEngine {
       }
       return parsed;
     } catch (e) {
-      console.error('Failed to load achievement stats:', e);
+      console.error("Failed to load achievement stats:", e);
       return this.getDefaultStats();
     }
   }
@@ -299,19 +310,19 @@ export class AchievementEngine {
 
       for (const [id, data] of Object.entries(parsed)) {
         const unlocked = data as any;
-        const achievement = this.achievements.find(a => a.id === id);
+        const achievement = this.achievements.find((a) => a.id === id);
         if (achievement) {
           map.set(id, {
             achievement,
             unlockedAt: new Date(unlocked.unlockedAt),
-            progress: unlocked.progress
+            progress: unlocked.progress,
           });
         }
       }
 
       return map;
     } catch (e) {
-      console.error('Failed to load unlocked achievements:', e);
+      console.error("Failed to load unlocked achievements:", e);
       return new Map();
     }
   }
@@ -324,9 +335,12 @@ export class AchievementEngine {
       // Save stats (convert Set to Array for JSON)
       const statsToSave = {
         ...this.stats,
-        opcodesUsed: Array.from(this.stats.opcodesUsed)
+        opcodesUsed: Array.from(this.stats.opcodesUsed),
       };
-      localStorage.setItem(`${this.storageKey}_stats`, JSON.stringify(statsToSave));
+      localStorage.setItem(
+        `${this.storageKey}_stats`,
+        JSON.stringify(statsToSave),
+      );
 
       // Save unlocked achievements
       const unlockedToSave: Record<string, any> = {};
@@ -334,12 +348,15 @@ export class AchievementEngine {
         unlockedToSave[id] = {
           achievementId: id,
           unlockedAt: data.unlockedAt.toISOString(),
-          progress: data.progress
+          progress: data.progress,
         };
       });
-      localStorage.setItem(`${this.storageKey}_unlocked`, JSON.stringify(unlockedToSave));
+      localStorage.setItem(
+        `${this.storageKey}_unlocked`,
+        JSON.stringify(unlockedToSave),
+      );
     } catch (e) {
-      console.error('Failed to save achievement data:', e);
+      console.error("Failed to save achievement data:", e);
     }
   }
 
@@ -362,7 +379,7 @@ export class AchievementEngine {
    */
   trackGenomeExecuted(opcodes: string[]): Achievement[] {
     this.stats.genomesExecuted++;
-    opcodes.forEach(op => this.stats.opcodesUsed.add(op));
+    opcodes.forEach((op) => this.stats.opcodesUsed.add(op));
     return this.checkAchievements();
   }
 
@@ -388,7 +405,7 @@ export class AchievementEngine {
    */
   trackColorUsed(): Achievement[] {
     this.stats.colorsUsed++;
-    this.stats.opcodesUsed.add('COLOR');
+    this.stats.opcodesUsed.add("COLOR");
     return this.checkAchievements();
   }
 
@@ -404,7 +421,10 @@ export class AchievementEngine {
   /**
    * Track assessment challenge completion
    */
-  trackChallengeCompleted(correct: boolean, mutationType: string): Achievement[] {
+  trackChallengeCompleted(
+    correct: boolean,
+    mutationType: string,
+  ): Achievement[] {
     this.stats.challengesCompleted++;
 
     if (correct) {
@@ -413,12 +433,24 @@ export class AchievementEngine {
 
       // Track mutation type identification
       switch (mutationType) {
-        case 'silent': this.stats.silentIdentified++; break;
-        case 'missense': this.stats.missenseIdentified++; break;
-        case 'nonsense': this.stats.nonsenseIdentified++; break;
-        case 'frameshift': this.stats.frameshiftIdentified++; break;
-        case 'insertion': this.stats.insertionIdentified++; break;
-        case 'deletion': this.stats.deletionIdentified++; break;
+        case "silent":
+          this.stats.silentIdentified++;
+          break;
+        case "missense":
+          this.stats.missenseIdentified++;
+          break;
+        case "nonsense":
+          this.stats.nonsenseIdentified++;
+          break;
+        case "frameshift":
+          this.stats.frameshiftIdentified++;
+          break;
+        case "insertion":
+          this.stats.insertionIdentified++;
+          break;
+        case "deletion":
+          this.stats.deletionIdentified++;
+          break;
       }
     } else {
       this.stats.consecutiveCorrect = 0;
@@ -471,27 +503,33 @@ export class AchievementEngine {
       if (this.unlockedAchievements.has(achievement.id)) continue;
 
       // Skip legend achievement (handled specially)
-      if (achievement.id === 'legend') continue;
+      if (achievement.id === "legend") continue;
 
       // Check condition
       if (achievement.condition(this.stats)) {
         this.unlockedAchievements.set(achievement.id, {
           achievement,
-          unlockedAt: new Date()
+          unlockedAt: new Date(),
         });
         newlyUnlocked.push(achievement);
       }
     }
 
     // Check if all non-legend achievements are unlocked
-    const nonLegendAchievements = this.achievements.filter(a => a.id !== 'legend');
-    const allUnlocked = nonLegendAchievements.every(a => this.unlockedAchievements.has(a.id));
+    const nonLegendAchievements = this.achievements.filter(
+      (a) => a.id !== "legend",
+    );
+    const allUnlocked = nonLegendAchievements.every((a) =>
+      this.unlockedAchievements.has(a.id)
+    );
 
-    if (allUnlocked && !this.unlockedAchievements.has('legend')) {
-      const legendAchievement = this.achievements.find(a => a.id === 'legend')!;
-      this.unlockedAchievements.set('legend', {
+    if (allUnlocked && !this.unlockedAchievements.has("legend")) {
+      const legendAchievement = this.achievements.find(
+        (a) => a.id === "legend",
+      )!;
+      this.unlockedAchievements.set("legend", {
         achievement: legendAchievement,
-        unlockedAt: new Date()
+        unlockedAt: new Date(),
       });
       newlyUnlocked.push(legendAchievement);
     }
@@ -515,15 +553,16 @@ export class AchievementEngine {
    * Get achievements by category
    */
   getAchievementsByCategory(category: AchievementCategory): Achievement[] {
-    return this.achievements.filter(a => a.category === category);
+    return this.achievements.filter((a) => a.category === category);
   }
 
   /**
    * Get unlocked achievements
    */
   getUnlockedAchievements(): UnlockedAchievement[] {
-    return Array.from(this.unlockedAchievements.values())
-      .sort((a, b) => b.unlockedAt.getTime() - a.unlockedAt.getTime());
+    return Array.from(this.unlockedAchievements.values()).sort(
+      (a, b) => b.unlockedAt.getTime() - a.unlockedAt.getTime(),
+    );
   }
 
   /**
@@ -562,13 +601,17 @@ export class AchievementEngine {
    * Export achievement data (for debugging or analytics)
    */
   export(): string {
-    return JSON.stringify({
-      stats: {
-        ...this.stats,
-        opcodesUsed: Array.from(this.stats.opcodesUsed)
+    return JSON.stringify(
+      {
+        stats: {
+          ...this.stats,
+          opcodesUsed: Array.from(this.stats.opcodesUsed),
+        },
+        unlocked: Array.from(this.unlockedAchievements.keys()),
+        progress: this.getProgressPercentage(),
       },
-      unlocked: Array.from(this.unlockedAchievements.keys()),
-      progress: this.getProgressPercentage()
-    }, null, 2);
+      null,
+      2,
+    );
   }
 }

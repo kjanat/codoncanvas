@@ -1,43 +1,44 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Population Genetics Simulator - CodonCanvas</title>
-  <style>
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Population Genetics Simulator - CodonCanvas</title>
+    <style>
     * {
-      margin: 0;
-      padding: 0;
       box-sizing: border-box;
+      padding: 0;
+      margin: 0;
     }
 
     body {
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
-      background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
-      color: #333;
       min-height: 100vh;
       padding: 20px;
+      font-family:
+        -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+      color: #333;
+      background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
     }
 
     .container {
       max-width: 1400px;
       margin: 0 auto;
+      overflow: hidden;
       background: white;
       border-radius: 12px;
       box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
-      overflow: hidden;
     }
 
     header {
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-      color: white;
       padding: 30px;
+      color: white;
       text-align: center;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     }
 
     header h1 {
-      font-size: 2.5em;
       margin-bottom: 10px;
+      font-size: 2.5em;
       text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
     }
 
@@ -51,23 +52,23 @@
     }
 
     .intro {
-      background: #f8f9fa;
-      border-left: 4px solid #667eea;
       padding: 20px;
       margin-bottom: 30px;
+      background: #f8f9fa;
+      border-left: 4px solid #667eea;
       border-radius: 4px;
     }
 
     .intro h2 {
-      color: #667eea;
       margin-bottom: 10px;
+      color: #667eea;
     }
 
     .controls {
-      background: #f8f9fa;
       padding: 20px;
-      border-radius: 8px;
       margin-bottom: 30px;
+      background: #f8f9fa;
+      border-radius: 8px;
     }
 
     .control-group {
@@ -76,24 +77,24 @@
 
     .control-group label {
       display: block;
-      font-weight: 600;
       margin-bottom: 8px;
+      font-weight: 600;
       color: #555;
     }
 
     .control-row {
       display: flex;
+      flex-wrap: wrap;
       gap: 15px;
       align-items: center;
-      flex-wrap: wrap;
     }
 
     input[type="number"], select, textarea {
       padding: 10px;
+      font-family: inherit;
+      font-size: 14px;
       border: 2px solid #ddd;
       border-radius: 6px;
-      font-size: 14px;
-      font-family: inherit;
       transition: border-color 0.3s;
     }
 
@@ -113,25 +114,25 @@
     textarea {
       width: 100%;
       min-height: 100px;
-      font-family: 'Courier New', monospace;
+      font-family: "Courier New", monospace;
       resize: vertical;
     }
 
     button {
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-      color: white;
-      border: none;
       padding: 12px 24px;
-      border-radius: 6px;
       font-size: 16px;
       font-weight: 600;
+      color: white;
       cursor: pointer;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      border: none;
+      border-radius: 6px;
       transition: transform 0.2s, box-shadow 0.2s;
     }
 
     button:hover {
-      transform: translateY(-2px);
       box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+      transform: translateY(-2px);
     }
 
     button:active {
@@ -139,15 +140,15 @@
     }
 
     button:disabled {
-      background: #ccc;
       cursor: not-allowed;
+      background: #ccc;
       transform: none;
     }
 
     .button-group {
       display: flex;
-      gap: 10px;
       flex-wrap: wrap;
+      gap: 10px;
     }
 
     .population-grid {
@@ -158,65 +159,65 @@
     }
 
     .organism-card {
-      border: 2px solid #ddd;
-      border-radius: 8px;
       overflow: hidden;
       background: white;
+      border: 2px solid #ddd;
+      border-radius: 8px;
       transition: transform 0.2s, box-shadow 0.2s;
     }
 
     .organism-card:hover {
-      transform: translateY(-4px);
       box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+      transform: translateY(-4px);
     }
 
     .organism-header {
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
       padding: 12px;
       font-weight: 600;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
+      color: white;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     }
 
     .generation-badge {
-      background: rgba(255, 255, 255, 0.3);
       padding: 4px 10px;
-      border-radius: 12px;
       font-size: 12px;
+      background: rgba(255, 255, 255, 0.3);
+      border-radius: 12px;
     }
 
     .organism-canvas {
+      display: block;
       width: 100%;
       height: 250px;
       background: #f8f9fa;
-      display: block;
     }
 
     .organism-genome {
+      max-height: 80px;
       padding: 12px;
-      font-family: 'Courier New', monospace;
+      overflow-y: auto;
+      font-family: "Courier New", monospace;
       font-size: 11px;
+      line-height: 1.4;
+      word-break: break-all;
       background: #f8f9fa;
       border-top: 1px solid #ddd;
-      max-height: 80px;
-      overflow-y: auto;
-      word-break: break-all;
-      line-height: 1.4;
     }
 
     .mutation-highlight {
-      background: #ffd700;
       padding: 2px;
+      background: #ffd700;
       border-radius: 2px;
     }
 
     .stats-panel {
-      background: #f8f9fa;
-      border-radius: 8px;
       padding: 20px;
       margin-bottom: 30px;
+      background: #f8f9fa;
+      border-radius: 8px;
     }
 
     .stats-grid {
@@ -226,16 +227,16 @@
     }
 
     .stat-card {
-      background: white;
       padding: 15px;
-      border-radius: 6px;
+      background: white;
       border-left: 4px solid #667eea;
+      border-radius: 6px;
     }
 
     .stat-label {
-      color: #666;
-      font-size: 14px;
       margin-bottom: 5px;
+      font-size: 14px;
+      color: #666;
     }
 
     .stat-value {
@@ -245,16 +246,16 @@
     }
 
     .info-box {
-      background: #e3f2fd;
-      border-left: 4px solid #2196f3;
       padding: 15px;
       margin: 20px 0;
+      background: #e3f2fd;
+      border-left: 4px solid #2196f3;
       border-radius: 4px;
     }
 
     .info-box h3 {
-      color: #1976d2;
       margin-bottom: 8px;
+      color: #1976d2;
     }
 
     .info-box ul {
@@ -266,17 +267,17 @@
     }
 
     footer {
-      background: #f8f9fa;
       padding: 20px;
-      text-align: center;
       color: #666;
+      text-align: center;
+      background: #f8f9fa;
       border-top: 1px solid #ddd;
     }
 
     footer a {
+      font-weight: 600;
       color: #667eea;
       text-decoration: none;
-      font-weight: 600;
     }
 
     footer a:hover {
@@ -292,136 +293,195 @@
         grid-template-columns: 1fr;
       }
     }
-  </style>
-</head>
-<body>
-  <div class="container">
-    <header>
-      <h1>🧬 Population Genetics Simulator</h1>
-      <p>Observe genetic drift and evolutionary divergence in real-time</p>
-    </header>
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <header>
+        <h1>🧬 Population Genetics Simulator</h1>
+        <p>Observe genetic drift and evolutionary divergence in real-time</p>
+      </header>
 
-    <div class="content">
-      <div class="intro">
-        <h2>About This Simulation</h2>
+      <div class="content">
+        <div class="intro">
+          <h2>About This Simulation</h2>
+          <p>
+            Start with a population of <strong>identical genomes</strong> and
+            watch them <strong>diverge</strong>
+            through random mutations over generations. This demonstrates
+            fundamental concepts in population genetics:
+          </p>
+          <ul style="margin: 10px 0 10px 30px">
+            <li>
+              <strong>Genetic Drift:</strong> Random changes in allele
+              frequencies between generations
+            </li>
+            <li>
+              <strong>Mutation Accumulation:</strong> How populations accumulate
+              genetic differences over time
+            </li>
+            <li>
+              <strong>Divergent Evolution:</strong> How identical ancestors
+              produce varied descendants
+            </li>
+            <li>
+              <strong>Fitness Landscapes:</strong> How different mutations
+              affect phenotypic outcomes
+            </li>
+          </ul>
+        </div>
+
+        <div class="controls">
+          <div class="control-group">
+            <label>Founder Genome (all organisms start with this):</label>
+            <textarea id="founderGenome">ATG GAA CCC GGA TAA</textarea>
+          </div>
+
+          <div class="control-group">
+            <label>Population Parameters:</label>
+            <div class="control-row">
+              <div>
+                <label
+                  for="popSize"
+                  style="font-weight: normal; font-size: 13px"
+                >Population Size:</label>
+                <input type="number" id="popSize" min="2" max="12" value="6">
+              </div>
+              <div>
+                <label
+                  for="mutationRate"
+                  style="font-weight: normal; font-size: 13px"
+                >Mutation Rate (%):</label>
+                <input
+                  type="number"
+                  id="mutationRate"
+                  min="0"
+                  max="100"
+                  value="15"
+                  step="5"
+                >
+              </div>
+              <div>
+                <label
+                  for="generationDelay"
+                  style="font-weight: normal; font-size: 13px"
+                >Generation Delay (ms):</label>
+                <input
+                  type="number"
+                  id="generationDelay"
+                  min="100"
+                  max="5000"
+                  value="1000"
+                  step="100"
+                >
+              </div>
+            </div>
+          </div>
+
+          <div class="control-group">
+            <label>Mutation Type Distribution:</label>
+            <div class="control-row">
+              <div>
+                <label
+                  for="mutationType"
+                  style="font-weight: normal; font-size: 13px"
+                >Type:</label>
+                <select id="mutationType">
+                  <option value="balanced">Balanced (all types)</option>
+                  <option value="point-only">Point mutations only</option>
+                  <option value="frameshift-heavy">Frameshift-heavy</option>
+                  <option value="conservative">
+                    Conservative (70% silent)
+                  </option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <div class="button-group">
+            <button id="startBtn">Start Simulation</button>
+            <button id="pauseBtn" disabled>Pause</button>
+            <button id="resetBtn">Reset Population</button>
+            <button id="stepBtn">Single Generation</button>
+          </div>
+        </div>
+
+        <div class="stats-panel">
+          <h2 style="margin-bottom: 15px">Population Statistics</h2>
+          <div class="stats-grid">
+            <div class="stat-card">
+              <div class="stat-label">Current Generation</div>
+              <div class="stat-value" id="currentGen">0</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-label">Total Mutations</div>
+              <div class="stat-value" id="totalMutations">0</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-label">Genetic Diversity</div>
+              <div class="stat-value" id="diversity">0%</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-label">Unique Genomes</div>
+              <div class="stat-value" id="uniqueGenomes">1</div>
+            </div>
+          </div>
+        </div>
+
+        <h2 style="margin-bottom: 20px">
+          Population (Generation <span id="generationDisplay">0</span>)
+        </h2>
+        <div class="population-grid" id="populationGrid"></div>
+
+        <div class="info-box">
+          <h3>💡 Observation Tips</h3>
+          <ul>
+            <li>
+              <strong>Watch for divergence:</strong> Identical starting genomes
+              become visually distinct over generations
+            </li>
+            <li>
+              <strong>Mutation types matter:</strong> Frameshift mutations cause
+              dramatic phenotypic changes
+            </li>
+            <li>
+              <strong>Genetic diversity increases:</strong> The "Unique Genomes"
+              stat tracks how many distinct variants exist
+            </li>
+            <li>
+              <strong>Some lineages fail:</strong> Nonsense mutations (early
+              STOP) produce truncated phenotypes
+            </li>
+            <li>
+              <strong>Try different rates:</strong> High mutation rates
+              (&gt;30%) accelerate divergence, low rates (&lt;5%) show drift
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <footer>
         <p>
-          Start with a population of <strong>identical genomes</strong> and watch them <strong>diverge</strong>
-          through random mutations over generations. This demonstrates fundamental concepts in population genetics:
+          <strong>CodonCanvas Population Genetics Simulator</strong><br>
+          Explore more demos:
+          <a href="index.html">Playground</a> |
+          <a href="mutation-demo.html">Mutation Lab</a> |
+          <a href="evolution-demo.html">Evolution Lab</a> |
+          <a href="timeline-demo.html">Timeline Scrubber</a>
         </p>
-        <ul style="margin: 10px 0 10px 30px;">
-          <li><strong>Genetic Drift:</strong> Random changes in allele frequencies between generations</li>
-          <li><strong>Mutation Accumulation:</strong> How populations accumulate genetic differences over time</li>
-          <li><strong>Divergent Evolution:</strong> How identical ancestors produce varied descendants</li>
-          <li><strong>Fitness Landscapes:</strong> How different mutations affect phenotypic outcomes</li>
-        </ul>
-      </div>
-
-      <div class="controls">
-        <div class="control-group">
-          <label>Founder Genome (all organisms start with this):</label>
-          <textarea id="founderGenome">ATG GAA CCC GGA TAA</textarea>
-        </div>
-
-        <div class="control-group">
-          <label>Population Parameters:</label>
-          <div class="control-row">
-            <div>
-              <label for="popSize" style="font-weight: normal; font-size: 13px;">Population Size:</label>
-              <input type="number" id="popSize" min="2" max="12" value="6">
-            </div>
-            <div>
-              <label for="mutationRate" style="font-weight: normal; font-size: 13px;">Mutation Rate (%):</label>
-              <input type="number" id="mutationRate" min="0" max="100" value="15" step="5">
-            </div>
-            <div>
-              <label for="generationDelay" style="font-weight: normal; font-size: 13px;">Generation Delay (ms):</label>
-              <input type="number" id="generationDelay" min="100" max="5000" value="1000" step="100">
-            </div>
-          </div>
-        </div>
-
-        <div class="control-group">
-          <label>Mutation Type Distribution:</label>
-          <div class="control-row">
-            <div>
-              <label for="mutationType" style="font-weight: normal; font-size: 13px;">Type:</label>
-              <select id="mutationType">
-                <option value="balanced">Balanced (all types)</option>
-                <option value="point-only">Point mutations only</option>
-                <option value="frameshift-heavy">Frameshift-heavy</option>
-                <option value="conservative">Conservative (70% silent)</option>
-              </select>
-            </div>
-          </div>
-        </div>
-
-        <div class="button-group">
-          <button id="startBtn">Start Simulation</button>
-          <button id="pauseBtn" disabled>Pause</button>
-          <button id="resetBtn">Reset Population</button>
-          <button id="stepBtn">Single Generation</button>
-        </div>
-      </div>
-
-      <div class="stats-panel">
-        <h2 style="margin-bottom: 15px;">Population Statistics</h2>
-        <div class="stats-grid">
-          <div class="stat-card">
-            <div class="stat-label">Current Generation</div>
-            <div class="stat-value" id="currentGen">0</div>
-          </div>
-          <div class="stat-card">
-            <div class="stat-label">Total Mutations</div>
-            <div class="stat-value" id="totalMutations">0</div>
-          </div>
-          <div class="stat-card">
-            <div class="stat-label">Genetic Diversity</div>
-            <div class="stat-value" id="diversity">0%</div>
-          </div>
-          <div class="stat-card">
-            <div class="stat-label">Unique Genomes</div>
-            <div class="stat-value" id="uniqueGenomes">1</div>
-          </div>
-        </div>
-      </div>
-
-      <h2 style="margin-bottom: 20px;">Population (Generation <span id="generationDisplay">0</span>)</h2>
-      <div class="population-grid" id="populationGrid"></div>
-
-      <div class="info-box">
-        <h3>💡 Observation Tips</h3>
-        <ul>
-          <li><strong>Watch for divergence:</strong> Identical starting genomes become visually distinct over generations</li>
-          <li><strong>Mutation types matter:</strong> Frameshift mutations cause dramatic phenotypic changes</li>
-          <li><strong>Genetic diversity increases:</strong> The "Unique Genomes" stat tracks how many distinct variants exist</li>
-          <li><strong>Some lineages fail:</strong> Nonsense mutations (early STOP) produce truncated phenotypes</li>
-          <li><strong>Try different rates:</strong> High mutation rates (&gt;30%) accelerate divergence, low rates (&lt;5%) show drift</li>
-        </ul>
-      </div>
+      </footer>
     </div>
 
-    <footer>
-      <p>
-        <strong>CodonCanvas Population Genetics Simulator</strong><br>
-        Explore more demos:
-        <a href="index.html">Playground</a> |
-        <a href="mutation-demo.html">Mutation Lab</a> |
-        <a href="evolution-demo.html">Evolution Lab</a> |
-        <a href="timeline-demo.html">Timeline Scrubber</a>
-      </p>
-    </footer>
-  </div>
-
-  <script type="module">
-    import { CodonLexer } from './src/lexer.ts';
-    import { CodonVM } from './src/vm.ts';
-    import { Canvas2DRenderer } from './src/renderer.ts';
+    <script type="module">
+    import { CodonLexer } from "./src/lexer.ts";
     import {
-      applyPointMutation,
-      applyInsertion,
       applyDeletion,
-      applyFrameshiftMutation
-    } from './src/mutations.ts';
+      applyFrameshiftMutation,
+      applyInsertion,
+      applyPointMutation,
+    } from "./src/mutations.ts";
+    import { Canvas2DRenderer } from "./src/renderer.ts";
+    import { CodonVM } from "./src/vm.ts";
 
     // Population state
     let population = [];
@@ -429,24 +489,24 @@
     let totalMutations = 0;
     let isRunning = false;
     let intervalId = null;
-    let founderGenome = '';
+    let founderGenome = "";
 
     // DOM elements
-    const founderGenomeInput = document.getElementById('founderGenome');
-    const popSizeInput = document.getElementById('popSize');
-    const mutationRateInput = document.getElementById('mutationRate');
-    const generationDelayInput = document.getElementById('generationDelay');
-    const mutationTypeSelect = document.getElementById('mutationType');
-    const startBtn = document.getElementById('startBtn');
-    const pauseBtn = document.getElementById('pauseBtn');
-    const resetBtn = document.getElementById('resetBtn');
-    const stepBtn = document.getElementById('stepBtn');
-    const populationGrid = document.getElementById('populationGrid');
-    const currentGenSpan = document.getElementById('currentGen');
-    const totalMutationsSpan = document.getElementById('totalMutations');
-    const diversitySpan = document.getElementById('diversity');
-    const uniqueGenomesSpan = document.getElementById('uniqueGenomes');
-    const generationDisplay = document.getElementById('generationDisplay');
+    const founderGenomeInput = document.getElementById("founderGenome");
+    const popSizeInput = document.getElementById("popSize");
+    const mutationRateInput = document.getElementById("mutationRate");
+    const generationDelayInput = document.getElementById("generationDelay");
+    const mutationTypeSelect = document.getElementById("mutationType");
+    const startBtn = document.getElementById("startBtn");
+    const pauseBtn = document.getElementById("pauseBtn");
+    const resetBtn = document.getElementById("resetBtn");
+    const stepBtn = document.getElementById("stepBtn");
+    const populationGrid = document.getElementById("populationGrid");
+    const currentGenSpan = document.getElementById("currentGen");
+    const totalMutationsSpan = document.getElementById("totalMutations");
+    const diversitySpan = document.getElementById("diversity");
+    const uniqueGenomesSpan = document.getElementById("uniqueGenomes");
+    const generationDisplay = document.getElementById("generationDisplay");
 
     // Initialize population
     function initializePopulation() {
@@ -458,7 +518,7 @@
         genome: founderGenome,
         generation: 0,
         mutations: [],
-        parentId: null
+        parentId: null,
       }));
 
       generation = 0;
@@ -474,10 +534,10 @@
 
       let result;
       switch (mutationType) {
-        case 'point-only':
+        case "point-only":
           result = applyPointMutation(genome);
           break;
-        case 'frameshift-heavy':
+        case "frameshift-heavy":
           if (rand < 0.6) {
             result = applyFrameshiftMutation(genome);
           } else if (rand < 0.8) {
@@ -486,7 +546,7 @@
             result = applyPointMutation(genome);
           }
           break;
-        case 'conservative':
+        case "conservative":
           if (rand < 0.7) {
             // Silent mutation - pick a codon and replace with synonymous
             result = applyPointMutation(genome);
@@ -533,7 +593,7 @@
           genome: newGenome,
           generation,
           mutations,
-          parentId: organism.id
+          parentId: organism.id,
         };
       });
 
@@ -543,32 +603,34 @@
 
     // Render population grid
     function renderPopulation() {
-      populationGrid.innerHTML = '';
+      populationGrid.innerHTML = "";
       generationDisplay.textContent = generation;
 
       population.forEach((organism, idx) => {
-        const card = document.createElement('div');
-        card.className = 'organism-card';
+        const card = document.createElement("div");
+        card.className = "organism-card";
 
-        const header = document.createElement('div');
-        header.className = 'organism-header';
+        const header = document.createElement("div");
+        header.className = "organism-header";
         header.innerHTML = `
           <span>Organism ${idx + 1}</span>
           <span class="generation-badge">Gen ${organism.generation}</span>
         `;
 
-        const canvas = document.createElement('canvas');
-        canvas.className = 'organism-canvas';
+        const canvas = document.createElement("canvas");
+        canvas.className = "organism-canvas";
         canvas.width = 400;
         canvas.height = 400;
 
-        const genomeDiv = document.createElement('div');
-        genomeDiv.className = 'organism-genome';
+        const genomeDiv = document.createElement("div");
+        genomeDiv.className = "organism-genome";
 
         // Highlight mutations if any
         let genomeDisplay = organism.genome;
         if (organism.mutations.length > 0) {
-          genomeDisplay = `<span class="mutation-highlight" title="${organism.mutations.join(', ')}">${organism.genome}</span>`;
+          genomeDisplay = `<span class="mutation-highlight" title="${
+            organism.mutations.join(", ")
+          }">${organism.genome}</span>`;
           genomeDiv.innerHTML = genomeDisplay;
         } else {
           genomeDiv.textContent = organism.genome;
@@ -587,15 +649,23 @@
           const vm = new CodonVM(renderer);
           vm.run(tokens);
         } catch (error) {
-          const ctx = canvas.getContext('2d');
-          ctx.fillStyle = '#ffebee';
+          const ctx = canvas.getContext("2d");
+          ctx.fillStyle = "#ffebee";
           ctx.fillRect(0, 0, canvas.width, canvas.height);
-          ctx.fillStyle = '#c62828';
-          ctx.font = '14px sans-serif';
-          ctx.textAlign = 'center';
-          ctx.fillText('Render Error', canvas.width / 2, canvas.height / 2 - 10);
-          ctx.font = '11px sans-serif';
-          ctx.fillText(error.message.substring(0, 40), canvas.width / 2, canvas.height / 2 + 10);
+          ctx.fillStyle = "#c62828";
+          ctx.font = "14px sans-serif";
+          ctx.textAlign = "center";
+          ctx.fillText(
+            "Render Error",
+            canvas.width / 2,
+            canvas.height / 2 - 10,
+          );
+          ctx.font = "11px sans-serif";
+          ctx.fillText(
+            error.message.substring(0, 40),
+            canvas.width / 2,
+            canvas.height / 2 + 10,
+          );
         }
       });
     }
@@ -607,14 +677,16 @@
 
       // Calculate genetic diversity (unique genomes / total)
       const uniqueGenomes = new Set(population.map(org => org.genome)).size;
-      const diversity = ((uniqueGenomes / population.length) * 100).toFixed(0);
+      const diversity = ((uniqueGenomes / population.length) * 100).toFixed(
+        0,
+      );
 
-      diversitySpan.textContent = diversity + '%';
+      diversitySpan.textContent = diversity + "%";
       uniqueGenomesSpan.textContent = uniqueGenomes;
     }
 
     // Event handlers
-    startBtn.addEventListener('click', () => {
+    startBtn.addEventListener("click", () => {
       if (!isRunning) {
         isRunning = true;
         startBtn.disabled = true;
@@ -626,7 +698,7 @@
       }
     });
 
-    pauseBtn.addEventListener('click', () => {
+    pauseBtn.addEventListener("click", () => {
       if (isRunning) {
         isRunning = false;
         startBtn.disabled = false;
@@ -636,7 +708,7 @@
       }
     });
 
-    resetBtn.addEventListener('click', () => {
+    resetBtn.addEventListener("click", () => {
       if (isRunning) {
         clearInterval(intervalId);
         isRunning = false;
@@ -647,12 +719,12 @@
       initializePopulation();
     });
 
-    stepBtn.addEventListener('click', () => {
+    stepBtn.addEventListener("click", () => {
       advanceGeneration();
     });
 
     // Initialize on load
     initializePopulation();
-  </script>
-</body>
+    </script>
+  </body>
 </html>

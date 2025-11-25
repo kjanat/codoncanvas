@@ -9,19 +9,19 @@ TEMP_DIR="codoncanvas-examples"
 echo "📦 Creating CodonCanvas Examples distribution..."
 
 # Clean old artifacts
-rm -rf "$TEMP_DIR" "$OUTPUT"
+rm -rf "${TEMP_DIR}" "${OUTPUT}"
 
 # Create temp directory structure
-mkdir -p "$TEMP_DIR"
+mkdir -p "${TEMP_DIR}"
 
 # Copy examples
-cp -r examples/* "$TEMP_DIR/"
+cp -r examples/* "${TEMP_DIR}/"
 
 # Copy codon chart reference
-cp codon-chart.svg "$TEMP_DIR/"
+cp codon-chart.svg "${TEMP_DIR}/"
 
 # Copy quick start from student handouts (extract relevant section)
-cat > "$TEMP_DIR/QUICK_START.txt" << 'EOF'
+cat > "${TEMP_DIR}/QUICK_START.txt" << 'EOF'
 CodonCanvas Quick Start
 =======================
 
@@ -54,10 +54,11 @@ See EDUCATORS.md and STUDENT_HANDOUTS.md for lesson plans
 EOF
 
 # Create distribution info
-cat > "$TEMP_DIR/VERSION.txt" << EOF
+BUILD_DATE=$(date +%Y-%m-%d) || true
+cat > "${TEMP_DIR}/VERSION.txt" << EOF
 CodonCanvas Example Programs
 Version: 1.0.0
-Date: $(date +%Y-%m-%d)
+Date: ${BUILD_DATE}
 Contents: 18 example .genome files + documentation
 License: MIT
 
@@ -71,14 +72,15 @@ Docs: https://github.com/codoncanvas/codoncanvas
 EOF
 
 # Create ZIP
-zip -r "$OUTPUT" "$TEMP_DIR" > /dev/null
+zip -r "${OUTPUT}" "${TEMP_DIR}" > /dev/null
 
 # Cleanup
-rm -rf "$TEMP_DIR"
+rm -rf "${TEMP_DIR}"
 
 # Report
-SIZE=$(du -h "$OUTPUT" | cut -f1)
-echo "✅ Created $OUTPUT ($SIZE)"
+SIZE=$(du -h "${OUTPUT}" | cut -f1) || true
+SIZE=${SIZE:-unknown}
+echo "✅ Created ${OUTPUT} (${SIZE})"
 echo "📊 Contents:"
 echo "   - 18 example .genome files"
 echo "   - examples/README.md (usage guide)"

@@ -123,9 +123,10 @@ export class Stats {
 
   static sd(values: number[], sample = true): number {
     if (values.length === 0) return 0;
-    const m = this.mean(values);
+    const m = Stats.mean(values);
     const divisor = sample ? values.length - 1 : values.length;
-    const variance = values.reduce((sum, val) => sum + Math.pow(val - m, 2), 0) / divisor;
+    const variance = values.reduce((sum, val) => sum + (val - m) ** 2, 0) /
+      divisor;
     return Math.sqrt(variance);
   }
 
@@ -160,26 +161,29 @@ export class Stats {
   static descriptive(values: number[]): DescriptiveStats {
     return {
       n: values.length,
-      mean: this.mean(values),
-      sd: this.sd(values),
-      min: this.min(values),
-      max: this.max(values),
-      median: this.median(values),
-      q1: this.quartile(values, 1),
-      q3: this.quartile(values, 3)
+      mean: Stats.mean(values),
+      sd: Stats.sd(values),
+      min: Stats.min(values),
+      max: Stats.max(values),
+      median: Stats.median(values),
+      q1: Stats.quartile(values, 1),
+      q3: Stats.quartile(values, 3),
     };
   }
 
   /**
    * Independent samples t-test
    */
-  static tTest(group1: number[], group2: number[]): { t: number; df: number; p: number } {
+  static tTest(
+    group1: number[],
+    group2: number[],
+  ): { t: number; df: number; p: number } {
     const n1 = group1.length;
     const n2 = group2.length;
-    const m1 = this.mean(group1);
-    const m2 = this.mean(group2);
-    const v1 = Math.pow(this.sd(group1), 2);
-    const v2 = Math.pow(this.sd(group2), 2);
+    const m1 = Stats.mean(group1);
+    const m2 = Stats.mean(group2);
+    const v1 = Stats.sd(group1) ** 2;
+    const v2 = Stats.sd(group2) ** 2;
 
     const pooledVar = ((n1 - 1) * v1 + (n2 - 1) * v2) / (n1 + n2 - 2);
     const se = Math.sqrt(pooledVar * (1 / n1 + 1 / n2));
@@ -187,7 +191,7 @@ export class Stats {
     const t = (m1 - m2) / se;
     const df = n1 + n2 - 2;
 
-    const p = this.tDistribution(Math.abs(t), df);
+    const p = Stats.tDistribution(Math.abs(t), df);
 
     return { t, df, p };
   }
@@ -198,10 +202,10 @@ export class Stats {
   static cohensD(group1: number[], group2: number[]): number {
     const n1 = group1.length;
     const n2 = group2.length;
-    const m1 = this.mean(group1);
-    const m2 = this.mean(group2);
-    const v1 = Math.pow(this.sd(group1), 2);
-    const v2 = Math.pow(this.sd(group2), 2);
+    const m1 = Stats.mean(group1);
+    const m2 = Stats.mean(group2);
+    const v1 = Stats.sd(group1) ** 2;
+    const v2 = Stats.sd(group2) ** 2;
 
     const pooledSD = Math.sqrt(((n1 - 1) * v1 + (n2 - 1) * v2) / (n1 + n2 - 2));
     return (m1 - m2) / pooledSD;
@@ -212,11 +216,11 @@ export class Stats {
    */
   static tDistribution(t: number, df: number): number {
     if (df > 30) {
-      return 2 * (1 - this.normalCDF(t));
+      return 2 * (1 - Stats.normalCDF(t));
     }
 
     const x = df / (df + t * t);
-    const p = 1 - 0.5 * Math.pow(x, df / 2);
+    const p = 1 - 0.5 * x ** (df / 2);
     return 2 * Math.min(p, 1 - p);
   }
 
@@ -225,9 +229,8 @@ export class Stats {
    */
   static normalCDF(z: number): number {
     const t = 1 / (1 + 0.2316419 * Math.abs(z));
-    const d = 0.3989423 * Math.exp(-z * z / 2);
-    const p =
-      d *
+    const d = 0.3989423 * Math.exp((-z * z) / 2);
+    const p = d *
       t *
       (0.3193815 +
         t * (-0.3565638 + t * (1.781478 + t * (-1.821256 + t * 1.330274))));
@@ -236,18 +239,18 @@ export class Stats {
 
   static interpretEffectSize(d: number): string {
     const abs = Math.abs(d);
-    if (abs < 0.2) return 'negligible';
-    if (abs < 0.5) return 'small';
-    if (abs < 0.8) return 'medium';
-    return 'large';
+    if (abs < 0.2) return "negligible";
+    if (abs < 0.5) return "small";
+    if (abs < 0.8) return "medium";
+    return "large";
   }
 
   static interpretPValue(p: number): string {
-    if (p < 0.001) return 'highly significant (p < .001)';
-    if (p < 0.01) return 'very significant (p < .01)';
-    if (p < 0.05) return 'significant (p < .05)';
-    if (p < 0.10) return 'marginally significant (p < .10)';
-    return 'not significant (p ≥ .10)';
+    if (p < 0.001) return "highly significant (p < .001)";
+    if (p < 0.01) return "very significant (p < .01)";
+    if (p < 0.05) return "significant (p < .05)";
+    if (p < 0.1) return "marginally significant (p < .10)";
+    return "not significant (p ≥ .10)";
   }
 }
 
@@ -266,10 +269,16 @@ export class MetricsAnalyzer {
    * Calculate engagement metrics
    */
   engagementMetrics(): EngagementMetrics {
-    const durations = this.sessions.map(s => s.duration);
-    const genomes = this.sessions.map(s => s.genomesCreated);
-    const totalGenomes = this.sessions.reduce((sum, s) => sum + s.genomesCreated, 0);
-    const totalExecuted = this.sessions.reduce((sum, s) => sum + s.genomesExecuted, 0);
+    const durations = this.sessions.map((s) => s.duration);
+    const genomes = this.sessions.map((s) => s.genomesCreated);
+    const totalGenomes = this.sessions.reduce(
+      (sum, s) => sum + s.genomesCreated,
+      0,
+    );
+    const totalExecuted = this.sessions.reduce(
+      (sum, s) => sum + s.genomesExecuted,
+      0,
+    );
 
     return {
       totalSessions: this.sessions.length,
@@ -277,8 +286,10 @@ export class MetricsAnalyzer {
       avgSessionDuration: Stats.descriptive(durations),
       totalGenomesCreated: totalGenomes,
       avgGenomesPerSession: Stats.descriptive(genomes),
-      genomesExecutedRate: totalGenomes > 0 ? (totalExecuted / totalGenomes) * 100 : 0,
-      retentionRate: this.sessions.length > 1 ? 100 : 0
+      genomesExecutedRate: totalGenomes > 0
+        ? (totalExecuted / totalGenomes) * 100
+        : 0,
+      retentionRate: this.sessions.length > 1 ? 100 : 0,
     };
   }
 
@@ -287,7 +298,7 @@ export class MetricsAnalyzer {
    */
   learningVelocity(): LearningVelocity {
     const ttfa = this.sessions
-      .map(s => s.timeToFirstArtifact)
+      .map((s) => s.timeToFirstArtifact)
       .filter((t): t is number => t !== null);
 
     const FIVE_MIN = 5 * 60 * 1000;
@@ -295,10 +306,12 @@ export class MetricsAnalyzer {
 
     return {
       timeToFirstArtifact: Stats.descriptive(ttfa),
-      fastLearners: ttfa.filter(t => t < FIVE_MIN).length,
-      moderateLearners: ttfa.filter(t => t >= FIVE_MIN && t < FIFTEEN_MIN).length,
-      slowLearners: ttfa.filter(t => t >= FIFTEEN_MIN).length,
-      noArtifact: this.sessions.filter(s => s.timeToFirstArtifact === null).length
+      fastLearners: ttfa.filter((t) => t < FIVE_MIN).length,
+      moderateLearners: ttfa.filter((t) => t >= FIVE_MIN && t < FIFTEEN_MIN)
+        .length,
+      slowLearners: ttfa.filter((t) => t >= FIFTEEN_MIN).length,
+      noArtifact: this.sessions.filter((s) => s.timeToFirstArtifact === null)
+        .length,
     };
   }
 
@@ -306,13 +319,19 @@ export class MetricsAnalyzer {
    * Calculate tool adoption patterns
    */
   toolAdoption(): ToolAdoption {
-    const tools = ['diffViewer', 'timeline', 'evolution', 'assessment', 'export'] as const;
+    const tools = [
+      "diffViewer",
+      "timeline",
+      "evolution",
+      "assessment",
+      "export",
+    ] as const;
     const result: any = {};
 
     for (const tool of tools) {
       const key = `feature_${tool}` as keyof MetricsSession;
-      const usage = this.sessions.map(s => s[key] as number);
-      const users = usage.filter(u => u > 0).length;
+      const usage = this.sessions.map((s) => s[key] as number);
+      const users = usage.filter((u) => u > 0).length;
       const avgUsage = Stats.mean(usage);
 
       result[tool] = { users, avgUsage };
@@ -326,27 +345,31 @@ export class MetricsAnalyzer {
    */
   renderModePreferences(): RenderModePreferences {
     const totalExecutions = this.sessions.reduce(
-      (sum, s) => sum + s.renderMode_visual + s.renderMode_audio + s.renderMode_both,
-      0
+      (sum, s) =>
+        sum + s.renderMode_visual + s.renderMode_audio + s.renderMode_both,
+      0,
     );
 
-    const visual = this.sessions.reduce((sum, s) => sum + s.renderMode_visual, 0);
+    const visual = this.sessions.reduce(
+      (sum, s) => sum + s.renderMode_visual,
+      0,
+    );
     const audio = this.sessions.reduce((sum, s) => sum + s.renderMode_audio, 0);
     const both = this.sessions.reduce((sum, s) => sum + s.renderMode_both, 0);
 
     return {
       visualOnly: {
         sessions: visual,
-        percentage: totalExecutions > 0 ? (visual / totalExecutions) * 100 : 0
+        percentage: totalExecutions > 0 ? (visual / totalExecutions) * 100 : 0,
       },
       audioOnly: {
         sessions: audio,
-        percentage: totalExecutions > 0 ? (audio / totalExecutions) * 100 : 0
+        percentage: totalExecutions > 0 ? (audio / totalExecutions) * 100 : 0,
       },
       multiSensory: {
         sessions: both,
-        percentage: totalExecutions > 0 ? (both / totalExecutions) * 100 : 0
-      }
+        percentage: totalExecutions > 0 ? (both / totalExecutions) * 100 : 0,
+      },
     };
   }
 
@@ -354,13 +377,21 @@ export class MetricsAnalyzer {
    * Calculate mutation patterns
    */
   mutationPatterns(): MutationPatterns {
-    const types = ['silent', 'missense', 'nonsense', 'frameshift', 'point', 'insertion', 'deletion'] as const;
+    const types = [
+      "silent",
+      "missense",
+      "nonsense",
+      "frameshift",
+      "point",
+      "insertion",
+      "deletion",
+    ] as const;
     const result: any = {};
     let total = 0;
 
     for (const type of types) {
       const key = `mutation_${type}` as keyof MetricsSession;
-      const values = this.sessions.map(s => s[key] as number);
+      const values = this.sessions.map((s) => s[key] as number);
       result[type] = Stats.descriptive(values);
       total += values.reduce((sum, v) => sum + v, 0);
     }
@@ -378,7 +409,7 @@ export class MetricsAnalyzer {
       velocity: this.learningVelocity(),
       tools: this.toolAdoption(),
       renderMode: this.renderModePreferences(),
-      mutations: this.mutationPatterns()
+      mutations: this.mutationPatterns(),
     };
   }
 
@@ -389,48 +420,72 @@ export class MetricsAnalyzer {
     group1Sessions: MetricsSession[],
     group2Sessions: MetricsSession[],
     group1Name: string,
-    group2Name: string
+    group2Name: string,
   ): ComparisonResult[] {
     const results: ComparisonResult[] = [];
 
     // Compare session duration
-    const dur1 = group1Sessions.map(s => s.duration);
-    const dur2 = group2Sessions.map(s => s.duration);
+    const dur1 = group1Sessions.map((s) => s.duration);
+    const dur2 = group2Sessions.map((s) => s.duration);
     if (dur1.length > 0 && dur2.length > 0) {
-      results.push(this.createComparison(
-        group1Name, group2Name, 'Session Duration (min)',
-        dur1.map(d => d / 60000), dur2.map(d => d / 60000)
-      ));
+      results.push(
+        this.createComparison(
+          group1Name,
+          group2Name,
+          "Session Duration (min)",
+          dur1.map((d) => d / 60000),
+          dur2.map((d) => d / 60000),
+        ),
+      );
     }
 
     // Compare genomes created
-    const gen1 = group1Sessions.map(s => s.genomesCreated);
-    const gen2 = group2Sessions.map(s => s.genomesCreated);
+    const gen1 = group1Sessions.map((s) => s.genomesCreated);
+    const gen2 = group2Sessions.map((s) => s.genomesCreated);
     if (gen1.length > 0 && gen2.length > 0) {
-      results.push(this.createComparison(
-        group1Name, group2Name, 'Genomes Created',
-        gen1, gen2
-      ));
+      results.push(
+        this.createComparison(
+          group1Name,
+          group2Name,
+          "Genomes Created",
+          gen1,
+          gen2,
+        ),
+      );
     }
 
     // Compare time to first artifact
-    const ttfa1 = group1Sessions.map(s => s.timeToFirstArtifact).filter((t): t is number => t !== null);
-    const ttfa2 = group2Sessions.map(s => s.timeToFirstArtifact).filter((t): t is number => t !== null);
+    const ttfa1 = group1Sessions
+      .map((s) => s.timeToFirstArtifact)
+      .filter((t): t is number => t !== null);
+    const ttfa2 = group2Sessions
+      .map((s) => s.timeToFirstArtifact)
+      .filter((t): t is number => t !== null);
     if (ttfa1.length > 0 && ttfa2.length > 0) {
-      results.push(this.createComparison(
-        group1Name, group2Name, 'Time to First Artifact (min)',
-        ttfa1.map(t => t / 60000), ttfa2.map(t => t / 60000)
-      ));
+      results.push(
+        this.createComparison(
+          group1Name,
+          group2Name,
+          "Time to First Artifact (min)",
+          ttfa1.map((t) => t / 60000),
+          ttfa2.map((t) => t / 60000),
+        ),
+      );
     }
 
     // Compare mutations applied
-    const mut1 = group1Sessions.map(s => s.mutationsApplied);
-    const mut2 = group2Sessions.map(s => s.mutationsApplied);
+    const mut1 = group1Sessions.map((s) => s.mutationsApplied);
+    const mut2 = group2Sessions.map((s) => s.mutationsApplied);
     if (mut1.length > 0 && mut2.length > 0) {
-      results.push(this.createComparison(
-        group1Name, group2Name, 'Mutations Applied',
-        mut1, mut2
-      ));
+      results.push(
+        this.createComparison(
+          group1Name,
+          group2Name,
+          "Mutations Applied",
+          mut1,
+          mut2,
+        ),
+      );
     }
 
     return results;
@@ -441,7 +496,7 @@ export class MetricsAnalyzer {
     group2: string,
     metric: string,
     values1: number[],
-    values2: number[]
+    values2: number[],
   ): ComparisonResult {
     const m1 = Stats.mean(values1);
     const m2 = Stats.mean(values2);
@@ -459,7 +514,7 @@ export class MetricsAnalyzer {
       t,
       p,
       cohensD: d,
-      interpretation: Stats.interpretEffectSize(d)
+      interpretation: Stats.interpretEffectSize(d),
     };
   }
 }
@@ -472,13 +527,15 @@ export class MetricsAnalyzer {
  * Parse CSV string into MetricsSession objects
  */
 export function parseCSVContent(content: string): MetricsSession[] {
-  const lines = content.trim().split('\n');
+  const lines = content.trim().split("\n");
 
   if (lines.length < 2) {
-    throw new Error('CSV file is empty or missing header');
+    throw new Error("CSV file is empty or missing header");
   }
 
-  const header = lines[0].split(',').map(h => h.trim().replace(/^"(.*)"$/, '$1'));
+  const header = lines[0]
+    .split(",")
+    .map((h) => h.trim().replace(/^"(.*)"$/, "$1"));
   const sessions: MetricsSession[] = [];
 
   for (let i = 1; i < lines.length; i++) {
@@ -489,13 +546,22 @@ export function parseCSVContent(content: string): MetricsSession[] {
       const value = values[idx];
 
       // Parse numbers
-      if (key === 'duration' || key === 'startTime' || key === 'endTime' ||
-          key.startsWith('genomes') || key.startsWith('mutation') ||
-          key.startsWith('renderMode') || key.startsWith('feature') ||
-          key === 'mutationsApplied' || key === 'errorCount') {
+      if (
+        key === "duration" ||
+        key === "startTime" ||
+        key === "endTime" ||
+        key.startsWith("genomes") ||
+        key.startsWith("mutation") ||
+        key.startsWith("renderMode") ||
+        key.startsWith("feature") ||
+        key === "mutationsApplied" ||
+        key === "errorCount"
+      ) {
         session[key] = parseFloat(value) || 0;
-      } else if (key === 'timeToFirstArtifact') {
-        session[key] = value === 'null' || value === '' ? null : parseFloat(value);
+      } else if (key === "timeToFirstArtifact") {
+        session[key] = value === "null" || value === ""
+          ? null
+          : parseFloat(value);
       } else {
         session[key] = value;
       }
@@ -509,24 +575,24 @@ export function parseCSVContent(content: string): MetricsSession[] {
 
 function parseCSVLine(line: string): string[] {
   const result: string[] = [];
-  let current = '';
+  let current = "";
   let inQuotes = false;
 
   for (let i = 0; i < line.length; i++) {
     const char = line[i];
 
-    if (char === '"') {
+    if (char === "\"") {
       inQuotes = !inQuotes;
-    } else if (char === ',' && !inQuotes) {
+    } else if (char === "," && !inQuotes) {
       result.push(current.trim());
-      current = '';
+      current = "";
     } else {
       current += char;
     }
   }
 
   result.push(current.trim());
-  return result.map(v => v.replace(/^"(.*)"$/, '$1'));
+  return result.map((v) => v.replace(/^"(.*)"$/, "$1"));
 }
 
 // ============================================================================

@@ -11,6 +11,7 @@ This directory contains ready-to-use genome files for CodonCanvas.
 ## Difficulty Levels
 
 ### Beginner (5 examples)
+
 - **helloCircle.genome** - Hello Circle
 - **twoShapes.genome** - Two Shapes
 - **lineArt.genome** - Line Art
@@ -18,6 +19,7 @@ This directory contains ready-to-use genome files for CodonCanvas.
 - **silentMutation.genome** - Silent Mutation Demo
 
 ### Intermediate (7 examples)
+
 - **colorfulPattern.genome** - Colorful Pattern
 - **ellipseGallery.genome** - Ellipse Gallery
 - **scaleTransform.genome** - Scale Transform
@@ -27,6 +29,7 @@ This directory contains ready-to-use genome files for CodonCanvas.
 - **stackCleanup.genome** - Stack Cleanup with POP
 
 ### Advanced (6 examples)
+
 - **rosette.genome** - Rosette Pattern
 - **texturedCircle.genome** - Textured Circle with Noise
 - **spiralPattern.genome** - Spiral Pattern
@@ -35,7 +38,9 @@ This directory contains ready-to-use genome files for CodonCanvas.
 - **mandala.genome** - Mandala Pattern
 
 ### Advanced Showcase (7 examples)
+
 Intricate compositions demonstrating full system capabilities:
+
 - **fractalFlower.genome** - Fractal Flower (multi-layer petals, ellipses, NOISE)
 - **geometricMosaic.genome** - Geometric Mosaic (gradient grid, mixed shapes)
 - **starfield.genome** - Starfield (textured stars, NOISE effects, depth)
@@ -45,7 +50,9 @@ Intricate compositions demonstrating full system capabilities:
 - **cosmicWheel.genome** - Cosmic Wheel (radial mandala, textures, complexity)
 
 ### Biological Patterns (5 examples) - NEW!
+
 Nature-inspired patterns teaching biological concepts:
+
 - **branching-tree.genome** - Branching Tree (fractal branching, tree/vessel structure)
 - **phyllotaxis-sunflower.genome** - Phyllotaxis (golden angle, sunflower seeds)
 - **cell-division.genome** - Cell Division (mitosis visualization, colony growth)
@@ -65,6 +72,7 @@ These examples are designed for classroom mutation experiments:
 ## File Format
 
 Each .genome file contains:
+
 1. Comment header with metadata (lines starting with `;`)
 2. DNA sequence using only A, C, G, T bases
 3. Whitespace and comments ignored by interpreter
@@ -82,6 +90,7 @@ The new biological pattern examples teach key genetics and biology concepts:
 - **Neural Morphology**: Dendritic trees collect inputs, axons transmit signals
 
 Each example includes biological context in comments and can be used for:
+
 - Visual demonstrations in biology lectures
 - Mutation experiments showing how changes affect structure
 - Pattern recognition exercises

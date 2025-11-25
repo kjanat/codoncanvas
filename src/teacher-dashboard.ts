@@ -17,7 +17,7 @@
  * - Supports formative assessment and early intervention
  */
 
-import { ResearchSession } from './research-metrics';
+import type { ResearchSession } from "./research-metrics";
 
 export interface StudentProgress {
   /** Student identifier (can be anonymous ID, not PII) */
@@ -83,7 +83,7 @@ export interface AtRiskStudent {
   studentId: string;
   studentName?: string;
   reasons: string[];
-  severity: 'high' | 'medium' | 'low';
+  severity: "high" | "medium" | "low";
   metrics: {
     sessions: number;
     timeToFirstArtifact: number | null;
@@ -108,7 +108,9 @@ export class TeacherDashboard {
 
       // Validate required fields
       if (!data.studentId || !data.exportDate) {
-        throw new Error('Invalid student progress data: missing required fields');
+        throw new Error(
+          "Invalid student progress data: missing required fields",
+        );
       }
 
       this.students.set(data.studentId, data);
@@ -141,7 +143,7 @@ export class TeacherDashboard {
           // Resolve when all files processed
           if (imported + errors === files.length) {
             if (imported === 0) {
-              reject(new Error('Failed to import any files'));
+              reject(new Error("Failed to import any files"));
             } else {
               resolve(imported);
             }
@@ -151,7 +153,7 @@ export class TeacherDashboard {
         reader.onerror = () => {
           errors++;
           if (imported + errors === files.length) {
-            reject(new Error('File reading failed'));
+            reject(new Error("File reading failed"));
           }
         };
 
@@ -199,21 +201,35 @@ export class TeacherDashboard {
     }
 
     // Aggregate metrics
-    const totalSessions = students.reduce((sum, s) => sum + s.aggregateMetrics.totalSessions, 0);
-    const totalDuration = students.reduce((sum, s) => sum + s.aggregateMetrics.totalDuration, 0);
-    const totalGenomes = students.reduce((sum, s) => sum + s.aggregateMetrics.totalGenomesCreated, 0);
-    const totalMutations = students.reduce((sum, s) => sum + s.aggregateMetrics.totalMutationsApplied, 0);
+    const totalSessions = students.reduce(
+      (sum, s) => sum + s.aggregateMetrics.totalSessions,
+      0,
+    );
+    const totalDuration = students.reduce(
+      (sum, s) => sum + s.aggregateMetrics.totalDuration,
+      0,
+    );
+    const totalGenomes = students.reduce(
+      (sum, s) => sum + s.aggregateMetrics.totalGenomesCreated,
+      0,
+    );
+    const totalMutations = students.reduce(
+      (sum, s) => sum + s.aggregateMetrics.totalMutationsApplied,
+      0,
+    );
 
     // Time to first artifact (only students who achieved it)
     const ttfaValues = students
-      .map(s => s.aggregateMetrics.avgTimeToFirstArtifact)
-      .filter(t => t > 0);
+      .map((s) => s.aggregateMetrics.avgTimeToFirstArtifact)
+      .filter((t) => t > 0);
     const avgTTFA = ttfaValues.length > 0
       ? ttfaValues.reduce((sum, t) => sum + t, 0) / ttfaValues.length
       : 0;
 
     // Tutorial completion rate
-    const tutorialCompletionRate = students.reduce((sum, s) => sum + s.aggregateMetrics.completionRate, 0) / students.length;
+    const tutorialCompletionRate =
+      students.reduce((sum, s) => sum + s.aggregateMetrics.completionRate, 0) /
+      students.length;
 
     // Engagement distribution
     let highEngagement = 0;
@@ -221,7 +237,7 @@ export class TeacherDashboard {
     let lowEngagement = 0;
     let atRisk = 0;
 
-    students.forEach(s => {
+    students.forEach((s) => {
       const sessions = s.aggregateMetrics.totalSessions;
       if (sessions >= 3) highEngagement++;
       else if (sessions >= 1) mediumEngagement++;
@@ -233,14 +249,14 @@ export class TeacherDashboard {
     });
 
     // Tutorial-specific completion
-    const tutorialCompletion: ClassroomStats['tutorialCompletion'] = {};
-    students.forEach(s => {
+    const tutorialCompletion: ClassroomStats["tutorialCompletion"] = {};
+    students.forEach((s) => {
       Object.entries(s.tutorials).forEach(([tutorialId, progress]) => {
         if (!tutorialCompletion[tutorialId]) {
           tutorialCompletion[tutorialId] = {
             started: 0,
             completed: 0,
-            avgProgress: 0
+            avgProgress: 0,
           };
         }
 
@@ -258,7 +274,7 @@ export class TeacherDashboard {
     });
 
     // Average tutorial progress
-    Object.keys(tutorialCompletion).forEach(tutorialId => {
+    Object.keys(tutorialCompletion).forEach((tutorialId) => {
       const started = tutorialCompletion[tutorialId].started;
       if (started > 0) {
         tutorialCompletion[tutorialId].avgProgress /= started;
@@ -273,15 +289,15 @@ export class TeacherDashboard {
         genomesPerStudent: totalGenomes / students.length,
         mutationsPerStudent: totalMutations / students.length,
         timeToFirstArtifact: avgTTFA,
-        tutorialCompletionRate
+        tutorialCompletionRate,
       },
       distribution: {
         highEngagement,
         mediumEngagement,
         lowEngagement,
-        atRisk
+        atRisk,
       },
-      tutorialCompletion
+      tutorialCompletion,
     };
   }
 
@@ -292,42 +308,47 @@ export class TeacherDashboard {
     const students = this.getStudents();
     const atRiskList: AtRiskStudent[] = [];
 
-    students.forEach(student => {
+    students.forEach((student) => {
       const reasons: string[] = [];
-      let severity: 'high' | 'medium' | 'low' = 'low';
+      let severity: "high" | "medium" | "low" = "low";
 
       // Check: No first artifact achieved
       if (student.aggregateMetrics.avgTimeToFirstArtifact === 0) {
-        reasons.push('Has not created first successful artifact');
-        severity = 'high';
+        reasons.push("Has not created first successful artifact");
+        severity = "high";
       }
 
       // Check: Very low session count
       if (student.aggregateMetrics.totalSessions < 1) {
-        reasons.push('No completed sessions');
-        severity = 'high';
+        reasons.push("No completed sessions");
+        severity = "high";
       } else if (student.aggregateMetrics.totalSessions < 2) {
-        reasons.push('Only 1 session completed');
-        severity = severity === 'high' ? 'high' : 'medium';
+        reasons.push("Only 1 session completed");
+        severity = severity === "high" ? "high" : "medium";
       }
 
       // Check: No tutorials started
-      const tutorialsStarted = Object.values(student.tutorials).filter(t => t.startedAt !== null).length;
+      const tutorialsStarted = Object.values(student.tutorials).filter(
+        (t) => t.startedAt !== null,
+      ).length;
       if (tutorialsStarted === 0) {
-        reasons.push('No tutorials started');
-        severity = 'high';
+        reasons.push("No tutorials started");
+        severity = "high";
       }
 
       // Check: No genomes created
       if (student.aggregateMetrics.totalGenomesCreated === 0) {
-        reasons.push('No genomes created');
-        severity = 'high';
+        reasons.push("No genomes created");
+        severity = "high";
       }
 
       // Check: Low tutorial completion rate
-      if (student.aggregateMetrics.completionRate < 0.25 && tutorialsStarted > 0) {
-        reasons.push('Low tutorial completion rate (<25%)');
-        severity = severity === 'high' ? 'high' : 'medium';
+      if (
+        student.aggregateMetrics.completionRate < 0.25 &&
+        tutorialsStarted > 0
+      ) {
+        reasons.push("Low tutorial completion rate (<25%)");
+        severity = severity === "high" ? "high" : "medium";
       }
 
       // Only include if there are risk factors
@@ -339,10 +360,13 @@ export class TeacherDashboard {
           severity,
           metrics: {
             sessions: student.aggregateMetrics.totalSessions,
-            timeToFirstArtifact: student.aggregateMetrics.avgTimeToFirstArtifact,
+            timeToFirstArtifact:
+              student.aggregateMetrics.avgTimeToFirstArtifact,
             tutorialsStarted,
-            tutorialsCompleted: Object.values(student.tutorials).filter(t => t.completed).length
-          }
+            tutorialsCompleted: Object.values(student.tutorials).filter(
+              (t) => t.completed,
+            ).length,
+          },
         });
       }
     });
@@ -364,59 +388,66 @@ export class TeacherDashboard {
     const students = this.getStudents();
 
     if (students.length === 0) {
-      return 'No student data imported';
+      return "No student data imported";
     }
 
     // CSV header
     const headers = [
-      'Student ID',
-      'Student Name',
-      'Total Sessions',
-      'Total Duration (min)',
-      'Genomes Created',
-      'Mutations Applied',
-      'Time to First Artifact (min)',
-      'Tutorials Completed',
-      'Completion Rate (%)',
-      'At Risk'
+      "Student ID",
+      "Student Name",
+      "Total Sessions",
+      "Total Duration (min)",
+      "Genomes Created",
+      "Mutations Applied",
+      "Time to First Artifact (min)",
+      "Tutorials Completed",
+      "Completion Rate (%)",
+      "At Risk",
     ];
 
     // CSV rows
-    const rows = students.map(s => {
-      const tutorialsCompleted = Object.values(s.tutorials).filter(t => t.completed).length;
-      const atRisk = s.aggregateMetrics.avgTimeToFirstArtifact === 0 || s.aggregateMetrics.totalSessions < 1;
+    const rows = students.map((s) => {
+      const tutorialsCompleted = Object.values(s.tutorials).filter(
+        (t) => t.completed,
+      ).length;
+      const atRisk = s.aggregateMetrics.avgTimeToFirstArtifact === 0 ||
+        s.aggregateMetrics.totalSessions < 1;
 
       return [
         s.studentId,
-        s.studentName || 'N/A',
+        s.studentName || "N/A",
         s.aggregateMetrics.totalSessions,
         Math.round(s.aggregateMetrics.totalDuration / 60000), // ms to minutes
         s.aggregateMetrics.totalGenomesCreated,
         s.aggregateMetrics.totalMutationsApplied,
         s.aggregateMetrics.avgTimeToFirstArtifact > 0
           ? Math.round(s.aggregateMetrics.avgTimeToFirstArtifact / 60000)
-          : 'N/A',
+          : "N/A",
         tutorialsCompleted,
         Math.round(s.aggregateMetrics.completionRate * 100),
-        atRisk ? 'YES' : 'NO'
+        atRisk ? "YES" : "NO",
       ];
     });
 
-    return [headers.join(','), ...rows.map(r => r.join(','))].join('\n');
+    return [headers.join(","), ...rows.map((r) => r.join(","))].join("\n");
   }
 
   /**
    * Export complete classroom data as JSON
    */
   exportClassroomData(): string {
-    return JSON.stringify({
-      exportDate: new Date().toISOString(),
-      version: '1.0',
-      studentCount: this.students.size,
-      classroomStats: this.getClassroomStats(),
-      atRiskStudents: this.getAtRiskStudents(),
-      students: this.getStudents()
-    }, null, 2);
+    return JSON.stringify(
+      {
+        exportDate: new Date().toISOString(),
+        version: "1.0",
+        studentCount: this.students.size,
+        classroomStats: this.getClassroomStats(),
+        atRiskStudents: this.getAtRiskStudents(),
+        students: this.getStudents(),
+      },
+      null,
+      2,
+    );
   }
 
   /**
@@ -431,15 +462,15 @@ export class TeacherDashboard {
         genomesPerStudent: 0,
         mutationsPerStudent: 0,
         timeToFirstArtifact: 0,
-        tutorialCompletionRate: 0
+        tutorialCompletionRate: 0,
       },
       distribution: {
         highEngagement: 0,
         mediumEngagement: 0,
         lowEngagement: 0,
-        atRisk: 0
+        atRisk: 0,
       },
-      tutorialCompletion: {}
+      tutorialCompletion: {},
     };
   }
 }
@@ -451,26 +482,39 @@ export class TeacherDashboard {
 export function generateStudentExport(
   studentId: string,
   studentName: string | undefined,
-  tutorials: StudentProgress['tutorials'],
-  sessions: ResearchSession[]
+  tutorials: StudentProgress["tutorials"],
+  sessions: ResearchSession[],
 ): string {
   // Calculate aggregate metrics from sessions
   const totalSessions = sessions.length;
   const totalDuration = sessions.reduce((sum, s) => sum + (s.duration || 0), 0);
-  const totalGenomesCreated = sessions.reduce((sum, s) => sum + s.genomesCreated, 0);
-  const totalGenomesExecuted = sessions.reduce((sum, s) => sum + s.genomesExecuted, 0);
-  const totalMutationsApplied = sessions.reduce((sum, s) => sum + s.mutationsApplied, 0);
+  const totalGenomesCreated = sessions.reduce(
+    (sum, s) => sum + s.genomesCreated,
+    0,
+  );
+  const totalGenomesExecuted = sessions.reduce(
+    (sum, s) => sum + s.genomesExecuted,
+    0,
+  );
+  const totalMutationsApplied = sessions.reduce(
+    (sum, s) => sum + s.mutationsApplied,
+    0,
+  );
 
   const ttfaValues = sessions
-    .map(s => s.timeToFirstArtifact)
+    .map((s) => s.timeToFirstArtifact)
     .filter((t): t is number => t !== null);
   const avgTimeToFirstArtifact = ttfaValues.length > 0
     ? ttfaValues.reduce((sum, t) => sum + t, 0) / ttfaValues.length
     : 0;
 
-  const tutorialsCompleted = Object.values(tutorials).filter(t => t.completed).length;
+  const tutorialsCompleted = Object.values(tutorials).filter(
+    (t) => t.completed,
+  ).length;
   const tutorialsTotal = Object.keys(tutorials).length;
-  const completionRate = tutorialsTotal > 0 ? tutorialsCompleted / tutorialsTotal : 0;
+  const completionRate = tutorialsTotal > 0
+    ? tutorialsCompleted / tutorialsTotal
+    : 0;
 
   const studentProgress: StudentProgress = {
     studentId,
@@ -485,8 +529,8 @@ export function generateStudentExport(
       totalGenomesExecuted,
       totalMutationsApplied,
       avgTimeToFirstArtifact,
-      completionRate
-    }
+      completionRate,
+    },
   };
 
   return JSON.stringify(studentProgress, null, 2);

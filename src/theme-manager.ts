@@ -3,11 +3,11 @@
  * Handles theme selection, persistence, and automatic theme detection
  */
 
-export type Theme = 'light' | 'dark' | 'high-contrast';
+export type Theme = "light" | "dark" | "high-contrast";
 
 export class ThemeManager {
-  private static readonly STORAGE_KEY = 'codoncanvas-theme';
-  private static readonly THEME_ATTRIBUTE = 'data-theme';
+  private static readonly STORAGE_KEY = "codoncanvas-theme";
+  private static readonly THEME_ATTRIBUTE = "data-theme";
   private currentTheme: Theme;
   private mediaQuery: MediaQueryList;
 
@@ -18,8 +18,11 @@ export class ThemeManager {
     this.currentTheme = savedTheme || systemTheme;
 
     // Listen for system theme changes
-    this.mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
-    this.mediaQuery.addEventListener('change', this.handleSystemThemeChange.bind(this));
+    this.mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
+    this.mediaQuery.addEventListener(
+      "change",
+      this.handleSystemThemeChange.bind(this),
+    );
 
     // Apply initial theme
     this.applyTheme(this.currentTheme);
@@ -45,7 +48,7 @@ export class ThemeManager {
    * Cycle to the next theme in order: dark → light → high-contrast → dark
    */
   cycleTheme(): Theme {
-    const themes: Theme[] = ['dark', 'light', 'high-contrast'];
+    const themes: Theme[] = ["dark", "light", "high-contrast"];
     const currentIndex = themes.indexOf(this.currentTheme);
     const nextIndex = (currentIndex + 1) % themes.length;
     const nextTheme = themes[nextIndex];
@@ -58,9 +61,9 @@ export class ThemeManager {
    */
   getThemeDisplayName(theme: Theme = this.currentTheme): string {
     const names: Record<Theme, string> = {
-      'dark': 'Dark',
-      'light': 'Light',
-      'high-contrast': 'High Contrast'
+      dark: "Dark",
+      light: "Light",
+      "high-contrast": "High Contrast",
     };
     return names[theme];
   }
@@ -70,9 +73,9 @@ export class ThemeManager {
    */
   getThemeIcon(theme: Theme = this.currentTheme): string {
     const icons: Record<Theme, string> = {
-      'dark': '🌙',
-      'light': '☀️',
-      'high-contrast': '🔆'
+      dark: "🌙",
+      light: "☀️",
+      "high-contrast": "🔆",
     };
     return icons[theme];
   }
@@ -91,7 +94,7 @@ export class ThemeManager {
     try {
       localStorage.setItem(ThemeManager.STORAGE_KEY, theme);
     } catch (error) {
-      console.warn('Failed to save theme preference:', error);
+      console.warn("Failed to save theme preference:", error);
     }
   }
 
@@ -105,7 +108,7 @@ export class ThemeManager {
         return saved as Theme;
       }
     } catch (error) {
-      console.warn('Failed to load theme preference:', error);
+      console.warn("Failed to load theme preference:", error);
     }
     return null;
   }
@@ -115,17 +118,17 @@ export class ThemeManager {
    */
   private getSystemTheme(): Theme {
     // Check for high contrast preference (Windows)
-    if (window.matchMedia('(prefers-contrast: high)').matches) {
-      return 'high-contrast';
+    if (window.matchMedia("(prefers-contrast: high)").matches) {
+      return "high-contrast";
     }
 
     // Check for dark mode preference
-    if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
-      return 'dark';
+    if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
+      return "dark";
     }
 
     // Default to dark (current default in CodonCanvas)
-    return 'dark';
+    return "dark";
   }
 
   /**
@@ -135,7 +138,7 @@ export class ThemeManager {
     // Only auto-switch if user hasn't manually selected a theme
     const savedTheme = this.getSavedTheme();
     if (!savedTheme) {
-      const newTheme = event.matches ? 'dark' : 'light';
+      const newTheme = event.matches ? "dark" : "light";
       this.currentTheme = newTheme;
       this.applyTheme(newTheme);
     }
@@ -145,7 +148,7 @@ export class ThemeManager {
    * Validate theme string
    */
   private isValidTheme(theme: string): boolean {
-    return ['light', 'dark', 'high-contrast'].includes(theme);
+    return ["light", "dark", "high-contrast"].includes(theme);
   }
 
   /**
@@ -155,7 +158,7 @@ export class ThemeManager {
     try {
       localStorage.removeItem(ThemeManager.STORAGE_KEY);
     } catch (error) {
-      console.warn('Failed to reset theme preference:', error);
+      console.warn("Failed to reset theme preference:", error);
     }
     const systemTheme = this.getSystemTheme();
     this.currentTheme = systemTheme;
@@ -166,6 +169,9 @@ export class ThemeManager {
    * Cleanup event listeners
    */
   destroy(): void {
-    this.mediaQuery.removeEventListener('change', this.handleSystemThemeChange.bind(this));
+    this.mediaQuery.removeEventListener(
+      "change",
+      this.handleSystemThemeChange.bind(this),
+    );
   }
 }

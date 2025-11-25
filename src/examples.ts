@@ -2,19 +2,23 @@
  * Built-in example genomes for the playground
  */
 
-export type DifficultyLevel = 'beginner' | 'intermediate' | 'advanced' | 'advanced-showcase';
+export type DifficultyLevel =
+  | "beginner"
+  | "intermediate"
+  | "advanced"
+  | "advanced-showcase";
 export type Concept =
-  | 'drawing'
-  | 'transforms'
-  | 'colors'
-  | 'stack'
-  | 'composition'
-  | 'advanced-opcodes'
-  | 'state-management'
-  | 'arithmetic'
-  | 'comparison'
-  | 'logic';
-export type MutationType = 'silent' | 'missense' | 'nonsense' | 'frameshift';
+  | "drawing"
+  | "transforms"
+  | "colors"
+  | "stack"
+  | "composition"
+  | "advanced-opcodes"
+  | "state-management"
+  | "arithmetic"
+  | "comparison"
+  | "logic";
+export type MutationType = "silent" | "missense" | "nonsense" | "frameshift";
 
 export interface ExampleMetadata {
   title: string;
@@ -28,29 +32,30 @@ export interface ExampleMetadata {
 
 export const examples: Record<string, ExampleMetadata> = {
   helloCircle: {
-    title: 'Hello Circle',
-    description: 'Minimal example - draws a single circle',
-    genome: 'ATG GAA AAT GGA TAA',
-    difficulty: 'beginner',
-    concepts: ['drawing'],
-    goodForMutations: ['silent', 'missense', 'nonsense'],
-    keywords: ['simple', 'intro', 'first', 'basic', 'circle']
+    title: "Hello Circle",
+    description: "Minimal example - draws a single circle",
+    genome: "ATG GAA AAT GGA TAA",
+    difficulty: "beginner",
+    concepts: ["drawing"],
+    goodForMutations: ["silent", "missense", "nonsense"],
+    keywords: ["simple", "intro", "first", "basic", "circle"],
   },
 
   rnaHello: {
-    title: 'RNA Hello',
-    description: 'RNA notation (U instead of T) demonstrating biological transcription',
+    title: "RNA Hello",
+    description:
+      "RNA notation (U instead of T) demonstrating biological transcription",
     genome: `; RNA notation using U (Uracil) instead of T (Thymine)
 AUG GAA AAU GGA UAA`,
-    difficulty: 'beginner',
-    concepts: ['drawing'],
-    goodForMutations: ['silent', 'missense', 'nonsense'],
-    keywords: ['rna', 'uracil', 'transcription', 'biology', 'simple']
+    difficulty: "beginner",
+    concepts: ["drawing"],
+    goodForMutations: ["silent", "missense", "nonsense"],
+    keywords: ["rna", "uracil", "transcription", "biology", "simple"],
   },
 
   rnaComposition: {
-    title: 'RNA Composition',
-    description: 'Complex RNA example with multiple shapes',
+    title: "RNA Composition",
+    description: "Complex RNA example with multiple shapes",
     genome: `; RNA notation demonstrating composition
 AUG
   GAA AAU GGA        ; Push 3, draw circle
@@ -59,15 +64,15 @@ AUG
   GAA AAA GAA CCC ACA ; Push 0, push 21, translate
   GAA AGG GCA        ; Push 10, draw triangle
 UAA`,
-    difficulty: 'intermediate',
-    concepts: ['drawing', 'transforms', 'composition'],
-    goodForMutations: ['missense', 'frameshift'],
-    keywords: ['rna', 'uracil', 'composition', 'multiple', 'shapes']
+    difficulty: "intermediate",
+    concepts: ["drawing", "transforms", "composition"],
+    goodForMutations: ["missense", "frameshift"],
+    keywords: ["rna", "uracil", "composition", "multiple", "shapes"],
   },
 
   twoShapes: {
-    title: 'Two Shapes',
-    description: 'Circle and rectangle side by side',
+    title: "Two Shapes",
+    description: "Circle and rectangle side by side",
     genome: `ATG
   GAA AAT GGA        ; Push 3, draw small circle
   GAA CCC            ; Push 21
@@ -75,15 +80,15 @@ UAA`,
   ACA                ; Translate(21, 0) - move right
   GAA AGG GAA AGG CCA ; Push 10, push 10, draw rect
 TAA`,
-    difficulty: 'beginner',
-    concepts: ['drawing', 'transforms'],
-    goodForMutations: ['missense', 'frameshift'],
-    keywords: ['shapes', 'translate', 'position', 'rectangle']
+    difficulty: "beginner",
+    concepts: ["drawing", "transforms"],
+    goodForMutations: ["missense", "frameshift"],
+    keywords: ["shapes", "translate", "position", "rectangle"],
   },
 
   colorfulPattern: {
-    title: 'Colorful Pattern',
-    description: 'Multiple colored shapes with rotation',
+    title: "Colorful Pattern",
+    description: "Multiple colored shapes with rotation",
     genome: `ATG
   GAA CCC GAA AAA GAA AAA TTA  ; Set color (21, 0, 0) - red
   GAA CAC GGA                   ; Push 25, draw circle
@@ -94,15 +99,15 @@ TAA`,
   GAA AAA GAA AAA GAA GCC TTA  ; Set color (0, 0, 37) - blue
   GAA CAC GGA                   ; Push 25, draw circle
 TAA`,
-    difficulty: 'intermediate',
-    concepts: ['drawing', 'colors', 'transforms', 'composition'],
-    goodForMutations: ['silent', 'missense'],
-    keywords: ['color', 'rotation', 'pattern', 'multiple']
+    difficulty: "intermediate",
+    concepts: ["drawing", "colors", "transforms", "composition"],
+    goodForMutations: ["silent", "missense"],
+    keywords: ["color", "rotation", "pattern", "multiple"],
   },
 
   lineArt: {
-    title: 'Line Art',
-    description: 'Demonstrates LINE primitive with rotation',
+    title: "Line Art",
+    description: "Demonstrates LINE primitive with rotation",
     genome: `ATG
   GAA GCC AAA        ; Push 37, draw line
   GAA GGA AGA        ; Push 26, rotate 26 degrees
@@ -112,15 +117,15 @@ TAA`,
   GAA GGA AGA        ; Push 26, rotate 26 degrees
   GAA GCC AAA        ; Push 37, draw line
 TAA`,
-    difficulty: 'beginner',
-    concepts: ['drawing', 'transforms'],
-    goodForMutations: ['silent', 'frameshift'],
-    keywords: ['line', 'rotation', 'repetition', 'angles']
+    difficulty: "beginner",
+    concepts: ["drawing", "transforms"],
+    goodForMutations: ["silent", "frameshift"],
+    keywords: ["line", "rotation", "repetition", "angles"],
   },
 
   triangleDemo: {
-    title: 'Triangle Demo',
-    description: 'Uses TRIANGLE primitive with different sizes',
+    title: "Triangle Demo",
+    description: "Uses TRIANGLE primitive with different sizes",
     genome: `ATG
   GAA AAT GCA        ; Push 3, draw small triangle
   GAA AGG            ; Push 10
@@ -130,15 +135,15 @@ TAA`,
   GAA AAA ACA        ; Push 0, translate(10, 0)
   GAA CGC GCA        ; Push 25, draw large triangle
 TAA`,
-    difficulty: 'beginner',
-    concepts: ['drawing', 'transforms'],
-    goodForMutations: ['missense', 'nonsense'],
-    keywords: ['triangle', 'sizes', 'scaling', 'shapes']
+    difficulty: "beginner",
+    concepts: ["drawing", "transforms"],
+    goodForMutations: ["missense", "nonsense"],
+    keywords: ["triangle", "sizes", "scaling", "shapes"],
   },
 
   ellipseGallery: {
-    title: 'Ellipse Gallery',
-    description: 'ELLIPSE primitive with various aspect ratios',
+    title: "Ellipse Gallery",
+    description: "ELLIPSE primitive with various aspect ratios",
     genome: `ATG
   GAA AGG            ; Push 10 (rx)
   GAA ATT            ; Push 15 (ry)
@@ -149,15 +154,15 @@ TAA`,
   GAA AGG            ; Push 10 (ry)
   GTA                ; Draw ellipse (tall)
 TAA`,
-    difficulty: 'intermediate',
-    concepts: ['drawing', 'transforms'],
-    goodForMutations: ['silent', 'missense'],
-    keywords: ['ellipse', 'oval', 'aspect', 'ratio']
+    difficulty: "intermediate",
+    concepts: ["drawing", "transforms"],
+    goodForMutations: ["silent", "missense"],
+    keywords: ["ellipse", "oval", "aspect", "ratio"],
   },
 
   scaleTransform: {
-    title: 'Scale Transform',
-    description: 'Demonstrates SCALE opcode for sizing',
+    title: "Scale Transform",
+    description: "Demonstrates SCALE opcode for sizing",
     genome: `ATG
   GAA AAT GGA        ; Push 3, draw tiny circle
   GAA ACC CGA        ; Push 11, scale by 1.7x
@@ -165,15 +170,15 @@ TAA`,
   GAA ACC CGA        ; Push 11, scale by 1.7x again
   GAA AAT GGA        ; Push 3, draw even larger
 TAA`,
-    difficulty: 'intermediate',
-    concepts: ['transforms', 'drawing'],
-    goodForMutations: ['frameshift', 'missense'],
-    keywords: ['scale', 'size', 'transform', 'magnify']
+    difficulty: "intermediate",
+    concepts: ["transforms", "drawing"],
+    goodForMutations: ["frameshift", "missense"],
+    keywords: ["scale", "size", "transform", "magnify"],
   },
 
   stackOperations: {
-    title: 'Stack Operations',
-    description: 'DUP and SWAP for efficient stack management',
+    title: "Stack Operations",
+    description: "DUP and SWAP for efficient stack management",
     genome: `ATG
   GAA AGG            ; Push 10
   ATA                ; DUP → stack: [10, 10]
@@ -185,15 +190,15 @@ TAA`,
   TGG                ; SWAP → stack: [10, 3]
   CCA                ; Draw rect(10, 3) - horizontal bar
 TAA`,
-    difficulty: 'intermediate',
-    concepts: ['stack', 'drawing'],
-    goodForMutations: ['frameshift', 'nonsense'],
-    keywords: ['stack', 'dup', 'swap', 'pop', 'operations']
+    difficulty: "intermediate",
+    concepts: ["stack", "drawing"],
+    goodForMutations: ["frameshift", "nonsense"],
+    keywords: ["stack", "dup", "swap", "pop", "operations"],
   },
 
   rosette: {
-    title: 'Rosette Pattern',
-    description: 'Complex composition with rotation and color',
+    title: "Rosette Pattern",
+    description: "Complex composition with rotation and color",
     genome: `ATG
   GAA AGG            ; Push 10 (radius)
   GAA CTT GAA AAA GAA AAA TTA  ; Color(31, 0, 0) red
@@ -208,15 +213,15 @@ TAA`,
   GAA CCC GAA CCC GAA AAA TTA  ; Color(21, 21, 0) yellow
   GAA AGG GGA        ; Draw circle
 TAA`,
-    difficulty: 'advanced',
-    concepts: ['composition', 'colors', 'transforms'],
-    goodForMutations: ['silent', 'missense', 'frameshift'],
-    keywords: ['rosette', 'flower', 'radial', 'colorful', 'pattern']
+    difficulty: "advanced",
+    concepts: ["composition", "colors", "transforms"],
+    goodForMutations: ["silent", "missense", "frameshift"],
+    keywords: ["rosette", "flower", "radial", "colorful", "pattern"],
   },
 
   face: {
-    title: 'Simple Face',
-    description: 'Combines primitives to draw a smiley face',
+    title: "Simple Face",
+    description: "Combines primitives to draw a smiley face",
     genome: `ATG
   GAA CGC GGA        ; Push 25, draw head (large circle)
   GAA AAA GAA ATT ACA ; Push 0, push 15, translate(0, 15)
@@ -228,15 +233,15 @@ TAA`,
   GAA AAT            ; Push 3
   CCA                ; Draw mouth (10x3 rect)
 TAA`,
-    difficulty: 'intermediate',
-    concepts: ['composition', 'drawing', 'transforms'],
-    goodForMutations: ['missense', 'nonsense'],
-    keywords: ['face', 'smiley', 'fun', 'combine', 'shapes']
+    difficulty: "intermediate",
+    concepts: ["composition", "drawing", "transforms"],
+    goodForMutations: ["missense", "nonsense"],
+    keywords: ["face", "smiley", "fun", "combine", "shapes"],
   },
 
   texturedCircle: {
-    title: 'Textured Circle with Noise',
-    description: 'Demonstrates NOISE opcode for artistic texture effects',
+    title: "Textured Circle with Noise",
+    description: "Demonstrates NOISE opcode for artistic texture effects",
     genome: `ATG
   GAA TCC            ; Push 53 (radius)
   GAA AAA GAA AAA TTA ; Color(0, 0, 0) black
@@ -250,15 +255,15 @@ TAA`,
   GAA AAA GAA CGC GAA CCC TTA ; Color(0, 25, 21) cool
   CTA                ; NOISE(26, 15) - lighter texture
 TAA`,
-    difficulty: 'advanced',
-    concepts: ['advanced-opcodes', 'colors', 'drawing'],
-    goodForMutations: ['missense', 'frameshift'],
-    keywords: ['noise', 'texture', 'artistic', 'advanced', 'effects']
+    difficulty: "advanced",
+    concepts: ["advanced-opcodes", "colors", "drawing"],
+    goodForMutations: ["missense", "frameshift"],
+    keywords: ["noise", "texture", "artistic", "advanced", "effects"],
   },
 
   spiralPattern: {
-    title: 'Spiral Pattern',
-    description: 'Geometric spiral using iterative rotation and translation',
+    title: "Spiral Pattern",
+    description: "Geometric spiral using iterative rotation and translation",
     genome: `ATG
   GAA AAT GGA        ; Push 3, draw circle
   GAA ATT AGA        ; Push 15, rotate 15 degrees
@@ -274,15 +279,15 @@ TAA`,
   GAA CCC GAA AAA ACA ; Push 21, push 0, translate(21, 0)
   GAA AAT GGA        ; Draw circle
 TAA`,
-    difficulty: 'advanced',
-    concepts: ['composition', 'transforms', 'drawing'],
-    goodForMutations: ['silent', 'frameshift'],
-    keywords: ['spiral', 'geometric', 'iteration', 'pattern']
+    difficulty: "advanced",
+    concepts: ["composition", "transforms", "drawing"],
+    goodForMutations: ["silent", "frameshift"],
+    keywords: ["spiral", "geometric", "iteration", "pattern"],
   },
 
   nestedFrames: {
-    title: 'Nested Frames with State',
-    description: 'SAVE_STATE/RESTORE_STATE for complex layered compositions',
+    title: "Nested Frames with State",
+    description: "SAVE_STATE/RESTORE_STATE for complex layered compositions",
     genome: `ATG
   ; Draw concentric circles with state preservation
   GAA CTT GAA CTT GAA CTT TTA ; Color(31, 31, 31) bright
@@ -306,15 +311,15 @@ TAA`,
   GAA CGC GAA AAA ACA ; TRANSLATE(25, 0) - draw adjacent
   GAA TCC GGA        ; Push 53, another outer circle
 TAA`,
-    difficulty: 'advanced',
-    concepts: ['advanced-opcodes', 'composition', 'colors', 'state-management'],
-    goodForMutations: ['nonsense', 'missense'],
-    keywords: ['nested', 'layers', 'state', 'save', 'advanced']
+    difficulty: "advanced",
+    concepts: ["advanced-opcodes", "composition", "colors", "state-management"],
+    goodForMutations: ["nonsense", "missense"],
+    keywords: ["nested", "layers", "state", "save", "advanced"],
   },
 
   colorGradient: {
-    title: 'Color Gradient',
-    description: 'Systematic color manipulation for gradient effect',
+    title: "Color Gradient",
+    description: "Systematic color manipulation for gradient effect",
     genome: `ATG
   GAA AAA GAA AAA GAA AAA TTA ; Color(0, 0, 0) black
   GAA AGG GGA        ; Push 10, draw circle
@@ -331,15 +336,15 @@ TAA`,
   GAA AAA GAA AAA GAA GCC TTA ; Color(0, 0, 37) lighter
   GAA AGG GGA        ; Draw circle
 TAA`,
-    difficulty: 'intermediate',
-    concepts: ['colors', 'drawing', 'transforms', 'composition'],
-    goodForMutations: ['silent', 'frameshift'],
-    keywords: ['gradient', 'color', 'progression', 'smooth']
+    difficulty: "intermediate",
+    concepts: ["colors", "drawing", "transforms", "composition"],
+    goodForMutations: ["silent", "frameshift"],
+    keywords: ["gradient", "color", "progression", "smooth"],
   },
 
   silentMutation: {
-    title: 'Silent Mutation Demo',
-    description: 'Pedagogical: GGA vs GGC (synonymous CIRCLE codons)',
+    title: "Silent Mutation Demo",
+    description: "Pedagogical: GGA vs GGC (synonymous CIRCLE codons)",
     genome: `ATG
   GAA CCC GAA CTT GAA AAA TTA ; Color(21, 31, 0) green
   GAA CGC GGA        ; Push 25, CIRCLE using GGA
@@ -348,15 +353,15 @@ TAA`,
   GAA CGC GGC        ; Push 25, CIRCLE using GGC (synonymous!)
 TAA
 ; Note: Both circles identical - demonstrates silent mutation`,
-    difficulty: 'beginner',
-    concepts: ['drawing', 'colors'],
-    goodForMutations: ['silent'],
-    keywords: ['silent', 'mutation', 'pedagogical', 'demo', 'synonymous']
+    difficulty: "beginner",
+    concepts: ["drawing", "colors"],
+    goodForMutations: ["silent"],
+    keywords: ["silent", "mutation", "pedagogical", "demo", "synonymous"],
   },
 
   gridPattern: {
-    title: 'Grid Pattern',
-    description: 'Systematic positioning with TRANSLATE for grid layout',
+    title: "Grid Pattern",
+    description: "Systematic positioning with TRANSLATE for grid layout",
     genome: `ATG
   GAA AAT GCA        ; Push 3, draw triangle
   GAA AGG GAA AAA ACA ; Push 10, push 0, translate(10, 0)
@@ -370,15 +375,15 @@ TAA
   GAA AGG GAA AAA ACA ; Translate(10, 0)
   GAA AAT GCA        ; Draw triangle
 TAA`,
-    difficulty: 'advanced',
-    concepts: ['composition', 'transforms', 'stack'],
-    goodForMutations: ['frameshift', 'nonsense'],
-    keywords: ['grid', 'layout', 'systematic', 'positioning']
+    difficulty: "advanced",
+    concepts: ["composition", "transforms", "stack"],
+    goodForMutations: ["frameshift", "nonsense"],
+    keywords: ["grid", "layout", "systematic", "positioning"],
   },
 
   mandala: {
-    title: 'Mandala Pattern',
-    description: 'Complex radial symmetry with multiple transforms',
+    title: "Mandala Pattern",
+    description: "Complex radial symmetry with multiple transforms",
     genome: `ATG
   GAA CCC            ; Push 21
   GAA AAA GAA AAA TTA ; Color(0, 0, 0) black
@@ -397,15 +402,15 @@ TAA`,
   GAA CCC GAA AAA ACA ; Translate(21, 0)
   GAA AAT GCA        ; Draw triangle
 TAA`,
-    difficulty: 'advanced',
-    concepts: ['composition', 'colors', 'transforms'],
-    goodForMutations: ['silent', 'missense', 'frameshift'],
-    keywords: ['mandala', 'radial', 'symmetry', 'complex', 'artistic']
+    difficulty: "advanced",
+    concepts: ["composition", "colors", "transforms"],
+    goodForMutations: ["silent", "missense", "frameshift"],
+    keywords: ["mandala", "radial", "symmetry", "complex", "artistic"],
   },
 
   stackCleanup: {
-    title: 'Stack Cleanup with POP',
-    description: 'Demonstrates POP for stack management and cleanup',
+    title: "Stack Cleanup with POP",
+    description: "Demonstrates POP for stack management and cleanup",
     genome: `ATG
   GAA CCC            ; Push 21
   GAA CGC            ; Push 25
@@ -422,15 +427,16 @@ TAA`,
   ; Stack now has 21 for radius
   GGA                ; Draw circle with radius 21
 TAA`,
-    difficulty: 'intermediate',
-    concepts: ['stack', 'drawing'],
-    goodForMutations: ['nonsense', 'frameshift'],
-    keywords: ['stack', 'cleanup', 'pop', 'management', 'operations']
+    difficulty: "intermediate",
+    concepts: ["stack", "drawing"],
+    goodForMutations: ["nonsense", "frameshift"],
+    keywords: ["stack", "cleanup", "pop", "management", "operations"],
   },
 
   fractalTree: {
-    title: 'Fractal Tree',
-    description: 'Branching tree structure using SAVE/RESTORE_STATE for recursion',
+    title: "Fractal Tree",
+    description:
+      "Branching tree structure using SAVE/RESTORE_STATE for recursion",
     genome: `ATG
   ; Setup: rotate to vertical, set brown color for trunk
   GAA GGA AGA        ; Push 26, rotate 90 degrees (vertical)
@@ -483,15 +489,15 @@ TAA`,
 
   TCG                ; RESTORE_STATE - back to trunk
 TAA`,
-    difficulty: 'advanced',
-    concepts: ['state-management', 'composition', 'colors', 'transforms'],
-    goodForMutations: ['nonsense', 'missense'],
-    keywords: ['fractal', 'tree', 'branching', 'recursion', 'nature', 'nested']
+    difficulty: "advanced",
+    concepts: ["state-management", "composition", "colors", "transforms"],
+    goodForMutations: ["nonsense", "missense"],
+    keywords: ["fractal", "tree", "branching", "recursion", "nature", "nested"],
   },
 
   snowflake: {
-    title: 'Snowflake Pattern',
-    description: 'Six-fold radial symmetry using state preservation',
+    title: "Snowflake Pattern",
+    description: "Six-fold radial symmetry using state preservation",
     genome: `ATG
   ; Center dot
   GAA AAA GAA AAA GAA TCC TTA ; Color(0, 0, 53) light blue
@@ -552,15 +558,22 @@ TAA`,
   GAA AAT GCA        ; Draw tip
   TCG                ; RESTORE_STATE
 TAA`,
-    difficulty: 'advanced',
-    concepts: ['state-management', 'composition', 'colors', 'transforms'],
-    goodForMutations: ['nonsense', 'frameshift'],
-    keywords: ['snowflake', 'radial', 'symmetry', 'winter', 'pattern', 'six-fold']
+    difficulty: "advanced",
+    concepts: ["state-management", "composition", "colors", "transforms"],
+    goodForMutations: ["nonsense", "frameshift"],
+    keywords: [
+      "snowflake",
+      "radial",
+      "symmetry",
+      "winter",
+      "pattern",
+      "six-fold",
+    ],
   },
 
   flowerGarden: {
-    title: 'Flower Garden',
-    description: 'Multiple flowers using state isolation for composition',
+    title: "Flower Garden",
+    description: "Multiple flowers using state isolation for composition",
     genome: `ATG
   ; Flower 1 (red, left position)
   TCA                ; SAVE_STATE - main canvas state
@@ -614,16 +627,23 @@ TAA`,
   GAA AAA GAA AGG ACA GAA AGG AAA TCG
   TCG                ; RESTORE_STATE
 TAA`,
-    difficulty: 'advanced',
-    concepts: ['state-management', 'composition', 'colors', 'transforms'],
-    goodForMutations: ['missense', 'nonsense'],
-    keywords: ['flower', 'garden', 'nature', 'composition', 'multiple', 'colorful']
-  }
-,
+    difficulty: "advanced",
+    concepts: ["state-management", "composition", "colors", "transforms"],
+    goodForMutations: ["missense", "nonsense"],
+    keywords: [
+      "flower",
+      "garden",
+      "nature",
+      "composition",
+      "multiple",
+      "colorful",
+    ],
+  },
 
   parametricCircles: {
-    title: 'Parametric Circles',
-    description: 'Computed circle sizes using ADD and MUL arithmetic operations',
+    title: "Parametric Circles",
+    description:
+      "Computed circle sizes using ADD and MUL arithmetic operations",
     genome: `; Demonstrate arithmetic operations for parametric design
 ATG
   ; Small circle with computed radius (1 + 5 = 6)
@@ -652,15 +672,24 @@ ATG
   CTT                ; MUL → 40
   GGA                ; CIRCLE(40) - computed from chain
 TAA`,
-    difficulty: 'intermediate',
-    concepts: ['arithmetic', 'drawing', 'transforms', 'stack'],
-    goodForMutations: ['missense'],
-    keywords: ['arithmetic', 'computation', 'parametric', 'add', 'multiply', 'computed', 'math']
+    difficulty: "intermediate",
+    concepts: ["arithmetic", "drawing", "transforms", "stack"],
+    goodForMutations: ["missense"],
+    keywords: [
+      "arithmetic",
+      "computation",
+      "parametric",
+      "add",
+      "multiply",
+      "computed",
+      "math",
+    ],
   },
 
   geometricSeries: {
-    title: 'Geometric Series',
-    description: 'Growing circles using multiplication to create exponential patterns',
+    title: "Geometric Series",
+    description:
+      "Growing circles using multiplication to create exponential patterns",
     genome: `; Geometric progression using MUL opcode
 ATG
   ; Circle 1: base size 5
@@ -687,15 +716,24 @@ ATG
   CTT                ; MUL → 35
   GGA                ; CIRCLE(35)
 TAA`,
-    difficulty: 'intermediate',
-    concepts: ['arithmetic', 'drawing', 'transforms', 'stack'],
-    goodForMutations: ['missense'],
-    keywords: ['geometric', 'series', 'exponential', 'growth', 'multiply', 'pattern', 'math']
+    difficulty: "intermediate",
+    concepts: ["arithmetic", "drawing", "transforms", "stack"],
+    goodForMutations: ["missense"],
+    keywords: [
+      "geometric",
+      "series",
+      "exponential",
+      "growth",
+      "multiply",
+      "pattern",
+      "math",
+    ],
   },
 
   proportionalSizing: {
-    title: 'Proportional Sizing',
-    description: 'Circles with ratios computed using division for proportional design',
+    title: "Proportional Sizing",
+    description:
+      "Circles with ratios computed using division for proportional design",
     genome: `; Demonstrate proportional sizing with DIV opcode
 ATG
   ; Large circle: base size 40
@@ -720,15 +758,23 @@ ATG
   CAT                ; DIV → 10
   GGA                ; CIRCLE(10) - quarter radius
 TAA`,
-    difficulty: 'intermediate',
-    concepts: ['arithmetic', 'drawing', 'transforms', 'stack'],
-    goodForMutations: ['missense'],
-    keywords: ['proportions', 'ratios', 'division', 'scaling', 'relative', 'fractions', 'math']
+    difficulty: "intermediate",
+    concepts: ["arithmetic", "drawing", "transforms", "stack"],
+    goodForMutations: ["missense"],
+    keywords: [
+      "proportions",
+      "ratios",
+      "division",
+      "scaling",
+      "relative",
+      "fractions",
+      "math",
+    ],
   },
 
   relativeSizes: {
-    title: 'Relative Sizes',
-    description: 'Descending circle sizes using subtraction for gradients',
+    title: "Relative Sizes",
+    description: "Descending circle sizes using subtraction for gradients",
     genome: `; Demonstrate relative sizing with SUB opcode
 ATG
   ; Circle 1: base size 35
@@ -762,15 +808,24 @@ ATG
   CAG                ; SUB → 20
   GGA                ; CIRCLE(20) - smallest
 TAA`,
-    difficulty: 'intermediate',
-    concepts: ['arithmetic', 'drawing', 'transforms', 'stack'],
-    goodForMutations: ['missense'],
-    keywords: ['subtraction', 'differences', 'offsets', 'relative', 'gradients', 'pattern', 'math']
+    difficulty: "intermediate",
+    concepts: ["arithmetic", "drawing", "transforms", "stack"],
+    goodForMutations: ["missense"],
+    keywords: [
+      "subtraction",
+      "differences",
+      "offsets",
+      "relative",
+      "gradients",
+      "pattern",
+      "math",
+    ],
   },
 
   centeredComposition: {
-    title: 'Centered Composition',
-    description: 'Symmetrical design using division to compute center positions',
+    title: "Centered Composition",
+    description:
+      "Symmetrical design using division to compute center positions",
     genome: `; Center a composition using DIV for coordinate calculation
 ATG
   ; Compute center x (canvas assumed 400 wide → 200 center)
@@ -800,15 +855,24 @@ ATG
   GAA ATT            ; PUSH 15
   GGA                ; CIRCLE(15) - left accent (symmetry)
 TAA`,
-    difficulty: 'advanced',
-    concepts: ['arithmetic', 'drawing', 'transforms', 'stack', 'composition'],
-    goodForMutations: ['missense'],
-    keywords: ['centering', 'symmetry', 'division', 'composition', 'layout', 'coordinates', 'math']
+    difficulty: "advanced",
+    concepts: ["arithmetic", "drawing", "transforms", "stack", "composition"],
+    goodForMutations: ["missense"],
+    keywords: [
+      "centering",
+      "symmetry",
+      "division",
+      "composition",
+      "layout",
+      "coordinates",
+      "math",
+    ],
   },
 
   loopRosette: {
-    title: 'Loop Rosette',
-    description: 'Radial flower pattern using LOOP opcode for efficient repetition',
+    title: "Loop Rosette",
+    description:
+      "Radial flower pattern using LOOP opcode for efficient repetition",
     genome: `; Rosette with 8 petals using LOOP opcode
 ATG
   ; Draw one petal and rotate - this sequence will be looped
@@ -822,15 +886,23 @@ ATG
   GAA AAC            ; PUSH 7 (loop count = 7 more petals, 8 total)
   CAA                ; LOOP
 TAA`,
-    difficulty: 'intermediate',
-    concepts: ['drawing', 'transforms', 'stack', 'arithmetic'],
-    goodForMutations: ['missense', 'frameshift'],
-    keywords: ['loop', 'iteration', 'rosette', 'radial', 'pattern', 'repetition', 'efficiency']
+    difficulty: "intermediate",
+    concepts: ["drawing", "transforms", "stack", "arithmetic"],
+    goodForMutations: ["missense", "frameshift"],
+    keywords: [
+      "loop",
+      "iteration",
+      "rosette",
+      "radial",
+      "pattern",
+      "repetition",
+      "efficiency",
+    ],
   },
 
   loopSpiral: {
-    title: 'Loop Spiral',
-    description: 'Expanding spiral pattern using LOOP with arithmetic',
+    title: "Loop Spiral",
+    description: "Expanding spiral pattern using LOOP with arithmetic",
     genome: `; Spiral using LOOP to repeat circle + translate pattern
 ATG
   ; Initial small circle with offset
@@ -847,15 +919,15 @@ ATG
 
   ; Result: 11 circles in a line (1 + 10 loops)
 TAA`,
-    difficulty: 'intermediate',
-    concepts: ['drawing', 'transforms', 'stack', 'arithmetic'],
-    goodForMutations: ['missense'],
-    keywords: ['loop', 'spiral', 'iteration', 'translate', 'pattern', 'growth']
+    difficulty: "intermediate",
+    concepts: ["drawing", "transforms", "stack", "arithmetic"],
+    goodForMutations: ["missense"],
+    keywords: ["loop", "spiral", "iteration", "translate", "pattern", "growth"],
   },
 
   loopGrid: {
-    title: 'Loop Grid',
-    description: 'Grid of shapes created with efficient LOOP patterns',
+    title: "Loop Grid",
+    description: "Grid of shapes created with efficient LOOP patterns",
     genome: `; Simple row of circles using LOOP
 ATG
   ; Draw circle and move right
@@ -870,16 +942,18 @@ ATG
   GAA AAC            ; PUSH 6 (loop count)
   CAA                ; LOOP
 TAA`,
-    difficulty: 'intermediate',
-    concepts: ['drawing', 'transforms', 'stack'],
-    goodForMutations: ['missense', 'frameshift'],
-    keywords: ['loop', 'grid', 'pattern', 'row', 'repetition', 'translate']
+    difficulty: "intermediate",
+    concepts: ["drawing", "transforms", "stack"],
+    goodForMutations: ["missense", "frameshift"],
+    keywords: ["loop", "grid", "pattern", "row", "repetition", "translate"],
   },
 
   fibonacciSpiral: {
-    title: 'Fibonacci Spiral',
-    description: 'Mathematical golden ratio spiral using arithmetic and LOOP for elegant composition',
-    genome: `; Fibonacci-inspired spiral: each square grows following 1,1,2,3,5,8,13...
+    title: "Fibonacci Spiral",
+    description:
+      "Mathematical golden ratio spiral using arithmetic and LOOP for elegant composition",
+    genome:
+      `; Fibonacci-inspired spiral: each square grows following 1,1,2,3,5,8,13...
 ; Using approximation within 0-63 literal range
 ATG
   ; Square 1: size 3
@@ -919,15 +993,25 @@ ATG
   ATA CCA            ; DUP, RECT(24, 24)
 
 TAA`,
-    difficulty: 'advanced-showcase',
-    concepts: ['arithmetic', 'drawing', 'transforms', 'composition', 'stack'],
-    goodForMutations: ['missense'],
-    keywords: ['fibonacci', 'spiral', 'golden', 'ratio', 'mathematical', 'elegant', 'sequence', 'masterpiece']
+    difficulty: "advanced-showcase",
+    concepts: ["arithmetic", "drawing", "transforms", "composition", "stack"],
+    goodForMutations: ["missense"],
+    keywords: [
+      "fibonacci",
+      "spiral",
+      "golden",
+      "ratio",
+      "mathematical",
+      "elegant",
+      "sequence",
+      "masterpiece",
+    ],
   },
 
   goldenMandala: {
-    title: 'Golden Mandala',
-    description: 'Multi-layered sacred geometry using LOOP and computed golden ratio proportions',
+    title: "Golden Mandala",
+    description:
+      "Multi-layered sacred geometry using LOOP and computed golden ratio proportions",
     genome: `; Golden ratio mandala with phi-proportioned layers
 ; Inner circle radius = 10, middle = 16 (~10×1.6), outer = 26 (~16×1.6)
 ATG
@@ -976,16 +1060,35 @@ ATG
   GAA AGT            ; PUSH 11 (loop count)
   CAA                ; LOOP
 TAA`,
-    difficulty: 'advanced-showcase',
-    concepts: ['arithmetic', 'drawing', 'transforms', 'colors', 'composition', 'stack'],
-    goodForMutations: ['silent', 'missense'],
-    keywords: ['mandala', 'golden', 'ratio', 'sacred', 'geometry', 'layers', 'phi', 'radial', 'masterpiece']
+    difficulty: "advanced-showcase",
+    concepts: [
+      "arithmetic",
+      "drawing",
+      "transforms",
+      "colors",
+      "composition",
+      "stack",
+    ],
+    goodForMutations: ["silent", "missense"],
+    keywords: [
+      "mandala",
+      "golden",
+      "ratio",
+      "sacred",
+      "geometry",
+      "layers",
+      "phi",
+      "radial",
+      "masterpiece",
+    ],
   },
 
   parametricStar: {
-    title: 'Parametric Star',
-    description: 'Mathematical star curve using LOOP with computed radius variations',
-    genome: `; Parametric star with varying radius (r = base + amplitude × sin-like pattern)
+    title: "Parametric Star",
+    description:
+      "Mathematical star curve using LOOP with computed radius variations",
+    genome:
+      `; Parametric star with varying radius (r = base + amplitude × sin-like pattern)
 ; Approximating sine with discrete 8-point pattern: 0, 7, 10, 7, 0, -7, -10, -7
 ATG
   ; Base radius = 20, amplitude = 10 (radius varies 10-30)
@@ -1038,15 +1141,26 @@ ATG
   GGA                ; CIRCLE(27)
   GAA GTC AGA        ; ROTATE 45° (completes circle)
 TAA`,
-    difficulty: 'advanced-showcase',
-    concepts: ['arithmetic', 'drawing', 'transforms', 'colors', 'composition'],
-    goodForMutations: ['silent', 'missense'],
-    keywords: ['parametric', 'star', 'rose', 'curve', 'mathematical', 'trigonometric', 'rainbow', 'colorful', 'masterpiece']
+    difficulty: "advanced-showcase",
+    concepts: ["arithmetic", "drawing", "transforms", "colors", "composition"],
+    goodForMutations: ["silent", "missense"],
+    keywords: [
+      "parametric",
+      "star",
+      "rose",
+      "curve",
+      "mathematical",
+      "trigonometric",
+      "rainbow",
+      "colorful",
+      "masterpiece",
+    ],
   },
 
   comparisonDemo: {
-    title: 'Comparison Logic',
-    description: 'Demonstrates EQ (equality) and LT (less than) comparison opcodes producing boolean results',
+    title: "Comparison Logic",
+    description:
+      "Demonstrates EQ (equality) and LT (less than) comparison opcodes producing boolean results",
     genome: `; Comparison opcodes: EQ and LT
 ; Stack convention: comparisons push 1 (true) or 0 (false)
 ATG
@@ -1099,17 +1213,29 @@ ATG
   ; Demonstrates: EQ produces 1 or 0, LT produces 1 or 0
   ; Pattern: visible circle = true, invisible = false
 TAA`,
-    difficulty: 'advanced',
-    concepts: ['comparison', 'logic', 'arithmetic', 'drawing', 'stack'],
-    goodForMutations: ['missense'],
-    keywords: ['comparison', 'equality', 'less-than', 'boolean', 'logic', 'conditional', 'true', 'false', 'EQ', 'LT']
-  }
-,
+    difficulty: "advanced",
+    concepts: ["comparison", "logic", "arithmetic", "drawing", "stack"],
+    goodForMutations: ["missense"],
+    keywords: [
+      "comparison",
+      "equality",
+      "less-than",
+      "boolean",
+      "logic",
+      "conditional",
+      "true",
+      "false",
+      "EQ",
+      "LT",
+    ],
+  },
 
   conditionalRainbow: {
-    title: 'Conditional Rainbow',
-    description: 'Draws circles conditionally based on arithmetic comparisons - demonstrates boolean-controlled visual output',
-    genome: `; Conditional drawing: draw circles only when value exceeds threshold
+    title: "Conditional Rainbow",
+    description:
+      "Draws circles conditionally based on arithmetic comparisons - demonstrates boolean-controlled visual output",
+    genome:
+      `; Conditional drawing: draw circles only when value exceeds threshold
 ; Pattern: check if radius > threshold, multiply by result to enable/disable drawing
 ATG
   ; Circle 1: radius=3, threshold=5 → 3<5 → false → invisible
@@ -1168,15 +1294,34 @@ ATG
   ; Pattern: only circles with radius > threshold are drawn
   ; Demonstrates conditional execution via arithmetic multiplication
 TAA`,
-    difficulty: 'advanced-showcase',
-    concepts: ['comparison', 'logic', 'arithmetic', 'drawing', 'colors', 'stack'],
-    goodForMutations: ['missense'],
-    keywords: ['conditional', 'threshold', 'comparison', 'logic', 'filtering', 'selective', 'boolean', 'rainbow', 'algorithm', 'masterpiece']
+    difficulty: "advanced-showcase",
+    concepts: [
+      "comparison",
+      "logic",
+      "arithmetic",
+      "drawing",
+      "colors",
+      "stack",
+    ],
+    goodForMutations: ["missense"],
+    keywords: [
+      "conditional",
+      "threshold",
+      "comparison",
+      "logic",
+      "filtering",
+      "selective",
+      "boolean",
+      "rainbow",
+      "algorithm",
+      "masterpiece",
+    ],
   },
 
   sortingVisualization: {
-    title: 'Sorting Visualization',
-    description: 'Demonstrates comparison-based sorting logic with visual height bars representing sorted values',
+    title: "Sorting Visualization",
+    description:
+      "Demonstrates comparison-based sorting logic with visual height bars representing sorted values",
     genome: `; Bubble sort-inspired visualization: compare and swap visual bars
 ; Three bars with heights 15, 10, 25 → after comparisons: 10, 15, 25 (sorted)
 ATG
@@ -1227,15 +1372,33 @@ ATG
   ; Visual: top row (blue) = unsorted, bottom row (green) = sorted
   ; Demonstrates comparison logic applied to data visualization
 TAA`,
-    difficulty: 'advanced-showcase',
-    concepts: ['comparison', 'logic', 'arithmetic', 'drawing', 'colors', 'composition'],
-    goodForMutations: ['missense'],
-    keywords: ['sorting', 'comparison', 'algorithm', 'visualization', 'bars', 'data', 'ordered', 'computational', 'masterpiece']
+    difficulty: "advanced-showcase",
+    concepts: [
+      "comparison",
+      "logic",
+      "arithmetic",
+      "drawing",
+      "colors",
+      "composition",
+    ],
+    goodForMutations: ["missense"],
+    keywords: [
+      "sorting",
+      "comparison",
+      "algorithm",
+      "visualization",
+      "bars",
+      "data",
+      "ordered",
+      "computational",
+      "masterpiece",
+    ],
   },
 
   collatzSequence: {
-    title: 'Collatz Conjecture',
-    description: 'Famous unsolved math problem: n→n/2 if even, n→3n+1 if odd, visualized with decreasing circle sizes',
+    title: "Collatz Conjecture",
+    description:
+      "Famous unsolved math problem: n→n/2 if even, n→3n+1 if odd, visualized with decreasing circle sizes",
     genome: `; Collatz sequence starting from n=27: 27→82→41→124→62→31→94→47→...
 ; Visualized as descending circles (simplified, showing first few steps)
 ; Pattern: large→medium→small demonstrates iterative arithmetic
@@ -1299,15 +1462,34 @@ ATG
   ; Visual: descending rainbow demonstrates iterative arithmetic
   ; Famous unsolved problem: does every number reach 1?
 TAA`,
-    difficulty: 'advanced-showcase',
-    concepts: ['arithmetic', 'comparison', 'logic', 'drawing', 'colors', 'composition'],
-    goodForMutations: ['missense'],
-    keywords: ['collatz', 'conjecture', 'algorithm', 'iteration', 'mathematical', 'unsolved', 'sequence', 'computation', 'famous', 'masterpiece']
+    difficulty: "advanced-showcase",
+    concepts: [
+      "arithmetic",
+      "comparison",
+      "logic",
+      "drawing",
+      "colors",
+      "composition",
+    ],
+    goodForMutations: ["missense"],
+    keywords: [
+      "collatz",
+      "conjecture",
+      "algorithm",
+      "iteration",
+      "mathematical",
+      "unsolved",
+      "sequence",
+      "computation",
+      "famous",
+      "masterpiece",
+    ],
   },
 
   euclideanGCD: {
-    title: 'Euclidean Algorithm (GCD)',
-    description: 'Greatest Common Divisor using subtraction method - fundamental algorithm visualized as shrinking rectangles',
+    title: "Euclidean Algorithm (GCD)",
+    description:
+      "Greatest Common Divisor using subtraction method - fundamental algorithm visualized as shrinking rectangles",
     genome: `; GCD(48, 18) using Euclidean subtraction algorithm
 ; 48-18=30, 30-18=12, 18-12=6, 12-6=6, 6-6=0 → GCD=6
 ; Visualized as rectangles shrinking to the common divisor
@@ -1354,11 +1536,29 @@ ATG
   ; Final square shows the greatest common divisor
   ; Ancient algorithm (Euclid ~300 BCE) demonstrated visually
 TAA`,
-    difficulty: 'advanced-showcase',
-    concepts: ['arithmetic', 'comparison', 'logic', 'drawing', 'colors', 'composition'],
-    goodForMutations: ['missense'],
-    keywords: ['euclidean', 'gcd', 'algorithm', 'greatest', 'common', 'divisor', 'mathematical', 'ancient', 'fundamental', 'masterpiece']
-  }
+    difficulty: "advanced-showcase",
+    concepts: [
+      "arithmetic",
+      "comparison",
+      "logic",
+      "drawing",
+      "colors",
+      "composition",
+    ],
+    goodForMutations: ["missense"],
+    keywords: [
+      "euclidean",
+      "gcd",
+      "algorithm",
+      "greatest",
+      "common",
+      "divisor",
+      "mathematical",
+      "ancient",
+      "fundamental",
+      "masterpiece",
+    ],
+  },
 };
 
 export type ExampleKey = keyof typeof examples;

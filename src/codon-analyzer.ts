@@ -11,7 +11,7 @@
  * (codon usage bias, GC content, compositional analysis)
  */
 
-import { Codon, Opcode, CODON_MAP, CodonToken } from './types';
+import { Codon, CODON_MAP, type CodonToken, Opcode } from "./types";
 
 /**
  * Complete codon usage analysis results
@@ -52,10 +52,10 @@ export interface CodonAnalysis {
 
   /** Genome "signature" metrics for comparison */
   signature: {
-    drawingDensity: number;  // % of drawing opcodes
+    drawingDensity: number; // % of drawing opcodes
     transformDensity: number; // % of transform opcodes
-    complexity: number;       // unique opcodes / total opcodes
-    redundancy: number;       // avg synonymous codons per opcode
+    complexity: number; // unique opcodes / total opcodes
+    redundancy: number; // avg synonymous codons per opcode
   };
 }
 
@@ -64,7 +64,13 @@ export interface CodonAnalysis {
  */
 const OPCODE_FAMILIES = {
   control: [Opcode.START, Opcode.STOP],
-  drawing: [Opcode.CIRCLE, Opcode.RECT, Opcode.LINE, Opcode.TRIANGLE, Opcode.ELLIPSE],
+  drawing: [
+    Opcode.CIRCLE,
+    Opcode.RECT,
+    Opcode.LINE,
+    Opcode.TRIANGLE,
+    Opcode.ELLIPSE,
+  ],
   transform: [Opcode.TRANSLATE, Opcode.ROTATE, Opcode.SCALE, Opcode.COLOR],
   stack: [Opcode.PUSH, Opcode.DUP, Opcode.POP, Opcode.SWAP],
   utility: [Opcode.NOP, Opcode.SAVE_STATE, Opcode.RESTORE_STATE],
@@ -97,20 +103,23 @@ export function analyzeCodonUsage(tokens: CodonToken[]): CodonAnalysis {
     codonFrequency.set(codon, (codonFrequency.get(codon) || 0) + 1);
 
     // Base composition (normalize U→T for GC calculation)
-    const bases = codon.split('');
+    const bases = codon.split("");
     for (const base of bases) {
-      const normalizedBase = base === 'U' ? 'T' : base;
-      if (normalizedBase === 'G') gCount++;
-      else if (normalizedBase === 'C') cCount++;
-      else if (normalizedBase === 'A') aCount++;
-      else if (normalizedBase === 'T') tCount++;
+      const normalizedBase = base === "U" ? "T" : base;
+      if (normalizedBase === "G") gCount++;
+      else if (normalizedBase === "C") cCount++;
+      else if (normalizedBase === "A") aCount++;
+      else if (normalizedBase === "T") tCount++;
     }
 
     // Opcode distribution
     const opcode = CODON_MAP[codon];
     if (opcode !== undefined) {
       const opcodeName = Opcode[opcode];
-      opcodeDistribution.set(opcodeName, (opcodeDistribution.get(opcodeName) || 0) + 1);
+      opcodeDistribution.set(
+        opcodeName,
+        (opcodeDistribution.get(opcodeName) || 0) + 1,
+      );
     }
   }
 
@@ -120,7 +129,10 @@ export function analyzeCodonUsage(tokens: CodonToken[]): CodonAnalysis {
   const atContent = totalBases > 0 ? ((aCount + tCount) / totalBases) * 100 : 0;
 
   // Calculate opcode family percentages
-  const opcodeFamilies = calculateOpcodeFamilies(opcodeDistribution, totalCodons);
+  const opcodeFamilies = calculateOpcodeFamilies(
+    opcodeDistribution,
+    totalCodons,
+  );
 
   // Top codons
   const topCodons = Array.from(codonFrequency.entries())
@@ -166,7 +178,7 @@ export function analyzeCodonUsage(tokens: CodonToken[]): CodonAnalysis {
  * Normalize codon (convert U→T for consistency)
  */
 function normalizeCodon(codon: string): string {
-  return codon.replace(/U/g, 'T');
+  return codon.replace(/U/g, "T");
 }
 
 /**
@@ -174,8 +186,8 @@ function normalizeCodon(codon: string): string {
  */
 function calculateOpcodeFamilies(
   opcodeDistribution: Map<string, number>,
-  totalCodons: number
-): CodonAnalysis['opcodeFamilies'] {
+  totalCodons: number,
+): CodonAnalysis["opcodeFamilies"] {
   const families = {
     control: 0,
     drawing: 0,
@@ -210,7 +222,7 @@ function calculateOpcodeFamilies(
  * e.g., GG* family (GGA, GGC, GGG, GGT)
  */
 function calculateCodonFamilyUsage(
-  codonFrequency: Map<string, number>
+  codonFrequency: Map<string, number>,
 ): Map<string, number> {
   const familyUsage = new Map<string, number>();
 
@@ -227,8 +239,8 @@ function calculateCodonFamilyUsage(
  */
 function calculateSignature(
   opcodeDistribution: Map<string, number>,
-  totalCodons: number
-): CodonAnalysis['signature'] {
+  totalCodons: number,
+): CodonAnalysis["signature"] {
   let drawingCount = 0;
   let transformCount = 0;
   const uniqueOpcodes = opcodeDistribution.size;
@@ -243,8 +255,12 @@ function calculateSignature(
     }
   }
 
-  const drawingDensity = totalCodons > 0 ? (drawingCount / totalCodons) * 100 : 0;
-  const transformDensity = totalCodons > 0 ? (transformCount / totalCodons) * 100 : 0;
+  const drawingDensity = totalCodons > 0
+    ? (drawingCount / totalCodons) * 100
+    : 0;
+  const transformDensity = totalCodons > 0
+    ? (transformCount / totalCodons) * 100
+    : 0;
   const complexity = totalCodons > 0 ? uniqueOpcodes / totalCodons : 0;
 
   // Calculate redundancy (avg synonymous codons per opcode)
@@ -266,23 +282,33 @@ function calculateSignature(
 export function compareAnalyses(a: CodonAnalysis, b: CodonAnalysis): number {
   // Compare opcode family distributions (weighted average)
   const familySimilarity =
-    (100 - Math.abs(a.opcodeFamilies.drawing - b.opcodeFamilies.drawing)) * 0.3 +
-    (100 - Math.abs(a.opcodeFamilies.transform - b.opcodeFamilies.transform)) * 0.2 +
+    (100 - Math.abs(a.opcodeFamilies.drawing - b.opcodeFamilies.drawing)) *
+      0.3 +
+    (100 - Math.abs(a.opcodeFamilies.transform - b.opcodeFamilies.transform)) *
+      0.2 +
     (100 - Math.abs(a.opcodeFamilies.stack - b.opcodeFamilies.stack)) * 0.2 +
-    (100 - Math.abs(a.opcodeFamilies.control - b.opcodeFamilies.control)) * 0.15 +
-    (100 - Math.abs(a.opcodeFamilies.utility - b.opcodeFamilies.utility)) * 0.15;
+    (100 - Math.abs(a.opcodeFamilies.control - b.opcodeFamilies.control)) *
+      0.15 +
+    (100 - Math.abs(a.opcodeFamilies.utility - b.opcodeFamilies.utility)) *
+      0.15;
 
   // Compare GC content
   const gcSimilarity = 100 - Math.abs(a.gcContent - b.gcContent);
 
   // Compare signature metrics
   const signatureSimilarity =
-    (100 - Math.abs(a.signature.drawingDensity - b.signature.drawingDensity)) * 0.4 +
-    (100 - Math.abs(a.signature.transformDensity - b.signature.transformDensity)) * 0.3 +
-    (100 - Math.abs(a.signature.complexity - b.signature.complexity) * 100) * 0.3;
+    (100 - Math.abs(a.signature.drawingDensity - b.signature.drawingDensity)) *
+      0.4 +
+    (100 -
+        Math.abs(a.signature.transformDensity - b.signature.transformDensity)) *
+      0.3 +
+    (100 - Math.abs(a.signature.complexity - b.signature.complexity) * 100) *
+      0.3;
 
   // Weighted average
-  return familySimilarity * 0.5 + gcSimilarity * 0.2 + signatureSimilarity * 0.3;
+  return (
+    familySimilarity * 0.5 + gcSimilarity * 0.2 + signatureSimilarity * 0.3
+  );
 }
 
 /**
@@ -291,33 +317,41 @@ export function compareAnalyses(a: CodonAnalysis, b: CodonAnalysis): number {
 export function formatAnalysis(analysis: CodonAnalysis): string {
   const lines: string[] = [];
 
-  lines.push('=== Codon Usage Analysis ===\n');
+  lines.push("=== Codon Usage Analysis ===\n");
   lines.push(`Total Codons: ${analysis.totalCodons}`);
   lines.push(`GC Content: ${analysis.gcContent.toFixed(1)}%`);
   lines.push(`AT Content: ${analysis.atContent.toFixed(1)}%\n`);
 
-  lines.push('Top 5 Codons:');
+  lines.push("Top 5 Codons:");
   for (const { codon, count, percentage } of analysis.topCodons) {
     lines.push(`  ${codon}: ${count} (${percentage.toFixed(1)}%)`);
   }
 
-  lines.push('\nTop 5 Operations:');
+  lines.push("\nTop 5 Operations:");
   for (const { opcode, count, percentage } of analysis.topOpcodes) {
     lines.push(`  ${opcode}: ${count} (${percentage.toFixed(1)}%)`);
   }
 
-  lines.push('\nOpcode Family Distribution:');
+  lines.push("\nOpcode Family Distribution:");
   lines.push(`  Control: ${analysis.opcodeFamilies.control.toFixed(1)}%`);
   lines.push(`  Drawing: ${analysis.opcodeFamilies.drawing.toFixed(1)}%`);
   lines.push(`  Transform: ${analysis.opcodeFamilies.transform.toFixed(1)}%`);
   lines.push(`  Stack: ${analysis.opcodeFamilies.stack.toFixed(1)}%`);
   lines.push(`  Utility: ${analysis.opcodeFamilies.utility.toFixed(1)}%`);
 
-  lines.push('\nGenome Signature:');
-  lines.push(`  Drawing Density: ${analysis.signature.drawingDensity.toFixed(1)}%`);
-  lines.push(`  Transform Density: ${analysis.signature.transformDensity.toFixed(1)}%`);
-  lines.push(`  Complexity: ${(analysis.signature.complexity * 100).toFixed(1)}%`);
-  lines.push(`  Redundancy: ${analysis.signature.redundancy.toFixed(2)} codons/opcode`);
+  lines.push("\nGenome Signature:");
+  lines.push(
+    `  Drawing Density: ${analysis.signature.drawingDensity.toFixed(1)}%`,
+  );
+  lines.push(
+    `  Transform Density: ${analysis.signature.transformDensity.toFixed(1)}%`,
+  );
+  lines.push(
+    `  Complexity: ${(analysis.signature.complexity * 100).toFixed(1)}%`,
+  );
+  lines.push(
+    `  Redundancy: ${analysis.signature.redundancy.toFixed(2)} codons/opcode`,
+  );
 
-  return lines.join('\n');
+  return lines.join("\n");
 }

@@ -22,16 +22,16 @@ export function exportGenome(
     description?: string;
     author?: string;
     metadata?: Record<string, any>;
-  }
+  },
 ): string {
   const genomeFile: GenomeFile = {
-    version: '1.0.0',
+    version: "1.0.0",
     title,
     description: options?.description,
     author: options?.author,
     created: new Date().toISOString(),
     genome,
-    metadata: options?.metadata
+    metadata: options?.metadata,
   };
 
   return JSON.stringify(genomeFile, null, 2);
@@ -45,13 +45,15 @@ export function importGenome(fileContent: string): GenomeFile {
     const parsed = JSON.parse(fileContent);
 
     if (!parsed.version || !parsed.title || !parsed.genome) {
-      throw new Error('Invalid .genome file: missing required fields (version, title, genome)');
+      throw new Error(
+        "Invalid .genome file: missing required fields (version, title, genome)",
+      );
     }
 
     return parsed as GenomeFile;
   } catch (error) {
     if (error instanceof SyntaxError) {
-      throw new Error('Invalid .genome file: not valid JSON');
+      throw new Error("Invalid .genome file: not valid JSON");
     }
     throw error;
   }
@@ -67,15 +69,19 @@ export function downloadGenomeFile(
     description?: string;
     author?: string;
     metadata?: Record<string, any>;
-  }
+  },
 ): void {
-  const content = exportGenome(genome, filename.replace('.genome', ''), options);
-  const blob = new Blob([content], { type: 'application/json' });
+  const content = exportGenome(
+    genome,
+    filename.replace(".genome", ""),
+    options,
+  );
+  const blob = new Blob([content], { type: "application/json" });
   const url = URL.createObjectURL(blob);
 
-  const a = document.createElement('a');
+  const a = document.createElement("a");
   a.href = url;
-  a.download = filename.endsWith('.genome') ? filename : `${filename}.genome`;
+  a.download = filename.endsWith(".genome") ? filename : `${filename}.genome`;
   document.body.appendChild(a);
   a.click();
   document.body.removeChild(a);
@@ -99,7 +105,7 @@ export function readGenomeFile(file: File): Promise<GenomeFile> {
       }
     };
 
-    reader.onerror = () => reject(new Error('Failed to read file'));
+    reader.onerror = () => reject(new Error("Failed to read file"));
     reader.readAsText(file);
   });
 }
@@ -107,36 +113,47 @@ export function readGenomeFile(file: File): Promise<GenomeFile> {
 /**
  * Validate genome file structure
  */
-export function validateGenomeFile(content: string): { valid: boolean; errors: string[] } {
+export function validateGenomeFile(content: string): {
+  valid: boolean;
+  errors: string[];
+} {
   const errors: string[] = [];
 
   try {
     const parsed = JSON.parse(content);
 
     if (!parsed.version) {
-errors.push('Missing required field: version');
-}
+      errors.push("Missing required field: version");
+    }
     if (!parsed.title) {
-errors.push('Missing required field: title');
-}
+      errors.push("Missing required field: title");
+    }
     if (!parsed.genome) {
-errors.push('Missing required field: genome');
-}
-    if (parsed.genome && typeof parsed.genome !== 'string') {
-errors.push('Field "genome" must be a string');
-}
+      errors.push("Missing required field: genome");
+    }
+    if (parsed.genome && typeof parsed.genome !== "string") {
+      errors.push("Field \"genome\" must be a string");
+    }
 
     // Check genome contains valid bases (only if genome exists)
-    if (parsed.genome && typeof parsed.genome === 'string') {
-      const cleanGenome = parsed.genome.replace(/\s+/g, '').replace(/;.*$/gm, '');
+    if (parsed.genome && typeof parsed.genome === "string") {
+      const cleanGenome = parsed.genome
+        .replace(/\s+/g, "")
+        .replace(/;.*$/gm, "");
       const invalidChars = cleanGenome.match(/[^ACGT]/g);
       if (invalidChars) {
-        errors.push(`Invalid characters in genome: ${[...new Set(invalidChars)].join(', ')}`);
+        errors.push(
+          `Invalid characters in genome: ${
+            [...new Set(invalidChars)].join(
+              ", ",
+            )
+          }`,
+        );
       }
     }
 
     return { valid: errors.length === 0, errors };
   } catch (error) {
-    return { valid: false, errors: ['Invalid JSON format'] };
+    return { valid: false, errors: ["Invalid JSON format"] };
   }
 }

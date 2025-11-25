@@ -34,9 +34,11 @@ git push -u origin master
 After deployment, update the following files to use your actual GitHub Pages URL:
 
 **In `index.html`** (lines 14, 17, 21, 24):
+
 - Replace `https://yourusername.github.io/codoncanvas/` with your actual URL
 
 **In `vite.config.ts`** (line 6):
+
 - Base path is already set to `/codoncanvas/` for GitHub Pages
 - If deploying to custom domain, change this to `/`
 
@@ -62,6 +64,7 @@ git push
 Location: `.github/workflows/deploy.yml`
 
 **Build Job:**
+
 1. Checkout code
 2. Setup Node.js 20
 3. Install dependencies (`npm ci`)
@@ -70,6 +73,7 @@ Location: `.github/workflows/deploy.yml`
 6. Upload artifact for deployment
 
 **Deploy Job:**
+
 1. Deploy artifact to GitHub Pages
 2. Set environment URL for easy access
 
@@ -78,6 +82,7 @@ Location: `.github/workflows/deploy.yml`
 Location: `vite.config.ts`
 
 **Key Settings:**
+
 - **Base path:** `/codoncanvas/` in production (for GitHub Pages subdirectory)
 - **Build inputs:** All 5 HTML pages (index, demos, mutation, timeline, evolution)
 - **Output:** `dist/` directory with bundled assets
@@ -126,6 +131,7 @@ npm run preview
 **Problem:** Assets not loading, 404 errors in console.
 
 **Solution:** Check `base` path in `vite.config.ts`:
+
 - For GitHub Pages: `/codoncanvas/`
 - For custom domain root: `/`
 
@@ -140,6 +146,7 @@ npm run preview
 **Problem:** GitHub Actions fails at "Run tests" step.
 
 **Solution:** Fix failing tests locally first:
+
 ```bash
 npm test
 ```
@@ -149,6 +156,7 @@ npm test
 **Problem:** Link previews on Twitter/Facebook show no image.
 
 **Solution:**
+
 1. Ensure `screenshot_playground.png` exists in repository root
 2. Update Open Graph URLs in HTML files with correct deployment URL
 3. Use absolute URLs (not relative paths)
@@ -166,6 +174,7 @@ If you want to use a custom domain instead of GitHub Pages subdomain:
 ## Deployment Checklist
 
 Before deploying:
+
 - [ ] All tests passing (`npm test`)
 - [ ] Build succeeds locally (`npm run build`)
 - [ ] Preview works locally (`npm run preview`)
@@ -176,6 +185,7 @@ Before deploying:
 ## Automatic Deployment
 
 Every push to `master` branch triggers automatic deployment:
+
 1. Tests run first (deployment fails if tests fail)
 2. Production build generated
 3. Artifact uploaded to GitHub Pages
@@ -192,6 +202,7 @@ To trigger deployment without pushing code:
 ## Monitoring
 
 Check deployment status:
+
 - **Actions tab:** View workflow runs and logs
 - **Settings → Pages:** See deployment history and current URL
 - **Deployments:** Shows all deployment events
@@ -199,6 +210,7 @@ Check deployment status:
 ## Support
 
 For deployment issues:
+
 - Check [GitHub Actions documentation](https://docs.github.com/en/actions)
 - Check [GitHub Pages documentation](https://docs.github.com/en/pages)
 - Review workflow logs in Actions tab

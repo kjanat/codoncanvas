@@ -22,6 +22,7 @@ The implementation successfully delivers ALL Phase A and Phase B requirements fr
 ### Specification vs Implementation Comparison
 
 #### MVP Spec Allocation (64 codons total):
+
 - Control Flow: 4 codons (ATG, TAA, TAG, TGA)
 - Drawing Primitives: 20 codons (CIRCLE×4, RECT×4, LINE×4, TRIANGLE×4, ELLIPSE×4)
 - Transform Operations: 16 codons (TRANSLATE×4, ROTATE×4, SCALE×4, COLOR×4)
@@ -30,6 +31,7 @@ The implementation successfully delivers ALL Phase A and Phase B requirements fr
 - Advanced Operations: 9 codons (SWAP×2, **NOISE×4**, SAVE_STATE×3)
 
 #### Actual Implementation (64 codons total):
+
 - Control Flow: 4 codons ✅ (ATG, TAA, TAG, TGA)
 - Drawing Primitives: 20 codons ✅ (exactly as spec)
 - Transform Operations: 16 codons ✅ (exactly as spec)
@@ -43,7 +45,9 @@ The implementation successfully delivers ALL Phase A and Phase B requirements fr
 ### Critical Differences
 
 #### 1. NOISE Opcode (MISSING)
+
 **Spec Definition** (Line 53-60):
+
 ```
 CTA, CTC, CTG, CTT → NOISE (4 codons)
 Stack Effect: [seed, intensity] → []
@@ -51,6 +55,7 @@ Description: Add visual noise/texture at current position
 ```
 
 **Implementation Reality**:
+
 - NOISE opcode **NOT IMPLEMENTED**
 - Codons CTA, CTC, CTG, CTT **REPURPOSED** for:
   - CTA → EQ (equality comparison)
@@ -61,13 +66,16 @@ Description: Add visual noise/texture at current position
 **Assessment**: ✅ ACCEPTABLE - NOISE was a pedagogical "nice-to-have" in the spec. The repurposed codons provide **greater educational value** through computational features (arithmetic enables algorithmic art, comparisons enable conditional logic).
 
 #### 2. NOP Codon Count (REDUCED)
+
 **Spec Definition** (Line 46-51):
+
 ```
 CAA, CAC, CAG, CAT → NOP (4 codons)
 Description: No operation; used for visual spacing in source
 ```
 
 **Implementation Reality**:
+
 - Only CAC → NOP (1 codon)
 - CAA → LOOP
 - CAG → SUB
@@ -76,26 +84,32 @@ Description: No operation; used for visual spacing in source
 **Assessment**: ✅ ACCEPTABLE - NOP codons were intended for "readability spacing". Having 1 NOP codon is sufficient for this purpose. The other 3 codons provide valuable computational operations.
 
 #### 3. RESTORE_STATE (ADDED)
+
 **Spec Omission**: SAVE_STATE had 3 synonymous codons but no RESTORE operation specified.
 
 **Implementation Reality**:
+
 - SAVE_STATE: TCA, TCC (2 codons)
 - RESTORE_STATE: TCG, TCT (2 codons)
 
 **Assessment**: ✅ IMPROVEMENT - RESTORE_STATE is logically necessary for SAVE_STATE to be useful. This is a **specification bug fix** in the implementation.
 
 #### 4. New Computational Features (MAJOR ADDITION)
+
 **Not in MVP Spec**:
+
 - Arithmetic: ADD, SUB, MUL, DIV (4 codons)
 - Comparison: EQ, LT (2 codons)
 - Control Flow: LOOP (1 codon)
 
 **Implementation Sessions**:
+
 - Session 71-72: Arithmetic opcodes
 - Session 73: LOOP opcode
 - Session 75: Comparison opcodes
 
 **Assessment**: ✅ ENHANCEMENT - These features enable:
+
 - Algorithmic art (fractals, spirals, mathematical patterns)
 - Computational thinking pedagogy
 - Advanced student challenges
@@ -110,12 +124,14 @@ Description: No operation; used for visual spacing in source
 ### Lexer (~200 LOC) ✅ COMPLETE
 
 **Spec Requirements**:
+
 - [x] Tokenize triplets with whitespace handling
 - [x] Strip comments (`;` to EOL)
 - [x] Validate base characters (A/C/G/T only)
 - [x] Detect mid-triplet breaks
 
 **Implementation**: `src/lexer.ts` (205 lines)
+
 - Implements `CodonLexer` class
 - Full comment stripping
 - Whitespace normalization
@@ -127,6 +143,7 @@ Description: No operation; used for visual spacing in source
 ### VM Core (~300 LOC) ✅ COMPLETE
 
 **Spec Requirements**:
+
 - [x] Stack machine with state (position, rotation, color, scale)
 - [x] Implement all 9 opcode families
 - [x] Base-4 literal decoding for PUSH
@@ -134,6 +151,7 @@ Description: No operation; used for visual spacing in source
 - [x] Instruction count sandboxing (max 10,000)
 
 **Implementation**: `src/vm.ts` (408 lines)
+
 - Implements `CodonVM` class
 - Full state management (`VMState` interface)
 - **14 opcode families** (exceeds spec's 9)
@@ -147,12 +165,14 @@ Description: No operation; used for visual spacing in source
 ### Canvas Renderer (~200 LOC) ✅ COMPLETE
 
 **Spec Requirements**:
+
 - [x] Circle, rect, line, triangle, ellipse primitives
 - [x] Transform state management (translate, rotate, scale)
 - [x] Color application (HSL)
 - [x] Export to PNG
 
 **Implementation**: `src/renderer.ts` (Canvas2DRenderer)
+
 - All 5 drawing primitives implemented
 - Transform matrix management
 - HSL color conversion
@@ -165,12 +185,14 @@ Description: No operation; used for visual spacing in source
 ### Playground UI (~300 LOC) ✅ COMPLETE
 
 **Spec Requirements**:
+
 - [x] Code editor with syntax highlighting (color by opcode family)
 - [x] Live preview canvas (updates on keypress with 300ms debounce)
 - [x] Split view (source | canvas)
 - [x] Example loader (3 built-in examples)
 
 **Implementation**:
+
 - `src/playground.ts`: Main playground logic
 - `index.html`: Full-featured playground interface
 - Syntax highlighting with Monaco Editor integration
@@ -187,6 +209,7 @@ Description: No operation; used for visual spacing in source
 ### Linter (~400 LOC) ✅ COMPLETE
 
 **Spec Requirements**:
+
 - [x] Frame alignment checker
 - [x] Stop-before-start detection (RED)
 - [x] Start-after-stop warning (YELLOW)
@@ -194,6 +217,7 @@ Description: No operation; used for visual spacing in source
 - [x] Stack depth analyzer
 
 **Implementation**: Integrated in `src/lexer.ts` via `validateFrame()` and `validateStructure()`
+
 - All validation rules implemented
 - Real-time linting in playground
 - Visual error highlighting
@@ -203,12 +227,14 @@ Description: No operation; used for visual spacing in source
 ### Mutation Tools (~200 LOC) ✅ COMPLETE
 
 **Spec Requirements**:
+
 - [x] Point mutation button (change random codon to synonymous)
 - [x] Indel buttons (+/− 1 base, +/− 3 bases)
 - [x] Frameshift button (insert 1-2 bases randomly)
 - [x] Mutation presets (silent, missense, nonsense)
 
 **Implementation**: `src/mutations.ts` + `mutation-demo.html`
+
 - All mutation types implemented
 - Interactive mutation demo page
 - Genome comparison tools (`src/genome-comparison.ts`)
@@ -219,12 +245,14 @@ Description: No operation; used for visual spacing in source
 ### Diff Viewer (~300 LOC) ✅ COMPLETE
 
 **Spec Requirements**:
+
 - [x] Side-by-side genome comparison
 - [x] Highlight changed codons
 - [x] Show downstream frame shift
 - [x] Visual output diff (old | new)
 
 **Implementation**: `src/diff-viewer.ts` + integrated in playground
+
 - Interactive diff visualization
 - Codon-level highlighting
 - Canvas output comparison
@@ -235,12 +263,14 @@ Description: No operation; used for visual spacing in source
 ### Timeline Scrubber (~300 LOC) ✅ COMPLETE
 
 **Spec Requirements**:
+
 - [x] Step-through execution (instruction by instruction)
 - [x] Rewind/forward controls
 - [x] State snapshot visualization (stack contents, position marker)
 - [x] Speed control (1x, 2x, 4x)
 
 **Implementation**: `src/timeline-scrubber.ts` + `timeline-demo.html`
+
 - Full step-through debugging
 - State inspection
 - Variable speed playback
@@ -255,6 +285,7 @@ Description: No operation; used for visual spacing in source
 ### Spec Test Case Requirements (Section 5.1-5.2)
 
 **Core Functionality Tests**:
+
 - [x] Silent mutation produces identical output → `src/mutations.test.ts`
 - [x] Missense mutation changes shape → `src/mutations.test.ts`
 - [x] Nonsense mutation truncates output → `src/mutations.test.ts`
@@ -263,16 +294,19 @@ Description: No operation; used for visual spacing in source
 - [x] Stack underflow throws error → `src/vm.test.ts`
 
 **Linter Tests**:
+
 - [x] Detects mid-triplet break → `src/lexer.test.ts`
 - [x] Detects stop before start → `src/lexer.test.ts`
 - [x] Warns on start after stop → `src/lexer.test.ts`
 
 **Visual Regression Tests**:
+
 - ⚠️ Not implemented via automated image snapshots
 - ✅ Covered by 48 curated examples in gallery
 - ✅ Manual testing via playground
 
 **Test Suite Size**:
+
 - 16 test files
 - Core files tested: lexer, vm, renderer, mutations, evolution, assessment, achievements
 - **Status**: ✅ COMPREHENSIVE - Exceeds spec requirements
@@ -284,6 +318,7 @@ Description: No operation; used for visual spacing in source
 ### Spec vs Reality
 
 **MVP Spec** (MVP_Technical_Specification.md):
+
 - 727 lines
 - Complete opcode table (but outdated)
 - TypeScript interfaces (match implementation)
@@ -291,6 +326,7 @@ Description: No operation; used for visual spacing in source
 - Test cases specified
 
 **Actual Documentation**:
+
 - **OPCODES.md**: ✅ UP-TO-DATE with actual implementation (587 lines)
 - **README.md**: ✅ Current, comprehensive
 - **EDUCATORS.md**: ✅ Professional-grade pedagogy guide (998 lines)
@@ -303,24 +339,32 @@ Description: No operation; used for visual spacing in source
 ## Deviations Impact Assessment
 
 ### 1. Missing NOISE Opcode
+
 **Impact**: 🟢 LOW
+
 - Artistic texture generation is still possible via other means (small circles, random colors)
 - The codons were repurposed for higher-value features
 
 ### 2. Reduced NOP Codons
+
 **Impact**: 🟢 LOW
+
 - 1 NOP codon sufficient for formatting
 - Repurposed codons enable computational features
 
 ### 3. Added Computational Features
+
 **Impact**: 🟢 HIGH POSITIVE
+
 - Enables algorithmic art (fractals, spirals)
 - Teaches computational thinking
 - Supports research applications
 - Documented in Sessions 71-76
 
 ### 4. Specification Staleness
+
 **Impact**: 🟡 MEDIUM
+
 - Confusion risk for new contributors
 - May mislead educators expecting NOISE opcode
 - Fixed by marking spec as "historical reference"
@@ -337,12 +381,14 @@ Description: No operation; used for visual spacing in source
 > **⚠️ HISTORICAL DOCUMENT**
 > This specification reflects the original MVP design (October 2025).
 > The implementation has evolved beyond this spec to include:
+>
 > - Arithmetic operations (ADD, SUB, MUL, DIV)
 > - Comparison operations (EQ, LT)
 > - Loop control flow (LOOP)
 > - RESTORE_STATE for state management
 >
 > **For current implementation details, see:**
+>
 > - [OPCODES.md](./OPCODES.md) - Complete opcode reference
 > - [README.md](./README.md) - Getting started guide
 > - [EDUCATORS.md](./EDUCATORS.md) - Pedagogical documentation
@@ -351,6 +397,7 @@ Description: No operation; used for visual spacing in source
 ### Priority 2: Create Implementation Evolution Document (Optional)
 
 **Action**: Create `IMPLEMENTATION_HISTORY.md` documenting:
+
 - MVP → v1.0 evolution
 - Rationale for NOISE → arithmetic/comparison trade-off
 - Session references for major features
@@ -393,18 +440,18 @@ The implementation exceeds all MVP requirements. The outdated spec does not bloc
 
 ## Appendix: Codon Allocation Table
 
-| Category | Spec Count | Impl Count | Delta | Notes |
-|----------|------------|------------|-------|-------|
-| Control Flow | 4 | 4 | ✅ 0 | Exact match |
-| Drawing Primitives | 20 | 20 | ✅ 0 | Exact match |
-| Transform Operations | 16 | 16 | ✅ 0 | Exact match |
-| Stack Operations | 8 | 7 | ⚠️ -1 | One codon repurposed |
-| Utility (NOP) | 7 | 4 | ⚠️ -3 | Three codons repurposed |
-| Advanced Ops | 9 | 6 | ⚠️ -3 | NOISE removed, RESTORE added |
-| Arithmetic | 0 | 4 | 🟢 +4 | NEW: ADD, SUB, MUL, DIV |
-| Comparison | 0 | 2 | 🟢 +2 | NEW: EQ, LT |
-| Loops | 0 | 1 | 🟢 +1 | NEW: LOOP |
-| **TOTAL** | **64** | **64** | ✅ **0** | Complete codon map |
+| Category             | Spec Count | Impl Count | Delta    | Notes                        |
+| -------------------- | ---------- | ---------- | -------- | ---------------------------- |
+| Control Flow         | 4          | 4          | ✅ 0     | Exact match                  |
+| Drawing Primitives   | 20         | 20         | ✅ 0     | Exact match                  |
+| Transform Operations | 16         | 16         | ✅ 0     | Exact match                  |
+| Stack Operations     | 8          | 7          | ⚠️ -1     | One codon repurposed         |
+| Utility (NOP)        | 7          | 4          | ⚠️ -3     | Three codons repurposed      |
+| Advanced Ops         | 9          | 6          | ⚠️ -3     | NOISE removed, RESTORE added |
+| Arithmetic           | 0          | 4          | 🟢 +4    | NEW: ADD, SUB, MUL, DIV      |
+| Comparison           | 0          | 2          | 🟢 +2    | NEW: EQ, LT                  |
+| Loops                | 0          | 1          | 🟢 +1    | NEW: LOOP                    |
+| **TOTAL**            | **64**     | **64**     | ✅ **0** | Complete codon map           |
 
 ---
 

@@ -15,23 +15,23 @@
  * - Scaffolds learning progression
  */
 
-import { CodonLexer } from './lexer';
-import { CodonVM } from './vm';
-import { Canvas2DRenderer } from './renderer';
-import { MutationResult } from './mutations';
+import { CodonLexer } from "./lexer";
+import type { MutationResult } from "./mutations";
+import { Canvas2DRenderer } from "./renderer";
+import { CodonVM } from "./vm";
 
 /**
  * Impact classification for mutation effects.
  * Based on visual output difference percentage.
  */
-export type ImpactLevel = 'SILENT' | 'LOCAL' | 'MAJOR' | 'CATASTROPHIC';
+export type ImpactLevel = "SILENT" | "LOCAL" | "MAJOR" | "CATASTROPHIC";
 
 /**
  * Confidence score for prediction accuracy.
  * Higher confidence for direct changes (silent, nonsense),
  * lower for complex cascading effects (frameshift).
  */
-export type ConfidenceLevel = 'HIGH' | 'MEDIUM' | 'LOW';
+export type ConfidenceLevel = "HIGH" | "MEDIUM" | "LOW";
 
 /**
  * Prediction result with visual preview and metadata.
@@ -70,9 +70,12 @@ export interface MutationPrediction {
  * @returns Percentage of pixels that differ (0-100)
  * @internal
  */
-function calculatePixelDiff(canvas1: HTMLCanvasElement, canvas2: HTMLCanvasElement): number {
-  const ctx1 = canvas1.getContext('2d')!;
-  const ctx2 = canvas2.getContext('2d')!;
+function calculatePixelDiff(
+  canvas1: HTMLCanvasElement,
+  canvas2: HTMLCanvasElement,
+): number {
+  const ctx1 = canvas1.getContext("2d")!;
+  const ctx2 = canvas2.getContext("2d")!;
 
   const imageData1 = ctx1.getImageData(0, 0, canvas1.width, canvas1.height);
   const imageData2 = ctx2.getImageData(0, 0, canvas2.width, canvas2.height);
@@ -108,19 +111,19 @@ function calculatePixelDiff(canvas1: HTMLCanvasElement, canvas2: HTMLCanvasEleme
  */
 function classifyImpact(pixelDiff: number, mutationType: string): ImpactLevel {
   // Silent mutations should show minimal change
-  if (mutationType === 'silent' && pixelDiff < 2) {
-    return 'SILENT';
+  if (mutationType === "silent" && pixelDiff < 2) {
+    return "SILENT";
   }
 
   // Thresholds based on visual change severity
   if (pixelDiff < 5) {
-    return 'SILENT'; // <5% change = nearly identical
+    return "SILENT"; // <5% change = nearly identical
   } else if (pixelDiff < 25) {
-    return 'LOCAL'; // 5-25% = localized change (shape/color shift)
+    return "LOCAL"; // 5-25% = localized change (shape/color shift)
   } else if (pixelDiff < 60) {
-    return 'MAJOR'; // 25-60% = significant change (multiple elements)
+    return "MAJOR"; // 25-60% = significant change (multiple elements)
   } else {
-    return 'CATASTROPHIC'; // >60% = global scramble (frameshift)
+    return "CATASTROPHIC"; // >60% = global scramble (frameshift)
   }
 }
 
@@ -134,36 +137,39 @@ function classifyImpact(pixelDiff: number, mutationType: string): ImpactLevel {
  * @returns Confidence score (0.0-1.0) and level label
  * @internal
  */
-function calculateConfidence(mutationType: string, impact: ImpactLevel): { score: number; level: ConfidenceLevel } {
+function calculateConfidence(
+  mutationType: string,
+  impact: ImpactLevel,
+): { score: number; level: ConfidenceLevel } {
   // High confidence for predictable mutations
-  if (mutationType === 'silent') {
-    return { score: 0.95, level: 'HIGH' };
+  if (mutationType === "silent") {
+    return { score: 0.95, level: "HIGH" };
   }
-  if (mutationType === 'nonsense') {
-    return { score: 0.90, level: 'HIGH' };
+  if (mutationType === "nonsense") {
+    return { score: 0.9, level: "HIGH" };
   }
-  if (mutationType === 'missense' && impact === 'LOCAL') {
-    return { score: 0.85, level: 'HIGH' };
+  if (mutationType === "missense" && impact === "LOCAL") {
+    return { score: 0.85, level: "HIGH" };
   }
 
   // Medium confidence for point mutations
-  if (mutationType === 'point') {
-    return { score: 0.70, level: 'MEDIUM' };
+  if (mutationType === "point") {
+    return { score: 0.7, level: "MEDIUM" };
   }
 
   // Lower confidence for frameshifts (cascading unpredictability)
-  if (mutationType === 'frameshift') {
-    return { score: 0.60, level: 'MEDIUM' };
+  if (mutationType === "frameshift") {
+    return { score: 0.6, level: "MEDIUM" };
   }
 
   // Insertions/deletions vary by length
-  if (mutationType === 'insertion' || mutationType === 'deletion') {
-    return impact === 'CATASTROPHIC'
-      ? { score: 0.50, level: 'LOW' }
-      : { score: 0.70, level: 'MEDIUM' };
+  if (mutationType === "insertion" || mutationType === "deletion") {
+    return impact === "CATASTROPHIC"
+      ? { score: 0.5, level: "LOW" }
+      : { score: 0.7, level: "MEDIUM" };
   }
 
-  return { score: 0.65, level: 'MEDIUM' };
+  return { score: 0.65, level: "MEDIUM" };
 }
 
 /**
@@ -175,10 +181,18 @@ function calculateConfidence(mutationType: string, impact: ImpactLevel): { score
  * @returns Analysis object with detected changes
  * @internal
  */
-function analyzeChanges(originalGenome: string, mutatedGenome: string, pixelDiff: number) {
+function analyzeChanges(
+  originalGenome: string,
+  mutatedGenome: string,
+  pixelDiff: number,
+) {
   // Check for frameshift (length change not divisible by 3)
-  const originalLength = originalGenome.replace(/\s+/g, '').replace(/;.*/g, '').length;
-  const mutatedLength = mutatedGenome.replace(/\s+/g, '').replace(/;.*/g, '').length;
+  const originalLength = originalGenome
+    .replace(/\s+/g, "")
+    .replace(/;.*/g, "").length;
+  const mutatedLength = mutatedGenome
+    .replace(/\s+/g, "")
+    .replace(/;.*/g, "").length;
   const lengthDiff = Math.abs(originalLength - mutatedLength);
   const frameshifted = lengthDiff > 0 && lengthDiff % 3 !== 0;
 
@@ -192,7 +206,9 @@ function analyzeChanges(originalGenome: string, mutatedGenome: string, pixelDiff
       const originalTokens = lexer.tokenize(originalGenome);
       const mutatedTokens = lexer.tokenize(mutatedGenome);
       truncated = mutatedTokens.length < originalTokens.length;
-      shapeChanges = truncated ? originalTokens.length - mutatedTokens.length : 0;
+      shapeChanges = truncated
+        ? originalTokens.length - mutatedTokens.length
+        : 0;
     } catch {
       // Tokenization failed (invalid genome), skip token-based analysis
     }
@@ -203,7 +219,7 @@ function analyzeChanges(originalGenome: string, mutatedGenome: string, pixelDiff
     colorChanges: pixelDiff > 5 && pixelDiff < 40, // Heuristic for color-only changes
     positionChanges: pixelDiff > 10, // Significant spatial changes
     truncated,
-    frameshifted
+    frameshifted,
   };
 }
 
@@ -216,33 +232,39 @@ function analyzeChanges(originalGenome: string, mutatedGenome: string, pixelDiff
  * @returns Human-readable impact description
  * @internal
  */
-function generateDescription(impact: ImpactLevel, analysis: ReturnType<typeof analyzeChanges>, mutationType: string): string {
-  if (impact === 'SILENT') {
-    return 'Minimal visual change - outputs nearly identical (synonymous codon)';
+function generateDescription(
+  impact: ImpactLevel,
+  analysis: ReturnType<typeof analyzeChanges>,
+  mutationType: string,
+): string {
+  if (impact === "SILENT") {
+    return "Minimal visual change - outputs nearly identical (synonymous codon)";
   }
 
-  if (impact === 'LOCAL') {
+  if (impact === "LOCAL") {
     if (analysis.colorChanges && !analysis.positionChanges) {
-      return 'Local change - color or minor shape adjustment';
+      return "Local change - color or minor shape adjustment";
     }
-    return 'Local change - single shape or position modified';
+    return "Local change - single shape or position modified";
   }
 
-  if (impact === 'MAJOR') {
+  if (impact === "MAJOR") {
     if (analysis.truncated) {
-      return `Major change - early termination removes ${analysis.shapeChanges} shape${analysis.shapeChanges > 1 ? 's' : ''}`;
+      return `Major change - early termination removes ${analysis.shapeChanges} shape${
+        analysis.shapeChanges > 1 ? "s" : ""
+      }`;
     }
-    return 'Major change - multiple shapes affected';
+    return "Major change - multiple shapes affected";
   }
 
-  if (impact === 'CATASTROPHIC') {
+  if (impact === "CATASTROPHIC") {
     if (analysis.frameshifted) {
-      return 'CATASTROPHIC - frameshift scrambles all downstream codons';
+      return "CATASTROPHIC - frameshift scrambles all downstream codons";
     }
-    return 'CATASTROPHIC - global transformation of output';
+    return "CATASTROPHIC - global transformation of output";
   }
 
-  return 'Unknown impact pattern';
+  return "Unknown impact pattern";
 }
 
 /**
@@ -271,17 +293,17 @@ export function predictMutationImpact(
   originalGenome: string,
   mutationResult: MutationResult,
   canvasWidth: number = 200,
-  canvasHeight: number = 200
+  canvasHeight: number = 200,
 ): MutationPrediction {
   const lexer = new CodonLexer();
 
   // Create offscreen canvases for rendering
-  const canvas1 = document.createElement('canvas');
+  const canvas1 = document.createElement("canvas");
   canvas1.width = canvasWidth;
   canvas1.height = canvasHeight;
   const renderer1 = new Canvas2DRenderer(canvas1);
 
-  const canvas2 = document.createElement('canvas');
+  const canvas2 = document.createElement("canvas");
   canvas2.width = canvasWidth;
   canvas2.height = canvasHeight;
   const renderer2 = new Canvas2DRenderer(canvas2);
@@ -295,7 +317,7 @@ export function predictMutationImpact(
     originalRendered = true;
   } catch (error) {
     // Original genome invalid - prediction may be unreliable
-    console.warn('Original genome render failed:', error);
+    console.warn("Original genome render failed:", error);
   }
 
   // Render mutated genome
@@ -307,12 +329,12 @@ export function predictMutationImpact(
     mutatedRendered = true;
   } catch (error) {
     // Mutated genome invalid (expected for frameshifts)
-    console.warn('Mutated genome render failed:', error);
+    console.warn("Mutated genome render failed:", error);
   }
 
   // If neither rendered, use full diff as catastrophic
   if (!originalRendered && !mutatedRendered) {
-    throw new Error('Both genomes failed to render - cannot predict impact');
+    throw new Error("Both genomes failed to render - cannot predict impact");
   }
 
   // Calculate pixel difference
@@ -328,17 +350,28 @@ export function predictMutationImpact(
   const impact = classifyImpact(pixelDiff, mutationResult.type);
 
   // Calculate confidence
-  const { score: confidence, level: confidenceLevel } = calculateConfidence(mutationResult.type, impact);
+  const { score: confidence, level: confidenceLevel } = calculateConfidence(
+    mutationResult.type,
+    impact,
+  );
 
   // Analyze changes
-  const analysis = analyzeChanges(originalGenome, mutationResult.mutated, pixelDiff);
+  const analysis = analyzeChanges(
+    originalGenome,
+    mutationResult.mutated,
+    pixelDiff,
+  );
 
   // Generate description
-  const description = generateDescription(impact, analysis, mutationResult.type);
+  const description = generateDescription(
+    impact,
+    analysis,
+    mutationResult.type,
+  );
 
   // Generate preview data URLs
-  const originalPreview = canvas1.toDataURL('image/png');
-  const mutatedPreview = canvas2.toDataURL('image/png');
+  const originalPreview = canvas1.toDataURL("image/png");
+  const mutatedPreview = canvas2.toDataURL("image/png");
 
   return {
     impact,
@@ -348,7 +381,7 @@ export function predictMutationImpact(
     originalPreview,
     mutatedPreview,
     description,
-    analysis
+    analysis,
   };
 }
 
@@ -376,7 +409,7 @@ export function predictMutationImpact(
  */
 export function predictMutationImpactBatch(
   genome: string,
-  mutations: MutationResult[]
+  mutations: MutationResult[],
 ): MutationPrediction[] {
-  return mutations.map(mutation => predictMutationImpact(genome, mutation));
+  return mutations.map((mutation) => predictMutationImpact(genome, mutation));
 }

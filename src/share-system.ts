@@ -16,7 +16,7 @@ export interface ShareSystemConfig {
   getGenome: () => string;
   appTitle?: string;
   showQRCode?: boolean;
-  socialPlatforms?: ('twitter' | 'reddit' | 'email')[];
+  socialPlatforms?: ("twitter" | "reddit" | "email")[];
 }
 
 /**
@@ -27,14 +27,18 @@ export class ShareSystem {
   private getGenome: () => string;
   private appTitle: string;
   private showQRCode: boolean;
-  private socialPlatforms: ('twitter' | 'reddit' | 'email')[];
+  private socialPlatforms: ("twitter" | "reddit" | "email")[];
 
   constructor(config: ShareSystemConfig) {
     this.container = config.containerElement;
     this.getGenome = config.getGenome;
-    this.appTitle = config.appTitle ?? 'CodonCanvas';
+    this.appTitle = config.appTitle ?? "CodonCanvas";
     this.showQRCode = config.showQRCode ?? true;
-    this.socialPlatforms = config.socialPlatforms ?? ['twitter', 'reddit', 'email'];
+    this.socialPlatforms = config.socialPlatforms ?? [
+      "twitter",
+      "reddit",
+      "email",
+    ];
 
     this.render();
   }
@@ -58,12 +62,28 @@ export class ShareSystem {
           <button class="share-btn" id="share-download" title="Download as .genome file">
             💾 Download
           </button>
-          ${this.showQRCode ? '<button class="share-btn" id="share-qr" title="Generate QR code">📱 QR Code</button>' : ''}
+          ${
+      this.showQRCode
+        ? "<button class=\"share-btn\" id=\"share-qr\" title=\"Generate QR code\">📱 QR Code</button>"
+        : ""
+    }
         </div>
         <div class="share-social">
-          ${this.socialPlatforms.includes('twitter') ? '<button class="social-btn twitter" id="share-twitter" title="Share on Twitter">🐦 Twitter</button>' : ''}
-          ${this.socialPlatforms.includes('reddit') ? '<button class="social-btn reddit" id="share-reddit" title="Share on Reddit">🔴 Reddit</button>' : ''}
-          ${this.socialPlatforms.includes('email') ? '<button class="social-btn email" id="share-email" title="Share via email">📧 Email</button>' : ''}
+          ${
+      this.socialPlatforms.includes("twitter")
+        ? "<button class=\"social-btn twitter\" id=\"share-twitter\" title=\"Share on Twitter\">🐦 Twitter</button>"
+        : ""
+    }
+          ${
+      this.socialPlatforms.includes("reddit")
+        ? "<button class=\"social-btn reddit\" id=\"share-reddit\" title=\"Share on Reddit\">🔴 Reddit</button>"
+        : ""
+    }
+          ${
+      this.socialPlatforms.includes("email")
+        ? "<button class=\"social-btn email\" id=\"share-email\" title=\"Share via email\">📧 Email</button>"
+        : ""
+    }
         </div>
         <div id="share-feedback" class="share-feedback"></div>
         <div id="share-modal" class="share-modal hidden"></div>
@@ -78,21 +98,21 @@ export class ShareSystem {
    * Attach event listeners
    */
   private attachEventListeners(): void {
-    const copyBtn = this.container.querySelector('#share-copy');
-    const permalinkBtn = this.container.querySelector('#share-permalink');
-    const downloadBtn = this.container.querySelector('#share-download');
-    const qrBtn = this.container.querySelector('#share-qr');
-    const twitterBtn = this.container.querySelector('#share-twitter');
-    const redditBtn = this.container.querySelector('#share-reddit');
-    const emailBtn = this.container.querySelector('#share-email');
+    const copyBtn = this.container.querySelector("#share-copy");
+    const permalinkBtn = this.container.querySelector("#share-permalink");
+    const downloadBtn = this.container.querySelector("#share-download");
+    const qrBtn = this.container.querySelector("#share-qr");
+    const twitterBtn = this.container.querySelector("#share-twitter");
+    const redditBtn = this.container.querySelector("#share-reddit");
+    const emailBtn = this.container.querySelector("#share-email");
 
-    copyBtn?.addEventListener('click', () => this.copyToClipboard());
-    permalinkBtn?.addEventListener('click', () => this.generatePermalink());
-    downloadBtn?.addEventListener('click', () => this.downloadGenome());
-    qrBtn?.addEventListener('click', () => this.generateQRCode());
-    twitterBtn?.addEventListener('click', () => this.shareToTwitter());
-    redditBtn?.addEventListener('click', () => this.shareToReddit());
-    emailBtn?.addEventListener('click', () => this.shareViaEmail());
+    copyBtn?.addEventListener("click", () => this.copyToClipboard());
+    permalinkBtn?.addEventListener("click", () => this.generatePermalink());
+    downloadBtn?.addEventListener("click", () => this.downloadGenome());
+    qrBtn?.addEventListener("click", () => this.generateQRCode());
+    twitterBtn?.addEventListener("click", () => this.shareToTwitter());
+    redditBtn?.addEventListener("click", () => this.shareToReddit());
+    emailBtn?.addEventListener("click", () => this.shareViaEmail());
   }
 
   /**
@@ -102,27 +122,27 @@ export class ShareSystem {
     const genome = this.getGenome();
 
     if (!genome || genome.trim().length === 0) {
-      this.showFeedback('No genome to copy', 'error');
+      this.showFeedback("No genome to copy", "error");
       return;
     }
 
     try {
       await navigator.clipboard.writeText(genome);
-      this.showFeedback('✅ Copied to clipboard!', 'success');
+      this.showFeedback("✅ Copied to clipboard!", "success");
     } catch (error) {
       // Fallback for older browsers
-      const textarea = document.createElement('textarea');
+      const textarea = document.createElement("textarea");
       textarea.value = genome;
-      textarea.style.position = 'fixed';
-      textarea.style.opacity = '0';
+      textarea.style.position = "fixed";
+      textarea.style.opacity = "0";
       document.body.appendChild(textarea);
       textarea.select();
 
       try {
-        document.execCommand('copy');
-        this.showFeedback('✅ Copied to clipboard!', 'success');
+        document.execCommand("copy");
+        this.showFeedback("✅ Copied to clipboard!", "success");
       } catch (err) {
-        this.showFeedback('❌ Failed to copy', 'error');
+        this.showFeedback("❌ Failed to copy", "error");
       }
 
       document.body.removeChild(textarea);
@@ -136,22 +156,26 @@ export class ShareSystem {
     const genome = this.getGenome();
 
     if (!genome || genome.trim().length === 0) {
-      this.showFeedback('No genome to share', 'error');
+      this.showFeedback("No genome to share", "error");
       return;
     }
 
     const encoded = this.encodeGenome(genome);
-    const currentUrl = window.location.href.split('#')[0].split('?')[0];
+    const currentUrl = window.location.href.split("#")[0].split("?")[0];
     const permalink = `${currentUrl}?genome=${encoded}`;
 
     // Copy permalink to clipboard
-    navigator.clipboard.writeText(permalink)
+    navigator.clipboard
+      .writeText(permalink)
       .then(() => {
-        this.showFeedback('🔗 Permalink copied!', 'success');
+        this.showFeedback("🔗 Permalink copied!", "success");
       })
       .catch(() => {
         // Show in modal if clipboard fails
-        this.showModal('Permalink', `<input type="text" value="${permalink}" readonly style="width: 100%; padding: 8px; font-family: monospace;">`);
+        this.showModal(
+          "Permalink",
+          `<input type="text" value="${permalink}" readonly style="width: 100%; padding: 8px; font-family: monospace;">`,
+        );
       });
   }
 
@@ -162,13 +186,13 @@ export class ShareSystem {
     const genome = this.getGenome();
 
     if (!genome || genome.trim().length === 0) {
-      this.showFeedback('No genome to download', 'error');
+      this.showFeedback("No genome to download", "error");
       return;
     }
 
-    const blob = new Blob([genome], { type: 'text/plain' });
+    const blob = new Blob([genome], { type: "text/plain" });
     const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
+    const a = document.createElement("a");
     a.href = url;
     a.download = `codoncanvas-${Date.now()}.genome`;
     document.body.appendChild(a);
@@ -176,7 +200,7 @@ export class ShareSystem {
     document.body.removeChild(a);
     URL.revokeObjectURL(url);
 
-    this.showFeedback('💾 Downloaded!', 'success');
+    this.showFeedback("💾 Downloaded!", "success");
   }
 
   /**
@@ -186,25 +210,33 @@ export class ShareSystem {
     const genome = this.getGenome();
 
     if (!genome || genome.trim().length === 0) {
-      this.showFeedback('No genome to encode', 'error');
+      this.showFeedback("No genome to encode", "error");
       return;
     }
 
     const encoded = this.encodeGenome(genome);
-    const currentUrl = window.location.href.split('#')[0].split('?')[0];
+    const currentUrl = window.location.href.split("#")[0].split("?")[0];
     const permalink = `${currentUrl}?genome=${encoded}`;
 
     // Use QR code API
-    const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${encodeURIComponent(permalink)}`;
+    const qrUrl =
+      `https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${
+        encodeURIComponent(
+          permalink,
+        )
+      }`;
 
-    this.showModal('QR Code', `
+    this.showModal(
+      "QR Code",
+      `
       <div style="text-align: center;">
         <img src="${qrUrl}" alt="QR Code" style="max-width: 100%;">
         <p style="margin-top: 1rem; font-size: 0.875rem; color: #888;">
           Scan with mobile device to open genome
         </p>
       </div>
-    `);
+    `,
+    );
   }
 
   /**
@@ -214,20 +246,25 @@ export class ShareSystem {
     const genome = this.getGenome();
 
     if (!genome || genome.trim().length === 0) {
-      this.showFeedback('No genome to share', 'error');
+      this.showFeedback("No genome to share", "error");
       return;
     }
 
     const encoded = this.encodeGenome(genome);
-    const currentUrl = window.location.href.split('#')[0].split('?')[0];
+    const currentUrl = window.location.href.split("#")[0].split("?")[0];
     const permalink = `${currentUrl}?genome=${encoded}`;
 
-    const text = `Check out my DNA-inspired visual program in ${this.appTitle}! 🧬`;
-    const hashtags = 'CodonCanvas,BioInformatics,VisualProgramming';
+    const text =
+      `Check out my DNA-inspired visual program in ${this.appTitle}! 🧬`;
+    const hashtags = "CodonCanvas,BioInformatics,VisualProgramming";
 
-    const twitterUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(permalink)}&hashtags=${hashtags}`;
+    const twitterUrl = `https://twitter.com/intent/tweet?text=${
+      encodeURIComponent(
+        text,
+      )
+    }&url=${encodeURIComponent(permalink)}&hashtags=${hashtags}`;
 
-    window.open(twitterUrl, '_blank', 'width=550,height=420');
+    window.open(twitterUrl, "_blank", "width=550,height=420");
   }
 
   /**
@@ -237,19 +274,23 @@ export class ShareSystem {
     const genome = this.getGenome();
 
     if (!genome || genome.trim().length === 0) {
-      this.showFeedback('No genome to share', 'error');
+      this.showFeedback("No genome to share", "error");
       return;
     }
 
     const encoded = this.encodeGenome(genome);
-    const currentUrl = window.location.href.split('#')[0].split('?')[0];
+    const currentUrl = window.location.href.split("#")[0].split("?")[0];
     const permalink = `${currentUrl}?genome=${encoded}`;
 
     const title = `My DNA-inspired visual program in ${this.appTitle}`;
 
-    const redditUrl = `https://reddit.com/submit?url=${encodeURIComponent(permalink)}&title=${encodeURIComponent(title)}`;
+    const redditUrl = `https://reddit.com/submit?url=${
+      encodeURIComponent(
+        permalink,
+      )
+    }&title=${encodeURIComponent(title)}`;
 
-    window.open(redditUrl, '_blank');
+    window.open(redditUrl, "_blank");
   }
 
   /**
@@ -259,18 +300,23 @@ export class ShareSystem {
     const genome = this.getGenome();
 
     if (!genome || genome.trim().length === 0) {
-      this.showFeedback('No genome to share', 'error');
+      this.showFeedback("No genome to share", "error");
       return;
     }
 
     const encoded = this.encodeGenome(genome);
-    const currentUrl = window.location.href.split('#')[0].split('?')[0];
+    const currentUrl = window.location.href.split("#")[0].split("?")[0];
     const permalink = `${currentUrl}?genome=${encoded}`;
 
     const subject = `Check out my ${this.appTitle} program`;
-    const body = `I created a DNA-inspired visual program using ${this.appTitle}!\n\nView it here: ${permalink}\n\nGenome:\n${genome}`;
+    const body =
+      `I created a DNA-inspired visual program using ${this.appTitle}!\n\nView it here: ${permalink}\n\nGenome:\n${genome}`;
 
-    const mailtoUrl = `mailto:?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+    const mailtoUrl = `mailto:?subject=${encodeURIComponent(subject)}&body=${
+      encodeURIComponent(
+        body,
+      )
+    }`;
 
     window.location.href = mailtoUrl;
   }
@@ -278,18 +324,21 @@ export class ShareSystem {
   /**
    * Show feedback message
    */
-  private showFeedback(message: string, type: 'success' | 'error' | 'info' = 'info'): void {
-    const feedback = this.container.querySelector('#share-feedback');
+  private showFeedback(
+    message: string,
+    type: "success" | "error" | "info" = "info",
+  ): void {
+    const feedback = this.container.querySelector("#share-feedback");
     if (!feedback) {
-return;
-}
+      return;
+    }
 
     feedback.className = `share-feedback ${type}`;
     feedback.textContent = message;
 
     setTimeout(() => {
-      feedback.className = 'share-feedback';
-      feedback.textContent = '';
+      feedback.className = "share-feedback";
+      feedback.textContent = "";
     }, 3000);
   }
 
@@ -297,10 +346,10 @@ return;
    * Show modal with content
    */
   private showModal(title: string, content: string): void {
-    const modal = this.container.querySelector('#share-modal');
+    const modal = this.container.querySelector("#share-modal");
     if (!modal) {
-return;
-}
+      return;
+    }
 
     modal.innerHTML = `
       <div class="modal-overlay" onclick="this.parentElement.classList.add('hidden')">
@@ -316,7 +365,7 @@ return;
       </div>
     `;
 
-    modal.classList.remove('hidden');
+    modal.classList.remove("hidden");
   }
 
   /**
@@ -325,11 +374,11 @@ return;
   private encodeGenome(genome: string): string {
     try {
       return btoa(genome)
-        .replace(/\+/g, '-')
-        .replace(/\//g, '_')
-        .replace(/=/g, '');
+        .replace(/\+/g, "-")
+        .replace(/\//g, "_")
+        .replace(/=/g, "");
     } catch (error) {
-      console.error('Failed to encode genome:', error);
+      console.error("Failed to encode genome:", error);
       return encodeURIComponent(genome);
     }
   }
@@ -340,14 +389,12 @@ return;
   static decodeGenome(encoded: string): string {
     try {
       // Restore base64 padding
-      const padding = '='.repeat((4 - (encoded.length % 4)) % 4);
-      const base64 = encoded
-        .replace(/-/g, '+')
-        .replace(/_/g, '/') + padding;
+      const padding = "=".repeat((4 - (encoded.length % 4)) % 4);
+      const base64 = encoded.replace(/-/g, "+").replace(/_/g, "/") + padding;
 
       return atob(base64);
     } catch (error) {
-      console.error('Failed to decode genome:', error);
+      console.error("Failed to decode genome:", error);
       return decodeURIComponent(encoded);
     }
   }
@@ -357,11 +404,11 @@ return;
    */
   static loadFromURL(): string | null {
     const params = new URLSearchParams(window.location.search);
-    const encoded = params.get('genome');
+    const encoded = params.get("genome");
 
     if (!encoded) {
-return null;
-}
+      return null;
+    }
 
     return ShareSystem.decodeGenome(encoded);
   }
@@ -371,12 +418,12 @@ return null;
  * Inject share system styles
  */
 export function injectShareStyles(): void {
-  if (document.getElementById('share-system-styles')) {
-return;
-}
+  if (document.getElementById("share-system-styles")) {
+    return;
+  }
 
-  const style = document.createElement('style');
-  style.id = 'share-system-styles';
+  const style = document.createElement("style");
+  style.id = "share-system-styles";
   style.textContent = `
     .share-system {
       background: #2d2d30;

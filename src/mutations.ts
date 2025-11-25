@@ -12,12 +12,19 @@
  * - **Frameshift**: Insert/delete 1-2 bases (scrambles downstream codons)
  */
 
-import { Base, Codon, CODON_MAP, Opcode } from './types';
+import { type Base, type Codon, CODON_MAP, Opcode } from "./types";
 
 /**
  * Mutation type classification for pedagogical purposes.
  */
-export type MutationType = 'silent' | 'missense' | 'nonsense' | 'point' | 'insertion' | 'deletion' | 'frameshift';
+export type MutationType =
+  | "silent"
+  | "missense"
+  | "nonsense"
+  | "point"
+  | "insertion"
+  | "deletion"
+  | "frameshift";
 
 /**
  * Result of applying a mutation to a genome.
@@ -36,8 +43,12 @@ export interface MutationResult {
   description: string;
 }
 
-const BASES: Base[] = ['A', 'C', 'G', 'T'];
-const STOP_CODONS: Set<Codon> = new Set(['TAA' as Codon, 'TAG' as Codon, 'TGA' as Codon]);
+const BASES: Base[] = ["A", "C", "G", "T"];
+const STOP_CODONS: Set<Codon> = new Set([
+  "TAA" as Codon,
+  "TAG" as Codon,
+  "TGA" as Codon,
+]);
 
 /**
  * Get synonymous codons (same opcode) for a given codon.
@@ -49,8 +60,8 @@ const STOP_CODONS: Set<Codon> = new Set(['TAA' as Codon, 'TAG' as Codon, 'TGA' a
 function getSynonymousCodons(codon: Codon): Codon[] {
   const opcode = CODON_MAP[codon];
   if (opcode === undefined) {
-return [];
-}
+    return [];
+  }
 
   return Object.entries(CODON_MAP)
     .filter(([c, op]) => op === opcode && c !== codon)
@@ -67,11 +78,13 @@ return [];
 function getMissenseCodons(codon: Codon): Codon[] {
   const opcode = CODON_MAP[codon];
   if (opcode === undefined) {
-return [];
-}
+    return [];
+  }
 
   return Object.entries(CODON_MAP)
-    .filter(([c, op]) => op !== opcode && !STOP_CODONS.has(c as Codon) && c !== codon)
+    .filter(
+      ([c, op]) => op !== opcode && !STOP_CODONS.has(c as Codon) && c !== codon,
+    )
     .map(([c]) => c as Codon);
 }
 
@@ -85,10 +98,10 @@ return [];
 function parseGenome(genome: string): string[] {
   // Strip comments and whitespace
   const cleaned = genome
-    .split('\n')
-    .map(line => line.split(';')[0])
-    .join('')
-    .replace(/\s+/g, '');
+    .split("\n")
+    .map((line) => line.split(";")[0])
+    .join("")
+    .replace(/\s+/g, "");
 
   const codons: string[] = [];
   for (let i = 0; i < cleaned.length; i += 3) {
@@ -113,7 +126,10 @@ function parseGenome(genome: string): string[] {
  * // result.description: "Silent mutation: GGA → GGC (same opcode: CIRCLE)"
  * ```
  */
-export function applySilentMutation(genome: string, position?: number): MutationResult {
+export function applySilentMutation(
+  genome: string,
+  position?: number,
+): MutationResult {
   const codons = parseGenome(genome);
 
   // Find position with synonymous codons
@@ -124,7 +140,7 @@ export function applySilentMutation(genome: string, position?: number): Mutation
       .filter(({ codon }) => getSynonymousCodons(codon).length > 0);
 
     if (candidates.length === 0) {
-      throw new Error('No synonymous mutations available in this genome');
+      throw new Error("No synonymous mutations available in this genome");
     }
 
     targetPos = candidates[Math.floor(Math.random() * candidates.length)].index;
@@ -134,7 +150,9 @@ export function applySilentMutation(genome: string, position?: number): Mutation
   const synonymous = getSynonymousCodons(originalCodon);
 
   if (synonymous.length === 0) {
-    throw new Error(`No synonymous codons for ${originalCodon} at position ${targetPos}`);
+    throw new Error(
+      `No synonymous codons for ${originalCodon} at position ${targetPos}`,
+    );
   }
 
   const newCodon = synonymous[Math.floor(Math.random() * synonymous.length)];
@@ -142,10 +160,13 @@ export function applySilentMutation(genome: string, position?: number): Mutation
 
   return {
     original: genome,
-    mutated: codons.join(' '),
-    type: 'silent',
+    mutated: codons.join(" "),
+    type: "silent",
     position: targetPos,
-    description: `Silent mutation: ${originalCodon} → ${newCodon} (same opcode: ${Opcode[CODON_MAP[originalCodon]]})`
+    description:
+      `Silent mutation: ${originalCodon} → ${newCodon} (same opcode: ${
+        Opcode[CODON_MAP[originalCodon]]
+      })`,
   };
 }
 
@@ -165,7 +186,10 @@ export function applySilentMutation(genome: string, position?: number): Mutation
  * // result.description: "Missense mutation: GGA → CCA (CIRCLE → RECT)"
  * ```
  */
-export function applyMissenseMutation(genome: string, position?: number): MutationResult {
+export function applyMissenseMutation(
+  genome: string,
+  position?: number,
+): MutationResult {
   const codons = parseGenome(genome);
 
   let targetPos = position;
@@ -175,7 +199,7 @@ export function applyMissenseMutation(genome: string, position?: number): Mutati
       .filter(({ codon }) => getMissenseCodons(codon).length > 0);
 
     if (candidates.length === 0) {
-      throw new Error('No missense mutations available in this genome');
+      throw new Error("No missense mutations available in this genome");
     }
 
     targetPos = candidates[Math.floor(Math.random() * candidates.length)].index;
@@ -185,7 +209,9 @@ export function applyMissenseMutation(genome: string, position?: number): Mutati
   const missense = getMissenseCodons(originalCodon);
 
   if (missense.length === 0) {
-    throw new Error(`No missense codons for ${originalCodon} at position ${targetPos}`);
+    throw new Error(
+      `No missense codons for ${originalCodon} at position ${targetPos}`,
+    );
   }
 
   const newCodon = missense[Math.floor(Math.random() * missense.length)];
@@ -193,10 +219,12 @@ export function applyMissenseMutation(genome: string, position?: number): Mutati
 
   return {
     original: genome,
-    mutated: codons.join(' '),
-    type: 'missense',
+    mutated: codons.join(" "),
+    type: "missense",
     position: targetPos,
-    description: `Missense mutation: ${originalCodon} → ${newCodon} (${Opcode[CODON_MAP[originalCodon]]} → ${Opcode[CODON_MAP[newCodon]]})`
+    description: `Missense mutation: ${originalCodon} → ${newCodon} (${
+      Opcode[CODON_MAP[originalCodon]]
+    } → ${Opcode[CODON_MAP[newCodon]]})`,
   };
 }
 
@@ -217,7 +245,10 @@ export function applyMissenseMutation(genome: string, position?: number): Mutati
  * // Output will be truncated (CIRCLE missing)
  * ```
  */
-export function applyNonsenseMutation(genome: string, position?: number): MutationResult {
+export function applyNonsenseMutation(
+  genome: string,
+  position?: number,
+): MutationResult {
   const codons = parseGenome(genome);
 
   let targetPos = position;
@@ -225,26 +256,30 @@ export function applyNonsenseMutation(genome: string, position?: number): Mutati
     // Avoid mutating the START codon or existing STOP codons
     const candidates = codons
       .map((c, i) => ({ codon: c as Codon, index: i }))
-      .filter(({ codon, index }) => codon !== 'ATG' && !STOP_CODONS.has(codon) && index > 0);
+      .filter(
+        ({ codon, index }) =>
+          codon !== "ATG" && !STOP_CODONS.has(codon) && index > 0,
+      );
 
     if (candidates.length === 0) {
-      throw new Error('No nonsense mutation positions available');
+      throw new Error("No nonsense mutation positions available");
     }
 
     targetPos = candidates[Math.floor(Math.random() * candidates.length)].index;
   }
 
   const originalCodon = codons[targetPos] as Codon;
-  const stopCodon = 'TAA'; // Use TAA as standard STOP
+  const stopCodon = "TAA"; // Use TAA as standard STOP
 
   codons[targetPos] = stopCodon;
 
   return {
     original: genome,
-    mutated: codons.join(' '),
-    type: 'nonsense',
+    mutated: codons.join(" "),
+    type: "nonsense",
     position: targetPos,
-    description: `Nonsense mutation: ${originalCodon} → ${stopCodon} (early termination)`
+    description:
+      `Nonsense mutation: ${originalCodon} → ${stopCodon} (early termination)`,
   };
 }
 
@@ -263,8 +298,11 @@ export function applyNonsenseMutation(genome: string, position?: number): Mutati
  * // Could be: "Point mutation: G→C at position 5 (GGA→GCA: CIRCLE→TRIANGLE)"
  * ```
  */
-export function applyPointMutation(genome: string, position?: number): MutationResult {
-  const cleaned = genome.replace(/\s+/g, '').replace(/;.*/g, '');
+export function applyPointMutation(
+  genome: string,
+  position?: number,
+): MutationResult {
+  const cleaned = genome.replace(/\s+/g, "").replace(/;.*/g, "");
 
   const targetPos = position ?? Math.floor(Math.random() * cleaned.length);
   if (targetPos >= cleaned.length) {
@@ -272,10 +310,12 @@ export function applyPointMutation(genome: string, position?: number): MutationR
   }
 
   const originalBase = cleaned[targetPos];
-  const otherBases = BASES.filter(b => b !== originalBase);
+  const otherBases = BASES.filter((b) => b !== originalBase);
   const newBase = otherBases[Math.floor(Math.random() * otherBases.length)];
 
-  const mutated = cleaned.substring(0, targetPos) + newBase + cleaned.substring(targetPos + 1);
+  const mutated = cleaned.substring(0, targetPos) +
+    newBase +
+    cleaned.substring(targetPos + 1);
 
   // Format as codons
   const codons: string[] = [];
@@ -285,10 +325,11 @@ export function applyPointMutation(genome: string, position?: number): MutationR
 
   return {
     original: genome,
-    mutated: codons.join(' '),
-    type: 'point',
+    mutated: codons.join(" "),
+    type: "point",
     position: targetPos,
-    description: `Point mutation at base ${targetPos}: ${originalBase} → ${newBase}`
+    description:
+      `Point mutation at base ${targetPos}: ${originalBase} → ${newBase}`,
   };
 }
 
@@ -309,8 +350,12 @@ export function applyPointMutation(genome: string, position?: number): MutationR
  * // Inserts 1 base (frameshift): Scrambles downstream codons
  * ```
  */
-export function applyInsertion(genome: string, position?: number, length: number = 1): MutationResult {
-  const cleaned = genome.replace(/\s+/g, '').replace(/;.*/g, '');
+export function applyInsertion(
+  genome: string,
+  position?: number,
+  length: number = 1,
+): MutationResult {
+  const cleaned = genome.replace(/\s+/g, "").replace(/;.*/g, "");
 
   const targetPos = position ?? Math.floor(Math.random() * cleaned.length);
   if (targetPos > cleaned.length) {
@@ -318,11 +363,13 @@ export function applyInsertion(genome: string, position?: number, length: number
   }
 
   // Generate random bases
-  const insertion = Array.from({ length }, () =>
-    BASES[Math.floor(Math.random() * BASES.length)]
-  ).join('');
+  const insertion = Array.from(
+    { length },
+    () => BASES[Math.floor(Math.random() * BASES.length)],
+  ).join("");
 
-  const mutated = cleaned.substring(0, targetPos) + insertion + cleaned.substring(targetPos);
+  const mutated = cleaned.substring(0, targetPos) + insertion +
+    cleaned.substring(targetPos);
 
   // Format as codons
   const codons: string[] = [];
@@ -332,10 +379,13 @@ export function applyInsertion(genome: string, position?: number, length: number
 
   return {
     original: genome,
-    mutated: codons.join(' '),
-    type: 'insertion',
+    mutated: codons.join(" "),
+    type: "insertion",
     position: targetPos,
-    description: `Insertion at base ${targetPos}: +${insertion} (${length} base${length > 1 ? 's' : ''})`
+    description:
+      `Insertion at base ${targetPos}: +${insertion} (${length} base${
+        length > 1 ? "s" : ""
+      })`,
   };
 }
 
@@ -357,16 +407,24 @@ export function applyInsertion(genome: string, position?: number, length: number
  * // Deletes 1 base (frameshift): Scrambles downstream codons
  * ```
  */
-export function applyDeletion(genome: string, position?: number, length: number = 1): MutationResult {
-  const cleaned = genome.replace(/\s+/g, '').replace(/;.*/g, '');
+export function applyDeletion(
+  genome: string,
+  position?: number,
+  length: number = 1,
+): MutationResult {
+  const cleaned = genome.replace(/\s+/g, "").replace(/;.*/g, "");
 
-  const targetPos = position ?? Math.floor(Math.random() * Math.max(0, cleaned.length - length));
+  const targetPos = position ??
+    Math.floor(Math.random() * Math.max(0, cleaned.length - length));
   if (targetPos + length > cleaned.length) {
-    throw new Error(`Deletion at position ${targetPos} with length ${length} exceeds genome length`);
+    throw new Error(
+      `Deletion at position ${targetPos} with length ${length} exceeds genome length`,
+    );
   }
 
   const deleted = cleaned.substring(targetPos, targetPos + length);
-  const mutated = cleaned.substring(0, targetPos) + cleaned.substring(targetPos + length);
+  const mutated = cleaned.substring(0, targetPos) +
+    cleaned.substring(targetPos + length);
 
   // Format as codons
   const codons: string[] = [];
@@ -376,10 +434,12 @@ export function applyDeletion(genome: string, position?: number, length: number 
 
   return {
     original: genome,
-    mutated: codons.join(' '),
-    type: 'deletion',
+    mutated: codons.join(" "),
+    type: "deletion",
     position: targetPos,
-    description: `Deletion at base ${targetPos}: -${deleted} (${length} base${length > 1 ? 's' : ''})`
+    description: `Deletion at base ${targetPos}: -${deleted} (${length} base${
+      length > 1 ? "s" : ""
+    })`,
   };
 }
 
@@ -401,18 +461,21 @@ export function applyDeletion(genome: string, position?: number, length: number 
  * // All downstream codons completely scrambled
  * ```
  */
-export function applyFrameshiftMutation(genome: string, position?: number): MutationResult {
+export function applyFrameshiftMutation(
+  genome: string,
+  position?: number,
+): MutationResult {
   const isInsertion = Math.random() < 0.5;
   const length = Math.floor(Math.random() * 2) + 1; // 1 or 2 bases
 
   if (isInsertion) {
     const result = applyInsertion(genome, position, length);
-    result.type = 'frameshift';
+    result.type = "frameshift";
     result.description = `Frameshift (insertion): ${result.description}`;
     return result;
   } else {
     const result = applyDeletion(genome, position, length);
-    result.type = 'frameshift';
+    result.type = "frameshift";
     result.description = `Frameshift (deletion): ${result.description}`;
     return result;
   }
@@ -434,7 +497,10 @@ export function applyFrameshiftMutation(genome: string, position?: number): Muta
  * // Shows that codon at index 1 changed (silent mutation)
  * ```
  */
-export function compareGenomes(original: string, mutated: string): {
+export function compareGenomes(
+  original: string,
+  mutated: string,
+): {
   originalCodons: string[];
   mutatedCodons: string[];
   differences: Array<{ position: number; original: string; mutated: string }>;
@@ -443,17 +509,21 @@ export function compareGenomes(original: string, mutated: string): {
   const mutatedCodons = parseGenome(mutated);
 
   const maxLength = Math.max(originalCodons.length, mutatedCodons.length);
-  const differences: Array<{ position: number; original: string; mutated: string }> = [];
+  const differences: Array<{
+    position: number;
+    original: string;
+    mutated: string;
+  }> = [];
 
   for (let i = 0; i < maxLength; i++) {
-    const orig = originalCodons[i] || '';
-    const mut = mutatedCodons[i] || '';
+    const orig = originalCodons[i] || "";
+    const mut = mutatedCodons[i] || "";
 
     if (orig !== mut) {
       differences.push({
         position: i,
         original: orig,
-        mutated: mut
+        mutated: mut,
       });
     }
   }

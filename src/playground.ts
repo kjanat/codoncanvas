@@ -1,118 +1,207 @@
-import { ExampleKey, examples, type DifficultyLevel, type Concept, ExampleMetadata } from './examples';
-import { CodonLexer } from './lexer';
-import { Canvas2DRenderer, type Renderer } from './renderer';
-import { AudioRenderer } from './audio-renderer';
-import { MIDIExporter } from './midi-exporter';
-import { CodonVM } from './vm';
-import { VMState } from './types';
-import { downloadGenomeFile, readGenomeFile } from './genome-io';
+import { AudioRenderer } from "./audio-renderer";
+import { DiffViewer, injectDiffViewerStyles } from "./diff-viewer";
 import {
-  applySilentMutation,
+  type Concept,
+  type DifficultyLevel,
+  type ExampleKey,
+  type ExampleMetadata,
+  examples,
+} from "./examples";
+import { downloadGenomeFile, readGenomeFile } from "./genome-io";
+import { CodonLexer } from "./lexer";
+import { MIDIExporter } from "./midi-exporter";
+import {
+  applyDeletion,
+  applyFrameshiftMutation,
+  applyInsertion,
   applyMissenseMutation,
   applyNonsenseMutation,
   applyPointMutation,
-  applyInsertion,
-  applyDeletion,
-  applyFrameshiftMutation,
-  type MutationType
-} from './mutations';
-import { ShareSystem, injectShareStyles } from './share-system';
-import { DiffViewer, injectDiffViewerStyles } from './diff-viewer';
-import { TutorialManager, helloCircleTutorial } from './tutorial';
-import { initializeTutorial } from './tutorial-ui';
-import './tutorial-ui.css';
-import { TimelineScrubber, injectTimelineStyles } from './timeline-scrubber';
-import { ThemeManager } from './theme-manager';
-import { AchievementEngine } from './achievement-engine';
-import { AchievementUI } from './achievement-ui';
-import './achievement-ui.css';
-import { AssessmentEngine } from './assessment-engine';
-import { AssessmentUI } from './assessment-ui';
-import { ResearchMetrics } from './research-metrics';
-import { analyzeCodonUsage, formatAnalysis, type CodonAnalysis } from './codon-analyzer';
-import { predictMutationImpact, type MutationPrediction, type ImpactLevel } from './mutation-predictor';
-import { compareGenomesDetailed, type GenomeComparisonResult } from './genome-comparison';
+  applySilentMutation,
+  type MutationType,
+} from "./mutations";
+import { Canvas2DRenderer, type Renderer } from "./renderer";
+import { injectShareStyles, ShareSystem } from "./share-system";
+import { helloCircleTutorial, TutorialManager } from "./tutorial";
+import { initializeTutorial } from "./tutorial-ui";
+import type { VMState } from "./types";
+import { CodonVM } from "./vm";
+import "./tutorial-ui.css";
+import { AchievementEngine } from "./achievement-engine";
+import { AchievementUI } from "./achievement-ui";
+import { ThemeManager } from "./theme-manager";
+import { injectTimelineStyles, TimelineScrubber } from "./timeline-scrubber";
+import "./achievement-ui.css";
+import { AssessmentEngine } from "./assessment-engine";
+import { AssessmentUI } from "./assessment-ui";
+import {
+  analyzeCodonUsage,
+  type CodonAnalysis,
+  formatAnalysis,
+} from "./codon-analyzer";
+import {
+  compareGenomesDetailed,
+  type GenomeComparisonResult,
+} from "./genome-comparison";
+import {
+  type ImpactLevel,
+  type MutationPrediction,
+  predictMutationImpact,
+} from "./mutation-predictor";
+import { ResearchMetrics } from "./research-metrics";
 
 // Get DOM elements
-const editor = document.getElementById('editor') as HTMLTextAreaElement;
-const canvas = document.getElementById('canvas') as HTMLCanvasElement;
-const runBtn = document.getElementById('runBtn') as HTMLButtonElement;
-const clearBtn = document.getElementById('clearBtn') as HTMLButtonElement;
-const exampleSelect = document.getElementById('exampleSelect') as HTMLSelectElement;
-const exportBtn = document.getElementById('exportBtn') as HTMLButtonElement;
-const exportAudioBtn = document.getElementById('exportAudioBtn') as HTMLButtonElement;
-const exportMidiBtn = document.getElementById('exportMidiBtn') as HTMLButtonElement;
-const saveGenomeBtn = document.getElementById('saveGenomeBtn') as HTMLButtonElement;
-const loadGenomeBtn = document.getElementById('loadGenomeBtn') as HTMLButtonElement;
-const exportStudentProgressBtn = document.getElementById('exportStudentProgressBtn') as HTMLButtonElement;
-const genomeFileInput = document.getElementById('genomeFileInput') as HTMLInputElement;
-const statusMessage = document.getElementById('statusMessage') as HTMLSpanElement;
-const codonCount = document.getElementById('codonCount') as HTMLSpanElement;
-const instructionCount = document.getElementById('instructionCount') as HTMLSpanElement;
-const statusBar = document.querySelector('.status-bar') as HTMLDivElement;
+const editor = document.getElementById("editor") as HTMLTextAreaElement;
+const canvas = document.getElementById("canvas") as HTMLCanvasElement;
+const runBtn = document.getElementById("runBtn") as HTMLButtonElement;
+const clearBtn = document.getElementById("clearBtn") as HTMLButtonElement;
+const exampleSelect = document.getElementById(
+  "exampleSelect",
+) as HTMLSelectElement;
+const exportBtn = document.getElementById("exportBtn") as HTMLButtonElement;
+const exportAudioBtn = document.getElementById(
+  "exportAudioBtn",
+) as HTMLButtonElement;
+const exportMidiBtn = document.getElementById(
+  "exportMidiBtn",
+) as HTMLButtonElement;
+const saveGenomeBtn = document.getElementById(
+  "saveGenomeBtn",
+) as HTMLButtonElement;
+const loadGenomeBtn = document.getElementById(
+  "loadGenomeBtn",
+) as HTMLButtonElement;
+const exportStudentProgressBtn = document.getElementById(
+  "exportStudentProgressBtn",
+) as HTMLButtonElement;
+const genomeFileInput = document.getElementById(
+  "genomeFileInput",
+) as HTMLInputElement;
+const statusMessage = document.getElementById(
+  "statusMessage",
+) as HTMLSpanElement;
+const codonCount = document.getElementById("codonCount") as HTMLSpanElement;
+const instructionCount = document.getElementById(
+  "instructionCount",
+) as HTMLSpanElement;
+const statusBar = document.querySelector(".status-bar") as HTMLDivElement;
 
 // Mutation buttons
-const silentMutationBtn = document.getElementById('silentMutationBtn') as HTMLButtonElement;
-const missenseMutationBtn = document.getElementById('missenseMutationBtn') as HTMLButtonElement;
-const nonsenseMutationBtn = document.getElementById('nonsenseMutationBtn') as HTMLButtonElement;
-const frameshiftMutationBtn = document.getElementById('frameshiftMutationBtn') as HTMLButtonElement;
-const pointMutationBtn = document.getElementById('pointMutationBtn') as HTMLButtonElement;
-const insertionMutationBtn = document.getElementById('insertionMutationBtn') as HTMLButtonElement;
-const deletionMutationBtn = document.getElementById('deletionMutationBtn') as HTMLButtonElement;
+const silentMutationBtn = document.getElementById(
+  "silentMutationBtn",
+) as HTMLButtonElement;
+const missenseMutationBtn = document.getElementById(
+  "missenseMutationBtn",
+) as HTMLButtonElement;
+const nonsenseMutationBtn = document.getElementById(
+  "nonsenseMutationBtn",
+) as HTMLButtonElement;
+const frameshiftMutationBtn = document.getElementById(
+  "frameshiftMutationBtn",
+) as HTMLButtonElement;
+const pointMutationBtn = document.getElementById(
+  "pointMutationBtn",
+) as HTMLButtonElement;
+const insertionMutationBtn = document.getElementById(
+  "insertionMutationBtn",
+) as HTMLButtonElement;
+const deletionMutationBtn = document.getElementById(
+  "deletionMutationBtn",
+) as HTMLButtonElement;
 
 // Share system
-const shareContainer = document.getElementById('shareContainer') as HTMLDivElement;
+const shareContainer = document.getElementById(
+  "shareContainer",
+) as HTMLDivElement;
 
 // Example filter elements
-const difficultyFilter = document.getElementById('difficultyFilter') as HTMLSelectElement;
-const conceptFilter = document.getElementById('conceptFilter') as HTMLSelectElement;
-const searchInput = document.getElementById('searchInput') as HTMLInputElement;
-const exampleInfo = document.getElementById('exampleInfo') as HTMLDivElement;
+const difficultyFilter = document.getElementById(
+  "difficultyFilter",
+) as HTMLSelectElement;
+const conceptFilter = document.getElementById(
+  "conceptFilter",
+) as HTMLSelectElement;
+const searchInput = document.getElementById("searchInput") as HTMLInputElement;
+const exampleInfo = document.getElementById("exampleInfo") as HTMLDivElement;
 
 // Linter elements
-const linterPanel = document.getElementById('linterPanel') as HTMLDivElement;
-const linterToggle = document.getElementById('linterToggle') as HTMLButtonElement;
-const linterMessages = document.getElementById('linterMessages') as HTMLDivElement;
-const fixAllBtn = document.getElementById('fixAllBtn') as HTMLButtonElement;
+const linterPanel = document.getElementById("linterPanel") as HTMLDivElement;
+const linterToggle = document.getElementById(
+  "linterToggle",
+) as HTMLButtonElement;
+const linterMessages = document.getElementById(
+  "linterMessages",
+) as HTMLDivElement;
+const fixAllBtn = document.getElementById("fixAllBtn") as HTMLButtonElement;
 
 // DiffViewer elements
-const diffViewerPanel = document.getElementById('diffViewerPanel') as HTMLDivElement;
-const diffViewerToggle = document.getElementById('diffViewerToggle') as HTMLButtonElement;
-const diffViewerClearBtn = document.getElementById('diffViewerClearBtn') as HTMLButtonElement;
-const diffViewerContainer = document.getElementById('diffViewerContainer') as HTMLDivElement;
+const diffViewerPanel = document.getElementById(
+  "diffViewerPanel",
+) as HTMLDivElement;
+const diffViewerToggle = document.getElementById(
+  "diffViewerToggle",
+) as HTMLButtonElement;
+const diffViewerClearBtn = document.getElementById(
+  "diffViewerClearBtn",
+) as HTMLButtonElement;
+const diffViewerContainer = document.getElementById(
+  "diffViewerContainer",
+) as HTMLDivElement;
 
 // Analyzer elements
-const analyzeBtn = document.getElementById('analyzeBtn') as HTMLButtonElement;
-const analyzerPanel = document.getElementById('analyzerPanel') as HTMLDivElement;
-const analyzerToggle = document.getElementById('analyzerToggle') as HTMLButtonElement;
-const analyzerContent = document.getElementById('analyzerContent') as HTMLDivElement;
+const analyzeBtn = document.getElementById("analyzeBtn") as HTMLButtonElement;
+const analyzerPanel = document.getElementById(
+  "analyzerPanel",
+) as HTMLDivElement;
+const analyzerToggle = document.getElementById(
+  "analyzerToggle",
+) as HTMLButtonElement;
+const analyzerContent = document.getElementById(
+  "analyzerContent",
+) as HTMLDivElement;
 
 // Comparison button (will be injected)
 let compareBtn: HTMLButtonElement;
 
 // Audio elements
-const audioToggleBtn = document.getElementById('audioToggleBtn') as HTMLButtonElement;
+const audioToggleBtn = document.getElementById(
+  "audioToggleBtn",
+) as HTMLButtonElement;
 
 // Timeline elements
-const timelineToggleBtn = document.getElementById('timelineToggleBtn') as HTMLButtonElement;
-const timelinePanel = document.getElementById('timelinePanel') as HTMLDivElement;
-const timelineContainer = document.getElementById('timelineContainer') as HTMLDivElement;
+const timelineToggleBtn = document.getElementById(
+  "timelineToggleBtn",
+) as HTMLButtonElement;
+const timelinePanel = document.getElementById(
+  "timelinePanel",
+) as HTMLDivElement;
+const timelineContainer = document.getElementById(
+  "timelineContainer",
+) as HTMLDivElement;
 
 // Theme elements
-const themeToggleBtn = document.getElementById('themeToggleBtn') as HTMLButtonElement;
+const themeToggleBtn = document.getElementById(
+  "themeToggleBtn",
+) as HTMLButtonElement;
 
 // Mode toggle elements
-const modeToggleBtns = document.querySelectorAll('input[name="mode"]') as NodeListOf<HTMLInputElement>;
-const playgroundContainer = document.getElementById('playgroundContainer') as HTMLDivElement;
-const assessmentContainer = document.getElementById('assessmentContainer') as HTMLDivElement;
+const modeToggleBtns = document.querySelectorAll(
+  "input[name=\"mode\"]",
+) as NodeListOf<HTMLInputElement>;
+const playgroundContainer = document.getElementById(
+  "playgroundContainer",
+) as HTMLDivElement;
+const assessmentContainer = document.getElementById(
+  "assessmentContainer",
+) as HTMLDivElement;
 
 // Initialize lexer, renderer, and VM
 const lexer = new CodonLexer();
 const renderer = new Canvas2DRenderer(canvas);
 const audioRenderer = new AudioRenderer();
 const midiExporter = new MIDIExporter();
-type RenderMode = 'visual' | 'audio' | 'both';
-let renderMode: RenderMode = 'visual'; // Start with visual mode
+type RenderMode = "visual" | "audio" | "both";
+let renderMode: RenderMode = "visual"; // Start with visual mode
 const vm = new CodonVM(renderer);
 let lastSnapshots: VMState[] = []; // Store last execution snapshots for MIDI export
 
@@ -130,7 +219,10 @@ const themeManager = new ThemeManager();
 
 // Initialize achievement system
 const achievementEngine = new AchievementEngine();
-const achievementUI = new AchievementUI(achievementEngine, 'achievementContainer');
+const achievementUI = new AchievementUI(
+  achievementEngine,
+  "achievementContainer",
+);
 
 // Initialize assessment system
 const assessmentEngine = new AssessmentEngine();
@@ -144,13 +236,16 @@ function updateThemeButton() {
   const icon = themeManager.getThemeIcon();
   const name = themeManager.getThemeDisplayName();
   themeToggleBtn.textContent = `${icon} ${name}`;
-  themeToggleBtn.setAttribute('aria-label', `Current theme: ${name}. Click to cycle to next theme.`);
+  themeToggleBtn.setAttribute(
+    "aria-label",
+    `Current theme: ${name}. Click to cycle to next theme.`,
+  );
 }
 
 // Set initial button state
 updateThemeButton();
 
-function setStatus(message: string, type: 'info' | 'error' | 'success') {
+function setStatus(message: string, type: "info" | "error" | "success") {
   statusMessage.textContent = message;
   statusBar.className = `status-bar ${type}`;
 }
@@ -168,30 +263,26 @@ function trackDrawingOperations(tokens: { text: string }[]) {
     const codon = token.text;
 
     // Track shapes (CIRCLE, RECT, LINE, TRIANGLE, ELLIPSE)
-    if (['GGA', 'GGC', 'GGG', 'GGT'].includes(codon)) {
-      allUnlocked.push(...achievementEngine.trackShapeDrawn('CIRCLE'));
-    } else if (['CCA', 'CCC', 'CCG', 'CCT'].includes(codon)) {
-      allUnlocked.push(...achievementEngine.trackShapeDrawn('RECT'));
-    } else if (['AAA', 'AAC', 'AAG', 'AAT'].includes(codon)) {
-      allUnlocked.push(...achievementEngine.trackShapeDrawn('LINE'));
-    } else if (['GCA', 'GCC', 'GCG', 'GCT'].includes(codon)) {
-      allUnlocked.push(...achievementEngine.trackShapeDrawn('TRIANGLE'));
-    } else if (['GTA', 'GTC', 'GTG', 'GTT'].includes(codon)) {
-      allUnlocked.push(...achievementEngine.trackShapeDrawn('ELLIPSE'));
-    }
-
-    // Track color usage (COLOR opcode)
-    else if (['TTA', 'TTC', 'TTG', 'TTT'].includes(codon)) {
+    if (["GGA", "GGC", "GGG", "GGT"].includes(codon)) {
+      allUnlocked.push(...achievementEngine.trackShapeDrawn("CIRCLE"));
+    } else if (["CCA", "CCC", "CCG", "CCT"].includes(codon)) {
+      allUnlocked.push(...achievementEngine.trackShapeDrawn("RECT"));
+    } else if (["AAA", "AAC", "AAG", "AAT"].includes(codon)) {
+      allUnlocked.push(...achievementEngine.trackShapeDrawn("LINE"));
+    } else if (["GCA", "GCC", "GCG", "GCT"].includes(codon)) {
+      allUnlocked.push(...achievementEngine.trackShapeDrawn("TRIANGLE"));
+    } else if (["GTA", "GTC", "GTG", "GTT"].includes(codon)) {
+      allUnlocked.push(...achievementEngine.trackShapeDrawn("ELLIPSE"));
+    } // Track color usage (COLOR opcode)
+    else if (["TTA", "TTC", "TTG", "TTT"].includes(codon)) {
       allUnlocked.push(...achievementEngine.trackColorUsed());
-    }
-
-    // Track transforms (TRANSLATE, ROTATE, SCALE)
-    else if (['ACA', 'ACC', 'ACG', 'ACT'].includes(codon)) {
-      allUnlocked.push(...achievementEngine.trackTransformApplied('TRANSLATE'));
-    } else if (['AGA', 'AGC', 'AGG', 'AGT'].includes(codon)) {
-      allUnlocked.push(...achievementEngine.trackTransformApplied('ROTATE'));
-    } else if (['CGA', 'CGC', 'CGG', 'CGT'].includes(codon)) {
-      allUnlocked.push(...achievementEngine.trackTransformApplied('SCALE'));
+    } // Track transforms (TRANSLATE, ROTATE, SCALE)
+    else if (["ACA", "ACC", "ACG", "ACT"].includes(codon)) {
+      allUnlocked.push(...achievementEngine.trackTransformApplied("TRANSLATE"));
+    } else if (["AGA", "AGC", "AGG", "AGT"].includes(codon)) {
+      allUnlocked.push(...achievementEngine.trackTransformApplied("ROTATE"));
+    } else if (["CGA", "CGC", "CGG", "CGT"].includes(codon)) {
+      allUnlocked.push(...achievementEngine.trackTransformApplied("SCALE"));
     }
   }
 
@@ -203,11 +294,13 @@ async function runProgram() {
     const source = editor.value;
 
     // Track genome created
-    const unlocked1 = achievementEngine.trackGenomeCreated(source.replace(/\s+/g, '').length);
+    const unlocked1 = achievementEngine.trackGenomeCreated(
+      source.replace(/\s+/g, "").length,
+    );
     achievementUI.handleUnlocks(unlocked1);
 
     // Research metrics tracking
-    researchMetrics.trackGenomeCreated(source.replace(/\s+/g, '').length);
+    researchMetrics.trackGenomeCreated(source.replace(/\s+/g, "").length);
 
     // Tokenize
     const tokens = lexer.tokenize(source);
@@ -215,21 +308,23 @@ async function runProgram() {
 
     // Validate structure
     const structureErrors = lexer.validateStructure(tokens);
-    const criticalErrors = structureErrors.filter(e => e.severity === 'error');
+    const criticalErrors = structureErrors.filter(
+      (e) => e.severity === "error",
+    );
 
     if (criticalErrors.length > 0) {
-      setStatus(`Error: ${criticalErrors[0].message}`, 'error');
+      setStatus(`Error: ${criticalErrors[0].message}`, "error");
       return;
     }
 
     // Validate frame
     const frameErrors = lexer.validateFrame(source);
     if (frameErrors.length > 0) {
-      setStatus(`Warning: ${frameErrors[0].message}`, 'error');
+      setStatus(`Warning: ${frameErrors[0].message}`, "error");
     }
 
     // Execute with appropriate renderer(s)
-    if (renderMode === 'audio') {
+    if (renderMode === "audio") {
       // Audio only mode: use AudioRenderer
       const audioVM = new CodonVM(audioRenderer);
       audioRenderer.clear();
@@ -242,42 +337,48 @@ async function runProgram() {
       lastSnapshots = snapshots; // Store for MIDI export
 
       updateStats(tokens.length, audioVM.state.instructionCount);
-      setStatus(`♪ Playing ${audioVM.state.instructionCount} audio instructions`, 'success');
+      setStatus(
+        `♪ Playing ${audioVM.state.instructionCount} audio instructions`,
+        "success",
+      );
 
       // Research metrics: track execution
       researchMetrics.trackGenomeExecuted({
         timestamp: Date.now(),
-        renderMode: 'audio',
+        renderMode: "audio",
         genomeLength: tokens.length,
         instructionCount: audioVM.state.instructionCount,
-        success: true
+        success: true,
       });
 
       // Track genome execution and drawing operations
-      const opcodes = tokens.map(t => t.text);
+      const opcodes = tokens.map((t) => t.text);
       const unlocked2 = achievementEngine.trackGenomeExecuted(opcodes);
       const unlocked3 = trackDrawingOperations(tokens);
       achievementUI.handleUnlocks([...unlocked2, ...unlocked3]);
-    } else if (renderMode === 'visual') {
+    } else if (renderMode === "visual") {
       // Visual only mode: use Canvas2DRenderer
       vm.reset();
       const snapshots = vm.run(tokens);
       lastSnapshots = snapshots; // Store for MIDI export
 
       updateStats(tokens.length, vm.state.instructionCount);
-      setStatus(`Executed ${vm.state.instructionCount} instructions successfully`, 'success');
+      setStatus(
+        `Executed ${vm.state.instructionCount} instructions successfully`,
+        "success",
+      );
 
       // Research metrics: track execution
       researchMetrics.trackGenomeExecuted({
         timestamp: Date.now(),
-        renderMode: 'visual',
+        renderMode: "visual",
         genomeLength: tokens.length,
         instructionCount: vm.state.instructionCount,
-        success: true
+        success: true,
       });
 
       // Track genome execution and drawing operations
-      const opcodes = tokens.map(t => t.text);
+      const opcodes = tokens.map((t) => t.text);
       const unlocked2 = achievementEngine.trackGenomeExecuted(opcodes);
       const unlocked3 = trackDrawingOperations(tokens);
       achievementUI.handleUnlocks([...unlocked2, ...unlocked3]);
@@ -299,40 +400,42 @@ async function runProgram() {
       // Execute both simultaneously
       const [audioSnapshots, visualSnapshots] = await Promise.all([
         Promise.resolve(audioVM.run(tokens)),
-        Promise.resolve(vm.run(tokens))
+        Promise.resolve(vm.run(tokens)),
       ]);
       lastSnapshots = audioSnapshots; // Store for MIDI export (use audio snapshots)
 
       updateStats(tokens.length, vm.state.instructionCount);
-      setStatus(`♪🎨 Playing ${audioVM.state.instructionCount} audio + visual instructions`, 'success');
+      setStatus(
+        `♪🎨 Playing ${audioVM.state.instructionCount} audio + visual instructions`,
+        "success",
+      );
 
       // Research metrics: track execution
       researchMetrics.trackGenomeExecuted({
         timestamp: Date.now(),
-        renderMode: 'both',
+        renderMode: "both",
         genomeLength: tokens.length,
         instructionCount: audioVM.state.instructionCount,
-        success: true
+        success: true,
       });
 
       // Track genome execution and drawing operations
-      const opcodes = tokens.map(t => t.text);
+      const opcodes = tokens.map((t) => t.text);
       const unlocked2 = achievementEngine.trackGenomeExecuted(opcodes);
       const unlocked3 = trackDrawingOperations(tokens);
       achievementUI.handleUnlocks([...unlocked2, ...unlocked3]);
     }
-
   } catch (error) {
     if (error instanceof Error) {
-      setStatus(`Error: ${error.message}`, 'error');
-      researchMetrics.trackError('execution', error.message);
+      setStatus(`Error: ${error.message}`, "error");
+      researchMetrics.trackError("execution", error.message);
     } else if (Array.isArray(error)) {
       // ParseError array
-      setStatus(`Error: ${error[0].message}`, 'error');
-      researchMetrics.trackError('parse', error[0].message);
+      setStatus(`Error: ${error[0].message}`, "error");
+      researchMetrics.trackError("parse", error[0].message);
     } else {
-      setStatus('Unknown error occurred', 'error');
-      researchMetrics.trackError('unknown', 'Unknown error occurred');
+      setStatus("Unknown error occurred", "error");
+      researchMetrics.trackError("unknown", "Unknown error occurred");
     }
   }
 }
@@ -340,25 +443,25 @@ async function runProgram() {
 function clearCanvas() {
   vm.reset();
   renderer.clear();
-  setStatus('Canvas cleared', 'info');
+  setStatus("Canvas cleared", "info");
   updateStats(0, 0);
 }
 
 function getFilteredExamples(): Array<[ExampleKey, ExampleMetadata]> {
-  const difficulty = difficultyFilter.value as DifficultyLevel | '';
-  const concept = conceptFilter.value as Concept | '';
+  const difficulty = difficultyFilter.value as DifficultyLevel | "";
+  const concept = conceptFilter.value as Concept | "";
   const search = searchInput.value.toLowerCase().trim();
 
   return Object.entries(examples).filter(([key, ex]) => {
     // Difficulty filter
     if (difficulty && ex.difficulty !== difficulty) {
-return false;
-}
+      return false;
+    }
 
     // Concept filter
     if (concept && !ex.concepts.includes(concept)) {
-return false;
-}
+      return false;
+    }
 
     // Search filter
     if (search) {
@@ -366,12 +469,14 @@ return false;
         ex.title,
         ex.description,
         ...ex.keywords,
-        ...ex.concepts
-      ].join(' ').toLowerCase();
+        ...ex.concepts,
+      ]
+        .join(" ")
+        .toLowerCase();
 
       if (!searchableText.includes(search)) {
-return false;
-}
+        return false;
+      }
     }
 
     return true;
@@ -382,14 +487,14 @@ function updateExampleDropdown() {
   const filtered = getFilteredExamples();
 
   // Clear existing options (except first)
-  exampleSelect.innerHTML = '<option value="">Load Example...</option>';
+  exampleSelect.innerHTML = "<option value=\"\">Load Example...</option>";
 
   // Group by difficulty for better UX
   const grouped = {
     beginner: [] as Array<[ExampleKey, ExampleMetadata]>,
     intermediate: [] as Array<[ExampleKey, ExampleMetadata]>,
     advanced: [] as Array<[ExampleKey, ExampleMetadata]>,
-    'advanced-showcase': [] as Array<[ExampleKey, ExampleMetadata]>
+    "advanced-showcase": [] as Array<[ExampleKey, ExampleMetadata]>,
   };
 
   filtered.forEach(([key, ex]) => {
@@ -398,10 +503,10 @@ function updateExampleDropdown() {
 
   // Add beginner examples
   if (grouped.beginner.length > 0) {
-    const beginnerGroup = document.createElement('optgroup');
-    beginnerGroup.label = '🌱 Beginner';
+    const beginnerGroup = document.createElement("optgroup");
+    beginnerGroup.label = "🌱 Beginner";
     grouped.beginner.forEach(([key, ex]) => {
-      const option = document.createElement('option');
+      const option = document.createElement("option");
       option.value = key;
       option.textContent = ex.title;
       beginnerGroup.appendChild(option);
@@ -411,10 +516,10 @@ function updateExampleDropdown() {
 
   // Add intermediate examples
   if (grouped.intermediate.length > 0) {
-    const intermediateGroup = document.createElement('optgroup');
-    intermediateGroup.label = '🌿 Intermediate';
+    const intermediateGroup = document.createElement("optgroup");
+    intermediateGroup.label = "🌿 Intermediate";
     grouped.intermediate.forEach(([key, ex]) => {
-      const option = document.createElement('option');
+      const option = document.createElement("option");
       option.value = key;
       option.textContent = ex.title;
       intermediateGroup.appendChild(option);
@@ -424,10 +529,10 @@ function updateExampleDropdown() {
 
   // Add advanced examples
   if (grouped.advanced.length > 0) {
-    const advancedGroup = document.createElement('optgroup');
-    advancedGroup.label = '🌳 Advanced';
+    const advancedGroup = document.createElement("optgroup");
+    advancedGroup.label = "🌳 Advanced";
     grouped.advanced.forEach(([key, ex]) => {
-      const option = document.createElement('option');
+      const option = document.createElement("option");
       option.value = key;
       option.textContent = ex.title;
       advancedGroup.appendChild(option);
@@ -436,11 +541,11 @@ function updateExampleDropdown() {
   }
 
   // Add advanced showcase examples
-  if (grouped['advanced-showcase'].length > 0) {
-    const showcaseGroup = document.createElement('optgroup');
-    showcaseGroup.label = '✨ Advanced Showcase';
-    grouped['advanced-showcase'].forEach(([key, ex]) => {
-      const option = document.createElement('option');
+  if (grouped["advanced-showcase"].length > 0) {
+    const showcaseGroup = document.createElement("optgroup");
+    showcaseGroup.label = "✨ Advanced Showcase";
+    grouped["advanced-showcase"].forEach(([key, ex]) => {
+      const option = document.createElement("option");
       option.value = key;
       option.textContent = ex.title;
       showcaseGroup.appendChild(option);
@@ -453,14 +558,15 @@ function updateExampleDropdown() {
   const filteredCount = filtered.length;
 
   if (filteredCount < totalCount) {
-    exampleSelect.options[0].textContent = `Load Example... (${filteredCount} of ${totalCount})`;
+    exampleSelect.options[0].textContent =
+      `Load Example... (${filteredCount} of ${totalCount})`;
   }
 }
 
 function showExampleInfo(key: ExampleKey) {
   const ex = examples[key];
   if (!ex) {
-    exampleInfo.style.display = 'none';
+    exampleInfo.style.display = "none";
     return;
   }
 
@@ -475,11 +581,15 @@ function showExampleInfo(key: ExampleKey) {
       ${ex.description}
     </div>
     <div style="font-size: 0.85em; opacity: 0.7;">
-      <div><strong>Concepts:</strong> ${ex.concepts.join(', ')}</div>
-      <div><strong>Good for mutations:</strong> ${ex.goodForMutations.join(', ')}</div>
+      <div><strong>Concepts:</strong> ${ex.concepts.join(", ")}</div>
+      <div><strong>Good for mutations:</strong> ${
+    ex.goodForMutations.join(
+      ", ",
+    )
+  }</div>
     </div>
   `;
-  exampleInfo.style.display = 'block';
+  exampleInfo.style.display = "block";
 }
 
 function runLinter(source: string): void {
@@ -498,17 +608,21 @@ function runLinter(source: string): void {
     if (Array.isArray(error)) {
       displayLinterErrors(error);
     } else if (error instanceof Error) {
-      displayLinterErrors([{
-        message: error.message,
-        position: 0,
-        severity: 'error' as const
-      }]);
+      displayLinterErrors([
+        {
+          message: error.message,
+          position: 0,
+          severity: "error" as const,
+        },
+      ]);
     } else {
-      displayLinterErrors([{
-        message: 'Unknown error during linting',
-        position: 0,
-        severity: 'error' as const
-      }]);
+      displayLinterErrors([
+        {
+          message: "Unknown error during linting",
+          position: 0,
+          severity: "error" as const,
+        },
+      ]);
     }
   }
 }
@@ -521,9 +635,9 @@ function canAutoFix(errorMessage: string): boolean {
     /Program should begin with START codon/,
     /Program should end with STOP codon/,
     /Mid-triplet break detected/,
-    /Source length \d+ is not divisible by 3/
+    /Source length \d+ is not divisible by 3/,
   ];
-  return fixablePatterns.some(pattern => pattern.test(errorMessage));
+  return fixablePatterns.some((pattern) => pattern.test(errorMessage));
 }
 
 /**
@@ -532,22 +646,22 @@ function canAutoFix(errorMessage: string): boolean {
 function autoFixError(errorMessage: string, source: string): string | null {
   // Missing START codon
   if (/Program should begin with START codon/.test(errorMessage)) {
-    return 'ATG ' + source.trim();
+    return "ATG " + source.trim();
   }
 
   // Missing STOP codon
   if (/Program should end with STOP codon/.test(errorMessage)) {
-    return source.trim() + ' TAA';
+    return source.trim() + " TAA";
   }
 
   // Mid-triplet break - remove all whitespace and re-space by triplets
   if (/Mid-triplet break detected/.test(errorMessage)) {
-    const cleaned = source.replace(/\s+/g, '');
+    const cleaned = source.replace(/\s+/g, "");
     const triplets: string[] = [];
     for (let i = 0; i < cleaned.length; i += 3) {
       triplets.push(cleaned.slice(i, i + 3));
     }
-    return triplets.join(' ');
+    return triplets.join(" ");
   }
 
   // Non-triplet length - pad with 'A' or truncate
@@ -555,7 +669,7 @@ function autoFixError(errorMessage: string, source: string): string | null {
     const match = errorMessage.match(/Missing (\d+) bases/);
     if (match) {
       const missing = parseInt(match[1]);
-      return source.trim() + 'A'.repeat(missing);
+      return source.trim() + "A".repeat(missing);
     }
   }
 
@@ -571,10 +685,10 @@ function applyAutoFix(errorMessage: string): void {
 
   if (fixed) {
     editor.value = fixed;
-    setStatus('Applied auto-fix', 'success');
+    setStatus("Applied auto-fix", "success");
     runLinter(fixed);
   } else {
-    setStatus('Could not auto-fix this error', 'error');
+    setStatus("Could not auto-fix this error", "error");
   }
 }
 
@@ -596,7 +710,7 @@ function fixAllErrors(): void {
       const allErrors = [...frameErrors, ...structErrors];
 
       // Find first fixable error
-      const fixableError = allErrors.find(err => canAutoFix(err.message));
+      const fixableError = allErrors.find((err) => canAutoFix(err.message));
 
       if (!fixableError) {
         // No more fixable errors
@@ -632,46 +746,72 @@ function fixAllErrors(): void {
 
   if (fixedCount > 0) {
     editor.value = source;
-    setStatus(`Fixed ${fixedCount} error${fixedCount > 1 ? 's' : ''}`, 'success');
+    setStatus(
+      `Fixed ${fixedCount} error${fixedCount > 1 ? "s" : ""}`,
+      "success",
+    );
     runLinter(source);
   } else {
-    setStatus('No auto-fixable errors found', 'info');
+    setStatus("No auto-fixable errors found", "info");
   }
 }
 
-function displayLinterErrors(errors: Array<{ message: string; position: number; severity: 'error' | 'warning' | 'info' }>): void {
+function displayLinterErrors(
+  errors: Array<{
+    message: string;
+    position: number;
+    severity: "error" | "warning" | "info";
+  }>,
+): void {
   if (errors.length === 0) {
-    linterMessages.innerHTML = '<div style="color: #89d185;">✅ No errors found</div>';
+    linterMessages.innerHTML =
+      "<div style=\"color: #89d185;\">✅ No errors found</div>";
   } else {
-    const errorHTML = errors.map((err, idx) => {
-      const icon = err.severity === 'error' ? '🔴' : err.severity === 'warning' ? '🟡' : 'ℹ️';
-      const color = err.severity === 'error' ? '#f48771' : err.severity === 'warning' ? '#dcdcaa' : '#4ec9b0';
-      const fixable = canAutoFix(err.message);
-      const fixButton = fixable
-        ? `<button
+    const errorHTML = errors
+      .map((err, idx) => {
+        const icon = err.severity === "error"
+          ? "🔴"
+          : err.severity === "warning"
+          ? "🟡"
+          : "ℹ️";
+        const color = err.severity === "error"
+          ? "#f48771"
+          : err.severity === "warning"
+          ? "#dcdcaa"
+          : "#4ec9b0";
+        const fixable = canAutoFix(err.message);
+        const fixButton = fixable
+          ? `<button
              class="fix-button"
-             data-error-msg="${err.message.replace(/"/g, '&quot;')}"
+             data-error-msg="${err.message.replace(/"/g, "&quot;")}"
              style="margin-left: 12px; padding: 2px 8px; background: #4ec9b0; color: #1e1e1e; border: none; border-radius: 3px; cursor: pointer; font-size: 0.85em; font-weight: 500;"
              onmouseover="this.style.background='#6dd3bb'"
              onmouseout="this.style.background='#4ec9b0'">
              Fix
            </button>`
-        : '';
-      return `<div style="margin-bottom: 8px; padding: 6px 8px; border-left: 3px solid ${color}; background: rgba(255,255,255,0.03); display: flex; align-items: center;">
+          : "";
+        return `<div style="margin-bottom: 8px; padding: 6px 8px; border-left: 3px solid ${color}; background: rgba(255,255,255,0.03); display: flex; align-items: center;">
         <span style="margin-right: 8px;">${icon}</span>
         <span style="color: ${color}; font-weight: 500;">${err.severity.toUpperCase()}</span>
         <span style="color: #d4d4d4; margin-left: 8px; flex: 1;">${err.message}</span>
-        ${err.position !== undefined ? `<span style="color: #858585; margin-left: 8px; font-size: 0.9em;">(pos: ${err.position})</span>` : ''}
+        ${
+          err.position !== undefined
+            ? `<span style="color: #858585; margin-left: 8px; font-size: 0.9em;">(pos: ${err.position})</span>`
+            : ""
+        }
         ${fixButton}
       </div>`;
-    }).join('');
+      })
+      .join("");
     linterMessages.innerHTML = errorHTML;
 
     // Attach click handlers to Fix buttons
-    const fixButtons = linterMessages.querySelectorAll('.fix-button');
-    fixButtons.forEach(btn => {
-      btn.addEventListener('click', (e) => {
-        const errorMsg = (e.target as HTMLElement).getAttribute('data-error-msg');
+    const fixButtons = linterMessages.querySelectorAll(".fix-button");
+    fixButtons.forEach((btn) => {
+      btn.addEventListener("click", (e) => {
+        const errorMsg = (e.target as HTMLElement).getAttribute(
+          "data-error-msg",
+        );
         if (errorMsg) {
           applyAutoFix(errorMsg);
         }
@@ -681,16 +821,16 @@ function displayLinterErrors(errors: Array<{ message: string; position: number; 
 }
 
 function toggleLinter(): void {
-  const isHidden = linterPanel.style.display === 'none';
+  const isHidden = linterPanel.style.display === "none";
 
   if (isHidden) {
-    linterPanel.style.display = 'block';
-    linterToggle.textContent = 'Hide';
-    linterToggle.setAttribute('aria-expanded', 'true');
+    linterPanel.style.display = "block";
+    linterToggle.textContent = "Hide";
+    linterToggle.setAttribute("aria-expanded", "true");
   } else {
-    linterPanel.style.display = 'none';
-    linterToggle.textContent = 'Show';
-    linterToggle.setAttribute('aria-expanded', 'false');
+    linterPanel.style.display = "none";
+    linterToggle.textContent = "Show";
+    linterToggle.setAttribute("aria-expanded", "false");
   }
 }
 
@@ -698,46 +838,46 @@ function toggleDiffViewer(): void {
   const contentContainer = diffViewerContainer.parentElement;
   if (!contentContainer) return;
 
-  const isHidden = contentContainer.style.display === 'none';
+  const isHidden = contentContainer.style.display === "none";
 
   if (isHidden) {
-    contentContainer.style.display = 'block';
-    diffViewerToggle.textContent = 'Hide';
-    diffViewerToggle.setAttribute('aria-expanded', 'true');
+    contentContainer.style.display = "block";
+    diffViewerToggle.textContent = "Hide";
+    diffViewerToggle.setAttribute("aria-expanded", "true");
   } else {
-    contentContainer.style.display = 'none';
-    diffViewerToggle.textContent = 'Show';
-    diffViewerToggle.setAttribute('aria-expanded', 'false');
+    contentContainer.style.display = "none";
+    diffViewerToggle.textContent = "Show";
+    diffViewerToggle.setAttribute("aria-expanded", "false");
   }
 }
 
 function clearDiffViewer(): void {
   diffViewer.clear();
-  diffViewerPanel.style.display = 'none';
-  originalGenomeBeforeMutation = '';
+  diffViewerPanel.style.display = "none";
+  originalGenomeBeforeMutation = "";
 }
 
 function loadExample() {
   const key = exampleSelect.value as ExampleKey;
   if (key && examples[key]) {
     editor.value = examples[key].genome;
-    setStatus(`Loaded: ${examples[key].title}`, 'info');
+    setStatus(`Loaded: ${examples[key].title}`, "info");
     showExampleInfo(key);
     runLinter(examples[key].genome);
-    exampleSelect.value = '';
+    exampleSelect.value = "";
   }
 }
 
 function exportImage() {
   try {
     const dataURL = renderer.toDataURL();
-    const link = document.createElement('a');
-    link.download = 'codoncanvas-output.png';
+    const link = document.createElement("a");
+    link.download = "codoncanvas-output.png";
     link.href = dataURL;
     link.click();
-    setStatus('Image exported successfully', 'success');
+    setStatus("Image exported successfully", "success");
   } catch (error) {
-    setStatus('Failed to export image', 'error');
+    setStatus("Failed to export image", "error");
   }
 }
 
@@ -745,7 +885,7 @@ function saveGenome() {
   try {
     const genome = editor.value.trim();
     if (!genome) {
-      setStatus('No genome to save', 'error');
+      setStatus("No genome to save", "error");
       return;
     }
 
@@ -754,17 +894,17 @@ function saveGenome() {
     const filename = `codoncanvas-${timestamp}`;
 
     // Use the genome content as title (first line or first 30 chars)
-    const firstLine = genome.split('\n')[0].replace(/;.*$/, '').trim();
-    const title = firstLine.slice(0, 30) || 'CodonCanvas Genome';
+    const firstLine = genome.split("\n")[0].replace(/;.*$/, "").trim();
+    const title = firstLine.slice(0, 30) || "CodonCanvas Genome";
 
     downloadGenomeFile(genome, filename, {
-      description: 'Created with CodonCanvas Playground',
-      author: 'CodonCanvas User'
+      description: "Created with CodonCanvas Playground",
+      author: "CodonCanvas User",
     });
 
-    setStatus('Genome saved successfully', 'success');
+    setStatus("Genome saved successfully", "success");
   } catch (error) {
-    setStatus('Failed to save genome', 'error');
+    setStatus("Failed to save genome", "error");
   }
 }
 
@@ -788,22 +928,22 @@ async function handleFileLoad(event: Event) {
     editor.value = genomeFile.genome;
 
     // Show success with metadata
-    const info = genomeFile.title + (genomeFile.author ? ` by ${genomeFile.author}` : '');
-    setStatus(`Loaded: ${info}`, 'success');
+    const info = genomeFile.title +
+      (genomeFile.author ? ` by ${genomeFile.author}` : "");
+    setStatus(`Loaded: ${info}`, "success");
 
     // Reset file input
-    input.value = '';
-
+    input.value = "";
   } catch (error) {
     if (error instanceof Error) {
-      setStatus(`Failed to load genome: ${error.message}`, 'error');
+      setStatus(`Failed to load genome: ${error.message}`, "error");
     } else {
-      setStatus('Failed to load genome', 'error');
+      setStatus("Failed to load genome", "error");
     }
 
     // Reset file input
     const input = event.target as HTMLInputElement;
-    input.value = '';
+    input.value = "";
   }
 }
 
@@ -812,7 +952,7 @@ function applyMutation(type: MutationType) {
     const genome = editor.value.trim();
 
     if (!genome) {
-      setStatus('No genome to mutate', 'error');
+      setStatus("No genome to mutate", "error");
       return;
     }
 
@@ -822,25 +962,25 @@ function applyMutation(type: MutationType) {
     let result;
 
     switch (type) {
-      case 'silent':
+      case "silent":
         result = applySilentMutation(genome);
         break;
-      case 'missense':
+      case "missense":
         result = applyMissenseMutation(genome);
         break;
-      case 'nonsense':
+      case "nonsense":
         result = applyNonsenseMutation(genome);
         break;
-      case 'point':
+      case "point":
         result = applyPointMutation(genome);
         break;
-      case 'insertion':
+      case "insertion":
         result = applyInsertion(genome);
         break;
-      case 'deletion':
+      case "deletion":
         result = applyDeletion(genome);
         break;
-      case 'frameshift':
+      case "frameshift":
         result = applyFrameshiftMutation(genome);
         break;
       default:
@@ -856,29 +996,28 @@ function applyMutation(type: MutationType) {
 
     // Show DiffViewer with comparison
     diffViewer.renderMutation(result);
-    diffViewerPanel.style.display = 'block';
+    diffViewerPanel.style.display = "block";
 
     // Scroll DiffViewer into view (smooth scroll)
-    diffViewerPanel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    diffViewerPanel.scrollIntoView({ behavior: "smooth", block: "nearest" });
 
     // Auto-run to show effect
     runProgram();
 
     // Show mutation info
-    setStatus(`🧬 ${result.description}`, 'success');
-
+    setStatus(`🧬 ${result.description}`, "success");
   } catch (error) {
     if (error instanceof Error) {
-      setStatus(`Mutation failed: ${error.message}`, 'error');
+      setStatus(`Mutation failed: ${error.message}`, "error");
     } else {
-      setStatus('Mutation failed', 'error');
+      setStatus("Mutation failed", "error");
     }
   }
 }
 
 // Mutation preview modal functions
 function injectPreviewModalStyles() {
-  const style = document.createElement('style');
+  const style = document.createElement("style");
   style.textContent = `
     .preview-modal-overlay {
       position: fixed;
@@ -1057,9 +1196,9 @@ function injectPreviewModalStyles() {
 }
 
 function createPreviewModal() {
-  const overlay = document.createElement('div');
-  overlay.className = 'preview-modal-overlay';
-  overlay.id = 'previewModalOverlay';
+  const overlay = document.createElement("div");
+  overlay.className = "preview-modal-overlay";
+  overlay.id = "previewModalOverlay";
   overlay.innerHTML = `
     <div class="preview-modal" role="dialog" aria-labelledby="previewModalTitle" aria-modal="true">
       <h3 id="previewModalTitle">🔮 Mutation Preview</h3>
@@ -1111,56 +1250,93 @@ function createPreviewModal() {
   document.body.appendChild(overlay);
 
   // Close on overlay click
-  overlay.addEventListener('click', (e) => {
+  overlay.addEventListener("click", (e) => {
     if (e.target === overlay) {
       closePreviewModal();
     }
   });
 
   // Cancel button
-  const cancelBtn = document.getElementById('previewCancelBtn') as HTMLButtonElement;
-  cancelBtn.addEventListener('click', closePreviewModal);
+  const cancelBtn = document.getElementById(
+    "previewCancelBtn",
+  ) as HTMLButtonElement;
+  cancelBtn.addEventListener("click", closePreviewModal);
 
   // Apply button
-  const applyBtn = document.getElementById('previewApplyBtn') as HTMLButtonElement;
-  applyBtn.addEventListener('click', applyPredictedMutation);
+  const applyBtn = document.getElementById(
+    "previewApplyBtn",
+  ) as HTMLButtonElement;
+  applyBtn.addEventListener("click", applyPredictedMutation);
 
   // Escape key to close
-  document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape' && overlay.classList.contains('active')) {
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape" && overlay.classList.contains("active")) {
       closePreviewModal();
     }
   });
 }
 
-function showPreviewModal(prediction: MutationPrediction, mutationType: MutationType) {
+function showPreviewModal(
+  prediction: MutationPrediction,
+  mutationType: MutationType,
+) {
   currentPrediction = prediction;
   currentMutationType = mutationType;
 
-  const overlay = document.getElementById('previewModalOverlay') as HTMLDivElement;
-  const originalCanvas = document.getElementById('previewOriginalCanvas') as HTMLImageElement;
-  const mutatedCanvas = document.getElementById('previewMutatedCanvas') as HTMLImageElement;
-  const impactBadge = document.getElementById('previewImpactBadge') as HTMLDivElement;
-  const confidenceStars = document.getElementById('previewConfidenceStars') as HTMLSpanElement;
-  const confidencePercent = document.getElementById('previewConfidencePercent') as HTMLSpanElement;
-  const description = document.getElementById('previewDescription') as HTMLDivElement;
-  const pixelDiff = document.getElementById('previewPixelDiff') as HTMLSpanElement;
-  const shapeChanges = document.getElementById('previewShapeChanges') as HTMLSpanElement;
-  const colorChanges = document.getElementById('previewColorChanges') as HTMLSpanElement;
-  const positionChanges = document.getElementById('previewPositionChanges') as HTMLSpanElement;
+  const overlay = document.getElementById(
+    "previewModalOverlay",
+  ) as HTMLDivElement;
+  const originalCanvas = document.getElementById(
+    "previewOriginalCanvas",
+  ) as HTMLImageElement;
+  const mutatedCanvas = document.getElementById(
+    "previewMutatedCanvas",
+  ) as HTMLImageElement;
+  const impactBadge = document.getElementById(
+    "previewImpactBadge",
+  ) as HTMLDivElement;
+  const confidenceStars = document.getElementById(
+    "previewConfidenceStars",
+  ) as HTMLSpanElement;
+  const confidencePercent = document.getElementById(
+    "previewConfidencePercent",
+  ) as HTMLSpanElement;
+  const description = document.getElementById(
+    "previewDescription",
+  ) as HTMLDivElement;
+  const pixelDiff = document.getElementById(
+    "previewPixelDiff",
+  ) as HTMLSpanElement;
+  const shapeChanges = document.getElementById(
+    "previewShapeChanges",
+  ) as HTMLSpanElement;
+  const colorChanges = document.getElementById(
+    "previewColorChanges",
+  ) as HTMLSpanElement;
+  const positionChanges = document.getElementById(
+    "previewPositionChanges",
+  ) as HTMLSpanElement;
 
   // Set preview images
   originalCanvas.src = prediction.originalPreview;
   mutatedCanvas.src = prediction.mutatedPreview;
 
   // Set impact badge
-  impactBadge.textContent = `${getImpactIcon(prediction.impact)} ${prediction.impact}`;
+  impactBadge.textContent = `${
+    getImpactIcon(
+      prediction.impact,
+    )
+  } ${prediction.impact}`;
   impactBadge.className = `preview-impact-badge ${prediction.impact}`;
 
   // Set confidence
   const stars = getConfidenceStars(prediction.confidence);
   confidenceStars.textContent = stars;
-  confidencePercent.textContent = `(${Math.round(prediction.confidence * 100)}%)`;
+  confidencePercent.textContent = `(${
+    Math.round(
+      prediction.confidence * 100,
+    )
+  }%)`;
 
   // Set description
   description.textContent = prediction.description;
@@ -1168,16 +1344,20 @@ function showPreviewModal(prediction: MutationPrediction, mutationType: Mutation
   // Set stats
   pixelDiff.textContent = `${prediction.pixelDiffPercent.toFixed(1)}%`;
   shapeChanges.textContent = prediction.analysis.shapeChanges.toString();
-  colorChanges.textContent = prediction.analysis.colorChanges ? 'Yes' : 'No';
-  positionChanges.textContent = prediction.analysis.positionChanges ? 'Yes' : 'No';
+  colorChanges.textContent = prediction.analysis.colorChanges ? "Yes" : "No";
+  positionChanges.textContent = prediction.analysis.positionChanges
+    ? "Yes"
+    : "No";
 
   // Show modal
-  overlay.classList.add('active');
+  overlay.classList.add("active");
 }
 
 function closePreviewModal() {
-  const overlay = document.getElementById('previewModalOverlay') as HTMLDivElement;
-  overlay.classList.remove('active');
+  const overlay = document.getElementById(
+    "previewModalOverlay",
+  ) as HTMLDivElement;
+  overlay.classList.remove("active");
   currentPrediction = null;
   currentMutationType = null;
 }
@@ -1195,17 +1375,21 @@ function applyPredictedMutation() {
 
 function getImpactIcon(impact: ImpactLevel): string {
   switch (impact) {
-    case 'SILENT': return '🟢';
-    case 'LOCAL': return '🟡';
-    case 'MAJOR': return '🟠';
-    case 'CATASTROPHIC': return '🔴';
+    case "SILENT":
+      return "🟢";
+    case "LOCAL":
+      return "🟡";
+    case "MAJOR":
+      return "🟠";
+    case "CATASTROPHIC":
+      return "🔴";
   }
 }
 
 function getConfidenceStars(confidence: number): string {
-  if (confidence >= 0.85) return '⭐⭐⭐';
-  if (confidence >= 0.60) return '⭐⭐';
-  return '⭐';
+  if (confidence >= 0.85) return "⭐⭐⭐";
+  if (confidence >= 0.6) return "⭐⭐";
+  return "⭐";
 }
 
 async function previewMutation(type: MutationType) {
@@ -1213,32 +1397,32 @@ async function previewMutation(type: MutationType) {
     const genome = editor.value.trim();
 
     if (!genome) {
-      setStatus('No genome to preview', 'error');
+      setStatus("No genome to preview", "error");
       return;
     }
 
     let result;
 
     switch (type) {
-      case 'silent':
+      case "silent":
         result = applySilentMutation(genome);
         break;
-      case 'missense':
+      case "missense":
         result = applyMissenseMutation(genome);
         break;
-      case 'nonsense':
+      case "nonsense":
         result = applyNonsenseMutation(genome);
         break;
-      case 'point':
+      case "point":
         result = applyPointMutation(genome);
         break;
-      case 'insertion':
+      case "insertion":
         result = applyInsertion(genome);
         break;
-      case 'deletion':
+      case "deletion":
         result = applyDeletion(genome);
         break;
-      case 'frameshift':
+      case "frameshift":
         result = applyFrameshiftMutation(genome);
         break;
       default:
@@ -1250,12 +1434,11 @@ async function previewMutation(type: MutationType) {
 
     // Show modal
     showPreviewModal(prediction, type);
-
   } catch (error) {
     if (error instanceof Error) {
-      setStatus(`Preview failed: ${error.message}`, 'error');
+      setStatus(`Preview failed: ${error.message}`, "error");
     } else {
-      setStatus('Preview failed', 'error');
+      setStatus("Preview failed", "error");
     }
   }
 }
@@ -1266,26 +1449,39 @@ function addPreviewButtons() {
   if (!mutationToolbar) return;
 
   // Create preview all button
-  const previewAllBtn = document.createElement('button');
-  previewAllBtn.className = 'secondary';
-  previewAllBtn.textContent = '🔮 Preview';
-  previewAllBtn.title = 'Preview mutation effects before applying';
-  previewAllBtn.setAttribute('aria-label', 'Preview mutation effects before applying');
-  previewAllBtn.style.marginLeft = 'auto';
-  previewAllBtn.style.fontWeight = '600';
+  const previewAllBtn = document.createElement("button");
+  previewAllBtn.className = "secondary";
+  previewAllBtn.textContent = "🔮 Preview";
+  previewAllBtn.title = "Preview mutation effects before applying";
+  previewAllBtn.setAttribute(
+    "aria-label",
+    "Preview mutation effects before applying",
+  );
+  previewAllBtn.style.marginLeft = "auto";
+  previewAllBtn.style.fontWeight = "600";
 
   // Create dropdown for selecting mutation type to preview
-  const previewContainer = document.createElement('span');
-  previewContainer.style.display = 'inline-flex';
-  previewContainer.style.gap = '0.25rem';
-  previewContainer.style.marginLeft = 'auto';
+  const previewContainer = document.createElement("span");
+  previewContainer.style.display = "inline-flex";
+  previewContainer.style.gap = "0.25rem";
+  previewContainer.style.marginLeft = "auto";
 
-  previewAllBtn.addEventListener('click', () => {
+  previewAllBtn.addEventListener("click", () => {
     // Show menu to select mutation type
-    const mutationType = prompt('Select mutation type to preview:\n1. Silent\n2. Missense\n3. Nonsense\n4. Frameshift\n5. Point\n6. Insertion\n7. Deletion\n\nEnter number (1-7):');
+    const mutationType = prompt(
+      "Select mutation type to preview:\n1. Silent\n2. Missense\n3. Nonsense\n4. Frameshift\n5. Point\n6. Insertion\n7. Deletion\n\nEnter number (1-7):",
+    );
     if (!mutationType) return;
 
-    const types: MutationType[] = ['silent', 'missense', 'nonsense', 'frameshift', 'point', 'insertion', 'deletion'];
+    const types: MutationType[] = [
+      "silent",
+      "missense",
+      "nonsense",
+      "frameshift",
+      "point",
+      "insertion",
+      "deletion",
+    ];
     const index = parseInt(mutationType) - 1;
     if (index >= 0 && index < types.length) {
       previewMutation(types[index]);
@@ -1297,43 +1493,49 @@ function addPreviewButtons() {
 
   // Add right-click preview to each mutation button
   const mutationButtons = [
-    { btn: silentMutationBtn, type: 'silent' as MutationType },
-    { btn: missenseMutationBtn, type: 'missense' as MutationType },
-    { btn: nonsenseMutationBtn, type: 'nonsense' as MutationType },
-    { btn: frameshiftMutationBtn, type: 'frameshift' as MutationType },
-    { btn: pointMutationBtn, type: 'point' as MutationType },
-    { btn: insertionMutationBtn, type: 'insertion' as MutationType },
-    { btn: deletionMutationBtn, type: 'deletion' as MutationType }
+    { btn: silentMutationBtn, type: "silent" as MutationType },
+    { btn: missenseMutationBtn, type: "missense" as MutationType },
+    { btn: nonsenseMutationBtn, type: "nonsense" as MutationType },
+    { btn: frameshiftMutationBtn, type: "frameshift" as MutationType },
+    { btn: pointMutationBtn, type: "point" as MutationType },
+    { btn: insertionMutationBtn, type: "insertion" as MutationType },
+    { btn: deletionMutationBtn, type: "deletion" as MutationType },
   ];
 
   mutationButtons.forEach(({ btn, type }) => {
     // Right-click to preview
-    btn.addEventListener('contextmenu', (e) => {
+    btn.addEventListener("contextmenu", (e) => {
       e.preventDefault();
       previewMutation(type);
     });
 
     // Update tooltip to mention right-click
-    const currentTitle = btn.getAttribute('title') || '';
-    btn.setAttribute('title', `${currentTitle}\nRight-click to preview`);
+    const currentTitle = btn.getAttribute("title") || "";
+    btn.setAttribute("title", `${currentTitle}\nRight-click to preview`);
   });
 }
 
 // Audio toggle handler - cycles through visual → audio → both → visual
 async function toggleAudio() {
-  const modes: RenderMode[] = ['visual', 'audio', 'both'];
+  const modes: RenderMode[] = ["visual", "audio", "both"];
   const currentIndex = modes.indexOf(renderMode);
   const nextMode = modes[(currentIndex + 1) % modes.length];
 
   // If switching to audio or both mode, initialize AudioContext
-  if ((nextMode === 'audio' || nextMode === 'both') && renderMode === 'visual') {
+  if (
+    (nextMode === "audio" || nextMode === "both") &&
+    renderMode === "visual"
+  ) {
     try {
       await audioRenderer.initialize();
       // Track audio synthesis achievement
       const unlocked = achievementEngine.trackAudioSynthesis();
       achievementUI.handleUnlocks(unlocked);
     } catch (error) {
-      setStatus('Error initializing audio: ' + (error as Error).message, 'error');
+      setStatus(
+        "Error initializing audio: " + (error as Error).message,
+        "error",
+      );
       return;
     }
   }
@@ -1341,30 +1543,33 @@ async function toggleAudio() {
   renderMode = nextMode;
 
   // Update UI based on mode
-  if (renderMode === 'visual') {
-    audioToggleBtn.textContent = '🎨 Visual';
-    audioToggleBtn.setAttribute('aria-label', 'Visual mode - click for audio');
-    exportBtn.style.display = 'inline-block';
-    exportAudioBtn.style.display = 'none';
-    exportMidiBtn.style.display = 'none';
-    canvas.style.display = 'block';
-    setStatus('Visual mode - genomes render to canvas', 'info');
-  } else if (renderMode === 'audio') {
-    audioToggleBtn.textContent = '🔊 Audio';
-    audioToggleBtn.setAttribute('aria-label', 'Audio mode - click for both');
-    exportBtn.style.display = 'none';
-    exportAudioBtn.style.display = 'inline-block';
-    exportMidiBtn.style.display = 'inline-block'; // MIDI export available in audio mode
-    canvas.style.display = 'none'; // Hide canvas in audio-only mode
-    setStatus('Audio mode - genomes play as sound', 'info');
+  if (renderMode === "visual") {
+    audioToggleBtn.textContent = "🎨 Visual";
+    audioToggleBtn.setAttribute("aria-label", "Visual mode - click for audio");
+    exportBtn.style.display = "inline-block";
+    exportAudioBtn.style.display = "none";
+    exportMidiBtn.style.display = "none";
+    canvas.style.display = "block";
+    setStatus("Visual mode - genomes render to canvas", "info");
+  } else if (renderMode === "audio") {
+    audioToggleBtn.textContent = "🔊 Audio";
+    audioToggleBtn.setAttribute("aria-label", "Audio mode - click for both");
+    exportBtn.style.display = "none";
+    exportAudioBtn.style.display = "inline-block";
+    exportMidiBtn.style.display = "inline-block"; // MIDI export available in audio mode
+    canvas.style.display = "none"; // Hide canvas in audio-only mode
+    setStatus("Audio mode - genomes play as sound", "info");
   } else {
-    audioToggleBtn.textContent = '🎨🔊 Both';
-    audioToggleBtn.setAttribute('aria-label', 'Both modes - click for visual only');
-    exportBtn.style.display = 'inline-block';
-    exportAudioBtn.style.display = 'inline-block';
-    exportMidiBtn.style.display = 'inline-block'; // MIDI export available in both mode
-    canvas.style.display = 'block';
-    setStatus('Multi-sensory mode - audio + visual simultaneously', 'info');
+    audioToggleBtn.textContent = "🎨🔊 Both";
+    audioToggleBtn.setAttribute(
+      "aria-label",
+      "Both modes - click for visual only",
+    );
+    exportBtn.style.display = "inline-block";
+    exportAudioBtn.style.display = "inline-block";
+    exportMidiBtn.style.display = "inline-block"; // MIDI export available in both mode
+    canvas.style.display = "block";
+    setStatus("Multi-sensory mode - audio + visual simultaneously", "info");
   }
 }
 
@@ -1373,14 +1578,14 @@ async function exportAudio() {
   try {
     const blob = await audioRenderer.exportWAV();
     const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
+    const a = document.createElement("a");
     a.href = url;
     a.download = `codoncanvas-audio-${Date.now()}.webm`;
     a.click();
     URL.revokeObjectURL(url);
-    setStatus('Audio exported successfully', 'success');
+    setStatus("Audio exported successfully", "success");
   } catch (error) {
-    setStatus('Error exporting audio: ' + (error as Error).message, 'error');
+    setStatus("Error exporting audio: " + (error as Error).message, "error");
   }
 }
 
@@ -1388,20 +1593,23 @@ async function exportAudio() {
 function exportMidi() {
   try {
     if (lastSnapshots.length === 0) {
-      setStatus('Run genome first before exporting MIDI', 'error');
+      setStatus("Run genome first before exporting MIDI", "error");
       return;
     }
 
     const midiBlob = midiExporter.generateMIDI(lastSnapshots);
     const url = URL.createObjectURL(midiBlob);
-    const a = document.createElement('a');
+    const a = document.createElement("a");
     a.href = url;
     a.download = `codoncanvas-${Date.now()}.mid`;
     a.click();
     URL.revokeObjectURL(url);
-    setStatus('MIDI exported successfully - import into GarageBand, Ableton, etc.', 'success');
+    setStatus(
+      "MIDI exported successfully - import into GarageBand, Ableton, etc.",
+      "success",
+    );
   } catch (error) {
-    setStatus('Error exporting MIDI: ' + (error as Error).message, 'error');
+    setStatus("Error exporting MIDI: " + (error as Error).message, "error");
   }
 }
 
@@ -1409,13 +1617,13 @@ function exportMidi() {
 async function exportStudentProgress() {
   try {
     // Prompt for student ID and name
-    const studentId = prompt('Enter Student ID (e.g., S12345):');
-    if (!studentId || studentId.trim() === '') {
-      setStatus('Export cancelled - Student ID required', 'info');
+    const studentId = prompt("Enter Student ID (e.g., S12345):");
+    if (!studentId || studentId.trim() === "") {
+      setStatus("Export cancelled - Student ID required", "info");
       return;
     }
 
-    const studentName = prompt('Enter Student Name (optional):');
+    const studentName = prompt("Enter Student Name (optional):");
 
     // Gather tutorial progress
     const tutorials: {
@@ -1430,8 +1638,8 @@ async function exportStudentProgress() {
 
     // Get all tutorial managers (assuming tutorialManager tracks all tutorials)
     // For now, use localStorage to gather tutorial progress from TutorialManager's storage
-    const tutorialIds = ['helloCircle', 'mutations', 'timeline', 'evolution'];
-    tutorialIds.forEach(id => {
+    const tutorialIds = ["helloCircle", "mutations", "timeline", "evolution"];
+    tutorialIds.forEach((id) => {
       const storageKey = `codoncanvas_tutorial_${id}`;
       const saved = localStorage.getItem(storageKey);
       if (saved) {
@@ -1442,7 +1650,7 @@ async function exportStudentProgress() {
             currentStep: progress.currentStep || 0,
             totalSteps: progress.totalSteps || 6,
             startedAt: progress.startedAt || null,
-            completedAt: progress.completedAt || null
+            completedAt: progress.completedAt || null,
           };
         } catch (e) {
           // If parsing fails, record as not started
@@ -1451,7 +1659,7 @@ async function exportStudentProgress() {
             currentStep: 0,
             totalSteps: 6,
             startedAt: null,
-            completedAt: null
+            completedAt: null,
           };
         }
       } else {
@@ -1461,7 +1669,7 @@ async function exportStudentProgress() {
           currentStep: 0,
           totalSteps: 6,
           startedAt: null,
-          completedAt: null
+          completedAt: null,
         };
       }
     });
@@ -1470,26 +1678,29 @@ async function exportStudentProgress() {
     const sessions = researchMetrics.getAllSessions();
 
     // Import generateStudentExport from teacher-dashboard
-    const { generateStudentExport } = await import('./teacher-dashboard');
+    const { generateStudentExport } = await import("./teacher-dashboard");
     const exportData = generateStudentExport(
       studentId.trim(),
       studentName?.trim() || undefined,
       tutorials,
-      sessions
+      sessions,
     );
 
     // Download as JSON file
-    const blob = new Blob([exportData], { type: 'application/json' });
+    const blob = new Blob([exportData], { type: "application/json" });
     const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
+    const a = document.createElement("a");
     a.href = url;
     a.download = `codoncanvas-student-${studentId.trim()}-${Date.now()}.json`;
     a.click();
     URL.revokeObjectURL(url);
 
-    setStatus(`Student progress exported for ${studentId}`, 'success');
+    setStatus(`Student progress exported for ${studentId}`, "success");
   } catch (error) {
-    setStatus('Error exporting student progress: ' + (error as Error).message, 'error');
+    setStatus(
+      "Error exporting student progress: " + (error as Error).message,
+      "error",
+    );
   }
 }
 
@@ -1497,50 +1708,61 @@ async function exportStudentProgress() {
 function toggleTimeline() {
   timelineVisible = !timelineVisible;
   if (timelineVisible) {
-    timelinePanel.style.display = 'block';
-    timelineToggleBtn.textContent = '⏱️ Hide Timeline';
+    timelinePanel.style.display = "block";
+    timelineToggleBtn.textContent = "⏱️ Hide Timeline";
     // Load current genome into timeline
     const source = editor.value.trim();
     if (source) {
       try {
         timelineScrubber.loadGenome(source);
       } catch (error) {
-        setStatus(`Timeline error: ${error instanceof Error ? error.message : 'Unknown error'}`, 'error');
+        setStatus(
+          `Timeline error: ${
+            error instanceof Error ? error.message : "Unknown error"
+          }`,
+          "error",
+        );
       }
     }
   } else {
-    timelinePanel.style.display = 'none';
-    timelineToggleBtn.textContent = '⏱️ Timeline';
+    timelinePanel.style.display = "none";
+    timelineToggleBtn.textContent = "⏱️ Timeline";
   }
 }
 
 // Event listeners
-runBtn.addEventListener('click', runProgram);
-clearBtn.addEventListener('click', clearCanvas);
-audioToggleBtn.addEventListener('click', toggleAudio);
-timelineToggleBtn.addEventListener('click', toggleTimeline);
-themeToggleBtn.addEventListener('click', () => {
+runBtn.addEventListener("click", runProgram);
+clearBtn.addEventListener("click", clearCanvas);
+audioToggleBtn.addEventListener("click", toggleAudio);
+timelineToggleBtn.addEventListener("click", toggleTimeline);
+themeToggleBtn.addEventListener("click", () => {
   themeManager.cycleTheme();
   updateThemeButton();
-  setStatus(`Theme changed to ${themeManager.getThemeDisplayName()}`, 'info');
+  setStatus(`Theme changed to ${themeManager.getThemeDisplayName()}`, "info");
 });
-exampleSelect.addEventListener('change', loadExample);
-exportBtn.addEventListener('click', exportImage);
-exportAudioBtn.addEventListener('click', exportAudio);
-exportMidiBtn.addEventListener('click', exportMidi);
-saveGenomeBtn.addEventListener('click', saveGenome);
-loadGenomeBtn.addEventListener('click', loadGenome);
-genomeFileInput.addEventListener('change', handleFileLoad);
-exportStudentProgressBtn.addEventListener('click', exportStudentProgress);
+exampleSelect.addEventListener("change", loadExample);
+exportBtn.addEventListener("click", exportImage);
+exportAudioBtn.addEventListener("click", exportAudio);
+exportMidiBtn.addEventListener("click", exportMidi);
+saveGenomeBtn.addEventListener("click", saveGenome);
+loadGenomeBtn.addEventListener("click", loadGenome);
+genomeFileInput.addEventListener("change", handleFileLoad);
+exportStudentProgressBtn.addEventListener("click", exportStudentProgress);
 
 // Mutation button listeners
-silentMutationBtn.addEventListener('click', () => applyMutation('silent'));
-missenseMutationBtn.addEventListener('click', () => applyMutation('missense'));
-nonsenseMutationBtn.addEventListener('click', () => applyMutation('nonsense'));
-frameshiftMutationBtn.addEventListener('click', () => applyMutation('frameshift'));
-pointMutationBtn.addEventListener('click', () => applyMutation('point'));
-insertionMutationBtn.addEventListener('click', () => applyMutation('insertion'));
-deletionMutationBtn.addEventListener('click', () => applyMutation('deletion'));
+silentMutationBtn.addEventListener("click", () => applyMutation("silent"));
+missenseMutationBtn.addEventListener("click", () => applyMutation("missense"));
+nonsenseMutationBtn.addEventListener("click", () => applyMutation("nonsense"));
+frameshiftMutationBtn.addEventListener(
+  "click",
+  () => applyMutation("frameshift"),
+);
+pointMutationBtn.addEventListener("click", () => applyMutation("point"));
+insertionMutationBtn.addEventListener(
+  "click",
+  () => applyMutation("insertion"),
+);
+deletionMutationBtn.addEventListener("click", () => applyMutation("deletion"));
 
 // Codon Analyzer functions
 let currentAnalysis: CodonAnalysis | null = null;
@@ -1550,7 +1772,7 @@ function runAnalyzer() {
     const genome = editor.value.trim();
 
     if (!genome) {
-      setStatus('No genome to analyze', 'error');
+      setStatus("No genome to analyze", "error");
       return;
     }
 
@@ -1558,7 +1780,7 @@ function runAnalyzer() {
     const tokens = lexer.tokenize(genome);
 
     if (tokens.length === 0) {
-      setStatus('No valid codons to analyze', 'error');
+      setStatus("No valid codons to analyze", "error");
       return;
     }
 
@@ -1569,18 +1791,17 @@ function runAnalyzer() {
     renderAnalysis(currentAnalysis);
 
     // Show panel
-    analyzerPanel.style.display = 'block';
+    analyzerPanel.style.display = "block";
 
     // Scroll into view
-    analyzerPanel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    analyzerPanel.scrollIntoView({ behavior: "smooth", block: "nearest" });
 
-    setStatus(`📊 Analyzed ${currentAnalysis.totalCodons} codons`, 'success');
-
+    setStatus(`📊 Analyzed ${currentAnalysis.totalCodons} codons`, "success");
   } catch (error) {
     if (error instanceof Error) {
-      setStatus(`Analysis failed: ${error.message}`, 'error');
+      setStatus(`Analysis failed: ${error.message}`, "error");
     } else {
-      setStatus('Analysis failed', 'error');
+      setStatus("Analysis failed", "error");
     }
   }
 }
@@ -1589,94 +1810,174 @@ function renderAnalysis(analysis: CodonAnalysis) {
   const html: string[] = [];
 
   // Summary stats (compact grid)
-  html.push('<div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 16px;">');
-  html.push(`<div style="background: #1e1e1e; padding: 8px; border-radius: 4px; border-left: 3px solid #4ec9b0;"><div style="color: #a0a0a0; font-size: 11px;">Total Codons</div><div style="font-weight: 600; font-size: 16px; color: #4ec9b0;">${analysis.totalCodons}</div></div>`);
-  html.push(`<div style="background: #1e1e1e; padding: 8px; border-radius: 4px; border-left: 3px solid #569cd6;"><div style="color: #a0a0a0; font-size: 11px;">GC Content</div><div style="font-weight: 600; font-size: 16px; color: #569cd6;">${analysis.gcContent.toFixed(1)}%</div></div>`);
-  html.push(`<div style="background: #1e1e1e; padding: 8px; border-radius: 4px; border-left: 3px solid #dcdcaa;"><div style="color: #a0a0a0; font-size: 11px;">Complexity</div><div style="font-weight: 600; font-size: 16px; color: #dcdcaa;">${(analysis.signature.complexity * 100).toFixed(1)}%</div></div>`);
-  html.push('</div>');
+  html.push(
+    "<div style=\"display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 16px;\">",
+  );
+  html.push(
+    `<div style="background: #1e1e1e; padding: 8px; border-radius: 4px; border-left: 3px solid #4ec9b0;"><div style="color: #a0a0a0; font-size: 11px;">Total Codons</div><div style="font-weight: 600; font-size: 16px; color: #4ec9b0;">${analysis.totalCodons}</div></div>`,
+  );
+  html.push(
+    `<div style="background: #1e1e1e; padding: 8px; border-radius: 4px; border-left: 3px solid #569cd6;"><div style="color: #a0a0a0; font-size: 11px;">GC Content</div><div style="font-weight: 600; font-size: 16px; color: #569cd6;">${
+      analysis.gcContent.toFixed(
+        1,
+      )
+    }%</div></div>`,
+  );
+  html.push(
+    `<div style="background: #1e1e1e; padding: 8px; border-radius: 4px; border-left: 3px solid #dcdcaa;"><div style="color: #a0a0a0; font-size: 11px;">Complexity</div><div style="font-weight: 600; font-size: 16px; color: #dcdcaa;">${
+      (
+        analysis.signature.complexity * 100
+      ).toFixed(1)
+    }%</div></div>`,
+  );
+  html.push("</div>");
 
   // Top codons
-  html.push('<div style="margin-bottom: 16px;">');
-  html.push('<div style="color: #4ec9b0; font-weight: 600; margin-bottom: 8px;">Top 5 Codons</div>');
-  html.push('<div style="display: flex; flex-direction: column; gap: 4px;">');
+  html.push("<div style=\"margin-bottom: 16px;\">");
+  html.push(
+    "<div style=\"color: #4ec9b0; font-weight: 600; margin-bottom: 8px;\">Top 5 Codons</div>",
+  );
+  html.push("<div style=\"display: flex; flex-direction: column; gap: 4px;\">");
   for (const { codon, count, percentage } of analysis.topCodons) {
-    html.push(`<div style="display: flex; justify-content: space-between; align-items: center; padding: 4px 8px; background: #1e1e1e; border-radius: 3px;">` +
-      `<span style="font-family: 'Courier New', monospace; font-weight: 600; color: #dcdcaa;">${codon}</span>` +
-      `<span style="color: #a0a0a0; font-size: 11px;">${count}× (${percentage.toFixed(1)}%)</span>` +
-      `<div style="width: 80px; height: 6px; background: #2d2d30; border-radius: 3px; overflow: hidden;"><div style="width: ${percentage}%; height: 100%; background: #4ec9b0;"></div></div>` +
-      `</div>`);
+    html.push(
+      `<div style="display: flex; justify-content: space-between; align-items: center; padding: 4px 8px; background: #1e1e1e; border-radius: 3px;">` +
+        `<span style="font-family: 'Courier New', monospace; font-weight: 600; color: #dcdcaa;">${codon}</span>` +
+        `<span style="color: #a0a0a0; font-size: 11px;">${count}× (${
+          percentage.toFixed(
+            1,
+          )
+        }%)</span>` +
+        `<div style="width: 80px; height: 6px; background: #2d2d30; border-radius: 3px; overflow: hidden;"><div style="width: ${percentage}%; height: 100%; background: #4ec9b0;"></div></div>` +
+        `</div>`,
+    );
   }
-  html.push('</div></div>');
+  html.push("</div></div>");
 
   // Opcode families (visual bars)
-  html.push('<div style="margin-bottom: 16px;">');
-  html.push('<div style="color: #4ec9b0; font-weight: 600; margin-bottom: 8px;">Opcode Family Distribution</div>');
-  html.push('<div style="display: flex; flex-direction: column; gap: 6px;">');
+  html.push("<div style=\"margin-bottom: 16px;\">");
+  html.push(
+    "<div style=\"color: #4ec9b0; font-weight: 600; margin-bottom: 8px;\">Opcode Family Distribution</div>",
+  );
+  html.push("<div style=\"display: flex; flex-direction: column; gap: 6px;\">");
 
   const families = [
-    { name: 'Control', value: analysis.opcodeFamilies.control, color: '#c586c0' },
-    { name: 'Drawing', value: analysis.opcodeFamilies.drawing, color: '#4ec9b0' },
-    { name: 'Transform', value: analysis.opcodeFamilies.transform, color: '#569cd6' },
-    { name: 'Stack', value: analysis.opcodeFamilies.stack, color: '#dcdcaa' },
-    { name: 'Utility', value: analysis.opcodeFamilies.utility, color: '#a0a0a0' },
+    {
+      name: "Control",
+      value: analysis.opcodeFamilies.control,
+      color: "#c586c0",
+    },
+    {
+      name: "Drawing",
+      value: analysis.opcodeFamilies.drawing,
+      color: "#4ec9b0",
+    },
+    {
+      name: "Transform",
+      value: analysis.opcodeFamilies.transform,
+      color: "#569cd6",
+    },
+    { name: "Stack", value: analysis.opcodeFamilies.stack, color: "#dcdcaa" },
+    {
+      name: "Utility",
+      value: analysis.opcodeFamilies.utility,
+      color: "#a0a0a0",
+    },
   ];
 
   for (const family of families) {
-    html.push(`<div style="display: flex; align-items: center; gap: 8px;">` +
-      `<span style="width: 80px; color: #d4d4d4; font-size: 11px;">${family.name}</span>` +
-      `<div style="flex: 1; height: 16px; background: #2d2d30; border-radius: 3px; overflow: hidden; position: relative;">` +
-      `<div style="width: ${family.value}%; height: 100%; background: ${family.color}; transition: width 0.3s;"></div>` +
-      `</div>` +
-      `<span style="width: 45px; text-align: right; color: #a0a0a0; font-size: 11px; font-weight: 600;">${family.value.toFixed(1)}%</span>` +
-      `</div>`);
+    html.push(
+      `<div style="display: flex; align-items: center; gap: 8px;">` +
+        `<span style="width: 80px; color: #d4d4d4; font-size: 11px;">${family.name}</span>` +
+        `<div style="flex: 1; height: 16px; background: #2d2d30; border-radius: 3px; overflow: hidden; position: relative;">` +
+        `<div style="width: ${family.value}%; height: 100%; background: ${family.color}; transition: width 0.3s;"></div>` +
+        `</div>` +
+        `<span style="width: 45px; text-align: right; color: #a0a0a0; font-size: 11px; font-weight: 600;">${
+          family.value.toFixed(
+            1,
+          )
+        }%</span>` +
+        `</div>`,
+    );
   }
-  html.push('</div></div>');
+  html.push("</div></div>");
 
   // Genome signature
-  html.push('<div style="margin-bottom: 16px;">');
-  html.push('<div style="color: #4ec9b0; font-weight: 600; margin-bottom: 8px;">Genome Signature</div>');
-  html.push('<div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px;">');
-  html.push(`<div style="background: #1e1e1e; padding: 8px; border-radius: 4px;"><div style="color: #a0a0a0; font-size: 11px;">Drawing Density</div><div style="color: #4ec9b0; font-weight: 600;">${analysis.signature.drawingDensity.toFixed(1)}%</div></div>`);
-  html.push(`<div style="background: #1e1e1e; padding: 8px; border-radius: 4px;"><div style="color: #a0a0a0; font-size: 11px;">Transform Density</div><div style="color: #569cd6; font-weight: 600;">${analysis.signature.transformDensity.toFixed(1)}%</div></div>`);
-  html.push(`<div style="background: #1e1e1e; padding: 8px; border-radius: 4px;"><div style="color: #a0a0a0; font-size: 11px;">Redundancy</div><div style="color: #dcdcaa; font-weight: 600;">${analysis.signature.redundancy.toFixed(2)}</div></div>`);
-  html.push(`<div style="background: #1e1e1e; padding: 8px; border-radius: 4px;"><div style="color: #a0a0a0; font-size: 11px;">AT Content</div><div style="color: #c586c0; font-weight: 600;">${analysis.atContent.toFixed(1)}%</div></div>`);
-  html.push('</div></div>');
+  html.push("<div style=\"margin-bottom: 16px;\">");
+  html.push(
+    "<div style=\"color: #4ec9b0; font-weight: 600; margin-bottom: 8px;\">Genome Signature</div>",
+  );
+  html.push(
+    "<div style=\"display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px;\">",
+  );
+  html.push(
+    `<div style="background: #1e1e1e; padding: 8px; border-radius: 4px;"><div style="color: #a0a0a0; font-size: 11px;">Drawing Density</div><div style="color: #4ec9b0; font-weight: 600;">${
+      analysis.signature.drawingDensity.toFixed(
+        1,
+      )
+    }%</div></div>`,
+  );
+  html.push(
+    `<div style="background: #1e1e1e; padding: 8px; border-radius: 4px;"><div style="color: #a0a0a0; font-size: 11px;">Transform Density</div><div style="color: #569cd6; font-weight: 600;">${
+      analysis.signature.transformDensity.toFixed(
+        1,
+      )
+    }%</div></div>`,
+  );
+  html.push(
+    `<div style="background: #1e1e1e; padding: 8px; border-radius: 4px;"><div style="color: #a0a0a0; font-size: 11px;">Redundancy</div><div style="color: #dcdcaa; font-weight: 600;">${
+      analysis.signature.redundancy.toFixed(
+        2,
+      )
+    }</div></div>`,
+  );
+  html.push(
+    `<div style="background: #1e1e1e; padding: 8px; border-radius: 4px;"><div style="color: #a0a0a0; font-size: 11px;">AT Content</div><div style="color: #c586c0; font-weight: 600;">${
+      analysis.atContent.toFixed(
+        1,
+      )
+    }%</div></div>`,
+  );
+  html.push("</div></div>");
 
   // Info note
-  html.push('<div style="padding: 8px; background: #1e1e1e; border-left: 3px solid #569cd6; border-radius: 3px; font-size: 11px; color: #a0a0a0; line-height: 1.5;">');
-  html.push('💡 <strong style="color: #569cd6;">Bioinformatics Insight:</strong> GC content and codon usage bias are real genomic metrics used in computational biology. This analysis connects programming to actual research techniques!');
-  html.push('</div>');
+  html.push(
+    "<div style=\"padding: 8px; background: #1e1e1e; border-left: 3px solid #569cd6; border-radius: 3px; font-size: 11px; color: #a0a0a0; line-height: 1.5;\">",
+  );
+  html.push(
+    "💡 <strong style=\"color: #569cd6;\">Bioinformatics Insight:</strong> GC content and codon usage bias are real genomic metrics used in computational biology. This analysis connects programming to actual research techniques!",
+  );
+  html.push("</div>");
 
-  analyzerContent.innerHTML = html.join('');
+  analyzerContent.innerHTML = html.join("");
 }
 
 function toggleAnalyzer() {
-  const isVisible = analyzerPanel.style.display !== 'none';
-  analyzerPanel.style.display = isVisible ? 'none' : 'block';
-  analyzerToggle.textContent = isVisible ? 'Show' : 'Hide';
-  analyzerToggle.setAttribute('aria-expanded', (!isVisible).toString());
+  const isVisible = analyzerPanel.style.display !== "none";
+  analyzerPanel.style.display = isVisible ? "none" : "block";
+  analyzerToggle.textContent = isVisible ? "Show" : "Hide";
+  analyzerToggle.setAttribute("aria-expanded", (!isVisible).toString());
 }
 
 // Example filter listeners
-difficultyFilter.addEventListener('change', updateExampleDropdown);
-conceptFilter.addEventListener('change', updateExampleDropdown);
-searchInput.addEventListener('input', updateExampleDropdown);
+difficultyFilter.addEventListener("change", updateExampleDropdown);
+conceptFilter.addEventListener("change", updateExampleDropdown);
+searchInput.addEventListener("input", updateExampleDropdown);
 
 // Linter listeners
-linterToggle.addEventListener('click', toggleLinter);
-fixAllBtn.addEventListener('click', fixAllErrors);
+linterToggle.addEventListener("click", toggleLinter);
+fixAllBtn.addEventListener("click", fixAllErrors);
 
 // DiffViewer listeners
-diffViewerToggle.addEventListener('click', toggleDiffViewer);
-diffViewerClearBtn.addEventListener('click', clearDiffViewer);
+diffViewerToggle.addEventListener("click", toggleDiffViewer);
+diffViewerClearBtn.addEventListener("click", clearDiffViewer);
 
 // Analyzer listeners
-analyzeBtn.addEventListener('click', runAnalyzer);
-analyzerToggle.addEventListener('click', toggleAnalyzer);
+analyzeBtn.addEventListener("click", runAnalyzer);
+analyzerToggle.addEventListener("click", toggleAnalyzer);
 
 // Debounced linter on editor input
 let linterTimeout: number | null = null;
-editor.addEventListener('input', () => {
+editor.addEventListener("input", () => {
   if (linterTimeout) {
     clearTimeout(linterTimeout);
   }
@@ -1689,44 +1990,40 @@ editor.addEventListener('input', () => {
 updateExampleDropdown();
 
 // Keyboard shortcuts
-editor.addEventListener('keydown', (e) => {
+editor.addEventListener("keydown", (e) => {
   // Ctrl/Cmd + Enter: Run program
-  if ((e.metaKey || e.ctrlKey) && e.key === 'Enter') {
+  if ((e.metaKey || e.ctrlKey) && e.key === "Enter") {
     e.preventDefault();
     runProgram();
-  }
-  // Ctrl/Cmd + K: Clear canvas
-  else if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
+  } // Ctrl/Cmd + K: Clear canvas
+  else if ((e.metaKey || e.ctrlKey) && e.key === "k") {
     e.preventDefault();
     clearCanvas();
-  }
-  // Ctrl/Cmd + S: Save genome
-  else if ((e.metaKey || e.ctrlKey) && e.key === 's') {
+  } // Ctrl/Cmd + S: Save genome
+  else if ((e.metaKey || e.ctrlKey) && e.key === "s") {
     e.preventDefault();
     saveGenome();
-  }
-  // Ctrl/Cmd + E: Export PNG
-  else if ((e.metaKey || e.ctrlKey) && e.key === 'e') {
+  } // Ctrl/Cmd + E: Export PNG
+  else if ((e.metaKey || e.ctrlKey) && e.key === "e") {
     e.preventDefault();
     exportImage();
-  }
-  // Ctrl/Cmd + L: Toggle linter
-  else if ((e.metaKey || e.ctrlKey) && e.key === 'l') {
+  } // Ctrl/Cmd + L: Toggle linter
+  else if ((e.metaKey || e.ctrlKey) && e.key === "l") {
     e.preventDefault();
     toggleLinter();
   }
 });
 
 // Global keyboard shortcuts (not just in editor)
-document.addEventListener('keydown', (e) => {
+document.addEventListener("keydown", (e) => {
   // Esc: Hide linter or example info
-  if (e.key === 'Escape') {
-    if (linterPanel.style.display !== 'none') {
-      linterPanel.style.display = 'none';
-      linterToggle.textContent = 'Show';
-      linterToggle.setAttribute('aria-expanded', 'false');
-    } else if (exampleInfo.style.display !== 'none') {
-      exampleInfo.style.display = 'none';
+  if (e.key === "Escape") {
+    if (linterPanel.style.display !== "none") {
+      linterPanel.style.display = "none";
+      linterToggle.textContent = "Show";
+      linterToggle.setAttribute("aria-expanded", "false");
+    } else if (exampleInfo.style.display !== "none") {
+      exampleInfo.style.display = "none";
     }
   }
 });
@@ -1748,22 +2045,22 @@ addPreviewButtons();
 const shareSystem = new ShareSystem({
   containerElement: shareContainer,
   getGenome: () => editor.value.trim(),
-  appTitle: 'CodonCanvas Playground',
+  appTitle: "CodonCanvas Playground",
   showQRCode: true,
-  socialPlatforms: ['twitter', 'reddit', 'email']
+  socialPlatforms: ["twitter", "reddit", "email"],
 });
 
 // Initialize DiffViewer
 const diffViewer = new DiffViewer({
   containerElement: diffViewerContainer,
   showCanvas: true,
-  highlightColor: '#ff6b6b',
+  highlightColor: "#ff6b6b",
   canvasWidth: 300,
-  canvasHeight: 300
+  canvasHeight: 300,
 });
 
 // Track original genome for comparison
-let originalGenomeBeforeMutation: string = '';
+let originalGenomeBeforeMutation: string = "";
 
 // Track current prediction for preview modal
 let currentPrediction: MutationPrediction | null = null;
@@ -1772,17 +2069,13 @@ let currentMutationType: MutationType | null = null;
 // Initialize tutorial system
 const tutorialManager = new TutorialManager();
 tutorialManager.start(helloCircleTutorial);
-const tutorialUI = initializeTutorial(
-  document.body,
-  tutorialManager,
-  editor
-);
+const tutorialUI = initializeTutorial(document.body, tutorialManager, editor);
 
 // Load genome from URL if present
 const urlGenome = ShareSystem.loadFromURL();
 if (urlGenome) {
   editor.value = urlGenome;
-  setStatus('Loaded genome from share link', 'success');
+  setStatus("Loaded genome from share link", "success");
   setTimeout(() => {
     runProgram();
     runLinter(urlGenome);
@@ -1796,13 +2089,13 @@ if (urlGenome) {
 }
 
 // Mode switching logic
-function switchMode(mode: 'playground' | 'assessment') {
-  if (mode === 'playground') {
-    playgroundContainer.style.display = 'grid';
-    assessmentContainer.style.display = 'none';
+function switchMode(mode: "playground" | "assessment") {
+  if (mode === "playground") {
+    playgroundContainer.style.display = "grid";
+    assessmentContainer.style.display = "none";
   } else {
-    playgroundContainer.style.display = 'none';
-    assessmentContainer.style.display = 'block';
+    playgroundContainer.style.display = "none";
+    assessmentContainer.style.display = "block";
 
     // Initialize assessment UI on first access
     if (!assessmentUI) {
@@ -1810,7 +2103,7 @@ function switchMode(mode: 'playground' | 'assessment') {
         assessmentEngine,
         assessmentContainer,
         achievementEngine,
-        achievementUI
+        achievementUI,
       );
     }
     assessmentUI.show();
@@ -1818,15 +2111,17 @@ function switchMode(mode: 'playground' | 'assessment') {
 }
 
 // Setup mode toggle listeners
-modeToggleBtns.forEach(btn => {
-  btn.addEventListener('change', (e) => {
-    const mode = (e.target as HTMLInputElement).value as 'playground' | 'assessment';
+modeToggleBtns.forEach((btn) => {
+  btn.addEventListener("change", (e) => {
+    const mode = (e.target as HTMLInputElement).value as
+      | "playground"
+      | "assessment";
     switchMode(mode);
   });
 });
 
 // Initialize in playground mode
-switchMode('playground');
+switchMode("playground");
 
 // ========================================
 // GENOME COMPARISON LAB
@@ -1836,12 +2131,12 @@ switchMode('playground');
  * Inject styles for comparison modal
  */
 function injectComparisonModalStyles(): void {
-  if (document.getElementById('comparison-modal-styles')) {
+  if (document.getElementById("comparison-modal-styles")) {
     return;
   }
 
-  const style = document.createElement('style');
-  style.id = 'comparison-modal-styles';
+  const style = document.createElement("style");
+  style.id = "comparison-modal-styles";
   style.textContent = `
     .comparison-modal-overlay {
       position: fixed;
@@ -2127,9 +2422,9 @@ function injectComparisonModalStyles(): void {
  * Create comparison modal DOM structure
  */
 function createComparisonModal(): HTMLElement {
-  const overlay = document.createElement('div');
-  overlay.className = 'comparison-modal-overlay';
-  overlay.style.display = 'none';
+  const overlay = document.createElement("div");
+  overlay.className = "comparison-modal-overlay";
+  overlay.style.display = "none";
 
   overlay.innerHTML = `
     <div class="comparison-modal">
@@ -2176,39 +2471,55 @@ ATG GAA CCC GGA TAA"></textarea>
   `;
 
   // Close modal on overlay click
-  overlay.addEventListener('click', (e) => {
+  overlay.addEventListener("click", (e) => {
     if (e.target === overlay) {
       closeComparisonModal();
     }
   });
 
   // Close button
-  overlay.querySelector('.comparison-modal-close')!.addEventListener('click', closeComparisonModal);
+  overlay
+    .querySelector(".comparison-modal-close")!
+    .addEventListener("click", closeComparisonModal);
 
   // Load current genome buttons
-  overlay.querySelector('#loadCurrentA')!.addEventListener('click', () => {
-    const textarea = document.getElementById('comparisonGenomeA') as HTMLTextAreaElement;
+  overlay.querySelector("#loadCurrentA")!.addEventListener("click", () => {
+    const textarea = document.getElementById(
+      "comparisonGenomeA",
+    ) as HTMLTextAreaElement;
     textarea.value = editor.value;
   });
 
-  overlay.querySelector('#loadCurrentB')!.addEventListener('click', () => {
-    const textarea = document.getElementById('comparisonGenomeB') as HTMLTextAreaElement;
+  overlay.querySelector("#loadCurrentB")!.addEventListener("click", () => {
+    const textarea = document.getElementById(
+      "comparisonGenomeB",
+    ) as HTMLTextAreaElement;
     textarea.value = editor.value;
   });
 
   // Compare button
-  overlay.querySelector('#compareGenomesBtn')!.addEventListener('click', performComparison);
+  overlay
+    .querySelector("#compareGenomesBtn")!
+    .addEventListener("click", performComparison);
 
   // Clear button
-  overlay.querySelector('#clearComparisonBtn')!.addEventListener('click', () => {
-    (document.getElementById('comparisonGenomeA') as HTMLTextAreaElement).value = '';
-    (document.getElementById('comparisonGenomeB') as HTMLTextAreaElement).value = '';
-    (document.getElementById('comparisonResults') as HTMLDivElement).classList.remove('show');
-  });
+  overlay
+    .querySelector("#clearComparisonBtn")!
+    .addEventListener("click", () => {
+      (
+        document.getElementById("comparisonGenomeA") as HTMLTextAreaElement
+      ).value = "";
+      (
+        document.getElementById("comparisonGenomeB") as HTMLTextAreaElement
+      ).value = "";
+      (
+        document.getElementById("comparisonResults") as HTMLDivElement
+      ).classList.remove("show");
+    });
 
   // ESC key to close
-  overlay.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape') {
+  overlay.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") {
       closeComparisonModal();
     }
   });
@@ -2226,8 +2537,8 @@ function openComparisonModal(): void {
     comparisonModal = createComparisonModal();
     document.body.appendChild(comparisonModal);
   }
-  comparisonModal.style.display = 'flex';
-  (document.getElementById('comparisonGenomeA') as HTMLTextAreaElement).focus();
+  comparisonModal.style.display = "flex";
+  (document.getElementById("comparisonGenomeA") as HTMLTextAreaElement).focus();
 }
 
 /**
@@ -2235,7 +2546,7 @@ function openComparisonModal(): void {
  */
 function closeComparisonModal(): void {
   if (comparisonModal) {
-    comparisonModal.style.display = 'none';
+    comparisonModal.style.display = "none";
   }
 }
 
@@ -2243,16 +2554,20 @@ function closeComparisonModal(): void {
  * Perform genome comparison
  */
 function performComparison(): void {
-  const genomeA = (document.getElementById('comparisonGenomeA') as HTMLTextAreaElement).value.trim();
-  const genomeB = (document.getElementById('comparisonGenomeB') as HTMLTextAreaElement).value.trim();
+  const genomeA = (
+    document.getElementById("comparisonGenomeA") as HTMLTextAreaElement
+  ).value.trim();
+  const genomeB = (
+    document.getElementById("comparisonGenomeB") as HTMLTextAreaElement
+  ).value.trim();
 
   if (!genomeA || !genomeB) {
-    setStatus('Please enter both genomes to compare', 'error');
+    setStatus("Please enter both genomes to compare", "error");
     return;
   }
 
   try {
-    setStatus('Comparing genomes...', 'info');
+    setStatus("Comparing genomes...", "info");
 
     // Perform comparison
     const result = compareGenomesDetailed(genomeA, genomeB);
@@ -2260,10 +2575,10 @@ function performComparison(): void {
     // Display results
     displayComparisonResults(result);
 
-    setStatus('Comparison complete', 'success');
+    setStatus("Comparison complete", "success");
   } catch (error) {
-    setStatus(`Comparison error: ${(error as Error).message}`, 'error');
-    console.error('Comparison error:', error);
+    setStatus(`Comparison error: ${(error as Error).message}`, "error");
+    console.error("Comparison error:", error);
   }
 }
 
@@ -2271,34 +2586,55 @@ function performComparison(): void {
  * Display comparison results
  */
 function displayComparisonResults(result: GenomeComparisonResult): void {
-  const resultsDiv = document.getElementById('comparisonResults') as HTMLDivElement;
-  resultsDiv.classList.add('show');
+  const resultsDiv = document.getElementById(
+    "comparisonResults",
+  ) as HTMLDivElement;
+  resultsDiv.classList.add("show");
 
   // Similarity badge
-  const similarityDiv = document.getElementById('comparisonSimilarity') as HTMLDivElement;
+  const similarityDiv = document.getElementById(
+    "comparisonSimilarity",
+  ) as HTMLDivElement;
   const badgeClass = `similarity-${result.analysis.similarity}`;
-  const similarityLabel = result.analysis.similarity.replace(/-/g, ' ').toUpperCase();
-  similarityDiv.innerHTML = `<span class="comparison-similarity-badge ${badgeClass}">${similarityLabel}</span>`;
+  const similarityLabel = result.analysis.similarity
+    .replace(/-/g, " ")
+    .toUpperCase();
+  similarityDiv.innerHTML =
+    `<span class="comparison-similarity-badge ${badgeClass}">${similarityLabel}</span>`;
 
   // Canvases
-  const canvasA = document.getElementById('comparisonCanvasA') as HTMLImageElement;
-  const canvasB = document.getElementById('comparisonCanvasB') as HTMLImageElement;
+  const canvasA = document.getElementById(
+    "comparisonCanvasA",
+  ) as HTMLImageElement;
+  const canvasB = document.getElementById(
+    "comparisonCanvasB",
+  ) as HTMLImageElement;
   canvasA.src = result.visual.originalCanvas;
   canvasB.src = result.visual.mutatedCanvas;
 
   // Metrics
-  const metricsDiv = document.getElementById('comparisonMetrics') as HTMLDivElement;
+  const metricsDiv = document.getElementById(
+    "comparisonMetrics",
+  ) as HTMLDivElement;
   metricsDiv.innerHTML = `
     <div class="comparison-metric">
       <div class="comparison-metric-label">Pixel Difference</div>
       <div class="comparison-metric-value">
-        ${result.metrics.pixelDifferencePercent.toFixed(1)}<span class="comparison-metric-unit">%</span>
+        ${
+    result.metrics.pixelDifferencePercent.toFixed(
+      1,
+    )
+  }<span class="comparison-metric-unit">%</span>
       </div>
     </div>
     <div class="comparison-metric">
       <div class="comparison-metric-label">Codon Difference</div>
       <div class="comparison-metric-value">
-        ${result.metrics.codonDifferencePercent.toFixed(1)}<span class="comparison-metric-unit">%</span>
+        ${
+    result.metrics.codonDifferencePercent.toFixed(
+      1,
+    )
+  }<span class="comparison-metric-unit">%</span>
       </div>
     </div>
     <div class="comparison-metric">
@@ -2310,17 +2646,25 @@ function displayComparisonResults(result: GenomeComparisonResult): void {
     <div class="comparison-metric">
       <div class="comparison-metric-label">Length Difference</div>
       <div class="comparison-metric-value">
-        ${result.metrics.lengthDifference > 0 ? '+' : ''}${result.metrics.lengthDifference}<span class="comparison-metric-unit">codons</span>
+        ${
+    result.metrics.lengthDifference > 0 ? "+" : ""
+  }${result.metrics.lengthDifference}<span class="comparison-metric-unit">codons</span>
       </div>
     </div>
   `;
 
   // Analysis
-  const analysisDiv = document.getElementById('comparisonAnalysis') as HTMLDivElement;
+  const analysisDiv = document.getElementById(
+    "comparisonAnalysis",
+  ) as HTMLDivElement;
   analysisDiv.innerHTML = `
     <p class="comparison-analysis-description">${result.analysis.description}</p>
     <div class="comparison-insights">
-      ${result.analysis.insights.map(insight => `<div class="comparison-insight">${insight}</div>`).join('')}
+      ${
+    result.analysis.insights
+      .map((insight) => `<div class="comparison-insight">${insight}</div>`)
+      .join("")
+  }
     </div>
   `;
 }
@@ -2330,22 +2674,22 @@ function displayComparisonResults(result: GenomeComparisonResult): void {
  */
 function addCompareButton(): void {
   // Find the analyze button and insert compare button after it
-  compareBtn = document.createElement('button');
-  compareBtn.id = 'compareBtn';
-  compareBtn.className = 'secondary';
-  compareBtn.setAttribute('aria-label', 'Compare two genomes side-by-side');
-  compareBtn.textContent = '🔬 Compare';
-  compareBtn.addEventListener('click', openComparisonModal);
+  compareBtn = document.createElement("button");
+  compareBtn.id = "compareBtn";
+  compareBtn.className = "secondary";
+  compareBtn.setAttribute("aria-label", "Compare two genomes side-by-side");
+  compareBtn.textContent = "🔬 Compare";
+  compareBtn.addEventListener("click", openComparisonModal);
 
   // Insert after analyze button
-  analyzeBtn.insertAdjacentElement('afterend', compareBtn);
+  analyzeBtn.insertAdjacentElement("afterend", compareBtn);
 }
 
 // Initialize comparison lab
 injectComparisonModalStyles();
 addCompareButton();
 
-console.log('🧬 CodonCanvas Playground loaded');
-console.log('Press Cmd/Ctrl + Enter to run your genome');
-console.log('💡 Switch to Assessment mode to test your mutation knowledge');
-console.log('🔬 Use Compare to analyze differences between two genomes');
+console.log("🧬 CodonCanvas Playground loaded");
+console.log("Press Cmd/Ctrl + Enter to run your genome");
+console.log("💡 Switch to Assessment mode to test your mutation knowledge");
+console.log("🔬 Use Compare to analyze differences between two genomes");

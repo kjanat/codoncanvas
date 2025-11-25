@@ -1,23 +1,26 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Mutation Demonstrations - CodonCanvas</title>
-  <meta name="description" content="Interactive demonstrations of DNA mutations: silent, missense, nonsense, and frameshift mutations in CodonCanvas">
-  <style>
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mutation Demonstrations - CodonCanvas</title>
+    <meta
+      name="description"
+      content="Interactive demonstrations of DNA mutations: silent, missense, nonsense, and frameshift mutations in CodonCanvas"
+    >
+    <style>
     * {
-      margin: 0;
-      padding: 0;
       box-sizing: border-box;
+      padding: 0;
+      margin: 0;
     }
 
     body {
-      font-family: 'Monaco', 'Menlo', 'Courier New', monospace;
-      background: linear-gradient(135deg, #1e1e1e 0%, #2d2d30 100%);
-      color: #d4d4d4;
-      padding: 2rem 1rem;
       min-height: 100vh;
+      padding: 2rem 1rem;
+      font-family: "Monaco", "Menlo", "Courier New", monospace;
+      color: #d4d4d4;
+      background: linear-gradient(135deg, #1e1e1e 0%, #2d2d30 100%);
     }
 
     @media (max-width: 768px) {
@@ -32,18 +35,18 @@
     }
 
     header {
-      text-align: center;
-      margin-bottom: 3rem;
       padding: 2rem;
+      margin-bottom: 3rem;
+      text-align: center;
       background: #252526;
-      border-radius: 12px;
       border: 1px solid #3e3e42;
+      border-radius: 12px;
     }
 
     h1 {
+      margin-bottom: 0.5rem;
       font-size: 2.5rem;
       color: #4ec9b0;
-      margin-bottom: 0.5rem;
     }
 
     @media (max-width: 768px) {
@@ -58,17 +61,17 @@
     }
 
     .subtitle {
+      margin-bottom: 1rem;
       font-size: 1.1rem;
       color: #a0a0a0;
-      margin-bottom: 1rem;
     }
 
     .intro {
+      max-width: 800px;
+      margin: 0 auto;
       font-size: 0.95rem;
       line-height: 1.6;
       color: #d4d4d4;
-      max-width: 800px;
-      margin: 0 auto;
     }
 
     @media (max-width: 768px) {
@@ -96,16 +99,16 @@
     }
 
     .demo-card {
-      background: #252526;
-      border-radius: 12px;
-      border: 1px solid #3e3e42;
       padding: 1.5rem;
+      background: #252526;
+      border: 1px solid #3e3e42;
+      border-radius: 12px;
       transition: transform 0.2s, box-shadow 0.2s;
     }
 
     .demo-card:hover {
-      transform: translateY(-4px);
       box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+      transform: translateY(-4px);
     }
 
     @media (max-width: 768px) {
@@ -125,45 +128,45 @@
     .demo-type {
       display: inline-block;
       padding: 0.4rem 0.8rem;
-      border-radius: 6px;
+      margin-bottom: 0.5rem;
       font-size: 0.75rem;
       font-weight: bold;
       text-transform: uppercase;
       letter-spacing: 0.5px;
-      margin-bottom: 0.5rem;
+      border-radius: 6px;
     }
 
     .demo-type.silent {
-      background: #4ec9b0;
       color: #1e1e1e;
+      background: #4ec9b0;
     }
 
     .demo-type.missense {
-      background: #ce9178;
       color: #1e1e1e;
+      background: #ce9178;
     }
 
     .demo-type.nonsense {
-      background: #f48771;
       color: #1e1e1e;
+      background: #f48771;
     }
 
     .demo-type.frameshift {
-      background: #c586c0;
       color: #1e1e1e;
+      background: #c586c0;
     }
 
     .demo-title {
+      margin-bottom: 0.5rem;
       font-size: 1.5rem;
       color: #4ec9b0;
-      margin-bottom: 0.5rem;
     }
 
     .demo-description {
-      font-size: 0.9rem;
-      color: #a0a0a0;
-      line-height: 1.5;
       margin-bottom: 1rem;
+      font-size: 0.9rem;
+      line-height: 1.5;
+      color: #a0a0a0;
     }
 
     .comparison {
@@ -181,39 +184,39 @@
     }
 
     .comparison-side {
-      background: #1e1e1e;
-      border-radius: 8px;
       padding: 1rem;
+      background: #1e1e1e;
       border: 1px solid #3e3e42;
+      border-radius: 8px;
     }
 
     .comparison-label {
+      margin-bottom: 0.5rem;
       font-size: 0.75rem;
       font-weight: bold;
       color: #569cd6;
       text-transform: uppercase;
       letter-spacing: 0.5px;
-      margin-bottom: 0.5rem;
     }
 
     .code-display {
-      font-family: 'Monaco', 'Menlo', 'Courier New', monospace;
+      padding: 0.75rem;
+      margin-bottom: 1rem;
+      overflow-x: auto;
+      font-family: "Monaco", "Menlo", "Courier New", monospace;
       font-size: 0.85rem;
       line-height: 1.8;
-      margin-bottom: 1rem;
-      padding: 0.75rem;
+      word-break: break-all;
+      white-space: pre-wrap;
       background: #0e0e0e;
       border-radius: 4px;
-      overflow-x: auto;
-      white-space: pre-wrap;
-      word-break: break-all;
     }
 
     @media (max-width: 768px) {
       .code-display {
+        padding: 0.5rem;
         font-size: 0.75rem;
         line-height: 1.6;
-        padding: 0.5rem;
       }
     }
 
@@ -222,42 +225,42 @@
     }
 
     .codon.start {
-      color: #4ec9b0;
       font-weight: bold;
+      color: #4ec9b0;
     }
 
     .codon.stop {
-      color: #f48771;
       font-weight: bold;
+      color: #f48771;
     }
 
     .codon.mutated {
-      background: rgba(255, 215, 0, 0.2);
       padding: 2px 4px;
-      border-radius: 3px;
-      border: 1px solid rgba(255, 215, 0, 0.5);
-      color: #ffd700;
       font-weight: bold;
+      color: #ffd700;
+      background: rgba(255, 215, 0, 0.2);
+      border: 1px solid rgba(255, 215, 0, 0.5);
+      border-radius: 3px;
     }
 
     .codon.affected {
-      background: rgba(255, 100, 100, 0.15);
       padding: 2px 4px;
-      border-radius: 3px;
       color: #ff9999;
+      background: rgba(255, 100, 100, 0.15);
+      border-radius: 3px;
     }
 
     .canvas-container {
-      text-align: center;
       margin-bottom: 0.5rem;
+      text-align: center;
     }
 
     canvas {
-      border: 1px solid #3e3e42;
-      background: white;
-      border-radius: 4px;
       max-width: 100%;
       height: auto;
+      background: white;
+      border: 1px solid #3e3e42;
+      border-radius: 4px;
     }
 
     @media (max-width: 768px) {
@@ -268,19 +271,19 @@
     }
 
     .biological-note {
-      background: #2d2d30;
-      border-left: 3px solid #569cd6;
       padding: 1rem;
-      border-radius: 4px;
+      margin-top: 1rem;
       font-size: 0.85rem;
       line-height: 1.6;
-      margin-top: 1rem;
+      background: #2d2d30;
+      border-left: 3px solid #569cd6;
+      border-radius: 4px;
     }
 
     @media (max-width: 768px) {
       .biological-note {
-        font-size: 0.8rem;
         padding: 0.75rem;
+        font-size: 0.8rem;
       }
     }
 
@@ -290,8 +293,8 @@
 
     .impact-indicator {
       display: inline-flex;
-      align-items: center;
       gap: 0.5rem;
+      align-items: center;
       margin-top: 0.75rem;
       font-size: 0.85rem;
     }
@@ -304,8 +307,8 @@
     .impact-dot {
       width: 12px;
       height: 12px;
-      border-radius: 50%;
       background: #3e3e42;
+      border-radius: 50%;
     }
 
     .impact-dot.active {
@@ -324,11 +327,11 @@
     }
 
     footer {
-      text-align: center;
-      margin-top: 3rem;
       padding: 2rem;
-      color: #a0a0a0;
+      margin-top: 3rem;
       font-size: 0.9rem;
+      color: #a0a0a0;
+      text-align: center;
     }
 
     footer a {
@@ -342,13 +345,13 @@
 
     .cta-button {
       display: inline-block;
-      margin-top: 1.5rem;
       padding: 0.75rem 1.5rem;
-      background: #0e639c;
+      margin-top: 1.5rem;
+      font-weight: bold;
       color: white;
       text-decoration: none;
+      background: #0e639c;
       border-radius: 6px;
-      font-weight: bold;
       transition: background 0.2s;
     }
 
@@ -359,9 +362,9 @@
     @media (max-width: 768px) {
       .cta-button {
         display: block;
+        max-width: 280px;
         margin: 1.5rem auto;
         text-align: center;
-        max-width: 280px;
       }
     }
 
@@ -375,224 +378,286 @@
       position: absolute;
       top: -40px;
       left: 0;
-      background: #007acc;
-      color: white;
-      padding: 8px;
-      text-decoration: none;
       z-index: 100;
+      padding: 8px;
+      color: white;
+      text-decoration: none;
+      background: #007acc;
     }
 
     .skip-link:focus {
       top: 0;
     }
-  </style>
-</head>
-<body>
-  <a href="#main-content" class="skip-link">Skip to main content</a>
+    </style>
+  </head>
+  <body>
+    <a href="#main-content" class="skip-link">Skip to main content</a>
 
-  <div class="container">
-    <header role="banner">
-      <h1>🧬 Mutation Demonstrations</h1>
-      <div class="subtitle">See How DNA Code Changes Affect Visual Output</div>
-      <div class="intro">
-        CodonCanvas uses DNA-like code to create visual art. Just like in biology, small changes (mutations)
-        can have dramatic effects. Explore four fundamental mutation types and their visual impacts below.
-      </div>
-      <a href="index.html" class="cta-button">Try the Playground →</a>
-    </header>
+    <div class="container">
+      <header role="banner">
+        <h1>🧬 Mutation Demonstrations</h1>
+        <div class="subtitle">
+          See How DNA Code Changes Affect Visual Output
+        </div>
+        <div class="intro">
+          CodonCanvas uses DNA-like code to create visual art. Just like in
+          biology, small changes (mutations) can have dramatic effects. Explore
+          four fundamental mutation types and their visual impacts below.
+        </div>
+        <a href="index.html" class="cta-button">Try the Playground →</a>
+      </header>
 
-    <main id="main-content">
-      <div class="demo-grid">
-        <!-- Silent Mutation Demo -->
-        <article class="demo-card">
-          <div class="demo-header">
-            <span class="demo-type silent">Silent Mutation</span>
-            <h2 class="demo-title">Silent Mutation</h2>
-            <p class="demo-description">
-              Changes a codon to a synonymous variant that codes for the same instruction.
-              Like swapping synonyms in a sentence—the meaning stays the same.
-            </p>
-          </div>
+      <main id="main-content">
+        <div class="demo-grid">
+          <!-- Silent Mutation Demo -->
+          <article class="demo-card">
+            <div class="demo-header">
+              <span class="demo-type silent">Silent Mutation</span>
+              <h2 class="demo-title">Silent Mutation</h2>
+              <p class="demo-description">
+                Changes a codon to a synonymous variant that codes for the same
+                instruction. Like swapping synonyms in a sentence—the meaning
+                stays the same.
+              </p>
+            </div>
 
-          <div class="comparison">
-            <div class="comparison-side">
-              <div class="comparison-label">Original</div>
-              <div class="code-display" id="silent-original"></div>
-              <div class="canvas-container">
-                <canvas id="canvas-silent-original" width="200" height="200" role="img" aria-label="Original genome output"></canvas>
+            <div class="comparison">
+              <div class="comparison-side">
+                <div class="comparison-label">Original</div>
+                <div class="code-display" id="silent-original"></div>
+                <div class="canvas-container">
+                  <canvas
+                    id="canvas-silent-original"
+                    width="200"
+                    height="200"
+                    role="img"
+                    aria-label="Original genome output"
+                  ></canvas>
+                </div>
+              </div>
+              <div class="comparison-side">
+                <div class="comparison-label">After Silent Mutation</div>
+                <div class="code-display" id="silent-mutated"></div>
+                <div class="canvas-container">
+                  <canvas
+                    id="canvas-silent-mutated"
+                    width="200"
+                    height="200"
+                    role="img"
+                    aria-label="Mutated genome output - should be identical"
+                  ></canvas>
+                </div>
               </div>
             </div>
-            <div class="comparison-side">
-              <div class="comparison-label">After Silent Mutation</div>
-              <div class="code-display" id="silent-mutated"></div>
-              <div class="canvas-container">
-                <canvas id="canvas-silent-mutated" width="200" height="200" role="img" aria-label="Mutated genome output - should be identical"></canvas>
+
+            <div class="biological-note">
+              <strong>🧬 Biological Parallel:</strong> In DNA, multiple codons
+              can code for the same amino acid due to genetic redundancy. For
+              example, both GCU and GCC code for alanine. This redundancy
+              protects against harmful mutations.
+              <div class="impact-indicator">
+                <span>Phenotype Impact:</span>
+                <div class="impact-level">
+                  <div class="impact-dot active"></div>
+                  <div class="impact-dot"></div>
+                  <div class="impact-dot"></div>
+                </div>
+                <span style="color: #4ec9b0">None</span>
               </div>
             </div>
-          </div>
+          </article>
 
-          <div class="biological-note">
-            <strong>🧬 Biological Parallel:</strong> In DNA, multiple codons can code for the same amino acid due to genetic
-            redundancy. For example, both GCU and GCC code for alanine. This redundancy protects against harmful mutations.
-            <div class="impact-indicator">
-              <span>Phenotype Impact:</span>
-              <div class="impact-level">
-                <div class="impact-dot active"></div>
-                <div class="impact-dot"></div>
-                <div class="impact-dot"></div>
-              </div>
-              <span style="color: #4ec9b0;">None</span>
+          <!-- Missense Mutation Demo -->
+          <article class="demo-card">
+            <div class="demo-header">
+              <span class="demo-type missense">Missense Mutation</span>
+              <h2 class="demo-title">Missense Mutation</h2>
+              <p class="demo-description">
+                Changes a codon to code for a different instruction. This alters
+                the function while maintaining the overall program structure.
+              </p>
             </div>
-          </div>
-        </article>
 
-        <!-- Missense Mutation Demo -->
-        <article class="demo-card">
-          <div class="demo-header">
-            <span class="demo-type missense">Missense Mutation</span>
-            <h2 class="demo-title">Missense Mutation</h2>
-            <p class="demo-description">
-              Changes a codon to code for a different instruction. This alters the function
-              while maintaining the overall program structure.
-            </p>
-          </div>
-
-          <div class="comparison">
-            <div class="comparison-side">
-              <div class="comparison-label">Original</div>
-              <div class="code-display" id="missense-original"></div>
-              <div class="canvas-container">
-                <canvas id="canvas-missense-original" width="200" height="200" role="img" aria-label="Original genome output"></canvas>
+            <div class="comparison">
+              <div class="comparison-side">
+                <div class="comparison-label">Original</div>
+                <div class="code-display" id="missense-original"></div>
+                <div class="canvas-container">
+                  <canvas
+                    id="canvas-missense-original"
+                    width="200"
+                    height="200"
+                    role="img"
+                    aria-label="Original genome output"
+                  ></canvas>
+                </div>
               </div>
-            </div>
-            <div class="comparison-side">
-              <div class="comparison-label">After Missense Mutation</div>
-              <div class="code-display" id="missense-mutated"></div>
-              <div class="canvas-container">
-                <canvas id="canvas-missense-mutated" width="200" height="200" role="img" aria-label="Mutated genome output - different shape"></canvas>
+              <div class="comparison-side">
+                <div class="comparison-label">After Missense Mutation</div>
+                <div class="code-display" id="missense-mutated"></div>
+                <div class="canvas-container">
+                  <canvas
+                    id="canvas-missense-mutated"
+                    width="200"
+                    height="200"
+                    role="img"
+                    aria-label="Mutated genome output - different shape"
+                  ></canvas>
+                </div>
               </div>
             </div>
-          </div>
 
-          <div class="biological-note">
-            <strong>🧬 Biological Parallel:</strong> Missense mutations change one amino acid to another in a protein.
-            Sickle cell disease is caused by a single missense mutation (glutamic acid → valine), demonstrating how
-            one change can have significant effects.
-            <div class="impact-indicator">
-              <span>Phenotype Impact:</span>
-              <div class="impact-level">
-                <div class="impact-dot warning"></div>
-                <div class="impact-dot warning"></div>
-                <div class="impact-dot"></div>
-              </div>
-              <span style="color: #ce9178;">Moderate</span>
-            </div>
-          </div>
-        </article>
-
-        <!-- Nonsense Mutation Demo -->
-        <article class="demo-card">
-          <div class="demo-header">
-            <span class="demo-type nonsense">Nonsense Mutation</span>
-            <h2 class="demo-title">Nonsense Mutation</h2>
-            <p class="demo-description">
-              Introduces an early STOP codon, terminating the program prematurely.
-              Everything after the STOP is never executed.
-            </p>
-          </div>
-
-          <div class="comparison">
-            <div class="comparison-side">
-              <div class="comparison-label">Original</div>
-              <div class="code-display" id="nonsense-original"></div>
-              <div class="canvas-container">
-                <canvas id="canvas-nonsense-original" width="200" height="200" role="img" aria-label="Original genome output"></canvas>
+            <div class="biological-note">
+              <strong>🧬 Biological Parallel:</strong> Missense mutations change
+              one amino acid to another in a protein. Sickle cell disease is
+              caused by a single missense mutation (glutamic acid → valine),
+              demonstrating how one change can have significant effects.
+              <div class="impact-indicator">
+                <span>Phenotype Impact:</span>
+                <div class="impact-level">
+                  <div class="impact-dot warning"></div>
+                  <div class="impact-dot warning"></div>
+                  <div class="impact-dot"></div>
+                </div>
+                <span style="color: #ce9178">Moderate</span>
               </div>
             </div>
-            <div class="comparison-side">
-              <div class="comparison-label">After Nonsense Mutation</div>
-              <div class="code-display" id="nonsense-mutated"></div>
-              <div class="canvas-container">
-                <canvas id="canvas-nonsense-mutated" width="200" height="200" role="img" aria-label="Mutated genome output - truncated"></canvas>
+          </article>
+
+          <!-- Nonsense Mutation Demo -->
+          <article class="demo-card">
+            <div class="demo-header">
+              <span class="demo-type nonsense">Nonsense Mutation</span>
+              <h2 class="demo-title">Nonsense Mutation</h2>
+              <p class="demo-description">
+                Introduces an early STOP codon, terminating the program
+                prematurely. Everything after the STOP is never executed.
+              </p>
+            </div>
+
+            <div class="comparison">
+              <div class="comparison-side">
+                <div class="comparison-label">Original</div>
+                <div class="code-display" id="nonsense-original"></div>
+                <div class="canvas-container">
+                  <canvas
+                    id="canvas-nonsense-original"
+                    width="200"
+                    height="200"
+                    role="img"
+                    aria-label="Original genome output"
+                  ></canvas>
+                </div>
+              </div>
+              <div class="comparison-side">
+                <div class="comparison-label">After Nonsense Mutation</div>
+                <div class="code-display" id="nonsense-mutated"></div>
+                <div class="canvas-container">
+                  <canvas
+                    id="canvas-nonsense-mutated"
+                    width="200"
+                    height="200"
+                    role="img"
+                    aria-label="Mutated genome output - truncated"
+                  ></canvas>
+                </div>
               </div>
             </div>
-          </div>
 
-          <div class="biological-note">
-            <strong>🧬 Biological Parallel:</strong> Nonsense mutations create premature stop codons in genes,
-            producing truncated (shortened) proteins. Many genetic diseases, including some forms of muscular
-            dystrophy and cystic fibrosis, result from nonsense mutations.
-            <div class="impact-indicator">
-              <span>Phenotype Impact:</span>
-              <div class="impact-level">
-                <div class="impact-dot danger"></div>
-                <div class="impact-dot danger"></div>
-                <div class="impact-dot danger"></div>
-              </div>
-              <span style="color: #f48771;">Severe</span>
-            </div>
-          </div>
-        </article>
-
-        <!-- Frameshift Mutation Demo -->
-        <article class="demo-card">
-          <div class="demo-header">
-            <span class="demo-type frameshift">Frameshift Mutation</span>
-            <h2 class="demo-title">Frameshift Mutation</h2>
-            <p class="demo-description">
-              Inserts or deletes bases (not in multiples of 3), shifting the reading frame.
-              All codons downstream are completely scrambled.
-            </p>
-          </div>
-
-          <div class="comparison">
-            <div class="comparison-side">
-              <div class="comparison-label">Original</div>
-              <div class="code-display" id="frameshift-original"></div>
-              <div class="canvas-container">
-                <canvas id="canvas-frameshift-original" width="200" height="200" role="img" aria-label="Original genome output"></canvas>
+            <div class="biological-note">
+              <strong>🧬 Biological Parallel:</strong> Nonsense mutations create
+              premature stop codons in genes, producing truncated (shortened)
+              proteins. Many genetic diseases, including some forms of muscular
+              dystrophy and cystic fibrosis, result from nonsense mutations.
+              <div class="impact-indicator">
+                <span>Phenotype Impact:</span>
+                <div class="impact-level">
+                  <div class="impact-dot danger"></div>
+                  <div class="impact-dot danger"></div>
+                  <div class="impact-dot danger"></div>
+                </div>
+                <span style="color: #f48771">Severe</span>
               </div>
             </div>
-            <div class="comparison-side">
-              <div class="comparison-label">After Frameshift</div>
-              <div class="code-display" id="frameshift-mutated"></div>
-              <div class="canvas-container">
-                <canvas id="canvas-frameshift-mutated" width="200" height="200" role="img" aria-label="Mutated genome output - completely scrambled"></canvas>
+          </article>
+
+          <!-- Frameshift Mutation Demo -->
+          <article class="demo-card">
+            <div class="demo-header">
+              <span class="demo-type frameshift">Frameshift Mutation</span>
+              <h2 class="demo-title">Frameshift Mutation</h2>
+              <p class="demo-description">
+                Inserts or deletes bases (not in multiples of 3), shifting the
+                reading frame. All codons downstream are completely scrambled.
+              </p>
+            </div>
+
+            <div class="comparison">
+              <div class="comparison-side">
+                <div class="comparison-label">Original</div>
+                <div class="code-display" id="frameshift-original"></div>
+                <div class="canvas-container">
+                  <canvas
+                    id="canvas-frameshift-original"
+                    width="200"
+                    height="200"
+                    role="img"
+                    aria-label="Original genome output"
+                  ></canvas>
+                </div>
+              </div>
+              <div class="comparison-side">
+                <div class="comparison-label">After Frameshift</div>
+                <div class="code-display" id="frameshift-mutated"></div>
+                <div class="canvas-container">
+                  <canvas
+                    id="canvas-frameshift-mutated"
+                    width="200"
+                    height="200"
+                    role="img"
+                    aria-label="Mutated genome output - completely scrambled"
+                  ></canvas>
+                </div>
               </div>
             </div>
-          </div>
 
-          <div class="biological-note">
-            <strong>🧬 Biological Parallel:</strong> Frameshift mutations are among the most severe because they alter
-            the reading frame of ALL downstream codons. Think of it like removing a letter from a sentence:
-            "THE CAT ATE" → "TH ECA TAT E" (completely unreadable). Many cancers involve frameshift mutations.
-            <div class="impact-indicator">
-              <span>Phenotype Impact:</span>
-              <div class="impact-level">
-                <div class="impact-dot danger"></div>
-                <div class="impact-dot danger"></div>
-                <div class="impact-dot danger"></div>
+            <div class="biological-note">
+              <strong>🧬 Biological Parallel:</strong> Frameshift mutations are
+              among the most severe because they alter the reading frame of ALL
+              downstream codons. Think of it like removing a letter from a
+              sentence: "THE CAT ATE" → "TH ECA TAT E" (completely unreadable).
+              Many cancers involve frameshift mutations.
+              <div class="impact-indicator">
+                <span>Phenotype Impact:</span>
+                <div class="impact-level">
+                  <div class="impact-dot danger"></div>
+                  <div class="impact-dot danger"></div>
+                  <div class="impact-dot danger"></div>
+                </div>
+                <span style="color: #c586c0">Catastrophic</span>
               </div>
-              <span style="color: #c586c0;">Catastrophic</span>
             </div>
-          </div>
-        </article>
-      </div>
-    </main>
+          </article>
+        </div>
+      </main>
 
-    <section style="margin: 3rem 0; padding: 2rem; background: #252526; border-radius: 8px; border: 1px solid #3e3e42;">
-      <div id="shareContainer"></div>
-    </section>
+      <section style="margin: 3rem 0; padding: 2rem; background: #252526; border-radius: 8px; border: 1px solid #3e3e42">
+        <div id="shareContainer"></div>
+      </section>
 
-    <footer role="contentinfo">
-      <p>🧬 Part of the <a href="index.html">CodonCanvas</a> Educational Platform</p>
-      <p style="margin-top: 0.5rem; font-size: 0.85rem;">
-        DNA-inspired visual programming for learning genetic concepts through code
-      </p>
-      <a href="index.html" class="cta-button">Open Playground</a>
-    </footer>
-  </div>
+      <footer role="contentinfo">
+        <p>
+          🧬 Part of the <a href="index.html">CodonCanvas</a> Educational
+          Platform
+        </p>
+        <p style="margin-top: 0.5rem; font-size: 0.85rem">
+          DNA-inspired visual programming for learning genetic concepts through
+          code
+        </p>
+        <a href="index.html" class="cta-button">Open Playground</a>
+      </footer>
+    </div>
 
-  <script type="module" src="/src/demos.ts"></script>
-</body>
+    <script type="module" src="/src/demos.ts"></script>
+  </body>
 </html>

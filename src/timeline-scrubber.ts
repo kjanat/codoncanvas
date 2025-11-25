@@ -3,11 +3,11 @@
  * Allows users to see genome execution frame-by-frame like a ribosome
  */
 
-import { VMState, CodonToken } from './types';
-import { CodonLexer } from './lexer';
-import { Canvas2DRenderer } from './renderer';
-import { CodonVM } from './vm';
-import { GifExporter } from './gif-exporter';
+import { GifExporter } from "./gif-exporter";
+import { CodonLexer } from "./lexer";
+import { Canvas2DRenderer } from "./renderer";
+import type { CodonToken, VMState } from "./types";
+import { CodonVM } from "./vm";
 
 export interface TimelineOptions {
   containerElement: HTMLElement;
@@ -65,9 +65,8 @@ export class TimelineScrubber {
 
       this.updateUI();
       this.renderStep(0);
-
     } catch (error) {
-      console.error('Failed to load genome:', error);
+      console.error("Failed to load genome:", error);
       throw error;
     }
   }
@@ -125,23 +124,56 @@ export class TimelineScrubber {
     this.container.innerHTML = html;
 
     // Get control elements
-    this.controls.slider = this.container.querySelector('#timeline-slider') as HTMLInputElement;
-    this.controls.playButton = this.container.querySelector('#timeline-play') as HTMLButtonElement;
-    this.controls.stepBackButton = this.container.querySelector('#timeline-step-back') as HTMLButtonElement;
-    this.controls.stepForwardButton = this.container.querySelector('#timeline-step-forward') as HTMLButtonElement;
-    this.controls.resetButton = this.container.querySelector('#timeline-reset') as HTMLButtonElement;
-    this.controls.speedSelect = this.container.querySelector('#timeline-speed') as HTMLSelectElement;
-    this.controls.stepDisplay = this.container.querySelector('#timeline-step-display') as HTMLElement;
-    this.controls.stackDisplay = this.container.querySelector('#timeline-stack-display') as HTMLElement;
-    this.controls.instructionDisplay = this.container.querySelector('#timeline-instruction-display') as HTMLElement;
+    this.controls.slider = this.container.querySelector(
+      "#timeline-slider",
+    ) as HTMLInputElement;
+    this.controls.playButton = this.container.querySelector(
+      "#timeline-play",
+    ) as HTMLButtonElement;
+    this.controls.stepBackButton = this.container.querySelector(
+      "#timeline-step-back",
+    ) as HTMLButtonElement;
+    this.controls.stepForwardButton = this.container.querySelector(
+      "#timeline-step-forward",
+    ) as HTMLButtonElement;
+    this.controls.resetButton = this.container.querySelector(
+      "#timeline-reset",
+    ) as HTMLButtonElement;
+    this.controls.speedSelect = this.container.querySelector(
+      "#timeline-speed",
+    ) as HTMLSelectElement;
+    this.controls.stepDisplay = this.container.querySelector(
+      "#timeline-step-display",
+    ) as HTMLElement;
+    this.controls.stackDisplay = this.container.querySelector(
+      "#timeline-stack-display",
+    ) as HTMLElement;
+    this.controls.instructionDisplay = this.container.querySelector(
+      "#timeline-instruction-display",
+    ) as HTMLElement;
 
     // Attach event listeners
-    this.controls.slider?.addEventListener('input', () => this.onSliderChange());
-    this.controls.playButton?.addEventListener('click', () => this.togglePlay());
-    this.controls.stepBackButton?.addEventListener('click', () => this.stepBack());
-    this.controls.stepForwardButton?.addEventListener('click', () => this.stepForward());
-    this.controls.resetButton?.addEventListener('click', () => this.reset());
-    this.controls.speedSelect?.addEventListener('change', () => this.onSpeedChange());
+    this.controls.slider?.addEventListener(
+      "input",
+      () => this.onSliderChange(),
+    );
+    this.controls.playButton?.addEventListener(
+      "click",
+      () => this.togglePlay(),
+    );
+    this.controls.stepBackButton?.addEventListener(
+      "click",
+      () => this.stepBack(),
+    );
+    this.controls.stepForwardButton?.addEventListener(
+      "click",
+      () => this.stepForward(),
+    );
+    this.controls.resetButton?.addEventListener("click", () => this.reset());
+    this.controls.speedSelect?.addEventListener(
+      "change",
+      () => this.onSpeedChange(),
+    );
   }
 
   /**
@@ -149,8 +181,8 @@ export class TimelineScrubber {
    */
   private renderStep(step: number): void {
     if (step < 0 || step >= this.snapshots.length) {
-return;
-}
+      return;
+    }
 
     const snapshot = this.snapshots[step];
     this.vm.restore(snapshot);
@@ -171,30 +203,36 @@ return;
    */
   private updateUI(): void {
     if (!this.controls.slider || !this.controls.stepDisplay) {
-return;
-}
+      return;
+    }
 
     this.controls.slider.max = String(Math.max(0, this.snapshots.length - 1));
     this.controls.slider.value = String(this.currentStep);
 
-    this.controls.stepDisplay.textContent = `${this.currentStep + 1} / ${this.snapshots.length}`;
+    this.controls.stepDisplay.textContent = `${
+      this.currentStep + 1
+    } / ${this.snapshots.length}`;
 
     if (this.currentStep < this.snapshots.length) {
       const snapshot = this.snapshots[this.currentStep];
       const token = this.tokens[snapshot.instructionPointer];
 
       if (this.controls.instructionDisplay) {
-        this.controls.instructionDisplay.textContent = token?.text || '-';
+        this.controls.instructionDisplay.textContent = token?.text || "-";
       }
 
       if (this.controls.stackDisplay) {
-        this.controls.stackDisplay.textContent = `[${snapshot.stack.join(', ')}]`;
+        this.controls.stackDisplay.textContent = `[${
+          snapshot.stack.join(
+            ", ",
+          )
+        }]`;
       }
     }
 
     // Update play button
     if (this.controls.playButton) {
-      this.controls.playButton.textContent = this.isPlaying ? '⏸' : '▶';
+      this.controls.playButton.textContent = this.isPlaying ? "⏸" : "▶";
     }
 
     this.renderMarkers();
@@ -204,15 +242,17 @@ return;
    * Render timeline markers
    */
   private renderMarkers(): void {
-    const markersContainer = this.container.querySelector('#timeline-markers');
+    const markersContainer = this.container.querySelector("#timeline-markers");
     if (!markersContainer || this.tokens.length === 0) {
-return;
-}
+      return;
+    }
 
-    const markers = this.tokens.map((token, i) => {
-      const position = (i / (this.tokens.length - 1)) * 100;
-      return `<div class="marker" style="left: ${position}%" title="${token.text}"></div>`;
-    }).join('');
+    const markers = this.tokens
+      .map((token, i) => {
+        const position = (i / (this.tokens.length - 1)) * 100;
+        return `<div class="marker" style="left: ${position}%" title="${token.text}"></div>`;
+      })
+      .join("");
 
     markersContainer.innerHTML = markers;
   }
@@ -222,8 +262,8 @@ return;
    */
   private onSliderChange(): void {
     if (!this.controls.slider) {
-return;
-}
+      return;
+    }
     this.currentStep = parseInt(this.controls.slider.value);
     this.renderStep(this.currentStep);
     this.updateUI();
@@ -231,8 +271,8 @@ return;
 
   private onSpeedChange(): void {
     if (!this.controls.speedSelect) {
-return;
-}
+      return;
+    }
     this.playbackSpeed = parseInt(this.controls.speedSelect.value);
   }
 
@@ -306,7 +346,11 @@ return;
    */
   async exportToGif(
     options: { fps?: number; quality?: number; genomeName?: string } = {},
-    onProgress?: (progress: { percent: number; currentFrame: number; totalFrames: number }) => void
+    onProgress?: (progress: {
+      percent: number;
+      currentFrame: number;
+      totalFrames: number;
+    }) => void,
   ): Promise<void> {
     const exporter = new GifExporter({
       width: this.canvas.width,
@@ -344,10 +388,10 @@ return;
       const blob = await exporter.exportFrames(frames, onProgress);
       const filename = options.genomeName
         ? `${options.genomeName}-animation.gif`
-        : 'codoncanvas-animation.gif';
+        : "codoncanvas-animation.gif";
       exporter.downloadGif(blob, filename);
     } catch (error) {
-      console.error('GIF export failed:', error);
+      console.error("GIF export failed:", error);
       throw error;
     }
   }
@@ -361,12 +405,12 @@ return;
  * Inject timeline scrubber styles
  */
 export function injectTimelineStyles(): void {
-  if (document.getElementById('timeline-scrubber-styles')) {
-return;
-}
+  if (document.getElementById("timeline-scrubber-styles")) {
+    return;
+  }
 
-  const style = document.createElement('style');
-  style.id = 'timeline-scrubber-styles';
+  const style = document.createElement("style");
+  style.id = "timeline-scrubber-styles";
   style.textContent = `
     .timeline-scrubber {
       background: #252526;

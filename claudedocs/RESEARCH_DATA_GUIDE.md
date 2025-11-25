@@ -9,12 +9,14 @@
 ## Overview
 
 This guide explains how to:
+
 1. Collect data from CodonCanvas studies
 2. Format data for analysis
 3. Run statistical analysis scripts
 4. Interpret results for publication
 
 **Companion Documents:**
+
 - `RESEARCH_FRAMEWORK.md` - Full research methodology
 - `ASSESSMENTS.md` - Assessment instruments and rubrics
 - `data_collection_template.csv` - CSV template
@@ -26,12 +28,14 @@ This guide explains how to:
 ### Pre-Study Checklist
 
 **IRB Approval:**
+
 - [ ] IRB protocol submitted and approved
 - [ ] Informed consent forms prepared
 - [ ] Data storage plan documented
 - [ ] Study ID system established
 
 **Materials Prepared:**
+
 - [ ] Pre-assessment printed/digital (ASSESSMENTS.md)
 - [ ] CodonCanvas lesson plans ready (LESSON_PLANS.md)
 - [ ] Post-assessment printed/digital
@@ -39,6 +43,7 @@ This guide explains how to:
 - [ ] Demographics survey ready
 
 **Logistics:**
+
 - [ ] Instructor training completed
 - [ ] Computer lab/devices reserved
 - [ ] CodonCanvas tested on all devices
@@ -47,23 +52,27 @@ This guide explains how to:
 ### Study Timeline
 
 **Week 0: Pre-Assessment**
+
 - Administer informed consent
 - Collect demographics (GPA, prior programming experience)
 - Administer Mutation Concept Inventory (MCI) pre-test
 - Record baseline data in spreadsheet
 
 **Week 1: Intervention**
+
 - Implement 3 CodonCanvas lessons (or control activities)
 - Monitor implementation fidelity
 - Record attendance and completion
 
 **Week 2: Post-Assessment**
+
 - Administer MCI post-test
 - Administer Mutation Transfer Task (MTT)
 - Administer Intrinsic Motivation Inventory (IMI)
 - Optional: Student reflection survey
 
 **Week 6-8: Delayed Post-Assessment**
+
 - Administer MCI retention test
 - Record retention data
 
@@ -77,36 +86,36 @@ Use the provided `data_collection_template.csv` as your starting point.
 
 **Required Columns:**
 
-| Column | Type | Range | Description |
-|--------|------|-------|-------------|
-| `id` | string | - | Unique student identifier (e.g., S001, S002) |
-| `group` | string | treatment\|control | For RCT only; omit for pre-post |
-| `pretest_total` | number | 0-100 | MCI pre-test total score (25 items × 4 points) |
-| `posttest_total` | number | 0-100 | MCI post-test total score |
-| `delayed_total` | number | 0-100 | MCI delayed post-test (optional) |
-| `pretest_silent` | number | 0-20 | Silent mutation subscale (5 items × 4 points) |
-| `pretest_missense` | number | 0-20 | Missense mutation subscale |
-| `pretest_nonsense` | number | 0-20 | Nonsense mutation subscale |
-| `pretest_frameshift` | number | 0-20 | Frameshift mutation subscale |
-| `pretest_indel` | number | 0-20 | Insertion/deletion subscale |
-| `posttest_silent` | number | 0-20 | Post-test silent mutation subscale |
-| `posttest_missense` | number | 0-20 | Post-test missense subscale |
-| `posttest_nonsense` | number | 0-20 | Post-test nonsense subscale |
-| `posttest_frameshift` | number | 0-20 | Post-test frameshift subscale |
-| `posttest_indel` | number | 0-20 | Post-test indel subscale |
+| Column                | Type   | Range              | Description                                    |
+| --------------------- | ------ | ------------------ | ---------------------------------------------- |
+| `id`                  | string | -                  | Unique student identifier (e.g., S001, S002)   |
+| `group`               | string | treatment\|control | For RCT only; omit for pre-post                |
+| `pretest_total`       | number | 0-100              | MCI pre-test total score (25 items × 4 points) |
+| `posttest_total`      | number | 0-100              | MCI post-test total score                      |
+| `delayed_total`       | number | 0-100              | MCI delayed post-test (optional)               |
+| `pretest_silent`      | number | 0-20               | Silent mutation subscale (5 items × 4 points)  |
+| `pretest_missense`    | number | 0-20               | Missense mutation subscale                     |
+| `pretest_nonsense`    | number | 0-20               | Nonsense mutation subscale                     |
+| `pretest_frameshift`  | number | 0-20               | Frameshift mutation subscale                   |
+| `pretest_indel`       | number | 0-20               | Insertion/deletion subscale                    |
+| `posttest_silent`     | number | 0-20               | Post-test silent mutation subscale             |
+| `posttest_missense`   | number | 0-20               | Post-test missense subscale                    |
+| `posttest_nonsense`   | number | 0-20               | Post-test nonsense subscale                    |
+| `posttest_frameshift` | number | 0-20               | Post-test frameshift subscale                  |
+| `posttest_indel`      | number | 0-20               | Post-test indel subscale                       |
 
 **Optional Columns:**
 
-| Column | Type | Range | Description |
-|--------|------|-------|-------------|
-| `mtt_score` | number | 0-15 | Mutation Transfer Task total (3 scenarios × 5 points) |
-| `imi_interest` | number | 1-7 | IMI Interest/Enjoyment subscale average |
-| `imi_competence` | number | 1-7 | IMI Perceived Competence subscale average |
-| `imi_effort` | number | 1-7 | IMI Effort/Importance subscale average |
-| `imi_value` | number | 1-7 | IMI Value/Usefulness subscale average |
-| `gpa` | number | 0.0-4.0 | Cumulative GPA (covariate) |
-| `prior_programming` | number | 0-3 | Programming experience (0=none, 1=little, 2=some, 3=lots) |
-| `institution` | string | - | Institution identifier (for multi-site studies) |
+| Column              | Type   | Range   | Description                                               |
+| ------------------- | ------ | ------- | --------------------------------------------------------- |
+| `mtt_score`         | number | 0-15    | Mutation Transfer Task total (3 scenarios × 5 points)     |
+| `imi_interest`      | number | 1-7     | IMI Interest/Enjoyment subscale average                   |
+| `imi_competence`    | number | 1-7     | IMI Perceived Competence subscale average                 |
+| `imi_effort`        | number | 1-7     | IMI Effort/Importance subscale average                    |
+| `imi_value`         | number | 1-7     | IMI Value/Usefulness subscale average                     |
+| `gpa`               | number | 0.0-4.0 | Cumulative GPA (covariate)                                |
+| `prior_programming` | number | 0-3     | Programming experience (0=none, 1=little, 2=some, 3=lots) |
+| `institution`       | string | -       | Institution identifier (for multi-site studies)           |
 
 ### Data Entry Tips
 
@@ -200,6 +209,7 @@ npm run research:generate-data -- --design prepost --n 30 --output test.csv
 ### Statistical Output Explained
 
 **Descriptive Statistics:**
+
 ```
 N:      50
 Mean:   65.20
@@ -215,6 +225,7 @@ Range:  [35.00, 92.00]
 - **Range:** Min to max (check for floor/ceiling effects)
 
 **Paired t-test (Pre-Post):**
+
 ```
 t(49) = 8.45, p < .001
 Mean difference: 15.30 (95% CI: [11.50, 19.10])
@@ -234,6 +245,7 @@ Cohen's d: 1.20 (large)
   - 0.8 = large
 
 **Independent t-test (RCT):**
+
 ```
 Treatment post-test: M = 72.30, SD = 11.20
 Control post-test:   M = 58.50, SD = 13.10
@@ -265,18 +277,21 @@ Cohen's d: 1.14 (large)
 Before running analysis, verify:
 
 **Completeness:**
+
 - [ ] All student IDs present
 - [ ] No duplicate IDs
 - [ ] Pre and post scores for all participants
 - [ ] Missing data < 10% of sample
 
 **Range Checks:**
+
 - [ ] All scores within valid range (0-100 for total, 0-20 for subscales)
 - [ ] No impossible values (e.g., negative scores, scores > 100)
 - [ ] GPA values between 0.0-4.0
 - [ ] IMI values between 1-7
 
 **Consistency:**
+
 - [ ] Subscale scores sum to total score (within rounding)
 - [ ] Pre-test administered before intervention
 - [ ] Post-test administered after intervention
@@ -285,18 +300,22 @@ Before running analysis, verify:
 ### Common Issues and Solutions
 
 **Issue:** "Groups differ at baseline (p < .05)"
+
 - **Solution:** Use ANCOVA with pre-test as covariate (report in methods)
 - **Report:** "We controlled for baseline differences using ANCOVA..."
 
 **Issue:** "Effect size smaller than expected"
+
 - **Possible causes:** Implementation fidelity issues, sample heterogeneity, ceiling effects
 - **Actions:** Check instructor fidelity logs, analyze by subgroup, examine score distributions
 
 **Issue:** "High attrition rate (>20%)"
+
 - **Solution:** Conduct attrition analysis (compare completers vs. non-completers)
 - **Report:** "Attrition rate was X%. Completers and non-completers did not differ on baseline characteristics (p > .05)."
 
 **Issue:** "Ceiling effect (many scores at 100)"
+
 - **Solution:** Report but acknowledge limitation
 - **Report:** "A ceiling effect was observed, with X% of participants scoring 95-100 on post-test, potentially underestimating treatment effects."
 
@@ -329,23 +348,27 @@ research_data/
 ### Security Best Practices
 
 **De-identification:**
+
 1. Assign study IDs (S001, S002, ...) before data entry
 2. Store ID-to-name mapping separately (locked location)
 3. Never include names, email, or identifiable info in analysis files
 4. Use institution codes (A, B, C) instead of institution names
 
 **Storage:**
+
 - **Consent forms:** Locked filing cabinet (paper) or encrypted drive (digital)
 - **Raw data:** Password-protected folder on secure university server
 - **Analysis data:** Can be stored on researcher laptop (de-identified)
 - **Backups:** Weekly backups to university cloud storage
 
 **Access Control:**
+
 - Only PI and approved research staff have access
 - Use password-protected files for sensitive data
 - Log all access to raw data (required by many IRBs)
 
 **Retention:**
+
 - **During study:** All data retained
 - **After publication:** De-identified data retained 3-7 years (check IRB policy)
 - **Identifiable data:** Destroyed after retention period
@@ -358,36 +381,43 @@ research_data/
 ### Script Errors
 
 **Error:** "Cannot find module"
+
 ```bash
 # Solution: Install dependencies
 npm install
 ```
 
 **Error:** "File not found"
+
 ```bash
 # Solution: Use full path or run from project root
 npm run research:analyze -- --design prepost --data /full/path/to/data.csv
 ```
 
 **Error:** "Invalid CSV format"
+
 - Check for extra commas, missing headers, or encoding issues
 - Open in Excel/Google Sheets and re-save as CSV (UTF-8)
 
 ### Statistical Questions
 
 **Q: What sample size do I need?**
+
 - **A:** Run power analysis: `npm run research:analyze -- --power-analysis --effect 0.5`
 - Typical result: N=64 per group (RCT), N=34 total (pre-post, d=0.5)
 
 **Q: My p-value is .06, almost significant. What do I do?**
+
 - **A:** Report as non-significant (p > .05). Discuss as trend in limitations.
 - Never "round down" p-values or cherry-pick analyses.
 
 **Q: How do I report subscale results?**
+
 - **A:** Use repeated measures analysis or separate t-tests with Bonferroni correction.
 - Example: α = .05 / 5 tests = .01 per test (conservative)
 
 **Q: Can I combine pilot data with main study data?**
+
 - **A:** Generally no (different populations/times). Report separately.
 - Exception: Pre-registered plan to pool data if pilot successful.
 
@@ -398,6 +428,7 @@ npm run research:analyze -- --design prepost --data /full/path/to/data.csv
 ### Statistical Software Alternatives
 
 If you prefer GUI-based tools:
+
 - **SPSS:** Commercial, widely used in education research
 - **R/RStudio:** Free, powerful, steep learning curve
 - **jamovi:** Free, user-friendly, SPSS-like interface
@@ -406,29 +437,35 @@ If you prefer GUI-based tools:
 ### Recommended Reading
 
 **Research Design:**
-- Shadish, Cook, & Campbell (2002). *Experimental and Quasi-Experimental Designs*
-- Creswell & Creswell (2017). *Research Design* (5th ed.)
+
+- Shadish, Cook, & Campbell (2002). _Experimental and Quasi-Experimental Designs_
+- Creswell & Creswell (2017). _Research Design_ (5th ed.)
 
 **Statistical Analysis:**
-- Field (2018). *Discovering Statistics Using IBM SPSS Statistics* (5th ed.)
-- Cumming (2012). *Understanding the New Statistics: Effect Sizes, CIs, and Meta-Analysis*
+
+- Field (2018). _Discovering Statistics Using IBM SPSS Statistics_ (5th ed.)
+- Cumming (2012). _Understanding the New Statistics: Effect Sizes, CIs, and Meta-Analysis_
 
 **Education Research:**
-- American Educational Research Association (2006). *Standards for Reporting*
-- Hattie (2008). *Visible Learning* (effect size interpretation)
+
+- American Educational Research Association (2006). _Standards for Reporting_
+- Hattie (2008). _Visible Learning_ (effect size interpretation)
 
 ### Getting Help
 
 **Technical Issues:**
+
 - GitHub Issues: [codoncanvas/issues](https://github.com/username/codoncanvas/issues)
 - Email support: [contact info]
 
 **Methodological Consultation:**
+
 - Consult your institution's statistics consulting center
 - Seek collaboration with education research faculty
 - Consider hiring a statistician for complex designs
 
 **IRB Questions:**
+
 - Contact your institution's IRB office
 - Refer to RESEARCH_FRAMEWORK.md Section 7 (Ethical Considerations)
 
@@ -458,6 +495,7 @@ npm run research:analyze -- --design prepost --data study.csv --table
 ## Appendix B: CSV Column Reference
 
 **Core Variables (Required):**
+
 - `id` - Student identifier
 - `pretest_total` - MCI pre-test score (0-100)
 - `posttest_total` - MCI post-test score (0-100)
@@ -465,9 +503,11 @@ npm run research:analyze -- --design prepost --data study.csv --table
 - `posttest_[type]` - Subscale post-scores (0-20 each)
 
 **RCT Variables:**
+
 - `group` - "treatment" or "control"
 
 **Optional Variables:**
+
 - `delayed_total` - Retention test score
 - `mtt_score` - Transfer task score (0-15)
 - `imi_*` - Motivation subscales (1-7)

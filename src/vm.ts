@@ -1,5 +1,11 @@
-import { Renderer } from './renderer';
-import { CODON_MAP, CodonToken, Opcode, VMState, Codon } from './types';
+import type { Renderer } from "./renderer";
+import {
+  type Codon,
+  CODON_MAP,
+  type CodonToken,
+  Opcode,
+  type VMState,
+} from "./types";
 
 /**
  * Virtual Machine interface for CodonCanvas execution.
@@ -73,7 +79,11 @@ export class CodonVM implements VM {
   state: VMState;
   renderer: Renderer;
   private maxInstructions: number = 10000;
-  private instructionHistory: { opcode: Opcode; codon: Codon; pushValue?: number }[] = [];
+  private instructionHistory: {
+    opcode: Opcode;
+    codon: Codon;
+    pushValue?: number;
+  }[] = [];
 
   constructor(renderer: Renderer) {
     this.renderer = renderer;
@@ -90,7 +100,7 @@ export class CodonVM implements VM {
       instructionPointer: 0,
       stateStack: [],
       instructionCount: 0,
-      seed: Date.now()
+      seed: Date.now(),
     };
   }
 
@@ -111,7 +121,9 @@ export class CodonVM implements VM {
   private pop(): number {
     const value = this.state.stack.pop();
     if (value === undefined) {
-      throw new Error(`Stack underflow at instruction ${this.state.instructionPointer}`);
+      throw new Error(
+        `Stack underflow at instruction ${this.state.instructionPointer}`,
+      );
     }
     return value;
   }
@@ -124,7 +136,7 @@ export class CodonVM implements VM {
    * Decode base-4 numeric literal from codon
    */
   private decodeNumericLiteral(codon: string): number {
-    const baseMap: Record<string, number> = { 'A': 0, 'C': 1, 'G': 2, 'T': 3 };
+    const baseMap: Record<string, number> = { A: 0, C: 1, G: 2, T: 3 };
     const d1 = baseMap[codon[0]] || 0;
     const d2 = baseMap[codon[1]] || 0;
     const d3 = baseMap[codon[2]] || 0;
@@ -142,7 +154,7 @@ export class CodonVM implements VM {
     this.state.instructionCount++;
 
     if (this.state.instructionCount > this.maxInstructions) {
-      throw new Error('Instruction limit exceeded (max 10,000)');
+      throw new Error("Instruction limit exceeded (max 10,000)");
     }
 
     // Track executed opcode for MIDI export
@@ -256,7 +268,7 @@ export class CodonVM implements VM {
 
       case Opcode.RESTORE_STATE: {
         if (this.state.stateStack.length === 0) {
-          throw new Error('RESTORE_STATE with empty state stack');
+          throw new Error("RESTORE_STATE with empty state stack");
         }
         const savedState = this.state.stateStack.pop()!;
         // Restore transform state (position, rotation, scale, color)
@@ -268,7 +280,11 @@ export class CodonVM implements VM {
         this.renderer.setPosition(savedState.position.x, savedState.position.y);
         this.renderer.setRotation(savedState.rotation);
         this.renderer.setScale(savedState.scale);
-        this.renderer.setColor(savedState.color.h, savedState.color.s, savedState.color.l);
+        this.renderer.setColor(
+          savedState.color.h,
+          savedState.color.s,
+          savedState.color.l,
+        );
         break;
       }
 
@@ -297,7 +313,9 @@ export class CodonVM implements VM {
         const b = this.pop();
         const a = this.pop();
         if (b === 0) {
-          throw new Error(`Division by zero at instruction ${this.state.instructionPointer}`);
+          throw new Error(
+            `Division by zero at instruction ${this.state.instructionPointer}`,
+          );
         }
         this.push(Math.floor(a / b));
         break;
@@ -311,11 +329,15 @@ export class CodonVM implements VM {
 
         // Validate loop parameters
         if (loopCount < 0 || instructionCount < 0) {
-          throw new Error(`LOOP requires non-negative parameters (count: ${loopCount}, instructions: ${instructionCount})`);
+          throw new Error(
+            `LOOP requires non-negative parameters (count: ${loopCount}, instructions: ${instructionCount})`,
+          );
         }
 
         if (instructionCount > this.instructionHistory.length) {
-          throw new Error(`LOOP instruction count (${instructionCount}) exceeds history length (${this.instructionHistory.length})`);
+          throw new Error(
+            `LOOP instruction count (${instructionCount}) exceeds history length (${this.instructionHistory.length})`,
+          );
         }
 
         // Get the instructions to replay
@@ -323,15 +345,26 @@ export class CodonVM implements VM {
         // We want to replay instructions BEFORE those parameter PUSHes
         const historyBeforeParams = this.instructionHistory.length - 2;
         const startIdx = historyBeforeParams - instructionCount;
-        const instructionsToRepeat = this.instructionHistory.slice(startIdx, historyBeforeParams);
+        const instructionsToRepeat = this.instructionHistory.slice(
+          startIdx,
+          historyBeforeParams,
+        );
 
         // Execute the loop body loopCount times
         for (let iteration = 0; iteration < loopCount; iteration++) {
-          for (const { opcode: loopOpcode, codon: loopCodon, pushValue } of instructionsToRepeat) {
+          for (
+            const {
+              opcode: loopOpcode,
+              codon: loopCodon,
+              pushValue,
+            } of instructionsToRepeat
+          ) {
             // Check instruction limit
             this.state.instructionCount++;
             if (this.state.instructionCount > this.maxInstructions) {
-              throw new Error(`Instruction limit exceeded (${this.maxInstructions})`);
+              throw new Error(
+                `Instruction limit exceeded (${this.maxInstructions})`,
+              );
             }
 
             // Handle PUSH specially - use stored value instead of executing
@@ -377,7 +410,9 @@ export class CodonVM implements VM {
       const opcode = CODON_MAP[token.text];
 
       if (opcode === undefined) {
-        throw new Error(`Unknown codon '${token.text}' at position ${token.position}`);
+        throw new Error(
+          `Unknown codon '${token.text}' at position ${token.position}`,
+        );
       }
 
       this.state.instructionPointer = i;
@@ -386,12 +421,18 @@ export class CodonVM implements VM {
       if (opcode === Opcode.PUSH) {
         i++;
         if (i >= tokens.length) {
-          throw new Error('PUSH instruction at end of program (missing numeric literal)');
+          throw new Error(
+            "PUSH instruction at end of program (missing numeric literal)",
+          );
         }
         const literalCodon = tokens[i].text;
         const value = this.decodeNumericLiteral(literalCodon);
         this.push(value);
-        this.instructionHistory.push({ opcode: Opcode.PUSH, codon: token.text, pushValue: value });
+        this.instructionHistory.push({
+          opcode: Opcode.PUSH,
+          codon: token.text,
+          pushValue: value,
+        });
         snapshots.push(this.snapshot());
       } else if (opcode === Opcode.STOP) {
         // Stop execution

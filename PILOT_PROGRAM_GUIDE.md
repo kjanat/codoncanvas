@@ -34,6 +34,7 @@ A **10-student, 3-session pilot** (Week 5 deployment) to empirically validate Co
 ### Why Run a Pilot?
 
 **Before large-scale deployment**, empirical data on:
+
 - Pedagogical effectiveness (learning gains)
 - Usability (interface friction points)
 - Engagement (retention, satisfaction)
@@ -42,6 +43,7 @@ A **10-student, 3-session pilot** (Week 5 deployment) to empirically validate Co
 ### Pilot Outcomes
 
 **Deliverables:**
+
 - Quantitative metrics (time, accuracy, satisfaction scores)
 - Qualitative insights (student quotes, observed behaviors)
 - Technical validation (bug reports, device compatibility)
@@ -54,21 +56,25 @@ A **10-student, 3-session pilot** (Week 5 deployment) to empirically validate Co
 ### Primary Objectives
 
 **1. Validate Learning Effectiveness**
+
 - **Measure:** Pre/post assessment score gains (target: +30% median improvement)
 - **Method:** 10-question quiz before Lesson 1, after Lesson 3
 - **Success Criterion:** ≥70% of students show improvement
 
 **2. Validate Usability**
+
 - **Measure:** Time-to-first-artifact (target: <5 minutes)
 - **Method:** Timer from "open playground" to "first successful genome"
 - **Success Criterion:** ≥80% of students achieve target
 
 **3. Validate Engagement**
+
 - **Measure:** Retention rate across 3 sessions (target: >80%)
 - **Method:** Attendance tracking
 - **Success Criterion:** ≥8/10 students attend all 3 sessions
 
 **4. Validate Satisfaction**
+
 - **Measure:** Thumbs-up rate (target: >80% positive)
 - **Method:** Post-session 3 survey (5-point Likert scale)
 - **Success Criterion:** ≥4/5 average rating
@@ -76,12 +82,14 @@ A **10-student, 3-session pilot** (Week 5 deployment) to empirically validate Co
 ### Secondary Objectives
 
 **Technical Validation:**
+
 - Browser compatibility (Chrome, Safari, Firefox)
 - Mobile/tablet usability (iPads, Chromebooks)
 - Performance (render times, UI responsiveness)
 - Accessibility (screen reader, keyboard navigation)
 
 **Pedagogical Insights:**
+
 - Which mutation types are hardest to grasp? (frameshift hypothesis)
 - Do students make connections to real biology?
 - Which examples resonate most?
@@ -94,12 +102,14 @@ A **10-student, 3-session pilot** (Week 5 deployment) to empirically validate Co
 ### Inclusion Criteria
 
 **Required:**
+
 - Ages 15-18 (secondary/tertiary education)
 - Basic biology exposure (DNA structure, genes)
 - Access to laptop/tablet with browser
 - Availability for 3 × 60-minute sessions
 
 **Preferred:**
+
 - Mix of biology/CS backgrounds (50/50 if possible)
 - Range of technical comfort levels (novice to advanced)
 - Diverse demographics (gender, ethnicity, academic performance)
@@ -113,16 +123,19 @@ A **10-student, 3-session pilot** (Week 5 deployment) to empirically validate Co
 ### Recruitment
 
 **Method 1: Classroom Recruitment**
+
 - Partner with biology or CS teacher
 - Recruit from existing course roster
 - Offer extra credit or completion certificate
 
 **Method 2: Student Organization**
+
 - STEM club, coding club, biology society
 - Advertise as "creative coding workshop"
 - Emphasize no prior coding required
 
 **Method 3: Open Call**
+
 - Post flyers in school/campus
 - Email blast to student body
 - First-come, first-served (screen for criteria)
@@ -130,6 +143,7 @@ A **10-student, 3-session pilot** (Week 5 deployment) to empirically validate Co
 ### Sample Size Rationale
 
 **Why 10 students?**
+
 - Large enough for statistical trends (qualitative insights)
 - Small enough for detailed observation (1 observer can track)
 - Pilot-appropriate (MVP validation, not publication-grade research)
@@ -144,12 +158,14 @@ A **10-student, 3-session pilot** (Week 5 deployment) to empirically validate Co
 #### Administrative Tasks
 
 **Consent & Permissions:**
+
 - [ ] Obtain IRB approval (if research institution)
 - [ ] Prepare parental consent forms (if minors <18)
 - [ ] Prepare student assent forms
 - [ ] Obtain institutional approval (school admin, department)
 
 **Participant Communication:**
+
 - [ ] Send welcome email with schedule
 - [ ] Share pre-session logistics (device requirements, URL)
 - [ ] Distribute pre-assessment (online, takes 10 minutes)
@@ -158,12 +174,14 @@ A **10-student, 3-session pilot** (Week 5 deployment) to empirically validate Co
 #### Technical Setup
 
 **Environment Preparation:**
+
 - [ ] Deploy CodonCanvas to stable URL (no local servers)
 - [ ] Test on all target devices (Chrome, Safari, Firefox, iPad)
 - [ ] Prepare backup plan (offline HTML bundle)
 - [ ] Set up screen recording (optional, with consent)
 
 **Materials Preparation:**
+
 - [ ] Print codon charts (1 per student + extras)
 - [ ] Print worksheets (Lesson 1-3, 1 per student)
 - [ ] Print observation checklist (for observer)
@@ -172,6 +190,7 @@ A **10-student, 3-session pilot** (Week 5 deployment) to empirically validate Co
 #### Observer Training
 
 **If multiple observers:**
+
 - [ ] Review observation protocol (see Section 5)
 - [ ] Conduct practice observation (mock session)
 - [ ] Calibrate rubrics (inter-rater reliability)
@@ -180,12 +199,14 @@ A **10-student, 3-session pilot** (Week 5 deployment) to empirically validate Co
 ### 1 Week Before Session 1
 
 **Pilot Rehearsal:**
+
 - [ ] Run full Session 1 with colleague/volunteer
 - [ ] Time all activities (ensure 60-minute fit)
 - [ ] Test all examples on deployment URL
 - [ ] Refine observation protocol based on rehearsal
 
 **Final Logistics:**
+
 - [ ] Confirm room reservation (computers, projector, tables)
 - [ ] Send reminder email to participants (24 hours before)
 - [ ] Prepare name tags and sign-in sheet
@@ -198,17 +219,20 @@ A **10-student, 3-session pilot** (Week 5 deployment) to empirically validate Co
 ### Observer Roles
 
 **Primary Observer (Educator/Researcher):**
+
 - Lead instruction (follow lesson plans)
 - Monitor student progress (circulate during activities)
 - Record key observations (friction points, aha moments)
 - Time critical metrics (time-to-first-artifact)
 
 **Technical Support (Optional):**
+
 - Troubleshoot device issues (browser crashes, network)
 - Record bug reports (error messages, unexpected behaviors)
 - Assist struggling students (without solving for them)
 
 **Note-Taker (Optional):**
+
 - Record verbatim quotes (student questions, comments)
 - Document group dynamics (pair work, peer teaching)
 - Capture non-verbal cues (frustration, excitement, confusion)
@@ -224,11 +248,13 @@ A **10-student, 3-session pilot** (Week 5 deployment) to empirically validate Co
 #### During Session
 
 **Timing Checkpoint 1: Introduction (0-10 min)**
+
 - [ ] Note: Are students engaged by hook (DNA → art)?
 - [ ] Observe: Any questions about biology vs. programming?
 - [ ] Record: Initial reactions to codon chart
 
 **Timing Checkpoint 2: First Genome (10-20 min)**
+
 - [ ] **START TIMER** when students begin typing "Hello Circle"
 - [ ] **STOP TIMER** when first circle appears on canvas
 - [ ] Record: Time-to-first-artifact for each student
@@ -238,16 +264,19 @@ A **10-student, 3-session pilot** (Week 5 deployment) to empirically validate Co
 - [ ] Note: How many students need help vs. self-debug?
 
 **Timing Checkpoint 3: Silent Mutations (20-35 min)**
+
 - [ ] Observe: Do students predict GGA → GGC = no change?
 - [ ] Record: Aha moments when redundancy clicks
 - [ ] Note: Confusion points (synonymous codon concept)
 
 **Timing Checkpoint 4: Two-Shape Challenge (35-55 min)**
+
 - [ ] Circulate: Which opcodes are hardest? (TRANSLATE hypothesis)
 - [ ] Record: Creative strategies (trial-and-error vs. planning)
 - [ ] Observe: Peer collaboration (helping vs. copying)
 
 **Timing Checkpoint 5: Wrap-up (55-60 min)**
+
 - [ ] Collect: Completed worksheets (Lesson 1)
 - [ ] Administer: Quick exit survey (1 question, 5-point scale)
   - "How likely are you to return for Session 2?" (1=not at all, 5=definitely)
@@ -265,12 +294,14 @@ A **10-student, 3-session pilot** (Week 5 deployment) to empirically validate Co
 #### During Session
 
 **Focus Areas:**
+
 - **Mutation classification accuracy** (during Worksheet 2.3)
 - **Frameshift confusion** (hypothesis: hardest mutation type)
 - **Visual prediction skills** (do students guess before running?)
 - **Engagement with biological parallels** (do they connect to real DNA?)
 
 **Key Observations:**
+
 - [ ] Time: How long for students to complete 8 mutation challenges?
 - [ ] Accuracy: Circulate and note correct vs. incorrect classifications
 - [ ] Confusion: Which mutation types trigger most questions?
@@ -281,12 +312,14 @@ A **10-student, 3-session pilot** (Week 5 deployment) to empirically validate Co
 #### During Session
 
 **Focus Areas:**
+
 - **Creative composition quality** (complexity, originality)
 - **Transform operation mastery** (do students use TRANSLATE, ROTATE, SCALE confidently?)
 - **"Evolution" understanding** (do students grasp cumulative mutation effects?)
 - **Overall confidence** (compare to Session 1 hesitancy)
 
 **Key Observations:**
+
 - [ ] Independence: How much instructor help is needed?
 - [ ] Complexity: Are students using ≥5 opcodes as required?
 - [ ] Debugging: Can students identify and fix their own errors?
@@ -310,14 +343,16 @@ A **10-student, 3-session pilot** (Week 5 deployment) to empirically validate Co
 **Format:** 10 multiple-choice questions (5 biology, 5 CS)
 
 **Timing:**
+
 - **Pre:** 1 week before Session 1 (online, 10 minutes)
 - **Post:** End of Session 3 (paper or online, 10 minutes)
 
 **Sample Questions:**
 
 **Biology Questions:**
+
 1. Which of the following is a stop codon?
-   - A) ATG  B) GGA  C) TAA ✓  D) CCA
+   - A) ATG B) GGA C) TAA ✓ D) CCA
 
 2. What is a silent mutation?
    - A) Mutation with no effect on output ✓
@@ -338,14 +373,15 @@ A **10-student, 3-session pilot** (Week 5 deployment) to empirically validate Co
    - D) Backup copies of genes
 
 5. In real DNA, how many bases code for one amino acid?
-   - A) 1  B) 2  C) 3 ✓  D) 4
+   - A) 1 B) 2 C) 3 ✓ D) 4
 
 **Computational Thinking Questions:**
 6. What is a stack in programming?
-   - A) Pile of instructions to execute
-   - B) Last-in-first-out data structure ✓
-   - C) List of variables
-   - D) Type of loop
+
+- A) Pile of instructions to execute
+- B) Last-in-first-out data structure ✓
+- C) List of variables
+- D) Type of loop
 
 7. What does PUSH GAA CCC do?
    - A) Draws a shape
@@ -372,6 +408,7 @@ A **10-student, 3-session pilot** (Week 5 deployment) to empirically validate Co
     - D) Adding comments to code
 
 **Scoring:**
+
 - 1 point per correct answer (max 10 points)
 - Calculate: % improvement = (post_score - pre_score) / (10 - pre_score) × 100%
 - Target: Median improvement ≥30%
@@ -381,20 +418,22 @@ A **10-student, 3-session pilot** (Week 5 deployment) to empirically validate Co
 **Purpose:** Validate usability (MVP target: <5 minutes)
 
 **Method:**
+
 - **Timer:** Stopwatch or digital timer (phone app)
 - **Start Event:** Instructor says "Begin typing your first genome"
 - **Stop Event:** Student raises hand + canvas shows correct circle
 
 **Data Sheet:**
 
-| Student ID | Start Time | Stop Time | Duration (MM:SS) | Issues Encountered | Notes |
-|------------|-----------|----------|------------------|-------------------|-------|
-| P01 | 10:15:00 | 10:18:30 | 03:30 ✓ | None | Completed independently |
-| P02 | 10:15:05 | 10:22:10 | 07:05 ⚠️ | Typo (ATF → ATG) | Needed hint |
-| P03 | 10:15:02 | 10:19:45 | 04:43 ✓ | Frame error | Self-corrected with linter |
-| ... | | | | | |
+| Student ID | Start Time | Stop Time | Duration (MM:SS) | Issues Encountered | Notes                      |
+| ---------- | ---------- | --------- | ---------------- | ------------------ | -------------------------- |
+| P01        | 10:15:00   | 10:18:30  | 03:30 ✓          | None               | Completed independently    |
+| P02        | 10:15:05   | 10:22:10  | 07:05 ⚠️          | Typo (ATF → ATG)   | Needed hint                |
+| P03        | 10:15:02   | 10:19:45  | 04:43 ✓          | Frame error        | Self-corrected with linter |
+| ...        |            |           |                  |                    |                            |
 
 **Analysis:**
+
 - Calculate: Median, mean, min, max times
 - Target: ≥80% of students <5 minutes
 - Identify: Common failure modes (typos, frame errors, missing START)
@@ -404,17 +443,20 @@ A **10-student, 3-session pilot** (Week 5 deployment) to empirically validate Co
 **Purpose:** Assess mutation type identification skills (target: >70% post-assessment)
 
 **Method:**
+
 - Use built-in assessment system (`assessment-demo.html`)
 - Students complete 10 "Medium" difficulty challenges
 - Export results as JSON (automatic scoring)
 
 **Data Collected:**
+
 - Overall accuracy (%)
 - Accuracy by mutation type (silent, missense, nonsense, frameshift)
 - Time per challenge
 - Attempts per challenge (guessing indicator)
 
 **Analysis:**
+
 ```json
 {
   "progress": {
@@ -422,16 +464,17 @@ A **10-student, 3-session pilot** (Week 5 deployment) to empirically validate Co
     "correctAnswers": 8,
     "accuracy": 80.0,
     "byType": {
-      "silent": {"correct": 9, "total": 10},
-      "missense": {"correct": 8, "total": 10},
-      "nonsense": {"correct": 7, "total": 10},
-      "frameshift": {"correct": 4, "total": 10}  // ⚠️ Needs review
+      "silent": { "correct": 9, "total": 10 },
+      "missense": { "correct": 8, "total": 10 },
+      "nonsense": { "correct": 7, "total": 10 },
+      "frameshift": { "correct": 4, "total": 10 } // ⚠️ Needs review
     }
   }
 }
 ```
 
 **Interpretation:**
+
 - Accuracy ≥70% overall: Target met ✓
 - Frameshift <60%: Common struggle (anticipated)
 - Use per-type data to refine Lesson 2
@@ -469,6 +512,7 @@ A **10-student, 3-session pilot** (Week 5 deployment) to empirically validate Co
    - Free text response
 
 **Scoring:**
+
 - Calculate: Mean rating per question, overall mean
 - Target: ≥4.0 average (80% positive)
 - Analyze: Open-ended responses for themes (praise, criticism)
@@ -525,14 +569,15 @@ A **10-student, 3-session pilot** (Week 5 deployment) to empirically validate Co
 
 **Format:** Spreadsheet with device/browser matrix
 
-| Device | OS | Browser | Session | Load Time | Render Perf | Issues |
-|--------|----|---------| --------|-----------|-------------|--------|
-| MacBook Pro | macOS 14 | Chrome 120 | 1 | 1.2s | Smooth | None |
-| iPad Air | iOS 17 | Safari 17 | 1 | 2.5s | Smooth | None |
-| Chromebook | ChromeOS | Chrome 119 | 1 | 3.1s | Laggy (NOISE) | ⚠️ |
-| ... | | | | | | |
+| Device      | OS       | Browser    | Session | Load Time | Render Perf   | Issues |
+| ----------- | -------- | ---------- | ------- | --------- | ------------- | ------ |
+| MacBook Pro | macOS 14 | Chrome 120 | 1       | 1.2s      | Smooth        | None   |
+| iPad Air    | iOS 17   | Safari 17  | 1       | 2.5s      | Smooth        | None   |
+| Chromebook  | ChromeOS | Chrome 119 | 1       | 3.1s      | Laggy (NOISE) | ⚠️      |
+| ...         |          |            |         |           |               |        |
 
 **Metrics:**
+
 - **Load Time:** Time from URL enter to playground ready
 - **Render Performance:** Smooth (60fps) / Acceptable (30fps) / Laggy (<30fps)
 - **Issues:** Any errors, crashes, visual glitches
@@ -546,6 +591,7 @@ A **10-student, 3-session pilot** (Week 5 deployment) to empirically validate Co
 #### Week 6: Data Aggregation (2-3 days)
 
 **1. Quantitative Data Processing:**
+
 - [ ] Compile pre/post assessment scores (Excel/Google Sheets)
 - [ ] Calculate learning gains (% improvement per student)
 - [ ] Aggregate time-to-first-artifact data (median, range)
@@ -554,6 +600,7 @@ A **10-student, 3-session pilot** (Week 5 deployment) to empirically validate Co
 - [ ] Calculate retention rate (attendance across 3 sessions)
 
 **2. Qualitative Data Coding:**
+
 - [ ] Transcribe observation notes (typed, organized by theme)
 - [ ] Code open-ended survey responses (thematic analysis)
 - [ ] Extract representative quotes (praise, criticism, confusion)
@@ -564,6 +611,7 @@ A **10-student, 3-session pilot** (Week 5 deployment) to empirically validate Co
 **Primary Metrics Evaluation:**
 
 **1. Time-to-First-Artifact (<5 min target)**
+
 ```
 Result: 8/10 students <5 min (80%) ✓ TARGET MET
 Median: 4:15, Range: 2:30 - 8:45
@@ -572,6 +620,7 @@ Conclusion: Usability validated, consider linter auto-fix for outliers
 ```
 
 **2. Retention (>80% target)**
+
 ```
 Result: 9/10 students attended all 3 sessions (90%) ✓ TARGET EXCEEDED
 Dropout: P05 (scheduling conflict, not due to dissatisfaction)
@@ -579,6 +628,7 @@ Conclusion: Engagement strong, scheduling robust
 ```
 
 **3. Mutation Accuracy (>70% target)**
+
 ```
 Result: 8/10 students >70% accuracy (80%) ✓ TARGET MET
 Median accuracy: 75%, Range: 55% - 95%
@@ -591,6 +641,7 @@ Conclusion: Overall target met, frameshift requires additional scaffolding
 ```
 
 **4. Satisfaction (>80% positive target)**
+
 ```
 Result: Mean rating 4.3/5.0 (86% positive) ✓ TARGET EXCEEDED
 Highest: Q1 (Enjoyment) 4.7/5.0, Q5 (Recommend) 4.6/5.0
@@ -601,6 +652,7 @@ Conclusion: High satisfaction, minor usability friction
 **Secondary Insights:**
 
 **Pedagogical Findings:**
+
 - **Frameshift Challenge:** Confirmed hypothesis (lowest accuracy at 53%)
   - Recommendation: Add visual demo (physical cards showing frame shift)
   - Consider: Interactive frameshift visualization tool
@@ -609,6 +661,7 @@ Conclusion: High satisfaction, minor usability friction
   - Recommendation: Add coordinate system visual aid
 
 **Usability Findings:**
+
 - **Linter Effectiveness:** 9/10 students used linter to self-correct
 - **Friction Point:** Base-4 encoding confusing for 6/10 students
   - Recommendation: Provide number-to-codon lookup table
@@ -616,6 +669,7 @@ Conclusion: High satisfaction, minor usability friction
   - Recommendation: Improve mobile responsive layout (collapsible panels)
 
 **Technical Findings:**
+
 - **Browser Compatibility:** 10/10 devices ran successfully
 - **Performance:** Chromebook lagged with NOISE opcode (3/10 students)
   - Recommendation: Optimize NOISE rendering or add "low performance mode"
@@ -629,49 +683,60 @@ Conclusion: High satisfaction, minor usability friction
 # CodonCanvas Pilot Evaluation Report
 
 ## Executive Summary
+
 - Pilot overview (10 students, 3 sessions, Week 5)
 - Primary metrics results (all targets met/exceeded)
 - Key recommendation: Proceed to wider deployment with minor refinements
 
 ## Methodology
+
 - Participant demographics
 - Data collection instruments
 - Analysis methods
 
 ## Results
+
 ### Primary Metrics
+
 - Time-to-first-artifact: 80% <5 min ✓
 - Retention: 90% ✓
 - Mutation accuracy: 80% >70% ✓
 - Satisfaction: 86% positive ✓
 
 ### Secondary Insights
+
 - Pedagogical findings (frameshift challenge)
 - Usability findings (base-4 confusion)
 - Technical findings (Chromebook performance)
 
 ## Discussion
+
 - What worked well (redundancy concept, linter, engagement)
 - What needs improvement (frameshift scaffolding, mobile layout)
 - Unexpected findings (peer teaching emergence)
 
 ## Recommendations
+
 ### Immediate (Week 7-8)
+
 - Add frameshift visual demo
 - Provide number-to-codon lookup table
 - Optimize mobile responsive layout
 
 ### Future (Phase D)
+
 - Interactive frameshift visualization tool
 - Low-performance mode for older devices
 - Expanded example library (10 more examples)
 
 ## Conclusion
+
 - MVP validated for wider deployment
 - Minor refinements needed (documented above)
 - Proceed with 50-student pilot (Week 9-10)
 
 ## Appendices
+
 - Raw data (pre/post scores, time logs, survey results)
 - Student quotes (representative excerpts)
 - Technical logs (device matrix, bug reports)
@@ -682,18 +747,21 @@ Conclusion: High satisfaction, minor usability friction
 **Based on pilot results, decide:**
 
 **GREEN LIGHT (Proceed to Wider Deployment):**
+
 - ✅ All 4 primary metrics met
 - ✅ High satisfaction (>80%)
 - ✅ No critical bugs
 - ✅ Strong engagement/retention
 
 **YELLOW LIGHT (Iterate Before Scaling):**
+
 - ⚠️ 2-3 metrics partially met (60-80%)
 - ⚠️ Moderate satisfaction (60-80%)
 - ⚠️ Usability friction points
 - ⚠️ Need pedagogical refinements
 
 **RED LIGHT (Major Rework Needed):**
+
 - ❌ <2 metrics met
 - ❌ Low satisfaction (<60%)
 - ❌ Critical bugs blocking usage
@@ -745,15 +813,18 @@ Parent/Guardian (if <18): _____________________ Date: _________
 ### Appendix B: Session Handouts
 
 **Handout 1: Codon Chart (1-page, double-sided)**
+
 - Front: All 64 codons organized by opcode family (color-coded)
 - Back: Base-4 encoding table (AAA=0, TTT=63)
 
 **Handout 2: Quick Start Guide (1-page)**
+
 - Step-by-step first genome
 - Common errors and fixes
 - Where to get help
 
 **Handout 3: Mutation Reference Card (1-page)**
+
 - 4 mutation types with examples
 - Visual phenotype predictions
 - Biological parallels
@@ -763,17 +834,20 @@ Parent/Guardian (if <18): _____________________ Date: _________
 **Pre-Pilot Training (30 minutes):**
 
 **Part 1: Protocol Review (10 min)**
+
 - Walk through observation checklist
 - Review timing checkpoints
 - Practice using stopwatch for time-to-first-artifact
 
 **Part 2: Calibration Exercise (15 min)**
+
 - Watch 5-minute mock video
 - Independently fill out checklist
 - Compare notes (inter-rater reliability)
 - Discuss discrepancies
 
 **Part 3: Logistics (5 min)**
+
 - Assign roles (if multiple observers)
 - Review emergency procedures (tech failure, student distress)
 - Confirm communication protocol (silent signals during session)
@@ -783,18 +857,21 @@ Parent/Guardian (if <18): _____________________ Date: _________
 **GDPR/FERPA Compliance:**
 
 **Data Collection:**
+
 - Anonymize immediately (assign P01-P10 IDs)
 - Store consent forms separately from data
 - Encrypt digital data (password-protected files)
 - No identifying info in reports (names, photos without consent)
 
 **Data Storage:**
+
 - Secure location (locked cabinet or encrypted drive)
 - Access limited to research team
 - Retention period: 3 years (or per IRB protocol)
 - Destruction method: Shred paper, securely delete digital
 
 **Data Sharing:**
+
 - Only aggregated results published
 - Individual data shared only if explicitly consented
 - De-identified datasets may be shared with collaborators (with IRB approval)
@@ -802,21 +879,25 @@ Parent/Guardian (if <18): _____________________ Date: _________
 ### Appendix E: Contingency Plans
 
 **Plan A: Technical Failure (Web Deployment Down)**
+
 - **Backup:** Offline HTML bundle on USB drives
 - **Action:** Distribute USBs, run locally
 - **Time Cost:** 5-minute delay
 
 **Plan B: Low Attendance (<8 students)**
+
 - **Threshold:** If <8 students show for Session 1
 - **Action:** Recruit 2-3 drop-in participants (same criteria)
 - **Alternative:** Proceed with smaller N, acknowledge in report
 
 **Plan C: Major Usability Blocker (>50% students stuck)**
+
 - **Trigger:** If >50% cannot complete first genome in 15 minutes
 - **Action:** Pause, demonstrate again, provide partially complete template
 - **Log:** Document issue for urgent fix before Session 2
 
 **Plan D: Student Distress (Frustration, Anxiety)**
+
 - **Recognize:** Student expressing strong negative emotion
 - **Action:** Offer break, one-on-one support, option to withdraw
 - **Follow-up:** Debrief with participant, assess if pilot design issue
@@ -824,29 +905,34 @@ Parent/Guardian (if <18): _____________________ Date: _________
 ### Appendix F: Timeline Checklist
 
 **Week 3 (2 weeks before pilot):**
+
 - [ ] Finalize participant roster (10 confirmed)
 - [ ] Send welcome email + pre-assessment link
 - [ ] Deploy CodonCanvas to production URL
 - [ ] Print all materials (codon charts, worksheets, consent forms)
 
 **Week 4 (1 week before pilot):**
+
 - [ ] Collect pre-assessment responses (follow up on missing)
 - [ ] Conduct pilot rehearsal (1-hour mock session)
 - [ ] Confirm room reservation + tech setup
 - [ ] Send 24-hour reminder email
 
 **Week 5 (Pilot Sessions):**
+
 - **Session 1 (Day 1):** Collect consents, administer Lesson 1, track time-to-first-artifact
 - **Session 2 (Day 3):** Administer Lesson 2, focus on mutation classification
 - **Session 3 (Day 5):** Administer Lesson 3, collect post-assessment + survey
 
 **Week 6 (Analysis):**
+
 - [ ] Aggregate quantitative data (Days 1-2)
 - [ ] Code qualitative data (Days 3-4)
 - [ ] Write pilot report (Days 5-7)
 - [ ] Share findings with stakeholders (Day 8)
 
 **Week 7 (Iteration):**
+
 - [ ] Prioritize recommendations (high/medium/low impact)
 - [ ] Implement urgent fixes (critical usability issues)
 - [ ] Update documentation (based on findings)
@@ -857,11 +943,13 @@ Parent/Guardian (if <18): _____________________ Date: _________
 ## Contact & Support
 
 **Questions During Pilot?**
+
 - **Technical Issues:** [Your email/Slack channel]
 - **Participant Concerns:** [Student support contact]
 - **Research Ethics:** [IRB coordinator, if applicable]
 
 **Post-Pilot Collaboration:**
+
 - Share findings: [Community forum/GitHub Discussions]
 - Contribute improvements: [GitHub repository]
 - Request custom features: [Feature request form]

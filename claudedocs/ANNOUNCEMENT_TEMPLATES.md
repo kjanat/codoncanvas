@@ -87,11 +87,13 @@ No installation. Runs in browser.
 ## Hacker News Post
 
 ### Title
+
 ```
 Show HN: CodonCanvas – DNA-inspired visual programming language
 ```
 
 ### Body
+
 ```
 I built CodonCanvas as an educational tool to make genetic concepts tangible through visual programming.
 
@@ -138,6 +140,7 @@ Happy to answer questions about the implementation or educational approach.
 **Title:** I made a visual programming language using DNA syntax to teach genetics concepts
 
 **Body:**
+
 ```
 CodonCanvas is an educational programming language where you write "genomes" in DNA triplets (codons like ATG, GGA, CCA) that compile to graphics.
 
@@ -174,6 +177,7 @@ Would love feedback on the mutation model and whether this resonates as a teachi
 **Title:** Made an evolution simulator where you breed genomes that generate art
 
 **Body:**
+
 ```
 CodonCanvas is a visual programming language using DNA syntax. The Evolution Lab feature lets you simulate natural selection:
 
@@ -205,6 +209,7 @@ Examples of evolved genomes included. You can fork and continue evolving any pub
 **Title:** Educational tool for teaching genetic mutation concepts through visual programming
 
 **Body:**
+
 ```
 I built CodonCanvas for teaching genetics to students without biology backgrounds. It's a programming language using DNA triplet syntax where mutations produce visually obvious effects.
 
@@ -271,6 +276,7 @@ See [BLOG_POST_DRAFT.md](./BLOG_POST_DRAFT.md) for comprehensive blog post conte
 **Tagline:** DNA-inspired visual programming language for teaching genetics
 
 **Description:**
+
 ```
 CodonCanvas makes genetic concepts tangible through hands-on coding. Write programs using DNA triplets (like real genetic code) that generate artwork, then mutate your code to see how changes affect output.
 
@@ -295,6 +301,7 @@ No installation required - runs entirely in browser. Open source with comprehens
 **Title:** Launched: DNA-inspired visual programming language for education
 
 **Post:**
+
 ```
 After 6 weeks of autonomous development (and 34 documented sessions), I'm launching CodonCanvas - a visual programming language using DNA syntax to teach genetics concepts.
 
@@ -349,6 +356,7 @@ GitHub: [URL]
 **Subject:** Free Tool for Teaching Genetic Mutations Visually
 
 **Body:**
+
 ```
 Hi [Name],
 
@@ -389,6 +397,7 @@ Best,
 **Subject:** Story Pitch: Teaching Genetics Through Visual Programming
 
 **Body:**
+
 ```
 Hi [Editor Name],
 
@@ -441,6 +450,7 @@ Best,
 **Title:** CodonCanvas: Teaching Genetic Mutations Through Visual Programming
 
 **Abstract:**
+
 ```
 We present CodonCanvas, an educational programming language using DNA syntax to teach genetic mutation concepts through visual feedback. Students write short genomes using genetic code (ATG, GGA, CCA, etc.) that compile to artwork. Introducing mutations produces characteristic visual effects that mirror biological mutation types.
 
@@ -472,6 +482,7 @@ Keywords: genetics education, visual programming, mutation pedagogy, STEM educat
 **Title:** DNA-Inspired Programming Language for Education (5 min)
 
 **Abstract:**
+
 ```
 Quick dive into CodonCanvas - a visual programming language using genetic code syntax for educational purposes.
 
@@ -506,6 +517,7 @@ Source: [URL]
 **Title:** CodonCanvas: Visual Programming for Genetics Education
 
 **Summary:**
+
 ```
 CodonCanvas addresses a documented challenge in biology education: students struggle to understand genetic mutation mechanisms and their effects. We propose an educational tool using visual programming with DNA syntax to make mutation concepts tangible.
 
@@ -558,6 +570,7 @@ Before posting, update:
 ### Timing Strategy
 
 **Week 1 Launch:**
+
 - Day 1: Twitter main announcement + HN post
 - Day 2: Reddit r/programming + r/generative
 - Day 3: Twitter feature highlights (thread)
@@ -565,6 +578,7 @@ Before posting, update:
 - Day 5: Product Hunt launch
 
 **Week 2-4:**
+
 - Blog post publication
 - Educational publication pitches
 - Conference submissions (if deadlines align)
@@ -574,6 +588,7 @@ Before posting, update:
 ### Engagement Tips
 
 **Do:**
+
 - Respond to all questions within 24 hours
 - Share user-created genomes (with permission)
 - Thank people for feedback and suggestions
@@ -581,6 +596,7 @@ Before posting, update:
 - Cross-post successful content
 
 **Don't:**
+
 - Spam multiple subreddits same day
 - Argue with critics (respond professionally)
 - Make unsupported claims about effectiveness

@@ -9,10 +9,10 @@
  * - Analyze solution diversity in research studies
  */
 
-import { compareGenomes } from './mutations';
-import { CodonLexer } from './lexer';
-import { CodonVM } from './vm';
-import { Canvas2DRenderer } from './renderer';
+import { CodonLexer } from "./lexer";
+import { compareGenomes } from "./mutations";
+import { Canvas2DRenderer } from "./renderer";
+import { CodonVM } from "./vm";
 
 /**
  * Detailed comparison result with educational metrics
@@ -52,7 +52,12 @@ export interface GenomeComparisonResult {
   /** Human-readable analysis */
   analysis: {
     /** Overall similarity classification */
-    similarity: 'identical' | 'very-similar' | 'similar' | 'different' | 'very-different';
+    similarity:
+      | "identical"
+      | "very-similar"
+      | "similar"
+      | "different"
+      | "very-different";
     /** Key differences summary */
     description: string;
     /** Educational insights */
@@ -68,7 +73,10 @@ export interface GenomeComparisonResult {
  * @param codons2 - Second codon array
  * @returns Number of differing positions
  */
-function calculateHammingDistance(codons1: string[], codons2: string[]): number {
+function calculateHammingDistance(
+  codons1: string[],
+  codons2: string[],
+): number {
   const maxLength = Math.max(codons1.length, codons2.length);
   let distance = 0;
 
@@ -95,7 +103,7 @@ function calculatePixelDifference(
   genome1: string,
   genome2: string,
   width: number = 300,
-  height: number = 300
+  height: number = 300,
 ): number {
   const lexer = new CodonLexer();
 
@@ -104,14 +112,14 @@ function calculatePixelDifference(
     const tokens1 = lexer.tokenize(genome1);
     const tokens2 = lexer.tokenize(genome2);
 
-    const canvas1 = document.createElement('canvas');
+    const canvas1 = document.createElement("canvas");
     canvas1.width = width;
     canvas1.height = height;
     const renderer1 = new Canvas2DRenderer(canvas1);
     const vm1 = new CodonVM(renderer1);
     vm1.run(tokens1);
 
-    const canvas2 = document.createElement('canvas');
+    const canvas2 = document.createElement("canvas");
     canvas2.width = width;
     canvas2.height = height;
     const renderer2 = new Canvas2DRenderer(canvas2);
@@ -119,8 +127,8 @@ function calculatePixelDifference(
     vm2.run(tokens2);
 
     // Compare pixels
-    const ctx1 = canvas1.getContext('2d')!;
-    const ctx2 = canvas2.getContext('2d')!;
+    const ctx1 = canvas1.getContext("2d")!;
+    const ctx2 = canvas2.getContext("2d")!;
     const imageData1 = ctx1.getImageData(0, 0, width, height);
     const imageData2 = ctx2.getImageData(0, 0, width, height);
 
@@ -152,12 +160,14 @@ function calculatePixelDifference(
 /**
  * Classify similarity level based on codon difference percentage
  */
-function classifySimilarity(codonDiffPercent: number): 'identical' | 'very-similar' | 'similar' | 'different' | 'very-different' {
-  if (codonDiffPercent === 0) return 'identical';
-  if (codonDiffPercent < 10) return 'very-similar';
-  if (codonDiffPercent < 30) return 'similar';
-  if (codonDiffPercent < 60) return 'different';
-  return 'very-different';
+function classifySimilarity(
+  codonDiffPercent: number,
+): "identical" | "very-similar" | "similar" | "different" | "very-different" {
+  if (codonDiffPercent === 0) return "identical";
+  if (codonDiffPercent < 10) return "very-similar";
+  if (codonDiffPercent < 30) return "similar";
+  if (codonDiffPercent < 60) return "different";
+  return "very-different";
 }
 
 /**
@@ -167,16 +177,16 @@ function generateDescription(
   codonDiff: number,
   pixelDiff: number,
   lengthDiff: number,
-  similarity: string
+  similarity: string,
 ): string {
   const parts: string[] = [];
 
   // Similarity level
-  if (similarity === 'identical') {
-    return 'The genomes are identical - no differences detected.';
+  if (similarity === "identical") {
+    return "The genomes are identical - no differences detected.";
   }
 
-  parts.push(`The genomes are ${similarity.replace('-', ' ')}`);
+  parts.push(`The genomes are ${similarity.replace("-", " ")}`);
 
   // Sequence differences
   if (codonDiff > 0) {
@@ -185,22 +195,32 @@ function generateDescription(
 
   // Visual differences
   if (pixelDiff === 0) {
-    parts.push('producing identical visual output (synonymous changes only)');
+    parts.push("producing identical visual output (synonymous changes only)");
   } else if (pixelDiff < 5) {
-    parts.push('with minimal visual differences');
+    parts.push("with minimal visual differences");
   } else if (pixelDiff < 30) {
     parts.push(`with ${pixelDiff.toFixed(1)}% visual change`);
   } else {
-    parts.push(`producing substantially different output (${pixelDiff.toFixed(1)}% pixels differ)`);
+    parts.push(
+      `producing substantially different output (${
+        pixelDiff.toFixed(
+          1,
+        )
+      }% pixels differ)`,
+    );
   }
 
   // Length differences
   if (lengthDiff !== 0) {
-    const longer = lengthDiff > 0 ? 'second' : 'first';
-    parts.push(`The ${longer} genome is ${Math.abs(lengthDiff)} codon${Math.abs(lengthDiff) === 1 ? '' : 's'} longer`);
+    const longer = lengthDiff > 0 ? "second" : "first";
+    parts.push(
+      `The ${longer} genome is ${Math.abs(lengthDiff)} codon${
+        Math.abs(lengthDiff) === 1 ? "" : "s"
+      } longer`,
+    );
   }
 
-  return parts.join('. ') + '.';
+  return parts.join(". ") + ".";
 }
 
 /**
@@ -209,42 +229,54 @@ function generateDescription(
 function generateInsights(
   codonDiff: number,
   pixelDiff: number,
-  differences: Array<{ position: number; original: string; mutated: string }>
+  differences: Array<{ position: number; original: string; mutated: string }>,
 ): string[] {
   const insights: string[] = [];
 
   // Silent mutations detected
   if (codonDiff > 0 && pixelDiff < 5) {
-    insights.push('💡 Silent mutations detected: sequence changes without visual effect (synonymous codons)');
+    insights.push(
+      "💡 Silent mutations detected: sequence changes without visual effect (synonymous codons)",
+    );
   }
 
   // Frameshift detection
-  const hasFrameshift = differences.some(d => !d.original || !d.mutated);
+  const hasFrameshift = differences.some((d) => !d.original || !d.mutated);
   if (hasFrameshift) {
-    insights.push('⚠️ Frameshift detected: length mismatch indicates insertion/deletion mutations');
+    insights.push(
+      "⚠️ Frameshift detected: length mismatch indicates insertion/deletion mutations",
+    );
   }
 
   // Localized changes
   if (differences.length > 0 && differences.length < 5 && pixelDiff < 30) {
-    insights.push('🎯 Localized changes: few codon differences with moderate visual impact');
+    insights.push(
+      "🎯 Localized changes: few codon differences with moderate visual impact",
+    );
   }
 
   // Catastrophic differences
   if (pixelDiff > 70) {
-    insights.push('🔴 Catastrophic differences: genomes produce very different outputs');
+    insights.push(
+      "🔴 Catastrophic differences: genomes produce very different outputs",
+    );
   }
 
   // High similarity
   if (codonDiff < 10 && pixelDiff < 10) {
-    insights.push('✅ High similarity: genomes are very close, possibly minor variations of same design');
+    insights.push(
+      "✅ High similarity: genomes are very close, possibly minor variations of same design",
+    );
   }
 
   // No insights needed for identical
   if (codonDiff === 0 && pixelDiff === 0) {
-    return ['✨ Perfect match: genomes are identical'];
+    return ["✨ Perfect match: genomes are identical"];
   }
 
-  return insights.length > 0 ? insights : ['📊 Mixed changes: combination of sequence and visual differences'];
+  return insights.length > 0
+    ? insights
+    : ["📊 Mixed changes: combination of sequence and visual differences"];
 }
 
 /**
@@ -254,16 +286,16 @@ function renderBothGenomes(
   genome1: string,
   genome2: string,
   width: number = 300,
-  height: number = 300
+  height: number = 300,
 ): { canvas1: string; canvas2: string; bothValid: boolean } {
   const lexer = new CodonLexer();
   let bothValid = true;
 
   // Render first genome
-  let canvas1DataURL = '';
+  let canvas1DataURL = "";
   try {
     const tokens1 = lexer.tokenize(genome1);
-    const canvas1 = document.createElement('canvas');
+    const canvas1 = document.createElement("canvas");
     canvas1.width = width;
     canvas1.height = height;
     const renderer1 = new Canvas2DRenderer(canvas1);
@@ -273,17 +305,17 @@ function renderBothGenomes(
   } catch (error) {
     bothValid = false;
     // Create blank canvas for invalid genome
-    const canvas = document.createElement('canvas');
+    const canvas = document.createElement("canvas");
     canvas.width = width;
     canvas.height = height;
     canvas1DataURL = canvas.toDataURL();
   }
 
   // Render second genome
-  let canvas2DataURL = '';
+  let canvas2DataURL = "";
   try {
     const tokens2 = lexer.tokenize(genome2);
-    const canvas2 = document.createElement('canvas');
+    const canvas2 = document.createElement("canvas");
     canvas2.width = width;
     canvas2.height = height;
     const renderer2 = new Canvas2DRenderer(canvas2);
@@ -293,7 +325,7 @@ function renderBothGenomes(
   } catch (error) {
     bothValid = false;
     // Create blank canvas for invalid genome
-    const canvas = document.createElement('canvas');
+    const canvas = document.createElement("canvas");
     canvas.width = width;
     canvas.height = height;
     canvas2DataURL = canvas.toDataURL();
@@ -302,7 +334,7 @@ function renderBothGenomes(
   return {
     canvas1: canvas1DataURL,
     canvas2: canvas2DataURL,
-    bothValid
+    bothValid,
   };
 }
 
@@ -327,7 +359,7 @@ function renderBothGenomes(
 export function compareGenomesDetailed(
   genome1: string,
   genome2: string,
-  options: { canvasWidth?: number; canvasHeight?: number } = {}
+  options: { canvasWidth?: number; canvasHeight?: number } = {},
 ): GenomeComparisonResult {
   const { canvasWidth = 300, canvasHeight = 300 } = options;
 
@@ -337,41 +369,60 @@ export function compareGenomesDetailed(
 
   // Calculate metrics
   const maxLength = Math.max(originalCodons.length, mutatedCodons.length);
-  const hammingDistance = calculateHammingDistance(originalCodons, mutatedCodons);
-  const codonDifferencePercent = maxLength > 0 ? (hammingDistance / maxLength) * 100 : 0;
+  const hammingDistance = calculateHammingDistance(
+    originalCodons,
+    mutatedCodons,
+  );
+  const codonDifferencePercent = maxLength > 0
+    ? (hammingDistance / maxLength) * 100
+    : 0;
   const lengthDifference = mutatedCodons.length - originalCodons.length;
-  const pixelDifferencePercent = calculatePixelDifference(genome1, genome2, canvasWidth, canvasHeight);
+  const pixelDifferencePercent = calculatePixelDifference(
+    genome1,
+    genome2,
+    canvasWidth,
+    canvasHeight,
+  );
 
   // Visual comparison
   const visual = renderBothGenomes(genome1, genome2, canvasWidth, canvasHeight);
 
   // Analysis
   const similarity = classifySimilarity(codonDifferencePercent);
-  const description = generateDescription(codonDifferencePercent, pixelDifferencePercent, lengthDifference, similarity);
-  const insights = generateInsights(codonDifferencePercent, pixelDifferencePercent, differences);
+  const description = generateDescription(
+    codonDifferencePercent,
+    pixelDifferencePercent,
+    lengthDifference,
+    similarity,
+  );
+  const insights = generateInsights(
+    codonDifferencePercent,
+    pixelDifferencePercent,
+    differences,
+  );
 
   return {
     codons: {
       original: originalCodons,
       mutated: mutatedCodons,
-      differences
+      differences,
     },
     metrics: {
       codonDifferencePercent,
       hammingDistance,
       lengthDifference,
       pixelDifferencePercent,
-      maxLength
+      maxLength,
     },
     visual: {
       originalCanvas: visual.canvas1,
       mutatedCanvas: visual.canvas2,
-      bothValid: visual.bothValid
+      bothValid: visual.bothValid,
     },
     analysis: {
       similarity,
       description,
-      insights
-    }
+      insights,
+    },
   };
 }

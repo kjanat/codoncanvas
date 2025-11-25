@@ -4,21 +4,21 @@
  * Validates that all new .genome files parse and render without errors
  */
 
-import { readFileSync } from 'fs';
-import { CodonLexer } from '../src/lexer.js';
-import { CodonVM } from '../src/vm.js';
-import { Canvas2DRenderer } from '../src/renderer.js';
-import { createCanvas } from 'canvas';
+import { createCanvas } from "canvas";
+import { readFileSync } from "fs";
+import { CodonLexer } from "../src/lexer.js";
+import { Canvas2DRenderer } from "../src/renderer.js";
+import { CodonVM } from "../src/vm.js";
 
 const examples = [
-  'fibonacci-spiral.genome',
-  'parametric-rose.genome',
-  'sierpinski-approximation.genome',
-  'golden-ratio-demo.genome',
-  'prime-number-spiral.genome'
+  "fibonacci-spiral.genome",
+  "parametric-rose.genome",
+  "sierpinski-approximation.genome",
+  "golden-ratio-demo.genome",
+  "prime-number-spiral.genome",
 ];
 
-console.log('🧬 Testing new algorithmic showcase examples...\n');
+console.log("🧬 Testing new algorithmic showcase examples...\n");
 
 const lexer = new CodonLexer();
 let allPassed = true;
@@ -28,7 +28,7 @@ for (const example of examples) {
     console.log(`Testing ${example}...`);
 
     // Read genome file
-    const genome = readFileSync(`examples/${example}`, 'utf-8');
+    const genome = readFileSync(`examples/${example}`, "utf-8");
 
     // Tokenize
     const tokens = lexer.tokenize(genome);
@@ -36,7 +36,7 @@ for (const example of examples) {
 
     // Validate structure
     const errors = lexer.validateStructure(tokens);
-    if (errors.filter(e => e.severity === 'error').length > 0) {
+    if (errors.filter((e) => e.severity === "error").length > 0) {
       console.log(`  ✗ Validation errors:`, errors);
       allPassed = false;
       continue;
@@ -52,14 +52,13 @@ for (const example of examples) {
     console.log(`  ✓ Rendered: ${snapshots.length} instructions executed`);
 
     // Check operations (may not be exposed in public API)
-    const opCount = (renderer as any).operations?.length || 'N/A';
+    const opCount = (renderer as any).operations?.length || "N/A";
     console.log(`  ✓ Drawing operations: ${opCount}`);
 
     // Basic success check - if we got here, rendering succeeded
     console.log(`  ✓ Final stack size: ${vm.state.stack.length}`);
 
     console.log(`  ✅ PASS\n`);
-
   } catch (error) {
     console.log(`  ❌ FAIL: ${error.message}\n`);
     allPassed = false;
@@ -67,9 +66,9 @@ for (const example of examples) {
 }
 
 if (allPassed) {
-  console.log('🎉 All examples passed!');
+  console.log("🎉 All examples passed!");
   process.exit(0);
 } else {
-  console.log('❌ Some examples failed');
+  console.log("❌ Some examples failed");
   process.exit(1);
 }

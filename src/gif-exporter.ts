@@ -3,10 +3,9 @@
  * Uses gif.js library for encoding
  */
 
-import type { VMState } from './types';
-
-// @ts-ignore - gif.js doesn't have TypeScript definitions
-import GIF from 'gif.js';
+// @ts-expect-error - gif.js doesn't have TypeScript definitions
+import GIF from "gif.js";
+import type { VMState } from "./types";
 
 export interface GifExportOptions {
   width?: number;
@@ -38,7 +37,7 @@ export class GifExporter {
     this.fps = options.fps ?? 4; // 4 FPS for smooth but reasonable size
     this.repeat = options.repeat ?? 0; // loop once by default
     // Note: workerScript can be provided if needed, but gif.js will use default if not specified
-    this.workerScript = options.workerScript ?? '';
+    this.workerScript = options.workerScript ?? "";
   }
 
   /**
@@ -46,7 +45,7 @@ export class GifExporter {
    */
   async exportFrames(
     frames: HTMLCanvasElement[],
-    onProgress?: (progress: ExportProgress) => void
+    onProgress?: (progress: ExportProgress) => void,
   ): Promise<Blob> {
     return new Promise((resolve, reject) => {
       const gifOptions: any = {
@@ -72,7 +71,7 @@ export class GifExporter {
       }
 
       // Progress callback
-      gif.on('progress', (percent: number) => {
+      gif.on("progress", (percent: number) => {
         if (onProgress) {
           onProgress({
             percent: Math.round(percent * 100),
@@ -83,12 +82,12 @@ export class GifExporter {
       });
 
       // Finished callback
-      gif.on('finished', (blob: Blob) => {
+      gif.on("finished", (blob: Blob) => {
         resolve(blob);
       });
 
       // Error callback
-      gif.on('error', (error: Error) => {
+      gif.on("error", (error: Error) => {
         reject(error);
       });
 
@@ -100,9 +99,9 @@ export class GifExporter {
   /**
    * Download GIF blob as file
    */
-  downloadGif(blob: Blob, filename: string = 'animation.gif'): void {
+  downloadGif(blob: Blob, filename: string = "animation.gif"): void {
     const url = URL.createObjectURL(blob);
-    const link = document.createElement('a');
+    const link = document.createElement("a");
     link.href = url;
     link.download = filename;
     document.body.appendChild(link);
@@ -115,13 +114,13 @@ export class GifExporter {
    * Capture single canvas frame as ImageData
    */
   captureFrame(canvas: HTMLCanvasElement): HTMLCanvasElement {
-    const captureCanvas = document.createElement('canvas');
+    const captureCanvas = document.createElement("canvas");
     captureCanvas.width = this.width;
     captureCanvas.height = this.height;
-    const ctx = captureCanvas.getContext('2d');
+    const ctx = captureCanvas.getContext("2d");
 
     if (!ctx) {
-      throw new Error('Failed to get 2D context for frame capture');
+      throw new Error("Failed to get 2D context for frame capture");
     }
 
     ctx.drawImage(canvas, 0, 0, this.width, this.height);

@@ -29,8 +29,8 @@
  * ```
  */
 
-import type { VMState } from './types.js';
-import { Opcode } from './types.js';
+import type { VMState } from "./types.js";
+import { Opcode } from "./types.js";
 
 /**
  * MIDI file generator for CodonCanvas genomes.
@@ -56,7 +56,7 @@ export class MIDIExporter {
     // Add tempo meta event at start
     events.push({
       deltaTime: 0,
-      type: 'meta',
+      type: "meta",
       metaType: 0x51, // Set Tempo
       data: this.encodeTempo(tempo),
     });
@@ -71,7 +71,7 @@ export class MIDIExporter {
           opcode,
           snapshot,
           currentTime,
-          lastVelocity
+          lastVelocity,
         );
         events.push(...midiEvents);
 
@@ -88,15 +88,15 @@ export class MIDIExporter {
     // Add End of Track meta event
     events.push({
       deltaTime: currentTime,
-      type: 'meta',
-      metaType: 0x2F,
+      type: "meta",
+      metaType: 0x2f,
       data: new Uint8Array(0),
     });
 
     // Build MIDI file
     const midiData = this.buildMIDIFile(events);
     // Cast to BlobPart for type safety
-    return new Blob([midiData as BlobPart], { type: 'audio/midi' });
+    return new Blob([midiData as BlobPart], { type: "audio/midi" });
   }
 
   /**
@@ -106,7 +106,7 @@ export class MIDIExporter {
     opcode: Opcode,
     state: VMState,
     time: number,
-    velocity: number
+    velocity: number,
   ): MIDIEvent[] {
     const events: MIDIEvent[] = [];
     const channel = 0; // MIDI channel 1 (0-indexed)
@@ -115,31 +115,61 @@ export class MIDIExporter {
       // Drawing opcodes → Notes
       case Opcode.CIRCLE:
         events.push(
-          ...this.createNoteEvents(60, velocity, time, this.NOTE_DURATION_TICKS, channel)
+          ...this.createNoteEvents(
+            60,
+            velocity,
+            time,
+            this.NOTE_DURATION_TICKS,
+            channel,
+          ),
         );
         break;
 
       case Opcode.RECT:
         events.push(
-          ...this.createNoteEvents(64, velocity, time, this.NOTE_DURATION_TICKS, channel)
+          ...this.createNoteEvents(
+            64,
+            velocity,
+            time,
+            this.NOTE_DURATION_TICKS,
+            channel,
+          ),
         );
         break;
 
       case Opcode.LINE:
         events.push(
-          ...this.createNoteEvents(67, velocity, time, this.NOTE_DURATION_TICKS, channel)
+          ...this.createNoteEvents(
+            67,
+            velocity,
+            time,
+            this.NOTE_DURATION_TICKS,
+            channel,
+          ),
         );
         break;
 
       case Opcode.TRIANGLE:
         events.push(
-          ...this.createNoteEvents(69, velocity, time, this.NOTE_DURATION_TICKS, channel)
+          ...this.createNoteEvents(
+            69,
+            velocity,
+            time,
+            this.NOTE_DURATION_TICKS,
+            channel,
+          ),
         );
         break;
 
       case Opcode.ELLIPSE:
         events.push(
-          ...this.createNoteEvents(72, velocity, time, this.NOTE_DURATION_TICKS, channel)
+          ...this.createNoteEvents(
+            72,
+            velocity,
+            time,
+            this.NOTE_DURATION_TICKS,
+            channel,
+          ),
         );
         break;
 
@@ -147,7 +177,7 @@ export class MIDIExporter {
       case Opcode.ROTATE:
         if (state.stack.length > 0) {
           const degrees = state.stack[state.stack.length - 1];
-          const ccValue = Math.floor((degrees % 360) / 360 * 127);
+          const ccValue = Math.floor(((degrees % 360) / 360) * 127);
           events.push(this.createControlChange(1, ccValue, time, channel)); // Modulation
         }
         break;
@@ -163,10 +193,12 @@ export class MIDIExporter {
       case Opcode.COLOR:
         if (state.stack.length >= 3) {
           const [h, s, l] = state.stack.slice(-3);
-          const panValue = Math.floor((h % 360) / 360 * 127);
+          const panValue = Math.floor(((h % 360) / 360) * 127);
           const brightnessValue = Math.floor((l / 100) * 127);
           events.push(this.createControlChange(10, panValue, time, channel)); // Pan
-          events.push(this.createControlChange(74, brightnessValue, time, channel)); // Brightness
+          events.push(
+            this.createControlChange(74, brightnessValue, time, channel),
+          ); // Brightness
         }
         break;
 
@@ -193,7 +225,15 @@ export class MIDIExporter {
       case Opcode.EQ:
       case Opcode.LT:
         // Comparison opcodes → short high note (data operations)
-        events.push(...this.createNoteEvents(84, velocity, time, this.NOTE_DURATION_TICKS / 4, channel));
+        events.push(
+          ...this.createNoteEvents(
+            84,
+            velocity,
+            time,
+            this.NOTE_DURATION_TICKS / 4,
+            channel,
+          ),
+        );
         break;
     }
 
@@ -208,18 +248,18 @@ export class MIDIExporter {
     velocity: number,
     startTime: number,
     duration: number,
-    channel: number
+    channel: number,
   ): MIDIEvent[] {
     return [
       {
         deltaTime: 0,
-        type: 'channel',
+        type: "channel",
         status: 0x90 | channel, // Note On
         data: new Uint8Array([note, velocity]),
       },
       {
         deltaTime: duration,
-        type: 'channel',
+        type: "channel",
         status: 0x80 | channel, // Note Off
         data: new Uint8Array([note, 64]),
       },
@@ -233,12 +273,12 @@ export class MIDIExporter {
     controller: number,
     value: number,
     time: number,
-    channel: number
+    channel: number,
   ): MIDIEvent {
     return {
       deltaTime: 0,
-      type: 'channel',
-      status: 0xB0 | channel, // Control Change
+      type: "channel",
+      status: 0xb0 | channel, // Control Change
       data: new Uint8Array([controller, value]),
     };
   }
@@ -256,9 +296,9 @@ export class MIDIExporter {
   private encodeTempo(bpm: number): Uint8Array {
     const microsecondsPerQuarter = Math.floor(60000000 / bpm);
     return new Uint8Array([
-      (microsecondsPerQuarter >> 16) & 0xFF,
-      (microsecondsPerQuarter >> 8) & 0xFF,
-      microsecondsPerQuarter & 0xFF,
+      (microsecondsPerQuarter >> 16) & 0xff,
+      (microsecondsPerQuarter >> 8) & 0xff,
+      microsecondsPerQuarter & 0xff,
     ]);
   }
 
@@ -307,7 +347,7 @@ export class MIDIExporter {
     const view = new DataView(header.buffer);
 
     // "MThd"
-    header[0] = 0x4D;
+    header[0] = 0x4d;
     header[1] = 0x54;
     header[2] = 0x68;
     header[3] = 0x64;
@@ -332,10 +372,10 @@ export class MIDIExporter {
       const deltaBytes = this.encodeVariableLength(event.deltaTime);
       eventData.push(...deltaBytes);
 
-      if (event.type === 'meta' && event.metaType !== undefined) {
+      if (event.type === "meta" && event.metaType !== undefined) {
         // Meta event: FF <type> <length> <data>
-        eventData.push(0xFF, event.metaType, event.data.length, ...event.data);
-      } else if (event.type === 'channel' && event.status !== undefined) {
+        eventData.push(0xff, event.metaType, event.data.length, ...event.data);
+      } else if (event.type === "channel" && event.status !== undefined) {
         // Channel event: <status> <data>
         eventData.push(event.status, ...event.data);
       }
@@ -346,10 +386,10 @@ export class MIDIExporter {
     const view = new DataView(trackChunk.buffer);
 
     // "MTrk"
-    trackChunk[0] = 0x4D;
+    trackChunk[0] = 0x4d;
     trackChunk[1] = 0x54;
     trackChunk[2] = 0x72;
-    trackChunk[3] = 0x6B;
+    trackChunk[3] = 0x6b;
 
     view.setUint32(4, eventData.length); // Track length
     trackChunk.set(eventData, 8);
@@ -362,11 +402,11 @@ export class MIDIExporter {
    */
   private encodeVariableLength(value: number): number[] {
     const bytes: number[] = [];
-    let buffer = value & 0x7F;
+    let buffer = value & 0x7f;
 
-    while (value >>= 7) {
-      bytes.unshift((buffer & 0x7F) | 0x80);
-      buffer = value & 0x7F;
+    while ((value >>= 7)) {
+      bytes.unshift((buffer & 0x7f) | 0x80);
+      buffer = value & 0x7f;
     }
 
     bytes.push(buffer);
@@ -379,7 +419,7 @@ export class MIDIExporter {
  */
 interface MIDIEvent {
   deltaTime: number; // Time offset in ticks
-  type: 'channel' | 'meta';
+  type: "channel" | "meta";
   status?: number; // For channel events
   metaType?: number; // For meta events
   data: Uint8Array;

@@ -31,24 +31,28 @@ Traditional genetics education faces a persistent challenge—mutations, reading
 #### The DNA Metaphor: Four Strategic Advantages
 
 **1. Tangible Causality**
+
 - DNA changes → immediate visual phenotype changes
 - Silent mutation → identical output (redundancy becomes concrete)
 - Missense mutation → shape changes (function alteration visible)
 - Frameshift → catastrophic downstream effects (reading frame sensitivity embodied)
 
 **2. Biological Authenticity**
+
 - All 64 possible DNA triplets (codons) mapped to operations
 - Authentic start codon (ATG) and stop codons (TAA, TAG, TGA)
 - Synonymous codons demonstrate genetic redundancy (e.g., GGA/GGC/GGG/GGT all produce CIRCLE)
 - Reading frames enforced through triplet tokenization
 
 **3. Low Cognitive Barriers**
+
 - Complete language specification fits on a single-page codon chart
 - No prerequisite programming knowledge required
 - DNA alphabet (A, C, G, T) familiar from biology classes
 - Syntax errors map to biological concepts (frameshift, premature stop)
 
 **4. Creative Motivation**
+
 - Code becomes art (visual output motivates experimentation)
 - Aesthetic feedback loop encourages iteration
 - "Evolving" programs through mutation feels like discovery, not debugging
@@ -86,6 +90,7 @@ CodonCanvas's pedagogical approach synthesizes multiple educational frameworks:
 **Core Principle**: Learning happens most effectively when learners construct external artifacts they can reflect upon.
 
 **CodonCanvas Application**:
+
 - Students construct visual artifacts (programs → images)
 - Artifacts are shareable and critique-able
 - Construction process reveals genetic concepts experientially
@@ -100,17 +105,20 @@ CodonCanvas's pedagogical approach synthesizes multiple educational frameworks:
 **CodonCanvas Strategies**:
 
 **Reducing Extraneous Load**:
+
 - Minimal syntax (only triplets + whitespace/comments)
 - Immediate visual feedback reduces "where's the error?" searches
 - Color-coded codon families reduce visual parsing effort
 - Built-in examples eliminate "blank page" anxiety
 
 **Managing Intrinsic Load**:
+
 - Progressive disclosure: Start with simple shapes, add transforms later
 - Chunking: Opcode families (drawing, transform, stack) create mental schemas
 - Dual coding: Visual output + textual code support multiple processing channels
 
 **Optimizing Germane Load**:
+
 - Mutation tools encourage schema formation ("What pattern predicts silent mutations?")
 - Diff viewer highlights structural changes supporting pattern recognition
 - Timeline scrubber externalizes execution flow, reducing mental simulation load
@@ -124,18 +132,21 @@ CodonCanvas's pedagogical approach synthesizes multiple educational frameworks:
 **CodonCanvas Implementation**:
 
 **Multiple Means of Representation**:
+
 - Visual output (primary)
 - Audio synthesis mode (multi-sensory learners, accessibility)
 - Timeline scrubber (sequential execution visualization)
 - Codon chart (spatial reference)
 
 **Multiple Means of Action/Expression**:
+
 - Text editor (manual coding)
 - Mutation tools (guided exploration)
 - Example gallery (remixing/modification entry point)
 - Save/load (asynchronous work, portfolio building)
 
 **Multiple Means of Engagement**:
+
 - Creative expression (intrinsic motivation)
 - Achievement system (gamification for goal-oriented learners)
 - Research metrics (analytical learners can explore patterns)
@@ -150,12 +161,14 @@ CodonCanvas's pedagogical approach synthesizes multiple educational frameworks:
 **CodonCanvas Features**:
 
 **Formative Assessment Tools**:
+
 - Real-time linter feedback (syntax errors as learning opportunities)
 - Mutation analyzer (predicts effects before execution)
 - Diff viewer (explicit comparison supports self-assessment)
 - Teacher dashboard (identifies struggling students via engagement metrics)
 
 **Learning Progressions**:
+
 - Leveled examples (beginner → intermediate → advanced)
 - Achievement system (scaffolded challenges)
 - Assessment rubrics (clear success criteria)
@@ -168,6 +181,7 @@ CodonCanvas's pedagogical approach synthesizes multiple educational frameworks:
 **Core Principle**: Learning occurs through participation in authentic practice communities.
 
 **CodonCanvas Context**:
+
 - Students engage in authentic programming practices (writing, debugging, iterating)
 - Shared vocabulary emerges naturally ("That's a frameshift!", "Let's add a LOOP")
 - Gallery sharing creates artifacts for community discussion
@@ -184,6 +198,7 @@ CodonCanvas's pedagogical approach synthesizes multiple educational frameworks:
 **Decision**: Map all 64 possible DNA triplets to operations, leaving no undefined codons.
 
 **Rationale**:
+
 1. **Biological Completeness**: Real genetic code uses all 64 codons. Partial mapping would create misleading mental models.
 2. **No Undefined Behavior**: Every possible input is valid (or explicitly invalid via frameshift), eliminating "mystery errors."
 3. **Synonymous Codons**: Complete mapping enables authentic degeneracy—multiple codons for same operation (e.g., 4 codons → CIRCLE) models genetic redundancy.
@@ -198,6 +213,7 @@ CodonCanvas's pedagogical approach synthesizes multiple educational frameworks:
 **Decision**: Use stack-based VM (PUSH/POP/DUP) rather than register-based or variable-based.
 
 **Rationale**:
+
 1. **Simplicity**: No named variables to track. State is entirely spatial (stack order).
 2. **Composability**: Operations compose naturally—PUSH, PUSH, ADD is self-explanatory sequence.
 3. **Biological Parallel**: DNA is linear sequential instructions, like stack programs.
@@ -215,6 +231,7 @@ CodonCanvas's pedagogical approach synthesizes multiple educational frameworks:
 **Example**: `GAA TCC` → PUSH 57 (T=3, C=1, C=1 → 3×16 + 1×4 + 1 = 53)
 
 **Rationale**:
+
 1. **DNA Native**: Uses DNA alphabet directly, no external number syntax.
 2. **Elegant Mapping**: Codon structure naturally encodes 0-63 range (3 digits, base 4 = 64 values).
 3. **Biological Metaphor**: Genetic information encoded in nucleotide sequences.
@@ -231,6 +248,7 @@ CodonCanvas's pedagogical approach synthesizes multiple educational frameworks:
 **Decision**: Primary visual output with optional audio synthesis mode.
 
 **Rationale**:
+
 1. **Accessibility**: Audio mode supports visually impaired learners.
 2. **Multi-Sensory Engagement**: Audio adds dimension for kinesthetic/auditory learners.
 3. **Aesthetic Variety**: Some students discover they prefer "hearing" mutations vs seeing them.
@@ -249,12 +267,14 @@ CodonCanvas's pedagogical approach synthesizes multiple educational frameworks:
 **Evolutionary Rationale**:
 
 **Greater Pedagogical Value**:
+
 - **Algorithmic Art**: Arithmetic enables fractals, spirals, Fibonacci sequences—patterns impossible with only primitives.
 - **Computational Thinking**: Loops and arithmetic introduce algorithmic reasoning alongside biological concepts.
 - **Research Applications**: Genetic algorithms require fitness functions (comparison ops) and iterative evolution (loops).
 - **Curriculum Depth**: Advanced students explore computational complexity (O(n) vs O(n²) patterns visible in output).
 
 **Biological Metaphors Enhanced**:
+
 - **Arithmetic as Metabolism**: Mathematical operations model cellular computation.
 - **Loops as Gene Regulation**: Repeated expression patterns analogous to developmental biology.
 - **Comparison as Feedback**: Conditional logic mirrors biological feedback loops (homeostasis).
@@ -262,6 +282,7 @@ CodonCanvas's pedagogical approach synthesizes multiple educational frameworks:
 **Trade-off**: Removed NOISE (artistic texture) in favor of computational features. NOISE was "nice-to-have"; arithmetic is "enables new pedagogical domain."
 
 **Validation Metrics**:
+
 - Fractal examples (Fibonacci spiral, Sierpiński triangle) most-shared in gallery
 - 40% of advanced students use LOOP in final projects (assessment data)
 - Teacher feedback: "Arithmetic unlocked AP CS integration opportunities"
@@ -277,14 +298,17 @@ CodonCanvas's pedagogical approach synthesizes multiple educational frameworks:
 CodonCanvas employs **scaffolded discovery learning** across five developmental stages:
 
 #### Stage 1: Exploration (Sessions 1-2)
+
 **Goal**: Build confidence, establish cause-effect mental model
 
 **Activities**:
+
 - Run pre-built examples
 - Single-codon mutations (GGA→GGC silent, GGA→CCA missense)
 - Observe visual changes
 
 **Success Indicators**:
+
 - Student can predict silent mutation outcome
 - Student explains difference between missense/nonsense
 - Time-to-first-artifact <5 minutes
@@ -292,14 +316,17 @@ CodonCanvas employs **scaffolded discovery learning** across five developmental 
 **Pedagogical Principle**: Low-stakes experimentation before formal instruction builds intrinsic motivation (Papert's constructionism).
 
 #### Stage 2: Comprehension (Sessions 3-4)
+
 **Goal**: Understand codon families, stack operations
 
 **Activities**:
+
 - Modify numeric literals (change PUSH values)
 - Compose shape + transform sequences
 - Debug stack underflow errors
 
 **Success Indicators**:
+
 - Student reads codon chart fluently
 - Student explains stack operation sequence
 - Student successfully modifies example to meet specification
@@ -307,14 +334,17 @@ CodonCanvas employs **scaffolded discovery learning** across five developmental 
 **Pedagogical Principle**: Guided practice with immediate feedback reduces cognitive load during schema formation (Sweller).
 
 #### Stage 3: Application (Sessions 5-7)
+
 **Goal**: Create original programs, apply mutation concepts
 
 **Activities**:
+
 - Design simple patterns (3-5 shapes)
 - Intentionally introduce frameshifts/nonsense mutations
 - Use timeline scrubber for debugging
 
 **Success Indicators**:
+
 - Student creates original genome from scratch
 - Student intentionally demonstrates 4+ mutation types
 - Student explains frameshift cascade effect
@@ -322,14 +352,17 @@ CodonCanvas employs **scaffolded discovery learning** across five developmental 
 **Pedagogical Principle**: Authentic creation tasks consolidate understanding (Bloom's taxonomy: Apply→Analyze).
 
 #### Stage 4: Analysis (Sessions 8-10)
+
 **Goal**: Systematic exploration, pattern recognition
 
 **Activities**:
+
 - Genetic algorithm experiments (fitness-based selection)
 - Codon usage analysis (which opcodes appear in successful programs?)
 - Comparative genomics (diff viewer analysis)
 
 **Success Indicators**:
+
 - Student formulates hypotheses about codon patterns
 - Student designs controlled mutation experiments
 - Student interprets research metrics data
@@ -337,14 +370,17 @@ CodonCanvas employs **scaffolded discovery learning** across five developmental 
 **Pedagogical Principle**: Inquiry-based learning through authentic research tasks (scientific method application).
 
 #### Stage 5: Synthesis (Sessions 11-15)
+
 **Goal**: Transfer to real genetics, computational thinking
 
 **Activities**:
+
 - Real DNA sequence analysis (compare to CodonCanvas)
 - Algorithmic pattern creation (loops, arithmetic)
 - Peer teaching (explain concepts to others)
 
 **Success Indicators**:
+
 - Student connects CodonCanvas to real genetic code
 - Student explains limitations of metaphor
 - Student applies computational thinking to biology problems
@@ -355,36 +391,40 @@ CodonCanvas employs **scaffolded discovery learning** across five developmental 
 
 Each biological mutation type maps to observable CodonCanvas behavior:
 
-| Mutation Type | Biology | CodonCanvas | Observable Effect | Pedagogical Value |
-|---------------|---------|-------------|-------------------|-------------------|
-| **Silent** | Same amino acid | Same opcode family | Identical visual output | Demonstrates genetic redundancy |
-| **Missense** | Different amino acid | Different opcode | Changed shape/color | Shows function alteration |
-| **Nonsense** | Premature stop | TAA/TAG/TGA insertion | Truncated image | Illustrates incomplete proteins |
-| **Frameshift** | Shifted reading frame | Insert/delete 1-2 bases | Catastrophic downstream change | Reading frame sensitivity visceral |
-| **Insertion** | Add 3+ nucleotides | Add codon(s) | Additional shape | Demonstrates insertion effects |
-| **Deletion** | Remove 3+ nucleotides | Remove codon(s) | Missing shape | Demonstrates deletion effects |
-| **Duplication** | Repeat sequence | Copy codon block | Repeated pattern | Models gene duplication events |
+| Mutation Type   | Biology               | CodonCanvas             | Observable Effect              | Pedagogical Value                  |
+| --------------- | --------------------- | ----------------------- | ------------------------------ | ---------------------------------- |
+| **Silent**      | Same amino acid       | Same opcode family      | Identical visual output        | Demonstrates genetic redundancy    |
+| **Missense**    | Different amino acid  | Different opcode        | Changed shape/color            | Shows function alteration          |
+| **Nonsense**    | Premature stop        | TAA/TAG/TGA insertion   | Truncated image                | Illustrates incomplete proteins    |
+| **Frameshift**  | Shifted reading frame | Insert/delete 1-2 bases | Catastrophic downstream change | Reading frame sensitivity visceral |
+| **Insertion**   | Add 3+ nucleotides    | Add codon(s)            | Additional shape               | Demonstrates insertion effects     |
+| **Deletion**    | Remove 3+ nucleotides | Remove codon(s)         | Missing shape                  | Demonstrates deletion effects      |
+| **Duplication** | Repeat sequence       | Copy codon block        | Repeated pattern               | Models gene duplication events     |
 
 **Design Principle**: One-to-one mapping between biological concepts and observable behaviors eliminates need for abstract translation. Students SEE the consequences directly.
 
 ### Scaffolding Mechanisms
 
 **Progressive Disclosure**:
+
 - Examples ordered by complexity (5-codon minimum → 200-codon fractals)
 - Opcode families introduced sequentially (shapes → transforms → arithmetic)
 - Achievement system gates advanced features until foundations solid
 
 **Worked Examples**:
+
 - 48 built-in examples with inline comments
 - Mutation demos show before/after for each type
 - Tutorial mode provides step-by-step walkthroughs
 
 **Error Support**:
+
 - Linter provides actionable fix suggestions ("Insert A to restore frame")
 - Mutation analyzer predicts effects before execution
 - Timeline scrubber externalizes execution for debugging
 
 **Cognitive Tools**:
+
 - Codon chart (external reference, reduces memorization load)
 - Diff viewer (comparison tool for pattern recognition)
 - Research metrics (data for hypothesis testing)
@@ -400,6 +440,7 @@ CodonCanvas includes extensive research infrastructure for educational studies a
 ### Educational Research Applications
 
 **Learning Analytics**:
+
 - Session duration tracking
 - Opcode usage patterns
 - Error frequency analysis
@@ -407,12 +448,14 @@ CodonCanvas includes extensive research infrastructure for educational studies a
 - Achievement progression rates
 
 **Research Questions Addressable**:
+
 - Which mutation types are most difficult for students to predict?
 - Does visual programming improve genetics concept retention vs traditional instruction?
 - What codon patterns emerge in successful student programs?
 - How does achievement system impact engagement/persistence?
 
 **Ethical Design**:
+
 - Opt-in metrics collection (informed consent)
 - Anonymized data export (student privacy)
 - Teacher dashboard (formative feedback, not surveillance)
@@ -421,18 +464,21 @@ CodonCanvas includes extensive research infrastructure for educational studies a
 ### Computational Biology Research
 
 **Genetic Algorithms**:
+
 - Population management (create, mutate, select populations)
 - Fitness functions (image similarity, aesthetic scoring)
 - Evolution simulation (generational progression)
 - Selection strategies (tournament, roulette, elitist)
 
 **Research Capabilities**:
+
 - Test evolutionary hypotheses (mutation rate effects on adaptation)
 - Explore fitness landscape topology (local vs global optima)
 - Study genetic drift in small populations
 - Model selection pressure intensity
 
 **Mutation Analysis**:
+
 - Codon analyzer (frequency, distribution, conservation)
 - Mutation predictor (effect forecasting)
 - Comparative genomics (diff viewer, similarity metrics)
@@ -443,6 +489,7 @@ CodonCanvas includes extensive research infrastructure for educational studies a
 ### Data Collection Ethics
 
 **Principles**:
+
 1. **Transparency**: Students/parents informed about data collection
 2. **Consent**: Opt-in required, opt-out always available
 3. **Minimalism**: Collect only data necessary for educational improvement
@@ -451,6 +498,7 @@ CodonCanvas includes extensive research infrastructure for educational studies a
 6. **Purpose Limitation**: Data used only for stated educational/research purposes
 
 **Implementation**:
+
 - Metrics disabled by default (teacher enables per-class)
 - Clear privacy policy in educator documentation
 - Export/delete functionality (data portability/right to erasure)
@@ -467,9 +515,11 @@ CodonCanvas includes extensive research infrastructure for educational studies a
 CodonCanvas evolved across 92 autonomous development sessions, following an emergent rather than pre-planned trajectory:
 
 #### Phase 1: MVP Foundation (Sessions 1-30)
+
 **Focus**: Core engine, pedagogy tools
 
 **Key Deliverables**:
+
 - Lexer (triplet tokenization, validation)
 - VM (stack machine, 9 opcode families)
 - Renderer (Canvas2D graphics)
@@ -483,9 +533,11 @@ CodonCanvas evolved across 92 autonomous development sessions, following an emer
 **Milestone**: Could demonstrate all mutation types visually. MVP complete.
 
 #### Phase 2: Research & Education Tools (Sessions 31-70)
+
 **Focus**: Beyond MVP—research infrastructure, advanced pedagogy
 
 **Key Additions**:
+
 - Evolution engine (genetic algorithms)
 - Audio renderer (multi-sensory mode)
 - RNA alphabet support (biological diversity)
@@ -502,9 +554,11 @@ CodonCanvas evolved across 92 autonomous development sessions, following an emer
 **Milestone**: Transitioned from "toy language" to "research/education platform."
 
 #### Phase 3: Computational Features (Sessions 71-76)
+
 **Focus**: Arithmetic, comparison, loops—algorithmic art
 
 **Key Additions**:
+
 - Arithmetic opcodes (ADD, SUB, MUL, DIV)
 - Comparison opcodes (EQ, LT)
 - Loop control flow (LOOP)
@@ -516,9 +570,11 @@ CodonCanvas evolved across 92 autonomous development sessions, following an emer
 **Design Decision Rationale**: Arithmetic was NOT in MVP spec. However, during example creation (Session 70), recognized pattern limitation—only static compositions possible, no algorithmic patterns. Adding arithmetic unlocked fractals, spirals, mathematical art. Trade-off: Removed NOISE (low pedagogical value) to maintain 64-codon biological completeness.
 
 #### Phase 4: Polish & Launch Prep (Sessions 77-92)
+
 **Focus**: Documentation, testing, compliance validation
 
 **Key Activities**:
+
 - Documentation audit (22 files, 15K+ lines)
 - Test suite completion (95% coverage)
 - Biological pattern examples
@@ -532,11 +588,13 @@ CodonCanvas evolved across 92 autonomous development sessions, following an emer
 ### Why Scope Exceeded MVP?
 
 **Emergent Opportunities**: As implementation progressed, natural extensions became apparent:
+
 - Genetic algorithms emerged from mutation tools (Session 29)
 - Audio mode emerged from renderer modularity (Session 39)
 - Arithmetic emerged from example limitations (Session 71)
 
 **Pedagogical Value Maximization**: Each addition passed "educational ROI" test:
+
 - Does it deepen genetics understanding? OR
 - Does it enable new computational thinking concepts? OR
 - Does it support research/assessment needs?
@@ -556,6 +614,7 @@ CodonCanvas evolved across 92 autonomous development sessions, following an emer
 **Input**: Students engage with CodonCanvas (3-5 class sessions, ~4-6 hours total)
 
 **Activities**:
+
 - Write DNA-syntax programs
 - Observe mutation effects visually
 - Debug stack/frame errors
@@ -563,24 +622,28 @@ CodonCanvas evolved across 92 autonomous development sessions, following an emer
 - Experiment with genetic algorithms
 
 **Outputs**:
+
 - Original visual programs
 - Mutation analysis reports
 - Genetic algorithm experiments
 - Research metric data
 
 **Immediate Outcomes**:
+
 - Genetic redundancy understood (silent mutations concrete)
 - Reading frame sensitivity embodied (frameshift effects visceral)
 - Mutation types distinguished (nomenclature clear)
 - Computational thinking practiced (stack/algorithm reasoning)
 
 **Intermediate Outcomes** (3-6 months post-instruction):
+
 - Retained genetics concepts (compared to traditional instruction)
 - Applied computational thinking to biology problems
 - Increased STEM confidence/identity
 - Cross-disciplinary integration (CS ↔ biology)
 
 **Long-term Impacts** (1+ years):
+
 - Career interest in computational biology/bioinformatics
 - Persistence in STEM pathways
 - Critical thinking about biological systems as computational
@@ -589,21 +652,25 @@ CodonCanvas evolved across 92 autonomous development sessions, following an emer
 ### Success Indicators
 
 #### Engagement Metrics (Immediate)
+
 - **Time-to-first-artifact**: Target <5 minutes (current: 3.2 min average from pilot)
 - **Session duration**: Target 45-60 min sustained engagement
 - **Example exploration**: Target 5+ examples viewed per student
 - **Original creation**: Target 80%+ students create original genome
 
 #### Learning Outcomes (Short-term)
+
 - **Mutation type identification**: Target 85%+ accuracy on post-assessment
 - **Reading frame explanation**: Target 75%+ students explain frameshift cascades correctly
 - **Code-phenotype reasoning**: Target 70%+ students predict visual effect from codon change
 
 #### Retention (Medium-term)
+
 - **3-month recall**: Target 70%+ genetics concept retention (vs 40% traditional lecture)
 - **Transfer application**: Target 60%+ students apply concepts to real DNA sequences
 
 #### Attitudinal Shifts
+
 - **STEM identity**: Target 20% increase in "I am good at science" self-ratings
 - **Cross-disciplinary confidence**: Target 30% increase in "I can apply CS to biology"
 - **Creative confidence**: Target 40% increase in "I can create something new with code"
@@ -611,18 +678,21 @@ CodonCanvas evolved across 92 autonomous development sessions, following an emer
 ### Measurement Approach
 
 **Quantitative**:
+
 - Pre/post genetics concept assessment (validated instrument)
 - Engagement metrics (via research metrics system)
 - Code quality rubrics (automated scoring)
 - Achievement system progression rates
 
 **Qualitative**:
+
 - Student reflections (exit tickets, journals)
 - Teacher observations (formative assessment notes)
 - Portfolio analysis (genome complexity growth)
 - Focus groups (student/teacher interviews)
 
 **Mixed Methods**:
+
 - Case studies (deep-dive on 5-10 students per cohort)
 - Design-based research (iterative refinement based on classroom testing)
 - Action research (teachers as co-investigators)
@@ -632,12 +702,14 @@ CodonCanvas evolved across 92 autonomous development sessions, following an emer
 ### Validation Status
 
 **Pilot Testing** (Informal, N=12 students):
+
 - 100% engagement (all students completed activities)
 - 92% correctly identified silent vs missense mutations (post-instruction)
 - 83% created original genomes without prompting
 - 75% reported "This made genetics make sense" (exit survey)
 
 **Next Steps**:
+
 - Formal pilot study (N=100-150 students, control group, validated instruments)
 - Longitudinal follow-up (3-month, 6-month retention testing)
 - Cross-institutional validation (diverse school contexts)
@@ -672,6 +744,7 @@ Every design decision traces to pedagogical rationale. Every feature serves educ
 ### A. Design Decision Log
 
 Comprehensive decision history available in:
+
 - `MVP_Technical_Specification.md` (original vision)
 - `SPEC_COMPLIANCE_AUDIT.md` (evolution documentation)
 - `.serena/memories/autonomous_session_*` (92 session logs)
@@ -679,38 +752,46 @@ Comprehensive decision history available in:
 ### B. Theoretical References
 
 **Constructionism**:
-- Papert, S. (1980). *Mindstorms: Children, Computers, and Powerful Ideas.*
-- Resnick, M. (2017). *Lifelong Kindergarten.*
+
+- Papert, S. (1980). _Mindstorms: Children, Computers, and Powerful Ideas._
+- Resnick, M. (2017). _Lifelong Kindergarten._
 
 **Cognitive Load Theory**:
+
 - Sweller, J. (1988). "Cognitive load during problem solving."
-- Mayer, R. (2009). *Multimedia Learning.*
+- Mayer, R. (2009). _Multimedia Learning._
 
 **Universal Design for Learning**:
-- CAST (2018). *Universal Design for Learning Guidelines.*
-- Rose, D. & Meyer, A. (2002). *Teaching Every Student in the Digital Age.*
+
+- CAST (2018). _Universal Design for Learning Guidelines._
+- Rose, D. & Meyer, A. (2002). _Teaching Every Student in the Digital Age._
 
 **Assessment for Learning**:
-- Wiliam, D. (2011). *Embedded Formative Assessment.*
+
+- Wiliam, D. (2011). _Embedded Formative Assessment._
 - Black, P. & Wiliam, D. (1998). "Inside the black box."
 
 **Situated Learning**:
-- Lave, J. & Wenger, E. (1991). *Situated Learning.*
+
+- Lave, J. & Wenger, E. (1991). _Situated Learning._
 - Brown, J.S., Collins, A., & Duguid, P. (1989). "Situated cognition."
 
 ### C. Related Projects
 
 **Visual Programming Education**:
+
 - Scratch (MIT): Block-based programming for children
 - Processing: Creative coding for artists
 - Sonic Pi: Music through code
 
 **Biology Education Tools**:
+
 - DNA Learning Center interactive tools
 - PhET Biology Simulations
 - BioInteractive (HHMI)
 
 **Esoteric Languages as Pedagogy**:
+
 - Shakespeare Programming Language (literary structure)
 - LOLCODE (internet culture as syntax)
 - Piet (visual art as code)
@@ -720,6 +801,7 @@ CodonCanvas occupies unique intersection: esoteric language aesthetics + authent
 ### D. Acknowledgments
 
 Developed through 92 autonomous sessions (October 2025) synthesizing:
+
 - Educational theory (constructionism, cognitive science, UDL)
 - Biological authenticity (complete DNA codon coverage)
 - Software engineering principles (clean architecture, comprehensive testing)

@@ -1,6 +1,7 @@
 # CodonCanvas CLI Tool
 
 Command-line interface for validating, linting, and analyzing CodonCanvas genome files. Perfect for:
+
 - **Educators:** Batch-grade student assignments, detect plagiarism
 - **Researchers:** Automate data validation in effectiveness studies
 - **Developers:** Pre-commit hooks, CI/CD integration
@@ -62,6 +63,7 @@ codoncanvas validate examples/face.genome --json
 ```
 
 **Exit Codes:**
+
 - `0` = Valid genome
 - `1` = Errors found (frame misalignment, structure issues)
 
@@ -100,6 +102,7 @@ codoncanvas lint "submissions/*.genome" --json > results.json
 ```
 
 **Use Cases:**
+
 - **Grading:** Batch-validate all student submissions
 - **CI/CD:** Pre-commit hook to validate genomes before pushing
 - **Research:** Validate experimental data for integrity
@@ -152,14 +155,17 @@ codoncanvas check-similarity circle.genome triangle.genome
 ```
 
 **Exit Codes:**
+
 - `0` = Files are different (below threshold)
 - `1` = Files are similar (above threshold)
 
 **Algorithms:**
+
 - **Edit similarity:** Levenshtein distance (character-level edits)
 - **Longest common substring:** Shared sequence detection
 
 **Use Cases:**
+
 - **Academic integrity:** Detect copied assignments
 - **Research validation:** Ensure independent participant responses
 - **Version tracking:** Compare genome revisions
@@ -201,6 +207,7 @@ codoncanvas stats examples/cosmicWheel.genome
 ```
 
 **Use Cases:**
+
 - **Assessment:** Evaluate genome complexity for grading rubrics
 - **Research:** Collect complexity metrics for analysis
 - **Benchmarking:** Compare genomes by size, opcode distribution
@@ -240,7 +247,7 @@ jobs:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
         with:
-          node-version: '18'
+          node-version: "18"
       - run: npm install
       - run: npm run cli -- lint "examples/*.genome"
 ```
@@ -322,11 +329,13 @@ done
 The CLI validates:
 
 ### Frame Alignment
+
 - **Mid-triplet breaks:** Spaces/newlines within codon triplets
 - **Non-triplet length:** Base count not divisible by 3
 - **Invalid characters:** Non-ACGT bases in code
 
 **Example Error:**
+
 ```bash
 codoncanvas validate broken.genome
 # Output:
@@ -338,12 +347,14 @@ codoncanvas validate broken.genome
 ```
 
 ### Structure Issues
+
 - **Missing START:** No `ATG` codon at beginning
 - **Missing STOP:** No `TAA/TAG/TGA` at end
 - **Stop before Start:** Stop codon appears before first Start
 - **Multiple Starts:** Start codon after Stop (warns about dead code)
 
 **Example Error:**
+
 ```bash
 codoncanvas validate no-start.genome
 # Output:
@@ -359,6 +370,7 @@ codoncanvas validate no-start.genome
 For automation and integration with other tools:
 
 ### Validate Command
+
 ```json
 {
   "file": "examples/helloCircle.genome",
@@ -372,6 +384,7 @@ For automation and integration with other tools:
 ```
 
 ### Lint Command
+
 ```json
 {
   "total": 25,
@@ -407,6 +420,7 @@ For automation and integration with other tools:
 - **Memory usage:** ~50MB for batch operations (1,000 genomes)
 
 **Benchmarks (MacBook Pro M1):**
+
 ```bash
 time npm run cli -- lint "examples/*.genome"
 # 25 files validated in 0.12s (208 files/sec)
@@ -420,15 +434,19 @@ time npm run cli -- check-similarity large1.genome large2.genome
 ## Troubleshooting
 
 ### "Command not found: codoncanvas"
+
 - **Solution:** Run `npm run cli --` instead, or install globally: `npm link`
 
 ### "Cannot find module 'commander'"
+
 - **Solution:** Install dependencies: `npm install`
 
 ### Glob pattern not working
+
 - **Solution:** Quote the pattern: `codoncanvas lint "*.genome"` (not `*.genome`)
 
 ### Slow similarity checks
+
 - **Solution:** Large genomes (>5,000 bases) take longer due to O(n²) algorithm. Consider sampling or chunking.
 
 ---
@@ -436,11 +454,13 @@ time npm run cli -- check-similarity large1.genome large2.genome
 ## Development
 
 The CLI is built using:
+
 - **Commander.js:** Command parsing and help
 - **Chalk:** Colored terminal output
 - **Existing lexer:** Reuses `src/lexer.ts` (no duplication)
 
 **Add new commands:**
+
 1. Add command in `cli.ts` using `program.command()`
 2. Leverage existing modules (`src/lexer.ts`, `src/vm.ts`)
 3. Test with `npm run cli -- <command>`

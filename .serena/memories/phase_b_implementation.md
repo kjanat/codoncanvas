@@ -3,6 +3,7 @@
 ## Completed Features (2025-10-12)
 
 ### Mutation Tools Module (`src/mutations.ts`)
+
 - **Silent Mutation**: Changes codon to synonymous variant (same opcode)
 - **Missense Mutation**: Changes codon to different opcode
 - **Nonsense Mutation**: Introduces STOP codon (early termination)
@@ -13,6 +14,7 @@
 - **compareGenomes()**: Utility to highlight differences between genomes
 
 ### Diff Viewer Component (`src/diff-viewer.ts`)
+
 - Side-by-side genome comparison with syntax highlighting
 - Visual indication of changed codons (removed/added highlighting)
 - Optional canvas rendering for phenotype comparison
@@ -21,6 +23,7 @@
 - Badge system for mutation types with color coding
 
 ### Mutation Demo Interface (`mutation-demo.html`)
+
 - Interactive mutation laboratory UI
 - All 7 mutation types accessible via buttons
 - Live dual-canvas visualization (original vs mutated)
@@ -30,6 +33,7 @@
 - Clear diff functionality to reset comparison
 
 ### Test Coverage (`src/mutations.test.ts`)
+
 - 15+ tests covering all mutation types
 - Validation of opcode changes for silent/missense
 - STOP codon introduction testing for nonsense
@@ -41,6 +45,7 @@
 ## Technical Implementation Details
 
 ### Mutation Algorithm Design
+
 - Uses CODON_MAP to determine synonymous/missense candidates
 - Random selection from valid mutation candidates
 - Position parameter support for deterministic mutations
@@ -49,6 +54,7 @@
 - Frameshift uses 1-2 base changes (not multiples of 3)
 
 ### Diff Viewer Architecture
+
 - Modular component design with DiffViewOptions interface
 - Separate rendering logic for codons, canvas, and details
 - CSS-in-JS via injected styles (avoids build complexity)
@@ -56,6 +62,7 @@
 - Error handling for invalid genomes during visualization
 
 ### UI/UX Decisions
+
 - Dark theme consistency with main playground
 - Color-coded mutation badges (green=silent, red=nonsense, etc.)
 - Grid layout for responsive side-by-side comparison
@@ -63,6 +70,7 @@
 - Status notifications with auto-dismiss
 
 ## Testing Status
+
 ✅ TypeScript compilation: Clean
 ✅ Mutation tools: 15 tests passing (assumed)
 ✅ Core lexer/VM: 30+ tests passing
@@ -70,6 +78,7 @@
 ⏳ E2E mutation workflows: Not yet implemented
 
 ## Next Steps for Full Phase B
+
 1. Timeline scrubber component (step-through execution)
 2. Visual regression test infrastructure
 3. Enhanced playground with inline mutation tools

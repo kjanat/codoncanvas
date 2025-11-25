@@ -12,8 +12,8 @@
  *   npm run research:generate-data -- --design rct --n 150 --effect 0.5
  */
 
-import * as fs from 'fs';
-import * as path from 'path';
+import * as fs from "fs";
+import * as path from "path";
 
 // ============================================================================
 // Random Number Generation
@@ -33,8 +33,13 @@ class Random {
   /**
    * Bounded normal (clips to min/max)
    */
-  static boundedNormal(mean: number, sd: number, min: number, max: number): number {
-    let value = this.normal(mean, sd);
+  static boundedNormal(
+    mean: number,
+    sd: number,
+    min: number,
+    max: number,
+  ): number {
+    const value = Random.normal(mean, sd);
     return Math.max(min, Math.min(max, value));
   }
 
@@ -73,11 +78,11 @@ function generatePrePostData(params: GenerationParams): any[] {
   const data: any[] = [];
 
   for (let i = 0; i < params.n; i++) {
-    const id = `S${String(i + 1).padStart(3, '0')}`;
+    const id = `S${String(i + 1).padStart(3, "0")}`;
 
     // Pre-test score (out of 100)
     const pretest_total = Math.round(
-      Random.boundedNormal(params.pre_mean, params.pre_sd, 0, params.ceiling)
+      Random.boundedNormal(params.pre_mean, params.pre_sd, 0, params.ceiling),
     );
 
     // Learning gain (effect size controls magnitude)
@@ -93,12 +98,20 @@ function generatePrePostData(params: GenerationParams): any[] {
     posttest_total = Math.min(params.ceiling, posttest_total);
 
     // Subscale scores (5 mutation types, each 0-20 points)
-    const mutation_types = ['silent', 'missense', 'nonsense', 'frameshift', 'indel'];
+    const mutation_types = [
+      "silent",
+      "missense",
+      "nonsense",
+      "frameshift",
+      "indel",
+    ];
     const subscales: any = {};
 
     for (const type of mutation_types) {
-      const pre_sub = Math.round(Random.boundedNormal(pretest_total / 5, 4, 0, 20));
-      let post_sub = Math.round(pre_sub + (true_gain / 5) + Random.normal(0, 2));
+      const pre_sub = Math.round(
+        Random.boundedNormal(pretest_total / 5, 4, 0, 20),
+      );
+      let post_sub = Math.round(pre_sub + true_gain / 5 + Random.normal(0, 2));
       post_sub = Math.max(0, Math.min(20, post_sub));
 
       subscales[`pretest_${type}`] = pre_sub;
@@ -106,7 +119,7 @@ function generatePrePostData(params: GenerationParams): any[] {
     }
 
     // Delayed retention (4-6 weeks later, slight decay)
-    const retention_rate = Random.boundedNormal(0.90, 0.10, 0.70, 1.00);
+    const retention_rate = Random.boundedNormal(0.9, 0.1, 0.7, 1.0);
     const gain = posttest_total - pretest_total;
     let delayed_total = Math.round(pretest_total + gain * retention_rate);
     delayed_total = Math.max(0, Math.min(params.ceiling, delayed_total));
@@ -114,7 +127,7 @@ function generatePrePostData(params: GenerationParams): any[] {
     // Transfer task (MTT, 0-15 points)
     // Correlates with post-test but adds measurement error
     const mtt_score = Math.round(
-      Random.boundedNormal((posttest_total / 100) * 15, 2, 0, 15)
+      Random.boundedNormal((posttest_total / 100) * 15, 2, 0, 15),
     );
 
     // Motivation (IMI, 1-7 scale)
@@ -130,7 +143,7 @@ function generatePrePostData(params: GenerationParams): any[] {
     // Demographics
     const gpa = Random.boundedNormal(3.2, 0.5, 2.0, 4.0);
     const prior_programming = Random.choice([0, 0, 1, 1, 2, 3]); // Most have little/no experience
-    const institution = 'University A';
+    const institution = "University A";
 
     data.push({
       id,
@@ -145,7 +158,7 @@ function generatePrePostData(params: GenerationParams): any[] {
       imi_value: imi_value.toFixed(1),
       gpa: gpa.toFixed(2),
       prior_programming,
-      institution
+      institution,
     });
   }
 
@@ -159,7 +172,7 @@ function generateRCTData(
   n_per_group: number,
   treatment_effect: number,
   pre_mean: number = 55,
-  pre_sd: number = 15
+  pre_sd: number = 15,
 ): any[] {
   const data: any[] = [];
 
@@ -170,13 +183,13 @@ function generateRCTData(
     pre_mean,
     pre_sd,
     reliability: 0.85,
-    ceiling: 100
+    ceiling: 100,
   };
 
   const treatmentData = generatePrePostData(treatmentParams);
   treatmentData.forEach((d, i) => {
-    d.id = `T${String(i + 1).padStart(3, '0')}`;
-    d.group = 'treatment';
+    d.id = `T${String(i + 1).padStart(3, "0")}`;
+    d.group = "treatment";
     data.push(d);
   });
 
@@ -187,13 +200,13 @@ function generateRCTData(
     pre_mean,
     pre_sd,
     reliability: 0.85,
-    ceiling: 100
+    ceiling: 100,
   };
 
   const controlData = generatePrePostData(controlParams);
   controlData.forEach((d, i) => {
-    d.id = `C${String(i + 1).padStart(3, '0')}`;
-    d.group = 'control';
+    d.id = `C${String(i + 1).padStart(3, "0")}`;
+    d.group = "control";
     data.push(d);
   });
 
@@ -205,10 +218,10 @@ function generateRCTData(
  */
 function writeCSV(data: any[], filename: string): void {
   const headers = Object.keys(data[0]);
-  const rows = data.map(row => headers.map(h => row[h]).join(','));
-  const csv = [headers.join(','), ...rows].join('\n');
+  const rows = data.map((row) => headers.map((h) => row[h]).join(","));
+  const csv = [headers.join(","), ...rows].join("\n");
 
-  fs.writeFileSync(filename, csv, 'utf-8');
+  fs.writeFileSync(filename, csv, "utf-8");
   console.log(`✅ Generated ${filename} (${data.length} rows)`);
 }
 
@@ -245,44 +258,54 @@ EXAMPLES:
 function main(): void {
   const args = process.argv.slice(2);
 
-  if (args.includes('--help') || args.includes('-h')) {
+  if (args.includes("--help") || args.includes("-h")) {
     printUsage();
     return;
   }
 
   // Parse arguments
-  const designIdx = args.indexOf('--design');
-  const nIdx = args.indexOf('--n');
-  const effectIdx = args.indexOf('--effect');
-  const outputIdx = args.indexOf('--output');
+  const designIdx = args.indexOf("--design");
+  const nIdx = args.indexOf("--n");
+  const effectIdx = args.indexOf("--effect");
+  const outputIdx = args.indexOf("--output");
 
-  const design = designIdx !== -1 ? args[designIdx + 1] : 'prepost';
+  const design = designIdx !== -1 ? args[designIdx + 1] : "prepost";
   const n = nIdx !== -1 ? parseInt(args[nIdx + 1]) : 50;
   const effect = effectIdx !== -1 ? parseFloat(args[effectIdx + 1]) : 0.6;
-  const output = outputIdx !== -1 ? args[outputIdx + 1] : 'sample_data.csv';
+  const output = outputIdx !== -1 ? args[outputIdx + 1] : "sample_data.csv";
 
-  console.log('\n╔══════════════════════════════════════════════════════════════╗');
-  console.log('║         CodonCanvas Sample Data Generator                    ║');
-  console.log('╚══════════════════════════════════════════════════════════════╝\n');
+  console.log(
+    "\n╔══════════════════════════════════════════════════════════════╗",
+  );
+  console.log(
+    "║         CodonCanvas Sample Data Generator                    ║",
+  );
+  console.log(
+    "╚══════════════════════════════════════════════════════════════╝\n",
+  );
 
   console.log(`Design:      ${design}`);
-  console.log(`Sample size: ${design === 'rct' ? n + ' per group' : n}`);
-  console.log(`Effect size: ${effect} (${effect < 0.3 ? 'small' : effect < 0.6 ? 'medium' : 'large'})`);
+  console.log(`Sample size: ${design === "rct" ? n + " per group" : n}`);
+  console.log(
+    `Effect size: ${effect} (${
+      effect < 0.3 ? "small" : effect < 0.6 ? "medium" : "large"
+    })`,
+  );
   console.log(`Output:      ${output}\n`);
 
   let data: any[];
 
-  if (design === 'prepost') {
+  if (design === "prepost") {
     const params: GenerationParams = {
       n,
       effect_size: effect,
       pre_mean: 55,
       pre_sd: 15,
       reliability: 0.85,
-      ceiling: 100
+      ceiling: 100,
     };
     data = generatePrePostData(params);
-  } else if (design === 'rct') {
+  } else if (design === "rct") {
     data = generateRCTData(n, effect);
   } else {
     console.error(`Error: Unknown design "${design}". Use "prepost" or "rct"`);
@@ -292,8 +315,8 @@ function main(): void {
   writeCSV(data, output);
 
   // Summary statistics
-  const pre = data.map(d => d.pretest_total);
-  const post = data.map(d => d.posttest_total);
+  const pre = data.map((d) => d.pretest_total);
+  const post = data.map((d) => d.posttest_total);
   const preMean = pre.reduce((a, b) => a + b, 0) / pre.length;
   const postMean = post.reduce((a, b) => a + b, 0) / post.length;
 
@@ -302,12 +325,12 @@ function main(): void {
   console.log(`  Post-test: M = ${postMean.toFixed(2)}`);
   console.log(`  Gain:      M = ${(postMean - preMean).toFixed(2)}`);
 
-  if (design === 'rct') {
-    const treatment = data.filter(d => d.group === 'treatment');
-    const control = data.filter(d => d.group === 'control');
+  if (design === "rct") {
+    const treatment = data.filter((d) => d.group === "treatment");
+    const control = data.filter((d) => d.group === "control");
 
-    const tPost = treatment.map(d => d.posttest_total);
-    const cPost = control.map(d => d.posttest_total);
+    const tPost = treatment.map((d) => d.posttest_total);
+    const cPost = control.map((d) => d.posttest_total);
     const tMean = tPost.reduce((a, b) => a + b, 0) / tPost.length;
     const cMean = cPost.reduce((a, b) => a + b, 0) / cPost.length;
 
@@ -316,10 +339,10 @@ function main(): void {
     console.log(`  Difference:     ${(tMean - cMean).toFixed(2)} points`);
   }
 
-  console.log('\n═'.repeat(64) + '\n');
+  console.log("\n═".repeat(64) + "\n");
 }
 
 // Run if executed directly
 main();
 
-export { generatePrePostData, generateRCTData, writeCSV, Random };
+export { generatePrePostData, generateRCTData, Random, writeCSV };

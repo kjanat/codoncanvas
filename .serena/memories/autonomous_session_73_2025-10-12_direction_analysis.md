@@ -3,6 +3,7 @@
 ## Current State Assessment
 
 **Complete Features (72 sessions):**
+
 - ✅ Core VM (START, STOP, all opcodes working)
 - ✅ All drawing primitives (CIRCLE, RECT, LINE, TRIANGLE, ELLIPSE)
 - ✅ All transforms (TRANSLATE, ROTATE, SCALE, COLOR)
@@ -29,11 +30,13 @@
 ## Gap Analysis - What's Missing?
 
 **From MVP Spec Section 7 (line 687-700):**
+
 - Mentions TC* = SAVE_STATE (implemented)
 - But NO RESTORE_STATE in spec! (we added it)
 - No mention of arithmetic in spec (we added ADD/SUB/MUL/DIV)
 
 **From Next Steps (MVP line 710 - "Medium-Term"):**
+
 1. ❌ Comparison operations (EQ, LT, GT) - NOT IMPLEMENTED
 2. ❌ Conditional execution (IF/ELSE) - NOT IMPLEMENTED
 3. ❌ Looping constructs (LOOP N times) - NOT IMPLEMENTED
@@ -42,6 +45,7 @@
 
 **Critical Missing Capability:**
 **LOOPS** - Without loops, can't create:
+
 - Repeated patterns programmatically
 - Efficient genome size (vs manual repetition)
 - Algorithmic thinking pedagogy
@@ -82,6 +86,7 @@
 ## Design Decision: LOOP Opcode
 
 **Stack Semantics:**
+
 ```
 PUSH 5     ; Push loop count
 PUSH 10    ; Push arguments for body
@@ -91,6 +96,7 @@ LOOP 2     ; Loop last 2 instructions 5 times
 ```
 
 **Alternative: Loop Block Marker**
+
 ```
 PUSH 5     ; Loop count
 LOOP_START ; Mark start of loop body
@@ -102,6 +108,7 @@ LOOP_END   ; Execute body N times
 **Chosen:** Stack + Count approach (simpler, one opcode)
 
 **Codon Allocation Strategy:**
+
 - Need 1 codon for LOOP
 - Options:
   1. Split CA* NOP family again (CAA → LOOP, CAC stays NOP)
@@ -109,6 +116,7 @@ LOOP_END   ; Execute body N times
   3. Overload with parameter
 
 **Decision:** Split CAA from NOP → LOOP
+
 - Rationale: NOP is aesthetic only, losing 1 synonym acceptable
 - Result: CAA = LOOP, CAC = NOP (1 synonym left)
 - Maintains pedagogical clarity
@@ -116,22 +124,26 @@ LOOP_END   ; Execute body N times
 ## Implementation Plan
 
 **Phase 1: Design Loop Semantics** (15 min)
+
 - Define: LOOP pops count, executes previous N instructions M times
 - Edge cases: count=0, count=1, nested loops
 - Error handling: stack underflow, negative counts
 
 **Phase 2: Type System** (10 min)
+
 - Add LOOP to Opcode enum
 - Update CODON_MAP: CAA → LOOP
 - Update documentation comments
 
 **Phase 3: VM Implementation** (45 min)
+
 - Implement LOOP execution logic
 - Track instruction history for replay
 - Handle nested loops with state stack
 - Add error handling
 
 **Phase 4: Test Coverage** (45 min)
+
 - Basic loops (3, 5, 10 iterations)
 - Edge cases (0, 1, large counts)
 - Nested loops
@@ -140,6 +152,7 @@ LOOP_END   ; Execute body N times
 - Complex patterns
 
 **Phase 5: Examples** (45 min)
+
 - spiralPattern (beginner-intermediate)
 - concentricCircles (beginner)
 - gridPattern (intermediate)
@@ -150,21 +163,25 @@ LOOP_END   ; Execute body N times
 ## Expected Outcomes
 
 **Educational:**
+
 - Teach iteration/loops (core CS)
 - Demonstrate algorithmic efficiency
 - Enable complex patterns with short genomes
 
 **Creative:**
+
 - Rosettes, spirals, grids, repeated elements
 - Parametric pattern generation
 - Efficient genome design
 
 **Technical:**
+
 - New opcode type (control flow)
 - Foundation for future control structures
 - ~200-300 LOC (types, VM, tests, examples)
 
 **Research:**
+
 - How do students discover/use loops?
 - Genome size reduction metrics
 - Loop complexity patterns

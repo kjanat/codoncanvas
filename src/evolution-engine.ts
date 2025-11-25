@@ -4,13 +4,13 @@
  */
 
 import {
+  applyDeletion,
+  applyInsertion,
+  applyMissenseMutation,
   applyPointMutation,
   applySilentMutation,
-  applyMissenseMutation,
-  applyInsertion,
-  applyDeletion,
-  type MutationResult
-} from './mutations.js';
+  type MutationResult,
+} from "./mutations.js";
 
 export interface EvolutionCandidate {
   /** Genome string */
@@ -42,7 +42,9 @@ export interface EvolutionEngineOptions {
   /** Number of candidates per generation (default: 6) */
   candidatesPerGeneration?: number;
   /** Mutation types to use (default: all) */
-  mutationTypes?: Array<'point' | 'silent' | 'missense' | 'insertion' | 'deletion'>;
+  mutationTypes?: Array<
+    "point" | "silent" | "missense" | "insertion" | "deletion"
+  >;
   /** Random seed for reproducibility */
   seed?: number;
 }
@@ -56,14 +58,22 @@ export interface EvolutionEngineOptions {
  */
 export class EvolutionEngine {
   private candidatesPerGeneration: number;
-  private mutationTypes: Array<'point' | 'silent' | 'missense' | 'insertion' | 'deletion'>;
+  private mutationTypes: Array<
+    "point" | "silent" | "missense" | "insertion" | "deletion"
+  >;
   private currentGeneration: number;
   private history: GenerationRecord[];
   private currentParent: string;
 
   constructor(initialGenome: string, options: EvolutionEngineOptions = {}) {
     this.candidatesPerGeneration = options.candidatesPerGeneration ?? 6;
-    this.mutationTypes = options.mutationTypes ?? ['point', 'silent', 'missense', 'insertion', 'deletion'];
+    this.mutationTypes = options.mutationTypes ?? [
+      "point",
+      "silent",
+      "missense",
+      "insertion",
+      "deletion",
+    ];
     this.currentGeneration = 0;
     this.currentParent = initialGenome;
     this.history = [];
@@ -87,19 +97,19 @@ export class EvolutionEngine {
       let mutation: MutationResult;
       try {
         switch (mutationType) {
-          case 'point':
+          case "point":
             mutation = applyPointMutation(parent);
             break;
-          case 'silent':
+          case "silent":
             mutation = applySilentMutation(parent);
             break;
-          case 'missense':
+          case "missense":
             mutation = applyMissenseMutation(parent);
             break;
-          case 'insertion':
+          case "insertion":
             mutation = applyInsertion(parent);
             break;
-          case 'deletion':
+          case "deletion":
             mutation = applyDeletion(parent);
             break;
           default:
@@ -111,18 +121,21 @@ export class EvolutionEngine {
           id: `gen${this.currentGeneration + 1}-${i}`,
           generation: this.currentGeneration + 1,
           parent: parent,
-          mutation: mutation
+          mutation: mutation,
         });
       } catch (error) {
         // If mutation fails, try again with different type
-        console.warn(`Mutation ${mutationType} failed, using point mutation fallback:`, error);
+        console.warn(
+          `Mutation ${mutationType} failed, using point mutation fallback:`,
+          error,
+        );
         mutation = applyPointMutation(parent);
         candidates.push({
           genome: mutation.mutated,
           id: `gen${this.currentGeneration + 1}-${i}`,
           generation: this.currentGeneration + 1,
           parent: parent,
-          mutation: mutation
+          mutation: mutation,
         });
       }
     }
@@ -133,7 +146,7 @@ export class EvolutionEngine {
       parent: parent,
       candidates: candidates,
       selected: null,
-      timestamp: Date.now()
+      timestamp: Date.now(),
     };
     this.history.push(record);
 
@@ -147,12 +160,16 @@ export class EvolutionEngine {
   selectCandidate(candidateId: string): void {
     const currentGenRecord = this.history[this.history.length - 1];
     if (!currentGenRecord) {
-      throw new Error('No generation to select from');
+      throw new Error("No generation to select from");
     }
 
-    const selected = currentGenRecord.candidates.find(c => c.id === candidateId);
+    const selected = currentGenRecord.candidates.find(
+      (c) => c.id === candidateId,
+    );
     if (!selected) {
-      throw new Error(`Candidate ${candidateId} not found in current generation`);
+      throw new Error(
+        `Candidate ${candidateId} not found in current generation`,
+      );
     }
 
     currentGenRecord.selected = selected;
@@ -224,7 +241,7 @@ export class EvolutionEngine {
       initialGenome: this.history[0]?.parent ?? this.currentParent,
       currentGeneration: this.currentGeneration,
       history: this.history,
-      lineage: this.getLineage()
+      lineage: this.getLineage(),
     };
   }
 }

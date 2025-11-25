@@ -10,11 +10,11 @@
  * Output: JSON report with complexity scores for each genome
  */
 
-import { readdirSync, readFileSync, writeFileSync } from 'fs';
-import { join, dirname } from 'path';
-import { fileURLToPath } from 'url';
-import { CodonLexer } from '../src/lexer';
-import { CODON_MAP, Opcode } from '../src/types';
+import { readdirSync, readFileSync, writeFileSync } from "fs";
+import { dirname, join } from "path";
+import { fileURLToPath } from "url";
+import { CodonLexer } from "../src/lexer";
+import { CODON_MAP, Opcode } from "../src/types";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -59,12 +59,13 @@ function analyzeGenome(filename: string, content: string): GenomeComplexity {
     const opcodeDistribution: Record<string, number> = {};
     const uniqueOpcodes = new Set<Opcode>();
 
-    tokens.forEach(token => {
+    tokens.forEach((token) => {
       const opcode = CODON_MAP[token.text];
       if (opcode !== undefined) {
         uniqueOpcodes.add(opcode);
         const opcodeName = Opcode[opcode];
-        opcodeDistribution[opcodeName] = (opcodeDistribution[opcodeName] || 0) + 1;
+        opcodeDistribution[opcodeName] = (opcodeDistribution[opcodeName] || 0) +
+          1;
       }
     });
 
@@ -72,7 +73,7 @@ function analyzeGenome(filename: string, content: string): GenomeComplexity {
     let currentDepth = 0;
     let maxStackDepth = 0;
 
-    tokens.forEach(token => {
+    tokens.forEach((token) => {
       const opcode = CODON_MAP[token.text];
 
       // Stack producers
@@ -83,13 +84,21 @@ function analyzeGenome(filename: string, content: string): GenomeComplexity {
 
       // Stack consumers
       if (
-        opcode === Opcode.CIRCLE || opcode === Opcode.LINE || opcode === Opcode.TRIANGLE ||
-        opcode === Opcode.ROTATE || opcode === Opcode.SCALE || opcode === Opcode.POP
+        opcode === Opcode.CIRCLE ||
+        opcode === Opcode.LINE ||
+        opcode === Opcode.TRIANGLE ||
+        opcode === Opcode.ROTATE ||
+        opcode === Opcode.SCALE ||
+        opcode === Opcode.POP
       ) {
         currentDepth = Math.max(0, currentDepth - 1);
       }
 
-      if (opcode === Opcode.RECT || opcode === Opcode.ELLIPSE || opcode === Opcode.TRANSLATE) {
+      if (
+        opcode === Opcode.RECT ||
+        opcode === Opcode.ELLIPSE ||
+        opcode === Opcode.TRANSLATE
+      ) {
         currentDepth = Math.max(0, currentDepth - 2);
       }
 
@@ -101,9 +110,12 @@ function analyzeGenome(filename: string, content: string): GenomeComplexity {
     // Detect advanced features
     const hasPush = uniqueOpcodes.has(Opcode.PUSH);
     const hasLoop = uniqueOpcodes.has(Opcode.LOOP);
-    const hasConditional = uniqueOpcodes.has(Opcode.IF) || uniqueOpcodes.has(Opcode.IFELSE);
-    const hasArithmetic = uniqueOpcodes.has(Opcode.ADD) || uniqueOpcodes.has(Opcode.SUB) ||
-                          uniqueOpcodes.has(Opcode.MUL) || uniqueOpcodes.has(Opcode.DIV);
+    const hasConditional = uniqueOpcodes.has(Opcode.IF) ||
+      uniqueOpcodes.has(Opcode.IFELSE);
+    const hasArithmetic = uniqueOpcodes.has(Opcode.ADD) ||
+      uniqueOpcodes.has(Opcode.SUB) ||
+      uniqueOpcodes.has(Opcode.MUL) ||
+      uniqueOpcodes.has(Opcode.DIV);
 
     // Calculate complexity score
     let complexityScore = instructionCount;
@@ -146,27 +158,42 @@ function analyzeGenome(filename: string, content: string): GenomeComplexity {
  * Main analysis function
  */
 function main() {
-  const examplesDir = join(__dirname, '..', 'examples');
-  const files = readdirSync(examplesDir).filter(f => f.endsWith('.genome'));
+  const examplesDir = join(__dirname, "..", "examples");
+  const files = readdirSync(examplesDir).filter((f) => f.endsWith(".genome"));
 
   console.log(`\n📊 Analyzing ${files.length} genomes...\n`);
 
   const analyses: GenomeComplexity[] = [];
 
-  files.forEach(filename => {
-    const content = readFileSync(join(examplesDir, filename), 'utf-8');
+  files.forEach((filename) => {
+    const content = readFileSync(join(examplesDir, filename), "utf-8");
     const analysis = analyzeGenome(filename, content);
     analyses.push(analysis);
 
-    console.log(`✓ ${filename.padEnd(30)} | ${analysis.instructionCount.toString().padStart(3)} instructions | ${analysis.uniqueOpcodes.toString().padStart(2)} opcodes | complexity: ${analysis.complexityScore}`);
+    console.log(
+      `✓ ${filename.padEnd(30)} | ${
+        analysis.instructionCount
+          .toString()
+          .padStart(3)
+      } instructions | ${
+        analysis.uniqueOpcodes
+          .toString()
+          .padStart(2)
+      } opcodes | complexity: ${analysis.complexityScore}`,
+    );
   });
 
   // Calculate summary statistics
-  const avgInstructions = analyses.reduce((sum, a) => sum + a.instructionCount, 0) / analyses.length;
-  const avgUniqueOpcodes = analyses.reduce((sum, a) => sum + a.uniqueOpcodes, 0) / analyses.length;
-  const avgComplexity = analyses.reduce((sum, a) => sum + a.complexityScore, 0) / analyses.length;
+  const avgInstructions =
+    analyses.reduce((sum, a) => sum + a.instructionCount, 0) / analyses.length;
+  const avgUniqueOpcodes =
+    analyses.reduce((sum, a) => sum + a.uniqueOpcodes, 0) / analyses.length;
+  const avgComplexity =
+    analyses.reduce((sum, a) => sum + a.complexityScore, 0) / analyses.length;
 
-  const sortedByComplexity = [...analyses].sort((a, b) => a.complexityScore - b.complexityScore);
+  const sortedByComplexity = [...analyses].sort(
+    (a, b) => a.complexityScore - b.complexityScore,
+  );
   const simplest = sortedByComplexity[0];
   const mostComplex = sortedByComplexity[sortedByComplexity.length - 1];
 
@@ -190,7 +217,12 @@ function main() {
   };
 
   // Write report
-  const reportPath = join(__dirname, '..', 'claudedocs', 'complexity-analysis.json');
+  const reportPath = join(
+    __dirname,
+    "..",
+    "claudedocs",
+    "complexity-analysis.json",
+  );
   writeFileSync(reportPath, JSON.stringify(report, null, 2));
 
   console.log(`\n📈 Summary Statistics:`);
@@ -198,8 +230,12 @@ function main() {
   console.log(`   Average unique opcodes: ${report.summary.avgUniqueOpcodes}`);
   console.log(`   Average complexity: ${report.summary.avgComplexity}`);
   console.log(`\n🎯 Complexity Range:`);
-  console.log(`   Simplest: ${report.summary.simplest.name} (${report.summary.simplest.score})`);
-  console.log(`   Most complex: ${report.summary.mostComplex.name} (${report.summary.mostComplex.score})`);
+  console.log(
+    `   Simplest: ${report.summary.simplest.name} (${report.summary.simplest.score})`,
+  );
+  console.log(
+    `   Most complex: ${report.summary.mostComplex.name} (${report.summary.mostComplex.score})`,
+  );
   console.log(`\n💾 Full report saved to: ${reportPath}\n`);
 }
 

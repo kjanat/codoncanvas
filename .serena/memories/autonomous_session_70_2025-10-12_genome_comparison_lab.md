@@ -11,6 +11,7 @@ Built **Genome Comparison Lab** - a novel feature that surfaces existing DiffVie
 ## Autonomous Direction Decision
 
 **Problem Identified:**
+
 - DiffViewer backend supports arbitrary genome comparison (`renderComparison()`)
 - BUT: Only used for mutation diffs in playground, not exposed as general comparison tool
 - NO UI for "compare two arbitrary genomes"
@@ -20,6 +21,7 @@ Built **Genome Comparison Lab** - a novel feature that surfaces existing DiffVie
 Surface powerful existing backend capability with intuitive educational UI.
 
 **Why This Direction:**
+
 - Backend already exists (tested, working) - just needs UI layer
 - Novel for CodonCanvas (not in 69 sessions as user-facing feature)
 - High educational impact (peer learning, debugging, solution diversity)
@@ -31,12 +33,14 @@ Surface powerful existing backend capability with intuitive educational UI.
 ### Core Module: `src/genome-comparison.ts` (~380 LOC)
 
 **Main Function:**
+
 ```typescript
 compareGenomesDetailed(genome1, genome2, options?)
   → GenomeComparisonResult
 ```
 
 **Capabilities:**
+
 1. **Codon-Level Analysis**
    - Reuses `compareGenomes()` from mutations.ts
    - Hamming distance calculation
@@ -59,10 +63,10 @@ compareGenomesDetailed(genome1, genome2, options?)
    - Similarity classification: identical | very-similar | similar | different | very-different
    - Human-readable description generation
    - Insight detection:
-     * Silent mutations (sequence change, no visual effect)
-     * Frameshift detection (length mismatches)
-     * Localized vs catastrophic changes
-     * High similarity patterns
+     - Silent mutations (sequence change, no visual effect)
+     - Frameshift detection (length mismatches)
+     - Localized vs catastrophic changes
+     - High similarity patterns
 
 ### UI Integration: `src/playground.ts` additions (~520 LOC)
 
@@ -77,23 +81,23 @@ compareGenomesDetailed(genome1, genome2, options?)
 
 2. **Results Display**
    - **Similarity Badge**: Color-coded (green → red)
-     * 🟢 IDENTICAL
-     * 🟢 VERY-SIMILAR  
-     * 🟡 SIMILAR
-     * 🟠 DIFFERENT
-     * 🔴 VERY-DIFFERENT
-   
+     - 🟢 IDENTICAL
+     - 🟢 VERY-SIMILAR
+     - 🟡 SIMILAR
+     - 🟠 DIFFERENT
+     - 🔴 VERY-DIFFERENT
+
    - **Side-by-Side Canvases**: Visual output comparison (300x300px each)
-   
+
    - **Metrics Dashboard**: 4 cards
-     * Pixel Difference % (visual)
-     * Codon Difference % (sequence)
-     * Hamming Distance (positions)
-     * Length Difference (±codons)
-   
-   - **Analysis Panel**: 
-     * Description (human-readable summary)
-     * Insights (educational bullets with emojis)
+     - Pixel Difference % (visual)
+     - Codon Difference % (sequence)
+     - Hamming Distance (positions)
+     - Length Difference (±codons)
+
+   - **Analysis Panel**:
+     - Description (human-readable summary)
+     - Insights (educational bullets with emojis)
 
 3. **Interactions**
    - "🔬 Compare" button in toolbar (after Analyze button)
@@ -103,6 +107,7 @@ compareGenomesDetailed(genome1, genome2, options?)
    - Status messages for feedback
 
 **Theme Integration:**
+
 - CSS variables for dark/light/high-contrast themes
 - Responsive design (mobile-first, grid → stacked)
 - Smooth animations (fadeIn, slideIn)
@@ -111,6 +116,7 @@ compareGenomesDetailed(genome1, genome2, options?)
 ## Educational Value
 
 **For Students:**
+
 - **Compare Solutions**: "How does my flower differ from the example?"
 - **Debug Aid**: "Why does example work but mine doesn't?"
 - **Peer Learning**: Compare with classmates, understand diversity
@@ -118,12 +124,14 @@ compareGenomesDetailed(genome1, genome2, options?)
 - **Similarity Intuition**: Build sense of "genetic distance"
 
 **For Educators:**
+
 - **Assess Diversity**: Measure creativity in solutions
 - **Identify Patterns**: Common approaches vs outliers
 - **Create Exercises**: "Find genome with <30% similarity"
 - **Discussion Prompts**: "Why are these 90% similar visually but 50% different in sequence?"
 
 **For Researchers:**
+
 - **Solution Space Metrics**: Quantify exploration
 - **Convergence Patterns**: Do students converge to similar solutions?
 - **Peer Effects**: Does comparison usage correlate with performance?
@@ -165,39 +173,44 @@ compareGenomesDetailed(genome1, genome2, options?)
 ## Files Created/Modified
 
 **Created:**
+
 - `src/genome-comparison.ts` (380 LOC) - Core comparison engine
 
 **Modified:**
+
 - `src/playground.ts` (+520 LOC) - UI integration
-  * Import genome-comparison module
-  * Modal styles injection
-  * Modal DOM creation
-  * Comparison logic
-  * Results display
-  * Button injection
+  - Import genome-comparison module
+  - Modal styles injection
+  - Modal DOM creation
+  - Comparison logic
+  - Results display
+  - Button injection
 
 ## Code Highlights
 
 **Intelligent Similarity Classification:**
+
 ```typescript
-if (codonDiffPercent === 0) return 'identical';
-if (codonDiffPercent < 10) return 'very-similar';
-if (codonDiffPercent < 30) return 'similar';
-if (codonDiffPercent < 60) return 'different';
-return 'very-different';
+if (codonDiffPercent === 0) return "identical";
+if (codonDiffPercent < 10) return "very-similar";
+if (codonDiffPercent < 30) return "similar";
+if (codonDiffPercent < 60) return "different";
+return "very-different";
 ```
 
 **Educational Insights Generation:**
+
 ```typescript
 if (codonDiff > 0 && pixelDiff < 5) {
-  insights.push('💡 Silent mutations detected: synonymous codons');
+  insights.push("💡 Silent mutations detected: synonymous codons");
 }
 if (pixelDiff > 70) {
-  insights.push('🔴 Catastrophic differences');
+  insights.push("🔴 Catastrophic differences");
 }
 ```
 
 **Pixel Difference Algorithm:**
+
 - RGB threshold (10) for robustness
 - Counts differing pixels
 - Percentage calculation
@@ -214,6 +227,7 @@ if (pixelDiff > 70) {
 ## Research Implications
 
 **New Metrics Available:**
+
 - Pairwise genome similarity (student-to-student)
 - Solution space diversity (class-level metric)
 - Comparison usage patterns (who compares, when, how often)
@@ -221,6 +235,7 @@ if (pixelDiff > 70) {
 - Convergence over time (solution evolution)
 
 **Research Questions:**
+
 - Do comparisons accelerate learning?
 - Optimal comparison frequency?
 - Peer comparison vs example comparison effects?
@@ -255,6 +270,7 @@ if (pixelDiff > 70) {
 ## Next Steps (Future Sessions)
 
 **Immediate (Session 71, ~45 min):**
+
 1. Add comparison examples (pre-loaded scenarios)
 2. Keyboard shortcut (Ctrl+Shift+C to open)
 3. Export comparison results as report
@@ -282,6 +298,7 @@ if (pixelDiff > 70) {
 - **Strategic**: Leveraged existing backend (efficient), filled major UI gap
 
 **Autonomous Direction:**
+
 - Analyzed project state (DiffViewer backend exists but unused)
 - Identified educational gap (no comparison tool)
 - Designed comprehensive solution

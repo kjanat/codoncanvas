@@ -2,82 +2,82 @@
  * Tests for Evolution Engine
  */
 
-import { describe, test, expect, beforeEach } from 'vitest';
-import { EvolutionEngine } from './evolution-engine.js';
+import { beforeEach, describe, expect, test } from "vitest";
+import { EvolutionEngine } from "./evolution-engine.js";
 
-describe('EvolutionEngine', () => {
-  const testGenome = 'ATG GAA AAT GGA TAA';
+describe("EvolutionEngine", () => {
+  const testGenome = "ATG GAA AAT GGA TAA";
   let engine: EvolutionEngine;
 
   beforeEach(() => {
     engine = new EvolutionEngine(testGenome);
   });
 
-  describe('Constructor', () => {
-    test('creates engine with default options', () => {
+  describe("Constructor", () => {
+    test("creates engine with default options", () => {
       expect(engine.getCurrentGeneration()).toBe(0);
       expect(engine.getCurrentParent()).toBe(testGenome);
       expect(engine.getHistory()).toEqual([]);
     });
 
-    test('accepts custom candidates per generation', () => {
+    test("accepts custom candidates per generation", () => {
       const customEngine = new EvolutionEngine(testGenome, {
-        candidatesPerGeneration: 4
+        candidatesPerGeneration: 4,
       });
       const candidates = customEngine.generateGeneration();
       expect(candidates.length).toBe(4);
     });
 
-    test('accepts custom mutation types', () => {
+    test("accepts custom mutation types", () => {
       const customEngine = new EvolutionEngine(testGenome, {
-        mutationTypes: ['silent', 'missense']
+        mutationTypes: ["silent", "missense"],
       });
       const candidates = customEngine.generateGeneration();
       expect(candidates.length).toBe(6); // default count
       // All mutations should be silent or missense
-      candidates.forEach(candidate => {
-        expect(['silent', 'missense']).toContain(candidate.mutation?.type);
+      candidates.forEach((candidate) => {
+        expect(["silent", "missense"]).toContain(candidate.mutation?.type);
       });
     });
   });
 
-  describe('generateGeneration', () => {
-    test('generates correct number of candidates', () => {
+  describe("generateGeneration", () => {
+    test("generates correct number of candidates", () => {
       const candidates = engine.generateGeneration();
       expect(candidates.length).toBe(6);
     });
 
-    test('assigns unique IDs to candidates', () => {
+    test("assigns unique IDs to candidates", () => {
       const candidates = engine.generateGeneration();
-      const ids = candidates.map(c => c.id);
+      const ids = candidates.map((c) => c.id);
       const uniqueIds = new Set(ids);
       expect(uniqueIds.size).toBe(candidates.length);
     });
 
-    test('sets correct generation number', () => {
+    test("sets correct generation number", () => {
       const candidates = engine.generateGeneration();
-      candidates.forEach(candidate => {
+      candidates.forEach((candidate) => {
         expect(candidate.generation).toBe(1);
       });
     });
 
-    test('sets parent genome correctly', () => {
+    test("sets parent genome correctly", () => {
       const candidates = engine.generateGeneration();
-      candidates.forEach(candidate => {
+      candidates.forEach((candidate) => {
         expect(candidate.parent).toBe(testGenome);
       });
     });
 
-    test('includes mutation information', () => {
+    test("includes mutation information", () => {
       const candidates = engine.generateGeneration();
-      candidates.forEach(candidate => {
+      candidates.forEach((candidate) => {
         expect(candidate.mutation).toBeDefined();
         expect(candidate.mutation?.type).toBeDefined();
         expect(candidate.mutation?.description).toBeDefined();
       });
     });
 
-    test('records generation in history', () => {
+    test("records generation in history", () => {
       engine.generateGeneration();
       const history = engine.getHistory();
       expect(history.length).toBe(1);
@@ -85,7 +85,7 @@ describe('EvolutionEngine', () => {
       expect(history[0].parent).toBe(testGenome);
     });
 
-    test('generates multiple generations sequentially', () => {
+    test("generates multiple generations sequentially", () => {
       // Generate first generation
       const gen1 = engine.generateGeneration();
       expect(gen1[0].generation).toBe(1);
@@ -100,8 +100,8 @@ describe('EvolutionEngine', () => {
     });
   });
 
-  describe('selectCandidate', () => {
-    test('selects valid candidate', () => {
+  describe("selectCandidate", () => {
+    test("selects valid candidate", () => {
       const candidates = engine.generateGeneration();
       const candidateId = candidates[0].id;
 
@@ -112,7 +112,7 @@ describe('EvolutionEngine', () => {
       expect(history[0].selected?.id).toBe(candidateId);
     });
 
-    test('updates current parent after selection', () => {
+    test("updates current parent after selection", () => {
       const candidates = engine.generateGeneration();
       const selected = candidates[0];
 
@@ -121,7 +121,7 @@ describe('EvolutionEngine', () => {
       expect(engine.getCurrentParent()).toBe(selected.genome);
     });
 
-    test('increments generation after selection', () => {
+    test("increments generation after selection", () => {
       const candidates = engine.generateGeneration();
       expect(engine.getCurrentGeneration()).toBe(0);
 
@@ -129,27 +129,27 @@ describe('EvolutionEngine', () => {
       expect(engine.getCurrentGeneration()).toBe(1);
     });
 
-    test('throws error for invalid candidate ID', () => {
+    test("throws error for invalid candidate ID", () => {
       engine.generateGeneration();
       expect(() => {
-        engine.selectCandidate('invalid-id');
+        engine.selectCandidate("invalid-id");
       }).toThrow();
     });
 
-    test('throws error when no generation to select from', () => {
+    test("throws error when no generation to select from", () => {
       expect(() => {
-        engine.selectCandidate('any-id');
-      }).toThrow('No generation to select from');
+        engine.selectCandidate("any-id");
+      }).toThrow("No generation to select from");
     });
   });
 
-  describe('getLineage', () => {
-    test('returns initial genome for fresh engine', () => {
+  describe("getLineage", () => {
+    test("returns initial genome for fresh engine", () => {
       const lineage = engine.getLineage();
       expect(lineage).toEqual([testGenome]);
     });
 
-    test('tracks lineage through selections', () => {
+    test("tracks lineage through selections", () => {
       // Gen 1
       const gen1 = engine.generateGeneration();
       engine.selectCandidate(gen1[0].id);
@@ -166,15 +166,15 @@ describe('EvolutionEngine', () => {
     });
   });
 
-  describe('reset', () => {
-    test('resets engine to initial state', () => {
+  describe("reset", () => {
+    test("resets engine to initial state", () => {
       // Make some progress
       const gen1 = engine.generateGeneration();
       engine.selectCandidate(gen1[0].id);
       engine.generateGeneration();
 
       // Reset
-      const newGenome = 'ATG GGA TAA';
+      const newGenome = "ATG GGA TAA";
       engine.reset(newGenome);
 
       expect(engine.getCurrentGeneration()).toBe(0);
@@ -183,8 +183,8 @@ describe('EvolutionEngine', () => {
     });
   });
 
-  describe('exportSession', () => {
-    test('exports complete session data', () => {
+  describe("exportSession", () => {
+    test("exports complete session data", () => {
       const gen1 = engine.generateGeneration();
       engine.selectCandidate(gen1[0].id);
 
@@ -196,7 +196,7 @@ describe('EvolutionEngine', () => {
       expect(session.lineage.length).toBe(2);
     });
 
-    test('exports lineage in correct order', () => {
+    test("exports lineage in correct order", () => {
       const gen1 = engine.generateGeneration();
       engine.selectCandidate(gen1[0].id);
       const gen2 = engine.generateGeneration();
@@ -210,8 +210,8 @@ describe('EvolutionEngine', () => {
     });
   });
 
-  describe('Evolution workflow', () => {
-    test('completes full evolution cycle', () => {
+  describe("Evolution workflow", () => {
+    test("completes full evolution cycle", () => {
       // Generation 1
       const gen1 = engine.generateGeneration();
       expect(gen1.length).toBe(6);

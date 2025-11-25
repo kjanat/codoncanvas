@@ -11,18 +11,21 @@ Implemented **ADD** and **MUL** arithmetic opcodes, unlocking computational crea
 ## Autonomous Direction Decision
 
 **Problem Identified:**
+
 - No arithmetic operations (ADD, SUB, MUL, DIV) in CodonCanvas
 - Limited to PUSH literals (0-63), cannot compute values
 - No parametric design or dynamic sizing
 - Missing key programming concept (arithmetic)
 
 **Analysis:**
+
 - All 64 codons allocated (verified systematically)
 - Need to split existing families (like RESTORE_STATE did in Session 23)
 - NOISE (CT*: 4 codons) identified as best candidate (artistic, non-core)
 - Prioritized ADD/MUL over SUB/DIV for pedagogical value
 
 **Why This Direction:**
+
 1. **Novel** - No arithmetic in 70 sessions
 2. **Educational value** - Bridges genetic code → computational thinking
 3. **Unlocks patterns** - Parametric design, computed values, geometric series
@@ -35,11 +38,13 @@ Implemented **ADD** and **MUL** arithmetic opcodes, unlocking computational crea
 
 **BEFORE:** CT* (4 codons) → NOISE
 **AFTER:**
+
 - CTA, CTC → NOISE (2 codons, maintains synonymous pair)
 - CTG → ADD (1 codon, no synonyms)
 - CTT → MUL (1 codon, no synonyms)
 
 **Trade-off:**
+
 - Lose 2 NOISE synonyms (still have 2 remaining for silent mutations)
 - Gain 2 core computational operations
 - Arithmetic ops don't need redundancy for pedagogy to work
@@ -47,6 +52,7 @@ Implemented **ADD** and **MUL** arithmetic opcodes, unlocking computational crea
 ### Phase 2: Type System (`src/types.ts`)
 
 **Changes:**
+
 1. Added `ADD` and `MUL` to `Opcode` enum (lines 80-81)
 2. Updated CODON_MAP:
    - Removed CTG/CTT from NOISE
@@ -59,6 +65,7 @@ Implemented **ADD** and **MUL** arithmetic opcodes, unlocking computational crea
 ### Phase 3: VM Execution (`src/vm.ts`)
 
 **Implementation:**
+
 ```typescript
 case Opcode.ADD: {
   const b = this.pop();
@@ -76,6 +83,7 @@ case Opcode.MUL: {
 ```
 
 **Stack semantics:**
+
 - ADD: `[a, b] → [a+b]` - Pop 2 values, push sum
 - MUL: `[a, b] → [a×b]` - Pop 2 values, push product
 - Order matters: Pop b, pop a, push result (standard RPN)
@@ -97,6 +105,7 @@ case Opcode.MUL: {
 8. **Chained operations** - `(1 + 3) × 7 = 28`
 
 **Coverage:**
+
 - Happy path (basic operations)
 - Edge cases (larger values)
 - Integration (with drawing opcodes)
@@ -110,15 +119,17 @@ case Opcode.MUL: {
 **Added 2 pedagogical examples:**
 
 **1. `parametricCircles`** (intermediate difficulty)
+
 - Demonstrates ADD and MUL for computed sizes
 - Three circles with progressively complex computations:
-  * Small: `1 + 5 = 6` (simple addition)
-  * Medium: `3 × 3 = 9` (multiplication)
-  * Large: `(5 + 3) × 5 = 40` (chained operations)
+  - Small: `1 + 5 = 6` (simple addition)
+  - Medium: `3 × 3 = 9` (multiplication)
+  - Large: `(5 + 3) × 5 = 40` (chained operations)
 - Keywords: arithmetic, computation, parametric, add, multiply, math
 - Concepts: arithmetic, drawing, transforms, stack
 
 **2. `geometricSeries`** (intermediate difficulty)
+
 - Growing circles using multiplication
 - Exponential pattern demonstration
 - Shows geometric progression
@@ -130,24 +141,28 @@ case Opcode.MUL: {
 ## Use Cases Unlocked
 
 **1. Parametric Sizing**
+
 ```
 PUSH 5, PUSH 3, ADD → 8 (radius)
 CIRCLE(8) - computed size!
 ```
 
 **2. Geometric Series**
+
 ```
 PUSH 10, PUSH 2, MUL → 20 (2x scaling)
 CIRCLE(20) - exponential growth
 ```
 
 **3. Computed Positions**
+
 ```
 PUSH 10, PUSH 5, ADD → 15
 PUSH 0, TRANSLATE(15, 0) - calculated offset
 ```
 
 **4. Dynamic Patterns**
+
 ```
 Base size × multiplier = pattern element
 Enables algorithmic composition
@@ -156,6 +171,7 @@ Enables algorithmic composition
 ## Educational Value
 
 **For Students:**
+
 - **Computational thinking** - Beyond hardcoded values
 - **Programming concepts** - Arithmetic operations, RPN notation
 - **Parametric design** - Values computed from relationships
@@ -163,12 +179,14 @@ Enables algorithmic composition
 - **Algorithm design** - Chained operations, formulas
 
 **For Educators:**
+
 - **CS fundamentals** - Stack-based arithmetic
 - **Math integration** - Algebra, geometry, series
 - **Creative coding** - Generative patterns
 - **Problem solving** - Compute vs hardcode trade-offs
 
 **For Researchers:**
+
 - **Usage patterns** - Do students discover arithmetic?
 - **Creativity metrics** - Parametric vs static designs
 - **Learning trajectories** - When do they use computation?
@@ -187,6 +205,7 @@ Enables algorithmic composition
 ## Files Modified
 
 **Modified:**
+
 - `src/types.ts` (+15 LOC) - Opcodes, CODON_MAP, Concept type
 - `src/vm.ts` (+12 LOC) - ADD/MUL execution cases
 - `src/vm.test.ts` (+73 LOC) - 8 comprehensive tests
@@ -197,6 +216,7 @@ Enables algorithmic composition
 ## Code Highlights
 
 **Elegant Stack Operations:**
+
 ```typescript
 case Opcode.ADD: {
   const b = this.pop();  // Pop order matters
@@ -207,6 +227,7 @@ case Opcode.ADD: {
 ```
 
 **Test-Driven Development:**
+
 ```typescript
 // Basic operation
 PUSH 1, PUSH 3, ADD → expect(stack[0]).toBe(4)
@@ -219,6 +240,7 @@ PUSH 1, ADD → expect().toThrow('Stack underflow')
 ```
 
 **Pedagogical Examples:**
+
 ```
 ; Parametric circle (computed radius)
 GAA AAC GAA ACT CTG GGA  ; 1 + 5 = 6, draw circle
@@ -239,6 +261,7 @@ GAA AAT GAA AAT CTT GGA  ; 3 × 3 = 9, draw circle
 **Decision Quality: ⭐⭐⭐⭐⭐ (5/5)**
 
 **Rationale:**
+
 - Identified real gap (no computation in 70 sessions)
 - Strategic codon reallocation (NOISE sacrifice acceptable)
 - Prioritized value (ADD/MUL > SUB/DIV)
@@ -246,6 +269,7 @@ GAA AAT GAA AAT CTT GGA  ; 3 × 3 = 9, draw circle
 - Professional execution (all tests pass, clean build)
 
 **Impact Assessment:**
+
 - **Pedagogical:** HIGH - Computational thinking, CS fundamentals
 - **Creative:** HIGH - Parametric design, algorithmic patterns
 - **Technical:** MEDIUM - Clean implementation, no breaking changes
@@ -254,21 +278,25 @@ GAA AAT GAA AAT CTT GGA  ; 3 × 3 = 9, draw circle
 ## What Worked
 
 **1. Systematic Codon Analysis:**
+
 - Verified all 64 codons allocated
 - Identified NOISE as best split candidate
 - Prioritized 2 ops over 4 (MVP mindset)
 
 **2. Test-Driven Implementation:**
+
 - Wrote 8 tests covering all scenarios
 - Fixed test expectations (base-4 decoding validation)
 - 305/305 tests passing (100% success)
 
 **3. Pedagogical Examples:**
+
 - Two clear demonstrations
 - Progressive complexity (simple → chained)
 - Real use cases (parametric, geometric series)
 
 **4. Complete Implementation:**
+
 - Types → VM → Tests → Examples → Build
 - No TODOs, no placeholders
 - Production-ready quality
@@ -300,6 +328,7 @@ GAA AAT GAA AAT CTT GGA  ; 3 × 3 = 9, draw circle
 ## Next Steps (Future Sessions)
 
 **Immediate (Session 72, ~30 min):**
+
 1. Add SUB/DIV opcodes (complete arithmetic suite)
 2. Split another family (CA* NOP → NOP/SUB, or reuse stack families)
 3. Examples: subtraction patterns, division ratios
@@ -328,6 +357,7 @@ GAA AAT GAA AAT CTT GGA  ; 3 × 3 = 9, draw circle
 - **Complete Implementation**: Types, VM, tests, examples, documentation
 
 **Autonomous Direction:**
+
 - Analyzed project state (no arithmetic despite being foundational)
 - Identified educational gap (no computation, only hardcoded values)
 - Designed codon reallocation strategy

@@ -1,46 +1,48 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Teacher Dashboard - CodonCanvas</title>
-  <style>
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teacher Dashboard - CodonCanvas</title>
+    <style>
     * {
-      margin: 0;
-      padding: 0;
       box-sizing: border-box;
+      padding: 0;
+      margin: 0;
     }
 
     body {
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
       min-height: 100vh;
       padding: 20px;
+      font-family:
+        -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu,
+        Cantarell, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     }
 
     .container {
       max-width: 1400px;
       margin: 0 auto;
+      overflow: hidden;
       background: white;
       border-radius: 12px;
       box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
-      overflow: hidden;
     }
 
     header {
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-      color: white;
       padding: 30px 40px;
+      color: white;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     }
 
     header h1 {
-      font-size: 32px;
       margin-bottom: 8px;
+      font-size: 32px;
     }
 
     header p {
-      opacity: 0.9;
       font-size: 16px;
+      opacity: 0.9;
     }
 
     .content {
@@ -48,24 +50,24 @@
     }
 
     .import-section {
+      padding: 40px;
+      margin-bottom: 30px;
+      text-align: center;
       background: #f8f9fa;
       border: 2px dashed #dee2e6;
       border-radius: 8px;
-      padding: 40px;
-      text-align: center;
-      margin-bottom: 30px;
     }
 
     .import-section h2 {
-      font-size: 24px;
       margin-bottom: 16px;
+      font-size: 24px;
       color: #333;
     }
 
     .import-section p {
-      color: #666;
       margin-bottom: 20px;
       line-height: 1.6;
+      color: #666;
     }
 
     .file-input-wrapper {
@@ -83,27 +85,27 @@
       padding: 12px 24px;
       font-size: 16px;
       font-weight: 500;
-      border-radius: 6px;
-      border: none;
       cursor: pointer;
+      border: none;
+      border-radius: 6px;
       transition: all 0.2s;
     }
 
     .btn-primary {
-      background: #667eea;
       color: white;
+      background: #667eea;
     }
 
     .btn-primary:hover {
       background: #5568d3;
-      transform: translateY(-2px);
       box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+      transform: translateY(-2px);
     }
 
     .btn-secondary {
-      background: #6c757d;
-      color: white;
       margin-left: 10px;
+      color: white;
+      background: #6c757d;
     }
 
     .btn-secondary:hover {
@@ -111,8 +113,8 @@
     }
 
     .btn-danger {
-      background: #dc3545;
       color: white;
+      background: #dc3545;
     }
 
     .btn-danger:hover {
@@ -120,8 +122,8 @@
     }
 
     .btn-success {
-      background: #28a745;
       color: white;
+      background: #28a745;
     }
 
     .btn-success:hover {
@@ -136,23 +138,23 @@
     }
 
     .stat-card {
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-      color: white;
       padding: 24px;
+      color: white;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
       border-radius: 8px;
       box-shadow: 0 4px 12px rgba(102, 126, 234, 0.2);
     }
 
     .stat-label {
+      margin-bottom: 8px;
       font-size: 14px;
       opacity: 0.9;
-      margin-bottom: 8px;
     }
 
     .stat-value {
+      margin-bottom: 4px;
       font-size: 32px;
       font-weight: bold;
-      margin-bottom: 4px;
     }
 
     .stat-subtitle {
@@ -165,49 +167,49 @@
     }
 
     .section h2 {
-      font-size: 24px;
+      padding-bottom: 10px;
       margin-bottom: 20px;
+      font-size: 24px;
       color: #333;
       border-bottom: 2px solid #667eea;
-      padding-bottom: 10px;
     }
 
     .alert {
-      padding: 16px;
-      border-radius: 6px;
-      margin-bottom: 16px;
       display: flex;
-      align-items: start;
       gap: 12px;
+      align-items: start;
+      padding: 16px;
+      margin-bottom: 16px;
+      border-radius: 6px;
     }
 
     .alert-icon {
-      font-size: 24px;
       flex-shrink: 0;
+      font-size: 24px;
     }
 
     .alert-danger {
-      background: #f8d7da;
       color: #721c24;
+      background: #f8d7da;
       border: 1px solid #f5c6cb;
     }
 
     .alert-warning {
-      background: #fff3cd;
       color: #856404;
+      background: #fff3cd;
       border: 1px solid #ffeaa7;
     }
 
     .alert-info {
-      background: #d1ecf1;
       color: #0c5460;
+      background: #d1ecf1;
       border: 1px solid #bee5eb;
     }
 
     .table-wrapper {
       overflow-x: auto;
-      border-radius: 8px;
       border: 1px solid #dee2e6;
+      border-radius: 8px;
     }
 
     table {
@@ -216,11 +218,11 @@
     }
 
     th {
-      background: #f8f9fa;
-      color: #495057;
-      font-weight: 600;
-      text-align: left;
       padding: 12px 16px;
+      font-weight: 600;
+      color: #495057;
+      text-align: left;
+      background: #f8f9fa;
       border-bottom: 2px solid #dee2e6;
     }
 
@@ -236,67 +238,67 @@
     .badge {
       display: inline-block;
       padding: 4px 12px;
-      border-radius: 12px;
       font-size: 12px;
       font-weight: 600;
+      border-radius: 12px;
     }
 
     .badge-danger {
-      background: #dc3545;
       color: white;
+      background: #dc3545;
     }
 
     .badge-warning {
-      background: #ffc107;
       color: #000;
+      background: #ffc107;
     }
 
     .badge-success {
-      background: #28a745;
       color: white;
+      background: #28a745;
     }
 
     .badge-secondary {
-      background: #6c757d;
       color: white;
+      background: #6c757d;
     }
 
     .progress-bar {
+      position: relative;
       width: 100%;
       height: 24px;
+      overflow: hidden;
       background: #e9ecef;
       border-radius: 12px;
-      overflow: hidden;
-      position: relative;
     }
 
     .progress-fill {
-      height: 100%;
-      background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
-      transition: width 0.3s ease;
       display: flex;
       align-items: center;
       justify-content: center;
-      color: white;
+      height: 100%;
       font-size: 12px;
       font-weight: 600;
+      color: white;
+      background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+      transition: width 0.3s ease;
     }
 
     .empty-state {
-      text-align: center;
       padding: 60px 20px;
       color: #6c757d;
+      text-align: center;
     }
 
     .empty-state-icon {
-      font-size: 64px;
       margin-bottom: 16px;
+      font-size: 64px;
       opacity: 0.5;
     }
 
     .empty-state h3 {
-      font-size: 20px;
       margin-bottom: 8px;
+      font-size: 20px;
     }
 
     .empty-state p {
@@ -324,48 +326,48 @@
 
     .student-cells {
       display: flex;
-      gap: 4px;
       flex-wrap: wrap;
+      gap: 4px;
     }
 
     .student-cell {
-      width: 32px;
-      height: 32px;
-      border-radius: 4px;
       display: flex;
       align-items: center;
       justify-content: center;
+      width: 32px;
+      height: 32px;
       font-size: 12px;
       font-weight: 600;
       cursor: help;
+      border-radius: 4px;
       transition: transform 0.2s;
     }
 
     .student-cell:hover {
-      transform: scale(1.2);
       z-index: 10;
+      transform: scale(1.2);
     }
 
     .cell-completed {
-      background: #28a745;
       color: white;
+      background: #28a745;
     }
 
     .cell-in-progress {
-      background: #ffc107;
       color: #000;
+      background: #ffc107;
     }
 
     .cell-not-started {
-      background: #e9ecef;
       color: #6c757d;
+      background: #e9ecef;
     }
 
     .actions {
       display: flex;
+      flex-wrap: wrap;
       gap: 10px;
       margin-top: 20px;
-      flex-wrap: wrap;
     }
 
     #dashboard {
@@ -375,114 +377,129 @@
     #dashboard.visible {
       display: block;
     }
-  </style>
-</head>
-<body>
-  <div class="container">
-    <header>
-      <h1>Teacher Dashboard</h1>
-      <p>Monitor student progress and classroom analytics for CodonCanvas</p>
-    </header>
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <header>
+        <h1>Teacher Dashboard</h1>
+        <p>Monitor student progress and classroom analytics for CodonCanvas</p>
+      </header>
 
-    <div class="content">
-      <div class="import-section">
-        <h2>Import Student Progress Files</h2>
-        <p>
-          Students export their progress as JSON files from the CodonCanvas playground.<br>
-          Upload one or more student files to view classroom analytics.
-        </p>
-        <div class="file-input-wrapper">
-          <input type="file" id="fileInput" accept=".json" multiple>
-          <label for="fileInput" class="btn btn-primary">Choose Files</label>
-        </div>
-        <button class="btn btn-secondary" onclick="loadDemoData()">Load Demo Data</button>
-      </div>
-
-      <div id="dashboard">
-        <!-- Class Overview Stats -->
-        <div class="section">
-          <h2>Classroom Overview</h2>
-          <div class="stats-grid" id="statsGrid"></div>
-        </div>
-
-        <!-- At-Risk Students -->
-        <div class="section" id="atRiskSection"></div>
-
-        <!-- Engagement Metrics Table -->
-        <div class="section">
-          <h2>Student Engagement Metrics</h2>
-          <div class="table-wrapper">
-            <table id="engagementTable">
-              <thead>
-                <tr>
-                  <th>Student ID</th>
-                  <th>Name</th>
-                  <th>Sessions</th>
-                  <th>Duration</th>
-                  <th>Genomes</th>
-                  <th>Mutations</th>
-                  <th>First Artifact</th>
-                  <th>Completion</th>
-                  <th>Status</th>
-                </tr>
-              </thead>
-              <tbody id="engagementBody"></tbody>
-            </table>
+      <div class="content">
+        <div class="import-section">
+          <h2>Import Student Progress Files</h2>
+          <p>
+            Students export their progress as JSON files from the CodonCanvas
+            playground.<br>
+            Upload one or more student files to view classroom analytics.
+          </p>
+          <div class="file-input-wrapper">
+            <input type="file" id="fileInput" accept=".json" multiple>
+            <label for="fileInput" class="btn btn-primary">Choose Files</label>
           </div>
+          <button class="btn btn-secondary" onclick="loadDemoData()">
+            Load Demo Data
+          </button>
         </div>
 
-        <!-- Tutorial Completion Matrix -->
-        <div class="section">
-          <h2>Tutorial Completion Matrix</h2>
-          <div id="tutorialMatrix"></div>
-        </div>
+        <div id="dashboard">
+          <!-- Class Overview Stats -->
+          <div class="section">
+            <h2>Classroom Overview</h2>
+            <div class="stats-grid" id="statsGrid"></div>
+          </div>
 
-        <!-- Export Actions -->
-        <div class="section">
-          <h2>Export Data</h2>
-          <div class="actions">
-            <button class="btn btn-success" onclick="exportGradingSummary()">Export Grading Summary (CSV)</button>
-            <button class="btn btn-success" onclick="exportClassroomData()">Export Full Data (JSON)</button>
-            <button class="btn btn-danger" onclick="clearData()">Clear All Data</button>
+          <!-- At-Risk Students -->
+          <div class="section" id="atRiskSection"></div>
+
+          <!-- Engagement Metrics Table -->
+          <div class="section">
+            <h2>Student Engagement Metrics</h2>
+            <div class="table-wrapper">
+              <table id="engagementTable">
+                <thead>
+                  <tr>
+                    <th>Student ID</th>
+                    <th>Name</th>
+                    <th>Sessions</th>
+                    <th>Duration</th>
+                    <th>Genomes</th>
+                    <th>Mutations</th>
+                    <th>First Artifact</th>
+                    <th>Completion</th>
+                    <th>Status</th>
+                  </tr>
+                </thead>
+                <tbody id="engagementBody"></tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- Tutorial Completion Matrix -->
+          <div class="section">
+            <h2>Tutorial Completion Matrix</h2>
+            <div id="tutorialMatrix"></div>
+          </div>
+
+          <!-- Export Actions -->
+          <div class="section">
+            <h2>Export Data</h2>
+            <div class="actions">
+              <button class="btn btn-success" onclick="exportGradingSummary()">
+                Export Grading Summary (CSV)
+              </button>
+              <button class="btn btn-success" onclick="exportClassroomData()">
+                Export Full Data (JSON)
+              </button>
+              <button class="btn btn-danger" onclick="clearData()">
+                Clear All Data
+              </button>
+            </div>
           </div>
         </div>
       </div>
     </div>
-  </div>
 
-  <script type="module">
-    import { TeacherDashboard, generateStudentExport } from './src/teacher-dashboard.ts';
+    <script type="module">
+    import {
+      generateStudentExport,
+      TeacherDashboard,
+    } from "./src/teacher-dashboard.ts";
 
     const dashboard = new TeacherDashboard();
-    let studentIdCounter = 1;
+    const studentIdCounter = 1;
 
     // File input handler
-    document.getElementById('fileInput').addEventListener('change', async (e) => {
-      const files = Array.from(e.target.files);
-      if (files.length === 0) return;
+    document.getElementById("fileInput").addEventListener(
+      "change",
+      async (e) => {
+        const files = Array.from(e.target.files);
+        if (files.length === 0) return;
 
-      try {
-        const imported = await dashboard.importMultipleFiles(files);
-        alert(`Successfully imported ${imported} student file(s)`);
-        renderDashboard();
-      } catch (error) {
-        alert(`Error importing files: ${error.message}`);
-      }
+        try {
+          const imported = await dashboard.importMultipleFiles(files);
+          alert(`Successfully imported ${imported} student file(s)`);
+          renderDashboard();
+        } catch (error) {
+          alert(`Error importing files: ${error.message}`);
+        }
 
-      // Clear input
-      e.target.value = '';
-    });
+        // Clear input
+        e.target.value = "";
+      },
+    );
 
     // Render dashboard
     function renderDashboard() {
       const students = dashboard.getStudents();
 
       if (students.length === 0) {
-        document.getElementById('dashboard').classList.remove('visible');
+        document.getElementById("dashboard").classList.remove("visible");
         return;
       }
 
-      document.getElementById('dashboard').classList.add('visible');
+      document.getElementById("dashboard").classList.add("visible");
 
       renderStats();
       renderAtRiskStudents();
@@ -493,7 +510,7 @@
     // Render stats cards
     function renderStats() {
       const stats = dashboard.getClassroomStats();
-      const statsGrid = document.getElementById('statsGrid');
+      const statsGrid = document.getElementById("statsGrid");
 
       statsGrid.innerHTML = `
         <div class="stat-card">
@@ -503,17 +520,23 @@
         </div>
         <div class="stat-card">
           <div class="stat-label">Average Sessions</div>
-          <div class="stat-value">${stats.avgEngagement.sessionsPerStudent.toFixed(1)}</div>
+          <div class="stat-value">${
+        stats.avgEngagement.sessionsPerStudent.toFixed(1)
+      }</div>
           <div class="stat-subtitle">per student</div>
         </div>
         <div class="stat-card">
           <div class="stat-label">Average Duration</div>
-          <div class="stat-value">${Math.round(stats.avgEngagement.durationPerStudent / 60000)}</div>
+          <div class="stat-value">${
+        Math.round(stats.avgEngagement.durationPerStudent / 60000)
+      }</div>
           <div class="stat-subtitle">minutes per student</div>
         </div>
         <div class="stat-card">
           <div class="stat-label">Tutorial Completion</div>
-          <div class="stat-value">${Math.round(stats.avgEngagement.tutorialCompletionRate * 100)}%</div>
+          <div class="stat-value">${
+        Math.round(stats.avgEngagement.tutorialCompletionRate * 100)
+      }%</div>
           <div class="stat-subtitle">average completion rate</div>
         </div>
         <div class="stat-card">
@@ -532,16 +555,19 @@
     // Render at-risk students
     function renderAtRiskStudents() {
       const atRisk = dashboard.getAtRiskStudents();
-      const section = document.getElementById('atRiskSection');
+      const section = document.getElementById("atRiskSection");
 
       if (atRisk.length === 0) {
-        section.innerHTML = '<div class="alert alert-info"><span class="alert-icon">✓</span><div><strong>No at-risk students identified</strong><br>All students are showing adequate engagement.</div></div>';
+        section.innerHTML =
+          "<div class=\"alert alert-info\"><span class=\"alert-icon\">✓</span><div><strong>No at-risk students identified</strong><br>All students are showing adequate engagement.</div></div>";
         return;
       }
 
       const alertsHTML = atRisk.map(student => {
-        const alertClass = student.severity === 'high' ? 'alert-danger' : 'alert-warning';
-        const icon = student.severity === 'high' ? '⚠️' : '⚡';
+        const alertClass = student.severity === "high"
+          ? "alert-danger"
+          : "alert-warning";
+        const icon = student.severity === "high" ? "⚠️" : "⚡";
         const name = student.studentName || student.studentId;
 
         return `
@@ -550,7 +576,7 @@
             <div>
               <strong>${name}</strong> - ${student.severity.toUpperCase()} priority
               <ul style="margin-top: 8px; padding-left: 20px;">
-                ${student.reasons.map(r => `<li>${r}</li>`).join('')}
+                ${student.reasons.map(r => `<li>${r}</li>`).join("")}
               </ul>
               <div style="margin-top: 8px; font-size: 12px;">
                 Sessions: ${student.metrics.sessions} |
@@ -559,30 +585,38 @@
             </div>
           </div>
         `;
-      }).join('');
+      }).join("");
 
-      section.innerHTML = `<h2>At-Risk Students (${atRisk.length})</h2>${alertsHTML}`;
+      section.innerHTML =
+        `<h2>At-Risk Students (${atRisk.length})</h2>${alertsHTML}`;
     }
 
     // Render engagement table
     function renderEngagementTable() {
       const students = dashboard.getStudents();
-      const tbody = document.getElementById('engagementBody');
+      const tbody = document.getElementById("engagementBody");
 
       tbody.innerHTML = students.map(student => {
-        const name = student.studentName || 'N/A';
-        const duration = Math.round(student.aggregateMetrics.totalDuration / 60000);
+        const name = student.studentName || "N/A";
+        const duration = Math.round(
+          student.aggregateMetrics.totalDuration / 60000,
+        );
         const ttfa = student.aggregateMetrics.avgTimeToFirstArtifact > 0
-          ? Math.round(student.aggregateMetrics.avgTimeToFirstArtifact / 60000) + ' min'
-          : 'Not achieved';
-        const completion = Math.round(student.aggregateMetrics.completionRate * 100);
+          ? Math.round(
+            student.aggregateMetrics.avgTimeToFirstArtifact / 60000,
+          ) + " min"
+          : "Not achieved";
+        const completion = Math.round(
+          student.aggregateMetrics.completionRate * 100,
+        );
 
-        const isAtRisk = student.aggregateMetrics.totalSessions < 1 || student.aggregateMetrics.avgTimeToFirstArtifact === 0;
+        const isAtRisk = student.aggregateMetrics.totalSessions < 1 ||
+          student.aggregateMetrics.avgTimeToFirstArtifact === 0;
         const statusBadge = isAtRisk
-          ? '<span class="badge badge-danger">At Risk</span>'
+          ? "<span class=\"badge badge-danger\">At Risk</span>"
           : student.aggregateMetrics.totalSessions >= 3
-            ? '<span class="badge badge-success">Engaged</span>'
-            : '<span class="badge badge-secondary">Active</span>';
+          ? "<span class=\"badge badge-success\">Engaged</span>"
+          : "<span class=\"badge badge-secondary\">Active</span>";
 
         return `
           <tr>
@@ -601,24 +635,25 @@
             <td>${statusBadge}</td>
           </tr>
         `;
-      }).join('');
+      }).join("");
     }
 
     // Render tutorial completion matrix
     function renderTutorialMatrix() {
       const students = dashboard.getStudents();
       const stats = dashboard.getClassroomStats();
-      const matrix = document.getElementById('tutorialMatrix');
+      const matrix = document.getElementById("tutorialMatrix");
 
       const tutorials = Object.keys(stats.tutorialCompletion);
 
       if (tutorials.length === 0) {
-        matrix.innerHTML = '<div class="empty-state"><div class="empty-state-icon">📚</div><h3>No tutorial data</h3><p>Students haven\'t started any tutorials yet.</p></div>';
+        matrix.innerHTML =
+          "<div class=\"empty-state\"><div class=\"empty-state-icon\">📚</div><h3>No tutorial data</h3><p>Students haven't started any tutorials yet.</p></div>";
         return;
       }
 
       const matrixHTML = tutorials.map(tutorialId => {
-        const tutorialName = tutorialId.replace(/([A-Z])/g, ' $1').trim();
+        const tutorialName = tutorialId.replace(/([A-Z])/g, " $1").trim();
         const tutorialStats = stats.tutorialCompletion[tutorialId];
 
         const cellsHTML = students.map(student => {
@@ -631,39 +666,49 @@
             return `<div class="student-cell cell-completed" title="${student.studentId}: Completed">✓</div>`;
           }
 
-          const percent = Math.round((progress.currentStep / progress.totalSteps) * 100);
+          const percent = Math.round(
+            (progress.currentStep / progress.totalSteps) * 100,
+          );
           return `<div class="student-cell cell-in-progress" title="${student.studentId}: ${percent}% complete">${percent}</div>`;
-        }).join('');
+        }).join("");
 
         return `
           <div class="tutorial-row">
             <div class="tutorial-name">
               ${tutorialName}
               <div style="font-size: 12px; color: #6c757d; margin-top: 4px;">
-                ${tutorialStats.completed}/${tutorialStats.started} completed (${Math.round(tutorialStats.avgProgress)}% avg)
+                ${tutorialStats.completed}/${tutorialStats.started} completed (${
+          Math.round(tutorialStats.avgProgress)
+        }% avg)
               </div>
             </div>
             <div class="student-cells">${cellsHTML}</div>
           </div>
         `;
-      }).join('');
+      }).join("");
 
       matrix.innerHTML = `<div class="tutorial-matrix">${matrixHTML}</div>`;
     }
 
     // Export functions
-    window.exportGradingSummary = function() {
+    window.exportGradingSummary = () => {
       const csv = dashboard.exportGradingSummary();
-      downloadFile(csv, 'codoncanvas-grading-summary.csv', 'text/csv');
+      downloadFile(csv, "codoncanvas-grading-summary.csv", "text/csv");
     };
 
-    window.exportClassroomData = function() {
+    window.exportClassroomData = () => {
       const json = dashboard.exportClassroomData();
-      downloadFile(json, 'codoncanvas-classroom-data.json', 'application/json');
+      downloadFile(
+        json,
+        "codoncanvas-classroom-data.json",
+        "application/json",
+      );
     };
 
-    window.clearData = function() {
-      if (confirm('Are you sure you want to clear all imported student data?')) {
+    window.clearData = () => {
+      if (
+        confirm("Are you sure you want to clear all imported student data?")
+      ) {
         dashboard.clearAll();
         renderDashboard();
       }
@@ -673,7 +718,7 @@
     function downloadFile(content, filename, type) {
       const blob = new Blob([content], { type });
       const url = URL.createObjectURL(blob);
-      const a = document.createElement('a');
+      const a = document.createElement("a");
       a.href = url;
       a.download = filename;
       a.click();
@@ -681,17 +726,26 @@
     }
 
     // Demo data loader
-    window.loadDemoData = function() {
+    window.loadDemoData = () => {
       // Generate 12 demo students with varying engagement levels
-      const tutorialIds = ['helloCircle', 'mutations', 'timeline', 'evolution'];
+      const tutorialIds = [
+        "helloCircle",
+        "mutations",
+        "timeline",
+        "evolution",
+      ];
 
       for (let i = 1; i <= 12; i++) {
-        const studentId = `DEMO${String(i).padStart(3, '0')}`;
+        const studentId = `DEMO${String(i).padStart(3, "0")}`;
         const studentName = `Demo Student ${i}`;
 
         // Vary engagement levels
-        const engagementLevel = i <= 3 ? 'high' : i <= 8 ? 'medium' : 'low';
-        const sessionCount = engagementLevel === 'high' ? 5 : engagementLevel === 'medium' ? 2 : 0;
+        const engagementLevel = i <= 3 ? "high" : i <= 8 ? "medium" : "low";
+        const sessionCount = engagementLevel === "high"
+          ? 5
+          : engagementLevel === "medium"
+          ? 2
+          : 0;
 
         const sessions = [];
         const tutorials = {};
@@ -703,50 +757,73 @@
             startTime: Date.now() - (5 - s) * 24 * 60 * 60 * 1000,
             endTime: Date.now() - (5 - s) * 24 * 60 * 60 * 1000 + 1800000,
             duration: 1800000,
-            genomesCreated: engagementLevel === 'high' ? 10 : 5,
-            genomesExecuted: engagementLevel === 'high' ? 15 : 8,
-            mutationsApplied: engagementLevel === 'high' ? 25 : 12,
+            genomesCreated: engagementLevel === "high" ? 10 : 5,
+            genomesExecuted: engagementLevel === "high" ? 15 : 8,
+            mutationsApplied: engagementLevel === "high" ? 25 : 12,
             renderModeUsage: { visual: 10, audio: 3, both: 2 },
-            features: { diffViewer: 5, timeline: 3, evolution: 2, assessment: 1, export: 2 },
-            timeToFirstArtifact: s === 0 ? (engagementLevel === 'high' ? 180000 : 300000) : null,
+            features: {
+              diffViewer: 5,
+              timeline: 3,
+              evolution: 2,
+              assessment: 1,
+              export: 2,
+            },
+            timeToFirstArtifact: s === 0
+              ? (engagementLevel === "high" ? 180000 : 300000)
+              : null,
             errors: [],
-            mutationTypes: { silent: 5, missense: 8, nonsense: 3, frameshift: 4, point: 10, insertion: 3, deletion: 2 }
+            mutationTypes: {
+              silent: 5,
+              missense: 8,
+              nonsense: 3,
+              frameshift: 4,
+              point: 10,
+              insertion: 3,
+              deletion: 2,
+            },
           };
           sessions.push(session);
         }
 
         // Generate tutorial progress
         tutorialIds.forEach((tutorialId, idx) => {
-          if (engagementLevel === 'low') {
+          if (engagementLevel === "low") {
             tutorials[tutorialId] = {
               completed: false,
               currentStep: 0,
               totalSteps: 6,
               startedAt: null,
-              completedAt: null
+              completedAt: null,
             };
           } else {
-            const completed = engagementLevel === 'high' || idx < 2;
+            const completed = engagementLevel === "high" || idx < 2;
             tutorials[tutorialId] = {
               completed,
               currentStep: completed ? 6 : idx + 2,
               totalSteps: 6,
               startedAt: Date.now() - (4 - idx) * 24 * 60 * 60 * 1000,
-              completedAt: completed ? Date.now() - (3 - idx) * 24 * 60 * 60 * 1000 : null
+              completedAt: completed
+                ? Date.now() - (3 - idx) * 24 * 60 * 60 * 1000
+                : null,
             };
           }
         });
 
-        const exportData = generateStudentExport(studentId, studentName, tutorials, sessions);
+        const exportData = generateStudentExport(
+          studentId,
+          studentName,
+          tutorials,
+          sessions,
+        );
         dashboard.importStudentData(exportData);
       }
 
       renderDashboard();
-      alert('Loaded 12 demo students with varying engagement levels');
+      alert("Loaded 12 demo students with varying engagement levels");
     };
 
     // Make dashboard available globally for console debugging
     window.teacherDashboard = dashboard;
-  </script>
-</body>
+    </script>
+  </body>
 </html>

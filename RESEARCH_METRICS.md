@@ -26,18 +26,21 @@ CodonCanvas includes **privacy-respecting research instrumentation** to measure 
 ### Key Features
 
 ✅ **Privacy-First Design**
+
 - No personally identifiable information (PII) collected
 - All data stored locally on user's device (localStorage)
 - No automatic transmission to servers
 - User-controlled data export and deletion
 
 ✅ **Opt-In Only**
+
 - Research metrics **disabled by default**
 - Explicit consent required before data collection
 - Users can disable anytime
 - Transparent data visibility
 
 ✅ **Research-Ready**
+
 - Publication-quality metrics (time-to-first-artifact, engagement, retention)
 - CSV export for statistical analysis (SPSS, R, Python)
 - Compatible with standard research designs (RCT, pre/post, longitudinal)
@@ -46,21 +49,25 @@ CodonCanvas includes **privacy-respecting research instrumentation** to measure 
 ### What Gets Tracked
 
 **Session Metrics:**
+
 - Session duration (start/end timestamps)
 - Session ID (anonymous UUID, no student identification)
 
 **Learning Activity:**
+
 - Genomes created (count)
 - Genomes executed successfully (count)
 - Time to first artifact (key learning velocity metric)
 - Errors encountered (type and count for debugging)
 
 **Feature Usage:**
+
 - Mutation types applied (silent, missense, nonsense, frameshift, point, insertion, deletion)
 - Render modes used (visual, audio, both)
 - Tool usage (diff viewer, timeline scrubber, evolution lab, assessment system, export)
 
 **What's NOT Tracked:**
+
 - ❌ Student names, emails, or IDs
 - ❌ Student genome source code content
 - ❌ IP addresses or location data
@@ -83,11 +90,13 @@ See [IRB Submission Guide](#irb-submission-guide) for consent form templates.
 ### Step 2: Enable Research Metrics (Classroom Setup)
 
 **Option A: Individual Student Setup**
+
 1. Open CodonCanvas playground (`index.html`)
 2. Students enable research metrics (future: UI toggle in playground settings)
 3. Students use CodonCanvas normally - data auto-saves every 30 seconds
 
 **Option B: Educator-Configured Setup** (future enhancement)
+
 1. Create custom CodonCanvas build with research metrics pre-enabled
 2. Deploy to classroom computers or LMS
 3. Students use without additional configuration
@@ -95,18 +104,20 @@ See [IRB Submission Guide](#irb-submission-guide) for consent form templates.
 **Current Status:** Option A only (manual toggle in browser console)
 
 **Temporary Enable Instructions (until UI added):**
+
 ```javascript
 // Open browser console (F12), paste:
-import('./src/research-metrics.js').then(m => {
+import("./src/research-metrics.js").then(m => {
   const metrics = new m.ResearchMetrics();
   metrics.enable();
-  console.log('Research metrics enabled ✓');
+  console.log("Research metrics enabled ✓");
 });
 ```
 
 ### Step 3: Collect Data
 
 Students use CodonCanvas normally. Research metrics automatically track:
+
 - Every genome creation and execution
 - Every mutation applied
 - Every tool used (diff viewer, timeline, etc.)
@@ -117,23 +128,25 @@ Data saves every 30 seconds to browser localStorage.
 ### Step 4: Export Data
 
 **Method 1: Research Dashboard (Recommended)**
+
 1. Open `research-dashboard.html` in same browser
 2. View aggregate statistics and session table
 3. Click "📊 Export CSV" button
 4. Save CSV file (e.g., `pilot_study_oct2025.csv`)
 
 **Method 2: Browser Console Export**
+
 ```javascript
-import('./src/research-metrics.js').then(m => {
+import("./src/research-metrics.js").then(m => {
   const metrics = new m.ResearchMetrics();
   const csv = metrics.exportCSV();
 
   // Download CSV
-  const blob = new Blob([csv], { type: 'text/csv' });
+  const blob = new Blob([csv], { type: "text/csv" });
   const url = URL.createObjectURL(blob);
-  const a = document.createElement('a');
+  const a = document.createElement("a");
   a.href = url;
-  a.download = 'codoncanvas_metrics.csv';
+  a.download = "codoncanvas_metrics.csv";
   a.click();
 });
 ```
@@ -141,6 +154,7 @@ import('./src/research-metrics.js').then(m => {
 ### Step 5: Analyze Data
 
 Use provided analysis script:
+
 ```bash
 npm run metrics:analyze -- --data pilot_study_oct2025.csv
 ```
@@ -156,16 +170,19 @@ See [Data Analysis Workflow](#data-analysis-workflow) for details.
 CodonCanvas research metrics are designed to comply with FERPA:
 
 ✅ **No PII Collected**
+
 - Session IDs are anonymous UUIDs (not student names/IDs)
 - No linkage to student educational records
 - Aggregate statistics only
 
 ✅ **Local Storage Only**
+
 - Data remains on student's device (not transmitted)
 - No server-side collection or storage
 - Educator must explicitly export data
 
 ✅ **Parental Rights**
+
 - Parents can request data inspection (`research-dashboard.html`)
 - Parents can delete data (browser localStorage clear)
 - Data collection is optional (opt-in consent required)
@@ -177,14 +194,17 @@ CodonCanvas research metrics are designed to comply with FERPA:
 For students under 13 years:
 
 ✅ **Parental Consent Required**
+
 - School must obtain verifiable parental consent before enabling
 - Use provided consent form template (see below)
 
 ✅ **Data Minimization**
+
 - Only educational activity metrics collected
 - No contact information or persistent identifiers tied to individual children
 
 ✅ **Deletion Rights**
+
 - Parents can request data deletion anytime
 - Educator must provide clear deletion instructions
 
@@ -195,22 +215,26 @@ For students under 13 years:
 **Exempt Research Categories** (likely applies):
 
 ✅ **Category 1 - Educational Settings**
+
 - Research conducted in established educational settings
 - Involves normal educational practices (programming instruction)
 - Anonymous or coded data (session IDs not linkable to students)
 
 **Criteria for Exemption:**
+
 - Minimal risk to participants
 - No identifiable private information
 - Normal classroom activities
 - Educational benefit
 
 **If NOT Exempt** (IRB approval needed):
+
 - Research involves vulnerable populations in atypical context
 - Data linkage to sensitive student records
 - Higher-than-minimal risk
 
 **Recommendation:** Submit for exempt determination with emphasis on:
+
 - Anonymous data collection (no PII)
 - Educational setting (normal classroom use)
 - Minimal risk (usage metrics only)
@@ -384,35 +408,41 @@ Do you want to participate? You can ask me questions first!
 ### IRB Protocol Outline
 
 **Section 1: Study Overview**
+
 - **Title:** Evaluating CodonCanvas for Genetics Education
 - **Purpose:** Measure learning effectiveness and engagement with DNA programming
 - **Design:** [Pre/post, RCT, longitudinal - specify your design]
 - **Sample:** [Target N, age range, recruitment method]
 
 **Section 2: Risks & Benefits**
+
 - **Risks:** Minimal (anonymous educational metrics)
 - **Benefits:** Improved genetics education pedagogy
 - **Risk Mitigation:** No PII collection, local storage, opt-in consent
 
 **Section 3: Data Collection**
+
 - **What:** Usage metrics (session duration, activities, errors)
 - **How:** Automated browser localStorage (ResearchMetrics class)
 - **Storage:** Local device only (no server transmission)
 - **Retention:** Exported for analysis, then deleted from devices
 
 **Section 4: Privacy & Confidentiality**
+
 - **Identifiers:** None (anonymous UUIDs only)
 - **Linkage:** No linkage to student records
 - **Aggregation:** All reporting is group-level statistics
 - **Compliance:** FERPA, COPPA, institutional policies
 
 **Section 5: Consent Process**
+
 - **Adults:** Informed consent form (see template above)
 - **Minors:** Parental consent + student assent (see templates above)
 - **Timing:** Before research metrics enabled
 - **Documentation:** Signed forms retained per IRB requirements
 
 **Section 6: Data Sharing**
+
 - **Publications:** Aggregate statistics only
 - **Open Data:** De-identified data may be shared with research community
 - **Repository:** [Specify if depositing in OSF, Dataverse, etc.]
@@ -425,52 +455,52 @@ Research metrics export to CSV with the following columns:
 
 ### Session-Level Fields
 
-| Column | Type | Description | Example |
-|--------|------|-------------|---------|
-| `sessionId` | string | Anonymous UUID | `"a7f3c2d1-..."` |
-| `startTime` | number | Unix timestamp (ms) | `1729123456789` |
-| `endTime` | number | Unix timestamp (ms) | `1729125000000` |
-| `duration` | number | Milliseconds | `1543211` |
-| `genomesCreated` | number | Total genomes created | `12` |
-| `genomesExecuted` | number | Successful executions | `11` |
-| `mutationsApplied` | number | Total mutations | `37` |
-| `timeToFirstArtifact` | number | Milliseconds to first success | `342000` |
+| Column                | Type   | Description                   | Example          |
+| --------------------- | ------ | ----------------------------- | ---------------- |
+| `sessionId`           | string | Anonymous UUID                | `"a7f3c2d1-..."` |
+| `startTime`           | number | Unix timestamp (ms)           | `1729123456789`  |
+| `endTime`             | number | Unix timestamp (ms)           | `1729125000000`  |
+| `duration`            | number | Milliseconds                  | `1543211`        |
+| `genomesCreated`      | number | Total genomes created         | `12`             |
+| `genomesExecuted`     | number | Successful executions         | `11`             |
+| `mutationsApplied`    | number | Total mutations               | `37`             |
+| `timeToFirstArtifact` | number | Milliseconds to first success | `342000`         |
 
 ### Render Mode Fields
 
-| Column | Type | Description |
-|--------|------|-------------|
-| `renderMode_visual` | number | Visual-only executions |
-| `renderMode_audio` | number | Audio-only executions |
-| `renderMode_both` | number | Multi-sensory executions |
+| Column              | Type   | Description              |
+| ------------------- | ------ | ------------------------ |
+| `renderMode_visual` | number | Visual-only executions   |
+| `renderMode_audio`  | number | Audio-only executions    |
+| `renderMode_both`   | number | Multi-sensory executions |
 
 ### Mutation Type Fields
 
-| Column | Type | Description |
-|--------|------|-------------|
-| `mutation_silent` | number | Silent mutations applied |
-| `mutation_missense` | number | Missense mutations applied |
-| `mutation_nonsense` | number | Nonsense mutations applied |
-| `mutation_frameshift` | number | Frameshift mutations applied |
-| `mutation_point` | number | Point mutations (generic) |
-| `mutation_insertion` | number | Insertion mutations (3+ bases) |
-| `mutation_deletion` | number | Deletion mutations (3+ bases) |
+| Column                | Type   | Description                    |
+| --------------------- | ------ | ------------------------------ |
+| `mutation_silent`     | number | Silent mutations applied       |
+| `mutation_missense`   | number | Missense mutations applied     |
+| `mutation_nonsense`   | number | Nonsense mutations applied     |
+| `mutation_frameshift` | number | Frameshift mutations applied   |
+| `mutation_point`      | number | Point mutations (generic)      |
+| `mutation_insertion`  | number | Insertion mutations (3+ bases) |
+| `mutation_deletion`   | number | Deletion mutations (3+ bases)  |
 
 ### Feature Usage Fields
 
-| Column | Type | Description |
-|--------|------|-------------|
-| `feature_diffViewer` | number | Diff viewer opens |
-| `feature_timeline` | number | Timeline scrubber uses |
-| `feature_evolution` | number | Evolution lab uses |
-| `feature_assessment` | number | Assessment tool uses |
-| `feature_export` | number | Export operations |
+| Column               | Type   | Description            |
+| -------------------- | ------ | ---------------------- |
+| `feature_diffViewer` | number | Diff viewer opens      |
+| `feature_timeline`   | number | Timeline scrubber uses |
+| `feature_evolution`  | number | Evolution lab uses     |
+| `feature_assessment` | number | Assessment tool uses   |
+| `feature_export`     | number | Export operations      |
 
 ### Error Tracking Fields
 
-| Column | Type | Description |
-|--------|------|-------------|
-| `errorCount` | number | Total errors encountered |
+| Column       | Type   | Description               |
+| ------------ | ------ | ------------------------- |
+| `errorCount` | number | Total errors encountered  |
 | `errorTypes` | string | JSON array of error types |
 
 ### Example CSV Row
@@ -497,6 +527,7 @@ npm run metrics:analyze -- --data study1_metrics.csv
 ```
 
 **Output:**
+
 - Descriptive statistics (mean, SD, median, range)
 - Engagement metrics (session duration trends, retention rate)
 - Learning velocity (time-to-first-artifact distribution)
@@ -507,6 +538,7 @@ npm run metrics:analyze -- --data study1_metrics.csv
 ### Step 3: Review Analysis Report
 
 Analysis script generates:
+
 - `study1_metrics_report.txt` - Text summary
 - `study1_metrics_stats.json` - Machine-readable statistics
 - `study1_metrics_charts.html` - Interactive visualizations
@@ -516,6 +548,7 @@ Analysis script generates:
 For custom analysis, import CSV into your preferred tool:
 
 **R:**
+
 ```r
 data <- read.csv("study1_metrics.csv")
 summary(data$duration)
@@ -523,14 +556,17 @@ t.test(data$timeToFirstArtifact ~ data$renderMode_visual)
 ```
 
 **Python (pandas):**
+
 ```python
 import pandas as pd
-df = pd.read_csv('study1_metrics.csv')
-df['duration'].describe()
-df.groupby(['renderMode_visual', 'renderMode_audio']).mean()
+
+df = pd.read_csv("study1_metrics.csv")
+df["duration"].describe()
+df.groupby(["renderMode_visual", "renderMode_audio"]).mean()
 ```
 
 **SPSS:**
+
 1. File → Import Data → CSV
 2. Analyze → Descriptive Statistics → Descriptives
 3. Analyze → Compare Means → Independent-Samples T Test
@@ -544,6 +580,7 @@ The research dashboard (`research-dashboard.html`) provides visual analytics and
 ### Dashboard Sections
 
 **1. Aggregate Metrics Cards**
+
 - Total sessions
 - Average session duration
 - Total genomes created
@@ -552,16 +589,19 @@ The research dashboard (`research-dashboard.html`) provides visual analytics and
 - Total errors encountered
 
 **2. Visual Analytics Charts**
+
 - Mutation type distribution (bar chart)
 - Render mode preferences (bar chart)
 - Feature usage frequencies (bar chart)
 
 **3. Sessions Table**
+
 - Last 20 sessions displayed
 - Columns: Session ID, Date, Duration, Genomes, Mutations, Time-to-First, Errors
 - Sortable by clicking column headers
 
 **4. Data Export Controls**
+
 - **📊 Export JSON:** Full data with metadata (archival)
 - **📋 Export CSV:** Statistical analysis format (SPSS, R, Python)
 - **🗑️ Clear All Data:** Delete all sessions (irreversible)
@@ -569,11 +609,13 @@ The research dashboard (`research-dashboard.html`) provides visual analytics and
 ### Accessing the Dashboard
 
 **Method 1: Direct File Access**
+
 ```
 file:///path/to/codoncanvas/research-dashboard.html
 ```
 
 **Method 2: Local Server** (recommended)
+
 ```bash
 cd codoncanvas
 npx http-server -p 8080
@@ -581,6 +623,7 @@ npx http-server -p 8080
 ```
 
 **Method 3: GitHub Pages** (if deployed)
+
 ```
 https://yourusername.github.io/codoncanvas/research-dashboard.html
 ```
@@ -592,6 +635,7 @@ https://yourusername.github.io/codoncanvas/research-dashboard.html
 - No real-time updates (refresh page to see new data)
 
 **Multi-Device Collection Strategy:**
+
 1. Each student exports their CSV individually
 2. Educator merges CSV files (concatenate rows)
 3. Analyze merged dataset
@@ -636,6 +680,7 @@ https://yourusername.github.io/codoncanvas/research-dashboard.html
 
 **Challenge:** Each device has separate localStorage
 **Solution:**
+
 1. Student 1 exports CSV → `student1.csv`
 2. Student 2 exports CSV → `student2.csv`
 3. Educator merges:
@@ -680,6 +725,7 @@ See Session 62 (RESEARCH_FOUNDATION.md) for detailed power analyses.
 ### Can I share my data?
 
 **Yes,** if:
+
 - Data is de-identified (already is)
 - IRB protocol allows data sharing (specify in protocol)
 - Consent form disclosed potential sharing (add clause)
@@ -691,18 +737,21 @@ Recommend depositing in open repositories (OSF, Dataverse) for scientific transp
 ## Additional Resources
 
 **Related Documentation:**
+
 - `RESEARCH_FOUNDATION.md` - Research background and study designs
 - `scripts/research-data-analyzer.ts` - Assessment data analysis (student test scores)
 - `scripts/metrics-analyzer.ts` - Metrics data analysis (usage patterns)
 - `src/research-metrics.ts` - Technical implementation details
 
 **Research Design Resources:**
+
 - [What Works Clearinghouse Standards](https://ies.ed.gov/ncee/wwc/Handbooks)
 - [IRB Application Templates](https://www.hhs.gov/ohrp/regulations-and-policy/guidance/index.html)
 - [FERPA Guidance](https://studentprivacy.ed.gov/)
 - [COPPA Compliance](https://www.ftc.gov/business-guidance/resources/complying-coppa-frequently-asked-questions)
 
 **Statistical Analysis Resources:**
+
 - [G*Power Sample Size Calculator](https://www.psychologie.hhu.de/arbeitsgruppen/allgemeine-psychologie-und-arbeitspsychologie/gpower)
 - [Effect Size Interpretation Guide](https://imaging.mrc-cbu.cam.ac.uk/statswiki/FAQ/effectSize)
 

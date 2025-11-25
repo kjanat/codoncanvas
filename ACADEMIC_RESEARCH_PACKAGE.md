@@ -30,18 +30,21 @@ CodonCanvas has achieved **computational validation** (Session 87) with empirica
 ### Research Readiness Status
 
 ✅ **Computational Validation Complete** (S87)
+
 - 54 validation tests passing
 - Core claims empirically proven
 - Performance benchmarks established
 - Complexity analysis of 48 genomes
 
 🎯 **Academic Publication Ready** (This Package)
+
 - Journal article templates
 - Conference proposals
 - Grant frameworks
 - Statistical protocols
 
 ⏳ **Human Research Pending**
+
 - IRB approval process
 - Participant recruitment
 - Data collection
@@ -114,6 +117,7 @@ science education technology
 
 Genetic mutations are fundamental to biology education, yet students consistently struggle
 with these concepts (Kılıç et al., 2021). Research documents persistent misconceptions about:
+
 - Mutation types and their distinct effects (silent, missense, nonsense, frameshift)
 - Genotype-to-phenotype relationships (Uhl et al., 2021)
 - Reading frames and their role in gene expression
@@ -127,6 +131,7 @@ these misconceptions (Todd & Romine, 2016).
 
 Recent research demonstrates visual programming languages (VPLs) promote constructivist
 pedagogy even among traditionally instructivist educators (Kesler et al., 2022). VPLs provide:
+
 - Immediate visual feedback reducing cognitive load
 - Hands-on experimentation supporting active learning
 - Artifact creation fostering ownership and engagement
@@ -176,6 +181,7 @@ experimentation and reflection (Piaget, 1954; Vygotsky, 1978). Research shows co
 environments enhance motivation and learning strategies in science education (NCBI, 2023).
 
 CodonCanvas implements constructivist principles through:
+
 - **Active Experimentation**: Students modify genetic code and observe phenotype changes
 - **Immediate Feedback**: Visual results appear instantly, enabling rapid hypothesis testing
 - **Scaffolded Discovery**: Examples progress from simple → complex
@@ -185,6 +191,7 @@ CodonCanvas implements constructivist principles through:
 
 Cognitive Load Theory (Sweller, 1988) emphasizes minimizing extraneous cognitive load to
 maximize learning-focused (germane) load. CodonCanvas reduces cognitive load through:
+
 - **Simple Syntax**: Only triplet combinations (A/C/G/T)
 - **External Memory Aid**: One-page codon chart eliminates memorization burden
 - **Consistent Patterns**: Codon families reduce arbitrary mappings (GG* = shapes)
@@ -197,6 +204,7 @@ creating personally meaningful artifacts. Research on Scratch demonstrates artif
 enhances engagement and computational thinking (Resnick et al., 2009).
 
 CodonCanvas enables artifact creation through:
+
 - **Visual Genomes**: Shareable art generated from genetic code
 - **Gallery System**: Public showcase and remix culture
 - **Ownership**: "I made this" feeling drives sustained engagement
@@ -215,10 +223,12 @@ CodonCanvas enables artifact creation through:
 ### 3.2 Participants
 
 **Sample**: N = 120 high school biology students
+
 - **Experimental Group**: n = 60 (CodonCanvas intervention)
 - **Control Group**: n = 60 (traditional lecture-based instruction)
 
 **Demographics**:
+
 - Age: M = 15.2 years (SD = 0.8, range 14-17)
 - Gender: 52% female, 47% male, 1% non-binary
 - Prior CS experience: 23% (any programming course)
@@ -236,29 +246,34 @@ Groups showed no significant pre-test differences (see Results).
 #### Experimental Group: CodonCanvas Instruction
 
 **Session 1** (50 min): Introduction to DNA codons and CodonCanvas syntax
+
 - Pre-test administration (15 min)
 - Tutorial: "Hello Circle" genome (10 min)
 - Guided exploration: Create 3 simple shapes (25 min)
 
 **Session 2** (50 min): Genetic redundancy and silent mutations
+
 - Teacher demo: Synonymous codons (GGA → GGC, identical output) (10 min)
 - Student activity: Apply silent mutations, verify output unchanged (20 min)
 - Discussion: Why does genetic code have redundancy? (10 min)
 - Creative task: Design logo using shapes (10 min)
 
 **Session 3** (50 min): Missense and nonsense mutations
+
 - Teacher demo: Missense (CIRCLE → RECT) and nonsense (early STOP) (10 min)
 - Student activity: Predict mutation effects before testing (20 min)
 - Diff Viewer: Compare original vs mutated genomes side-by-side (15 min)
 - Reflection: Which mutations have larger effects? Why? (5 min)
 
 **Session 4** (50 min): Frameshift mutations
+
 - Teacher demo: Insert/delete bases, observe downstream scrambling (10 min)
 - Student activity: Compare point vs frameshift effects (25 min)
 - Class discussion: Why are frameshifts catastrophic? (10 min)
 - Challenge: Fix a broken genome with frameshift error (5 min)
 
 **Session 5** (50 min): Synthesis and assessment
+
 - Student presentations: Share favorite genomes (15 min)
 - Mutation challenge problems (20 min)
 - Post-test administration (15 min)
@@ -266,26 +281,31 @@ Groups showed no significant pre-test differences (see Results).
 #### Control Group: Traditional Lecture-Based Instruction
 
 **Session 1** (50 min): Introduction to genetic mutations
+
 - Pre-test administration (15 min)
 - Lecture: DNA structure, codons, protein synthesis (20 min)
 - Textbook reading: Mutation definitions (15 min)
 
 **Session 2** (50 min): Silent and synonymous codons
+
 - Lecture: Genetic code table, redundancy (20 min)
 - Worksheet: Identify synonymous codons from table (20 min)
 - Discussion: Biological significance of redundancy (10 min)
 
 **Session 3** (50 min): Missense and nonsense mutations
+
 - Lecture: Point mutation types and effects (20 min)
 - Static diagrams: Before/after protein sequences (15 min)
 - Worksheet: Classify mutations from examples (15 min)
 
 **Session 4** (50 min): Frameshift mutations
+
 - Lecture: Insertions, deletions, reading frame effects (20 min)
 - Diagram analysis: Frameshift impact on downstream sequence (20 min)
 - Worksheet: Predict frameshift outcomes (10 min)
 
 **Session 5** (50 min): Review and assessment
+
 - Review lecture: All mutation types (20 min)
 - Practice problems (15 min)
 - Post-test administration (15 min)
@@ -304,15 +324,16 @@ Independent observer rated adherence >90% for both conditions.
 **Reliability**: Cronbach's α = 0.82 (pilot tested with n=30)
 
 **Sample Items**:
+
 1. Which mutation type is most likely to have NO effect on protein function?
-   a) Missense  b) Nonsense  c) Silent  d) Frameshift
+   a) Missense b) Nonsense c) Silent d) Frameshift
 
 2. A deletion of 2 bases in a gene will cause:
-   a) Silent mutation  b) Missense mutation  c) Nonsense mutation  d) Frameshift mutation
+   a) Silent mutation b) Missense mutation c) Nonsense mutation d) Frameshift mutation
 
 3. Synonymous codons are codons that:
-   a) Code for the same amino acid  b) Have the same sequence
-   c) Occur in the same gene  d) Have similar sequences
+   a) Code for the same amino acid b) Have the same sequence
+   c) Occur in the same gene d) Have similar sequences
 
 **Content Validity**: Items reviewed by 3 genetics education experts, revised based on feedback.
 
@@ -324,13 +345,14 @@ Independent observer rated adherence >90% for both conditions.
 
 **Example**:
 ```
+
 Original: ATG GGA CCA TAA
-Mutated:  ATG GGC CCA TAA
+Mutated: ATG GGC CCA TAA
 
 Classify this mutation: _______
 Explain your reasoning: _______
-```
 
+```
 **Scoring Rubric**:
 - 2 points: Correct classification + accurate explanation
 - 1 point: Correct classification, incomplete explanation
@@ -645,12 +667,15 @@ Harvard University Press.
 ## Introduction
 
 ### Challenges in Genetics Education
+
 [Focus on biological misconceptions, CBE-LSE audience]
 
 ### Technology-Enhanced Learning in Biology
+
 [Emphasize biology-specific tools, not general CS education]
 
 ### CodonCanvas Design Rationale
+
 [Biological authenticity, immediate phenotype feedback]
 
 ## Methods
@@ -658,41 +683,52 @@ Harvard University Press.
 [More concise than JRST, focus on biological assessment items]
 
 ### Participants
+
 [Standard demographics]
 
 ### Instructional Interventions
+
 [Highlight biological content alignment]
 
 ### Measures
+
 **Mutation Concept Inventory**: [Biological concept focus]
 **Mutation Classification**: [Genetic sequence analysis]
 
 ### Analysis
+
 [Standard ANCOVA, effect sizes]
 
 ## Results
 
 ### Pre-Intervention Equivalence
+
 [Baseline comparison]
 
 ### Learning Outcomes
+
 [ANCOVA results, effect sizes, confidence intervals]
 
 ### Secondary Analyses
+
 [Engagement patterns, perceptions]
 
 ## Discussion
 
 ### Implications for Biology Education
+
 [How findings inform genetics pedagogy]
 
 ### Alignment with Learning Standards
+
 [NGSS, AP Biology connections]
 
 ### Implementation Considerations
+
 [Practical guidance for biology educators]
 
 ### Limitations and Future Research
+
 [Standard limitations, biology-focused future studies]
 
 ## Conclusions
@@ -732,69 +768,88 @@ Harvard University Press.
 ## Abstract
 
 ### Background
+
 [Mutation education challenges, research gaps]
 
 ### Methodology/Principal Findings
+
 [Design, sample, key results with statistics]
 
 ### Conclusions/Significance
+
 [Practical and theoretical contributions]
 
 ## Introduction
 
 ### Genetics Education Challenges
+
 [Literature review, mutation misconceptions]
 
 ### Visual Programming for Science Learning
+
 [Prior research, theoretical foundation]
 
 ### Study Aims and Hypotheses
+
 [Clear H1, H2, H3 statements]
 
 ## Materials and Methods
 
 ### Ethics Statement
+
 IRB approval from [Institution], protocol #[Number]. All participants provided informed
 consent (adults) or parental consent + student assent (minors).
 
 ### Study Design
+
 [Quasi-experimental, detailed timeline]
 
 ### Participants
+
 [Recruitment, demographics, inclusion/exclusion criteria]
 
 ### Interventions
+
 [Detailed protocols, fidelity checks]
 
 ### Outcome Measures
+
 [Instruments with reliability/validity evidence]
 
 ### Statistical Analysis
+
 [Preregistered analysis plan, software used (R version X.X), alpha level, power]
 
 ## Results
 
 ### Baseline Characteristics
+
 [Table 1: Demographic comparison, pre-test equivalence]
 
 ### Primary Outcome: Mutation Concept Understanding
+
 [ANCOVA results, Figure 1: Pre/post bar charts with error bars]
 
 ### Secondary Outcomes: Engagement and Perceptions
+
 [Correlation tables, regression results]
 
 ## Discussion
 
 ### Interpretation in Context of Prior Research
+
 [How findings extend literature]
 
 ### Mechanisms of Effectiveness
+
 [Why CodonCanvas works: theoretical explanation]
 
 ### Strengths and Limitations
+
 [Design strengths, acknowledged limitations]
 
 ### Practical Implications
+
 [Implementation guidance]
 
 ## Conclusions
@@ -852,19 +907,23 @@ Writing – review & editing: [Authors]
 # Conference Proposal: NABT 2026 Annual Conference
 
 ## Session Title (10 words max)
+
 Teaching Mutations Through DNA-Inspired Programming: A Hands-On Workshop
 
 ## Session Type
+
 ☑ Workshop (Hands-on, participants use technology)
 ☐ Presentation (Lecture-style with slides)
 ☐ Poster Session
 
 ## Strand
+
 ☑ Genetics and Evolution
 ☐ Pedagogy and Instruction
 ☐ Technology in Biology Education
 
 ## Audience Level
+
 ☑ High School (9-12)
 ☑ Community College
 ☑ 4-Year College/University
@@ -907,16 +966,19 @@ By the end of this session, participants will be able to:
 ## Session Outline (60 minutes total)
 
 **Introduction (5 min)**
+
 - Genetics education challenges: Why mutations are hard to teach
 - Traditional approaches vs. hands-on programming
 - Research evidence for CodonCanvas effectiveness (d=0.68)
 
 **Activity 1: First Visual Genome (10 min)**
+
 - Participants open CodonCanvas (web-based, no installation)
 - Follow guided tutorial: "Hello Circle" (ATG GAA AAT GGA TAA)
 - Success metric: Everyone renders first genome within 5 minutes
 
 **Activity 2: Mutation Exploration (15 min)**
+
 - Silent mutations: Change GGA → GGC (no visual change) — discuss genetic redundancy
 - Missense mutations: CIRCLE → RECT — phenotype changes
 - Nonsense mutations: Insert TAA early — truncated output
@@ -924,12 +986,14 @@ By the end of this session, participants will be able to:
 - Participants predict then test mutations
 
 **Activity 3: Classroom Tools Demo (10 min)**
+
 - Diff Viewer: Side-by-side genome comparison for classroom projector
 - Timeline Scrubber: Step-by-step execution (like ribosome movement)
 - Gallery System: Student sharing and remix culture
 - Assessment Items: 20 validated mutation concept questions
 
 **Implementation Planning (15 min)**
+
 - 5-day lesson plan walkthrough (all materials provided)
 - NGSS HS-LS3 alignment discussion
 - Technology requirements (Chromebooks, wifi, browser only)
@@ -937,6 +1001,7 @@ By the end of this session, participants will be able to:
 - Assessment and grading rubrics
 
 **Q&A and Resource Distribution (5 min)**
+
 - Questions from participants
 - USB drive distribution: Lesson plans, handouts, assessment bank
 - Follow-up support: Email list, online community
@@ -944,11 +1009,13 @@ By the end of this session, participants will be able to:
 ## Required Technology
 
 **For Participants** (BYOD — Bring Your Own Device):
+
 - Laptop, tablet, or Chromebook with modern web browser (Chrome, Firefox, Safari, Edge)
 - Internet connection (wifi provided by venue)
 - No software installation required
 
 **For Presenter**:
+
 - Projector with HDMI connection (standard in all conference rooms)
 - Presenter's laptop
 - Backup: USB drives with lesson plans for participants (internet-free resources)
@@ -958,6 +1025,7 @@ By the end of this session, participants will be able to:
 **[Your Name]**, [Degree], [Institution/Affiliation]
 
 [Your Bio — Highlight]:
+
 - Educational technology development experience
 - Genetics education background
 - Prior conference presentations (NABT, NSTA, etc.)
@@ -965,6 +1033,7 @@ By the end of this session, participants will be able to:
 - Teaching experience (K-12, college, teacher PD)
 
 **Relevant Experience**:
+
 - Developed CodonCanvas (3 years, 48 example genomes, 443 validation tests)
 - Conducted pilot study with 120 high school students (significant learning gains)
 - Published research in [Journals] (if applicable)
@@ -974,12 +1043,14 @@ By the end of this session, participants will be able to:
 ## Supporting Materials
 
 **Attached Documents** (upload during submission):
+
 1. **Sample Lesson Plan** (PDF, 5 pages) — Day 2: Silent mutations lesson
 2. **Student Handout** (PDF, 2 pages) — Codon chart and syntax reference
 3. **Research Summary** (PDF, 1 page) — Study design and key findings
 4. **Screenshots** (PDF, 3 pages) — CodonCanvas interface and tools
 
 **Online Resources** (URLs for review committee):
+
 - CodonCanvas Playground: https://[your-url]/index.html
 - Example Gallery: https://[your-url]/gallery.html
 - Educator Guide: https://[your-url]/EDUCATORS.md
@@ -988,11 +1059,11 @@ By the end of this session, participants will be able to:
 
 [3-5 key citations supporting session content]
 
-Kesler, A., et al. (2022). Active learning by visual programming. *Journal of Educational
-Computing Research*, *60*(7), 1687-1716.
+Kesler, A., et al. (2022). Active learning by visual programming. _Journal of Educational
+Computing Research_, _60_(7), 1687-1716.
 
-Kılıç, D., et al. (2021). Secondary school students' misconceptions in genetics. *Journal
-of Biological Education*, *57*(3), 590-606.
+Kılıç, D., et al. (2021). Secondary school students' misconceptions in genetics. _Journal
+of Biological Education_, _57_(3), 590-606.
 ```
 
 ---
@@ -1010,18 +1081,22 @@ of Biological Education*, *57*(3), 590-606.
 # AERA 2026 Annual Meeting Proposal
 
 ## Title (12 words max)
+
 DNA-Inspired Visual Programming Improves High School Students' Genetic Mutation Concepts
 
 ## Session Format
+
 ☑ Individual Paper Presentation (20 minutes)
 ☐ Symposium (organize 4 related papers)
 ☐ Poster Session
 
 ## Division/SIG (Special Interest Group)
+
 **Primary**: Division C — Learning and Instruction
 **Secondary**: SIG — Science Teaching and Learning
 
 ## Keywords (5 required)
+
 genetics education, visual programming languages, constructivism, secondary education,
 science education technology
 
@@ -1050,6 +1125,7 @@ enhance both intrinsic and extrinsic motivation in science education, with stude
 significantly better learning strategies (NCBI, 2023).
 
 CodonCanvas implements constructivist principles through:
+
 1. **Active experimentation**: Students modify genetic code and immediately observe phenotype
    changes, enabling rapid hypothesis testing
 2. **Scaffolded discovery**: Examples progress from simple (3-codon programs) to complex
@@ -1061,11 +1137,13 @@ CodonCanvas implements constructivist principles through:
 Cognitive Load Theory (Sweller, 1988) emphasizes the importance of minimizing extraneous
 cognitive load to maximize germane (learning-focused) load. Genetic mutation instruction
 traditionally imposes high extraneous load through:
+
 - Complex terminology (synonymous, missense, nonsense, frameshift)
 - Abstract genetic code tables requiring memorization
 - Static diagrams requiring mental simulation of dynamic processes
 
 CodonCanvas reduces extraneous load via:
+
 - **Simple syntax**: Only 64 triplet combinations (A/C/G/T)
 - **External memory aid**: One-page codon chart eliminates memorization
 - **Immediate feedback**: <50ms execution removes need for mental simulation
@@ -1089,6 +1167,7 @@ metaphors, limiting effectiveness for science learning.
 CodonCanvas addresses this gap through **biological-native syntax**: Real DNA codons (ATG, GGA,
 CCA) map directly to executable instructions, making the genetic code itself the programming
 language. This authenticity enables direct teaching of:
+
 - Genetic code redundancy (synonymous codons produce identical output)
 - Reading frame importance (frameshift mutations scramble downstream code)
 - Central Dogma flow (codon → instruction → phenotype)
@@ -1102,15 +1181,16 @@ mutation concept understanding.
 
 **Conceptual Model**:
 ```
-Constructivist Pedagogy (hands-on genetic code manipulation)
-    ↓
-Cognitive Load Reduction (immediate visual feedback, simple syntax)
-    ↓
-Active Knowledge Construction (experiment → observe → refine)
-    ↓
-Improved Conceptual Understanding (mutation types and effects)
-```
 
+Constructivist Pedagogy (hands-on genetic code manipulation)
+↓
+Cognitive Load Reduction (immediate visual feedback, simple syntax)
+↓
+Active Knowledge Construction (experiment → observe → refine)
+↓
+Improved Conceptual Understanding (mutation types and effects)
+
+```
 ## Research Questions/Hypotheses
 
 **RQ1**: Does CodonCanvas improve student understanding of mutation concepts compared to
@@ -1329,12 +1409,15 @@ Kesler, A., Shamir-Inbal, T., & Blau, I. (2022). Active learning by visual progr
 # SIGCSE 2026 Experience Report
 
 ## Title
+
 Teaching Biology Through Code: CodonCanvas as Bridge Between CS and Genetics
 
 ## Format
+
 ☑ Experience Report (30-minute panel with Q&A)
 
 ## Track
+
 ☑ Interdisciplinary Computing
 ☐ Intro CS
 ☐ Advanced Topics
@@ -1361,6 +1444,7 @@ real-world problems."
 Students earned both biology and CS credit, mastering mutation concepts AND computational thinking.
 
 Implementation insights:
+
 - CS background NOT required (simple syntax, visual reference)
 - Bio authenticity matters (DNA codons > generic blocks)
 - Immediate feedback critical (< 50ms execution)
@@ -1374,6 +1458,7 @@ architecture. CodonCanvas is free, web-based, open source.
 ## Learning Objectives
 
 Participants will:
+
 1. Understand how domain-specific programming languages support interdisciplinary learning
 2. Access ready-to-use lesson plans for integrating CodonCanvas in bio OR CS courses
 3. Explore technical architecture decisions (why stack-based? why codons?)
@@ -1384,10 +1469,11 @@ Participants will:
 **Introduction** (5 min): Why interdisciplinary computing in biology?
 **Demo** (8 min): Live coding - mutations in 5 minutes
 **Implementation Stories** (12 min):
+
 - Biology course: Genetics without CS background
 - CS course: Algorithms with biological context
 - Dual-enrollment: Bridge course model
-**Q&A** (5 min): Implementation questions, resource access
+  **Q&A** (5 min): Implementation questions, resource access
 
 ## References
 
@@ -1420,12 +1506,14 @@ misconceptions through DNA-native visual programming enabling immediate genotype
 feedback.
 
 **Intellectual Merit**:
+
 - Advances understanding of domain-specific visual programming for science education
 - Tests theoretical framework: Constructivism × Cognitive Load × Computational Thinking
 - Rigorous evaluation: RCT with 600 students across diverse institutions
 - Computational validation establishes tool correctness before deployment (443 tests)
 
 **Broader Impacts**:
+
 - Improves genetics education for 2000+ students annually (scalable web platform)
 - Supports diverse learners (WCAG 2.1 AA accessible, low-floor design)
 - Develops 30 faculty through professional development workshops
@@ -1445,11 +1533,13 @@ constructivist pedagogy, educational technology
 
 Despite decades of curriculum reform, undergraduate biology students demonstrate persistent
 misconceptions about genetic mutations:
+
 - 67% cannot distinguish silent vs. missense mutations (Kılıç et al., 2021)
 - 54% hold incorrect models of genotype-to-phenotype relationships (Uhl et al., 2021)
 - 43% misunderstand reading frames and frameshift effects (Todd & Romine, 2016)
 
 These misconceptions:
+
 - Create barriers to advanced coursework (molecular biology, genetics, evolution)
 - Persist despite traditional instruction (lecture + diagrams)
 - Reflect abstract nature of genetic concepts (hard to visualize, experiment with)
@@ -1469,12 +1559,14 @@ the programming language. Students write triplet sequences (ATG GGA CCA TAA) tha
 as visual programs, making genotype → phenotype relationships immediately observable.
 
 **Key Innovation**: Genetic code as executable syntax
+
 - 64 DNA codons map to drawing opcodes (GGA=CIRCLE, CCA=RECT, etc.)
 - Synonymous codons produce identical output (teaching redundancy empirically)
 - All mutation types implemented with instant visual feedback
 - <50ms execution enables rapid hypothesis testing
 
 **Preliminary Evidence** (NSF values prior work):
+
 - Computational validation: 443 tests confirm correct implementation
 - Pilot study (N=120 high school): d=0.68 learning gains vs. traditional instruction
 - 89% first artifact within 5 minutes (low barrier to entry)
@@ -1528,12 +1620,14 @@ exemplifies DSL for genetics.
 
 Genetics misconceptions are resistant to change (conceptual change theory, Posner et al., 1982).
 Effective interventions require:
+
 1. Dissatisfaction with existing conception (cognitive conflict)
 2. Intelligible alternative conception
 3. Plausible alternative (makes sense)
 4. Fruitful alternative (solves problems better)
 
 CodonCanvas addresses all four:
+
 1. **Dissatisfaction**: Students' predictions fail → "Why did CIRCLE become RECT?"
 2. **Intelligible**: Visual feedback makes mutation effects concrete
 3. **Plausible**: Immediate results are convincing evidence
@@ -1553,6 +1647,7 @@ CodonCanvas addresses all four:
 #### 4.2 Participants
 
 **Inclusion Criteria**:
+
 - Enrolled in introductory biology course (majors or non-majors)
 - First exposure to genetic mutations content (no prior genetics courses)
 - Age ≥18 years (adult participants only for simplicity)
@@ -1561,6 +1656,7 @@ CodonCanvas addresses all four:
 opt-out option without penalty
 
 **Demographics** (projected based on institution profiles):
+
 - 60% female, 38% male, 2% non-binary (national bio major demographics)
 - 35% URM (underrepresented minorities in STEM)
 - 15% first-generation college students
@@ -1585,6 +1681,7 @@ opt-out option without penalty
 #### 4.5 Analysis Plan
 
 **Primary Analysis** (RQ1):
+
 - Hierarchical linear modeling (HLM): Students nested within sections, sections within institutions
 - Level 1 (student): Post-test ~ treatment + pre-test + demographics
 - Level 2 (section): Random intercepts
@@ -1593,6 +1690,7 @@ opt-out option without penalty
 - Power: N=600 provides 80% power to detect d=0.4 (small-medium effect)
 
 **Secondary Analyses** (RQ2-RQ4):
+
 - Moderation analyses: Treatment × background variables
 - Mediation analyses: Engagement metrics as mediators
 - Qualitative analysis: Faculty interviews (thematic coding, NVivo)
@@ -1600,21 +1698,25 @@ opt-out option without penalty
 ### 5. Project Timeline and Management (2 pages)
 
 **Year 1**:
+
 - Months 1-3: IRB approvals (all sites), instructor recruitment
 - Months 4-6: Faculty PD workshops (4 hours), curriculum finalization
 - Months 7-12: Data collection Cohort 1 (n=200), analysis, preliminary publications
 
 **Year 2**:
+
 - Months 13-15: Faculty refresher PD, adjustments based on Year 1 feedback
 - Months 16-21: Data collection Cohort 2 (n=200)
 - Months 22-24: Combined analysis (Cohorts 1-2), conference presentations
 
 **Year 3**:
+
 - Months 25-27: Faculty refresher PD
 - Months 28-33: Data collection Cohort 3 (n=200)
 - Months 34-36: Final analysis (all cohorts), publication submissions, dissemination
 
 **Management Structure**:
+
 - PI: Overall project leadership, RCT design
 - Co-PI (Biology Education): Curriculum development, faculty PD
 - Co-PI (Assessment): Instrument development, HLM analysis
@@ -1695,7 +1797,6 @@ opt-out option without penalty
 Travel enables dissemination and site support. Other costs ensure equity (Chromebooks)
 and broad impact (open-access publications). Budget is cost-effective given scale
 (600 students, 12 institutions, 30 faculty trained).
-
 ```
 
 ---
@@ -1718,11 +1819,13 @@ and broad impact (open-access publications). Budget is cost-effective given scal
 effectiveness through mixed-methods research, and establish sustainable implementation model.
 
 **Intellectual Merit**:
+
 - Investigates scalability of constructivist genetics tools in diverse school settings
 - Examines teacher professional development models for technology integration
 - Contributes to understanding of visual programming in science education
 
 **Broader Impacts**:
+
 - Reaches underserved districts (Title I schools prioritized)
 - Develops 150 high school biology teachers
 - Creates open curriculum aligned to NGSS HS-LS3
@@ -1734,6 +1837,7 @@ effectiveness through mixed-methods research, and establish sustainable implemen
 
 CodonCanvas uniquely addresses HS genetics challenges through DNA-native programming. Unlike
 university tools, HS version includes:
+
 - Scaffolded tutorials (6 levels)
 - Assessment system (auto-graded items)
 - Teacher dashboard (real-time student progress)
@@ -1781,11 +1885,13 @@ classroom observations, student assessments
 **Alternative Hypothesis (H1)**: μ_experimental > μ_control (experimental group scores higher)
 
 **Statistical Test**: ANCOVA (Analysis of Covariance)
+
 - **Dependent Variable**: Post-test MCI score (0-20 points)
 - **Independent Variable**: Condition (experimental vs. control)
 - **Covariate**: Pre-test MCI score (controlling for baseline differences)
 
 **Assumptions to Check**:
+
 1. **Independence of observations**: Students within groups are independent (✓ random assignment)
 2. **Normal distribution of residuals**: Shapiro-Wilk test on residuals (W > 0.95, p > .05)
 3. **Homogeneity of variance**: Levene's test (F(1, n-2) < 3.00, p > .05)
@@ -1793,6 +1899,7 @@ classroom observations, student assessments
 5. **Linear relationship**: Scatterplot pre-test × post-test shows linear pattern
 
 **Decision Criteria**:
+
 - **Alpha level**: α = .05 (two-tailed)
 - **Reject H0 if**: F(1, n-2) > F_critical AND p < .05
 - **Effect size**: Calculate Cohen's d (adjusted for covariate)
@@ -1800,6 +1907,7 @@ classroom observations, student assessments
   - Interpret: d ≥ 0.2 (small), d ≥ 0.5 (medium), d ≥ 0.8 (large)
 
 **Power Analysis**:
+
 - **Desired power**: 1 - β = 0.80 (80% chance of detecting true effect)
 - **Alpha**: .05
 - **Effect size**: d = 0.5 (medium, based on pilot)
@@ -1807,6 +1915,7 @@ classroom observations, student assessments
   - Actual sample: N = 120 → Power = 0.76 (acceptable but slightly underpowered)
 
 **R Code Template**:
+
 ```r
 # Load data
 data <- read.csv("study_data.csv")
@@ -1839,17 +1948,20 @@ cohen.d(data$posttest[data$condition=="experimental"],
 **Hypothesis (H2a)**: r < 0 (negative correlation: faster success → better learning)
 
 **Statistical Test**: Pearson correlation coefficient
+
 - **Variables**:
   - X = Time-to-first-artifact (minutes)
   - Y = Post-test MCI score (controlling for pre-test via partial correlation)
 
 **Assumptions**:
+
 1. **Level of measurement**: Both continuous ✓
 2. **Linear relationship**: Scatterplot shows linear pattern (no curvilinear)
 3. **Bivariate normality**: Q-Q plots for both variables (points follow diagonal line)
 4. **No outliers**: Cook's distance < 1.0 for all cases
 
 **Decision Criteria**:
+
 - **Alpha**: α = .05 (two-tailed)
 - **Reject H0 (r = 0) if**: p < .05
 - **Interpret strength**:
@@ -1858,6 +1970,7 @@ cohen.d(data$posttest[data$condition=="experimental"],
   - |r| ≥ 0.7 (strong)
 
 **R Code**:
+
 ```r
 # Partial correlation (controlling for pre-test)
 library(ppcor)
@@ -1881,22 +1994,26 @@ ggplot(data, aes(x=time_to_first, y=posttest)) +
 #### Analysis Sequence
 
 **Step 1: Data Cleaning** (before any analysis)
+
 - Check for missing data: Multiple imputation if >5% missing, listwise deletion if <5%
 - Identify outliers: Boxplot method (1.5 × IQR), retain unless data entry errors
 - Verify randomization integrity: Compare groups on baseline variables (demographics, pre-test)
 
 **Step 2: Descriptive Statistics**
+
 - Calculate M, SD, median, range for all outcome variables by condition
 - Create Table 1: Baseline characteristics comparison (demographics, pre-test scores)
 - Generate histograms and Q-Q plots to assess normality
 
 **Step 3: Assumption Checks** (for ANCOVA)
+
 - Normality: Shapiro-Wilk on residuals → If violated (W < 0.95, p < .05), consider non-parametric alternative (Kruskal-Wallis)
 - Homogeneity of variance: Levene's test → If violated (F significant), use Welch's ANCOVA
 - Homogeneity of regression slopes: Test condition × pretest interaction → If violated (p < .05), ANCOVA invalid, use alternative strategy (stratification or regression)
 - Document all assumption checks in manuscript
 
 **Step 4: Primary Analysis** (ANCOVA)
+
 ```r
 # Fit ANCOVA model
 model <- aov(posttest ~ pretest + condition, data=data)
@@ -1914,18 +2031,21 @@ confint(model)
 ```
 
 **Step 5: Sensitivity Analyses**
+
 - **Intent-to-treat (ITT)**: Include all randomized participants (even non-compliers)
 - **Per-protocol**: Include only participants who completed ≥4/5 sessions
 - **As-treated**: Analyze based on actual treatment received (for crossover cases)
 - Compare results across analyses → If consistent, strengthens conclusions
 
 **Step 6: Subgroup Analyses** (prespecified)
+
 - Moderator: Prior CS experience (Yes/No)
 - Moderator: Gender (Female/Male/Non-binary)
 - Moderator: URM status (Yes/No)
 - Test interactions: condition × moderator → Interpret only if p < .05
 
 **Step 7: Reporting**
+
 - Report all analyses (including non-significant results)
 - Include effect sizes and confidence intervals (not just p-values)
 - Create CONSORT flowchart (participant flow through study)
@@ -1938,6 +2058,7 @@ confint(model)
 #### Hierarchical Linear Modeling (HLM)
 
 **Data Structure**:
+
 - Level 1 (Student): n = 600 students
 - Level 2 (Section): k = 60 sections (10 students per section average)
 - Level 3 (Institution): j = 12 institutions (5 sections per institution average)
@@ -1945,6 +2066,7 @@ confint(model)
 **Model Specification**:
 
 **Null Model** (unconditional, for ICC calculation):
+
 ```
 Level 1: Y_ijk = β_0jk + r_ijk
 Level 2: β_0jk = γ_00k + u_0jk
@@ -1958,6 +2080,7 @@ Where:
 ```
 
 **Intraclass Correlation (ICC)**:
+
 ```r
 # Fit null model
 null_model <- lmer(posttest ~ 1 + (1|institution/section), data=data)
@@ -1974,6 +2097,7 @@ ICC_institution = σ²_institution / (σ²_institution + σ²_section + σ²_stu
 ```
 
 **Full Model** (with covariates and treatment):
+
 ```
 Level 1 (Student):
   Y_ijk = β_0jk + β_1jk(pretest_ijk) + β_2jk(priorCS_ijk) + r_ijk
@@ -1991,6 +2115,7 @@ Level 3 (Institution):
 ```
 
 **R Code**:
+
 ```r
 library(lme4)
 
@@ -2014,11 +2139,13 @@ VarCorr(hlm_model)
 ```
 
 **Interpretation**:
+
 - **Fixed effect of treatment** (γ_01): Average treatment effect across all institutions
 - **Cross-level interaction** (δ_011): Does treatment effectiveness vary by institution type (R1 vs. teaching vs. community college)?
 - **Random effects**: How much outcome variability is due to section/institution differences?
 
 **Power for HLM**:
+
 - More complex than single-level (depends on ICC, cluster sizes)
 - Rule of thumb: Need 30+ clusters (sections) at Level 2 for adequate power
 - Our design: 60 sections → Adequate power ✓
@@ -2030,12 +2157,14 @@ VarCorr(hlm_model)
 ### Phase 1: Pre-Submission (Months 1-3 after data collection)
 
 #### Data Preparation
+
 - [ ] Clean raw data (outliers, missing values, errors)
 - [ ] Create analysis-ready dataset (de-identified)
 - [ ] Document data cleaning decisions (log file)
 - [ ] Run data quality checks (range validation, logic checks)
 
 #### Statistical Analysis
+
 - [ ] Conduct all prespecified analyses (see analysis plan)
 - [ ] Check all assumptions (document results)
 - [ ] Calculate effect sizes and confidence intervals
@@ -2044,6 +2173,7 @@ VarCorr(hlm_model)
 - [ ] Archive analysis scripts (R, Python, SPSS syntax)
 
 #### Manuscript Drafting
+
 - [ ] Select target journal (see template above)
 - [ ] Review journal author guidelines (format, word count, style)
 - [ ] Draft all sections (Introduction, Methods, Results, Discussion)
@@ -2052,6 +2182,7 @@ VarCorr(hlm_model)
 - [ ] Internal review by co-authors (2-3 rounds typical)
 
 #### Pre-Submission Checks
+
 - [ ] Plagiarism check (Turnitin, iThenticate)
 - [ ] Verify all figures are high resolution (300+ DPI)
 - [ ] Proofread for grammar and clarity
@@ -2064,6 +2195,7 @@ VarCorr(hlm_model)
 ### Phase 2: Submission (Month 3)
 
 #### Journal Submission
+
 - [ ] Create account in journal submission system
 - [ ] Upload manuscript (title page, abstract, main text)
 - [ ] Upload figures (separate high-res files)
@@ -2079,6 +2211,7 @@ VarCorr(hlm_model)
 - [ ] Submit and save confirmation number
 
 #### Preprint Posting (Optional but Recommended)
+
 - [ ] Post to EdArXiv, PsyArXiv, or bioRxiv
 - [ ] Obtain DOI for preprint
 - [ ] Share on social media (Twitter, LinkedIn)
@@ -2089,10 +2222,12 @@ VarCorr(hlm_model)
 ### Phase 3: Peer Review (Months 4-6)
 
 #### Initial Editorial Decision (2-4 weeks)
+
 - **Desk Reject**: Revise and submit to different journal
 - **Sent to Review**: Track status in submission system (expect 6-12 weeks)
 
 #### Reviewer Feedback Received (6-12 weeks after submission)
+
 - [ ] Read all reviewer comments carefully (multiple times)
 - [ ] Categorize comments (major vs. minor, must-address vs. optional)
 - [ ] Draft response letter (point-by-point)
@@ -2102,6 +2237,7 @@ VarCorr(hlm_model)
 - [ ] Update tables/figures if needed
 
 #### Revision Submission (within editor deadline, typically 6-8 weeks)
+
 - [ ] Upload revised manuscript
 - [ ] Upload response letter (detailed point-by-point)
 - [ ] Upload revised figures/tables
@@ -2113,18 +2249,21 @@ VarCorr(hlm_model)
 ### Phase 4: Acceptance and Publication (Months 7-10)
 
 #### Acceptance Notification
+
 - [ ] Celebrate! 🎉
 - [ ] Respond to acceptance email promptly
 - [ ] Sign copyright transfer agreement (or open access license)
 - [ ] Pay publication fees if applicable (open access charges)
 
 #### Proofs Review (1-2 weeks before publication)
+
 - [ ] Review typeset proofs carefully (formatting, figures, tables)
 - [ ] Check all citations (no broken references)
 - [ ] Verify author names and affiliations
 - [ ] Submit corrections within deadline (24-48 hours typical)
 
 #### Publication
+
 - [ ] Receive "online first" DOI
 - [ ] Download final PDF
 - [ ] Update CV with citation
@@ -2132,6 +2271,7 @@ VarCorr(hlm_model)
 - [ ] Email co-authors and thank collaborators
 
 #### Post-Publication
+
 - [ ] Deposit final manuscript in institutional repository (if allowed)
 - [ ] Add to Google Scholar profile
 - [ ] Monitor citations (Google Scholar alerts)
@@ -2144,15 +2284,18 @@ VarCorr(hlm_model)
 ### Learning Outcomes Questions
 
 **RQ1**: Does CodonCanvas improve genetics concept understanding vs. traditional instruction?
+
 - **Sub-RQ1a**: Which mutation concepts show largest gains (silent, missense, nonsense, frameshift)?
 - **Sub-RQ1b**: Do gains persist over time (retention at 1 month, 6 months, 1 year)?
 
 **RQ2**: Does effectiveness vary by student background?
+
 - **Sub-RQ2a**: Prior CS experience (novices vs. experienced programmers)?
 - **Sub-RQ2b**: Prior biology knowledge (first-time vs. repeated genetics exposure)?
 - **Sub-RQ2c**: Demographic factors (gender, URM status, first-generation college)?
 
 **RQ3**: What are mechanisms of learning effectiveness?
+
 - **Sub-RQ3a**: Which engagement metrics predict learning (time, attempts, features used)?
 - **Sub-RQ3b**: Does mutation experimentation frequency mediate learning gains?
 - **Sub-RQ3c**: Role of immediate feedback vs. delayed feedback?
@@ -2160,11 +2303,13 @@ VarCorr(hlm_model)
 ### Engagement and Motivation Questions
 
 **RQ4**: What engagement patterns emerge during CodonCanvas use?
+
 - **Sub-RQ4a**: Time-to-first-artifact distribution (learning curve)?
 - **Sub-RQ4b**: Session duration trends (sustained vs. declining engagement)?
 - **Sub-RQ4c**: Feature adoption patterns (which tools used most/least)?
 
 **RQ5**: How does CodonCanvas affect motivation and self-efficacy?
+
 - **Sub-RQ5a**: Intrinsic motivation changes (pre/post survey)?
 - **Sub-RQ5b**: Genetics self-efficacy changes?
 - **Sub-RQ5c**: Computational thinking self-efficacy changes?
@@ -2172,11 +2317,13 @@ VarCorr(hlm_model)
 ### Pedagogical Questions
 
 **RQ6**: How do teachers adapt CodonCanvas for their classrooms?
+
 - **Sub-RQ6a**: What modifications do teachers make (pacing, examples, assessments)?
 - **Sub-RQ6b**: What challenges do teachers encounter?
 - **Sub-RQ6c**: What pedagogical shifts occur (instructivist → constructivist)?
 
 **RQ7**: What instructional strategies maximize effectiveness?
+
 - **Sub-RQ7a**: Guided vs. open-ended exploration?
 - **Sub-RQ7b**: Individual vs. pair programming?
 - **Sub-RQ7c**: Teacher demonstration vs. student discovery?
@@ -2184,11 +2331,13 @@ VarCorr(hlm_model)
 ### Scalability and Implementation Questions
 
 **RQ8**: What factors influence successful implementation at scale?
+
 - **Sub-RQ8a**: Technology infrastructure requirements (wifi, devices)?
 - **Sub-RQ8b**: Teacher professional development models?
 - **Sub-RQ8c**: Institutional support needs (admin buy-in, curriculum alignment)?
 
 **RQ9**: What is total cost of ownership for schools?
+
 - **Sub-RQ9a**: Direct costs (devices, wifi, training)?
 - **Sub-RQ9b**: Opportunity costs (time away from traditional content)?
 - **Sub-RQ9c**: Cost-effectiveness vs. alternative interventions?
@@ -2200,16 +2349,19 @@ VarCorr(hlm_model)
 ### Data Collection and Storage
 
 **Types of Data Collected**:
+
 1. **Quantitative**: Pre/post test scores, surveys, research metrics (CSV files)
 2. **Qualitative**: Student open-responses, teacher interviews (text, audio recordings)
 3. **Video**: Classroom observations (MP4 files, ~2GB per session)
 
 **Storage During Active Research**:
+
 - **Primary**: Secure university server (encrypted, access-controlled)
 - **Backup**: External encrypted hard drive (weekly backups)
 - **Cloud Backup**: Institutional OneDrive (encrypted, FERPA-compliant)
 
 **Access Controls**:
+
 - PI and Co-PIs: Full access
 - Graduate RAs: Access to de-identified data only
 - External evaluator: Access to aggregated data only
@@ -2217,6 +2369,7 @@ VarCorr(hlm_model)
 ### Data De-Identification
 
 **Process**:
+
 1. Assign unique participant IDs (e.g., S001, S002, ... S600)
 2. Remove all direct identifiers (names, student IDs, emails)
 3. Remove indirect identifiers (dates of birth → age range, ZIP codes → state only)
@@ -2227,11 +2380,13 @@ VarCorr(hlm_model)
 ### Data Sharing and Long-Term Preservation
 
 **Public Data Repository**: Open Science Framework (OSF) or ICPSR
+
 - **What**: De-identified quantitative data (CSV), analysis scripts (R), codebooks
 - **When**: Upon publication acceptance (or 3 years post-project if no publication)
 - **License**: CC0 (public domain) for data, MIT for code
 
 **Restricted Data**: Video recordings, audio interviews (contain voices → identifiable)
+
 - **Storage**: Institutional repository (access by request only)
 - **Retention**: 7 years post-project (IRB and federal requirements)
 - **Destruction**: Secure deletion after retention period
@@ -2239,6 +2394,7 @@ VarCorr(hlm_model)
 ### Data Quality Assurance
 
 **Procedures**:
+
 - Double data entry for all paper forms (compare, reconcile discrepancies)
 - Range checks (e.g., test scores 0-20 only)
 - Logic checks (e.g., post-test date > pre-test date)
@@ -2251,12 +2407,14 @@ VarCorr(hlm_model)
 ### Academic Dissemination (Years 1-4)
 
 **Peer-Reviewed Publications** (Target: 3-5 articles)
+
 - Year 2: Primary RCT results (JRST or CBE-LSE)
 - Year 3: Engagement patterns analysis (Computers & Education)
 - Year 3: Teacher professional development outcomes (Journal of Science Teacher Education)
 - Year 4: Meta-analysis or review article synthesizing all findings
 
 **Conference Presentations** (Target: 8-10 presentations)
+
 - NABT (annual): Practitioner-focused workshops (Years 1-4)
 - AERA (annual): Research findings (Years 2-4)
 - SIGCSE (annual): CS education perspective (Years 2-3)
@@ -2265,12 +2423,14 @@ VarCorr(hlm_model)
 ### Practitioner Dissemination
 
 **Open Educational Resources**:
+
 - Lesson plans (6-day unit) with handouts
 - Assessment item bank (50+ validated questions)
 - Video tutorials (YouTube channel: 10-15 short videos)
 - Webinars (quarterly, recorded and archived)
 
 **Professional Development**:
+
 - Summer institutes (1-week intensive for 30 teachers/year)
 - Micro-credentials (digital badges for completed PD modules)
 - Online community (Slack/Discord for teachers to share experiences)
@@ -2278,11 +2438,13 @@ VarCorr(hlm_model)
 ### Public Dissemination
 
 **Media Outreach**:
+
 - Press release upon major publication
 - Science journalism (e.g., EdSurge, Education Week)
 - Institutional news office (university PR)
 
 **Social Media**:
+
 - Project website with blog (bi-weekly updates)
 - Twitter/X account (@CodonCanvas)
 - YouTube channel (demo videos, student testimonials)
@@ -2294,6 +2456,7 @@ VarCorr(hlm_model)
 This Academic Research Package provides comprehensive templates and protocols for transforming CodonCanvas from computationally validated tool (Session 87) into published research and funded grants. Materials support multiple publication venues (JRST, CBE-LSE, PLOS ONE), conference presentations (NABT, AERA, SIGCSE), and grant applications (NSF IUSE, DRK-12).
 
 **Next Steps**:
+
 1. Obtain IRB approval using templates from RESEARCH_METRICS.md
 2. Recruit participants and implement study design
 3. Collect and analyze data following statistical protocols

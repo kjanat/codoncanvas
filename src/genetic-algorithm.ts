@@ -3,15 +3,15 @@
  * Implements automated fitness-driven evolution with selection, crossover, mutation
  */
 
+import { CodonLexer } from "./lexer.js";
 import {
-  applyPointMutation,
-  applyInsertion,
   applyDeletion,
-  type MutationResult
-} from './mutations.js';
-import { CodonLexer } from './lexer.js';
-import { CodonVM } from './vm.js';
-import { Canvas2DRenderer } from './renderer.js';
+  applyInsertion,
+  applyPointMutation,
+  type MutationResult,
+} from "./mutations.js";
+import { Canvas2DRenderer } from "./renderer.js";
+import { CodonVM } from "./vm.js";
 
 export interface GAIndividual {
   /** Genome string */
@@ -32,8 +32,8 @@ export interface GAGenerationStats {
   diversity: number; // unique genomes / population size
 }
 
-export type SelectionStrategy = 'tournament' | 'roulette' | 'elitism';
-export type CrossoverStrategy = 'single-point' | 'uniform' | 'none';
+export type SelectionStrategy = "tournament" | "roulette" | "elitism";
+export type CrossoverStrategy = "single-point" | "uniform" | "none";
 
 export interface GAOptions {
   /** Population size (default: 20) */
@@ -52,7 +52,10 @@ export interface GAOptions {
   tournamentSize?: number;
 }
 
-export type FitnessFunction = (genome: string, canvas: HTMLCanvasElement) => number;
+export type FitnessFunction = (
+  genome: string,
+  canvas: HTMLCanvasElement,
+) => number;
 
 /**
  * Genetic Algorithm Engine
@@ -78,13 +81,13 @@ export class GeneticAlgorithm {
   constructor(
     initialGenomes: string[],
     fitnessFunction: FitnessFunction,
-    options: GAOptions = {}
+    options: GAOptions = {},
   ) {
     this.populationSize = options.populationSize ?? 20;
     this.mutationRate = options.mutationRate ?? 0.1;
     this.crossoverRate = options.crossoverRate ?? 0.7;
-    this.selectionStrategy = options.selectionStrategy ?? 'tournament';
-    this.crossoverStrategy = options.crossoverStrategy ?? 'single-point';
+    this.selectionStrategy = options.selectionStrategy ?? "tournament";
+    this.crossoverStrategy = options.crossoverStrategy ?? "single-point";
     this.eliteCount = options.eliteCount ?? 2;
     this.tournamentSize = options.tournamentSize ?? 3;
 
@@ -94,7 +97,7 @@ export class GeneticAlgorithm {
     this.lexer = new CodonLexer();
 
     // Create offscreen canvas for fitness evaluation
-    this.offscreenCanvas = document.createElement('canvas');
+    this.offscreenCanvas = document.createElement("canvas");
     this.offscreenCanvas.width = 400;
     this.offscreenCanvas.height = 400;
 
@@ -115,7 +118,7 @@ export class GeneticAlgorithm {
         genome,
         fitness: this.evaluateFitness(genome),
         generation: 0,
-        id: `gen0-${i}`
+        id: `gen0-${i}`,
       });
     }
 
@@ -128,9 +131,9 @@ export class GeneticAlgorithm {
   private evaluateFitness(genome: string): number {
     try {
       // Clear canvas
-      const ctx = this.offscreenCanvas.getContext('2d')!;
+      const ctx = this.offscreenCanvas.getContext("2d")!;
       ctx.clearRect(0, 0, 400, 400);
-      ctx.fillStyle = 'white';
+      ctx.fillStyle = "white";
       ctx.fillRect(0, 0, 400, 400);
 
       // Render genome
@@ -152,14 +155,16 @@ export class GeneticAlgorithm {
    */
   private selectParent(): GAIndividual {
     switch (this.selectionStrategy) {
-      case 'tournament':
+      case "tournament":
         return this.tournamentSelection();
-      case 'roulette':
+      case "roulette":
         return this.rouletteWheelSelection();
-      case 'elitism':
+      case "elitism":
         return this.tournamentSelection(); // Elitism handled separately
       default:
-        throw new Error(`Unknown selection strategy: ${this.selectionStrategy}`);
+        throw new Error(
+          `Unknown selection strategy: ${this.selectionStrategy}`,
+        );
     }
   }
 
@@ -170,7 +175,8 @@ export class GeneticAlgorithm {
     let best: GAIndividual | null = null;
 
     for (let i = 0; i < this.tournamentSize; i++) {
-      const candidate = this.population[Math.floor(Math.random() * this.population.length)];
+      const candidate =
+        this.population[Math.floor(Math.random() * this.population.length)];
       if (!best || candidate.fitness > best.fitness) {
         best = candidate;
       }
@@ -183,11 +189,16 @@ export class GeneticAlgorithm {
    * Roulette wheel selection (fitness-proportionate)
    */
   private rouletteWheelSelection(): GAIndividual {
-    const totalFitness = this.population.reduce((sum, ind) => sum + ind.fitness, 0);
+    const totalFitness = this.population.reduce(
+      (sum, ind) => sum + ind.fitness,
+      0,
+    );
 
     if (totalFitness === 0) {
       // If all fitness is 0, select randomly
-      return this.population[Math.floor(Math.random() * this.population.length)];
+      return this.population[
+        Math.floor(Math.random() * this.population.length)
+      ];
     }
 
     let spin = Math.random() * totalFitness;
@@ -211,21 +222,26 @@ export class GeneticAlgorithm {
     }
 
     switch (this.crossoverStrategy) {
-      case 'single-point':
+      case "single-point":
         return this.singlePointCrossover(parent1, parent2);
-      case 'uniform':
+      case "uniform":
         return this.uniformCrossover(parent1, parent2);
-      case 'none':
+      case "none":
         return [parent1, parent2];
       default:
-        throw new Error(`Unknown crossover strategy: ${this.crossoverStrategy}`);
+        throw new Error(
+          `Unknown crossover strategy: ${this.crossoverStrategy}`,
+        );
     }
   }
 
   /**
    * Single-point crossover (split at codon boundary)
    */
-  private singlePointCrossover(parent1: string, parent2: string): [string, string] {
+  private singlePointCrossover(
+    parent1: string,
+    parent2: string,
+  ): [string, string] {
     // Ensure both parents are valid length (multiple of 3)
     const len1 = parent1.length - (parent1.length % 3);
     const len2 = parent2.length - (parent2.length % 3);
@@ -240,8 +256,10 @@ export class GeneticAlgorithm {
     const crossoverCodon = 1 + Math.floor(Math.random() * (numCodons - 1));
     const crossoverPoint = crossoverCodon * 3;
 
-    const child1 = parent1.slice(0, crossoverPoint) + parent2.slice(crossoverPoint);
-    const child2 = parent2.slice(0, crossoverPoint) + parent1.slice(crossoverPoint);
+    const child1 = parent1.slice(0, crossoverPoint) +
+      parent2.slice(crossoverPoint);
+    const child2 = parent2.slice(0, crossoverPoint) +
+      parent1.slice(crossoverPoint);
 
     return [child1, child2];
   }
@@ -254,8 +272,8 @@ export class GeneticAlgorithm {
     const len2 = parent2.length - (parent2.length % 3);
     const minLen = Math.min(len1, len2);
 
-    let child1 = '';
-    let child2 = '';
+    let child1 = "";
+    let child2 = "";
 
     for (let i = 0; i < minLen; i += 3) {
       if (Math.random() < 0.5) {
@@ -313,8 +331,11 @@ export class GeneticAlgorithm {
     // Calculate stats
     const bestFitness = this.population[0].fitness;
     const worstFitness = this.population[this.population.length - 1].fitness;
-    const avgFitness = this.population.reduce((sum, ind) => sum + ind.fitness, 0) / this.population.length;
-    const uniqueGenomes = new Set(this.population.map(ind => ind.genome)).size;
+    const avgFitness =
+      this.population.reduce((sum, ind) => sum + ind.fitness, 0) /
+      this.population.length;
+    const uniqueGenomes = new Set(this.population.map((ind) => ind.genome))
+      .size;
     const diversity = uniqueGenomes / this.population.length;
 
     this.stats.push({
@@ -322,7 +343,7 @@ export class GeneticAlgorithm {
       bestFitness,
       avgFitness,
       worstFitness,
-      diversity
+      diversity,
     });
 
     // Create next generation
@@ -333,7 +354,7 @@ export class GeneticAlgorithm {
       nextGen.push({
         ...this.population[i],
         generation: this.generation + 1,
-        id: `gen${this.generation + 1}-elite${i}`
+        id: `gen${this.generation + 1}-elite${i}`,
       });
     }
 
@@ -342,7 +363,10 @@ export class GeneticAlgorithm {
       const parent1 = this.selectParent();
       const parent2 = this.selectParent();
 
-      let [child1Genome, child2Genome] = this.crossover(parent1.genome, parent2.genome);
+      let [child1Genome, child2Genome] = this.crossover(
+        parent1.genome,
+        parent2.genome,
+      );
 
       child1Genome = this.mutate(child1Genome);
       child2Genome = this.mutate(child2Genome);
@@ -352,7 +376,7 @@ export class GeneticAlgorithm {
           genome: child1Genome,
           fitness: this.evaluateFitness(child1Genome),
           generation: this.generation + 1,
-          id: `gen${this.generation + 1}-${nextGen.length}`
+          id: `gen${this.generation + 1}-${nextGen.length}`,
         });
       }
 
@@ -361,7 +385,7 @@ export class GeneticAlgorithm {
           genome: child2Genome,
           fitness: this.evaluateFitness(child2Genome),
           generation: this.generation + 1,
-          id: `gen${this.generation + 1}-${nextGen.length}`
+          id: `gen${this.generation + 1}-${nextGen.length}`,
         });
       }
     }

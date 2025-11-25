@@ -1,22 +1,23 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Example Gallery - CodonCanvas</title>
-  <style>
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Example Gallery - CodonCanvas</title>
+    <style>
     * {
-      margin: 0;
-      padding: 0;
       box-sizing: border-box;
+      padding: 0;
+      margin: 0;
     }
 
     body {
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
       min-height: 100vh;
       padding: 2rem 1rem;
+      font-family:
+        -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
       color: #333;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     }
 
     .container {
@@ -25,74 +26,74 @@
     }
 
     header {
-      text-align: center;
       margin-bottom: 2rem;
       color: white;
+      text-align: center;
     }
 
     h1 {
-      font-size: 2.5rem;
       margin-bottom: 0.5rem;
+      font-size: 2.5rem;
     }
 
     .subtitle {
+      margin-bottom: 1.5rem;
       font-size: 1.1rem;
       opacity: 0.95;
-      margin-bottom: 1.5rem;
     }
 
     .header-actions {
       display: flex;
+      flex-wrap: wrap;
       gap: 1rem;
       justify-content: center;
-      flex-wrap: wrap;
     }
 
     .btn {
+      display: inline-block;
       padding: 0.75rem 1.5rem;
+      font-size: 1rem;
+      text-decoration: none;
+      cursor: pointer;
       border: none;
       border-radius: 8px;
-      font-size: 1rem;
-      cursor: pointer;
       transition: all 0.2s ease;
-      text-decoration: none;
-      display: inline-block;
     }
 
     .btn-primary {
-      background: white;
-      color: #667eea;
       font-weight: 600;
+      color: #667eea;
+      background: white;
     }
 
     .btn-primary:hover {
+      box-shadow: 0 4px 12px rgba(255, 255, 255, 0.3);
       transform: translateY(-2px);
-      box-shadow: 0 4px 12px rgba(255,255,255,0.3);
     }
 
     .btn-secondary {
-      background: rgba(255,255,255,0.2);
       color: white;
+      background: rgba(255, 255, 255, 0.2);
       border: 2px solid white;
     }
 
     .btn-secondary:hover {
-      background: rgba(255,255,255,0.3);
+      background: rgba(255, 255, 255, 0.3);
     }
 
     /* Filter Panel */
     .filter-panel {
-      background: white;
-      border-radius: 12px;
       padding: 1.5rem;
       margin-bottom: 2rem;
-      box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
     }
 
     .filter-row {
       display: flex;
-      gap: 1rem;
       flex-wrap: wrap;
+      gap: 1rem;
       align-items: center;
     }
 
@@ -103,17 +104,17 @@
 
     .filter-group label {
       display: block;
-      font-weight: 600;
       margin-bottom: 0.5rem;
+      font-weight: 600;
       color: #555;
     }
 
     .search-box {
       width: 100%;
       padding: 0.75rem 1rem;
+      font-size: 1rem;
       border: 2px solid #e0e0e0;
       border-radius: 8px;
-      font-size: 1rem;
       transition: border-color 0.2s;
     }
 
@@ -124,37 +125,37 @@
 
     .filter-chips {
       display: flex;
-      gap: 0.5rem;
       flex-wrap: wrap;
+      gap: 0.5rem;
     }
 
     .chip {
       padding: 0.5rem 1rem;
-      border: 2px solid #e0e0e0;
-      border-radius: 20px;
       font-size: 0.9rem;
       cursor: pointer;
-      transition: all 0.2s;
       background: white;
+      border: 2px solid #e0e0e0;
+      border-radius: 20px;
+      transition: all 0.2s;
     }
 
     .chip:hover {
-      border-color: #667eea;
       background: #f8f9ff;
+      border-color: #667eea;
     }
 
     .chip.active {
-      background: #667eea;
       color: white;
+      background: #667eea;
       border-color: #667eea;
     }
 
     .stats {
-      text-align: center;
-      color: #666;
-      font-size: 0.95rem;
-      margin-top: 1rem;
       padding-top: 1rem;
+      margin-top: 1rem;
+      font-size: 0.95rem;
+      color: #666;
+      text-align: center;
       border-top: 1px solid #e0e0e0;
     }
 
@@ -167,26 +168,26 @@
     }
 
     .gallery-card {
+      position: relative;
+      overflow: hidden;
+      cursor: pointer;
       background: white;
       border-radius: 12px;
-      overflow: hidden;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
       transition: all 0.3s ease;
-      cursor: pointer;
-      position: relative;
     }
 
     .gallery-card:hover {
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
       transform: translateY(-4px);
-      box-shadow: 0 8px 24px rgba(0,0,0,0.15);
     }
 
     .card-thumbnail {
+      position: relative;
       width: 100%;
       height: 200px;
-      background: #f5f5f5;
-      position: relative;
       overflow: hidden;
+      background: #f5f5f5;
     }
 
     .card-thumbnail canvas {
@@ -206,108 +207,108 @@
     }
 
     .card-title {
+      margin-bottom: 0.5rem;
       font-size: 1.1rem;
       font-weight: 600;
-      margin-bottom: 0.5rem;
       color: #333;
     }
 
     .card-meta {
       display: flex;
-      gap: 0.5rem;
       flex-wrap: wrap;
+      gap: 0.5rem;
       margin-bottom: 0.5rem;
     }
 
     .badge {
       padding: 0.25rem 0.75rem;
-      border-radius: 12px;
       font-size: 0.75rem;
       font-weight: 600;
       text-transform: uppercase;
       letter-spacing: 0.5px;
+      border-radius: 12px;
     }
 
     .badge-beginner {
-      background: #d4edda;
       color: #155724;
+      background: #d4edda;
     }
 
     .badge-intermediate {
-      background: #fff3cd;
       color: #856404;
+      background: #fff3cd;
     }
 
     .badge-advanced {
-      background: #f8d7da;
       color: #721c24;
+      background: #f8d7da;
     }
 
     .badge-showcase {
-      background: linear-gradient(135deg, #667eea, #764ba2);
       color: white;
+      background: linear-gradient(135deg, #667eea, #764ba2);
     }
 
     .card-concepts {
       font-size: 0.85rem;
-      color: #666;
       line-height: 1.4;
+      color: #666;
     }
 
     .concept-tags {
       display: flex;
-      gap: 0.4rem;
       flex-wrap: wrap;
+      gap: 0.4rem;
       margin-top: 0.5rem;
     }
 
     .concept-tag {
       padding: 0.2rem 0.6rem;
-      background: #f0f0f0;
-      color: #555;
-      border-radius: 10px;
       font-size: 0.7rem;
+      color: #555;
       cursor: pointer;
+      background: #f0f0f0;
+      border-radius: 10px;
       transition: all 0.2s;
     }
 
     .concept-tag:hover {
-      background: #667eea;
       color: white;
+      background: #667eea;
     }
 
     .sort-control {
       display: flex;
-      align-items: center;
       gap: 0.5rem;
+      align-items: center;
     }
 
     .sort-control label {
+      margin: 0;
       font-size: 0.9rem;
       color: #666;
-      margin: 0;
     }
 
     .sort-control select {
       padding: 0.5rem 0.75rem;
-      border: 2px solid #e0e0e0;
-      border-radius: 8px;
       font-size: 0.9rem;
       cursor: pointer;
       background: white;
+      border: 2px solid #e0e0e0;
+      border-radius: 8px;
     }
 
     /* Modal */
     .modal {
-      display: none;
       position: fixed;
       top: 0;
       left: 0;
+      z-index: 1000;
+      display: none;
       width: 100%;
       height: 100%;
-      background: rgba(0,0,0,0.8);
-      z-index: 1000;
       padding: 2rem;
+      background: rgba(0, 0, 0, 0.8);
     }
 
     .modal.active {
@@ -317,21 +318,21 @@
     }
 
     .modal-content {
-      background: white;
-      border-radius: 12px;
-      max-width: 1000px;
+      position: relative;
       width: 100%;
+      max-width: 1000px;
       max-height: 90vh;
       overflow: auto;
-      position: relative;
+      background: white;
+      border-radius: 12px;
     }
 
     .modal-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
       padding: 1.5rem;
       border-bottom: 1px solid #e0e0e0;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
     }
 
     .modal-title {
@@ -340,18 +341,18 @@
     }
 
     .modal-close {
-      font-size: 2rem;
-      cursor: pointer;
-      color: #999;
-      line-height: 1;
-      background: none;
-      border: none;
-      padding: 0;
-      width: 32px;
-      height: 32px;
       display: flex;
       align-items: center;
       justify-content: center;
+      width: 32px;
+      height: 32px;
+      padding: 0;
+      font-size: 2rem;
+      line-height: 1;
+      color: #999;
+      cursor: pointer;
+      background: none;
+      border: none;
     }
 
     .modal-close:hover {
@@ -359,10 +360,10 @@
     }
 
     .modal-body {
-      padding: 1.5rem;
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: 1.5rem;
+      padding: 1.5rem;
     }
 
     .preview-section, .code-section {
@@ -371,48 +372,48 @@
     }
 
     .section-title {
-      font-weight: 600;
       margin-bottom: 0.75rem;
+      font-weight: 600;
       color: #555;
     }
 
     .preview-canvas {
+      background: white;
       border: 2px solid #e0e0e0;
       border-radius: 8px;
-      background: white;
     }
 
     .code-viewer {
-      font-family: 'Courier New', monospace;
+      max-height: 400px;
+      padding: 1rem;
+      overflow: auto;
+      font-family: "Courier New", monospace;
       font-size: 0.9rem;
+      line-height: 1.6;
+      white-space: pre;
       background: #f5f5f5;
       border: 2px solid #e0e0e0;
       border-radius: 8px;
-      padding: 1rem;
-      overflow: auto;
-      max-height: 400px;
-      line-height: 1.6;
-      white-space: pre;
     }
 
     .modal-footer {
-      padding: 1.5rem;
-      border-top: 1px solid #e0e0e0;
       display: flex;
       gap: 1rem;
       justify-content: flex-end;
+      padding: 1.5rem;
+      border-top: 1px solid #e0e0e0;
     }
 
     .empty-state {
       grid-column: 1 / -1;
-      text-align: center;
       padding: 4rem 2rem;
       color: #666;
+      text-align: center;
     }
 
     .empty-state h2 {
-      font-size: 1.5rem;
       margin-bottom: 0.5rem;
+      font-size: 1.5rem;
     }
 
     /* Responsive */
@@ -438,171 +439,443 @@
         width: 100%;
       }
     }
-  </style>
-</head>
-<body>
-  <div class="container">
-    <header>
-      <h1>🎨 Example Gallery</h1>
-      <p class="subtitle">Explore 38 CodonCanvas genomes - from beginner to advanced showcase</p>
-      <div class="header-actions">
-        <a href="index.html" class="btn btn-primary">Open Playground</a>
-        <a href="tutorial.html" class="btn btn-secondary">Start Tutorial</a>
-      </div>
-    </header>
-
-    <div class="filter-panel">
-      <div class="filter-row">
-        <div class="filter-group">
-          <label for="search">Search Examples</label>
-          <input type="text" id="search" class="search-box" placeholder="Search by name or concept...">
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <header>
+        <h1>🎨 Example Gallery</h1>
+        <p class="subtitle">
+          Explore 38 CodonCanvas genomes - from beginner to advanced showcase
+        </p>
+        <div class="header-actions">
+          <a href="index.html" class="btn btn-primary">Open Playground</a>
+          <a href="tutorial.html" class="btn btn-secondary">Start Tutorial</a>
         </div>
-      </div>
-      <div class="filter-row" style="margin-top: 1rem;">
-        <div class="filter-group">
-          <label>Difficulty Level</label>
-          <div class="filter-chips" id="difficultyFilters">
-            <button class="chip active" data-difficulty="all">All</button>
-            <button class="chip" data-difficulty="beginner">Beginner</button>
-            <button class="chip" data-difficulty="intermediate">Intermediate</button>
-            <button class="chip" data-difficulty="advanced">Advanced</button>
-            <button class="chip" data-difficulty="advanced-showcase">Showcase</button>
+      </header>
+
+      <div class="filter-panel">
+        <div class="filter-row">
+          <div class="filter-group">
+            <label for="search">Search Examples</label>
+            <input
+              type="text"
+              id="search"
+              class="search-box"
+              placeholder="Search by name or concept..."
+            >
+          </div>
+        </div>
+        <div class="filter-row" style="margin-top: 1rem">
+          <div class="filter-group">
+            <label>Difficulty Level</label>
+            <div class="filter-chips" id="difficultyFilters">
+              <button class="chip active" data-difficulty="all">All</button>
+              <button class="chip" data-difficulty="beginner">Beginner</button>
+              <button class="chip" data-difficulty="intermediate">
+                Intermediate
+              </button>
+              <button class="chip" data-difficulty="advanced">Advanced</button>
+              <button class="chip" data-difficulty="advanced-showcase">
+                Showcase
+              </button>
+            </div>
+          </div>
+        </div>
+        <div
+          class="filter-row"
+          style="margin-top: 1rem; justify-content: space-between"
+        >
+          <div class="sort-control">
+            <label for="sortBy">Sort by:</label>
+            <select id="sortBy">
+              <option value="default">Default Order</option>
+              <option value="name">Name (A-Z)</option>
+              <option value="difficulty">Difficulty (Easy to Hard)</option>
+              <option value="difficulty-desc">Difficulty (Hard to Easy)</option>
+            </select>
+          </div>
+          <div class="stats">
+            Showing <span id="visibleCount">38</span> of <span id="totalCount"
+            >38</span> examples
           </div>
         </div>
       </div>
-      <div class="filter-row" style="margin-top: 1rem; justify-content: space-between;">
-        <div class="sort-control">
-          <label for="sortBy">Sort by:</label>
-          <select id="sortBy">
-            <option value="default">Default Order</option>
-            <option value="name">Name (A-Z)</option>
-            <option value="difficulty">Difficulty (Easy to Hard)</option>
-            <option value="difficulty-desc">Difficulty (Hard to Easy)</option>
-          </select>
-        </div>
-        <div class="stats">
-          Showing <span id="visibleCount">38</span> of <span id="totalCount">38</span> examples
+
+      <div class="gallery-grid" id="galleryGrid">
+        <!-- Gallery cards will be inserted here -->
+      </div>
+
+      <!-- Modal -->
+      <div class="modal" id="previewModal">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h2 class="modal-title" id="modalTitle">Example Name</h2>
+            <button class="modal-close" onclick="closeModal()">&times;</button>
+          </div>
+          <div class="modal-body">
+            <div class="preview-section">
+              <div class="section-title">Preview</div>
+              <canvas
+                id="modalCanvas"
+                class="preview-canvas"
+                width="400"
+                height="400"
+              ></canvas>
+            </div>
+            <div class="code-section">
+              <div class="section-title">Genome Code</div>
+              <div class="code-viewer" id="modalCode"></div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button class="btn btn-secondary" onclick="closeModal()">
+              Close
+            </button>
+            <button class="btn btn-primary" onclick="openInPlayground()">
+              Open in Playground
+            </button>
+          </div>
         </div>
       </div>
     </div>
 
-    <div class="gallery-grid" id="galleryGrid">
-      <!-- Gallery cards will be inserted here -->
-    </div>
-
-    <!-- Modal -->
-    <div class="modal" id="previewModal">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h2 class="modal-title" id="modalTitle">Example Name</h2>
-          <button class="modal-close" onclick="closeModal()">&times;</button>
-        </div>
-        <div class="modal-body">
-          <div class="preview-section">
-            <div class="section-title">Preview</div>
-            <canvas id="modalCanvas" class="preview-canvas" width="400" height="400"></canvas>
-          </div>
-          <div class="code-section">
-            <div class="section-title">Genome Code</div>
-            <div class="code-viewer" id="modalCode"></div>
-          </div>
-        </div>
-        <div class="modal-footer">
-          <button class="btn btn-secondary" onclick="closeModal()">Close</button>
-          <button class="btn btn-primary" onclick="openInPlayground()">Open in Playground</button>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <script type="module">
-    import { CodonLexer } from './src/lexer.ts';
-    import { CodonVM } from './src/vm.ts';
-    import { Canvas2DRenderer } from './src/renderer.ts';
+    <script type="module">
+    import { CodonLexer } from "./src/lexer.ts";
+    import { Canvas2DRenderer } from "./src/renderer.ts";
+    import { CodonVM } from "./src/vm.ts";
 
     // Example metadata
     const examples = [
-      { id: 'helloCircle', name: 'Hello Circle', difficulty: 'beginner', concepts: 'drawing', description: 'Minimal example - draws a single circle' },
-      { id: 'twoShapes', name: 'Two Shapes', difficulty: 'beginner', concepts: 'drawing, transforms', description: 'Two shapes with translation' },
-      { id: 'lineArt', name: 'Line Art', difficulty: 'beginner', concepts: 'drawing, lines', description: 'Simple line-based composition' },
-      { id: 'triangleDemo', name: 'Triangle Demo', difficulty: 'beginner', concepts: 'drawing, triangles', description: 'Triangle shape demonstration' },
-      { id: 'silentMutation', name: 'Silent Mutation Demo', difficulty: 'beginner', concepts: 'mutations', description: 'Demonstrates synonymous codons' },
-      { id: 'colorfulPattern', name: 'Colorful Pattern', difficulty: 'intermediate', concepts: 'colors, drawing', description: 'Multi-color shape composition' },
-      { id: 'ellipseGallery', name: 'Ellipse Gallery', difficulty: 'intermediate', concepts: 'drawing, ellipses', description: 'Various ellipse shapes' },
-      { id: 'scaleTransform', name: 'Scale Transform', difficulty: 'intermediate', concepts: 'transforms, scaling', description: 'Demonstrates SCALE opcode' },
-      { id: 'stackOperations', name: 'Stack Operations', difficulty: 'intermediate', concepts: 'stack, DUP', description: 'Stack manipulation with DUP' },
-      { id: 'face', name: 'Simple Face', difficulty: 'intermediate', concepts: 'drawing, composition', description: 'Face using multiple shapes' },
-      { id: 'colorGradient', name: 'Color Gradient', difficulty: 'intermediate', concepts: 'colors, gradients', description: 'Gradient color transitions' },
-      { id: 'stackCleanup', name: 'Stack Cleanup', difficulty: 'intermediate', concepts: 'stack, POP', description: 'Stack cleanup with POP opcode' },
-      { id: 'rosette', name: 'Rosette Pattern', difficulty: 'advanced', concepts: 'rotation, patterns', description: 'Radial rosette pattern' },
-      { id: 'texturedCircle', name: 'Textured Circle', difficulty: 'advanced', concepts: 'advanced-opcodes, noise', description: 'Circle with NOISE texture' },
-      { id: 'spiralPattern', name: 'Spiral Pattern', difficulty: 'advanced', concepts: 'transforms, patterns', description: 'Spiral composition' },
-      { id: 'nestedFrames', name: 'Nested Frames', difficulty: 'advanced', concepts: 'state-management, SAVE_STATE', description: 'Nested frames with state' },
-      { id: 'gridPattern', name: 'Grid Pattern', difficulty: 'advanced', concepts: 'patterns, grids', description: 'Grid layout composition' },
-      { id: 'mandala', name: 'Mandala Pattern', difficulty: 'advanced', concepts: 'rotation, symmetry', description: 'Complex mandala pattern' },
-      { id: 'fractalFlower', name: 'Fractal Flower', difficulty: 'advanced-showcase', concepts: 'advanced-opcodes, composition, colors, transforms, state-management', description: 'Multi-layer petals with ellipses and NOISE', screenshot: 'fractalFlower.png' },
-      { id: 'geometricMosaic', name: 'Geometric Mosaic', difficulty: 'advanced-showcase', concepts: 'patterns, grids, colors', description: 'Gradient grid with mixed shapes', screenshot: 'geometricMosaic.png' },
-      { id: 'starfield', name: 'Starfield', difficulty: 'advanced-showcase', concepts: 'advanced-opcodes, noise, composition', description: 'Textured stars with NOISE effects', screenshot: 'starfield.png' },
-      { id: 'recursiveCircles', name: 'Recursive Circles', difficulty: 'advanced-showcase', concepts: 'patterns, rotation', description: 'Nested rings with rotational symmetry', screenshot: 'recursiveCircles.png' },
-      { id: 'kaleidoscope', name: 'Kaleidoscope', difficulty: 'advanced-showcase', concepts: 'rotation, symmetry, composition', description: '6-fold symmetry with multi-shape', screenshot: 'kaleidoscope.png' },
-      { id: 'wavyLines', name: 'Wavy Lines', difficulty: 'advanced-showcase', concepts: 'lines, colors, transforms', description: 'Flowing waves with rainbow gradient', screenshot: 'wavyLines.png' },
-      { id: 'cosmicWheel', name: 'Cosmic Wheel', difficulty: 'advanced-showcase', concepts: 'advanced-opcodes, rotation, noise', description: 'Radial mandala with textures', screenshot: 'cosmicWheel.png' },
-      { id: 'fibonacci-spiral', name: 'Fibonacci Spiral', difficulty: 'advanced-showcase', concepts: 'LOOP, arithmetic, golden-ratio, Fibonacci', description: 'Golden ratio approximation via Fibonacci sequence using ADD opcode' },
-      { id: 'parametric-rose', name: 'Parametric Rose', difficulty: 'advanced-showcase', concepts: 'LOOP, rotation, mathematical-curves, parametric', description: 'Mathematical rose curve r = a·cos(k·θ) with 8-petal symmetry' },
-      { id: 'sierpinski-approximation', name: 'Sierpinski Triangle', difficulty: 'advanced-showcase', concepts: 'LOOP, fractals, recursion, geometric-progression', description: 'Fractal triangle with self-similar nested structure' },
-      { id: 'golden-ratio-demo', name: 'Golden Ratio Demo', difficulty: 'advanced-showcase', concepts: 'arithmetic, golden-ratio, geometry, precision', description: 'Visual proof of φ ≈ 1.618 using DIV for geometric construction' },
-      { id: 'prime-number-spiral', name: 'Prime Number Spiral', difficulty: 'advanced-showcase', concepts: 'LOOP, number-theory, spirals, Ulam-spiral', description: 'Ulam spiral approximation demonstrating LOOP efficiency' },
-      { id: 'fizzbuzz-visual', name: 'FizzBuzz Visual', difficulty: 'advanced-showcase', concepts: 'conditionals, computational-thinking, FizzBuzz, patterns', description: 'Classic programming challenge visualized: divisibility by 3, 5, and 15' },
-      { id: 'conditional-scaling', name: 'Conditional Scaling', difficulty: 'advanced-showcase', concepts: 'EQ, LT, conditionals, arithmetic, comparison-opcodes', description: 'Demonstrates EQ/LT opcodes for conditional behavior via size multiplication' },
-      { id: 'even-odd-spiral', name: 'Even-Odd Spiral', difficulty: 'advanced-showcase', concepts: 'LOOP, DIV, modulo-arithmetic, parity, computational-patterns', description: 'Spiral with alternating sizes based on even/odd number detection' },
-      { id: 'audio-scale', name: 'Audio Scale', difficulty: 'intermediate', concepts: 'audio, experimental', description: 'Musical scale demonstration' },
-      { id: 'audio-waveforms', name: 'Audio Waveforms', difficulty: 'intermediate', concepts: 'audio, experimental', description: 'Different waveform sounds' },
-      { id: 'audio-mutation-demo', name: 'Audio Mutation Demo', difficulty: 'intermediate', concepts: 'audio, mutations', description: 'Mutations affecting sound' },
-      { id: 'rna-hello', name: 'RNA Hello', difficulty: 'beginner', concepts: 'rna-mode', description: 'Hello circle using RNA notation' },
-      { id: 'rna-composition', name: 'RNA Composition', difficulty: 'intermediate', concepts: 'rna-mode, composition', description: 'Complex RNA genome' }
+      {
+        id: "helloCircle",
+        name: "Hello Circle",
+        difficulty: "beginner",
+        concepts: "drawing",
+        description: "Minimal example - draws a single circle",
+      },
+      {
+        id: "twoShapes",
+        name: "Two Shapes",
+        difficulty: "beginner",
+        concepts: "drawing, transforms",
+        description: "Two shapes with translation",
+      },
+      {
+        id: "lineArt",
+        name: "Line Art",
+        difficulty: "beginner",
+        concepts: "drawing, lines",
+        description: "Simple line-based composition",
+      },
+      {
+        id: "triangleDemo",
+        name: "Triangle Demo",
+        difficulty: "beginner",
+        concepts: "drawing, triangles",
+        description: "Triangle shape demonstration",
+      },
+      {
+        id: "silentMutation",
+        name: "Silent Mutation Demo",
+        difficulty: "beginner",
+        concepts: "mutations",
+        description: "Demonstrates synonymous codons",
+      },
+      {
+        id: "colorfulPattern",
+        name: "Colorful Pattern",
+        difficulty: "intermediate",
+        concepts: "colors, drawing",
+        description: "Multi-color shape composition",
+      },
+      {
+        id: "ellipseGallery",
+        name: "Ellipse Gallery",
+        difficulty: "intermediate",
+        concepts: "drawing, ellipses",
+        description: "Various ellipse shapes",
+      },
+      {
+        id: "scaleTransform",
+        name: "Scale Transform",
+        difficulty: "intermediate",
+        concepts: "transforms, scaling",
+        description: "Demonstrates SCALE opcode",
+      },
+      {
+        id: "stackOperations",
+        name: "Stack Operations",
+        difficulty: "intermediate",
+        concepts: "stack, DUP",
+        description: "Stack manipulation with DUP",
+      },
+      {
+        id: "face",
+        name: "Simple Face",
+        difficulty: "intermediate",
+        concepts: "drawing, composition",
+        description: "Face using multiple shapes",
+      },
+      {
+        id: "colorGradient",
+        name: "Color Gradient",
+        difficulty: "intermediate",
+        concepts: "colors, gradients",
+        description: "Gradient color transitions",
+      },
+      {
+        id: "stackCleanup",
+        name: "Stack Cleanup",
+        difficulty: "intermediate",
+        concepts: "stack, POP",
+        description: "Stack cleanup with POP opcode",
+      },
+      {
+        id: "rosette",
+        name: "Rosette Pattern",
+        difficulty: "advanced",
+        concepts: "rotation, patterns",
+        description: "Radial rosette pattern",
+      },
+      {
+        id: "texturedCircle",
+        name: "Textured Circle",
+        difficulty: "advanced",
+        concepts: "advanced-opcodes, noise",
+        description: "Circle with NOISE texture",
+      },
+      {
+        id: "spiralPattern",
+        name: "Spiral Pattern",
+        difficulty: "advanced",
+        concepts: "transforms, patterns",
+        description: "Spiral composition",
+      },
+      {
+        id: "nestedFrames",
+        name: "Nested Frames",
+        difficulty: "advanced",
+        concepts: "state-management, SAVE_STATE",
+        description: "Nested frames with state",
+      },
+      {
+        id: "gridPattern",
+        name: "Grid Pattern",
+        difficulty: "advanced",
+        concepts: "patterns, grids",
+        description: "Grid layout composition",
+      },
+      {
+        id: "mandala",
+        name: "Mandala Pattern",
+        difficulty: "advanced",
+        concepts: "rotation, symmetry",
+        description: "Complex mandala pattern",
+      },
+      {
+        id: "fractalFlower",
+        name: "Fractal Flower",
+        difficulty: "advanced-showcase",
+        concepts:
+          "advanced-opcodes, composition, colors, transforms, state-management",
+        description: "Multi-layer petals with ellipses and NOISE",
+        screenshot: "fractalFlower.png",
+      },
+      {
+        id: "geometricMosaic",
+        name: "Geometric Mosaic",
+        difficulty: "advanced-showcase",
+        concepts: "patterns, grids, colors",
+        description: "Gradient grid with mixed shapes",
+        screenshot: "geometricMosaic.png",
+      },
+      {
+        id: "starfield",
+        name: "Starfield",
+        difficulty: "advanced-showcase",
+        concepts: "advanced-opcodes, noise, composition",
+        description: "Textured stars with NOISE effects",
+        screenshot: "starfield.png",
+      },
+      {
+        id: "recursiveCircles",
+        name: "Recursive Circles",
+        difficulty: "advanced-showcase",
+        concepts: "patterns, rotation",
+        description: "Nested rings with rotational symmetry",
+        screenshot: "recursiveCircles.png",
+      },
+      {
+        id: "kaleidoscope",
+        name: "Kaleidoscope",
+        difficulty: "advanced-showcase",
+        concepts: "rotation, symmetry, composition",
+        description: "6-fold symmetry with multi-shape",
+        screenshot: "kaleidoscope.png",
+      },
+      {
+        id: "wavyLines",
+        name: "Wavy Lines",
+        difficulty: "advanced-showcase",
+        concepts: "lines, colors, transforms",
+        description: "Flowing waves with rainbow gradient",
+        screenshot: "wavyLines.png",
+      },
+      {
+        id: "cosmicWheel",
+        name: "Cosmic Wheel",
+        difficulty: "advanced-showcase",
+        concepts: "advanced-opcodes, rotation, noise",
+        description: "Radial mandala with textures",
+        screenshot: "cosmicWheel.png",
+      },
+      {
+        id: "fibonacci-spiral",
+        name: "Fibonacci Spiral",
+        difficulty: "advanced-showcase",
+        concepts: "LOOP, arithmetic, golden-ratio, Fibonacci",
+        description:
+          "Golden ratio approximation via Fibonacci sequence using ADD opcode",
+      },
+      {
+        id: "parametric-rose",
+        name: "Parametric Rose",
+        difficulty: "advanced-showcase",
+        concepts: "LOOP, rotation, mathematical-curves, parametric",
+        description:
+          "Mathematical rose curve r = a·cos(k·θ) with 8-petal symmetry",
+      },
+      {
+        id: "sierpinski-approximation",
+        name: "Sierpinski Triangle",
+        difficulty: "advanced-showcase",
+        concepts: "LOOP, fractals, recursion, geometric-progression",
+        description: "Fractal triangle with self-similar nested structure",
+      },
+      {
+        id: "golden-ratio-demo",
+        name: "Golden Ratio Demo",
+        difficulty: "advanced-showcase",
+        concepts: "arithmetic, golden-ratio, geometry, precision",
+        description:
+          "Visual proof of φ ≈ 1.618 using DIV for geometric construction",
+      },
+      {
+        id: "prime-number-spiral",
+        name: "Prime Number Spiral",
+        difficulty: "advanced-showcase",
+        concepts: "LOOP, number-theory, spirals, Ulam-spiral",
+        description:
+          "Ulam spiral approximation demonstrating LOOP efficiency",
+      },
+      {
+        id: "fizzbuzz-visual",
+        name: "FizzBuzz Visual",
+        difficulty: "advanced-showcase",
+        concepts:
+          "conditionals, computational-thinking, FizzBuzz, patterns",
+        description:
+          "Classic programming challenge visualized: divisibility by 3, 5, and 15",
+      },
+      {
+        id: "conditional-scaling",
+        name: "Conditional Scaling",
+        difficulty: "advanced-showcase",
+        concepts: "EQ, LT, conditionals, arithmetic, comparison-opcodes",
+        description:
+          "Demonstrates EQ/LT opcodes for conditional behavior via size multiplication",
+      },
+      {
+        id: "even-odd-spiral",
+        name: "Even-Odd Spiral",
+        difficulty: "advanced-showcase",
+        concepts:
+          "LOOP, DIV, modulo-arithmetic, parity, computational-patterns",
+        description:
+          "Spiral with alternating sizes based on even/odd number detection",
+      },
+      {
+        id: "audio-scale",
+        name: "Audio Scale",
+        difficulty: "intermediate",
+        concepts: "audio, experimental",
+        description: "Musical scale demonstration",
+      },
+      {
+        id: "audio-waveforms",
+        name: "Audio Waveforms",
+        difficulty: "intermediate",
+        concepts: "audio, experimental",
+        description: "Different waveform sounds",
+      },
+      {
+        id: "audio-mutation-demo",
+        name: "Audio Mutation Demo",
+        difficulty: "intermediate",
+        concepts: "audio, mutations",
+        description: "Mutations affecting sound",
+      },
+      {
+        id: "rna-hello",
+        name: "RNA Hello",
+        difficulty: "beginner",
+        concepts: "rna-mode",
+        description: "Hello circle using RNA notation",
+      },
+      {
+        id: "rna-composition",
+        name: "RNA Composition",
+        difficulty: "intermediate",
+        concepts: "rna-mode, composition",
+        description: "Complex RNA genome",
+      },
     ];
 
-    let currentFilter = 'all';
-    let searchQuery = '';
+    let currentFilter = "all";
+    let searchQuery = "";
     let currentExample = null;
-    let currentSort = 'default';
+    let currentSort = "default";
 
     // Difficulty ordering for sorting
     const difficultyOrder = {
-      'beginner': 1,
-      'intermediate': 2,
-      'advanced': 3,
-      'advanced-showcase': 4
+      "beginner": 1,
+      "intermediate": 2,
+      "advanced": 3,
+      "advanced-showcase": 4,
     };
 
     // Initialize
     renderGallery();
 
     // Search functionality
-    document.getElementById('search').addEventListener('input', (e) => {
+    document.getElementById("search").addEventListener("input", (e) => {
       searchQuery = e.target.value.toLowerCase();
       renderGallery();
     });
 
     // Difficulty filters
-    document.querySelectorAll('#difficultyFilters .chip').forEach(chip => {
-      chip.addEventListener('click', (e) => {
-        document.querySelectorAll('#difficultyFilters .chip').forEach(c => c.classList.remove('active'));
-        e.target.classList.add('active');
+    document.querySelectorAll("#difficultyFilters .chip").forEach(chip => {
+      chip.addEventListener("click", (e) => {
+        document.querySelectorAll("#difficultyFilters .chip").forEach(c =>
+          c.classList.remove("active")
+        );
+        e.target.classList.add("active");
         currentFilter = e.target.dataset.difficulty;
         renderGallery();
       });
     });
 
     // Sort functionality
-    document.getElementById('sortBy').addEventListener('change', (e) => {
+    document.getElementById("sortBy").addEventListener("change", (e) => {
       currentSort = e.target.value;
       renderGallery();
     });
 
     function renderGallery() {
-      let filtered = examples.filter(ex => {
-        const matchesDifficulty = currentFilter === 'all' || ex.difficulty === currentFilter;
+      const filtered = examples.filter(ex => {
+        const matchesDifficulty = currentFilter === "all" ||
+          ex.difficulty === currentFilter;
         const matchesSearch = !searchQuery ||
           ex.name.toLowerCase().includes(searchQuery) ||
           ex.concepts.toLowerCase().includes(searchQuery) ||
@@ -611,20 +884,25 @@
       });
 
       // Apply sorting
-      if (currentSort === 'name') {
+      if (currentSort === "name") {
         filtered.sort((a, b) => a.name.localeCompare(b.name));
-      } else if (currentSort === 'difficulty') {
-        filtered.sort((a, b) => difficultyOrder[a.difficulty] - difficultyOrder[b.difficulty]);
-      } else if (currentSort === 'difficulty-desc') {
-        filtered.sort((a, b) => difficultyOrder[b.difficulty] - difficultyOrder[a.difficulty]);
+      } else if (currentSort === "difficulty") {
+        filtered.sort((a, b) =>
+          difficultyOrder[a.difficulty] - difficultyOrder[b.difficulty]
+        );
+      } else if (currentSort === "difficulty-desc") {
+        filtered.sort((a, b) =>
+          difficultyOrder[b.difficulty] - difficultyOrder[a.difficulty]
+        );
       }
       // 'default' preserves original array order
 
-      const grid = document.getElementById('galleryGrid');
-      grid.innerHTML = '';
+      const grid = document.getElementById("galleryGrid");
+      grid.innerHTML = "";
 
       if (filtered.length === 0) {
-        grid.innerHTML = '<div class="empty-state"><h2>No examples found</h2><p>Try adjusting your filters or search query</p></div>';
+        grid.innerHTML =
+          "<div class=\"empty-state\"><h2>No examples found</h2><p>Try adjusting your filters or search query</p></div>";
       } else {
         filtered.forEach(example => {
           const card = createGalleryCard(example);
@@ -632,26 +910,29 @@
         });
       }
 
-      document.getElementById('visibleCount').textContent = filtered.length;
-      document.getElementById('totalCount').textContent = examples.length;
+      document.getElementById("visibleCount").textContent = filtered.length;
+      document.getElementById("totalCount").textContent = examples.length;
     }
 
     function createGalleryCard(example) {
-      const card = document.createElement('div');
-      card.className = 'gallery-card';
+      const card = document.createElement("div");
+      card.className = "gallery-card";
       card.onclick = () => openModal(example);
 
-      const difficultyClass = example.difficulty.replace('-', '');
-      const difficultyLabel = example.difficulty.replace('-', ' ');
+      const difficultyClass = example.difficulty.replace("-", "");
+      const difficultyLabel = example.difficulty.replace("-", " ");
 
       // Parse concept tags
-      const conceptTags = example.concepts.split(',').map(c => c.trim()).slice(0, 4); // Max 4 tags
+      const conceptTags = example.concepts.split(",").map(c => c.trim())
+        .slice(0, 4); // Max 4 tags
 
       card.innerHTML = `
         <div class="card-thumbnail" id="thumb-${example.id}">
-          ${example.screenshot ?
-            `<img src="examples/screenshots/${example.screenshot}" alt="${example.name}">` :
-            '<canvas width="400" height="400"></canvas>'}
+          ${
+        example.screenshot
+          ? `<img src="examples/screenshots/${example.screenshot}" alt="${example.name}">`
+          : "<canvas width=\"400\" height=\"400\"></canvas>"
+      }
         </div>
         <div class="card-content">
           <div class="card-title">${example.name}</div>
@@ -660,7 +941,11 @@
           </div>
           <div class="card-concepts">${example.description}</div>
           <div class="concept-tags">
-            ${conceptTags.map(tag => `<span class="concept-tag" onclick="filterByConcept('${tag}'); event.stopPropagation();">${tag}</span>`).join('')}
+            ${
+        conceptTags.map(tag =>
+          `<span class="concept-tag" onclick="filterByConcept('${tag}'); event.stopPropagation();">${tag}</span>`
+        ).join("")
+      }
           </div>
         </div>
       `;
@@ -681,7 +966,7 @@
         const canvas = document.querySelector(`#thumb-${exampleId} canvas`);
         if (!canvas) return;
 
-        const ctx = canvas.getContext('2d');
+        const ctx = canvas.getContext("2d");
         const renderer = new Canvas2DRenderer(canvas);
         const lexer = new CodonLexer();
         const vm = new CodonVM(renderer);
@@ -689,25 +974,28 @@
         const tokens = lexer.tokenize(code);
         vm.run(tokens);
       } catch (error) {
-        console.error(`Failed to generate thumbnail for ${exampleId}:`, error);
+        console.error(
+          `Failed to generate thumbnail for ${exampleId}:`,
+          error,
+        );
       }
     }
 
     async function openModal(example) {
       currentExample = example;
-      document.getElementById('modalTitle').textContent = example.name;
-      document.getElementById('previewModal').classList.add('active');
+      document.getElementById("modalTitle").textContent = example.name;
+      document.getElementById("previewModal").classList.add("active");
 
       try {
         const response = await fetch(`examples/${example.id}.genome`);
         const code = await response.text();
 
         // Show code
-        document.getElementById('modalCode').textContent = code;
+        document.getElementById("modalCode").textContent = code;
 
         // Render preview
-        const canvas = document.getElementById('modalCanvas');
-        const ctx = canvas.getContext('2d');
+        const canvas = document.getElementById("modalCanvas");
+        const ctx = canvas.getContext("2d");
         ctx.clearRect(0, 0, canvas.width, canvas.height);
 
         const renderer = new Canvas2DRenderer(canvas);
@@ -717,55 +1005,64 @@
         const tokens = lexer.tokenize(code);
         vm.run(tokens);
       } catch (error) {
-        console.error('Failed to load example:', error);
-        document.getElementById('modalCode').textContent = 'Error loading example';
+        console.error("Failed to load example:", error);
+        document.getElementById("modalCode").textContent =
+          "Error loading example";
       }
     }
 
-    window.filterByConcept = function(concept) {
-      document.getElementById('search').value = concept;
+    window.filterByConcept = (concept) => {
+      document.getElementById("search").value = concept;
       searchQuery = concept.toLowerCase();
       renderGallery();
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+      window.scrollTo({ top: 0, behavior: "smooth" });
     };
 
-    window.closeModal = function() {
-      document.getElementById('previewModal').classList.remove('active');
+    window.closeModal = () => {
+      document.getElementById("previewModal").classList.remove("active");
       currentExample = null;
     };
 
-    window.openInPlayground = async function() {
+    window.openInPlayground = async () => {
       if (!currentExample) return;
 
       try {
-        const response = await fetch(`examples/${currentExample.id}.genome`);
+        const response = await fetch(
+          `examples/${currentExample.id}.genome`,
+        );
         const code = await response.text();
 
         // Store code in sessionStorage for playground to load
-        sessionStorage.setItem('codoncanvas-import-code', code);
-        sessionStorage.setItem('codoncanvas-import-filename', `${currentExample.id}.genome`);
+        sessionStorage.setItem("codoncanvas-import-code", code);
+        sessionStorage.setItem(
+          "codoncanvas-import-filename",
+          `${currentExample.id}.genome`,
+        );
 
         // Navigate to playground
-        window.location.href = 'index.html';
+        window.location.href = "index.html";
       } catch (error) {
-        console.error('Failed to open in playground:', error);
-        alert('Failed to load example');
+        console.error("Failed to open in playground:", error);
+        alert("Failed to load example");
       }
     };
 
     // Close modal on background click
-    document.getElementById('previewModal').addEventListener('click', (e) => {
-      if (e.target.id === 'previewModal') {
-        closeModal();
-      }
-    });
+    document.getElementById("previewModal").addEventListener(
+      "click",
+      (e) => {
+        if (e.target.id === "previewModal") {
+          closeModal();
+        }
+      },
+    );
 
     // Close modal on Escape key
-    document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape') {
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape") {
         closeModal();
       }
     });
-  </script>
-</body>
+    </script>
+  </body>
 </html>

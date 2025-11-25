@@ -4,14 +4,14 @@
  * Validates internal links across all markdown documentation
  */
 
-import * as fs from 'fs';
-import * as path from 'path';
+import * as fs from "fs";
+import * as path from "path";
 
 interface LinkRef {
   file: string;
   line: number;
   link: string;
-  type: 'internal' | 'external' | 'anchor';
+  type: "internal" | "external" | "anchor";
 }
 
 interface AuditResult {
@@ -25,32 +25,32 @@ interface AuditResult {
 const LINK_REGEX = /\[([^\]]+)\]\(([^)]+)\)/g;
 
 function isExternalLink(link: string): boolean {
-  return link.startsWith('http://') || link.startsWith('https://');
+  return link.startsWith("http://") || link.startsWith("https://");
 }
 
 function extractLinks(content: string, filepath: string): LinkRef[] {
   const links: LinkRef[] = [];
-  const lines = content.split('\n');
+  const lines = content.split("\n");
 
   lines.forEach((line, idx) => {
     let match;
     while ((match = LINK_REGEX.exec(line)) !== null) {
       const link = match[2];
 
-      let type: 'internal' | 'external' | 'anchor';
+      let type: "internal" | "external" | "anchor";
       if (isExternalLink(link)) {
-        type = 'external';
-      } else if (link.startsWith('#')) {
-        type = 'anchor';
+        type = "external";
+      } else if (link.startsWith("#")) {
+        type = "anchor";
       } else {
-        type = 'internal';
+        type = "internal";
       }
 
       links.push({
         file: filepath,
         line: idx + 1,
         link,
-        type
+        type,
       });
     }
     LINK_REGEX.lastIndex = 0; // Reset regex state
@@ -61,7 +61,7 @@ function extractLinks(content: string, filepath: string): LinkRef[] {
 
 function validateInternalLink(link: string, sourceFile: string): boolean {
   // Handle anchor links
-  const [filepath, anchor] = link.split('#');
+  const [filepath, anchor] = link.split("#");
 
   // If no filepath (pure anchor), skip for now
   if (!filepath) return true;
@@ -78,7 +78,7 @@ function auditMarkdownFiles(dir: string): AuditResult {
     totalLinks: 0,
     brokenLinks: [],
     missingFiles: [],
-    validLinks: 0
+    validLinks: 0,
   };
 
   // Find all .md files (excluding node_modules)
@@ -86,20 +86,20 @@ function auditMarkdownFiles(dir: string): AuditResult {
 
   console.log(`\nFound ${files.length} markdown files\n`);
 
-  files.forEach(file => {
-    const content = fs.readFileSync(file, 'utf-8');
+  files.forEach((file) => {
+    const content = fs.readFileSync(file, "utf-8");
     const links = extractLinks(content, file);
 
-    links.forEach(linkRef => {
+    links.forEach((linkRef) => {
       result.totalLinks++;
 
-      if (linkRef.type === 'internal') {
+      if (linkRef.type === "internal") {
         if (!validateInternalLink(linkRef.link, linkRef.file)) {
           result.brokenLinks.push(linkRef);
         } else {
           result.validLinks++;
         }
-      } else if (linkRef.type === 'anchor') {
+      } else if (linkRef.type === "anchor") {
         // Could validate anchors exist in target file, but skipping for now
         result.validLinks++;
       } else {
@@ -112,7 +112,10 @@ function auditMarkdownFiles(dir: string): AuditResult {
   return result;
 }
 
-function findMarkdownFiles(dir: string, exclude: string[] = ['node_modules', '.git']): string[] {
+function findMarkdownFiles(
+  dir: string,
+  exclude: string[] = ["node_modules", ".git"],
+): string[] {
   let results: string[] = [];
 
   const entries = fs.readdirSync(dir, { withFileTypes: true });
@@ -124,7 +127,7 @@ function findMarkdownFiles(dir: string, exclude: string[] = ['node_modules', '.g
       if (!exclude.includes(entry.name)) {
         results = results.concat(findMarkdownFiles(fullPath, exclude));
       }
-    } else if (entry.isFile() && entry.name.endsWith('.md')) {
+    } else if (entry.isFile() && entry.name.endsWith(".md")) {
       results.push(fullPath);
     }
   }
@@ -133,9 +136,9 @@ function findMarkdownFiles(dir: string, exclude: string[] = ['node_modules', '.g
 }
 
 function printResults(result: AuditResult): void {
-  console.log('='.repeat(60));
-  console.log('DOCUMENTATION LINK AUDIT REPORT');
-  console.log('='.repeat(60));
+  console.log("=".repeat(60));
+  console.log("DOCUMENTATION LINK AUDIT REPORT");
+  console.log("=".repeat(60));
   console.log();
 
   console.log(`Total Links: ${result.totalLinks}`);
@@ -144,15 +147,15 @@ function printResults(result: AuditResult): void {
   console.log();
 
   if (result.brokenLinks.length > 0) {
-    console.log('BROKEN INTERNAL LINKS:');
-    console.log('-'.repeat(60));
-    result.brokenLinks.forEach(ref => {
+    console.log("BROKEN INTERNAL LINKS:");
+    console.log("-".repeat(60));
+    result.brokenLinks.forEach((ref) => {
       console.log(`  ${path.relative(process.cwd(), ref.file)}:${ref.line}`);
       console.log(`    → ${ref.link}`);
     });
     console.log();
   } else {
-    console.log('✅ All internal links valid!\n');
+    console.log("✅ All internal links valid!\n");
   }
 }
 

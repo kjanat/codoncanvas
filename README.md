@@ -29,6 +29,7 @@ Try CodonCanvas online (no installation required):
 ### All Demos
 
 **For Students:**
+
 - **[Learning Paths](https://kjanat.github.io/codoncanvas/learning-paths.html)** 🎓 **NEW** - Curated learning journeys from DNA basics to mathematical beauty
 - **[Interactive Tutorial](https://kjanat.github.io/codoncanvas/tutorial.html)** ⭐ - Step-by-step guided learning (start here!)
 - **[Example Gallery](https://kjanat.github.io/codoncanvas/gallery.html)** 🎨 - Browse 48 examples with filters and live preview
@@ -41,6 +42,7 @@ Try CodonCanvas online (no installation required):
 - **[Genetic Algorithm](https://kjanat.github.io/codoncanvas/genetic-algorithm-demo.html)** - Automated fitness-driven evolution
 
 **For Teachers:**
+
 - **[Teacher Dashboard](https://kjanat.github.io/codoncanvas/teacher-dashboard.html)** 📊 **NEW** - Classroom analytics and student progress tracking
 - **[Research Metrics Dashboard](https://kjanat.github.io/codoncanvas/research-dashboard.html)** 📈 - Detailed engagement metrics and analysis
 
@@ -49,16 +51,19 @@ Try CodonCanvas online (no installation required):
 ## Screenshots
 
 ### Main Playground
+
 ![CodonCanvas Playground](screenshot_playground.png)
-*Interactive editor with live canvas preview, 27 built-in examples, and codon reference chart*
+_Interactive editor with live canvas preview, 27 built-in examples, and codon reference chart_
 
 ### Mutation Lab
+
 ![Mutation Laboratory](screenshot_mutations.png)
-*Compare original and mutated genomes side-by-side with diff visualization*
+_Compare original and mutated genomes side-by-side with diff visualization_
 
 ### Timeline Scrubber
+
 ![Timeline Scrubber](screenshot_timeline.png)
-*Step through execution instruction-by-instruction with state visualization*
+_Step through execution instruction-by-instruction with state visualization_
 
 ## 🎓 Learning Paths
 
@@ -165,6 +170,7 @@ npm run dev
 ```
 
 Then open in browser:
+
 - Main playground: `http://localhost:5173`
 - **Mutation demos: `http://localhost:5173/demos.html`** ⭐ Start here to see mutation effects!
 - Mutation lab: `http://localhost:5173/mutation-demo.html`
@@ -175,11 +181,13 @@ Then open in browser:
 ## Example: Hello Circle
 
 **DNA Notation:**
+
 ```dna
 ATG GAA AAT GGA TAA
 ```
 
 **RNA Notation (biologically accurate):**
+
 ```rna
 AUG GAA AAU GGA UAA
 ```
@@ -198,6 +206,7 @@ AUG GAA AAU GGA UAA
 The playground includes **27 pedagogical examples** demonstrating all features:
 
 ### Basic Shapes & Transforms (9)
+
 1. **Hello Circle** - Minimal example with single circle
 2. **RNA Hello** - RNA notation (U instead of T) demonstrating biological transcription
 3. **RNA Composition** - More complex RNA example with multiple shapes
@@ -209,23 +218,27 @@ The playground includes **27 pedagogical examples** demonstrating all features:
 9. **Scale Transform** - SCALE opcode demonstration
 
 ### Stack & Composition (4)
+
 10. **Stack Operations** - DUP and SWAP for efficient stack management
 11. **Rosette Pattern** - Complex composition with rotation and color
 12. **Simple Face** - Combines primitives to draw a smiley face
 13. **Stack Cleanup** - POP opcode for stack management
 
 ### Advanced Features (4)
+
 14. **Textured Circle** - NOISE opcode for artistic texture effects
 15. **Spiral Pattern** - Geometric spiral using iterative transforms
 16. **Nested Frames** - SAVE_STATE for layered compositions
 17. **Mandala Pattern** - Complex radial symmetry
 
 ### Educational Demonstrations (3)
+
 18. **Silent Mutation Demo** - Pedagogical comparison of synonymous codons (GGA vs GGC)
 19. **Color Gradient** - Systematic color manipulation
 20. **Grid Pattern** - Systematic positioning with TRANSLATE
 
 ### Advanced Showcase (7)
+
 21. **Fractal Flower** - Intricate nested petals with multi-layer color gradients
 22. **Geometric Mosaic** - Grid-based tiled composition with rainbow gradient
 23. **Starfield** - Night sky with textured stars and nebula effects using NOISE
@@ -340,6 +353,7 @@ GIF exports capture every step of execution, perfect for sharing on social media
 ### Sharing Genomes
 
 Share your `.genome` files with others to:
+
 - Exchange creative patterns
 - Submit homework assignments
 - Demonstrate mutation effects
@@ -378,6 +392,7 @@ Generation 3: ...continues...
 ### Educational Value
 
 The Evolution Lab demonstrates:
+
 - **Natural selection**: Only the fittest candidates reproduce
 - **Cumulative change**: Small mutations accumulate into large phenotypic differences
 - **Directed evolution**: Selection pressure (user choice) guides evolutionary trajectory
@@ -388,6 +403,7 @@ This hands-on experience makes abstract evolutionary concepts tangible and playf
 ### Interactive Tutorial
 
 First-time visitors to the Evolution Lab will see an **interactive tutorial** that guides them through:
+
 1. Welcome to natural selection concepts
 2. Generating the first set of 6 mutated candidates
 3. Visual comparison and fitness evaluation
@@ -513,6 +529,7 @@ CodonCanvas teaches:
 CodonCanvas provides comprehensive classroom support tools:
 
 **📊 Teacher Dashboard** ([teacher-dashboard.html](https://kjanat.github.io/codoncanvas/teacher-dashboard.html))
+
 - **Classroom Analytics**: View aggregate metrics across all students (engagement distribution, average sessions/duration/genomes)
 - **Student Progress Tracking**: Monitor individual tutorial completion and research metrics
 - **At-Risk Detection**: Identify students needing intervention with color-coded severity levels
@@ -520,6 +537,7 @@ CodonCanvas provides comprehensive classroom support tools:
 - **Privacy-Preserving**: All data handled client-side with no server transmission (FERPA-compliant)
 
 **Workflow:**
+
 1. Students complete activities and click "📊 Export Progress" button in playground
 2. Students save their progress file (JSON format) and submit to teacher
 3. Teacher opens Teacher Dashboard and imports multiple student files via drag-and-drop
@@ -527,6 +545,7 @@ CodonCanvas provides comprehensive classroom support tools:
 5. Teacher exports grading summary (CSV) or detailed classroom data (JSON) as needed
 
 **📈 Research Metrics** ([research-dashboard.html](https://kjanat.github.io/codoncanvas/research-dashboard.html))
+
 - **Session Analytics**: Deep-dive into individual learning sessions with timestamps and actions
 - **Engagement Patterns**: Track genomes created, mutations applied, tutorial progress, time-to-first-artifact
 - **Educational Research**: Support pedagogical studies with detailed interaction data
@@ -606,6 +625,7 @@ git push -u origin master
 ```
 
 See [DEPLOYMENT.md](DEPLOYMENT.md) for complete instructions including:
+
 - Social sharing optimization (Open Graph tags)
 - Custom domain setup
 - Troubleshooting guide

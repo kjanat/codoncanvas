@@ -61,19 +61,23 @@ The **CodonCanvas Gamification System** rewards students for learning and practi
 ### CodonCanvas-Specific Benefits
 
 **Addresses "Why Should I Practice?" Problem**
+
 - Without gamification: Students complete assigned work, then stop
 - With gamification: Students pursue achievements voluntarily, increasing practice 3-5x
 
 **Provides Concrete Learning Goals**
+
 - Without gamification: Abstract goal ("learn about mutations")
 - With gamification: Concrete milestones ("identify all 6 mutation types")
 
 **Creates Self-Directed Learning Paths**
+
 - Students discover features through achievement descriptions
 - Achievement icons hint at next steps ("What's this audio synthesis thing?")
 - Progress percentage creates completionist motivation
 
 **Reduces Educator Workload**
+
 - Students self-motivate through achievement pursuit
 - Less need for external incentives or grades
 - Natural formative assessment through achievement unlock rates
@@ -90,6 +94,7 @@ The **CodonCanvas Gamification System** rewards students for learning and practi
 **Educator Value:** Confirms students can navigate core features
 
 **Achievements:**
+
 - 🧬 **First Genome** - Create and execute first genome
 - 🎨 **First Draw** - Successfully draw first shape
 - 🔄 **First Mutation** - Apply first mutation
@@ -107,6 +112,7 @@ The **CodonCanvas Gamification System** rewards students for learning and practi
 **Educator Value:** Indicates genuine understanding of mutation concepts
 
 **Achievements:**
+
 - 🎯 **Mutation Expert** - Correctly identify 10 mutations
 - 🏆 **Perfect Score** - Achieve 100% on an assessment
 - 🔬 **Pattern Master** - Correctly identify all 6 mutation types
@@ -124,12 +130,14 @@ The **CodonCanvas Gamification System** rewards students for learning and practi
 **Educator Value:** Shows breadth of engagement with platform
 
 **Achievements:**
+
 - 🌈 **Color Artist** - Use COLOR opcode 10 times
 - 🧪 **Mad Scientist** - Apply 100 total mutations
 - 🎼 **Audio Pioneer** - Experiment with audio synthesis
 - 🧬 **Evolution Master** - Run 50 generations in evolution lab
 
 **Teaching Tip:** Exploration achievements work well for:
+
 - Extra credit opportunities
 - Advanced students who finish early
 - Open-ended creative projects
@@ -145,12 +153,14 @@ The **CodonCanvas Gamification System** rewards students for learning and practi
 **Educator Value:** Identifies top performers for advanced activities
 
 **Achievements:**
+
 - 💎 **Flawless** - Get 10 consecutive correct assessments
 - 🎓 **Professor** - 95%+ accuracy on 50+ challenges
 - 🏅 **Elite Coder** - Create genome with 100+ codons
 - 🌟 **Legend** - Unlock all other achievements (hidden until earned)
 
 **Teaching Tip:** Perfection achievements are excellent for:
+
 - Advanced placement students
 - Competition/showcase preparation
 - Student mentors/tutors (they'll need deep mastery)
@@ -160,24 +170,24 @@ The **CodonCanvas Gamification System** rewards students for learning and practi
 
 ## Complete Achievement List
 
-| Icon | Name | Category | Description | Condition | Typical Unlock |
-|------|------|----------|-------------|-----------|----------------|
-| 🧬 | First Genome | Basics | Create and execute your first genome | Execute 1 genome | 2-5 minutes |
-| 🎨 | First Draw | Basics | Successfully draw your first shape | Draw 1 shape | 2-5 minutes |
-| 🔄 | First Mutation | Basics | Apply your first mutation | Apply 1 mutation | 5-10 minutes |
-| 🎭 | Shape Explorer | Basics | Use all 5 shape opcodes | Use CIRCLE, RECT, LINE, TRIANGLE, ELLIPSE | 10-15 minutes |
-| 🎯 | Mutation Expert | Mastery | Correctly identify 10 mutations | 10+ correct assessments | 15-30 minutes |
-| 🏆 | Perfect Score | Mastery | Achieve 100% on assessment | 100% accuracy on any assessment set | 20-40 minutes |
-| 🔬 | Pattern Master | Mastery | Identify all 6 mutation types | Correctly identify silent, missense, nonsense, frameshift, insertion, deletion | 30-60 minutes |
-| ⚡ | Speed Runner | Mastery | Complete challenges quickly | 5+ consecutive correct | 15-30 minutes |
-| 🌈 | Color Artist | Exploration | Use COLOR opcode 10 times | Use COLOR 10x | 30-60 minutes |
-| 🧪 | Mad Scientist | Exploration | Apply 100 total mutations | Apply 100 mutations | 60-120 minutes |
-| 🎼 | Audio Pioneer | Exploration | Try audio synthesis mode | Use audio synthesis once | Variable |
-| 🧬 | Evolution Master | Exploration | Run 50 generations | Use evolution lab 50 generations | 30-60 minutes |
-| 💎 | Flawless | Perfection | 10 consecutive correct | 10 correct in a row | 30-60 minutes |
-| 🎓 | Professor | Perfection | 95%+ accuracy on 50+ challenges | 50+ assessments at 95%+ | 90-150 minutes |
-| 🏅 | Elite Coder | Perfection | Create 100+ codon genome | Create & execute 100+ codon genome | 60-120 minutes |
-| 🌟 | Legend | Perfection | Unlock all other achievements | Unlock all 15 achievements | Full course |
+| Icon | Name             | Category    | Description                          | Condition                                                                      | Typical Unlock |
+| ---- | ---------------- | ----------- | ------------------------------------ | ------------------------------------------------------------------------------ | -------------- |
+| 🧬   | First Genome     | Basics      | Create and execute your first genome | Execute 1 genome                                                               | 2-5 minutes    |
+| 🎨   | First Draw       | Basics      | Successfully draw your first shape   | Draw 1 shape                                                                   | 2-5 minutes    |
+| 🔄   | First Mutation   | Basics      | Apply your first mutation            | Apply 1 mutation                                                               | 5-10 minutes   |
+| 🎭   | Shape Explorer   | Basics      | Use all 5 shape opcodes              | Use CIRCLE, RECT, LINE, TRIANGLE, ELLIPSE                                      | 10-15 minutes  |
+| 🎯   | Mutation Expert  | Mastery     | Correctly identify 10 mutations      | 10+ correct assessments                                                        | 15-30 minutes  |
+| 🏆   | Perfect Score    | Mastery     | Achieve 100% on assessment           | 100% accuracy on any assessment set                                            | 20-40 minutes  |
+| 🔬   | Pattern Master   | Mastery     | Identify all 6 mutation types        | Correctly identify silent, missense, nonsense, frameshift, insertion, deletion | 30-60 minutes  |
+| ⚡   | Speed Runner     | Mastery     | Complete challenges quickly          | 5+ consecutive correct                                                         | 15-30 minutes  |
+| 🌈   | Color Artist     | Exploration | Use COLOR opcode 10 times            | Use COLOR 10x                                                                  | 30-60 minutes  |
+| 🧪   | Mad Scientist    | Exploration | Apply 100 total mutations            | Apply 100 mutations                                                            | 60-120 minutes |
+| 🎼   | Audio Pioneer    | Exploration | Try audio synthesis mode             | Use audio synthesis once                                                       | Variable       |
+| 🧬   | Evolution Master | Exploration | Run 50 generations                   | Use evolution lab 50 generations                                               | 30-60 minutes  |
+| 💎   | Flawless         | Perfection  | 10 consecutive correct               | 10 correct in a row                                                            | 30-60 minutes  |
+| 🎓   | Professor        | Perfection  | 95%+ accuracy on 50+ challenges      | 50+ assessments at 95%+                                                        | 90-150 minutes |
+| 🏅   | Elite Coder      | Perfection  | Create 100+ codon genome             | Create & execute 100+ codon genome                                             | 60-120 minutes |
+| 🌟   | Legend           | Perfection  | Unlock all other achievements        | Unlock all 15 achievements                                                     | Full course    |
 
 ---
 
@@ -207,12 +217,14 @@ The **CodonCanvas Gamification System** rewards students for learning and practi
 ### Multiple Achievements
 
 **Notification Queue System:**
+
 - Multiple achievements from one action → sequential notifications
 - 5-second display per achievement
 - Smooth slide-in/slide-out animations
 - No overlapping (waits for previous notification to dismiss)
 
 **Example Scenario:**
+
 ```
 Student uses all 5 shape opcodes in one genome:
 1. Executes genome → "First Genome" notification (5 sec)
@@ -224,6 +236,7 @@ Total: 3 achievements, 15 seconds of celebration 🎉
 ### Progress Persistence
 
 **What Gets Saved:**
+
 - All unlocked achievements (IDs + unlock dates)
 - Complete statistics (genomes created, mutations applied, etc.)
 - Opcode usage history (Set of all opcodes used)
@@ -231,11 +244,13 @@ Total: 3 achievements, 15 seconds of celebration 🎉
 - Mutation type tracking (which types correctly identified)
 
 **Where It's Saved:**
+
 - Browser localStorage (key: `codoncanvas_achievements`)
 - Survives page refresh, browser restart, system reboot
 - Cleared only by: student clicking "Reset Progress" OR browser cache clear
 
 **Cross-Session Experience:**
+
 ```
 Session 1 (Monday):
 - Student unlocks First Genome, First Draw, First Mutation
@@ -257,12 +272,14 @@ Session 2 (Wednesday):
 ### Playground Integration
 
 **Tracking Points:**
+
 - **Genome Creation** - Tracked when editor content becomes valid genome (ATG...TAA)
 - **Genome Execution** - Tracked when "Run" button executes successfully
 - **Mutation Application** - Tracked when mutation tools used (point/indel/frameshift buttons)
 - **Opcode Usage** - Tracked during execution (CIRCLE, RECT, COLOR, etc.)
 
 **Example Integration (Conceptual):**
+
 ```typescript
 // In playground.ts - after successful execution
 const opcodes = vm.getExecutedOpcodes();
@@ -273,6 +290,7 @@ achievementUI.handleUnlocks(newUnlocks);
 ### Assessment Mode Integration
 
 **Tracking Points:**
+
 - **Challenge Completion** - Tracked on answer submission
 - **Correct vs Incorrect** - Tracked based on answer accuracy
 - **Mutation Type** - Tracked to detect "Pattern Master" completion
@@ -280,20 +298,26 @@ achievementUI.handleUnlocks(newUnlocks);
 - **Perfect Score** - Manually triggered when assessment set reaches 100%
 
 **Example Integration:**
+
 ```typescript
 // In assessment-ui.ts - after challenge completion
-const correct = (studentAnswer === correctAnswer);
-const newUnlocks = achievementEngine.trackChallengeCompleted(correct, mutationType);
+const correct = studentAnswer === correctAnswer;
+const newUnlocks = achievementEngine.trackChallengeCompleted(
+  correct,
+  mutationType,
+);
 achievementUI.handleUnlocks(newUnlocks);
 ```
 
 ### Evolution Lab Integration
 
 **Tracking Points:**
+
 - **Generation Completion** - Tracked each generation run
 - **Accumulated Progress** - 50 generations → "Evolution Master" achievement
 
 **Example Integration:**
+
 ```typescript
 // In evolution-lab.ts - after generation completes
 const newUnlocks = achievementEngine.trackEvolutionGeneration();
@@ -303,12 +327,14 @@ achievementUI.handleUnlocks(newUnlocks);
 ### Audio Synthesis Integration
 
 **Tracking Points:**
+
 - **Audio Mode Activation** - Tracked on first audio synthesis usage
 - **One-Time Achievement** - "Audio Pioneer" unlocked immediately
 
 ### Timeline Integration
 
 **Tracking Points:**
+
 - **Step-Through Usage** - Tracked when timeline step controls used
 - **Accumulated for Future Achievements** - Currently tracked but no achievement uses it (reserved for v2.0)
 
@@ -319,6 +345,7 @@ achievementUI.handleUnlocks(newUnlocks);
 ### Student Progress Monitoring
 
 **Individual Student View:**
+
 ```
 Student: Alex Chen
 Progress: 12/16 (75%)
@@ -346,6 +373,7 @@ Recommendations:
 ### Class-Wide Analytics
 
 **Aggregated View:**
+
 ```
 Class: BIO 101 Section A (n=28)
 Average Progress: 67% (10.7/16 achievements)
@@ -379,6 +407,7 @@ Insights:
 ### Export & Reporting
 
 **Data Export Format (JSON):**
+
 ```json
 {
   "student": "alex_chen",
@@ -404,6 +433,7 @@ Insights:
 ```
 
 **Import to Gradebook:**
+
 - Export JSON → Convert to CSV → Import to LMS
 - Map achievement unlocks to grade categories:
   - Basics Complete (4/4) → 10% of grade
@@ -420,6 +450,7 @@ Insights:
 **Structure:** Each lesson targets 1-2 specific achievements
 
 **Example Lesson Plan (45 min):**
+
 ```
 Lesson 4: Mutation Type Mastery
 Target Achievement: 🔬 Pattern Master
@@ -436,6 +467,7 @@ Success Metric: 80%+ students unlock Pattern Master by end of class
 ```
 
 **Benefits:**
+
 - Clear lesson objective (unlock specific achievement)
 - Built-in formative assessment (unlock rate = understanding rate)
 - Student motivation aligned with learning goal
@@ -445,6 +477,7 @@ Success Metric: 80%+ students unlock Pattern Master by end of class
 **Structure:** Class-wide or team-based achievement competitions
 
 **Example Challenge (Week 3):**
+
 ```
 🏆 Evolution Lab Challenge
 Goal: Which team can unlock Evolution Master first?
@@ -463,6 +496,7 @@ Timeline: 1 week (in-class + homework)
 ```
 
 **Benefits:**
+
 - Peer learning (teams discuss strategies)
 - Competitive motivation (first to unlock wins)
 - Collaborative achievement pursuit
@@ -472,6 +506,7 @@ Timeline: 1 week (in-class + homework)
 **Structure:** Students set individual achievement goals
 
 **Example Assignment:**
+
 ```
 📋 Week 4 Assignment: Choose Your Path
 
@@ -492,6 +527,7 @@ Due: End of Week 4
 ```
 
 **Benefits:**
+
 - Student agency (they choose goals)
 - Differentiated learning (different students, different achievements)
 - Metacognitive reflection (plan → execute → reflect)
@@ -501,6 +537,7 @@ Due: End of Week 4
 **Structure:** Semester-long achievement collection with reflection
 
 **Example Portfolio Requirements:**
+
 ```
 📁 CodonCanvas Achievement Portfolio
 
@@ -528,6 +565,7 @@ Grading:
 ```
 
 **Benefits:**
+
 - Longitudinal engagement tracking
 - Reflective practice throughout semester
 - Visible progress over time
@@ -545,43 +583,52 @@ Grading:
 **Target Achievement:** [Icon] [Name] ([Category])
 **Prerequisites:** [List prerequisite achievements]
 **Learning Objectives:**
+
 - [Objective 1]
 - [Objective 2]
 
 **Materials:**
+
 - CodonCanvas playground
 - Achievement dashboard
 - [Other materials]
 
 **Phase 1: Introduction ([X] min)**
+
 - Show achievement on screen
 - Explain what unlocking it requires
 - Connect to learning objectives
 
 **Phase 2: Guided Practice ([X] min)**
+
 - Demonstrate activities that progress toward achievement
 - Students follow along, tracking their own progress
 - Check-in: "How many have unlocked it so far?"
 
 **Phase 3: Independent Practice ([X] min)**
+
 - Students work independently toward unlock
 - Circulate and assist students who are stuck
 - Celebrate unlocks as they happen
 
 **Phase 4: Reflection ([X] min)**
+
 - Class discussion: What was challenging?
 - Show class unlock rate (X/Y students)
 - Preview next achievement
 
 **Assessment:**
+
 - Formative: Achievement unlock rate
 - Summative: [Other assessments]
 
 **Differentiation:**
+
 - Struggling students: Pair with peer mentor
 - Advanced students: Challenge to unlock next achievement
 
 **Homework:**
+
 - [Optional: Target additional achievement]
 ```
 
@@ -594,16 +641,19 @@ Grading:
 **Target Achievement:** 🧬 First Genome (Basics)
 **Prerequisites:** None (first lesson)
 **Learning Objectives:**
+
 - Understand what a genome is in CodonCanvas
 - Execute a simple program
 - Experience achievement unlock
 
 **Materials:**
+
 - CodonCanvas playground
 - Example genome (Hello Circle)
 - Achievement dashboard demo
 
 **Phase 1: Introduction (10 min)**
+
 - Welcome to CodonCanvas!
 - Demo: Show achievement system on screen
   - "See these locked badges? You'll unlock them as you learn."
@@ -611,6 +661,7 @@ Grading:
 - Explain: Create a genome → Run it → Unlock achievement
 
 **Phase 2: Guided Practice (15 min)**
+
 - Together, create "Hello Circle" genome
 - Step through each codon (ATG, GAA, AAA, GGA, TAA)
 - Explain what each does
@@ -618,22 +669,26 @@ Grading:
 - Celebrate: "Look! Your achievement unlocked!"
 
 **Phase 3: Experimentation (15 min)**
+
 - Challenge: "Can you make TWO circles?"
 - Students modify genome, run again
 - Circulate, help struggling students
 - Point out: Stats updated (2 genomes executed)
 
 **Phase 4: Achievement Dashboard (10 min)**
+
 - Navigate to achievements page
 - Show progress: 1/16 (6%) - just getting started!
 - Show other locked achievements
 - Preview: "Next class we'll unlock 🔄 First Mutation"
 
 **Assessment:**
+
 - Check: 100% of students should have First Genome unlocked
 - If not: Address before next class
 
 **Homework:**
+
 - (Optional) Challenge: Try to unlock 🎨 First Draw on your own
 - Read: What are the 6 mutation types? (prep for next class)
 ```
@@ -647,6 +702,7 @@ Grading:
 **Setup:** Large screen or poster showing class progress
 
 **Display:**
+
 ```
 📊 BIO 101 Achievement Leaderboard
 
@@ -674,6 +730,7 @@ Class Average: 10.7/16 (67%)
 **Privacy Note:** Use first names only or student IDs
 
 **Benefits:**
+
 - Social proof (others are achieving, I can too)
 - Friendly competition (I want to move up a tier)
 - Visible class progress (we're improving together)
@@ -681,16 +738,19 @@ Class Average: 10.7/16 (67%)
 ### Tactic 2: Achievement Celebrations
 
 **In-Class Rituals:**
+
 - 🎉 **First Unlock of Class:** Applause when first student unlocks new achievement
 - 🏆 **Achievement Shoutouts:** Last 5 min of class, students share recent unlocks
 - 🌟 **Legend Ceremony:** Special recognition when first student unlocks Legend
 
 **Digital Celebrations:**
+
 - Email: Weekly achievement digest to students
 - LMS: Post achievement unlock screenshots
 - Discord/Slack: #achievements channel for sharing
 
 **Benefits:**
+
 - Positive reinforcement (achievements are valued)
 - Community building (celebrate each other's success)
 - Motivation (I want to share my unlock too)
@@ -698,6 +758,7 @@ Class Average: 10.7/16 (67%)
 ### Tactic 3: Achievement Pathways
 
 **Create Visual Roadmaps:**
+
 ```
 🗺️ Your Path to Legend Status
 
@@ -715,6 +776,7 @@ Week 7-8: 💎 Perfection Tier
 ```
 
 **Benefits:**
+
 - Clear progression (I know what's next)
 - Manageable milestones (one tier at a time)
 - Long-term motivation (I can see the end goal)
@@ -722,6 +784,7 @@ Week 7-8: 💎 Perfection Tier
 ### Tactic 4: Achievement-Based Incentives
 
 **Grade Integration:**
+
 ```
 📝 Grading Rubric
 
@@ -737,12 +800,14 @@ Bonus (Up to +5%):
 ```
 
 **Non-Grade Rewards:**
+
 - Extra credit opportunities
 - Priority for advanced activities
 - Showcase on class website
 - Recommendation letter mention (for exceptional students)
 
 **Benefits:**
+
 - Extrinsic motivation aligned with learning
 - Clear value of achievement pursuit
 - Multiple pathways to success
@@ -750,6 +815,7 @@ Bonus (Up to +5%):
 ### Tactic 5: Peer Mentorship
 
 **Achievement-Based Roles:**
+
 ```
 🎓 Student Mentors (Must have Mastery Complete)
 
@@ -765,6 +831,7 @@ Benefits for Mentors:
 ```
 
 **Benefits:**
+
 - Peer learning (students teach students)
 - Advanced students stay engaged (mentor role)
 - Struggling students get personalized help
@@ -776,6 +843,7 @@ Benefits for Mentors:
 ### Quick Start (5 minutes)
 
 **1. Add Script Tags**
+
 ```html
 <script type="module">
   import { AchievementEngine } from './dist/achievement-engine.js';
@@ -791,11 +859,13 @@ Benefits for Mentors:
 ```
 
 **2. Add Container Element**
+
 ```html
 <div id="achievements-container"></div>
 ```
 
 **3. Track Activities**
+
 ```typescript
 // After genome execution
 const newUnlocks = achievementEngine.trackGenomeExecuted(opcodes);
@@ -807,11 +877,12 @@ achievementUI.handleUnlocks(newUnlocks);
 ### Full Integration Example
 
 **Playground Integration:**
+
 ```typescript
 // In playground.ts
 
-import { AchievementEngine } from './achievement-engine.js';
-import { AchievementUI } from './achievement-ui.js';
+import { AchievementEngine } from "./achievement-engine.js";
+import { AchievementUI } from "./achievement-ui.js";
 
 class Playground {
   private achievementEngine: AchievementEngine;
@@ -819,7 +890,10 @@ class Playground {
 
   constructor() {
     this.achievementEngine = new AchievementEngine();
-    this.achievementUI = new AchievementUI(this.achievementEngine, 'achievements-sidebar');
+    this.achievementUI = new AchievementUI(
+      this.achievementEngine,
+      "achievements-sidebar",
+    );
   }
 
   onGenomeCreated(genome: string): void {
@@ -894,16 +968,19 @@ showUnlockNotification(achievement: Achievement): void
 ### What Gets Stored
 
 **Achievement Data:**
+
 - Achievement IDs of unlocked achievements
 - Unlock timestamps (Date objects)
 - Achievement progress (for partial achievements)
 
 **Statistics:**
+
 - Activity counters (genomes created, mutations applied, etc.)
 - Performance metrics (challenges completed, accuracy)
 - Usage tracking (opcodes used, features tried)
 
 **NOT Stored:**
+
 - Student names or personal information
 - Email addresses or login credentials
 - Genome source code content
@@ -912,12 +989,14 @@ showUnlockNotification(achievement: Achievement): void
 ### Where It's Stored
 
 **localStorage:**
+
 - Key: `codoncanvas_achievements_stats`
 - Key: `codoncanvas_achievements_unlocked`
 - Storage limit: ~5MB (plenty for achievement data)
 - Accessible only to CodonCanvas domain
 
 **NOT Sent To:**
+
 - External servers
 - Analytics platforms
 - Third-party services
@@ -926,6 +1005,7 @@ showUnlockNotification(achievement: Achievement): void
 ### GDPR/FERPA Compliance
 
 **GDPR Compliance:**
+
 - ✅ Data stored locally on student device (not collected by server)
 - ✅ No personal information tracked
 - ✅ Student can delete data anytime (Reset Progress button)
@@ -933,6 +1013,7 @@ showUnlockNotification(achievement: Achievement): void
 - ✅ No data shared with third parties
 
 **FERPA Compliance:**
+
 - ✅ Educational records stay on student device
 - ✅ No personally identifiable information stored
 - ✅ No unauthorized access to student data
@@ -943,21 +1024,23 @@ showUnlockNotification(achievement: Achievement): void
 ### Data Export & Deletion
 
 **Student-Initiated Export:**
+
 ```typescript
 // Get all achievement data as JSON
 const data = achievementEngine.export();
 console.log(data); // Copy/paste to save
 
 // Or download as file
-const blob = new Blob([data], { type: 'application/json' });
+const blob = new Blob([data], { type: "application/json" });
 const url = URL.createObjectURL(blob);
-const a = document.createElement('a');
+const a = document.createElement("a");
 a.href = url;
-a.download = 'my-achievements.json';
+a.download = "my-achievements.json";
 a.click();
 ```
 
 **Student-Initiated Deletion:**
+
 ```typescript
 // Reset button in UI
 achievementEngine.reset();
@@ -973,6 +1056,7 @@ achievementEngine.reset();
 ### Custom Achievement Conditions
 
 **Modify Existing Achievement:**
+
 ```typescript
 // In achievement-engine.ts, line ~150
 
@@ -989,6 +1073,7 @@ achievementEngine.reset();
 ### Add New Achievement
 
 **Step 1: Define Achievement**
+
 ```typescript
 // In achievement-engine.ts, defineAchievements()
 
@@ -1003,12 +1088,14 @@ achievementEngine.reset();
 ```
 
 **Step 2: Add Tracking (if needed)**
+
 ```typescript
 // Already exists: trackTimelineStepThrough()
 // If new stat needed, add to PlayerStats interface
 ```
 
 **Step 3: Rebuild**
+
 ```bash
 npm run build
 ```
@@ -1016,17 +1103,19 @@ npm run build
 ### Custom Achievement Icons
 
 **Change Icon Emoji:**
+
 ```typescript
 // In achievement-engine.ts
-icon: '🎯'  // Change to any emoji
+icon: "🎯"; // Change to any emoji
 ```
 
 **Use Custom Images:**
+
 ```typescript
 // In achievement-ui.ts, renderBadge()
 // Replace emoji with <img> tag
 
-const iconHtml = achievement.icon.startsWith('http')
+const iconHtml = achievement.icon.startsWith("http")
   ? `<img src="${achievement.icon}" alt="${achievement.name}" style="width: 48px; height: 48px;">`
   : `<div class="badge-icon">${achievement.icon}</div>`;
 ```
@@ -1034,6 +1123,7 @@ const iconHtml = achievement.icon.startsWith('http')
 ### Custom Notification Style
 
 **Modify Notification CSS:**
+
 ```css
 /* In achievement-ui.ts, injectStyles() */
 
@@ -1047,6 +1137,7 @@ const iconHtml = achievement.icon.startsWith('http')
 ### Custom Progress Thresholds
 
 **Modify Tier Thresholds:**
+
 ```typescript
 // Add to AchievementEngine class
 
@@ -1111,9 +1202,10 @@ A: Category system encourages progression (Basics → Mastery → Exploration �
 
 **Q: How do I prevent achievements from becoming the ONLY motivation?**
 A: Balance intrinsic and extrinsic motivation:
-  - Connect achievements to learning goals (not just points)
-  - Use reflective questions ("What did you learn unlocking this?")
-  - Emphasize understanding over unlocking
+
+- Connect achievements to learning goals (not just points)
+- Use reflective questions ("What did you learn unlocking this?")
+- Emphasize understanding over unlocking
 
 **Q: What if high-performing students don't care about achievements?**
 A: Achievements are optional motivation. Don't force it. Some students prefer grades, others prefer achievements, many prefer both.
@@ -1127,45 +1219,45 @@ A: Yes! Achievement unlock rates = understanding rates. Example: 60% of class ha
 
 ### A. Learning Objectives Alignment
 
-| Achievement | Learning Objective | Bloom's Taxonomy Level |
-|-------------|-------------------|------------------------|
-| First Genome | Execute a basic genome program | Remember/Apply |
-| First Draw | Understand opcode-to-output mapping | Understand/Apply |
-| Shape Explorer | Recognize different drawing opcodes | Remember/Apply |
-| Mutation Expert | Identify mutation types accurately | Analyze |
-| Pattern Master | Distinguish all 6 mutation types | Analyze/Evaluate |
-| Perfect Score | Demonstrate mastery of mutation concepts | Evaluate |
-| Flawless | Apply knowledge consistently | Apply |
-| Professor | Achieve expert-level understanding | Evaluate/Create |
+| Achievement     | Learning Objective                       | Bloom's Taxonomy Level |
+| --------------- | ---------------------------------------- | ---------------------- |
+| First Genome    | Execute a basic genome program           | Remember/Apply         |
+| First Draw      | Understand opcode-to-output mapping      | Understand/Apply       |
+| Shape Explorer  | Recognize different drawing opcodes      | Remember/Apply         |
+| Mutation Expert | Identify mutation types accurately       | Analyze                |
+| Pattern Master  | Distinguish all 6 mutation types         | Analyze/Evaluate       |
+| Perfect Score   | Demonstrate mastery of mutation concepts | Evaluate               |
+| Flawless        | Apply knowledge consistently             | Apply                  |
+| Professor       | Achieve expert-level understanding       | Evaluate/Create        |
 
 ### B. Sample Grading Rubrics
 
 **Option 1: Achievement-Based Grading (30% of course grade)**
 
-| Tier | Requirements | Points | Grade Equivalent |
-|------|--------------|--------|------------------|
-| Basics | All 4 Basics unlocked | 10/30 | 33% |
-| Mastery | + All 4 Mastery unlocked | 20/30 | 67% |
-| Exploration | + 2+ Exploration unlocked | 25/30 | 83% |
-| Perfection | + 1+ Perfection unlocked | 28/30 | 93% |
-| Legend | + All 16 unlocked | 30/30 + bonus | 100%+ |
+| Tier        | Requirements              | Points        | Grade Equivalent |
+| ----------- | ------------------------- | ------------- | ---------------- |
+| Basics      | All 4 Basics unlocked     | 10/30         | 33%              |
+| Mastery     | + All 4 Mastery unlocked  | 20/30         | 67%              |
+| Exploration | + 2+ Exploration unlocked | 25/30         | 83%              |
+| Perfection  | + 1+ Perfection unlocked  | 28/30         | 93%              |
+| Legend      | + All 16 unlocked         | 30/30 + bonus | 100%+            |
 
 **Option 2: Activity-Based Grading**
 
-| Activity | Points | Tracked By |
-|----------|--------|------------|
-| Complete 50 genome executions | 10 | genomesExecuted stat |
-| Apply 100 mutations | 10 | mutationsApplied stat |
-| 90%+ assessment accuracy | 20 | (challengesCorrect/challengesCompleted) |
-| Unlock 8+ achievements | 10 | getProgressPercentage() |
+| Activity                      | Points | Tracked By                              |
+| ----------------------------- | ------ | --------------------------------------- |
+| Complete 50 genome executions | 10     | genomesExecuted stat                    |
+| Apply 100 mutations           | 10     | mutationsApplied stat                   |
+| 90%+ assessment accuracy      | 20     | (challengesCorrect/challengesCompleted) |
+| Unlock 8+ achievements        | 10     | getProgressPercentage()                 |
 
 ### C. Research Citations
 
-- Hamari, J., Koivisto, J., & Sarsa, H. (2014). Does gamification work? A literature review of empirical studies on gamification. *47th Hawaii International Conference on System Sciences*, 3025-3034.
+- Hamari, J., Koivisto, J., & Sarsa, H. (2014). Does gamification work? A literature review of empirical studies on gamification. _47th Hawaii International Conference on System Sciences_, 3025-3034.
 
-- Dicheva, D., Dichev, C., Agre, G., & Angelova, G. (2015). Gamification in education: A systematic mapping study. *Educational Technology & Society*, 18(3), 75-88.
+- Dicheva, D., Dichev, C., Agre, G., & Angelova, G. (2015). Gamification in education: A systematic mapping study. _Educational Technology & Society_, 18(3), 75-88.
 
-- Sailer, M., Hense, J. U., Mayr, S. K., & Mandl, H. (2017). How gamification motivates: An experimental study of the effects of specific game design elements on psychological need satisfaction. *Computers in Human Behavior*, 69, 371-380.
+- Sailer, M., Hense, J. U., Mayr, S. K., & Mandl, H. (2017). How gamification motivates: An experimental study of the effects of specific game design elements on psychological need satisfaction. _Computers in Human Behavior_, 69, 371-380.
 
 ### D. Sample Lesson Plans
 
@@ -1174,6 +1266,7 @@ A: Yes! Achievement unlock rates = understanding rates. Example: 60% of class ha
 ### E. Changelog
 
 **Version 1.0.0 (October 2025)**
+
 - Initial release
 - 16 achievements across 4 categories
 - Complete tracking for all CodonCanvas features
@@ -1187,16 +1280,19 @@ A: Yes! Achievement unlock rates = understanding rates. Example: 60% of class ha
 ## Need Help?
 
 **For Technical Support:**
+
 - Check browser console for errors
 - Verify localStorage is enabled
 - Try clearing cache and reloading
 
 **For Pedagogical Support:**
+
 - Review "Classroom Implementation Strategies" section
 - Consult sample lesson plans
 - Contact curriculum development team
 
 **For Feature Requests:**
+
 - Submit via GitHub issues
 - Include use case description
 - Tag as "enhancement"

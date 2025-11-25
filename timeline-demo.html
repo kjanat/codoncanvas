@@ -1,21 +1,21 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>CodonCanvas - Timeline Scrubber Demo</title>
-  <style>
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CodonCanvas - Timeline Scrubber Demo</title>
+    <style>
     * {
-      margin: 0;
-      padding: 0;
       box-sizing: border-box;
+      padding: 0;
+      margin: 0;
     }
 
     body {
-      font-family: 'Monaco', 'Menlo', 'Courier New', monospace;
-      background: #1e1e1e;
-      color: #d4d4d4;
       padding: 1rem;
+      font-family: "Monaco", "Menlo", "Courier New", monospace;
+      color: #d4d4d4;
+      background: #1e1e1e;
     }
 
     .container {
@@ -24,17 +24,17 @@
     }
 
     header {
-      background: #252526;
       padding: 1.5rem;
-      border-radius: 4px;
       margin-bottom: 1rem;
+      background: #252526;
       border: 1px solid #3e3e42;
+      border-radius: 4px;
     }
 
     h1 {
+      margin-bottom: 0.5rem;
       font-size: 1.75rem;
       color: #4ec9b0;
-      margin-bottom: 0.5rem;
     }
 
     .subtitle {
@@ -48,18 +48,18 @@
     }
 
     .panel {
+      overflow: hidden;
       background: #252526;
       border: 1px solid #3e3e42;
       border-radius: 4px;
-      overflow: hidden;
     }
 
     .panel-header {
-      background: #2d2d30;
       padding: 0.75rem 1rem;
-      border-bottom: 1px solid #3e3e42;
-      font-weight: bold;
       font-size: 0.875rem;
+      font-weight: bold;
+      background: #2d2d30;
+      border-bottom: 1px solid #3e3e42;
     }
 
     .panel-content {
@@ -73,33 +73,33 @@
     #editor {
       width: 100%;
       min-height: 120px;
-      background: #1e1e1e;
-      color: #d4d4d4;
       padding: 1rem;
-      font-family: 'Monaco', 'Menlo', 'Courier New', monospace;
+      font-family: "Monaco", "Menlo", "Courier New", monospace;
       font-size: 14px;
       line-height: 1.5;
+      color: #d4d4d4;
+      resize: vertical;
+      background: #1e1e1e;
       border: 1px solid #3e3e42;
       border-radius: 4px;
-      resize: vertical;
     }
 
     .button-group {
       display: flex;
-      gap: 0.5rem;
       flex-wrap: wrap;
+      gap: 0.5rem;
       margin-top: 0.75rem;
     }
 
     button {
-      background: #0e639c;
-      color: white;
-      border: none;
       padding: 0.5rem 1rem;
-      border-radius: 3px;
-      cursor: pointer;
-      font-size: 0.875rem;
       font-family: inherit;
+      font-size: 0.875rem;
+      color: white;
+      cursor: pointer;
+      background: #0e639c;
+      border: none;
+      border-radius: 3px;
       transition: background 0.2s;
     }
 
@@ -118,30 +118,30 @@
     .canvas-container {
       display: flex;
       justify-content: center;
+      min-height: 400px;
       padding: 1rem;
       background: #1e1e1e;
       border-radius: 4px;
-      min-height: 400px;
     }
 
     canvas {
-      border: 1px solid #3e3e42;
       background: white;
+      border: 1px solid #3e3e42;
       border-radius: 4px;
     }
 
     .info-box {
+      padding: 1rem;
+      margin-bottom: 1rem;
       background: #1e1e1e;
       border: 1px solid #3e3e42;
       border-radius: 4px;
-      padding: 1rem;
-      margin-bottom: 1rem;
     }
 
     .info-box h3 {
-      color: #4ec9b0;
-      font-size: 1rem;
       margin-bottom: 0.5rem;
+      font-size: 1rem;
+      color: #4ec9b0;
     }
 
     .info-box p {
@@ -152,155 +152,190 @@
 
     .status {
       padding: 0.75rem 1rem;
-      border-radius: 4px;
-      font-size: 0.875rem;
       margin-bottom: 1rem;
+      font-size: 0.875rem;
+      border-radius: 4px;
     }
 
     .status.success {
+      color: #89d185;
       background: rgba(137, 209, 133, 0.2);
       border: 1px solid #89d185;
-      color: #89d185;
     }
 
     .status.error {
+      color: #ff6b6b;
       background: rgba(255, 107, 107, 0.2);
       border: 1px solid #ff6b6b;
-      color: #ff6b6b;
     }
 
     .hidden {
       display: none;
     }
-  </style>
-</head>
-<body>
-  <div class="container">
-    <header>
-      <h1>🧬 CodonCanvas Timeline Scrubber</h1>
-      <div class="subtitle">Step-through execution visualization - watch your genome execute like a ribosome</div>
-    </header>
-
-    <div class="info-box">
-      <h3>How to use:</h3>
-      <p>
-        1. Load an example or write your own genome<br>
-        2. Click "Load & Execute" to process the genome<br>
-        3. Use timeline controls to step through execution frame-by-frame<br>
-        4. Watch the canvas update as each instruction executes<br>
-        5. Observe the stack and current instruction in real-time
-      </p>
-    </div>
-
-    <div id="statusContainer"></div>
-
-    <div class="main-content">
-      <div class="panel editor-section">
-        <div class="panel-header">Genome Editor</div>
-        <div class="panel-content">
-          <div class="button-group">
-            <button onclick="loadExample('helloCircle')">Hello Circle</button>
-            <button onclick="loadExample('twoShapes')">Two Shapes</button>
-            <button onclick="loadExample('colorfulPattern')">Colorful Pattern</button>
-          </div>
-          <textarea id="editor" placeholder="Enter genome here...">ATG GAA AAT GGA TAA</textarea>
-          <div class="button-group">
-            <button onclick="loadAndExecute()">🚀 Load & Execute</button>
-            <button class="secondary" onclick="clearCanvas()">Clear Canvas</button>
-          </div>
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <header>
+        <h1>🧬 CodonCanvas Timeline Scrubber</h1>
+        <div class="subtitle">
+          Step-through execution visualization - watch your genome execute like
+          a ribosome
         </div>
+      </header>
+
+      <div class="info-box">
+        <h3>How to use:</h3>
+        <p>
+          1. Load an example or write your own genome<br>
+          2. Click "Load & Execute" to process the genome<br>
+          3. Use timeline controls to step through execution frame-by-frame<br>
+          4. Watch the canvas update as each instruction executes<br>
+          5. Observe the stack and current instruction in real-time
+        </p>
       </div>
 
-      <div class="panel">
-        <div class="panel-header">Canvas Output</div>
-        <div class="canvas-container">
-          <canvas id="canvas" width="400" height="400"></canvas>
-        </div>
-      </div>
+      <div id="statusContainer"></div>
 
-      <div class="panel">
-        <div class="panel-header">Timeline Controls</div>
-        <div class="panel-content">
-          <div id="timelineContainer"></div>
-        </div>
-      </div>
-
-      <!-- Share System Section -->
-      <div class="panel" style="margin-top: 1rem;">
-        <div class="panel-header">Share & Export</div>
-        <div class="panel-content">
-          <div id="shareContainer"></div>
-          <div class="button-group" style="margin-top: 1rem; padding-top: 1rem; border-top: 1px solid #3e3e42;">
-            <button onclick="exportGif()">📹 Export Animation as GIF</button>
-            <select id="gifFps" style="background: #3e3e42; color: #d4d4d4; border: 1px solid #505052; padding: 0.5rem; border-radius: 3px;">
-              <option value="2">2 FPS</option>
-              <option value="4" selected>4 FPS</option>
-              <option value="6">6 FPS</option>
-              <option value="8">8 FPS</option>
-              <option value="10">10 FPS</option>
-            </select>
-            <select id="gifQuality" style="background: #3e3e42; color: #d4d4d4; border: 1px solid #505052; padding: 0.5rem; border-radius: 3px;">
-              <option value="5">Best Quality (slow)</option>
-              <option value="10" selected>Good Quality</option>
-              <option value="20">Fast (lower quality)</option>
-            </select>
-          </div>
-          <div id="gifProgress" style="display: none; margin-top: 0.75rem; padding: 0.75rem; background: #1e1e1e; border-radius: 4px; border: 1px solid #3e3e42;">
-            <div style="color: #858585; font-size: 0.875rem; margin-bottom: 0.5rem;">Encoding GIF...</div>
-            <div style="background: #3e3e42; height: 20px; border-radius: 3px; overflow: hidden;">
-              <div id="gifProgressBar" style="background: #0e639c; height: 100%; width: 0%; transition: width 0.3s;"></div>
+      <div class="main-content">
+        <div class="panel editor-section">
+          <div class="panel-header">Genome Editor</div>
+          <div class="panel-content">
+            <div class="button-group">
+              <button onclick="loadExample('helloCircle')">Hello Circle</button>
+              <button onclick="loadExample('twoShapes')">Two Shapes</button>
+              <button onclick="loadExample('colorfulPattern')">
+                Colorful Pattern
+              </button>
             </div>
-            <div id="gifProgressText" style="color: #4ec9b0; font-size: 0.75rem; margin-top: 0.5rem;">0%</div>
+            <textarea id="editor" placeholder="Enter genome here..."
+            >ATG GAA AAT GGA TAA</textarea>
+            <div class="button-group">
+              <button onclick="loadAndExecute()">🚀 Load & Execute</button>
+              <button class="secondary" onclick="clearCanvas()">
+                Clear Canvas
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div class="panel">
+          <div class="panel-header">Canvas Output</div>
+          <div class="canvas-container">
+            <canvas id="canvas" width="400" height="400"></canvas>
+          </div>
+        </div>
+
+        <div class="panel">
+          <div class="panel-header">Timeline Controls</div>
+          <div class="panel-content">
+            <div id="timelineContainer"></div>
+          </div>
+        </div>
+
+        <!-- Share System Section -->
+        <div class="panel" style="margin-top: 1rem">
+          <div class="panel-header">Share & Export</div>
+          <div class="panel-content">
+            <div id="shareContainer"></div>
+            <div
+              class="button-group"
+              style="margin-top: 1rem; padding-top: 1rem; border-top: 1px solid #3e3e42"
+            >
+              <button onclick="exportGif()">📹 Export Animation as GIF</button>
+              <select
+                id="gifFps"
+                style="background: #3e3e42; color: #d4d4d4; border: 1px solid #505052; padding: 0.5rem; border-radius: 3px"
+              >
+                <option value="2">2 FPS</option>
+                <option value="4" selected>4 FPS</option>
+                <option value="6">6 FPS</option>
+                <option value="8">8 FPS</option>
+                <option value="10">10 FPS</option>
+              </select>
+              <select
+                id="gifQuality"
+                style="background: #3e3e42; color: #d4d4d4; border: 1px solid #505052; padding: 0.5rem; border-radius: 3px"
+              >
+                <option value="5">Best Quality (slow)</option>
+                <option value="10" selected>Good Quality</option>
+                <option value="20">Fast (lower quality)</option>
+              </select>
+            </div>
+            <div
+              id="gifProgress"
+              style="display: none; margin-top: 0.75rem; padding: 0.75rem; background: #1e1e1e; border-radius: 4px; border: 1px solid #3e3e42"
+            >
+              <div style="color: #858585; font-size: 0.875rem; margin-bottom: 0.5rem">
+                Encoding GIF...
+              </div>
+              <div style="background: #3e3e42; height: 20px; border-radius: 3px; overflow: hidden">
+                <div
+                  id="gifProgressBar"
+                  style="background: #0e639c; height: 100%; width: 0%; transition: width 0.3s"
+                >
+                </div>
+              </div>
+              <div
+                id="gifProgressText"
+                style="color: #4ec9b0; font-size: 0.75rem; margin-top: 0.5rem"
+              >
+                0%
+              </div>
+            </div>
           </div>
         </div>
       </div>
     </div>
-  </div>
 
-  <script type="module">
-    import { examples } from './src/examples.ts';
-    import { TimelineScrubber, injectTimelineStyles } from './src/timeline-scrubber.ts';
-    import { ShareSystem, injectShareStyles } from './src/share-system.ts';
-    import { TutorialManager, timelineTutorial } from './src/tutorial.ts';
-    import { TutorialUI } from './src/tutorial-ui.ts';
-    import './src/tutorial-ui.css';
+    <script type="module">
+    import { examples } from "./src/examples.ts";
+    import { injectShareStyles, ShareSystem } from "./src/share-system.ts";
+    import {
+      injectTimelineStyles,
+      TimelineScrubber,
+    } from "./src/timeline-scrubber.ts";
+    import { TutorialUI } from "./src/tutorial-ui.ts";
+    import { timelineTutorial, TutorialManager } from "./src/tutorial.ts";
+    import "./src/tutorial-ui.css";
 
     // Inject styles
     injectTimelineStyles();
     injectShareStyles();
 
-    const editor = document.getElementById('editor');
-    const canvas = document.getElementById('canvas');
-    const timelineContainer = document.getElementById('timelineContainer');
-    const statusContainer = document.getElementById('statusContainer');
-    const shareContainer = document.getElementById('shareContainer');
+    const editor = document.getElementById("editor");
+    const canvas = document.getElementById("canvas");
+    const timelineContainer = document.getElementById("timelineContainer");
+    const statusContainer = document.getElementById("statusContainer");
+    const shareContainer = document.getElementById("shareContainer");
 
     // Initialize share system
     const shareSystem = new ShareSystem({
       containerElement: shareContainer,
       getGenome: () => editor.value.trim(),
-      appTitle: 'CodonCanvas Timeline Demo',
+      appTitle: "CodonCanvas Timeline Demo",
       showQRCode: true,
-      socialPlatforms: ['twitter', 'reddit', 'email']
+      socialPlatforms: ["twitter", "reddit", "email"],
     });
 
     let timeline = null;
 
-    function showStatus(message, type = 'success') {
-      statusContainer.innerHTML = `<div class="status ${type}">${message}</div>`;
+    function showStatus(message, type = "success") {
+      statusContainer.innerHTML =
+        `<div class="status ${type}">${message}</div>`;
       setTimeout(() => {
-        statusContainer.innerHTML = '';
+        statusContainer.innerHTML = "";
       }, 5000);
     }
 
-    window.loadExample = function(key) {
+    window.loadExample = (key) => {
       if (examples[key]) {
         editor.value = examples[key].genome;
-        showStatus(`Loaded: ${examples[key].title}`, 'success');
+        showStatus(`Loaded: ${examples[key].title}`, "success");
       }
     };
 
-    window.loadAndExecute = function() {
+    window.loadAndExecute = () => {
       try {
         const genome = editor.value;
 
@@ -313,73 +348,75 @@
         timeline = new TimelineScrubber({
           containerElement: timelineContainer,
           canvasElement: canvas,
-          playbackSpeed: 500
+          playbackSpeed: 500,
         });
 
         // Load genome
         timeline.loadGenome(genome);
 
-        showStatus('Genome loaded! Use timeline controls to step through execution.', 'success');
-
+        showStatus(
+          "Genome loaded! Use timeline controls to step through execution.",
+          "success",
+        );
       } catch (error) {
-        console.error('Load error:', error);
-        showStatus(`Error: ${error.message}`, 'error');
+        console.error("Load error:", error);
+        showStatus(`Error: ${error.message}`, "error");
       }
     };
 
-    window.clearCanvas = function() {
+    window.clearCanvas = () => {
       if (timeline) {
         timeline.destroy();
         timeline = null;
       }
-      const ctx = canvas.getContext('2d');
+      const ctx = canvas.getContext("2d");
       if (ctx) {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
       }
-      timelineContainer.innerHTML = '';
-      showStatus('Canvas and timeline cleared', 'success');
+      timelineContainer.innerHTML = "";
+      showStatus("Canvas and timeline cleared", "success");
     };
 
-    window.exportGif = async function() {
+    window.exportGif = async () => {
       if (!timeline) {
-        showStatus('Please load a genome first', 'error');
+        showStatus("Please load a genome first", "error");
         return;
       }
 
       try {
-        const fpsSelect = document.getElementById('gifFps');
-        const qualitySelect = document.getElementById('gifQuality');
-        const progressContainer = document.getElementById('gifProgress');
-        const progressBar = document.getElementById('gifProgressBar');
-        const progressText = document.getElementById('gifProgressText');
+        const fpsSelect = document.getElementById("gifFps");
+        const qualitySelect = document.getElementById("gifQuality");
+        const progressContainer = document.getElementById("gifProgress");
+        const progressBar = document.getElementById("gifProgressBar");
+        const progressText = document.getElementById("gifProgressText");
 
         const fps = parseInt(fpsSelect.value);
         const quality = parseInt(qualitySelect.value);
-        const genomeName = 'timeline-animation';
+        const genomeName = "timeline-animation";
 
         // Show progress
-        progressContainer.style.display = 'block';
-        progressBar.style.width = '0%';
-        progressText.textContent = '0%';
+        progressContainer.style.display = "block";
+        progressBar.style.width = "0%";
+        progressText.textContent = "0%";
 
         await timeline.exportToGif(
           { fps, quality, genomeName },
           (progress) => {
             progressBar.style.width = `${progress.percent}%`;
-            progressText.textContent = `${progress.percent}% (Frame ${progress.currentFrame}/${progress.totalFrames})`;
-          }
+            progressText.textContent =
+              `${progress.percent}% (Frame ${progress.currentFrame}/${progress.totalFrames})`;
+          },
         );
 
         // Hide progress and show success
         setTimeout(() => {
-          progressContainer.style.display = 'none';
-          showStatus('GIF exported successfully! 📹', 'success');
+          progressContainer.style.display = "none";
+          showStatus("GIF exported successfully! 📹", "success");
         }, 500);
-
       } catch (error) {
-        console.error('GIF export error:', error);
-        showStatus(`GIF export failed: ${error.message}`, 'error');
-        document.getElementById('gifProgress').style.display = 'none';
+        console.error("GIF export error:", error);
+        showStatus(`GIF export failed: ${error.message}`, "error");
+        document.getElementById("gifProgress").style.display = "none";
       }
     };
 
@@ -387,7 +424,7 @@
     const urlGenome = ShareSystem.loadFromURL();
     if (urlGenome) {
       editor.value = urlGenome;
-      showStatus('Loaded genome from share link', 'success');
+      showStatus("Loaded genome from share link", "success");
       setTimeout(() => {
         window.loadAndExecute();
       }, 100);
@@ -397,7 +434,9 @@
     }
 
     // Initialize tutorial system
-    const tutorialManager = new TutorialManager('codoncanvas_timeline_tutorial_completed');
+    const tutorialManager = new TutorialManager(
+      "codoncanvas_timeline_tutorial_completed",
+    );
     const tutorialUI = new TutorialUI(tutorialManager);
 
     // Show tutorial on first visit
@@ -409,14 +448,14 @@
 
     // Tutorial callbacks
     tutorialManager.onCompleteCallback(() => {
-      console.log('Timeline tutorial completed! 🏆');
+      console.log("Timeline tutorial completed! 🏆");
     });
 
     // Global function to reset tutorial (for testing)
-    window.resetTimelineTutorial = function() {
+    window.resetTimelineTutorial = () => {
       tutorialManager.reset();
-      console.log('Timeline tutorial reset. Reload page to see it again.');
+      console.log("Timeline tutorial reset. Reload page to see it again.");
     };
-  </script>
-</body>
+    </script>
+  </body>
 </html>

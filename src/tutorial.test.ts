@@ -1,5 +1,11 @@
-import { describe, it, expect, beforeEach, vi } from 'vitest';
-import { TutorialManager, helloCircleTutorial, mutationTutorial, timelineTutorial, evolutionTutorial } from './tutorial';
+import { beforeEach, describe, expect, it, vi } from "vitest";
+import {
+  evolutionTutorial,
+  helloCircleTutorial,
+  mutationTutorial,
+  timelineTutorial,
+  TutorialManager,
+} from "./tutorial";
 
 // Mock localStorage
 const localStorageMock = (() => {
@@ -14,164 +20,164 @@ const localStorageMock = (() => {
     },
     clear: () => {
       store = {};
-    }
+    },
   };
 })();
 
-Object.defineProperty(global, 'localStorage', { value: localStorageMock });
+Object.defineProperty(global, "localStorage", { value: localStorageMock });
 
-describe('TutorialManager', () => {
+describe("TutorialManager", () => {
   let manager: TutorialManager;
 
   beforeEach(() => {
     localStorage.clear();
-    manager = new TutorialManager('test_tutorial');
+    manager = new TutorialManager("test_tutorial");
   });
 
-  describe('initialization', () => {
-    it('should start uncompleted', () => {
+  describe("initialization", () => {
+    it("should start uncompleted", () => {
       expect(manager.isCompleted()).toBe(false);
     });
 
-    it('should start tutorial with config', () => {
+    it("should start tutorial with config", () => {
       manager.start(helloCircleTutorial);
       const step = manager.getCurrentStep();
       expect(step).toBeTruthy();
-      expect(step?.id).toBe('welcome');
+      expect(step?.id).toBe("welcome");
     });
   });
 
-  describe('step progression', () => {
+  describe("step progression", () => {
     beforeEach(() => {
       manager.start(helloCircleTutorial);
     });
 
-    it('should get progress correctly', () => {
+    it("should get progress correctly", () => {
       const progress = manager.getProgress();
       expect(progress.current).toBe(0);
       expect(progress.total).toBe(6);
       expect(progress.percent).toBe(0);
     });
 
-    it('should move to next step when validation passes', () => {
+    it("should move to next step when validation passes", () => {
       // First step has no validation
-      const success = manager.nextStep('');
+      const success = manager.nextStep("");
       expect(success).toBe(true);
-      expect(manager.getCurrentStep()?.id).toBe('start-codon');
+      expect(manager.getCurrentStep()?.id).toBe("start-codon");
     });
 
-    it('should not advance if validation fails', () => {
-      manager.nextStep(''); // Move to step 1
+    it("should not advance if validation fails", () => {
+      manager.nextStep(""); // Move to step 1
       const currentStep = manager.getCurrentStep();
 
       // Try with wrong code
-      const success = manager.nextStep('GAA');
+      const success = manager.nextStep("GAA");
       expect(success).toBe(false);
       expect(manager.getCurrentStep()).toEqual(currentStep);
     });
 
-    it('should advance when validation passes', () => {
-      manager.nextStep(''); // Move to step 1 (start-codon)
+    it("should advance when validation passes", () => {
+      manager.nextStep(""); // Move to step 1 (start-codon)
 
       // Correct code for step 1
-      const success = manager.nextStep('ATG');
+      const success = manager.nextStep("ATG");
       expect(success).toBe(true);
-      expect(manager.getCurrentStep()?.id).toBe('push-value');
+      expect(manager.getCurrentStep()?.id).toBe("push-value");
     });
 
-    it('should move backwards', () => {
-      manager.nextStep('');
-      manager.nextStep('ATG');
+    it("should move backwards", () => {
+      manager.nextStep("");
+      manager.nextStep("ATG");
 
       manager.previousStep();
-      expect(manager.getCurrentStep()?.id).toBe('start-codon');
+      expect(manager.getCurrentStep()?.id).toBe("start-codon");
     });
 
-    it('should not go before first step', () => {
+    it("should not go before first step", () => {
       manager.previousStep();
-      expect(manager.getCurrentStep()?.id).toBe('welcome');
+      expect(manager.getCurrentStep()?.id).toBe("welcome");
     });
   });
 
-  describe('validation', () => {
+  describe("validation", () => {
     beforeEach(() => {
       manager.start(helloCircleTutorial);
-      manager.nextStep(''); // Move to step 1
+      manager.nextStep(""); // Move to step 1
     });
 
-    it('should validate case-insensitively', () => {
-      expect(manager.validateStep('atg')).toBe(true);
-      expect(manager.validateStep('ATG')).toBe(true);
-      expect(manager.validateStep('AtG')).toBe(true);
+    it("should validate case-insensitively", () => {
+      expect(manager.validateStep("atg")).toBe(true);
+      expect(manager.validateStep("ATG")).toBe(true);
+      expect(manager.validateStep("AtG")).toBe(true);
     });
 
-    it('should validate with whitespace', () => {
-      expect(manager.validateStep('  ATG  ')).toBe(true);
-      expect(manager.validateStep('ATG   ')).toBe(true);
-      expect(manager.validateStep('\n\nATG\n')).toBe(true);
+    it("should validate with whitespace", () => {
+      expect(manager.validateStep("  ATG  ")).toBe(true);
+      expect(manager.validateStep("ATG   ")).toBe(true);
+      expect(manager.validateStep("\n\nATG\n")).toBe(true);
     });
 
-    it('should validate partial matches', () => {
-      manager.nextStep('ATG'); // Move to push-value step (expects "ATG GAA AGG")
+    it("should validate partial matches", () => {
+      manager.nextStep("ATG"); // Move to push-value step (expects "ATG GAA AGG")
 
       // Should allow extra content as long as expected is present
-      expect(manager.validateStep('ATG GAA AGG')).toBe(true);
-      expect(manager.validateStep('ATG GAA AGG GGA TAA')).toBe(true); // More complete code
+      expect(manager.validateStep("ATG GAA AGG")).toBe(true);
+      expect(manager.validateStep("ATG GAA AGG GGA TAA")).toBe(true); // More complete code
     });
   });
 
-  describe('completion', () => {
+  describe("completion", () => {
     beforeEach(() => {
       manager.start(helloCircleTutorial);
     });
 
-    it('should mark as completed when all steps finished', () => {
+    it("should mark as completed when all steps finished", () => {
       // Complete all steps
-      manager.nextStep(''); // welcome
-      manager.nextStep('ATG'); // start-codon
-      manager.nextStep('ATG GAA AGG'); // push-value
-      manager.nextStep('ATG GAA AGG GGA'); // draw-circle
-      manager.nextStep('ATG GAA AGG GGA TAA'); // stop-codon
-      manager.nextStep(''); // explore
+      manager.nextStep(""); // welcome
+      manager.nextStep("ATG"); // start-codon
+      manager.nextStep("ATG GAA AGG"); // push-value
+      manager.nextStep("ATG GAA AGG GGA"); // draw-circle
+      manager.nextStep("ATG GAA AGG GGA TAA"); // stop-codon
+      manager.nextStep(""); // explore
 
       expect(manager.isCompleted()).toBe(true);
       expect(manager.getCurrentStep()).toBeNull();
     });
 
-    it('should persist completion in localStorage', () => {
+    it("should persist completion in localStorage", () => {
       manager.markCompleted();
 
-      const newManager = new TutorialManager('test_tutorial');
+      const newManager = new TutorialManager("test_tutorial");
       expect(newManager.isCompleted()).toBe(true);
     });
 
-    it('should allow reset', () => {
+    it("should allow reset", () => {
       manager.markCompleted();
       manager.reset();
 
       expect(manager.isCompleted()).toBe(false);
       manager.start(helloCircleTutorial);
-      expect(manager.getCurrentStep()?.id).toBe('welcome');
+      expect(manager.getCurrentStep()?.id).toBe("welcome");
     });
   });
 
-  describe('skip functionality', () => {
+  describe("skip functionality", () => {
     beforeEach(() => {
       manager.start(helloCircleTutorial);
     });
 
-    it('should mark as completed when skipped', () => {
+    it("should mark as completed when skipped", () => {
       manager.skip();
       expect(manager.isCompleted()).toBe(true);
     });
   });
 
-  describe('callbacks', () => {
+  describe("callbacks", () => {
     beforeEach(() => {
       manager.start(helloCircleTutorial);
     });
 
-    it('should call onStepChange callback', () => {
+    it("should call onStepChange callback", () => {
       let called = false;
       let stepNumber = -1;
 
@@ -180,13 +186,13 @@ describe('TutorialManager', () => {
         stepNumber = step;
       });
 
-      manager.nextStep('');
+      manager.nextStep("");
 
       expect(called).toBe(true);
       expect(stepNumber).toBe(1);
     });
 
-    it('should call onComplete callback', () => {
+    it("should call onComplete callback", () => {
       let called = false;
 
       manager.onCompleteCallback(() => {
@@ -200,247 +206,257 @@ describe('TutorialManager', () => {
   });
 });
 
-describe('helloCircleTutorial', () => {
-  it('should have 6 steps', () => {
+describe("helloCircleTutorial", () => {
+  it("should have 6 steps", () => {
     expect(helloCircleTutorial.steps).toHaveLength(6);
   });
 
-  it('should have correct step order', () => {
-    const stepIds = helloCircleTutorial.steps.map(s => s.id);
+  it("should have correct step order", () => {
+    const stepIds = helloCircleTutorial.steps.map((s) => s.id);
     expect(stepIds).toEqual([
-      'welcome',
-      'start-codon',
-      'push-value',
-      'draw-circle',
-      'stop-codon',
-      'explore'
+      "welcome",
+      "start-codon",
+      "push-value",
+      "draw-circle",
+      "stop-codon",
+      "explore",
     ]);
   });
 
-  it('should have validation for code steps', () => {
-    const codeSteps = helloCircleTutorial.steps.filter(s => s.expectedCode);
+  it("should have validation for code steps", () => {
+    const codeSteps = helloCircleTutorial.steps.filter((s) => s.expectedCode);
     expect(codeSteps.length).toBeGreaterThan(0);
 
     // Check that code steps have expected codes
-    const startStep = helloCircleTutorial.steps.find(s => s.id === 'start-codon');
-    expect(startStep?.expectedCode).toBe('ATG');
+    const startStep = helloCircleTutorial.steps.find(
+      (s) => s.id === "start-codon",
+    );
+    expect(startStep?.expectedCode).toBe("ATG");
   });
 });
 
-describe('mutationTutorial', () => {
-  it('should have 6 steps', () => {
+describe("mutationTutorial", () => {
+  it("should have 6 steps", () => {
     expect(mutationTutorial.steps).toHaveLength(6);
   });
 
-  it('should have correct step order', () => {
-    const stepIds = mutationTutorial.steps.map(s => s.id);
+  it("should have correct step order", () => {
+    const stepIds = mutationTutorial.steps.map((s) => s.id);
     expect(stepIds).toEqual([
-      'welcome',
-      'silent-mutation',
-      'missense-mutation',
-      'nonsense-mutation',
-      'frameshift-mutation',
-      'complete'
+      "welcome",
+      "silent-mutation",
+      "missense-mutation",
+      "nonsense-mutation",
+      "frameshift-mutation",
+      "complete",
     ]);
   });
 
-  it('should have custom validation functions', () => {
-    const stepsWithValidation = mutationTutorial.steps.filter(s => s.validationFn);
+  it("should have custom validation functions", () => {
+    const stepsWithValidation = mutationTutorial.steps.filter(
+      (s) => s.validationFn,
+    );
     expect(stepsWithValidation.length).toBeGreaterThan(0);
   });
 
-  describe('silent mutation validation', () => {
+  describe("silent mutation validation", () => {
     let manager: TutorialManager;
 
     beforeEach(() => {
       localStorage.clear();
-      manager = new TutorialManager('test_mutation');
+      manager = new TutorialManager("test_mutation");
       manager.start(mutationTutorial);
-      manager.nextStep(''); // Skip welcome
+      manager.nextStep(""); // Skip welcome
     });
 
-    it('should validate GGC codon', () => {
-      const result = manager.validateStep('ATG GAA AGG GGC TAA');
+    it("should validate GGC codon", () => {
+      const result = manager.validateStep("ATG GAA AGG GGC TAA");
       expect(result).toBe(true);
     });
 
-    it('should reject if missing GGC', () => {
-      const result = manager.validateStep('ATG GAA AGG GGA TAA');
+    it("should reject if missing GGC", () => {
+      const result = manager.validateStep("ATG GAA AGG GGA TAA");
       expect(result).toBe(false);
     });
   });
 
-  describe('missense mutation validation', () => {
+  describe("missense mutation validation", () => {
     let manager: TutorialManager;
 
     beforeEach(() => {
       localStorage.clear();
-      manager = new TutorialManager('test_mutation');
+      manager = new TutorialManager("test_mutation");
       manager.start(mutationTutorial);
-      manager.nextStep(''); // Skip welcome
-      manager.nextStep('ATG GAA AGG GGC TAA'); // Complete silent
+      manager.nextStep(""); // Skip welcome
+      manager.nextStep("ATG GAA AGG GGC TAA"); // Complete silent
     });
 
-    it('should validate GCA codon', () => {
-      const result = manager.validateStep('ATG GAA AGG GCA TAA');
+    it("should validate GCA codon", () => {
+      const result = manager.validateStep("ATG GAA AGG GCA TAA");
       expect(result).toBe(true);
     });
 
-    it('should reject if has GGC instead', () => {
-      const result = manager.validateStep('ATG GAA AGG GGC TAA');
+    it("should reject if has GGC instead", () => {
+      const result = manager.validateStep("ATG GAA AGG GGC TAA");
       expect(result).toBe(false);
     });
   });
 
-  describe('nonsense mutation validation', () => {
+  describe("nonsense mutation validation", () => {
     let manager: TutorialManager;
 
     beforeEach(() => {
       localStorage.clear();
-      manager = new TutorialManager('test_mutation');
+      manager = new TutorialManager("test_mutation");
       manager.start(mutationTutorial);
-      manager.nextStep(''); // welcome
-      manager.nextStep('ATG GAA AGG GGC TAA'); // silent
-      manager.nextStep('ATG GAA AGG GCA TAA'); // missense
+      manager.nextStep(""); // welcome
+      manager.nextStep("ATG GAA AGG GGC TAA"); // silent
+      manager.nextStep("ATG GAA AGG GCA TAA"); // missense
     });
 
-    it('should validate premature TAA', () => {
-      const result = manager.validateStep('ATG GAA AGG TAA');
+    it("should validate premature TAA", () => {
+      const result = manager.validateStep("ATG GAA AGG TAA");
       expect(result).toBe(true);
     });
 
-    it('should reject if still has GCA', () => {
-      const result = manager.validateStep('ATG GAA AGG GCA TAA');
+    it("should reject if still has GCA", () => {
+      const result = manager.validateStep("ATG GAA AGG GCA TAA");
       expect(result).toBe(false);
     });
   });
 
-  describe('frameshift mutation validation', () => {
+  describe("frameshift mutation validation", () => {
     let manager: TutorialManager;
 
     beforeEach(() => {
       localStorage.clear();
-      manager = new TutorialManager('test_mutation');
+      manager = new TutorialManager("test_mutation");
       manager.start(mutationTutorial);
       // Navigate to frameshift step
-      manager.nextStep(''); // welcome
-      manager.nextStep('ATG GAA AGG GGC TAA'); // silent
-      manager.nextStep('ATG GAA AGG GCA TAA'); // missense
-      manager.nextStep('ATG GAA AGG TAA'); // nonsense
+      manager.nextStep(""); // welcome
+      manager.nextStep("ATG GAA AGG GGC TAA"); // silent
+      manager.nextStep("ATG GAA AGG GCA TAA"); // missense
+      manager.nextStep("ATG GAA AGG TAA"); // nonsense
     });
 
-    it('should validate frameshift (length not divisible by 3)', () => {
-      const result = manager.validateStep('ATG GA AGG GGA TAA');
+    it("should validate frameshift (length not divisible by 3)", () => {
+      const result = manager.validateStep("ATG GA AGG GGA TAA");
       expect(result).toBe(true);
     });
 
-    it('should reject if still in frame', () => {
-      const result = manager.validateStep('ATG GAA AGG GGA TAA');
+    it("should reject if still in frame", () => {
+      const result = manager.validateStep("ATG GAA AGG GGA TAA");
       expect(result).toBe(false);
     });
 
-    it('should accept deletion of one base', () => {
-      const result = manager.validateStep('ATG GAA GG GGA TAA');
+    it("should accept deletion of one base", () => {
+      const result = manager.validateStep("ATG GAA GG GGA TAA");
       expect(result).toBe(true);
     });
 
-    it('should accept insertion of one base', () => {
-      const result = manager.validateStep('ATG GAAA AGG GGA TAA');
+    it("should accept insertion of one base", () => {
+      const result = manager.validateStep("ATG GAAA AGG GGA TAA");
       expect(result).toBe(true);
     });
   });
 });
 
-describe('Timeline Tutorial', () => {
-  it('should have correct number of steps', () => {
+describe("Timeline Tutorial", () => {
+  it("should have correct number of steps", () => {
     expect(timelineTutorial.steps).toHaveLength(6);
   });
 
-  it('should have correct step order', () => {
-    const stepIds = timelineTutorial.steps.map(s => s.id);
+  it("should have correct step order", () => {
+    const stepIds = timelineTutorial.steps.map((s) => s.id);
     expect(stepIds).toEqual([
-      'welcome',
-      'play-pause',
-      'step-forward',
-      'observe-stack',
-      'state-changes',
-      'complete'
+      "welcome",
+      "play-pause",
+      "step-forward",
+      "observe-stack",
+      "state-changes",
+      "complete",
     ]);
   });
 
-  it('should have validation functions for interactive steps', () => {
-    const playPauseStep = timelineTutorial.steps.find(s => s.id === 'play-pause');
+  it("should have validation functions for interactive steps", () => {
+    const playPauseStep = timelineTutorial.steps.find(
+      (s) => s.id === "play-pause",
+    );
     expect(playPauseStep?.validationFn).toBeDefined();
   });
 
-  describe('play-pause step validation', () => {
+  describe("play-pause step validation", () => {
     let manager: TutorialManager;
 
     beforeEach(() => {
       localStorage.clear();
-      manager = new TutorialManager('test_timeline');
+      manager = new TutorialManager("test_timeline");
       manager.start(timelineTutorial);
-      manager.nextStep(''); // welcome
+      manager.nextStep(""); // welcome
     });
 
-    it('should allow manual progression (always true)', () => {
-      const result = manager.validateStep('ATG GAA AGG GGA TAA');
+    it("should allow manual progression (always true)", () => {
+      const result = manager.validateStep("ATG GAA AGG GGA TAA");
       expect(result).toBe(true);
     });
 
-    it('should allow empty code for timeline interactions', () => {
-      const result = manager.validateStep('');
+    it("should allow empty code for timeline interactions", () => {
+      const result = manager.validateStep("");
       expect(result).toBe(true);
     });
   });
 
-  describe('timeline tutorial progression', () => {
+  describe("timeline tutorial progression", () => {
     let manager: TutorialManager;
 
     beforeEach(() => {
       localStorage.clear();
-      manager = new TutorialManager('test_timeline');
+      manager = new TutorialManager("test_timeline");
     });
 
-    it('should start at welcome step', () => {
+    it("should start at welcome step", () => {
       manager.start(timelineTutorial);
       const step = manager.getCurrentStep();
-      expect(step?.id).toBe('welcome');
+      expect(step?.id).toBe("welcome");
     });
 
-    it('should progress through all steps', () => {
+    it("should progress through all steps", () => {
       manager.start(timelineTutorial);
 
-      expect(manager.nextStep('')).toBe(true); // welcome -> play-pause
-      expect(manager.getCurrentStep()?.id).toBe('play-pause');
+      expect(manager.nextStep("")).toBe(true); // welcome -> play-pause
+      expect(manager.getCurrentStep()?.id).toBe("play-pause");
 
-      expect(manager.nextStep('')).toBe(true); // play-pause -> step-forward
-      expect(manager.getCurrentStep()?.id).toBe('step-forward');
+      expect(manager.nextStep("")).toBe(true); // play-pause -> step-forward
+      expect(manager.getCurrentStep()?.id).toBe("step-forward");
 
-      expect(manager.nextStep('')).toBe(true); // step-forward -> observe-stack
-      expect(manager.getCurrentStep()?.id).toBe('observe-stack');
+      expect(manager.nextStep("")).toBe(true); // step-forward -> observe-stack
+      expect(manager.getCurrentStep()?.id).toBe("observe-stack");
 
-      expect(manager.nextStep('')).toBe(true); // observe-stack -> state-changes
-      expect(manager.getCurrentStep()?.id).toBe('state-changes');
+      expect(manager.nextStep("")).toBe(true); // observe-stack -> state-changes
+      expect(manager.getCurrentStep()?.id).toBe("state-changes");
 
-      expect(manager.nextStep('')).toBe(true); // state-changes -> complete
-      expect(manager.getCurrentStep()?.id).toBe('complete');
+      expect(manager.nextStep("")).toBe(true); // state-changes -> complete
+      expect(manager.getCurrentStep()?.id).toBe("complete");
     });
 
-    it('should mark as completed after final step', () => {
+    it("should mark as completed after final step", () => {
       manager.start(timelineTutorial);
 
       // Go through all steps
       timelineTutorial.steps.forEach(() => {
-        manager.nextStep('');
+        manager.nextStep("");
       });
 
       expect(manager.isCompleted()).toBe(true);
     });
 
-    it('should use separate storage key from other tutorials', () => {
-      const timelineManager = new TutorialManager('codoncanvas_timeline_tutorial_completed');
-      const mutationManager = new TutorialManager('codoncanvas_mutation_tutorial_completed');
+    it("should use separate storage key from other tutorials", () => {
+      const timelineManager = new TutorialManager(
+        "codoncanvas_timeline_tutorial_completed",
+      );
+      const mutationManager = new TutorialManager(
+        "codoncanvas_mutation_tutorial_completed",
+      );
 
       timelineManager.markCompleted();
 
@@ -449,111 +465,140 @@ describe('Timeline Tutorial', () => {
     });
   });
 
-  describe('timeline tutorial content', () => {
-    it('should mention ribosome metaphor', () => {
+  describe("timeline tutorial content", () => {
+    it("should mention ribosome metaphor", () => {
       const welcomeStep = timelineTutorial.steps[0];
-      expect(welcomeStep.content.toLowerCase()).toContain('ribosome');
+      expect(welcomeStep.content.toLowerCase()).toContain("ribosome");
     });
 
-    it('should explain stack concept', () => {
-      const stackStep = timelineTutorial.steps.find(s => s.id === 'observe-stack');
-      expect(stackStep?.content.toLowerCase()).toContain('stack');
-      expect(stackStep?.content.toLowerCase()).toContain('storage');
+    it("should explain stack concept", () => {
+      const stackStep = timelineTutorial.steps.find(
+        (s) => s.id === "observe-stack",
+      );
+      expect(stackStep?.content.toLowerCase()).toContain("stack");
+      expect(stackStep?.content.toLowerCase()).toContain("storage");
     });
 
-    it('should explain VM state', () => {
-      const stateStep = timelineTutorial.steps.find(s => s.id === 'state-changes');
-      expect(stateStep?.content.toLowerCase()).toContain('position');
-      expect(stateStep?.content.toLowerCase()).toContain('rotation');
+    it("should explain VM state", () => {
+      const stateStep = timelineTutorial.steps.find(
+        (s) => s.id === "state-changes",
+      );
+      expect(stateStep?.content.toLowerCase()).toContain("position");
+      expect(stateStep?.content.toLowerCase()).toContain("rotation");
     });
 
-    it('should provide next steps in completion', () => {
-      const completeStep = timelineTutorial.steps.find(s => s.id === 'complete');
-      expect(completeStep?.content.toLowerCase()).toContain('next steps');
+    it("should provide next steps in completion", () => {
+      const completeStep = timelineTutorial.steps.find(
+        (s) => s.id === "complete",
+      );
+      expect(completeStep?.content.toLowerCase()).toContain("next steps");
     });
   });
 });
 
-describe('evolutionTutorial', () => {
-  it('should have correct structure', () => {
-    expect(evolutionTutorial.id).toBe('evolution-lab');
-    expect(evolutionTutorial.title).toContain('Evolution');
+describe("evolutionTutorial", () => {
+  it("should have correct structure", () => {
+    expect(evolutionTutorial.id).toBe("evolution-lab");
+    expect(evolutionTutorial.title).toContain("Evolution");
     expect(evolutionTutorial.steps.length).toBeGreaterThan(4);
   });
 
-  it('should start with welcome step', () => {
+  it("should start with welcome step", () => {
     const firstStep = evolutionTutorial.steps[0];
-    expect(firstStep.id).toBe('welcome');
-    expect(firstStep.title.toLowerCase()).toContain('welcome');
+    expect(firstStep.id).toBe("welcome");
+    expect(firstStep.title.toLowerCase()).toContain("welcome");
   });
 
-  it('should include key evolution concepts', () => {
-    const allContent = evolutionTutorial.steps.map(s => s.content).join(' ').toLowerCase();
-    
+  it("should include key evolution concepts", () => {
+    const allContent = evolutionTutorial.steps
+      .map((s) => s.content)
+      .join(" ")
+      .toLowerCase();
+
     // Natural selection concepts
-    expect(allContent).toContain('fitness');
-    expect(allContent).toContain('generation');
-    expect(allContent).toContain('selection');
-    expect(allContent).toContain('mutation');
+    expect(allContent).toContain("fitness");
+    expect(allContent).toContain("generation");
+    expect(allContent).toContain("selection");
+    expect(allContent).toContain("mutation");
   });
 
-  it('should explain candidate generation', () => {
-    const genStep = evolutionTutorial.steps.find(s => s.id === 'generate-candidates');
+  it("should explain candidate generation", () => {
+    const genStep = evolutionTutorial.steps.find(
+      (s) => s.id === "generate-candidates",
+    );
     expect(genStep).toBeTruthy();
-    expect(genStep?.content.toLowerCase()).toContain('candidate');
-    expect(genStep?.content.toLowerCase()).toContain('generate');
+    expect(genStep?.content.toLowerCase()).toContain("candidate");
+    expect(genStep?.content.toLowerCase()).toContain("generate");
   });
 
-  it('should explain visual comparison', () => {
-    const compareStep = evolutionTutorial.steps.find(s => s.id === 'visual-comparison');
+  it("should explain visual comparison", () => {
+    const compareStep = evolutionTutorial.steps.find(
+      (s) => s.id === "visual-comparison",
+    );
     expect(compareStep).toBeTruthy();
-    expect(compareStep?.content.toLowerCase()).toContain('candidate');
-    expect(compareStep?.content.toLowerCase()).toContain('look');
-    expect(compareStep?.targetElement).toBe('#candidatesGrid');
+    expect(compareStep?.content.toLowerCase()).toContain("candidate");
+    expect(compareStep?.content.toLowerCase()).toContain("look");
+    expect(compareStep?.targetElement).toBe("#candidatesGrid");
   });
 
-  it('should explain selection process', () => {
-    const selectStep = evolutionTutorial.steps.find(s => s.id === 'selection');
+  it("should explain selection process", () => {
+    const selectStep = evolutionTutorial.steps.find(
+      (s) => s.id === "selection",
+    );
     expect(selectStep).toBeTruthy();
-    expect(selectStep?.content.toLowerCase()).toContain('fittest');
-    expect(selectStep?.content.toLowerCase()).toContain('selection');
+    expect(selectStep?.content.toLowerCase()).toContain("fittest");
+    expect(selectStep?.content.toLowerCase()).toContain("selection");
   });
 
-  it('should explain multi-generation evolution', () => {
-    const multiGenStep = evolutionTutorial.steps.find(s => s.id === 'multi-generation');
+  it("should explain multi-generation evolution", () => {
+    const multiGenStep = evolutionTutorial.steps.find(
+      (s) => s.id === "multi-generation",
+    );
     expect(multiGenStep).toBeTruthy();
-    expect(multiGenStep?.content.toLowerCase()).toContain('generation');
-    expect(multiGenStep?.content.toLowerCase()).toContain('lineage');
+    expect(multiGenStep?.content.toLowerCase()).toContain("generation");
+    expect(multiGenStep?.content.toLowerCase()).toContain("lineage");
   });
 
-  it('should have completion step', () => {
-    const completeStep = evolutionTutorial.steps.find(s => s.id === 'complete');
+  it("should have completion step", () => {
+    const completeStep = evolutionTutorial.steps.find(
+      (s) => s.id === "complete",
+    );
     expect(completeStep).toBeTruthy();
-    expect(completeStep?.title.toLowerCase()).toContain('master');
+    expect(completeStep?.title.toLowerCase()).toContain("master");
   });
 
-  it('should mention natural selection metaphor', () => {
-    const completeStep = evolutionTutorial.steps.find(s => s.id === 'complete');
-    expect(completeStep?.content.toLowerCase()).toContain('natural selection');
+  it("should mention natural selection metaphor", () => {
+    const completeStep = evolutionTutorial.steps.find(
+      (s) => s.id === "complete",
+    );
+    expect(completeStep?.content.toLowerCase()).toContain("natural selection");
   });
 
-  it('should provide challenges in completion', () => {
-    const completeStep = evolutionTutorial.steps.find(s => s.id === 'complete');
-    expect(completeStep?.content.toLowerCase()).toContain('challenge');
+  it("should provide challenges in completion", () => {
+    const completeStep = evolutionTutorial.steps.find(
+      (s) => s.id === "complete",
+    );
+    expect(completeStep?.content.toLowerCase()).toContain("challenge");
   });
 
-  it('should target correct DOM elements', () => {
-    expect(evolutionTutorial.steps[0].targetElement).toBe('#evolutionPanel');
-    
-    const genStep = evolutionTutorial.steps.find(s => s.id === 'generate-candidates');
-    expect(genStep?.targetElement).toBe('#generateBtn');
+  it("should target correct DOM elements", () => {
+    expect(evolutionTutorial.steps[0].targetElement).toBe("#evolutionPanel");
+
+    const genStep = evolutionTutorial.steps.find(
+      (s) => s.id === "generate-candidates",
+    );
+    expect(genStep?.targetElement).toBe("#generateBtn");
   });
 });
 
-describe('evolution tutorial isolation', () => {
-  it('should have separate storage key', () => {
-    const evolutionManager = new TutorialManager('codoncanvas_evolution_tutorial_completed');
-    const mutationManager = new TutorialManager('codoncanvas_mutation_tutorial_completed');
+describe("evolution tutorial isolation", () => {
+  it("should have separate storage key", () => {
+    const evolutionManager = new TutorialManager(
+      "codoncanvas_evolution_tutorial_completed",
+    );
+    const mutationManager = new TutorialManager(
+      "codoncanvas_mutation_tutorial_completed",
+    );
 
     evolutionManager.markCompleted();
 

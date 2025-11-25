@@ -3,7 +3,12 @@
  * Displays badges, notifications, and progress tracking for gamification system
  */
 
-import { Achievement, AchievementEngine, AchievementCategory, UnlockedAchievement } from './achievement-engine.js';
+import {
+  type Achievement,
+  type AchievementCategory,
+  type AchievementEngine,
+  UnlockedAchievement,
+} from "./achievement-engine.js";
 
 export class AchievementUI {
   private engine: AchievementEngine;
@@ -26,7 +31,7 @@ export class AchievementUI {
    * Inject CSS styles for achievement UI
    */
   private injectStyles(): void {
-    const styleId = 'achievement-ui-styles';
+    const styleId = "achievement-ui-styles";
     if (document.getElementById(styleId)) return;
 
     const styles = `
@@ -284,7 +289,7 @@ export class AchievementUI {
       }
     `;
 
-    const styleElement = document.createElement('style');
+    const styleElement = document.createElement("style");
     styleElement.id = styleId;
     styleElement.textContent = styles;
     document.head.appendChild(styleElement);
@@ -325,16 +330,22 @@ export class AchievementUI {
             <div class="stat-label">Challenges Correct</div>
           </div>
           <div class="stat-card">
-            <div class="stat-value">${stats.challengesCompleted > 0 ? Math.round((stats.challengesCorrect / stats.challengesCompleted) * 100) : 0}%</div>
+            <div class="stat-value">${
+      stats.challengesCompleted > 0
+        ? Math.round(
+          (stats.challengesCorrect / stats.challengesCompleted) * 100,
+        )
+        : 0
+    }%</div>
             <div class="stat-label">Accuracy</div>
           </div>
         </div>
 
         <div class="achievement-categories">
-          ${this.renderCategory('basics', '🌱 Basics')}
-          ${this.renderCategory('mastery', '🎯 Mastery')}
-          ${this.renderCategory('exploration', '🔍 Exploration')}
-          ${this.renderCategory('perfection', '💎 Perfection')}
+          ${this.renderCategory("basics", "🌱 Basics")}
+          ${this.renderCategory("mastery", "🎯 Mastery")}
+          ${this.renderCategory("exploration", "🔍 Exploration")}
+          ${this.renderCategory("perfection", "💎 Perfection")}
         </div>
       </div>
     `;
@@ -347,13 +358,15 @@ export class AchievementUI {
    */
   private renderCategory(category: AchievementCategory, title: string): string {
     const achievements = this.engine.getAchievementsByCategory(category);
-    const badges = achievements.map(achievement => this.renderBadge(achievement)).join('');
+    const badges = achievements
+      .map((achievement) => this.renderBadge(achievement))
+      .join("");
 
     return `
       <div class="achievement-category">
         <div class="category-header">
-          <span class="category-icon">${title.split(' ')[0]}</span>
-          <span>${title.split(' ')[1]}</span>
+          <span class="category-icon">${title.split(" ")[0]}</span>
+          <span>${title.split(" ")[1]}</span>
         </div>
         <div class="achievement-grid">
           ${badges}
@@ -368,14 +381,22 @@ export class AchievementUI {
   private renderBadge(achievement: Achievement): string {
     const isUnlocked = this.engine.isUnlocked(achievement.id);
     const unlockedData = isUnlocked
-      ? this.engine.getUnlockedAchievements().find(u => u.achievement.id === achievement.id)
+      ? this.engine
+        .getUnlockedAchievements()
+        .find((u) => u.achievement.id === achievement.id)
       : null;
 
-    const lockedClass = isUnlocked ? '' : 'locked';
-    const lockedOverlay = isUnlocked ? '' : '<div class="badge-locked-overlay">🔒 LOCKED</div>';
+    const lockedClass = isUnlocked ? "" : "locked";
+    const lockedOverlay = isUnlocked
+      ? ""
+      : "<div class=\"badge-locked-overlay\">🔒 LOCKED</div>";
     const unlockedDate = unlockedData
-      ? `<div class="badge-unlocked-date">Unlocked: ${this.formatDate(unlockedData.unlockedAt)}</div>`
-      : '';
+      ? `<div class="badge-unlocked-date">Unlocked: ${
+        this.formatDate(
+          unlockedData.unlockedAt,
+        )
+      }</div>`
+      : "";
 
     return `
       <div class="achievement-badge ${lockedClass}" data-achievement-id="${achievement.id}">
@@ -392,10 +413,10 @@ export class AchievementUI {
    * Format date for display
    */
   private formatDate(date: Date): string {
-    return new Intl.DateTimeFormat('en-US', {
-      month: 'short',
-      day: 'numeric',
-      year: 'numeric'
+    return new Intl.DateTimeFormat("en-US", {
+      month: "short",
+      day: "numeric",
+      year: "numeric",
     }).format(date);
   }
 
@@ -421,8 +442,8 @@ export class AchievementUI {
     this.isShowingNotification = true;
     const achievement = this.notificationQueue.shift()!;
 
-    const notification = document.createElement('div');
-    notification.className = 'achievement-notification';
+    const notification = document.createElement("div");
+    notification.className = "achievement-notification";
     notification.innerHTML = `
       <div class="notification-header">🎉 Achievement Unlocked!</div>
       <div class="notification-body">
@@ -438,7 +459,7 @@ export class AchievementUI {
 
     // Auto-remove after 5 seconds
     setTimeout(() => {
-      notification.style.animation = 'slideIn 0.5s ease reverse';
+      notification.style.animation = "slideIn 0.5s ease reverse";
       setTimeout(() => {
         notification.remove();
         this.showNextNotification();
@@ -460,7 +481,7 @@ export class AchievementUI {
    * Handle tracking event and show notifications for new unlocks
    */
   handleUnlocks(newlyUnlocked: Achievement[]): void {
-    newlyUnlocked.forEach(achievement => {
+    newlyUnlocked.forEach((achievement) => {
       this.showUnlockNotification(achievement);
     });
   }

@@ -135,12 +135,12 @@ CodonCanvas v1.0 | https://github.com/codoncanvas/codoncanvas
 
 **Match each mutation type to its description:**
 
-| Type | Description |
-|------|-------------|
-| 1. Silent     | ___ A. Changes codon to STOP, causing early termination |
+| Type          | Description                                                                |
+| ------------- | -------------------------------------------------------------------------- |
+| 1. Silent     | ___ A. Changes codon to STOP, causing early termination                    |
 | 2. Missense   | ___ B. Inserts or deletes bases (not multiple of 3), scrambling downstream |
-| 3. Nonsense   | ___ C. Changes codon to synonymous variant, no effect on output |
-| 4. Frameshift | ___ D. Changes codon to different operation, altering output |
+| 3. Nonsense   | ___ C. Changes codon to synonymous variant, no effect on output            |
+| 4. Frameshift | ___ D. Changes codon to different operation, altering output               |
 
 **Answers:** 1-C, 2-D, 3-A, 4-B
 
@@ -149,11 +149,13 @@ CodonCanvas v1.0 | https://github.com/codoncanvas/codoncanvas
 ### Part B: Classification Practice (15 min)
 
 **For each genome pair below:**
+
 1. Circle the mutation
 2. Classify as Silent / Missense / Nonsense / Frameshift
 3. Predict the visual effect
 
 **Example:**
+
 ```
 Original:  ATG GAA AAT GGA TAA
 Mutated:   ATG GAA AAT GGC TAA
@@ -165,6 +167,7 @@ Effect: Both GGA and GGC are CIRCLE opcodes, so no change (synonymous)
 ---
 
 **Problem 1:**
+
 ```
 Original:  ATG GAA CCC GAA CCC GGA TAA
 Mutated:   ATG GAA CCC GAA CCC CCA TAA
@@ -176,6 +179,7 @@ Effect: _________________________________________________
 ---
 
 **Problem 2:**
+
 ```
 Original:  ATG GAA AAT GGA GAA AAT CCA TAA
 Mutated:   ATG GAA AAT TAA GAA AAT CCA TAA
@@ -187,6 +191,7 @@ Effect: _________________________________________________
 ---
 
 **Problem 3:**
+
 ```
 Original:  ATG GAA AGG GGA TAA
 Mutated:   ATG GA AAG GGG ATA A
@@ -198,6 +203,7 @@ Effect: _________________________________________________
 ---
 
 **Problem 4:**
+
 ```
 Original:  ATG GAA CCC CCA TAA
 Mutated:   ATG GAA CCC CCG TAA
@@ -209,6 +215,7 @@ Effect: _________________________________________________
 ---
 
 **Problem 5:**
+
 ```
 Original:  ATG GAA AAT GAA AAT ACA GAA AGG GGA TAA
 Mutated:   ATG GAA AAT GAA AAT ACA GAA AGG GCA TAA
@@ -223,25 +230,26 @@ Effect: _________________________________________________
 
 1. **Which mutation type is most harmful? Why?**
 
-   _____________________________________________________________
+   ---
 
 2. **Why do you think genetic code has synonymous codons (redundancy)?**
 
-   _____________________________________________________________
+   ---
 
 3. **If you were "mutating" a classmate's genome, which type would you choose to minimize damage?**
 
-   _____________________________________________________________
+   ---
 
 4. **Real-world connection: Sickle cell anemia is caused by a single base change (GAG → GTG). What type of mutation is this?**
 
-   [ ] Silent  [ ] Missense  [ ] Nonsense  [ ] Frameshift
+   [ ] Silent [ ] Missense [ ] Nonsense [ ] Frameshift
 
 ---
 
 ### Answer Key (For Educators)
 
 **Part B:**
+
 1. **Missense** - GGA (CIRCLE) → CCA (RECT), shape changes from circle to rectangle
 2. **Nonsense** - GGA → TAA (STOP), program terminates early, second shape (RECT) disappears
 3. **Frameshift** - Delete 'A' shifts reading frame, all downstream codons scrambled: `GAA AGG` → `GA AAG`, `GGA` → `GGG`, `TAA` → `ATA A`
@@ -249,6 +257,7 @@ Effect: _________________________________________________
 5. **Missense** - GGA (CIRCLE) → GCA (TRIANGLE), circle becomes triangle at end
 
 **Part C:**
+
 1. Frameshift (affects ALL downstream codons, not just one)
 2. Redundancy reduces harm from point mutations (biological error tolerance)
 3. Silent (no effect) or late-stage missense (only affects end)
@@ -266,6 +275,7 @@ Normal numbers (base-10) use digits 0-9.
 Base-4 uses only **4 digits: 0, 1, 2, 3**
 
 In CodonCanvas:
+
 - **A = 0**
 - **C = 1**
 - **G = 2**
@@ -276,6 +286,7 @@ In CodonCanvas:
 **Formula:** `value = d1 × 16 + d2 × 4 + d3`
 
 **Example: CCC**
+
 - C = 1, C = 1, C = 1
 - 1×16 + 1×4 + 1 = 16 + 4 + 1 = **21**
 
@@ -284,7 +295,7 @@ In CodonCanvas:
 ### Conversion Table (0-63)
 
 | Codon | Value | Pixels* | Codon | Value | Pixels* |
-|-------|-------|---------|-------|-------|---------|
+| ----- | ----- | ------- | ----- | ----- | ------- |
 | AAA   | 0     | 0       | CAA   | 16    | 100     |
 | AAC   | 1     | 6       | CAC   | 17    | 106     |
 | AAG   | 2     | 13      | CAG   | 18    | 113     |
@@ -303,7 +314,7 @@ In CodonCanvas:
 | ATT   | 15    | 94      | CTT   | 31    | 194     |
 
 | Codon | Value | Pixels* | Codon | Value | Pixels* |
-|-------|-------|---------|-------|-------|---------|
+| ----- | ----- | ------- | ----- | ----- | ------- |
 | GAA   | 32    | 200     | TAA   | 48    | 300     |
 | GAC   | 33    | 206     | TAC   | 49    | 306     |
 | GAG   | 34    | 213     | TAG   | 50    | 313     |
@@ -353,6 +364,7 @@ In CodonCanvas:
 Go to: `[YOUR DEPLOYMENT URL]`
 
 You should see:
+
 - Editor panel (left)
 - Canvas panel (right)
 - Toolbar with ▶ Run button
@@ -368,6 +380,7 @@ ATG GAA AAT GGA TAA
 ```
 
 **What each part means:**
+
 - `ATG` - "Start here!"
 - `GAA AAT` - "Remember the number 3"
 - `GGA` - "Draw a circle"
@@ -387,12 +400,12 @@ You should see a small circle appear on the canvas!
 
 **Try changing `AAT` to different codons:**
 
-| Change to | Result |
-|-----------|--------|
-| `AAA`     | Tiny circle (value = 0) |
+| Change to | Result                     |
+| --------- | -------------------------- |
+| `AAA`     | Tiny circle (value = 0)    |
 | `AGG`     | Medium circle (value = 10) |
 | `CCC`     | Bigger circle (value = 21) |
-| `TTT`     | Huge circle (value = 63) |
+| `TTT`     | Huge circle (value = 63)   |
 
 ---
 
@@ -409,6 +422,7 @@ TAA
 ```
 
 **Explanation:**
+
 - `TTA CCC CCC AAA` sets color to red (hue=21, sat=21, light=0)
 - Lines starting with `;` are comments (ignored)
 
@@ -506,6 +520,7 @@ TAA
 **Goal:** Create an original visual artwork using CodonCanvas
 
 **Requirements:**
+
 - ☐ Program runs without errors
 - ☐ Uses at least 5 different opcodes
 - ☐ Contains at least 20 codons (not counting START/STOP)
@@ -516,14 +531,14 @@ TAA
 
 ### How You'll Be Graded
 
-| Criterion | What This Means | Points |
-|-----------|-----------------|--------|
-| **Does It Work?** | Program runs and shows what you intended | 30 |
-| **Is It Complex?** | Uses 5+ opcodes appropriately (not just repeated) | 25 |
-| **Is It Creative?** | Original idea, interesting to look at | 20 |
-| **Is It Documented?** | Comments explain what each section does | 15 |
-| **Is It Clean?** | No linter errors, efficient code | 10 |
-| **TOTAL** | | **100** |
+| Criterion             | What This Means                                   | Points  |
+| --------------------- | ------------------------------------------------- | ------- |
+| **Does It Work?**     | Program runs and shows what you intended          | 30      |
+| **Is It Complex?**    | Uses 5+ opcodes appropriately (not just repeated) | 25      |
+| **Is It Creative?**   | Original idea, interesting to look at             | 20      |
+| **Is It Documented?** | Comments explain what each section does           | 15      |
+| **Is It Clean?**      | No linter errors, efficient code                  | 10      |
+| **TOTAL**             |                                                   | **100** |
 
 ---
 
@@ -551,17 +566,20 @@ TAA
 ## Usage Notes for Educators
 
 **Printing Recommendations:**
+
 - **Codon Chart**: Color preferred (helps distinguish opcode families), laminate for reuse
 - **Worksheets**: B&W acceptable, single-sided for note-taking space
 - **Conversion Table**: Color optional, consider posting one large version in classroom
 - **Quick Start**: B&W acceptable, give to all students on Day 1
 
 **Differentiation:**
+
 - **Struggling**: Provide partially completed programs to finish
 - **Advanced**: Challenge to use NOISE, SAVE_STATE, or minimize codon count
 - **ELL Students**: Add visual icons to codon chart, pair with native speaker
 
 **Digital Alternatives:**
+
 - Share as PDFs in LMS
 - Create Google Doc versions for collaborative annotation
 - Use digital whiteboard for whole-class mutation practice

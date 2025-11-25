@@ -9,6 +9,7 @@
 CodonCanvas achieves **72,000-307,000 codons/second** throughput depending on genome complexity. Lexer operations are negligible (<0.2ms even for 1500 codons), while VM+rendering dominates execution time. Complex genomes with mixed transforms execute 3-4× faster than simple shape-heavy genomes due to rendering overhead.
 
 **Key Findings:**
+
 - ✅ **Scales linearly**: Performance is O(n) with genome size
 - ✅ **Fast lexing**: Tokenization is <1% of total execution time
 - ✅ **Rendering-bound**: Drawing operations dominate (95%+ of execution time)
@@ -18,6 +19,7 @@ CodonCanvas achieves **72,000-307,000 codons/second** throughput depending on ge
 ## Benchmark Methodology
 
 **Configuration:**
+
 - Iterations per test: 20 (with 5 warmup runs)
 - Canvas size: 400×400 pixels
 - Test sizes: 10, 50, 100, 500, 1000 codons (target)
@@ -36,6 +38,7 @@ CodonCanvas achieves **72,000-307,000 codons/second** throughput depending on ge
    - Represents typical student programs
 
 **Metrics:**
+
 - **Lexer:** Tokenization time only (parsing DNA triplets)
 - **VM:** Execution + rendering time (opcode processing + drawing)
 - **End-to-End:** Total time from source string to rendered canvas
@@ -48,14 +51,15 @@ CodonCanvas achieves **72,000-307,000 codons/second** throughput depending on ge
 Shape-heavy programs with minimal transforms. Represents worst-case rendering performance.
 
 | Codons | Lexer (ms) | VM (ms) | End-to-End (ms) | Throughput (codons/sec) |
-|--------|------------|---------|-----------------|-------------------------|
-| 14 | 0.01 | 0.22 | 0.20 | 68,569 |
-| 74 | 0.01 | 1.04 | 1.14 | 64,743 |
-| 149 | 0.01 | 2.05 | 2.00 | 74,649 |
-| 749 | 0.16 | 10.10 | 9.99 | 74,983 |
-| 1499 | 0.19 | 21.00 | 20.63 | 72,648 |
+| ------ | ---------- | ------- | --------------- | ----------------------- |
+| 14     | 0.01       | 0.22    | 0.20            | 68,569                  |
+| 74     | 0.01       | 1.04    | 1.14            | 64,743                  |
+| 149    | 0.01       | 2.05    | 2.00            | 74,649                  |
+| 749    | 0.16       | 10.10   | 9.99            | 74,983                  |
+| 1499   | 0.19       | 21.00   | 20.63           | 72,648                  |
 
 **Performance Characteristics:**
+
 - Linear scaling: ~14μs per codon (O(n))
 - Rendering dominates: 99% of execution time
 - Consistent throughput: ~72,000 codons/sec across all sizes
@@ -66,14 +70,15 @@ Shape-heavy programs with minimal transforms. Represents worst-case rendering pe
 Balanced programs with shapes, transforms, and state management. Represents typical usage.
 
 | Codons | Lexer (ms) | VM (ms) | End-to-End (ms) | Throughput (codons/sec) |
-|--------|------------|---------|-----------------|-------------------------|
-| 13 | 0.01 | 0.09 | 0.10 | 128,518 |
-| 53 | 0.01 | 0.25 | 0.27 | 196,723 |
-| 103 | 0.01 | 0.35 | 0.39 | 266,962 |
-| 503 | 0.06 | 1.57 | 1.67 | 300,414 |
-| 1003 | 0.10 | 3.14 | 3.26 | 307,507 |
+| ------ | ---------- | ------- | --------------- | ----------------------- |
+| 13     | 0.01       | 0.09    | 0.10            | 128,518                 |
+| 53     | 0.01       | 0.25    | 0.27            | 196,723                 |
+| 103    | 0.01       | 0.35    | 0.39            | 266,962                 |
+| 503    | 0.06       | 1.57    | 1.67            | 300,414                 |
+| 1003   | 0.10       | 3.14    | 3.26            | 307,507                 |
 
 **Performance Characteristics:**
+
 - Better scaling: ~3.2μs per codon (4× faster than simple)
 - Transform operations are cheap: Stack manipulation has minimal overhead
 - Drawing is expensive: Fewer shapes = faster execution
@@ -84,6 +89,7 @@ Balanced programs with shapes, transforms, and state management. Represents typi
 ### Lexer Performance
 
 **Tokenization Speed:**
+
 - 14 codons: 0.01ms (1.4M codons/sec)
 - 1499 codons: 0.19ms (7.8M codons/sec)
 
@@ -92,6 +98,7 @@ Balanced programs with shapes, transforms, and state management. Represents typi
 ### VM Performance
 
 **Execution Speed by Opcode Type:**
+
 - Transform operations (TRANSLATE, ROTATE, SCALE): ~0.001ms per operation
 - Stack operations (PUSH, DUP, POP): ~0.0005ms per operation
 - Drawing primitives (CIRCLE, RECT, LINE): ~0.01-0.03ms per shape (varies by complexity)
@@ -103,11 +110,13 @@ Balanced programs with shapes, transforms, and state management. Represents typi
 **Linear Complexity:** Both simple and complex genomes scale linearly (O(n)) with codon count.
 
 **Rendering vs Computation:**
+
 - Simple genomes: 99% rendering, 1% VM logic
 - Complex genomes: 90% rendering, 10% VM logic
 - Transform-heavy programs execute faster despite more instructions
 
 **Real-Time Capability:**
+
 - 10-codon genomes: <0.3ms (3000+ FPS)
 - 50-codon genomes: <1.2ms (830+ FPS)
 - 100-codon genomes: <2.0ms (500+ FPS)
@@ -117,11 +126,13 @@ Balanced programs with shapes, transforms, and state management. Represents typi
 ## Educational Context
 
 **Typical Student Genomes:**
+
 - Beginner: 10-20 codons (Hello Circle, Two Shapes)
 - Intermediate: 30-50 codons (Rosette patterns, simple compositions)
 - Advanced: 100-200 codons (Complex patterns, nested transforms)
 
 **Performance Expectations:**
+
 - All student genomes execute in <5ms (200+ FPS)
 - Real-time mutation preview is viable (300ms debounce provides smooth experience)
 - Timeline scrubbing with state snapshots has negligible overhead
@@ -130,6 +141,7 @@ Balanced programs with shapes, transforms, and state management. Represents typi
 ## Optimization Opportunities
 
 ### Current State (v1.1.0)
+
 - ✅ Efficient lexer (regex-based tokenization)
 - ✅ Minimal VM overhead (direct opcode dispatch)
 - ✅ Linear scaling (O(n) complexity)
@@ -138,6 +150,7 @@ Balanced programs with shapes, transforms, and state management. Represents typi
 ### Future Optimizations (Not Critical for MVP)
 
 **Low Priority:**
+
 1. **Canvas Batching:** Batch multiple draw calls into single path operation
    - Expected gain: 20-30% for shape-heavy genomes
    - Complexity: Medium (requires draw call analysis)
@@ -160,11 +173,13 @@ Balanced programs with shapes, transforms, and state management. Represents typi
 ### For Educators
 
 **Recommended Genome Sizes:**
+
 - Classroom demonstrations: 20-50 codons (instant feedback)
 - Student exercises: 30-100 codons (sub-2ms execution)
 - Advanced projects: 100-500 codons (still real-time)
 
 **Live Preview Settings:**
+
 - Debounce delay: 300ms (optimal for typing + execution)
 - Auto-run: Enabled (performance supports instant feedback)
 - Timeline scrubber: 60 FPS playback (30× slower than execution)
@@ -172,6 +187,7 @@ Balanced programs with shapes, transforms, and state management. Represents typi
 ### For Developers
 
 **Performance Budget:**
+
 - Lexer: <1ms for any student genome
 - VM: <20ms for 1000-codon genome
 - Total: <25ms for largest expected input
@@ -179,6 +195,7 @@ Balanced programs with shapes, transforms, and state management. Represents typi
 **Current Status:** ✅ All targets met with 4× safety margin
 
 **Testing Recommendations:**
+
 - Benchmark on target devices (Chromebooks, tablets)
 - Test with 500+ codon genomes for stress testing
 - Monitor memory usage during long sessions (timeline snapshots)
@@ -198,12 +215,14 @@ npx tsx scripts/benchmark.ts
 ```
 
 **Output:**
+
 - Console: Detailed results with statistics
 - Markdown tables: Copy-paste ready for documentation
 - JSON data: Raw results for further analysis
 
 **Customization:**
 Edit `scripts/benchmark.ts` to adjust:
+
 - Iteration count (default: 20)
 - Warmup runs (default: 5)
 - Genome sizes (default: [10, 50, 100, 500, 1000])

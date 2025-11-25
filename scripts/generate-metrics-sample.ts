@@ -10,7 +10,7 @@
  *   npm run metrics:generate-sample -- --n 50 --output pilot-metrics.csv
  */
 
-import * as fs from 'fs';
+import * as fs from "fs";
 
 // ============================================================================
 // Random Utilities
@@ -24,8 +24,13 @@ class Random {
     return z0 * sd + mean;
   }
 
-  static boundedNormal(mean: number, sd: number, min: number, max: number): number {
-    let value = this.normal(mean, sd);
+  static boundedNormal(
+    mean: number,
+    sd: number,
+    min: number,
+    max: number,
+  ): number {
+    const value = Random.normal(mean, sd);
     return Math.max(min, Math.min(max, value));
   }
 
@@ -53,7 +58,12 @@ class Random {
 // Learner Profiles
 // ============================================================================
 
-type LearnerProfile = 'explorer' | 'focused' | 'experimenter' | 'struggling' | 'advanced';
+type LearnerProfile =
+  | "explorer"
+  | "focused"
+  | "experimenter"
+  | "struggling"
+  | "advanced";
 
 interface ProfileCharacteristics {
   sessionDuration: { mean: number; sd: number };
@@ -77,7 +87,7 @@ const PROFILES: Record<LearnerProfile, ProfileCharacteristics> = {
     errorRate: 0.15,
     featureAdoption: 0.8, // High feature usage
     renderModePreference: { visual: 0.4, audio: 0.2, both: 0.4 },
-    mutationFocus: ['silent', 'missense', 'nonsense', 'frameshift'] // Tries everything
+    mutationFocus: ["silent", "missense", "nonsense", "frameshift"], // Tries everything
   },
   focused: {
     sessionDuration: { mean: 15 * 60 * 1000, sd: 5 * 60 * 1000 }, // 15 ± 5 min
@@ -88,7 +98,7 @@ const PROFILES: Record<LearnerProfile, ProfileCharacteristics> = {
     errorRate: 0.08,
     featureAdoption: 0.4, // Uses core features only
     renderModePreference: { visual: 0.8, audio: 0.1, both: 0.1 },
-    mutationFocus: ['silent', 'missense', 'point'] // Sticks to basics
+    mutationFocus: ["silent", "missense", "point"], // Sticks to basics
   },
   experimenter: {
     sessionDuration: { mean: 35 * 60 * 1000, sd: 10 * 60 * 1000 }, // 35 ± 10 min
@@ -96,10 +106,10 @@ const PROFILES: Record<LearnerProfile, ProfileCharacteristics> = {
     genomesExecuted: { mean: 25, sd: 8 },
     mutationsApplied: { mean: 40, sd: 12 },
     timeToFirstArtifact: { mean: 2.5 * 60 * 1000, sd: 60 * 1000 }, // 2.5 ± 1 min
-    errorRate: 0.20, // High experimentation = more errors
+    errorRate: 0.2, // High experimentation = more errors
     featureAdoption: 0.9, // Uses everything
     renderModePreference: { visual: 0.3, audio: 0.3, both: 0.4 },
-    mutationFocus: ['frameshift', 'insertion', 'deletion', 'nonsense'] // Advanced
+    mutationFocus: ["frameshift", "insertion", "deletion", "nonsense"], // Advanced
   },
   struggling: {
     sessionDuration: { mean: 12 * 60 * 1000, sd: 6 * 60 * 1000 }, // 12 ± 6 min
@@ -110,7 +120,7 @@ const PROFILES: Record<LearnerProfile, ProfileCharacteristics> = {
     errorRate: 0.35,
     featureAdoption: 0.2, // Low feature exploration
     renderModePreference: { visual: 0.9, audio: 0.05, both: 0.05 },
-    mutationFocus: ['point', 'silent'] // Simple mutations only
+    mutationFocus: ["point", "silent"], // Simple mutations only
   },
   advanced: {
     sessionDuration: { mean: 20 * 60 * 1000, sd: 6 * 60 * 1000 }, // 20 ± 6 min
@@ -121,8 +131,8 @@ const PROFILES: Record<LearnerProfile, ProfileCharacteristics> = {
     errorRate: 0.05, // Very efficient
     featureAdoption: 0.85,
     renderModePreference: { visual: 0.5, audio: 0.2, both: 0.3 },
-    mutationFocus: ['frameshift', 'missense', 'insertion', 'deletion']
-  }
+    mutationFocus: ["frameshift", "missense", "insertion", "deletion"],
+  },
 };
 
 // ============================================================================
@@ -155,48 +165,98 @@ interface MetricsSession {
   errorCount: number;
 }
 
-function generateSession(id: string, profile: LearnerProfile, baseTime: Date): MetricsSession {
+function generateSession(
+  id: string,
+  profile: LearnerProfile,
+  baseTime: Date,
+): MetricsSession {
   const char = PROFILES[profile];
 
   // Session metadata
   const duration = Math.max(
     60 * 1000, // Min 1 minute
-    Math.round(Random.boundedNormal(char.sessionDuration.mean, char.sessionDuration.sd, 0, 60 * 60 * 1000))
+    Math.round(
+      Random.boundedNormal(
+        char.sessionDuration.mean,
+        char.sessionDuration.sd,
+        0,
+        60 * 60 * 1000,
+      ),
+    ),
   );
-  const startTime = new Date(baseTime.getTime() + Random.int(-7 * 24 * 60 * 60 * 1000, 0)); // Past week
+  const startTime = new Date(
+    baseTime.getTime() + Random.int(-7 * 24 * 60 * 60 * 1000, 0),
+  ); // Past week
 
   // Engagement metrics
-  const genomesCreated = Math.max(0, Math.round(Random.normal(char.genomesCreated.mean, char.genomesCreated.sd)));
+  const genomesCreated = Math.max(
+    0,
+    Math.round(Random.normal(char.genomesCreated.mean, char.genomesCreated.sd)),
+  );
   const genomesExecuted = Math.max(
     genomesCreated,
-    Math.round(Random.normal(char.genomesExecuted.mean, char.genomesExecuted.sd))
+    Math.round(
+      Random.normal(char.genomesExecuted.mean, char.genomesExecuted.sd),
+    ),
   );
-  const mutationsApplied = Math.max(0, Math.round(Random.normal(char.mutationsApplied.mean, char.mutationsApplied.sd)));
+  const mutationsApplied = Math.max(
+    0,
+    Math.round(
+      Random.normal(char.mutationsApplied.mean, char.mutationsApplied.sd),
+    ),
+  );
 
   const timeToFirstArtifact = genomesCreated > 0
     ? Math.max(
-        10 * 1000, // Min 10 seconds
-        Math.round(Random.boundedNormal(char.timeToFirstArtifact.mean, char.timeToFirstArtifact.sd, 0, duration))
-      )
+      10 * 1000, // Min 10 seconds
+      Math.round(
+        Random.boundedNormal(
+          char.timeToFirstArtifact.mean,
+          char.timeToFirstArtifact.sd,
+          0,
+          duration,
+        ),
+      ),
+    )
     : 0;
 
   // Render mode distribution (must sum to genomesExecuted)
   const renderModeRoll = Math.random();
-  let visualMode = 0, audioMode = 0, bothMode = 0;
+  let visualMode = 0,
+    audioMode = 0,
+    bothMode = 0;
 
   if (genomesExecuted > 0) {
     const total = genomesExecuted;
     if (renderModeRoll < char.renderModePreference.visual) {
-      visualMode = Math.max(1, Math.round(total * Random.boundedNormal(0.7, 0.2, 0.3, 1.0)));
-      audioMode = Math.round((total - visualMode) * Random.boundedNormal(0.3, 0.2, 0, 0.5));
+      visualMode = Math.max(
+        1,
+        Math.round(total * Random.boundedNormal(0.7, 0.2, 0.3, 1.0)),
+      );
+      audioMode = Math.round(
+        (total - visualMode) * Random.boundedNormal(0.3, 0.2, 0, 0.5),
+      );
       bothMode = total - visualMode - audioMode;
-    } else if (renderModeRoll < char.renderModePreference.visual + char.renderModePreference.audio) {
-      audioMode = Math.max(1, Math.round(total * Random.boundedNormal(0.6, 0.2, 0.3, 1.0)));
-      visualMode = Math.round((total - audioMode) * Random.boundedNormal(0.3, 0.2, 0, 0.5));
+    } else if (
+      renderModeRoll <
+        char.renderModePreference.visual + char.renderModePreference.audio
+    ) {
+      audioMode = Math.max(
+        1,
+        Math.round(total * Random.boundedNormal(0.6, 0.2, 0.3, 1.0)),
+      );
+      visualMode = Math.round(
+        (total - audioMode) * Random.boundedNormal(0.3, 0.2, 0, 0.5),
+      );
       bothMode = total - visualMode - audioMode;
     } else {
-      bothMode = Math.max(1, Math.round(total * Random.boundedNormal(0.6, 0.2, 0.3, 1.0)));
-      visualMode = Math.round((total - bothMode) * Random.boundedNormal(0.5, 0.2, 0, 0.7));
+      bothMode = Math.max(
+        1,
+        Math.round(total * Random.boundedNormal(0.6, 0.2, 0.3, 1.0)),
+      );
+      visualMode = Math.round(
+        (total - bothMode) * Random.boundedNormal(0.5, 0.2, 0, 0.7),
+      );
       audioMode = total - visualMode - bothMode;
     }
   }
@@ -209,7 +269,7 @@ function generateSession(id: string, profile: LearnerProfile, baseTime: Date): M
     frameshift: 0,
     point: 0,
     insertion: 0,
-    deletion: 0
+    deletion: 0,
   };
 
   if (mutationsApplied > 0) {
@@ -218,37 +278,52 @@ function generateSession(id: string, profile: LearnerProfile, baseTime: Date): M
     for (let i = 0; i < mutationsApplied; i++) {
       if (Math.random() < 0.7 && focusSet.size > 0) {
         // 70% chance to use focused mutation
-        const type = Random.choice(char.mutationFocus) as keyof typeof mutationTypes;
+        const type = Random.choice(
+          char.mutationFocus,
+        ) as keyof typeof mutationTypes;
         mutationTypes[type]++;
       } else {
         // 30% chance for random mutation
-        const type = Random.choice(['silent', 'missense', 'nonsense', 'frameshift', 'point', 'insertion', 'deletion']) as keyof typeof mutationTypes;
+        const type = Random.choice([
+          "silent",
+          "missense",
+          "nonsense",
+          "frameshift",
+          "point",
+          "insertion",
+          "deletion",
+        ]) as keyof typeof mutationTypes;
         mutationTypes[type]++;
       }
     }
   }
 
   // Feature usage (correlated with mutations and duration)
-  const featureUsageProbability = char.featureAdoption * (duration / (30 * 60 * 1000)); // Higher for longer sessions
-  const diffViewerUsage = mutationsApplied > 5 && Math.random() < featureUsageProbability
-    ? Random.int(1, Math.ceil(mutationsApplied / 3))
-    : 0;
+  const featureUsageProbability = char.featureAdoption *
+    (duration / (30 * 60 * 1000)); // Higher for longer sessions
+  const diffViewerUsage =
+    mutationsApplied > 5 && Math.random() < featureUsageProbability
+      ? Random.int(1, Math.ceil(mutationsApplied / 3))
+      : 0;
 
-  const timelineUsage = genomesExecuted > 5 && Math.random() < featureUsageProbability
-    ? Random.int(1, Math.ceil(genomesExecuted / 4))
-    : 0;
+  const timelineUsage =
+    genomesExecuted > 5 && Math.random() < featureUsageProbability
+      ? Random.int(1, Math.ceil(genomesExecuted / 4))
+      : 0;
 
-  const evolutionUsage = mutationsApplied > 10 && Math.random() < featureUsageProbability * 0.6
-    ? Random.int(1, 5)
-    : 0;
+  const evolutionUsage =
+    mutationsApplied > 10 && Math.random() < featureUsageProbability * 0.6
+      ? Random.int(1, 5)
+      : 0;
 
   const assessmentUsage = Math.random() < featureUsageProbability * 0.4
     ? Random.int(1, 3)
     : 0;
 
-  const exportUsage = genomesCreated > 2 && Math.random() < featureUsageProbability * 0.7
-    ? Random.int(1, Math.ceil(genomesCreated / 2))
-    : 0;
+  const exportUsage =
+    genomesCreated > 2 && Math.random() < featureUsageProbability * 0.7
+      ? Random.int(1, Math.ceil(genomesCreated / 2))
+      : 0;
 
   // Error count
   const errorCount = Math.random() < char.errorRate
@@ -278,7 +353,7 @@ function generateSession(id: string, profile: LearnerProfile, baseTime: Date): M
     evolutionUsage,
     assessmentUsage,
     exportUsage,
-    errorCount
+    errorCount,
   };
 }
 
@@ -291,11 +366,17 @@ function generateMetricsDataset(n: number): MetricsSession[] {
   const baseTime = new Date();
 
   // Profile distribution (realistic classroom mix)
-  const profiles: LearnerProfile[] = ['explorer', 'focused', 'experimenter', 'struggling', 'advanced'];
-  const profileWeights = [0.25, 0.30, 0.20, 0.15, 0.10]; // Most are focused/explorers
+  const profiles: LearnerProfile[] = [
+    "explorer",
+    "focused",
+    "experimenter",
+    "struggling",
+    "advanced",
+  ];
+  const profileWeights = [0.25, 0.3, 0.2, 0.15, 0.1]; // Most are focused/explorers
 
   for (let i = 0; i < n; i++) {
-    const sessionId = `session_${String(i + 1).padStart(4, '0')}`;
+    const sessionId = `session_${String(i + 1).padStart(4, "0")}`;
     const profile = Random.weighted(profiles, profileWeights);
     const session = generateSession(sessionId, profile, baseTime);
     sessions.push(session);
@@ -310,32 +391,32 @@ function generateMetricsDataset(n: number): MetricsSession[] {
 
 function writeCSV(sessions: MetricsSession[], filename: string): void {
   const headers = [
-    'sessionId',
-    'startTime',
-    'duration',
-    'genomesCreated',
-    'genomesExecuted',
-    'mutationsApplied',
-    'timeToFirstArtifact',
-    'visualMode',
-    'audioMode',
-    'bothMode',
-    'silentMutations',
-    'missenseMutations',
-    'nonsenseMutations',
-    'frameshiftMutations',
-    'pointMutations',
-    'insertions',
-    'deletions',
-    'diffViewerUsage',
-    'timelineUsage',
-    'evolutionUsage',
-    'assessmentUsage',
-    'exportUsage',
-    'errorCount'
+    "sessionId",
+    "startTime",
+    "duration",
+    "genomesCreated",
+    "genomesExecuted",
+    "mutationsApplied",
+    "timeToFirstArtifact",
+    "visualMode",
+    "audioMode",
+    "bothMode",
+    "silentMutations",
+    "missenseMutations",
+    "nonsenseMutations",
+    "frameshiftMutations",
+    "pointMutations",
+    "insertions",
+    "deletions",
+    "diffViewerUsage",
+    "timelineUsage",
+    "evolutionUsage",
+    "assessmentUsage",
+    "exportUsage",
+    "errorCount",
   ];
 
-  const rows = sessions.map(s => [
+  const rows = sessions.map((s) => [
     s.sessionId,
     s.startTime,
     s.duration.toString(),
@@ -358,11 +439,11 @@ function writeCSV(sessions: MetricsSession[], filename: string): void {
     s.evolutionUsage.toString(),
     s.assessmentUsage.toString(),
     s.exportUsage.toString(),
-    s.errorCount.toString()
+    s.errorCount.toString(),
   ]);
 
-  const csv = [headers.join(','), ...rows.map(r => r.join(','))].join('\n');
-  fs.writeFileSync(filename, csv, 'utf-8');
+  const csv = [headers.join(","), ...rows.map((r) => r.join(","))].join("\n");
+  fs.writeFileSync(filename, csv, "utf-8");
   console.log(`✅ Generated ${filename} (${sessions.length} sessions)`);
 }
 
@@ -371,10 +452,12 @@ function writeCSV(sessions: MetricsSession[], filename: string): void {
 // ============================================================================
 
 function printSummary(sessions: MetricsSession[]): void {
-  const durations = sessions.map(s => s.duration);
-  const genomesCreated = sessions.map(s => s.genomesCreated);
-  const mutations = sessions.map(s => s.mutationsApplied);
-  const timeToFirst = sessions.filter(s => s.timeToFirstArtifact > 0).map(s => s.timeToFirstArtifact);
+  const durations = sessions.map((s) => s.duration);
+  const genomesCreated = sessions.map((s) => s.genomesCreated);
+  const mutations = sessions.map((s) => s.mutationsApplied);
+  const timeToFirst = sessions
+    .filter((s) => s.timeToFirstArtifact > 0)
+    .map((s) => s.timeToFirstArtifact);
 
   const mean = (arr: number[]) => arr.reduce((a, b) => a + b, 0) / arr.length;
   const formatDuration = (ms: number) => {
@@ -383,7 +466,7 @@ function printSummary(sessions: MetricsSession[]): void {
     return `${min}m ${sec}s`;
   };
 
-  console.log('\n📊 Dataset Summary:');
+  console.log("\n📊 Dataset Summary:");
   console.log(`  Sessions:           ${sessions.length}`);
   console.log(`  Avg duration:       ${formatDuration(mean(durations))}`);
   console.log(`  Avg genomes:        ${mean(genomesCreated).toFixed(1)}`);
@@ -391,25 +474,40 @@ function printSummary(sessions: MetricsSession[]): void {
   console.log(`  Avg time-to-first:  ${formatDuration(mean(timeToFirst))}`);
 
   // Render mode distribution
-  const totalExecutions = sessions.reduce((sum, s) => sum + s.genomesExecuted, 0);
+  const totalExecutions = sessions.reduce(
+    (sum, s) => sum + s.genomesExecuted,
+    0,
+  );
   const visualTotal = sessions.reduce((sum, s) => sum + s.visualMode, 0);
   const audioTotal = sessions.reduce((sum, s) => sum + s.audioMode, 0);
   const bothTotal = sessions.reduce((sum, s) => sum + s.bothMode, 0);
 
-  console.log('\n🎨 Render Modes:');
-  console.log(`  Visual only:  ${((visualTotal / totalExecutions) * 100).toFixed(1)}%`);
-  console.log(`  Audio only:   ${((audioTotal / totalExecutions) * 100).toFixed(1)}%`);
-  console.log(`  Both modes:   ${((bothTotal / totalExecutions) * 100).toFixed(1)}%`);
+  console.log("\n🎨 Render Modes:");
+  console.log(
+    `  Visual only:  ${((visualTotal / totalExecutions) * 100).toFixed(1)}%`,
+  );
+  console.log(
+    `  Audio only:   ${((audioTotal / totalExecutions) * 100).toFixed(1)}%`,
+  );
+  console.log(
+    `  Both modes:   ${((bothTotal / totalExecutions) * 100).toFixed(1)}%`,
+  );
 
   // Feature adoption
-  const diffUsers = sessions.filter(s => s.diffViewerUsage > 0).length;
-  const timelineUsers = sessions.filter(s => s.timelineUsage > 0).length;
-  const evolutionUsers = sessions.filter(s => s.evolutionUsage > 0).length;
+  const diffUsers = sessions.filter((s) => s.diffViewerUsage > 0).length;
+  const timelineUsers = sessions.filter((s) => s.timelineUsage > 0).length;
+  const evolutionUsers = sessions.filter((s) => s.evolutionUsage > 0).length;
 
-  console.log('\n🔧 Feature Adoption:');
-  console.log(`  Diff Viewer:  ${((diffUsers / sessions.length) * 100).toFixed(1)}%`);
-  console.log(`  Timeline:     ${((timelineUsers / sessions.length) * 100).toFixed(1)}%`);
-  console.log(`  Evolution:    ${((evolutionUsers / sessions.length) * 100).toFixed(1)}%`);
+  console.log("\n🔧 Feature Adoption:");
+  console.log(
+    `  Diff Viewer:  ${((diffUsers / sessions.length) * 100).toFixed(1)}%`,
+  );
+  console.log(
+    `  Timeline:     ${((timelineUsers / sessions.length) * 100).toFixed(1)}%`,
+  );
+  console.log(
+    `  Evolution:    ${((evolutionUsers / sessions.length) * 100).toFixed(1)}%`,
+  );
 }
 
 // ============================================================================
@@ -443,20 +541,26 @@ EXAMPLES:
 function main(): void {
   const args = process.argv.slice(2);
 
-  if (args.includes('--help') || args.includes('-h')) {
+  if (args.includes("--help") || args.includes("-h")) {
     printUsage();
     return;
   }
 
-  const nIdx = args.indexOf('--n');
-  const outputIdx = args.indexOf('--output');
+  const nIdx = args.indexOf("--n");
+  const outputIdx = args.indexOf("--output");
 
   const n = nIdx !== -1 ? parseInt(args[nIdx + 1]) : 20;
-  const output = outputIdx !== -1 ? args[outputIdx + 1] : 'sample-metrics.csv';
+  const output = outputIdx !== -1 ? args[outputIdx + 1] : "sample-metrics.csv";
 
-  console.log('\n╔══════════════════════════════════════════════════════════════╗');
-  console.log('║     CodonCanvas Metrics Sample Data Generator               ║');
-  console.log('╚══════════════════════════════════════════════════════════════╝\n');
+  console.log(
+    "\n╔══════════════════════════════════════════════════════════════╗",
+  );
+  console.log(
+    "║     CodonCanvas Metrics Sample Data Generator               ║",
+  );
+  console.log(
+    "╚══════════════════════════════════════════════════════════════╝\n",
+  );
 
   console.log(`Generating ${n} sessions...`);
   console.log(`Output: ${output}\n`);
@@ -465,13 +569,13 @@ function main(): void {
   writeCSV(sessions, output);
   printSummary(sessions);
 
-  console.log('\n═'.repeat(64));
-  console.log('💡 Next steps:');
-  console.log('  1. Open research-dashboard.html');
-  console.log('  2. Import this CSV file');
-  console.log('  3. Click "📈 Analyze Data" to view statistics\n');
+  console.log("\n═".repeat(64));
+  console.log("💡 Next steps:");
+  console.log("  1. Open research-dashboard.html");
+  console.log("  2. Import this CSV file");
+  console.log("  3. Click \"📈 Analyze Data\" to view statistics\n");
 }
 
 main();
 
-export { generateMetricsDataset, generateSession, writeCSV, PROFILES };
+export { generateMetricsDataset, generateSession, PROFILES, writeCSV };

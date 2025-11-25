@@ -31,17 +31,17 @@ Integrated session 68's mutation predictor into playground with full UI. Users c
 
 3. **Impact Visualization**
    - Color-coded badges:
-     * 🟢 SILENT: Green (#22c55e)
-     * 🟡 LOCAL: Yellow (#eab308)
-     * 🟠 MAJOR: Orange (#f97316)
-     * 🔴 CATASTROPHIC: Red (#ef4444)
+     - 🟢 SILENT: Green (#22c55e)
+     - 🟡 LOCAL: Yellow (#eab308)
+     - 🟠 MAJOR: Orange (#f97316)
+     - 🔴 CATASTROPHIC: Red (#ef4444)
    - Impact icon + label in badge
 
 4. **Confidence Display**
    - Star rating system:
-     * ⭐⭐⭐ HIGH (≥85%)
-     * ⭐⭐ MEDIUM (60-84%)
-     * ⭐ LOW (<60%)
+     - ⭐⭐⭐ HIGH (≥85%)
+     - ⭐⭐ MEDIUM (60-84%)
+     - ⭐ LOW (<60%)
    - Percentage display alongside stars
 
 5. **Detailed Stats Grid**
@@ -86,6 +86,7 @@ Integrated session 68's mutation predictor into playground with full UI. Users c
 ### Technical Implementation
 
 **Functions Added:**
+
 - `injectPreviewModalStyles()`: Injects ~170 LOC of CSS
 - `createPreviewModal()`: Builds DOM structure + event handlers
 - `showPreviewModal(prediction, type)`: Populates and displays modal
@@ -97,10 +98,12 @@ Integrated session 68's mutation predictor into playground with full UI. Users c
 - `addPreviewButtons()`: Wires up UI interactions
 
 **State Management:**
+
 - `currentPrediction`: Stores active prediction
 - `currentMutationType`: Stores mutation type for Apply action
 
 **Integration Points:**
+
 - Imports `predictMutationImpact` from mutation-predictor.ts
 - Reuses existing mutation functions (applySilentMutation, etc.)
 - Integrates with status bar for error messages
@@ -108,12 +111,14 @@ Integrated session 68's mutation predictor into playground with full UI. Users c
 ## Educational Value
 
 **Before This Session:**
+
 - Trial-and-error: Click → surprise → undo → repeat
 - No preview capability
 - Frustration with unexpected outcomes
 - Slow mental model formation
 
 **After This Session:**
+
 - Informed exploration: Preview → understand → decide
 - Visual comparison reduces cognitive load
 - Impact classification teaches mutation severity
@@ -121,6 +126,7 @@ Integrated session 68's mutation predictor into playground with full UI. Users c
 - Right-click convenience encourages exploration
 
 **Learning Scaffolds Added:**
+
 1. **Visual Comparison**: Side-by-side reinforces phenotype changes
 2. **Impact Classification**: Categorical understanding (SILENT vs CATASTROPHIC)
 3. **Confidence Calibration**: Teaches prediction uncertainty
@@ -130,6 +136,7 @@ Integrated session 68's mutation predictor into playground with full UI. Users c
 ## User Workflows
 
 **Workflow 1: Careful Exploration (Novice)**
+
 ```
 1. Type genome in editor
 2. Click "🔮 Preview" button
@@ -142,6 +149,7 @@ Integrated session 68's mutation predictor into playground with full UI. Users c
 ```
 
 **Workflow 2: Quick Preview (Expert)**
+
 ```
 1. Working on genome
 2. Right-click "Frameshift" button
@@ -152,6 +160,7 @@ Integrated session 68's mutation predictor into playground with full UI. Users c
 ```
 
 **Workflow 3: Prediction Game (Classroom)**
+
 ```
 1. Teacher: "Predict this mutation's impact"
 2. Students write guesses
@@ -203,6 +212,7 @@ Integrated session 68's mutation predictor into playground with full UI. Users c
 ## Future Enhancements (NOT in Session 69)
 
 **Immediate (Session 70, ~60 min):**
+
 1. Tutorial integration: Add prediction step to mutation tutorial
 2. Achievement: "Accurate Predictor" (10 correct predictions)
 3. Keyboard shortcuts: `P` key to open preview
@@ -221,6 +231,7 @@ Integrated session 68's mutation predictor into playground with full UI. Users c
 ## Research Implications
 
 **New Metrics Possible:**
+
 - **Prediction Accuracy**: User predictions vs system predictions
 - **Preview Usage Rate**: % mutations previewed before applying
 - **Confidence Alignment**: Do users agree with system confidence?
@@ -229,6 +240,7 @@ Integrated session 68's mutation predictor into playground with full UI. Users c
 - **Exploration Patterns**: Which mutations previewed most?
 
 **Research Questions:**
+
 - Do previews accelerate learning or reduce exploration?
 - Optimal confidence threshold for scaffolding?
 - Does previewing reduce "happy accidents"?
@@ -237,10 +249,10 @@ Integrated session 68's mutation predictor into playground with full UI. Users c
 ## Key Files Modified
 
 - **src/playground.ts**: +453 LOC
-  * Imports: mutation-predictor module
-  * Styles: Modal CSS injection
-  * Functions: Preview modal logic
-  * Interactions: Preview button + right-click handlers
+  - Imports: mutation-predictor module
+  - Styles: Modal CSS injection
+  - Functions: Preview modal logic
+  - Interactions: Preview button + right-click handlers
 
 ## Commit
 
@@ -272,6 +284,7 @@ Integrated session 68's mutation predictor into playground with full UI. Users c
 ## Achievement
 
 **Session 69 Achievement:** ⭐⭐⭐⭐⭐
+
 - Completes session 68's work (predictor → usable feature)
 - High educational value (scaffolding, reduced frustration)
 - Professional UI quality (smooth animations, theme-aware)
@@ -280,6 +293,7 @@ Integrated session 68's mutation predictor into playground with full UI. Users c
 - Research-enabling (new metrics possible)
 
 **Autonomous Direction:**
+
 - Analyzed session 68's explicit next steps
 - Chose highest-impact, most feasible direction
 - Delivered complete, polished, tested implementation

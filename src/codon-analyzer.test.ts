@@ -2,86 +2,88 @@
  * @fileoverview Tests for codon usage analyzer
  */
 
-import { describe, it, expect } from 'vitest';
-import { analyzeCodonUsage, compareAnalyses, formatAnalysis } from './codon-analyzer';
-import { CodonToken, Opcode } from './types';
+import { describe, expect, it } from "vitest";
+import {
+  analyzeCodonUsage,
+  compareAnalyses,
+  formatAnalysis,
+} from "./codon-analyzer";
+import { type CodonToken, Opcode } from "./types";
 
-describe('CodonAnalyzer', () => {
-  describe('analyzeCodonUsage', () => {
-    it('should count total codons correctly', () => {
+describe("CodonAnalyzer", () => {
+  describe("analyzeCodonUsage", () => {
+    it("should count total codons correctly", () => {
       const tokens: CodonToken[] = [
-        { text: 'ATG', position: 0, line: 1 },
-        { text: 'GGA', position: 3, line: 1 },
-        { text: 'TAA', position: 6, line: 1 },
+        { text: "ATG", position: 0, line: 1 },
+        { text: "GGA", position: 3, line: 1 },
+        { text: "TAA", position: 6, line: 1 },
       ];
 
       const analysis = analyzeCodonUsage(tokens);
       expect(analysis.totalCodons).toBe(3);
     });
 
-    it('should calculate GC content correctly', () => {
+    it("should calculate GC content correctly", () => {
       // GGA has 2 Gs and 1 A → GC% = 2/3 = 66.67%
-      const tokens: CodonToken[] = [
-        { text: 'GGA', position: 0, line: 1 },
-      ];
+      const tokens: CodonToken[] = [{ text: "GGA", position: 0, line: 1 }];
 
       const analysis = analyzeCodonUsage(tokens);
       expect(analysis.gcContent).toBeCloseTo(66.67, 1);
       expect(analysis.atContent).toBeCloseTo(33.33, 1);
     });
 
-    it('should handle RNA codons (normalize U→T)', () => {
+    it("should handle RNA codons (normalize U→T)", () => {
       const tokens: CodonToken[] = [
-        { text: 'AUG', position: 0, line: 1 }, // RNA start codon
-        { text: 'GGA', position: 3, line: 1 },
-        { text: 'UAA', position: 6, line: 1 }, // RNA stop codon
+        { text: "AUG", position: 0, line: 1 }, // RNA start codon
+        { text: "GGA", position: 3, line: 1 },
+        { text: "UAA", position: 6, line: 1 }, // RNA stop codon
       ];
 
       const analysis = analyzeCodonUsage(tokens);
       expect(analysis.totalCodons).toBe(3);
-      expect(analysis.opcodeDistribution.get('START')).toBe(1);
-      expect(analysis.opcodeDistribution.get('STOP')).toBe(1);
+      expect(analysis.opcodeDistribution.get("START")).toBe(1);
+      expect(analysis.opcodeDistribution.get("STOP")).toBe(1);
     });
 
-    it('should count codon frequency correctly', () => {
+    it("should count codon frequency correctly", () => {
       const tokens: CodonToken[] = [
-        { text: 'GGA', position: 0, line: 1 },
-        { text: 'GGA', position: 3, line: 1 },
-        { text: 'GGC', position: 6, line: 1 }, // Synonymous with GGA
-        { text: 'CCA', position: 9, line: 1 },
+        { text: "GGA", position: 0, line: 1 },
+        { text: "GGA", position: 3, line: 1 },
+        { text: "GGC", position: 6, line: 1 }, // Synonymous with GGA
+        { text: "CCA", position: 9, line: 1 },
       ];
 
       const analysis = analyzeCodonUsage(tokens);
-      expect(analysis.codonFrequency.get('GGA')).toBe(2);
-      expect(analysis.codonFrequency.get('GGC')).toBe(1);
-      expect(analysis.codonFrequency.get('CCA')).toBe(1);
+      expect(analysis.codonFrequency.get("GGA")).toBe(2);
+      expect(analysis.codonFrequency.get("GGC")).toBe(1);
+      expect(analysis.codonFrequency.get("CCA")).toBe(1);
     });
 
-    it('should calculate opcode distribution correctly', () => {
+    it("should calculate opcode distribution correctly", () => {
       const tokens: CodonToken[] = [
-        { text: 'ATG', position: 0, line: 1 },  // START
-        { text: 'GGA', position: 3, line: 1 },  // CIRCLE
-        { text: 'GGC', position: 6, line: 1 },  // CIRCLE (synonymous)
-        { text: 'CCA', position: 9, line: 1 },  // RECT
-        { text: 'TAA', position: 12, line: 1 }, // STOP
+        { text: "ATG", position: 0, line: 1 }, // START
+        { text: "GGA", position: 3, line: 1 }, // CIRCLE
+        { text: "GGC", position: 6, line: 1 }, // CIRCLE (synonymous)
+        { text: "CCA", position: 9, line: 1 }, // RECT
+        { text: "TAA", position: 12, line: 1 }, // STOP
       ];
 
       const analysis = analyzeCodonUsage(tokens);
-      expect(analysis.opcodeDistribution.get('START')).toBe(1);
-      expect(analysis.opcodeDistribution.get('CIRCLE')).toBe(2); // GGA + GGC
-      expect(analysis.opcodeDistribution.get('RECT')).toBe(1);
-      expect(analysis.opcodeDistribution.get('STOP')).toBe(1);
+      expect(analysis.opcodeDistribution.get("START")).toBe(1);
+      expect(analysis.opcodeDistribution.get("CIRCLE")).toBe(2); // GGA + GGC
+      expect(analysis.opcodeDistribution.get("RECT")).toBe(1);
+      expect(analysis.opcodeDistribution.get("STOP")).toBe(1);
     });
 
-    it('should calculate opcode family percentages', () => {
+    it("should calculate opcode family percentages", () => {
       const tokens: CodonToken[] = [
-        { text: 'ATG', position: 0, line: 1 },  // control
-        { text: 'GGA', position: 3, line: 1 },  // drawing
-        { text: 'GGA', position: 6, line: 1 },  // drawing
-        { text: 'ACA', position: 9, line: 1 },  // transform
-        { text: 'GAA', position: 12, line: 1 }, // stack (PUSH)
-        { text: 'AAA', position: 15, line: 1 }, // stack (PUSH literal - also counted as PUSH)
-        { text: 'TAA', position: 18, line: 1 }, // control
+        { text: "ATG", position: 0, line: 1 }, // control
+        { text: "GGA", position: 3, line: 1 }, // drawing
+        { text: "GGA", position: 6, line: 1 }, // drawing
+        { text: "ACA", position: 9, line: 1 }, // transform
+        { text: "GAA", position: 12, line: 1 }, // stack (PUSH)
+        { text: "AAA", position: 15, line: 1 }, // stack (PUSH literal - also counted as PUSH)
+        { text: "TAA", position: 18, line: 1 }, // control
       ];
 
       const analysis = analyzeCodonUsage(tokens);
@@ -95,29 +97,29 @@ describe('CodonAnalyzer', () => {
       expect(analysis.opcodeFamilies.stack).toBeCloseTo(14.29, 1); // 1/7 (GAA only)
     });
 
-    it('should identify top codons', () => {
+    it("should identify top codons", () => {
       const tokens: CodonToken[] = [
-        { text: 'GGA', position: 0, line: 1 },
-        { text: 'GGA', position: 3, line: 1 },
-        { text: 'GGA', position: 6, line: 1 },
-        { text: 'CCA', position: 9, line: 1 },
-        { text: 'CCA', position: 12, line: 1 },
-        { text: 'AAA', position: 15, line: 1 },
+        { text: "GGA", position: 0, line: 1 },
+        { text: "GGA", position: 3, line: 1 },
+        { text: "GGA", position: 6, line: 1 },
+        { text: "CCA", position: 9, line: 1 },
+        { text: "CCA", position: 12, line: 1 },
+        { text: "AAA", position: 15, line: 1 },
       ];
 
       const analysis = analyzeCodonUsage(tokens);
       expect(analysis.topCodons).toHaveLength(3);
-      expect(analysis.topCodons[0].codon).toBe('GGA');
+      expect(analysis.topCodons[0].codon).toBe("GGA");
       expect(analysis.topCodons[0].count).toBe(3);
       expect(analysis.topCodons[0].percentage).toBeCloseTo(50, 1);
     });
 
-    it('should calculate genome signature metrics', () => {
+    it("should calculate genome signature metrics", () => {
       const tokens: CodonToken[] = [
-        { text: 'ATG', position: 0, line: 1 },  // control
-        { text: 'GGA', position: 3, line: 1 },  // drawing
-        { text: 'ACA', position: 6, line: 1 },  // transform
-        { text: 'TAA', position: 9, line: 1 },  // control
+        { text: "ATG", position: 0, line: 1 }, // control
+        { text: "GGA", position: 3, line: 1 }, // drawing
+        { text: "ACA", position: 6, line: 1 }, // transform
+        { text: "TAA", position: 9, line: 1 }, // control
       ];
 
       const analysis = analyzeCodonUsage(tokens);
@@ -126,25 +128,25 @@ describe('CodonAnalyzer', () => {
       expect(analysis.signature.complexity).toBeGreaterThan(0); // unique opcodes / total
     });
 
-    it('should calculate codon family usage', () => {
+    it("should calculate codon family usage", () => {
       const tokens: CodonToken[] = [
-        { text: 'GGA', position: 0, line: 1 }, // GG* family
-        { text: 'GGC', position: 3, line: 1 }, // GG* family
-        { text: 'CCA', position: 6, line: 1 }, // CC* family
+        { text: "GGA", position: 0, line: 1 }, // GG* family
+        { text: "GGC", position: 3, line: 1 }, // GG* family
+        { text: "CCA", position: 6, line: 1 }, // CC* family
       ];
 
       const analysis = analyzeCodonUsage(tokens);
-      expect(analysis.codonFamilyUsage.get('GG')).toBe(2);
-      expect(analysis.codonFamilyUsage.get('CC')).toBe(1);
+      expect(analysis.codonFamilyUsage.get("GG")).toBe(2);
+      expect(analysis.codonFamilyUsage.get("CC")).toBe(1);
     });
   });
 
-  describe('compareAnalyses', () => {
-    it('should return 100 for identical analyses', () => {
+  describe("compareAnalyses", () => {
+    it("should return 100 for identical analyses", () => {
       const tokens: CodonToken[] = [
-        { text: 'ATG', position: 0, line: 1 },
-        { text: 'GGA', position: 3, line: 1 },
-        { text: 'TAA', position: 6, line: 1 },
+        { text: "ATG", position: 0, line: 1 },
+        { text: "GGA", position: 3, line: 1 },
+        { text: "TAA", position: 6, line: 1 },
       ];
 
       const analysis1 = analyzeCodonUsage(tokens);
@@ -154,21 +156,21 @@ describe('CodonAnalyzer', () => {
       expect(similarity).toBeCloseTo(100, 0);
     });
 
-    it('should return lower score for different analyses', () => {
+    it("should return lower score for different analyses", () => {
       const tokens1: CodonToken[] = [
-        { text: 'ATG', position: 0, line: 1 },
-        { text: 'GGA', position: 3, line: 1 }, // drawing-heavy
-        { text: 'GGA', position: 6, line: 1 },
-        { text: 'GGA', position: 9, line: 1 },
-        { text: 'TAA', position: 12, line: 1 },
+        { text: "ATG", position: 0, line: 1 },
+        { text: "GGA", position: 3, line: 1 }, // drawing-heavy
+        { text: "GGA", position: 6, line: 1 },
+        { text: "GGA", position: 9, line: 1 },
+        { text: "TAA", position: 12, line: 1 },
       ];
 
       const tokens2: CodonToken[] = [
-        { text: 'ATG', position: 0, line: 1 },
-        { text: 'ACA', position: 3, line: 1 }, // transform-heavy
-        { text: 'ACA', position: 6, line: 1 },
-        { text: 'ACA', position: 9, line: 1 },
-        { text: 'TAA', position: 12, line: 1 },
+        { text: "ATG", position: 0, line: 1 },
+        { text: "ACA", position: 3, line: 1 }, // transform-heavy
+        { text: "ACA", position: 6, line: 1 },
+        { text: "ACA", position: 9, line: 1 },
+        { text: "TAA", position: 12, line: 1 },
       ];
 
       const analysis1 = analyzeCodonUsage(tokens1);
@@ -180,60 +182,60 @@ describe('CodonAnalyzer', () => {
     });
   });
 
-  describe('formatAnalysis', () => {
-    it('should produce readable text output', () => {
+  describe("formatAnalysis", () => {
+    it("should produce readable text output", () => {
       const tokens: CodonToken[] = [
-        { text: 'ATG', position: 0, line: 1 },
-        { text: 'GGA', position: 3, line: 1 },
-        { text: 'CCA', position: 6, line: 1 },
-        { text: 'TAA', position: 9, line: 1 },
+        { text: "ATG", position: 0, line: 1 },
+        { text: "GGA", position: 3, line: 1 },
+        { text: "CCA", position: 6, line: 1 },
+        { text: "TAA", position: 9, line: 1 },
       ];
 
       const analysis = analyzeCodonUsage(tokens);
       const formatted = formatAnalysis(analysis);
 
-      expect(formatted).toContain('Total Codons: 4');
-      expect(formatted).toContain('GC Content:');
-      expect(formatted).toContain('Top 5 Codons:');
-      expect(formatted).toContain('Opcode Family Distribution:');
-      expect(formatted).toContain('Genome Signature:');
+      expect(formatted).toContain("Total Codons: 4");
+      expect(formatted).toContain("GC Content:");
+      expect(formatted).toContain("Top 5 Codons:");
+      expect(formatted).toContain("Opcode Family Distribution:");
+      expect(formatted).toContain("Genome Signature:");
     });
   });
 
-  describe('Real-world genome examples', () => {
-    it('should analyze a simple circle genome', () => {
+  describe("Real-world genome examples", () => {
+    it("should analyze a simple circle genome", () => {
       const tokens: CodonToken[] = [
-        { text: 'ATG', position: 0, line: 1 },   // START
-        { text: 'GAA', position: 3, line: 1 },   // PUSH
-        { text: 'AGG', position: 6, line: 1 },   // literal: 10
-        { text: 'GGA', position: 9, line: 1 },   // CIRCLE
-        { text: 'TAA', position: 12, line: 1 },  // STOP
+        { text: "ATG", position: 0, line: 1 }, // START
+        { text: "GAA", position: 3, line: 1 }, // PUSH
+        { text: "AGG", position: 6, line: 1 }, // literal: 10
+        { text: "GGA", position: 9, line: 1 }, // CIRCLE
+        { text: "TAA", position: 12, line: 1 }, // STOP
       ];
 
       const analysis = analyzeCodonUsage(tokens);
 
       expect(analysis.totalCodons).toBe(5);
-      expect(analysis.opcodeDistribution.get('CIRCLE')).toBe(1);
-      expect(analysis.opcodeDistribution.get('PUSH')).toBe(1);
+      expect(analysis.opcodeDistribution.get("CIRCLE")).toBe(1);
+      expect(analysis.opcodeDistribution.get("PUSH")).toBe(1);
       expect(analysis.opcodeFamilies.drawing).toBeGreaterThan(0);
       expect(analysis.opcodeFamilies.stack).toBeGreaterThan(0);
     });
 
-    it('should analyze a complex multi-shape genome', () => {
+    it("should analyze a complex multi-shape genome", () => {
       const tokens: CodonToken[] = [
-        { text: 'ATG', position: 0, line: 1 },   // START
-        { text: 'GAA', position: 3, line: 1 },   // PUSH
-        { text: 'CCC', position: 6, line: 1 },   // literal
-        { text: 'GGA', position: 9, line: 1 },   // CIRCLE
-        { text: 'GAA', position: 12, line: 1 },  // PUSH
-        { text: 'CCC', position: 15, line: 1 },  // literal
-        { text: 'GAA', position: 18, line: 1 },  // PUSH
-        { text: 'AAA', position: 21, line: 1 },  // literal
-        { text: 'ACA', position: 24, line: 1 },  // TRANSLATE
-        { text: 'GAA', position: 27, line: 1 },  // PUSH
-        { text: 'AGG', position: 30, line: 1 },  // literal
-        { text: 'CCA', position: 33, line: 1 },  // RECT
-        { text: 'TAA', position: 36, line: 1 },  // STOP
+        { text: "ATG", position: 0, line: 1 }, // START
+        { text: "GAA", position: 3, line: 1 }, // PUSH
+        { text: "CCC", position: 6, line: 1 }, // literal
+        { text: "GGA", position: 9, line: 1 }, // CIRCLE
+        { text: "GAA", position: 12, line: 1 }, // PUSH
+        { text: "CCC", position: 15, line: 1 }, // literal
+        { text: "GAA", position: 18, line: 1 }, // PUSH
+        { text: "AAA", position: 21, line: 1 }, // literal
+        { text: "ACA", position: 24, line: 1 }, // TRANSLATE
+        { text: "GAA", position: 27, line: 1 }, // PUSH
+        { text: "AGG", position: 30, line: 1 }, // literal
+        { text: "CCA", position: 33, line: 1 }, // RECT
+        { text: "TAA", position: 36, line: 1 }, // STOP
       ];
 
       const analysis = analyzeCodonUsage(tokens);

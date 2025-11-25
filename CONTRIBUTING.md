@@ -79,6 +79,7 @@ git checkout -b feature/your-feature-name
 ```
 
 Branch naming conventions:
+
 - `feature/` - New features or enhancements
 - `fix/` - Bug fixes
 - `docs/` - Documentation changes
@@ -156,7 +157,7 @@ export function tokenize(source: string): CodonToken[] {
   const cleaned = cleanSource(source);
 
   if (cleaned.length % 3 !== 0) {
-    throw new ParseError('Invalid reading frame', cleaned.length);
+    throw new ParseError("Invalid reading frame", cleaned.length);
   }
 
   return chunkIntoCodons(cleaned);
@@ -175,20 +176,20 @@ export function tokenize(source: string): CodonToken[] {
 ### Test Organization
 
 ```typescript
-import { describe, test, expect } from 'vitest';
-import { CodonLexer } from '../src/lexer/codon-lexer';
+import { describe, expect, test } from "vitest";
+import { CodonLexer } from "../src/lexer/codon-lexer";
 
-describe('CodonLexer', () => {
-  describe('tokenize', () => {
-    test('handles valid triplets', () => {
+describe("CodonLexer", () => {
+  describe("tokenize", () => {
+    test("handles valid triplets", () => {
       const lexer = new CodonLexer();
-      const result = lexer.tokenize('ATG GGA TAA');
+      const result = lexer.tokenize("ATG GGA TAA");
       expect(result).toHaveLength(3);
     });
 
-    test('throws on invalid frame', () => {
+    test("throws on invalid frame", () => {
       const lexer = new CodonLexer();
-      expect(() => lexer.tokenize('ATG GG')).toThrow('Invalid reading frame');
+      expect(() => lexer.tokenize("ATG GG")).toThrow("Invalid reading frame");
     });
   });
 });
@@ -215,6 +216,7 @@ npm run typecheck && npm run test
 ### Performance Standards
 
 CodonCanvas maintains high performance standards:
+
 - Lexer overhead: <1% of total execution time
 - VM throughput: >70,000 codons/sec (simple) or >300,000 codons/sec (complex)
 - Educational genomes (10-500 codons): <10ms execution time
@@ -269,6 +271,7 @@ diff before.txt after.txt
 ```
 
 **Types:**
+
 - `feat`: New feature
 - `fix`: Bug fix
 - `docs`: Documentation changes
@@ -278,6 +281,7 @@ diff before.txt after.txt
 - `chore`: Build process or auxiliary tool changes
 
 **Example:**
+
 ```
 feat(vm): Add SWAP opcode for stack manipulation
 
@@ -299,31 +303,37 @@ When creating a PR, include:
 
 ```markdown
 ## Description
+
 [Clear description of changes]
 
 ## Type of Change
+
 - [ ] Bug fix (non-breaking change fixing an issue)
 - [ ] New feature (non-breaking change adding functionality)
 - [ ] Breaking change (fix or feature causing existing functionality to change)
 - [ ] Documentation update
 
 ## Testing
+
 - [ ] Tests pass locally (`npm run test`)
 - [ ] Type checking passes (`npm run typecheck`)
 - [ ] New tests added for new functionality
 - [ ] Manual testing completed
 
 ## Performance Impact
+
 - [ ] No performance impact
 - [ ] Performance improved (include benchmark results)
 - [ ] Performance regression acceptable (explain why)
 
 ## Documentation
+
 - [ ] JSDoc comments added/updated
 - [ ] README.md updated (if needed)
 - [ ] CHANGELOG.md updated (if needed)
 
 ## Screenshots (if applicable)
+
 [Include before/after screenshots for visual changes]
 ```
 
@@ -345,6 +355,7 @@ Clear and concise description of the bug.
 
 **To Reproduce**
 Steps to reproduce:
+
 1. Open playground
 2. Enter genome: `ATG GGA TAA`
 3. Click run
@@ -358,9 +369,10 @@ What actually happened.
 
 **Genome (if applicable)**
 ```
-ATG GGA TAA
-```
 
+ATG GGA TAA
+
+```
 **Environment**
 - Browser: [e.g., Chrome 120]
 - OS: [e.g., macOS 14]
@@ -451,7 +463,7 @@ TAA               ; Stop
 
 All public APIs must include JSDoc:
 
-```typescript
+````typescript
 /**
  * Execute a single opcode instruction.
  *
@@ -470,7 +482,7 @@ All public APIs must include JSDoc:
 execute(opcode: Opcode, codon: Codon): void {
   // Implementation
 }
-```
+````
 
 ## Questions?
 
@@ -485,6 +497,7 @@ By contributing, you agree that your contributions will be licensed under the sa
 ## Recognition
 
 Contributors will be recognized in:
+
 - GitHub contributors list
 - CHANGELOG.md (for significant contributions)
 - Special thanks section in README (for major features)

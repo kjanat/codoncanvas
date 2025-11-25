@@ -1,4 +1,4 @@
-import { Base, Codon, CodonToken, ParseError } from './types';
+import { Base, type Codon, type CodonToken, type ParseError } from "./types";
 
 /**
  * Lexer interface for CodonCanvas genome parsing.
@@ -47,7 +47,7 @@ export interface Lexer {
  * ```
  */
 export class CodonLexer implements Lexer {
-  private readonly validBases = new Set<string>(['A', 'C', 'G', 'T', 'U']);
+  private readonly validBases = new Set<string>(["A", "C", "G", "T", "U"]);
 
   /**
    * Tokenize source genome into codons.
@@ -72,32 +72,40 @@ export class CodonLexer implements Lexer {
    */
   tokenize(source: string): CodonToken[] {
     // Track line numbers for error reporting
-    const lines = source.split('\n');
-    let cleanedSource = '';
+    const lines = source.split("\n");
+    let cleanedSource = "";
     const positionMap: Array<{ line: number; column: number }> = [];
 
     // Strip comments and track positions
     for (let lineIdx = 0; lineIdx < lines.length; lineIdx++) {
       const line = lines[lineIdx];
-      const commentIdx = line.indexOf(';');
+      const commentIdx = line.indexOf(";");
       const codeLine = commentIdx >= 0 ? line.slice(0, commentIdx) : line;
 
       for (let charIdx = 0; charIdx < codeLine.length; charIdx++) {
         const char = codeLine[charIdx];
         if (this.validBases.has(char)) {
           // Normalize U→T (RNA to DNA notation)
-          const normalizedChar = char === 'U' ? 'T' : char;
+          const normalizedChar = char === "U" ? "T" : char;
           cleanedSource += normalizedChar;
           positionMap.push({ line: lineIdx + 1, column: charIdx });
-        } else if (char.trim() !== '') {
-          throw new Error(`Invalid character '${char}' at line ${lineIdx + 1}, column ${charIdx}`);
+        } else if (char.trim() !== "") {
+          throw new Error(
+            `Invalid character '${char}' at line ${
+              lineIdx + 1
+            }, column ${charIdx}`,
+          );
         }
       }
     }
 
     // Check for non-triplet length
     if (cleanedSource.length % 3 !== 0) {
-      throw new Error(`Source length ${cleanedSource.length} is not divisible by 3. Missing ${3 - (cleanedSource.length % 3)} bases for complete codon.`);
+      throw new Error(
+        `Source length ${cleanedSource.length} is not divisible by 3. Missing ${
+          3 - (cleanedSource.length % 3)
+        } bases for complete codon.`,
+      );
     }
 
     // Chunk into triplets
@@ -107,7 +115,7 @@ export class CodonLexer implements Lexer {
       tokens.push({
         text: codonText as Codon,
         position: i,
-        line: positionMap[i]?.line || 1
+        line: positionMap[i]?.line || 1,
       });
     }
 
@@ -132,11 +140,11 @@ export class CodonLexer implements Lexer {
    */
   validateFrame(source: string): ParseError[] {
     const errors: ParseError[] = [];
-    const lines = source.split('\n');
+    const lines = source.split("\n");
 
     for (let lineIdx = 0; lineIdx < lines.length; lineIdx++) {
       const line = lines[lineIdx];
-      const commentIdx = line.indexOf(';');
+      const commentIdx = line.indexOf(";");
       const codeLine = commentIdx >= 0 ? line.slice(0, commentIdx) : line;
 
       // Check for mid-triplet whitespace breaks
@@ -145,14 +153,16 @@ export class CodonLexer implements Lexer {
         const char = codeLine[charIdx];
         if (this.validBases.has(char)) {
           baseCount++;
-        } else if (char.trim() === '') {
+        } else if (char.trim() === "") {
           // Whitespace detected
           if (baseCount % 3 !== 0) {
             errors.push({
-              message: `Mid-triplet break detected at line ${lineIdx + 1}. ${baseCount % 3} base(s) before whitespace.`,
+              message: `Mid-triplet break detected at line ${lineIdx + 1}. ${
+                baseCount % 3
+              } base(s) before whitespace.`,
               position: charIdx,
-              severity: 'warning',
-              fix: 'Remove whitespace or complete the codon'
+              severity: "warning",
+              fix: "Remove whitespace or complete the codon",
             });
           }
         }
@@ -190,17 +200,17 @@ export class CodonLexer implements Lexer {
     }
 
     // Check for START codon
-    if (tokens[0].text !== 'ATG') {
+    if (tokens[0].text !== "ATG") {
       errors.push({
-        message: 'Program should begin with START codon (ATG)',
+        message: "Program should begin with START codon (ATG)",
         position: 0,
-        severity: 'error',
-        fix: 'Add ATG at the beginning'
+        severity: "error",
+        fix: "Add ATG at the beginning",
       });
     }
 
     // Check for STOP codons
-    const stopCodons = new Set(['TAA', 'TAG', 'TGA']);
+    const stopCodons = new Set(["TAA", "TAG", "TGA"]);
     let firstStopIdx = -1;
 
     for (let i = 0; i < tokens.length; i++) {
@@ -210,13 +220,13 @@ export class CodonLexer implements Lexer {
         if (firstStopIdx === -1) {
           firstStopIdx = i;
         }
-      } else if (firstStopIdx >= 0 && token.text === 'ATG') {
+      } else if (firstStopIdx >= 0 && token.text === "ATG") {
         // START after STOP
         errors.push({
           message: `START codon after STOP at position ${i}`,
           position: token.position,
-          severity: 'warning',
-          fix: 'Remove unreachable code after STOP'
+          severity: "warning",
+          fix: "Remove unreachable code after STOP",
         });
       }
     }
@@ -224,10 +234,10 @@ export class CodonLexer implements Lexer {
     // Check if program ends with STOP
     if (tokens.length > 0 && !stopCodons.has(tokens[tokens.length - 1].text)) {
       errors.push({
-        message: 'Program should end with STOP codon (TAA, TAG, or TGA)',
+        message: "Program should end with STOP codon (TAA, TAG, or TGA)",
         position: tokens[tokens.length - 1].position,
-        severity: 'warning',
-        fix: 'Add TAA at the end'
+        severity: "warning",
+        fix: "Add TAA at the end",
       });
     }
 

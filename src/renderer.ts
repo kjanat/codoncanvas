@@ -10,8 +10,8 @@ class SeededRandom {
   constructor(seed: number) {
     this.state = seed % 2147483647;
     if (this.state <= 0) {
-this.state += 2147483646;
-}
+      this.state += 2147483646;
+    }
   }
 
   next(): number {
@@ -73,7 +73,12 @@ export interface Renderer {
   setColor(h: number, s: number, l: number): void;
 
   /** Get current transform state for VM tracking */
-  getCurrentTransform(): { x: number; y: number; rotation: number; scale: number };
+  getCurrentTransform(): {
+    x: number;
+    y: number;
+    rotation: number;
+    scale: number;
+  };
 
   /** Export canvas as data URL (for image download) */
   toDataURL(): string;
@@ -103,9 +108,9 @@ export class Canvas2DRenderer implements Renderer {
   readonly height: number;
 
   constructor(canvas: HTMLCanvasElement) {
-    const context = canvas.getContext('2d');
+    const context = canvas.getContext("2d");
     if (!context) {
-      throw new Error('Could not get 2D context from canvas');
+      throw new Error("Could not get 2D context from canvas");
     }
     this.ctx = context;
     this.width = canvas.width;
@@ -244,12 +249,17 @@ export class Canvas2DRenderer implements Renderer {
     this.ctx.strokeStyle = color;
   }
 
-  getCurrentTransform(): { x: number; y: number; rotation: number; scale: number } {
+  getCurrentTransform(): {
+    x: number;
+    y: number;
+    rotation: number;
+    scale: number;
+  } {
     return {
       x: this.currentX,
       y: this.currentY,
       rotation: this.currentRotation,
-      scale: this.currentScale
+      scale: this.currentScale,
     };
   }
 

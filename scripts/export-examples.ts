@@ -4,11 +4,11 @@
  * Creates examples/ directory with all 18 examples
  */
 
-import { examples } from '../src/examples';
-import { writeFileSync, mkdirSync } from 'fs';
-import { join } from 'path';
+import { mkdirSync, writeFileSync } from "fs";
+import { join } from "path";
+import { examples } from "../src/examples";
 
-const OUTPUT_DIR = 'examples';
+const OUTPUT_DIR = "examples";
 const README_TEMPLATE = `# CodonCanvas Example Programs
 
 This directory contains 18 ready-to-use genome files for CodonCanvas.
@@ -27,7 +27,7 @@ This directory contains 18 ready-to-use genome files for CodonCanvas.
 // Ensure output directory exists
 mkdirSync(OUTPUT_DIR, { recursive: true });
 
-console.log('📦 Exporting CodonCanvas examples...\n');
+console.log("📦 Exporting CodonCanvas examples...\n");
 
 // Export each example
 let count = 0;
@@ -46,13 +46,13 @@ for (const [key, example] of Object.entries(examples)) {
   const content = `; ${example.title}
 ; ${example.description}
 ; Difficulty: ${example.difficulty}
-; Concepts: ${example.concepts.join(', ')}
-; Good for mutations: ${example.goodForMutations.join(', ')}
+; Concepts: ${example.concepts.join(", ")}
+; Good for mutations: ${example.goodForMutations.join(", ")}
 
 ${example.genome}
 `;
 
-  writeFileSync(filepath, content, 'utf-8');
+  writeFileSync(filepath, content, "utf-8");
   count++;
 
   metadataList.push({
@@ -66,18 +66,22 @@ ${example.genome}
 }
 
 // Group by difficulty
-const beginner = metadataList.filter(e => e.difficulty === 'beginner');
-const intermediate = metadataList.filter(e => e.difficulty === 'intermediate');
-const advanced = metadataList.filter(e => e.difficulty === 'advanced');
+const beginner = metadataList.filter((e) => e.difficulty === "beginner");
+const intermediate = metadataList.filter(
+  (e) => e.difficulty === "intermediate",
+);
+const advanced = metadataList.filter((e) => e.difficulty === "advanced");
 
 // Generate README
 let readme = README_TEMPLATE;
 
-readme += beginner.map(e => `- **${e.key}.genome** - ${e.title}`).join('\n');
-readme += '\n\n### Intermediate (' + intermediate.length + ' examples)\n';
-readme += intermediate.map(e => `- **${e.key}.genome** - ${e.title}`).join('\n');
-readme += '\n\n### Advanced (' + advanced.length + ' examples)\n';
-readme += advanced.map(e => `- **${e.key}.genome** - ${e.title}`).join('\n');
+readme += beginner.map((e) => `- **${e.key}.genome** - ${e.title}`).join("\n");
+readme += "\n\n### Intermediate (" + intermediate.length + " examples)\n";
+readme += intermediate
+  .map((e) => `- **${e.key}.genome** - ${e.title}`)
+  .join("\n");
+readme += "\n\n### Advanced (" + advanced.length + " examples)\n";
+readme += advanced.map((e) => `- **${e.key}.genome** - ${e.title}`).join("\n");
 
 readme += `
 
@@ -105,8 +109,10 @@ Try \`helloCircle.genome\` first - minimal example that draws a circle.
 For classroom use, see EDUCATORS.md for lesson plans and mutation activities.
 `;
 
-writeFileSync(join(OUTPUT_DIR, 'README.md'), readme, 'utf-8');
+writeFileSync(join(OUTPUT_DIR, "README.md"), readme, "utf-8");
 
 console.log(`\n✅ Exported ${count} examples to ${OUTPUT_DIR}/`);
-console.log('✅ Generated examples/README.md');
-console.log('\n📝 Next: Run `npm run zip-examples` to create distribution archive');
+console.log("✅ Generated examples/README.md");
+console.log(
+  "\n📝 Next: Run `npm run zip-examples` to create distribution archive",
+);

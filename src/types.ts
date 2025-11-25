@@ -9,7 +9,7 @@
  * - RNA: Adenine, Cytosine, Guanine, Uracil
  * Note: U and T are treated as synonyms (both map to same codons).
  */
-export type Base = 'A' | 'C' | 'G' | 'T' | 'U';
+export type Base = "A" | "C" | "G" | "T" | "U";
 
 /**
  * Three-character DNA/RNA triplet (codon).
@@ -41,7 +41,7 @@ export interface ParseError {
   /** Character position where error occurred */
   position: number;
   /** Error severity level */
-  severity: 'error' | 'warning' | 'info';
+  severity: "error" | "warning" | "info";
   /** Optional suggested fix for linter UI */
   fix?: string;
 }
@@ -83,8 +83,8 @@ export enum Opcode {
   MUL,
   DIV,
   LOOP,
-  EQ,   // Comparison: equal
-  LT,   // Comparison: less than
+  EQ, // Comparison: equal
+  LT, // Comparison: less than
 }
 
 /**
@@ -138,47 +138,84 @@ export interface VMState {
  */
 export const CODON_MAP: Record<string, Opcode> = {
   // Control Flow
-  'ATG': Opcode.START,
-  'TAA': Opcode.STOP,
-  'TAG': Opcode.STOP,
-  'TGA': Opcode.STOP,
+  ATG: Opcode.START,
+  TAA: Opcode.STOP,
+  TAG: Opcode.STOP,
+  TGA: Opcode.STOP,
 
   // Drawing Primitives
-  'GGA': Opcode.CIRCLE, 'GGC': Opcode.CIRCLE, 'GGG': Opcode.CIRCLE, 'GGT': Opcode.CIRCLE,
-  'CCA': Opcode.RECT, 'CCC': Opcode.RECT, 'CCG': Opcode.RECT, 'CCT': Opcode.RECT,
-  'AAA': Opcode.LINE, 'AAC': Opcode.LINE, 'AAG': Opcode.LINE, 'AAT': Opcode.LINE,
-  'GCA': Opcode.TRIANGLE, 'GCC': Opcode.TRIANGLE, 'GCG': Opcode.TRIANGLE, 'GCT': Opcode.TRIANGLE,
-  'GTA': Opcode.ELLIPSE, 'GTC': Opcode.ELLIPSE, 'GTG': Opcode.ELLIPSE, 'GTT': Opcode.ELLIPSE,
+  GGA: Opcode.CIRCLE,
+  GGC: Opcode.CIRCLE,
+  GGG: Opcode.CIRCLE,
+  GGT: Opcode.CIRCLE,
+  CCA: Opcode.RECT,
+  CCC: Opcode.RECT,
+  CCG: Opcode.RECT,
+  CCT: Opcode.RECT,
+  AAA: Opcode.LINE,
+  AAC: Opcode.LINE,
+  AAG: Opcode.LINE,
+  AAT: Opcode.LINE,
+  GCA: Opcode.TRIANGLE,
+  GCC: Opcode.TRIANGLE,
+  GCG: Opcode.TRIANGLE,
+  GCT: Opcode.TRIANGLE,
+  GTA: Opcode.ELLIPSE,
+  GTC: Opcode.ELLIPSE,
+  GTG: Opcode.ELLIPSE,
+  GTT: Opcode.ELLIPSE,
 
   // Transform Operations
-  'ACA': Opcode.TRANSLATE, 'ACC': Opcode.TRANSLATE, 'ACG': Opcode.TRANSLATE, 'ACT': Opcode.TRANSLATE,
-  'AGA': Opcode.ROTATE, 'AGC': Opcode.ROTATE, 'AGG': Opcode.ROTATE, 'AGT': Opcode.ROTATE,
-  'CGA': Opcode.SCALE, 'CGC': Opcode.SCALE, 'CGG': Opcode.SCALE, 'CGT': Opcode.SCALE,
-  'TTA': Opcode.COLOR, 'TTC': Opcode.COLOR, 'TTG': Opcode.COLOR, 'TTT': Opcode.COLOR,
+  ACA: Opcode.TRANSLATE,
+  ACC: Opcode.TRANSLATE,
+  ACG: Opcode.TRANSLATE,
+  ACT: Opcode.TRANSLATE,
+  AGA: Opcode.ROTATE,
+  AGC: Opcode.ROTATE,
+  AGG: Opcode.ROTATE,
+  AGT: Opcode.ROTATE,
+  CGA: Opcode.SCALE,
+  CGC: Opcode.SCALE,
+  CGG: Opcode.SCALE,
+  CGT: Opcode.SCALE,
+  TTA: Opcode.COLOR,
+  TTC: Opcode.COLOR,
+  TTG: Opcode.COLOR,
+  TTT: Opcode.COLOR,
 
   // Stack Operations
-  'GAA': Opcode.PUSH, 'GAG': Opcode.PUSH, 'GAC': Opcode.PUSH, 'GAT': Opcode.PUSH,
-  'ATA': Opcode.DUP, 'ATC': Opcode.DUP, 'ATT': Opcode.DUP,
+  GAA: Opcode.PUSH,
+  GAG: Opcode.PUSH,
+  GAC: Opcode.PUSH,
+  GAT: Opcode.PUSH,
+  ATA: Opcode.DUP,
+  ATC: Opcode.DUP,
+  ATT: Opcode.DUP,
 
   // Utility
-  'CAC': Opcode.NOP,
-  'TAC': Opcode.POP, 'TAT': Opcode.POP, 'TGC': Opcode.POP,
+  CAC: Opcode.NOP,
+  TAC: Opcode.POP,
+  TAT: Opcode.POP,
+  TGC: Opcode.POP,
 
   // Advanced Operations
-  'TGG': Opcode.SWAP, 'TGT': Opcode.SWAP,
-  'TCA': Opcode.SAVE_STATE, 'TCC': Opcode.SAVE_STATE,
-  'TCG': Opcode.RESTORE_STATE, 'TCT': Opcode.RESTORE_STATE,
+  TGG: Opcode.SWAP,
+  TGT: Opcode.SWAP,
+  TCA: Opcode.SAVE_STATE,
+  TCC: Opcode.SAVE_STATE,
+  TCG: Opcode.RESTORE_STATE,
+  TCT: Opcode.RESTORE_STATE,
 
   // Arithmetic Operations
-  'CTG': Opcode.ADD,
-  'CAG': Opcode.SUB,
-  'CTT': Opcode.MUL,
-  'CAT': Opcode.DIV,
+  CTG: Opcode.ADD,
+  CAG: Opcode.SUB,
+  CTT: Opcode.MUL,
+  CAT: Opcode.DIV,
 
   // Comparison Operations
-  'CTA': Opcode.EQ,  // Equality comparison [a, b] → [1 if a==b else 0]
-  'CTC': Opcode.LT,  // Less than comparison [a, b] → [1 if a<b else 0]
+  CTA: Opcode.EQ, // Equality comparison [a, b] → [1 if a==b else 0]
+  CTC: Opcode.LT, // Less than comparison [a, b] → [1 if a<b else 0]
 
   // Control Flow Operations
-  'CAA': Opcode.LOOP,
+  CAA: Opcode.LOOP,
 };

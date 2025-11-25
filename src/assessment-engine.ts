@@ -14,18 +14,18 @@
  * - Educator dashboards showing class performance
  */
 
-import { Codon, CODON_MAP, Opcode } from './types';
 import {
-  MutationType,
-  MutationResult,
-  applySilentMutation,
+  applyDeletion,
+  applyFrameshiftMutation,
+  applyInsertion,
   applyMissenseMutation,
   applyNonsenseMutation,
   applyPointMutation,
-  applyInsertion,
-  applyDeletion,
-  applyFrameshiftMutation,
-} from './mutations';
+  applySilentMutation,
+  type MutationResult,
+  type MutationType,
+} from "./mutations";
+import { type Codon, CODON_MAP, Opcode } from "./types";
 
 /**
  * Difficulty level for generated challenges.
@@ -33,7 +33,7 @@ import {
  * - medium: Subtle differences requiring analysis
  * - hard: Complex scenarios with multiple mutations
  */
-export type DifficultyLevel = 'easy' | 'medium' | 'hard';
+export type DifficultyLevel = "easy" | "medium" | "hard";
 
 /**
  * A mutation identification challenge for students.
@@ -115,17 +115,17 @@ export class AssessmentEngine {
 
     // Frameshift: length change not divisible by 3
     if (lengthDiff > 0 && lengthDiff % 3 !== 0) {
-      return 'frameshift';
+      return "frameshift";
     }
 
     // Insertion: added bases (divisible by 3)
     if (mutClean.length > origClean.length && lengthDiff % 3 === 0) {
-      return 'insertion';
+      return "insertion";
     }
 
     // Deletion: removed bases (divisible by 3)
     if (mutClean.length < origClean.length && lengthDiff % 3 === 0) {
-      return 'deletion';
+      return "deletion";
     }
 
     // Point mutation: same length, identify type
@@ -152,7 +152,9 @@ export class AssessmentEngine {
     const mutationResult = this.applyMutationByType(original, mutationType);
 
     // Generate hint based on difficulty
-    const hint = difficulty === 'hard' ? undefined : this.generateHint(mutationType, difficulty);
+    const hint = difficulty === "hard"
+      ? undefined
+      : this.generateHint(mutationType, difficulty);
 
     return {
       id,
@@ -173,7 +175,10 @@ export class AssessmentEngine {
    * @param response - Student's answer (mutation type)
    * @returns Assessment result with feedback
    */
-  scoreResponse(challenge: Challenge, response: MutationType): AssessmentResult {
+  scoreResponse(
+    challenge: Challenge,
+    response: MutationType,
+  ): AssessmentResult {
     const correct = response === challenge.correctAnswer;
 
     const feedback = correct
@@ -198,8 +203,10 @@ export class AssessmentEngine {
    */
   calculateProgress(results: AssessmentResult[]): StudentProgress {
     const totalAttempts = results.length;
-    const correctAnswers = results.filter(r => r.correct).length;
-    const accuracy = totalAttempts > 0 ? (correctAnswers / totalAttempts) * 100 : 0;
+    const correctAnswers = results.filter((r) => r.correct).length;
+    const accuracy = totalAttempts > 0
+      ? (correctAnswers / totalAttempts) * 100
+      : 0;
 
     // Initialize tracking structures
     const byType: Record<MutationType, { correct: number; total: number }> = {
@@ -212,7 +219,10 @@ export class AssessmentEngine {
       frameshift: { correct: 0, total: 0 },
     };
 
-    const byDifficulty: Record<DifficultyLevel, { correct: number; total: number }> = {
+    const byDifficulty: Record<
+      DifficultyLevel,
+      { correct: number; total: number }
+    > = {
       easy: { correct: 0, total: 0 },
       medium: { correct: 0, total: 0 },
       hard: { correct: 0, total: 0 },
@@ -247,21 +257,24 @@ export class AssessmentEngine {
    * Apply mutation by type (dispatch to specific mutation functions).
    * @internal
    */
-  private applyMutationByType(genome: string, type: MutationType): MutationResult {
+  private applyMutationByType(
+    genome: string,
+    type: MutationType,
+  ): MutationResult {
     switch (type) {
-      case 'silent':
+      case "silent":
         return applySilentMutation(genome);
-      case 'missense':
+      case "missense":
         return applyMissenseMutation(genome);
-      case 'nonsense':
+      case "nonsense":
         return applyNonsenseMutation(genome);
-      case 'point':
+      case "point":
         return applyPointMutation(genome);
-      case 'insertion':
+      case "insertion":
         return applyInsertion(genome, undefined, 3); // Insert 3 bases (no frameshift)
-      case 'deletion':
+      case "deletion":
         return applyDeletion(genome, undefined, 3); // Delete 3 bases (no frameshift)
-      case 'frameshift':
+      case "frameshift":
         return applyFrameshiftMutation(genome); // Will insert/delete 1-2 bases
       default:
         throw new Error(`Unknown mutation type: ${type}`);
@@ -274,10 +287,10 @@ export class AssessmentEngine {
    */
   private cleanGenome(genome: string): string {
     return genome
-      .split('\n')
-      .map(line => line.split(';')[0])
-      .join('')
-      .replace(/\s+/g, '')
+      .split("\n")
+      .map((line) => line.split(";")[0])
+      .join("")
+      .replace(/\s+/g, "")
       .toUpperCase();
   }
 
@@ -286,7 +299,10 @@ export class AssessmentEngine {
    * Assumes genomes have same length.
    * @internal
    */
-  private identifyPointMutation(original: string, mutated: string): MutationType {
+  private identifyPointMutation(
+    original: string,
+    mutated: string,
+  ): MutationType {
     // Find changed codon
     for (let i = 0; i < original.length; i += 3) {
       const origCodon = original.slice(i, i + 3) as Codon;
@@ -295,7 +311,7 @@ export class AssessmentEngine {
       if (origCodon !== mutCodon) {
         // Check if mutation introduces STOP codon
         if (this.isStopCodon(mutCodon) && !this.isStopCodon(origCodon)) {
-          return 'nonsense';
+          return "nonsense";
         }
 
         // Check if codons map to same opcode
@@ -303,15 +319,15 @@ export class AssessmentEngine {
         const mutOpcode = CODON_MAP[mutCodon];
 
         if (origOpcode === mutOpcode) {
-          return 'silent';
+          return "silent";
         } else {
-          return 'missense';
+          return "missense";
         }
       }
     }
 
     // No differences found (shouldn't happen in valid challenge)
-    return 'silent';
+    return "silent";
   }
 
   /**
@@ -329,25 +345,28 @@ export class AssessmentEngine {
    */
   private generateBaseGenome(difficulty: DifficultyLevel): string {
     const lengths = {
-      easy: 5,    // 5 codons = 15 bases
-      medium: 8,  // 8 codons = 24 bases
-      hard: 12,   // 12 codons = 36 bases
+      easy: 5, // 5 codons = 15 bases
+      medium: 8, // 8 codons = 24 bases
+      hard: 12, // 12 codons = 36 bases
     };
 
     const codonCount = lengths[difficulty];
-    const codons: string[] = ['ATG']; // Always start with START
+    const codons: string[] = ["ATG"]; // Always start with START
 
     // Generate random valid codons
-    const validCodons = Object.keys(CODON_MAP).filter(c => c !== 'ATG' && !this.isStopCodon(c as Codon));
+    const validCodons = Object.keys(CODON_MAP).filter(
+      (c) => c !== "ATG" && !this.isStopCodon(c as Codon),
+    );
 
     for (let i = 1; i < codonCount - 1; i++) {
-      const randomCodon = validCodons[Math.floor(Math.random() * validCodons.length)];
+      const randomCodon =
+        validCodons[Math.floor(Math.random() * validCodons.length)];
       codons.push(randomCodon);
     }
 
-    codons.push('TAA'); // End with STOP
+    codons.push("TAA"); // End with STOP
 
-    return codons.join(' ');
+    return codons.join(" ");
   }
 
   /**
@@ -359,9 +378,16 @@ export class AssessmentEngine {
    */
   private selectMutationType(difficulty: DifficultyLevel): MutationType {
     const types: Record<DifficultyLevel, MutationType[]> = {
-      easy: ['silent', 'missense'],
-      medium: ['silent', 'missense', 'nonsense'],
-      hard: ['silent', 'missense', 'nonsense', 'frameshift', 'insertion', 'deletion'],
+      easy: ["silent", "missense"],
+      medium: ["silent", "missense", "nonsense"],
+      hard: [
+        "silent",
+        "missense",
+        "nonsense",
+        "frameshift",
+        "insertion",
+        "deletion",
+      ],
     };
 
     const available = types[difficulty];
@@ -372,28 +398,34 @@ export class AssessmentEngine {
    * Generate hint for challenge.
    * @internal
    */
-  private generateHint(mutationType: MutationType, difficulty: DifficultyLevel): string {
-    if (difficulty === 'easy') {
+  private generateHint(
+    mutationType: MutationType,
+    difficulty: DifficultyLevel,
+  ): string {
+    if (difficulty === "easy") {
       const hints: Record<MutationType, string> = {
-        silent: 'The output should look identical. Check if the opcodes are the same.',
-        missense: 'The output changed. Check if a different shape appeared.',
-        nonsense: 'The output is incomplete. Check if a STOP codon appeared early.',
-        point: 'Look for a single base change.',
-        insertion: 'Bases were added. Count the genome length.',
-        deletion: 'Bases were removed. Count the genome length.',
-        frameshift: 'The reading frame shifted. Count the bases added or removed.',
+        silent:
+          "The output should look identical. Check if the opcodes are the same.",
+        missense: "The output changed. Check if a different shape appeared.",
+        nonsense:
+          "The output is incomplete. Check if a STOP codon appeared early.",
+        point: "Look for a single base change.",
+        insertion: "Bases were added. Count the genome length.",
+        deletion: "Bases were removed. Count the genome length.",
+        frameshift:
+          "The reading frame shifted. Count the bases added or removed.",
       };
       return hints[mutationType];
     } else {
       // Medium difficulty: less specific hints
       const hints: Record<MutationType, string> = {
-        silent: 'Compare the visual outputs carefully.',
-        missense: 'Check if the functionality changed.',
-        nonsense: 'Does the program terminate early?',
-        point: 'Look for base substitutions.',
-        insertion: 'Did the genome get longer?',
-        deletion: 'Did the genome get shorter?',
-        frameshift: 'Is the length change divisible by 3?',
+        silent: "Compare the visual outputs carefully.",
+        missense: "Check if the functionality changed.",
+        nonsense: "Does the program terminate early?",
+        point: "Look for base substitutions.",
+        insertion: "Did the genome get longer?",
+        deletion: "Did the genome get shorter?",
+        frameshift: "Is the length change divisible by 3?",
       };
       return hints[mutationType];
     }
@@ -405,13 +437,20 @@ export class AssessmentEngine {
    */
   private generatePositiveFeedback(challenge: Challenge): string {
     const explanations: Record<MutationType, string> = {
-      silent: 'Correct! This is a silent mutation. The codon changed, but it still codes for the same opcode, so the output is identical.',
-      missense: 'Correct! This is a missense mutation. The codon changed to a different opcode, altering the visual output.',
-      nonsense: 'Correct! This is a nonsense mutation. A STOP codon was introduced, causing premature termination.',
-      point: 'Correct! This is a point mutation. A single base was substituted.',
-      insertion: 'Correct! This is an insertion. Bases were added (divisible by 3, so no frameshift).',
-      deletion: 'Correct! This is a deletion. Bases were removed (divisible by 3, so no frameshift).',
-      frameshift: 'Correct! This is a frameshift mutation. Bases were added or removed (not divisible by 3), scrambling the reading frame.',
+      silent:
+        "Correct! This is a silent mutation. The codon changed, but it still codes for the same opcode, so the output is identical.",
+      missense:
+        "Correct! This is a missense mutation. The codon changed to a different opcode, altering the visual output.",
+      nonsense:
+        "Correct! This is a nonsense mutation. A STOP codon was introduced, causing premature termination.",
+      point:
+        "Correct! This is a point mutation. A single base was substituted.",
+      insertion:
+        "Correct! This is an insertion. Bases were added (divisible by 3, so no frameshift).",
+      deletion:
+        "Correct! This is a deletion. Bases were removed (divisible by 3, so no frameshift).",
+      frameshift:
+        "Correct! This is a frameshift mutation. Bases were added or removed (not divisible by 3), scrambling the reading frame.",
     };
 
     return explanations[challenge.correctAnswer];
@@ -421,19 +460,29 @@ export class AssessmentEngine {
    * Generate corrective feedback for incorrect answer.
    * @internal
    */
-  private generateCorrectiveFeedback(challenge: Challenge, studentAnswer: MutationType): string {
+  private generateCorrectiveFeedback(
+    challenge: Challenge,
+    studentAnswer: MutationType,
+  ): string {
     const correct = challenge.correctAnswer;
 
-    const feedback = `Not quite. You answered "${studentAnswer}" but the correct answer is "${correct}". `;
+    const feedback =
+      `Not quite. You answered "${studentAnswer}" but the correct answer is "${correct}". `;
 
     const explanations: Record<MutationType, string> = {
-      silent: 'Silent mutations change the codon but not the opcode (same output).',
-      missense: 'Missense mutations change the codon to a different opcode (different output).',
-      nonsense: 'Nonsense mutations introduce a STOP codon, causing premature termination.',
-      point: 'Point mutations are single base substitutions.',
-      insertion: 'Insertions add bases. If divisible by 3, no frameshift occurs.',
-      deletion: 'Deletions remove bases. If divisible by 3, no frameshift occurs.',
-      frameshift: 'Frameshifts occur when bases added/removed are NOT divisible by 3, scrambling downstream codons.',
+      silent:
+        "Silent mutations change the codon but not the opcode (same output).",
+      missense:
+        "Missense mutations change the codon to a different opcode (different output).",
+      nonsense:
+        "Nonsense mutations introduce a STOP codon, causing premature termination.",
+      point: "Point mutations are single base substitutions.",
+      insertion:
+        "Insertions add bases. If divisible by 3, no frameshift occurs.",
+      deletion:
+        "Deletions remove bases. If divisible by 3, no frameshift occurs.",
+      frameshift:
+        "Frameshifts occur when bases added/removed are NOT divisible by 3, scrambling downstream codons.",
     };
 
     return feedback + explanations[correct];

@@ -55,14 +55,21 @@ export interface ResearchSession {
 
 export interface MutationEvent {
   timestamp: number;
-  type: 'silent' | 'missense' | 'nonsense' | 'frameshift' | 'point' | 'insertion' | 'deletion';
+  type:
+    | "silent"
+    | "missense"
+    | "nonsense"
+    | "frameshift"
+    | "point"
+    | "insertion"
+    | "deletion";
   genomeLengthBefore: number;
   genomeLengthAfter: number;
 }
 
 export interface ExecutionEvent {
   timestamp: number;
-  renderMode: 'visual' | 'audio' | 'both';
+  renderMode: "visual" | "audio" | "both";
   genomeLength: number;
   instructionCount: number;
   success: boolean;
@@ -71,8 +78,8 @@ export interface ExecutionEvent {
 
 export interface FeatureEvent {
   timestamp: number;
-  feature: 'diffViewer' | 'timeline' | 'evolution' | 'assessment' | 'export';
-  action: 'open' | 'close' | 'interact';
+  feature: "diffViewer" | "timeline" | "evolution" | "assessment" | "export";
+  action: "open" | "close" | "interact";
 }
 
 export interface ResearchMetricsOptions {
@@ -92,14 +99,14 @@ export class ResearchMetrics {
   private options: ResearchMetricsOptions;
   private currentSession: ResearchSession | null = null;
   private autoSaveTimer: number | null = null;
-  private readonly STORAGE_KEY = 'codoncanvas_research_sessions';
+  private readonly STORAGE_KEY = "codoncanvas_research_sessions";
 
   constructor(options: Partial<ResearchMetricsOptions> = {}) {
     this.options = {
       enabled: false, // Disabled by default (opt-in)
       maxSessions: 100, // Store up to 100 sessions
       autoSaveInterval: 30000, // Auto-save every 30 seconds
-      ...options
+      ...options,
     };
 
     // Load existing data if enabled
@@ -153,7 +160,7 @@ export class ResearchMetrics {
         timeline: 0,
         evolution: 0,
         assessment: 0,
-        export: 0
+        export: 0,
       },
       timeToFirstArtifact: null,
       errors: [],
@@ -164,8 +171,8 @@ export class ResearchMetrics {
         frameshift: 0,
         point: 0,
         insertion: 0,
-        deletion: 0
-      }
+        deletion: 0,
+      },
     };
 
     // Start auto-save timer
@@ -179,7 +186,8 @@ export class ResearchMetrics {
     if (!this.currentSession) return;
 
     this.currentSession.endTime = Date.now();
-    this.currentSession.duration = this.currentSession.endTime - this.currentSession.startTime;
+    this.currentSession.duration = this.currentSession.endTime -
+      this.currentSession.startTime;
 
     // Save final session
     this.saveSession();
@@ -210,15 +218,16 @@ export class ResearchMetrics {
 
     // Track time to first artifact
     if (event.success && this.currentSession!.timeToFirstArtifact === null) {
-      this.currentSession!.timeToFirstArtifact = Date.now() - this.currentSession!.startTime;
+      this.currentSession!.timeToFirstArtifact = Date.now() -
+        this.currentSession!.startTime;
     }
 
     // Track errors
     if (!event.success && event.errorMessage) {
       this.currentSession!.errors.push({
         timestamp: Date.now(),
-        type: 'execution',
-        message: event.errorMessage
+        type: "execution",
+        message: event.errorMessage,
       });
     }
   }
@@ -239,7 +248,7 @@ export class ResearchMetrics {
   trackFeatureUsage(event: FeatureEvent): void {
     if (!this.isEnabled()) return;
 
-    if (event.action === 'open' || event.action === 'interact') {
+    if (event.action === "open" || event.action === "interact") {
       this.currentSession!.features[event.feature]++;
     }
   }
@@ -253,7 +262,7 @@ export class ResearchMetrics {
     this.currentSession!.errors.push({
       timestamp: Date.now(),
       type,
-      message
+      message,
     });
   }
 
@@ -272,7 +281,7 @@ export class ResearchMetrics {
       const stored = localStorage.getItem(this.STORAGE_KEY);
       return stored ? JSON.parse(stored) : [];
     } catch (error) {
-      console.error('Failed to load research sessions:', error);
+      console.error("Failed to load research sessions:", error);
       return [];
     }
   }
@@ -287,17 +296,21 @@ export class ResearchMetrics {
     if (this.currentSession) {
       const currentSnapshot = {
         ...this.currentSession,
-        duration: Date.now() - this.currentSession.startTime
+        duration: Date.now() - this.currentSession.startTime,
       };
       sessions.push(currentSnapshot);
     }
 
-    return JSON.stringify({
-      exportDate: new Date().toISOString(),
-      version: '1.0',
-      totalSessions: sessions.length,
-      sessions
-    }, null, 2);
+    return JSON.stringify(
+      {
+        exportDate: new Date().toISOString(),
+        version: "1.0",
+        totalSessions: sessions.length,
+        sessions,
+      },
+      null,
+      2,
+    );
   }
 
   /**
@@ -309,47 +322,47 @@ export class ResearchMetrics {
     if (this.currentSession) {
       const currentSnapshot = {
         ...this.currentSession,
-        duration: Date.now() - this.currentSession.startTime
+        duration: Date.now() - this.currentSession.startTime,
       };
       sessions.push(currentSnapshot);
     }
 
     // CSV header
     const headers = [
-      'sessionId',
-      'startTime',
-      'duration',
-      'genomesCreated',
-      'genomesExecuted',
-      'mutationsApplied',
-      'timeToFirstArtifact',
-      'visualMode',
-      'audioMode',
-      'bothMode',
-      'silentMutations',
-      'missenseMutations',
-      'nonsenseMutations',
-      'frameshiftMutations',
-      'pointMutations',
-      'insertions',
-      'deletions',
-      'diffViewerUsage',
-      'timelineUsage',
-      'evolutionUsage',
-      'assessmentUsage',
-      'exportUsage',
-      'errorCount'
+      "sessionId",
+      "startTime",
+      "duration",
+      "genomesCreated",
+      "genomesExecuted",
+      "mutationsApplied",
+      "timeToFirstArtifact",
+      "visualMode",
+      "audioMode",
+      "bothMode",
+      "silentMutations",
+      "missenseMutations",
+      "nonsenseMutations",
+      "frameshiftMutations",
+      "pointMutations",
+      "insertions",
+      "deletions",
+      "diffViewerUsage",
+      "timelineUsage",
+      "evolutionUsage",
+      "assessmentUsage",
+      "exportUsage",
+      "errorCount",
     ];
 
     // CSV rows
-    const rows = sessions.map(s => [
+    const rows = sessions.map((s) => [
       s.sessionId,
       new Date(s.startTime).toISOString(),
-      s.duration !== null ? s.duration.toString() : '',
+      s.duration !== null ? s.duration.toString() : "",
       s.genomesCreated,
       s.genomesExecuted,
       s.mutationsApplied,
-      s.timeToFirstArtifact !== null ? s.timeToFirstArtifact.toString() : '',
+      s.timeToFirstArtifact !== null ? s.timeToFirstArtifact.toString() : "",
       s.renderModeUsage.visual,
       s.renderModeUsage.audio,
       s.renderModeUsage.both,
@@ -365,10 +378,10 @@ export class ResearchMetrics {
       s.features.evolution,
       s.features.assessment,
       s.features.export,
-      s.errors.length
+      s.errors.length,
     ]);
 
-    return [headers.join(','), ...rows.map(r => r.join(','))].join('\n');
+    return [headers.join(","), ...rows.map((r) => r.join(","))].join("\n");
   }
 
   /**
@@ -407,9 +420,12 @@ export class ResearchMetrics {
   } {
     const sessions = this.getAllSessions();
 
-    const totalDuration = sessions.reduce((sum, s) => sum + (s.duration || 0), 0);
+    const totalDuration = sessions.reduce(
+      (sum, s) => sum + (s.duration || 0),
+      0,
+    );
     const timeToFirstArtifacts = sessions
-      .map(s => s.timeToFirstArtifact)
+      .map((s) => s.timeToFirstArtifact)
       .filter((t): t is number => t !== null);
 
     const mutationTypeDistribution = {
@@ -419,7 +435,7 @@ export class ResearchMetrics {
       frameshift: 0,
       point: 0,
       insertion: 0,
-      deletion: 0
+      deletion: 0,
     };
 
     const renderModePreferences = { visual: 0, audio: 0, both: 0 };
@@ -428,10 +444,10 @@ export class ResearchMetrics {
       timeline: 0,
       evolution: 0,
       assessment: 0,
-      export: 0
+      export: 0,
     };
 
-    sessions.forEach(s => {
+    sessions.forEach((s) => {
       mutationTypeDistribution.silent += s.mutationTypes.silent;
       mutationTypeDistribution.missense += s.mutationTypes.missense;
       mutationTypeDistribution.nonsense += s.mutationTypes.nonsense;
@@ -455,17 +471,23 @@ export class ResearchMetrics {
       totalSessions: sessions.length,
       totalDuration,
       avgDuration: sessions.length > 0 ? totalDuration / sessions.length : 0,
-      totalGenomesCreated: sessions.reduce((sum, s) => sum + s.genomesCreated, 0),
-      totalGenomesExecuted: sessions.reduce((sum, s) => sum + s.genomesExecuted, 0),
+      totalGenomesCreated: sessions.reduce(
+        (sum, s) => sum + s.genomesCreated,
+        0,
+      ),
+      totalGenomesExecuted: sessions.reduce(
+        (sum, s) => sum + s.genomesExecuted,
+        0,
+      ),
       totalMutations: sessions.reduce((sum, s) => sum + s.mutationsApplied, 0),
-      avgTimeToFirstArtifact:
-        timeToFirstArtifacts.length > 0
-          ? timeToFirstArtifacts.reduce((sum, t) => sum + t, 0) / timeToFirstArtifacts.length
-          : 0,
+      avgTimeToFirstArtifact: timeToFirstArtifacts.length > 0
+        ? timeToFirstArtifacts.reduce((sum, t) => sum + t, 0) /
+          timeToFirstArtifacts.length
+        : 0,
       mutationTypeDistribution,
       renderModePreferences,
       featureUsage,
-      totalErrors: sessions.reduce((sum, s) => sum + s.errors.length, 0)
+      totalErrors: sessions.reduce((sum, s) => sum + s.errors.length, 0),
     };
   }
 
@@ -487,7 +509,9 @@ export class ResearchMetrics {
       const sessions = this.getAllSessions();
 
       // Add or update current session
-      const existingIndex = sessions.findIndex(s => s.sessionId === this.currentSession!.sessionId);
+      const existingIndex = sessions.findIndex(
+        (s) => s.sessionId === this.currentSession!.sessionId,
+      );
       if (existingIndex >= 0) {
         sessions[existingIndex] = this.currentSession;
       } else {
@@ -501,7 +525,7 @@ export class ResearchMetrics {
 
       localStorage.setItem(this.STORAGE_KEY, JSON.stringify(sessions));
     } catch (error) {
-      console.error('Failed to save research session:', error);
+      console.error("Failed to save research session:", error);
     }
   }
 
