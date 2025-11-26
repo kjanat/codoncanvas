@@ -104,7 +104,7 @@ program
 program
   .command("lint <pattern>")
   .description(
-    "Validate multiple .genome files (supports glob patterns like \"examples/*.genome\")",
+    'Validate multiple .genome files (supports glob patterns like "examples/*.genome")',
   )
   .option(
     "--fix",
@@ -252,11 +252,9 @@ program
       console.log();
       console.log(`  Edit similarity: ${(similarity * 100).toFixed(1)}%`);
       console.log(
-        `  Longest common substring: ${lcs.length} bases (${
-          (
-            lcsRatio * 100
-          ).toFixed(1)
-        }%)`,
+        `  Longest common substring: ${lcs.length} bases (${(
+          lcsRatio * 100
+        ).toFixed(1)}%)`,
       );
       console.log(`  Threshold: ${(threshold * 100).toFixed(0)}%`);
       console.log();
@@ -298,13 +296,14 @@ program
       const opcodeCounts: Record<string, number> = {};
       tokens.forEach((token) => {
         const firstBase = token.text[0];
-        const family = firstBase === "A"
-          ? "Stack/Control"
-          : firstBase === "C"
-          ? "Shapes/Utility"
-          : firstBase === "G"
-          ? "Shapes/Stack"
-          : "Transform/Color";
+        const family =
+          firstBase === "A"
+            ? "Stack/Control"
+            : firstBase === "C"
+              ? "Shapes/Utility"
+              : firstBase === "G"
+                ? "Shapes/Stack"
+                : "Transform/Color";
         opcodeCounts[family] = (opcodeCounts[family] || 0) + 1;
       });
 
@@ -331,11 +330,9 @@ program
         .sort((a, b) => b[1] - a[1])
         .forEach(([family, count]) => {
           console.log(
-            `  ${family}: ${count} (${
-              ((count / tokens.length) * 100).toFixed(
-                1,
-              )
-            }%)`,
+            `  ${family}: ${count} (${((count / tokens.length) * 100).toFixed(
+              1,
+            )}%)`,
           );
         });
       console.log();
@@ -344,11 +341,9 @@ program
         `  Avg codons per line: ${(tokens.length / lines).toFixed(1)}`,
       );
       console.log(
-        `  Documentation ratio: ${
-          (
-            (comments / (lines + comments)) * 100
-          ).toFixed(1)
-        }%`,
+        `  Documentation ratio: ${(
+          (comments / (lines + comments)) * 100
+        ).toFixed(1)}%`,
       );
     } catch (error) {
       console.error(chalk.red(`Error: ${error}`));

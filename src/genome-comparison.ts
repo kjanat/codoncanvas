@@ -202,11 +202,9 @@ function generateDescription(
     parts.push(`with ${pixelDiff.toFixed(1)}% visual change`);
   } else {
     parts.push(
-      `producing substantially different output (${
-        pixelDiff.toFixed(
-          1,
-        )
-      }% pixels differ)`,
+      `producing substantially different output (${pixelDiff.toFixed(
+        1,
+      )}% pixels differ)`,
     );
   }
 
@@ -373,9 +371,8 @@ export function compareGenomesDetailed(
     originalCodons,
     mutatedCodons,
   );
-  const codonDifferencePercent = maxLength > 0
-    ? (hammingDistance / maxLength) * 100
-    : 0;
+  const codonDifferencePercent =
+    maxLength > 0 ? (hammingDistance / maxLength) * 100 : 0;
   const lengthDifference = mutatedCodons.length - originalCodons.length;
   const pixelDifferencePercent = calculatePixelDifference(
     genome1,

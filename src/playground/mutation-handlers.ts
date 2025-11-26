@@ -3,6 +3,7 @@
  * Handles genome mutation operations and preview functionality
  */
 
+import { type ImpactLevel, predictMutationImpact } from "../mutation-predictor";
 import {
   applyDeletion,
   applyFrameshiftMutation,
@@ -13,13 +14,9 @@ import {
   applySilentMutation,
   type MutationType,
 } from "../mutations";
-import {
-  predictMutationImpact,
-  type ImpactLevel,
-} from "../mutation-predictor";
-import { editor, diffViewerPanel, diffViewerContainer } from "./dom-manager";
-import { setStatus } from "./ui-utils";
+import { diffViewerContainer, diffViewerPanel, editor } from "./dom-manager";
 import { achievementEngine, achievementUI } from "./ui-state";
+import { setStatus } from "./ui-utils";
 
 let originalGenomeBeforeMutation = "";
 let diffViewerInstance: any = null; // Cached DiffViewer instance
@@ -113,11 +110,35 @@ export function previewMutation(type: MutationType) {
       return;
     }
 
-    const prediction = predictMutationImpact(genome, type);
-    setStatus(
-      `Mutation preview: ${prediction.description}`,
-      "info",
-    );
+    let result;
+    switch (type) {
+      case "silent":
+        result = applySilentMutation(genome);
+        break;
+      case "missense":
+        result = applyMissenseMutation(genome);
+        break;
+      case "nonsense":
+        result = applyNonsenseMutation(genome);
+        break;
+      case "point":
+        result = applyPointMutation(genome);
+        break;
+      case "insertion":
+        result = applyInsertion(genome);
+        break;
+      case "deletion":
+        result = applyDeletion(genome);
+        break;
+      case "frameshift":
+        result = applyFrameshiftMutation(genome);
+        break;
+      default:
+        throw new Error(`Unknown mutation type: ${type}`);
+    }
+
+    const prediction = predictMutationImpact(genome, result);
+    setStatus(`Mutation preview: ${prediction.description}`, "info");
   } catch (error) {
     if (error instanceof Error) {
       setStatus(`Preview failed: ${error.message}`, "error");

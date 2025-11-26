@@ -98,8 +98,9 @@ describe("Mutation Tools", () => {
       expect(result.type).toBe("nonsense");
 
       const codons = result.mutated.split(" ");
-      const stopCount =
-        codons.filter((c) => ["TAA", "TAG", "TGA"].includes(c)).length;
+      const stopCount = codons.filter((c) =>
+        ["TAA", "TAG", "TGA"].includes(c),
+      ).length;
 
       // Should have more STOP codons than original
       expect(stopCount).toBeGreaterThan(1);

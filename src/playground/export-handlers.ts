@@ -5,8 +5,8 @@
 
 import { downloadGenomeFile } from "../genome-io";
 import { editor } from "./dom-manager";
+import { lastSnapshots, midiExporter, renderer } from "./ui-state";
 import { setStatus } from "./ui-utils";
-import { midiExporter, lastSnapshots, renderer } from "./ui-state";
 
 /**
  * Export canvas as PNG image

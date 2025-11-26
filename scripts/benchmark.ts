@@ -65,8 +65,8 @@ function calculateStats(times: number[]): BenchmarkStats {
   const sorted = [...times].sort((a, b) => a - b);
   const mean = times.reduce((a, b) => a + b, 0) / times.length;
   const median = sorted[Math.floor(sorted.length / 2)];
-  const variance = times.reduce((sum, t) => sum + (t - mean) ** 2, 0) /
-    times.length;
+  const variance =
+    times.reduce((sum, t) => sum + (t - mean) ** 2, 0) / times.length;
   const stdDev = Math.sqrt(variance);
 
   return {
@@ -222,32 +222,24 @@ for (const result of results) {
     "─────────────────────────────────────────────────────────────────────────",
   );
   console.log(
-    `  Lexer:      ${result.lexer.mean.toFixed(3)}ms (±${
-      result.lexer.stdDev.toFixed(
-        3,
-      )
-    }ms)`,
+    `  Lexer:      ${result.lexer.mean.toFixed(3)}ms (±${result.lexer.stdDev.toFixed(
+      3,
+    )}ms)`,
   );
   console.log(
-    `  VM:         ${result.vm.mean.toFixed(3)}ms (±${
-      result.vm.stdDev.toFixed(
-        3,
-      )
-    }ms)`,
+    `  VM:         ${result.vm.mean.toFixed(3)}ms (±${result.vm.stdDev.toFixed(
+      3,
+    )}ms)`,
   );
   console.log(
-    `  End-to-End: ${result.endToEnd.mean.toFixed(3)}ms (±${
-      result.endToEnd.stdDev.toFixed(
-        3,
-      )
-    }ms)`,
+    `  End-to-End: ${result.endToEnd.mean.toFixed(3)}ms (±${result.endToEnd.stdDev.toFixed(
+      3,
+    )}ms)`,
   );
   console.log(
-    `  Throughput: ${
-      (
-        result.codonCount / (result.endToEnd.mean / 1000)
-      ).toFixed(0)
-    } codons/sec`,
+    `  Throughput: ${(
+      result.codonCount / (result.endToEnd.mean / 1000)
+    ).toFixed(0)} codons/sec`,
   );
   console.log("");
 }
@@ -270,11 +262,9 @@ for (const result of results.filter((r) => r.type === "simple")) {
     result.codonCount / (result.endToEnd.mean / 1000),
   );
   console.log(
-    `| ${result.codonCount} | ${result.lexer.mean.toFixed(2)} | ${
-      result.vm.mean.toFixed(
-        2,
-      )
-    } | ${result.endToEnd.mean.toFixed(2)} | ${throughput.toLocaleString()} |`,
+    `| ${result.codonCount} | ${result.lexer.mean.toFixed(2)} | ${result.vm.mean.toFixed(
+      2,
+    )} | ${result.endToEnd.mean.toFixed(2)} | ${throughput.toLocaleString()} |`,
   );
 }
 
@@ -290,11 +280,9 @@ for (const result of results.filter((r) => r.type === "complex")) {
     result.codonCount / (result.endToEnd.mean / 1000),
   );
   console.log(
-    `| ${result.codonCount} | ${result.lexer.mean.toFixed(2)} | ${
-      result.vm.mean.toFixed(
-        2,
-      )
-    } | ${result.endToEnd.mean.toFixed(2)} | ${throughput.toLocaleString()} |`,
+    `| ${result.codonCount} | ${result.lexer.mean.toFixed(2)} | ${result.vm.mean.toFixed(
+      2,
+    )} | ${result.endToEnd.mean.toFixed(2)} | ${throughput.toLocaleString()} |`,
   );
 }
 

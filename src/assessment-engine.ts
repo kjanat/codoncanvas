@@ -25,7 +25,7 @@ import {
   type MutationResult,
   type MutationType,
 } from "./mutations";
-import { type Codon, CODON_MAP, Opcode } from "./types";
+import { CODON_MAP, type Codon, Opcode } from "./types";
 
 /**
  * Difficulty level for generated challenges.
@@ -152,9 +152,10 @@ export class AssessmentEngine {
     const mutationResult = this.applyMutationByType(original, mutationType);
 
     // Generate hint based on difficulty
-    const hint = difficulty === "hard"
-      ? undefined
-      : this.generateHint(mutationType, difficulty);
+    const hint =
+      difficulty === "hard"
+        ? undefined
+        : this.generateHint(mutationType, difficulty);
 
     return {
       id,
@@ -204,9 +205,8 @@ export class AssessmentEngine {
   calculateProgress(results: AssessmentResult[]): StudentProgress {
     const totalAttempts = results.length;
     const correctAnswers = results.filter((r) => r.correct).length;
-    const accuracy = totalAttempts > 0
-      ? (correctAnswers / totalAttempts) * 100
-      : 0;
+    const accuracy =
+      totalAttempts > 0 ? (correctAnswers / totalAttempts) * 100 : 0;
 
     // Initialize tracking structures
     const byType: Record<MutationType, { correct: number; total: number }> = {
@@ -466,8 +466,7 @@ export class AssessmentEngine {
   ): string {
     const correct = challenge.correctAnswer;
 
-    const feedback =
-      `Not quite. You answered "${studentAnswer}" but the correct answer is "${correct}". `;
+    const feedback = `Not quite. You answered "${studentAnswer}" but the correct answer is "${correct}". `;
 
     const explanations: Record<MutationType, string> = {
       silent:

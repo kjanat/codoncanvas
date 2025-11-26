@@ -137,8 +137,8 @@ class Stats {
     if (values.length === 0) return 0;
     const m = Stats.mean(values);
     const divisor = sample ? values.length - 1 : values.length;
-    const variance = values.reduce((sum, val) => sum + (val - m) ** 2, 0) /
-      divisor;
+    const variance =
+      values.reduce((sum, val) => sum + (val - m) ** 2, 0) / divisor;
     return Math.sqrt(variance);
   }
 
@@ -247,7 +247,8 @@ class Stats {
   static normalCDF(z: number): number {
     const t = 1 / (1 + 0.2316419 * Math.abs(z));
     const d = 0.3989423 * Math.exp((-z * z) / 2);
-    const p = d *
+    const p =
+      d *
       t *
       (0.3193815 +
         t * (-0.3565638 + t * (1.781478 + t * (-1.821256 + t * 1.330274))));
@@ -309,9 +310,8 @@ class MetricsAnalyzer {
       avgSessionDuration: Stats.descriptive(durations),
       totalGenomesCreated: totalGenomes,
       avgGenomesPerSession: Stats.descriptive(genomes),
-      genomesExecutedRate: totalGenomes > 0
-        ? (totalExecuted / totalGenomes) * 100
-        : 0,
+      genomesExecutedRate:
+        totalGenomes > 0 ? (totalExecuted / totalGenomes) * 100 : 0,
       retentionRate: this.sessions.length > 1 ? 100 : 0, // Placeholder for multi-user
     };
   }
@@ -567,9 +567,8 @@ function parseCSV(filepath: string): MetricsSession[] {
       ) {
         session[key] = parseFloat(value) || 0;
       } else if (key === "timeToFirstArtifact") {
-        session[key] = value === "null" || value === ""
-          ? null
-          : parseFloat(value);
+        session[key] =
+          value === "null" || value === "" ? null : parseFloat(value);
       } else {
         session[key] = value;
       }
@@ -589,7 +588,7 @@ function parseCSVLine(line: string): string[] {
   for (let i = 0; i < line.length; i++) {
     const char = line[i];
 
-    if (char === "\"") {
+    if (char === '"') {
       inQuotes = !inQuotes;
     } else if (char === "," && !inQuotes) {
       result.push(current.trim());
@@ -629,32 +628,22 @@ function generateReport(analyzer: MetricsAnalyzer, outputPath: string): void {
   report +=
     "───────────────────────────────────────────────────────────────────\n\n";
   report += `Total Sessions:              ${engagement.totalSessions}\n`;
-  report += `Average Session Duration:    ${
-    formatDuration(
-      engagement.avgSessionDuration.mean,
-    )
-  }\n`;
-  report += `  (SD = ${
-    formatDuration(
-      engagement.avgSessionDuration.sd,
-    )
-  }, Range: ${formatDuration(engagement.avgSessionDuration.min)} - ${
-    formatDuration(
-      engagement.avgSessionDuration.max,
-    )
-  })\n\n`;
+  report += `Average Session Duration:    ${formatDuration(
+    engagement.avgSessionDuration.mean,
+  )}\n`;
+  report += `  (SD = ${formatDuration(
+    engagement.avgSessionDuration.sd,
+  )}, Range: ${formatDuration(engagement.avgSessionDuration.min)} - ${formatDuration(
+    engagement.avgSessionDuration.max,
+  )})\n\n`;
   report += `Total Genomes Created:       ${engagement.totalGenomesCreated}\n`;
-  report += `Avg Genomes per Session:     ${
-    engagement.avgGenomesPerSession.mean.toFixed(
-      1,
-    )
-  }\n`;
+  report += `Avg Genomes per Session:     ${engagement.avgGenomesPerSession.mean.toFixed(
+    1,
+  )}\n`;
   report += `  (SD = ${engagement.avgGenomesPerSession.sd.toFixed(1)})\n`;
-  report += `Genome Execution Rate:       ${
-    engagement.genomesExecutedRate.toFixed(
-      1,
-    )
-  }%\n\n`;
+  report += `Genome Execution Rate:       ${engagement.genomesExecutedRate.toFixed(
+    1,
+  )}%\n\n`;
 
   // Learning Velocity
   report +=
@@ -663,43 +652,29 @@ function generateReport(analyzer: MetricsAnalyzer, outputPath: string): void {
   report +=
     "───────────────────────────────────────────────────────────────────\n\n";
   report += `Time to First Artifact:\n`;
-  report += `  Mean:     ${
-    formatDuration(
-      velocity.timeToFirstArtifact.mean,
-    )
-  }\n`;
-  report += `  Median:   ${
-    formatDuration(
-      velocity.timeToFirstArtifact.median,
-    )
-  }\n`;
+  report += `  Mean:     ${formatDuration(
+    velocity.timeToFirstArtifact.mean,
+  )}\n`;
+  report += `  Median:   ${formatDuration(
+    velocity.timeToFirstArtifact.median,
+  )}\n`;
   report += `  SD:       ${formatDuration(velocity.timeToFirstArtifact.sd)}\n`;
-  report += `  Range:    ${
-    formatDuration(
-      velocity.timeToFirstArtifact.min,
-    )
-  } - ${formatDuration(velocity.timeToFirstArtifact.max)}\n\n`;
+  report += `  Range:    ${formatDuration(
+    velocity.timeToFirstArtifact.min,
+  )} - ${formatDuration(velocity.timeToFirstArtifact.max)}\n\n`;
   report += `Learner Distribution:\n`;
-  report += `  Fast (<5 min):       ${velocity.fastLearners} (${
-    (
-      (velocity.fastLearners / engagement.totalSessions) * 100
-    ).toFixed(1)
-  }%)\n`;
-  report += `  Moderate (5-15 min): ${velocity.moderateLearners} (${
-    (
-      (velocity.moderateLearners / engagement.totalSessions) * 100
-    ).toFixed(1)
-  }%)\n`;
-  report += `  Slow (>15 min):      ${velocity.slowLearners} (${
-    (
-      (velocity.slowLearners / engagement.totalSessions) * 100
-    ).toFixed(1)
-  }%)\n`;
-  report += `  No Artifact:         ${velocity.noArtifact} (${
-    (
-      (velocity.noArtifact / engagement.totalSessions) * 100
-    ).toFixed(1)
-  }%)\n\n`;
+  report += `  Fast (<5 min):       ${velocity.fastLearners} (${(
+    (velocity.fastLearners / engagement.totalSessions) * 100
+  ).toFixed(1)}%)\n`;
+  report += `  Moderate (5-15 min): ${velocity.moderateLearners} (${(
+    (velocity.moderateLearners / engagement.totalSessions) * 100
+  ).toFixed(1)}%)\n`;
+  report += `  Slow (>15 min):      ${velocity.slowLearners} (${(
+    (velocity.slowLearners / engagement.totalSessions) * 100
+  ).toFixed(1)}%)\n`;
+  report += `  No Artifact:         ${velocity.noArtifact} (${(
+    (velocity.noArtifact / engagement.totalSessions) * 100
+  ).toFixed(1)}%)\n\n`;
 
   // Tool Adoption
   report +=
@@ -740,21 +715,15 @@ function generateReport(analyzer: MetricsAnalyzer, outputPath: string): void {
   report += "4. RENDER MODE PREFERENCES\n";
   report +=
     "───────────────────────────────────────────────────────────────────\n\n";
-  report += `Visual Only:         ${
-    renderMode.visualOnly.percentage.toFixed(
-      1,
-    )
-  }% (${renderMode.visualOnly.sessions} executions)\n`;
-  report += `Audio Only:          ${
-    renderMode.audioOnly.percentage.toFixed(
-      1,
-    )
-  }% (${renderMode.audioOnly.sessions} executions)\n`;
-  report += `Multi-Sensory:       ${
-    renderMode.multiSensory.percentage.toFixed(
-      1,
-    )
-  }% (${renderMode.multiSensory.sessions} executions)\n\n`;
+  report += `Visual Only:         ${renderMode.visualOnly.percentage.toFixed(
+    1,
+  )}% (${renderMode.visualOnly.sessions} executions)\n`;
+  report += `Audio Only:          ${renderMode.audioOnly.percentage.toFixed(
+    1,
+  )}% (${renderMode.audioOnly.sessions} executions)\n`;
+  report += `Multi-Sensory:       ${renderMode.multiSensory.percentage.toFixed(
+    1,
+  )}% (${renderMode.multiSensory.sessions} executions)\n\n`;
 
   // Mutation Patterns
   report +=
@@ -821,11 +790,9 @@ function formatToolRow(
   total: number,
 ): string {
   const adoption = (data.users / total) * 100;
-  return `${name.padEnd(20)} ${adoption.toFixed(1)}% adoption (avg ${
-    data.avgUsage.toFixed(
-      1,
-    )
-  } uses/session)\n`;
+  return `${name.padEnd(20)} ${adoption.toFixed(1)}% adoption (avg ${data.avgUsage.toFixed(
+    1,
+  )} uses/session)\n`;
 }
 
 function formatMutationRow(
@@ -835,11 +802,9 @@ function formatMutationRow(
 ): string {
   const sum = stats.mean * stats.n;
   const percentage = total > 0 ? (sum / total) * 100 : 0;
-  return `  ${name.padEnd(12)} ${percentage.toFixed(1)}% (M=${
-    stats.mean.toFixed(
-      1,
-    )
-  }, SD=${stats.sd.toFixed(1)})\n`;
+  return `  ${name.padEnd(12)} ${percentage.toFixed(1)}% (M=${stats.mean.toFixed(
+    1,
+  )}, SD=${stats.sd.toFixed(1)})\n`;
 }
 
 function generateComparisonReport(
@@ -855,32 +820,22 @@ function generateComparisonReport(
     "═══════════════════════════════════════════════════════════════════\n\n";
 
   for (const comp of comparisons) {
-    report +=
-      `───────────────────────────────────────────────────────────────────\n`;
+    report += `───────────────────────────────────────────────────────────────────\n`;
     report += `${comp.metric}\n`;
-    report +=
-      `───────────────────────────────────────────────────────────────────\n\n`;
+    report += `───────────────────────────────────────────────────────────────────\n\n`;
     report += `${comp.group1}:  M = ${comp.group1Mean.toFixed(2)}\n`;
     report += `${comp.group2}:  M = ${comp.group2Mean.toFixed(2)}\n`;
-    report += `Difference:      ${comp.diff > 0 ? "+" : ""}${
-      comp.diff.toFixed(
-        2,
-      )
-    } (${comp.percentChange > 0 ? "+" : ""}${
-      comp.percentChange.toFixed(
-        1,
-      )
-    }%)\n\n`;
-    report += `t-test:          t = ${comp.t.toFixed(3)}, p = ${
-      comp.p.toFixed(
-        4,
-      )
-    }\n`;
-    report += `Effect Size:     Cohen's d = ${
-      comp.cohensD.toFixed(
-        3,
-      )
-    } (${comp.interpretation})\n`;
+    report += `Difference:      ${comp.diff > 0 ? "+" : ""}${comp.diff.toFixed(
+      2,
+    )} (${comp.percentChange > 0 ? "+" : ""}${comp.percentChange.toFixed(
+      1,
+    )}%)\n\n`;
+    report += `t-test:          t = ${comp.t.toFixed(3)}, p = ${comp.p.toFixed(
+      4,
+    )}\n`;
+    report += `Effect Size:     Cohen's d = ${comp.cohensD.toFixed(
+      3,
+    )} (${comp.interpretation})\n`;
     report += `Interpretation:  ${Stats.interpretPValue(comp.p)}\n\n`;
   }
 

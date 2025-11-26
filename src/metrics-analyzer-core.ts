@@ -239,8 +239,8 @@ export class Stats {
     if (values.length === 0) return 0;
     const m = Stats.mean(values);
     const divisor = sample ? values.length - 1 : values.length;
-    const variance = values.reduce((sum, val) => sum + (val - m) ** 2, 0) /
-      divisor;
+    const variance =
+      values.reduce((sum, val) => sum + (val - m) ** 2, 0) / divisor;
     return Math.sqrt(variance);
   }
 
@@ -344,7 +344,8 @@ export class Stats {
   static normalCDF(z: number): number {
     const t = 1 / (1 + 0.2316419 * Math.abs(z));
     const d = 0.3989423 * Math.exp((-z * z) / 2);
-    const p = d *
+    const p =
+      d *
       t *
       (0.3193815 +
         t * (-0.3565638 + t * (1.781478 + t * (-1.821256 + t * 1.330274))));
@@ -433,9 +434,8 @@ export class MetricsAnalyzer {
       avgSessionDuration: Stats.descriptive(durations),
       totalGenomesCreated: totalGenomes,
       avgGenomesPerSession: Stats.descriptive(genomes),
-      genomesExecutedRate: totalGenomes > 0
-        ? (totalExecuted / totalGenomes) * 100
-        : 0,
+      genomesExecutedRate:
+        totalGenomes > 0 ? (totalExecuted / totalGenomes) * 100 : 0,
       retentionRate: this.sessions.length > 1 ? 100 : 0,
     };
   }
@@ -706,9 +706,8 @@ export function parseCSVContent(content: string): MetricsSession[] {
       ) {
         session[key] = parseFloat(value) || 0;
       } else if (key === "timeToFirstArtifact") {
-        session[key] = value === "null" || value === ""
-          ? null
-          : parseFloat(value);
+        session[key] =
+          value === "null" || value === "" ? null : parseFloat(value);
       } else {
         session[key] = value;
       }
@@ -728,7 +727,7 @@ function parseCSVLine(line: string): string[] {
   for (let i = 0; i < line.length; i++) {
     const char = line[i];
 
-    if (char === "\"") {
+    if (char === '"') {
       inQuotes = !inQuotes;
     } else if (char === "," && !inQuotes) {
       result.push(current.trim());

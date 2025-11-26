@@ -75,8 +75,8 @@ export class DiffViewer {
           <div class="diff-stats">
             <span class="badge mutation-${mutationType}">${mutationType}</span>
             <span class="diff-count">${differences.length} codon${
-      differences.length !== 1 ? "s" : ""
-    } changed</span>
+              differences.length !== 1 ? "s" : ""
+            } changed</span>
           </div>
         </div>
 
@@ -84,33 +84,29 @@ export class DiffViewer {
           <div class="diff-panel">
             <div class="diff-panel-header">Original</div>
             <div class="diff-codons">
-              ${
-      this.renderCodons(
-        comparison.originalCodons,
-        differences.map((d) => ({ pos: d.position, type: "removed" })),
-      )
-    }
+              ${this.renderCodons(
+                comparison.originalCodons,
+                differences.map((d) => ({ pos: d.position, type: "removed" })),
+              )}
             </div>
           </div>
 
           <div class="diff-panel">
             <div class="diff-panel-header">Mutated</div>
             <div class="diff-codons">
-              ${
-      this.renderCodons(
-        comparison.mutatedCodons,
-        differences.map((d) => ({ pos: d.position, type: "added" })),
-      )
-    }
+              ${this.renderCodons(
+                comparison.mutatedCodons,
+                differences.map((d) => ({ pos: d.position, type: "added" })),
+              )}
             </div>
           </div>
         </div>
 
         ${
-      this.options.showCanvas
-        ? this.renderCanvasDiff(original, mutated)
-        : ""
-    }
+          this.options.showCanvas
+            ? this.renderCanvasDiff(original, mutated)
+            : ""
+        }
 
         <div class="diff-details">
           ${this.renderDifferencesList(differences)}
@@ -119,8 +115,8 @@ export class DiffViewer {
     `;
 
     // Build DOM safely without innerHTML
-    const tempDiv = document.createElement('div');
-    tempDiv.insertAdjacentHTML('afterbegin', html);
+    const tempDiv = document.createElement("div");
+    tempDiv.insertAdjacentHTML("afterbegin", html);
     this.container.replaceChildren(...tempDiv.children);
 
     // Render canvases if enabled
@@ -190,16 +186,15 @@ export class DiffViewer {
     differences: Array<{ position: number; original: string; mutated: string }>,
   ): string {
     if (differences.length === 0) {
-      return "<div class=\"no-differences\">No differences found</div>";
+      return '<div class="no-differences">No differences found</div>';
     }
 
     return `
       <h4>Changes at codon level:</h4>
       <ul class="differences-list">
-        ${
-      differences
-        .map(
-          (diff) => `
+        ${differences
+          .map(
+            (diff) => `
           <li>
             Position ${diff.position}:
             <code class="codon-removed">${diff.original || "(deleted)"}</code>
@@ -207,9 +202,8 @@ export class DiffViewer {
             <code class="codon-added">${diff.mutated || "(inserted)"}</code>
           </li>
         `,
-        )
-        .join("")
-    }
+          )
+          .join("")}
       </ul>
     `;
   }

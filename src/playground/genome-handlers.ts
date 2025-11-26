@@ -5,8 +5,8 @@
 
 import { readGenomeFile } from "../genome-io";
 import { editor, genomeFileInput } from "./dom-manager";
-import { setStatus, updateStats } from "./ui-utils";
 import { runLinter } from "./linter-handlers";
+import { setStatus, updateStats } from "./ui-utils";
 
 /**
  * Trigger genome file load dialog
@@ -37,8 +37,8 @@ export async function handleFileLoad(event: Event) {
     updateStats(tokens.length, 0);
 
     // Show success with metadata
-    const info = genomeFile.title +
-      (genomeFile.author ? ` by ${genomeFile.author}` : "");
+    const info =
+      genomeFile.title + (genomeFile.author ? ` by ${genomeFile.author}` : "");
     setStatus(`Loaded: ${info}`, "success");
 
     // Run linter on loaded genome

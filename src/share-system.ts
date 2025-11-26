@@ -75,27 +75,27 @@ export class ShareSystem {
             💾 Download
           </button>
           ${
-      this.showQRCode
-        ? "<button class=\"share-btn\" id=\"share-qr\" title=\"Generate QR code\">📱 QR Code</button>"
-        : ""
-    }
+            this.showQRCode
+              ? '<button class="share-btn" id="share-qr" title="Generate QR code">📱 QR Code</button>'
+              : ""
+          }
         </div>
         <div class="share-social">
           ${
-      this.socialPlatforms.includes("twitter")
-        ? "<button class=\"social-btn twitter\" id=\"share-twitter\" title=\"Share on Twitter\">🐦 Twitter</button>"
-        : ""
-    }
+            this.socialPlatforms.includes("twitter")
+              ? '<button class="social-btn twitter" id="share-twitter" title="Share on Twitter">🐦 Twitter</button>'
+              : ""
+          }
           ${
-      this.socialPlatforms.includes("reddit")
-        ? "<button class=\"social-btn reddit\" id=\"share-reddit\" title=\"Share on Reddit\">🔴 Reddit</button>"
-        : ""
-    }
+            this.socialPlatforms.includes("reddit")
+              ? '<button class="social-btn reddit" id="share-reddit" title="Share on Reddit">🔴 Reddit</button>'
+              : ""
+          }
           ${
-      this.socialPlatforms.includes("email")
-        ? "<button class=\"social-btn email\" id=\"share-email\" title=\"Share via email\">📧 Email</button>"
-        : ""
-    }
+            this.socialPlatforms.includes("email")
+              ? '<button class="social-btn email" id="share-email" title="Share via email">📧 Email</button>'
+              : ""
+          }
         </div>
         <div id="share-feedback" class="share-feedback"></div>
         <div id="share-modal" class="share-modal hidden"></div>
@@ -103,8 +103,8 @@ export class ShareSystem {
     `;
 
     // Build share UI safely
-    const tempDiv = document.createElement('div');
-    tempDiv.insertAdjacentHTML('afterbegin', html);
+    const tempDiv = document.createElement("div");
+    tempDiv.insertAdjacentHTML("afterbegin", html);
     this.container.replaceChildren(...tempDiv.children);
     this.attachEventListeners();
   }
@@ -234,12 +234,9 @@ export class ShareSystem {
     const permalink = `${currentUrl}?genome=${encoded}`;
 
     // Use QR code API
-    const qrUrl =
-      `https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${
-        encodeURIComponent(
-          permalink,
-        )
-      }`;
+    const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${encodeURIComponent(
+      permalink,
+    )}`;
 
     this.showModal(
       "QR Code",
@@ -269,15 +266,12 @@ export class ShareSystem {
     const currentUrl = window.location.href.split("#")[0].split("?")[0];
     const permalink = `${currentUrl}?genome=${encoded}`;
 
-    const text =
-      `Check out my DNA-inspired visual program in ${this.appTitle}! 🧬`;
+    const text = `Check out my DNA-inspired visual program in ${this.appTitle}! 🧬`;
     const hashtags = "CodonCanvas,BioInformatics,VisualProgramming";
 
-    const twitterUrl = `https://twitter.com/intent/tweet?text=${
-      encodeURIComponent(
-        text,
-      )
-    }&url=${encodeURIComponent(permalink)}&hashtags=${hashtags}`;
+    const twitterUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(
+      text,
+    )}&url=${encodeURIComponent(permalink)}&hashtags=${hashtags}`;
 
     window.open(twitterUrl, "_blank", "width=550,height=420");
   }
@@ -299,11 +293,9 @@ export class ShareSystem {
 
     const title = `My DNA-inspired visual program in ${this.appTitle}`;
 
-    const redditUrl = `https://reddit.com/submit?url=${
-      encodeURIComponent(
-        permalink,
-      )
-    }&title=${encodeURIComponent(title)}`;
+    const redditUrl = `https://reddit.com/submit?url=${encodeURIComponent(
+      permalink,
+    )}&title=${encodeURIComponent(title)}`;
 
     window.open(redditUrl, "_blank");
   }
@@ -324,14 +316,11 @@ export class ShareSystem {
     const permalink = `${currentUrl}?genome=${encoded}`;
 
     const subject = `Check out my ${this.appTitle} program`;
-    const body =
-      `I created a DNA-inspired visual program using ${this.appTitle}!\n\nView it here: ${permalink}\n\nGenome:\n${genome}`;
+    const body = `I created a DNA-inspired visual program using ${this.appTitle}!\n\nView it here: ${permalink}\n\nGenome:\n${genome}`;
 
-    const mailtoUrl = `mailto:?subject=${encodeURIComponent(subject)}&body=${
-      encodeURIComponent(
-        body,
-      )
-    }`;
+    const mailtoUrl = `mailto:?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(
+      body,
+    )}`;
 
     window.location.href = mailtoUrl;
   }
@@ -394,8 +383,8 @@ export class ShareSystem {
     const body = document.createElement("div");
     body.className = "modal-body";
     // Build modal body safely - content is pre-escaped HTML from callers
-    const tempDiv = document.createElement('div');
-    tempDiv.insertAdjacentHTML('afterbegin', content);
+    const tempDiv = document.createElement("div");
+    tempDiv.insertAdjacentHTML("afterbegin", content);
     body.replaceChildren(...tempDiv.children);
 
     modalContent.appendChild(header);
@@ -466,7 +455,8 @@ export class ShareSystem {
     const validPattern = /^[ATGC\s\n\r]+$/i;
 
     // Check length limits (prevent DoS)
-    if (genome.length > 1000000) { // 1MB limit
+    if (genome.length > 1000000) {
+      // 1MB limit
       return false;
     }
 

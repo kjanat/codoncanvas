@@ -12,6 +12,7 @@ function escapeHtml(unsafe: string): string {
     .replace(/"/g, "&quot;")
     .replace(/'/g, "&#039;");
 }
+
 import { DiffViewer, injectDiffViewerStyles } from "./diff-viewer";
 import {
   type Concept,
@@ -199,7 +200,7 @@ const themeToggleBtn = document.getElementById(
 
 // Mode toggle elements
 const modeToggleBtns = document.querySelectorAll(
-  "input[name=\"mode\"]",
+  'input[name="mode"]',
 ) as NodeListOf<HTMLInputElement>;
 const playgroundContainer = document.getElementById(
   "playgroundContainer",
@@ -575,8 +576,7 @@ function updateExampleDropdown() {
   const filteredCount = filtered.length;
 
   if (filteredCount < totalCount) {
-    exampleSelect.options[0].textContent =
-      `Load Example... (${filteredCount} of ${totalCount})`;
+    exampleSelect.options[0].textContent = `Load Example... (${filteredCount} of ${totalCount})`;
   }
 }
 
@@ -598,7 +598,8 @@ function showExampleInfo(key: ExampleKey) {
   titleDiv.appendChild(titleStrong);
 
   const difficultySpan = document.createElement("span");
-  difficultySpan.style.cssText = "float: right; font-size: 0.85em; opacity: 0.7;";
+  difficultySpan.style.cssText =
+    "float: right; font-size: 0.85em; opacity: 0.7;";
   difficultySpan.textContent = ex.difficulty;
   titleDiv.appendChild(difficultySpan);
 
@@ -613,13 +614,17 @@ function showExampleInfo(key: ExampleKey) {
   const conceptsLabel = document.createElement("strong");
   conceptsLabel.textContent = "Concepts:";
   conceptsDiv.appendChild(conceptsLabel);
-  conceptsDiv.appendChild(document.createTextNode(" " + ex.concepts.join(", ")));
+  conceptsDiv.appendChild(
+    document.createTextNode(" " + ex.concepts.join(", ")),
+  );
 
   const mutationsDiv = document.createElement("div");
   const mutationsLabel = document.createElement("strong");
   mutationsLabel.textContent = "Good for mutations:";
   mutationsDiv.appendChild(mutationsLabel);
-  mutationsDiv.appendChild(document.createTextNode(" " + ex.goodForMutations.join(", ")));
+  mutationsDiv.appendChild(
+    document.createTextNode(" " + ex.goodForMutations.join(", ")),
+  );
 
   metaDiv.appendChild(conceptsDiv);
   metaDiv.appendChild(mutationsDiv);
@@ -810,16 +815,18 @@ function displayLinterErrors(
     linterMessages.appendChild(successDiv);
   } else {
     errors.forEach((err) => {
-      const icon = err.severity === "error"
-        ? "🔴"
-        : err.severity === "warning"
-        ? "🟡"
-        : "ℹ️";
-      const color = err.severity === "error"
-        ? "#f48771"
-        : err.severity === "warning"
-        ? "#dcdcaa"
-        : "#4ec9b0";
+      const icon =
+        err.severity === "error"
+          ? "🔴"
+          : err.severity === "warning"
+            ? "🟡"
+            : "ℹ️";
+      const color =
+        err.severity === "error"
+          ? "#f48771"
+          : err.severity === "warning"
+            ? "#dcdcaa"
+            : "#4ec9b0";
 
       const errorDiv = document.createElement("div");
       errorDiv.style.cssText = `margin-bottom: 8px; padding: 6px 8px; border-left: 3px solid ${color}; background: rgba(255,255,255,0.03); display: flex; align-items: center;`;
@@ -842,7 +849,8 @@ function displayLinterErrors(
 
       if (err.position !== undefined) {
         const posSpan = document.createElement("span");
-        posSpan.style.cssText = "color: #858585; margin-left: 8px; font-size: 0.9em;";
+        posSpan.style.cssText =
+          "color: #858585; margin-left: 8px; font-size: 0.9em;";
         posSpan.textContent = `(pos: ${err.position})`;
         errorDiv.appendChild(posSpan);
       }
@@ -852,7 +860,8 @@ function displayLinterErrors(
         const fixButton = document.createElement("button");
         fixButton.className = "fix-button";
         fixButton.dataset.errorMsg = err.message; // Store for handler
-        fixButton.style.cssText = "margin-left: 12px; padding: 2px 8px; background: #4ec9b0; color: #1e1e1e; border: none; border-radius: 3px; cursor: pointer; font-size: 0.85em; font-weight: 500;";
+        fixButton.style.cssText =
+          "margin-left: 12px; padding: 2px 8px; background: #4ec9b0; color: #1e1e1e; border: none; border-radius: 3px; cursor: pointer; font-size: 0.85em; font-weight: 500;";
         fixButton.textContent = "Fix";
 
         fixButton.addEventListener("mouseover", () => {
@@ -862,7 +871,9 @@ function displayLinterErrors(
           fixButton.style.background = "#4ec9b0";
         });
         fixButton.addEventListener("click", (e) => {
-          const errorMsg = (e.target as HTMLElement).getAttribute("data-error-msg");
+          const errorMsg = (e.target as HTMLElement).getAttribute(
+            "data-error-msg",
+          );
           if (errorMsg) {
             applyAutoFix(errorMsg);
           }
@@ -984,8 +995,8 @@ async function handleFileLoad(event: Event) {
     editor.value = genomeFile.genome;
 
     // Show success with metadata
-    const info = genomeFile.title +
-      (genomeFile.author ? ` by ${genomeFile.author}` : "");
+    const info =
+      genomeFile.title + (genomeFile.author ? ` by ${genomeFile.author}` : "");
     setStatus(`Loaded: ${info}`, "success");
 
     // Reset file input
@@ -1257,83 +1268,83 @@ function createPreviewModal() {
   overlay.id = "previewModalOverlay";
 
   // Build modal structure safely
-  const modal = document.createElement('div');
-  modal.className = 'preview-modal';
-  modal.setAttribute('role', 'dialog');
-  modal.setAttribute('aria-labelledby', 'previewModalTitle');
-  modal.setAttribute('aria-modal', 'true');
+  const modal = document.createElement("div");
+  modal.className = "preview-modal";
+  modal.setAttribute("role", "dialog");
+  modal.setAttribute("aria-labelledby", "previewModalTitle");
+  modal.setAttribute("aria-modal", "true");
 
-  const h3 = document.createElement('h3');
-  h3.id = 'previewModalTitle';
-  h3.textContent = '🔮 Mutation Preview';
+  const h3 = document.createElement("h3");
+  h3.id = "previewModalTitle";
+  h3.textContent = "🔮 Mutation Preview";
 
-  const comparison = document.createElement('div');
-  comparison.className = 'preview-comparison';
+  const comparison = document.createElement("div");
+  comparison.className = "preview-comparison";
 
-  const origContainer = document.createElement('div');
-  origContainer.className = 'preview-canvas-container';
-  const origH4 = document.createElement('h4');
-  origH4.textContent = 'Original';
-  const origImg = document.createElement('img');
-  origImg.id = 'previewOriginalCanvas';
-  origImg.className = 'preview-canvas';
-  origImg.alt = 'Original genome rendering';
+  const origContainer = document.createElement("div");
+  origContainer.className = "preview-canvas-container";
+  const origH4 = document.createElement("h4");
+  origH4.textContent = "Original";
+  const origImg = document.createElement("img");
+  origImg.id = "previewOriginalCanvas";
+  origImg.className = "preview-canvas";
+  origImg.alt = "Original genome rendering";
   origContainer.appendChild(origH4);
   origContainer.appendChild(origImg);
 
-  const mutContainer = document.createElement('div');
-  mutContainer.className = 'preview-canvas-container';
-  const mutH4 = document.createElement('h4');
-  mutH4.textContent = 'After Mutation';
-  const mutImg = document.createElement('img');
-  mutImg.id = 'previewMutatedCanvas';
-  mutImg.className = 'preview-canvas';
-  mutImg.alt = 'Mutated genome rendering';
+  const mutContainer = document.createElement("div");
+  mutContainer.className = "preview-canvas-container";
+  const mutH4 = document.createElement("h4");
+  mutH4.textContent = "After Mutation";
+  const mutImg = document.createElement("img");
+  mutImg.id = "previewMutatedCanvas";
+  mutImg.className = "preview-canvas";
+  mutImg.alt = "Mutated genome rendering";
   mutContainer.appendChild(mutH4);
   mutContainer.appendChild(mutImg);
 
   comparison.appendChild(origContainer);
   comparison.appendChild(mutContainer);
 
-  const centerDiv = document.createElement('div');
-  centerDiv.style.textAlign = 'center';
+  const centerDiv = document.createElement("div");
+  centerDiv.style.textAlign = "center";
 
-  const impactBadge = document.createElement('div');
-  impactBadge.className = 'preview-impact-badge';
-  impactBadge.id = 'previewImpactBadge';
-  impactBadge.textContent = 'SILENT';
+  const impactBadge = document.createElement("div");
+  impactBadge.className = "preview-impact-badge";
+  impactBadge.id = "previewImpactBadge";
+  impactBadge.textContent = "SILENT";
 
-  const confidence = document.createElement('div');
-  confidence.className = 'preview-confidence';
-  confidence.textContent = 'Confidence: ';
-  const stars = document.createElement('span');
-  stars.className = 'preview-confidence-stars';
-  stars.id = 'previewConfidenceStars';
-  stars.textContent = '⭐⭐⭐';
-  const percent = document.createElement('span');
-  percent.id = 'previewConfidencePercent';
-  percent.textContent = '(95%)';
+  const confidence = document.createElement("div");
+  confidence.className = "preview-confidence";
+  confidence.textContent = "Confidence: ";
+  const stars = document.createElement("span");
+  stars.className = "preview-confidence-stars";
+  stars.id = "previewConfidenceStars";
+  stars.textContent = "⭐⭐⭐";
+  const percent = document.createElement("span");
+  percent.id = "previewConfidencePercent";
+  percent.textContent = "(95%)";
   confidence.appendChild(stars);
-  confidence.appendChild(document.createTextNode(' '));
+  confidence.appendChild(document.createTextNode(" "));
   confidence.appendChild(percent);
 
   centerDiv.appendChild(impactBadge);
   centerDiv.appendChild(confidence);
 
-  const description = document.createElement('div');
-  description.className = 'preview-description';
-  description.id = 'previewDescription';
-  description.textContent = 'Minimal visual change - outputs nearly identical';
+  const description = document.createElement("div");
+  description.className = "preview-description";
+  description.id = "previewDescription";
+  description.textContent = "Minimal visual change - outputs nearly identical";
 
-  const stats = document.createElement('div');
-  stats.className = 'preview-stats';
+  const stats = document.createElement("div");
+  stats.className = "preview-stats";
 
   const createStat = (label: string, id: string, value: string) => {
-    const stat = document.createElement('div');
-    stat.className = 'preview-stat';
-    const strong = document.createElement('strong');
-    strong.textContent = label + ': ';
-    const span = document.createElement('span');
+    const stat = document.createElement("div");
+    stat.className = "preview-stat";
+    const strong = document.createElement("strong");
+    strong.textContent = label + ": ";
+    const span = document.createElement("span");
     span.id = id;
     span.textContent = value;
     stat.appendChild(strong);
@@ -1341,21 +1352,23 @@ function createPreviewModal() {
     return stat;
   };
 
-  stats.appendChild(createStat('Pixel Difference', 'previewPixelDiff', '2.3%'));
-  stats.appendChild(createStat('Shape Changes', 'previewShapeChanges', '0'));
-  stats.appendChild(createStat('Color Changes', 'previewColorChanges', 'No'));
-  stats.appendChild(createStat('Position Changes', 'previewPositionChanges', 'No'));
+  stats.appendChild(createStat("Pixel Difference", "previewPixelDiff", "2.3%"));
+  stats.appendChild(createStat("Shape Changes", "previewShapeChanges", "0"));
+  stats.appendChild(createStat("Color Changes", "previewColorChanges", "No"));
+  stats.appendChild(
+    createStat("Position Changes", "previewPositionChanges", "No"),
+  );
 
-  const actions = document.createElement('div');
-  actions.className = 'preview-actions';
-  const cancelBtn = document.createElement('button');
-  cancelBtn.className = 'preview-btn preview-btn-cancel';
-  cancelBtn.id = 'previewCancelBtn';
-  cancelBtn.textContent = 'Cancel';
-  const applyBtn = document.createElement('button');
-  applyBtn.className = 'preview-btn preview-btn-apply';
-  applyBtn.id = 'previewApplyBtn';
-  applyBtn.textContent = 'Apply Mutation';
+  const actions = document.createElement("div");
+  actions.className = "preview-actions";
+  const cancelBtn = document.createElement("button");
+  cancelBtn.className = "preview-btn preview-btn-cancel";
+  cancelBtn.id = "previewCancelBtn";
+  cancelBtn.textContent = "Cancel";
+  const applyBtn = document.createElement("button");
+  applyBtn.className = "preview-btn preview-btn-apply";
+  applyBtn.id = "previewApplyBtn";
+  applyBtn.textContent = "Apply Mutation";
   actions.appendChild(cancelBtn);
   actions.appendChild(applyBtn);
 
@@ -1376,16 +1389,10 @@ function createPreviewModal() {
     }
   });
 
-  // Cancel button
-  const cancelBtn = document.getElementById(
-    "previewCancelBtn",
-  ) as HTMLButtonElement;
+  // Cancel button - reuse existing reference
   cancelBtn.addEventListener("click", closePreviewModal);
 
-  // Apply button
-  const applyBtn = document.getElementById(
-    "previewApplyBtn",
-  ) as HTMLButtonElement;
+  // Apply button - reuse existing reference
   applyBtn.addEventListener("click", applyPredictedMutation);
 
   // Escape key to close
@@ -1442,21 +1449,17 @@ function showPreviewModal(
   mutatedCanvas.src = prediction.mutatedPreview;
 
   // Set impact badge
-  impactBadge.textContent = `${
-    getImpactIcon(
-      prediction.impact,
-    )
-  } ${prediction.impact}`;
+  impactBadge.textContent = `${getImpactIcon(
+    prediction.impact,
+  )} ${prediction.impact}`;
   impactBadge.className = `preview-impact-badge ${prediction.impact}`;
 
   // Set confidence
   const stars = getConfidenceStars(prediction.confidence);
   confidenceStars.textContent = stars;
-  confidencePercent.textContent = `(${
-    Math.round(
-      prediction.confidence * 100,
-    )
-  }%)`;
+  confidencePercent.textContent = `(${Math.round(
+    prediction.confidence * 100,
+  )}%)`;
 
   // Set description
   description.textContent = prediction.description;
@@ -1873,14 +1876,12 @@ exportStudentProgressBtn.addEventListener("click", exportStudentProgress);
 silentMutationBtn.addEventListener("click", () => applyMutation("silent"));
 missenseMutationBtn.addEventListener("click", () => applyMutation("missense"));
 nonsenseMutationBtn.addEventListener("click", () => applyMutation("nonsense"));
-frameshiftMutationBtn.addEventListener(
-  "click",
-  () => applyMutation("frameshift"),
+frameshiftMutationBtn.addEventListener("click", () =>
+  applyMutation("frameshift"),
 );
 pointMutationBtn.addEventListener("click", () => applyMutation("point"));
-insertionMutationBtn.addEventListener(
-  "click",
-  () => applyMutation("insertion"),
+insertionMutationBtn.addEventListener("click", () =>
+  applyMutation("insertion"),
 );
 deletionMutationBtn.addEventListener("click", () => applyMutation("deletion"));
 
@@ -1931,42 +1932,36 @@ function renderAnalysis(analysis: CodonAnalysis) {
 
   // Summary stats (compact grid)
   html.push(
-    "<div style=\"display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 16px;\">",
+    '<div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 16px;">',
   );
   html.push(
     `<div style="background: #1e1e1e; padding: 8px; border-radius: 4px; border-left: 3px solid #4ec9b0;"><div style="color: #a0a0a0; font-size: 11px;">Total Codons</div><div style="font-weight: 600; font-size: 16px; color: #4ec9b0;">${analysis.totalCodons}</div></div>`,
   );
   html.push(
-    `<div style="background: #1e1e1e; padding: 8px; border-radius: 4px; border-left: 3px solid #569cd6;"><div style="color: #a0a0a0; font-size: 11px;">GC Content</div><div style="font-weight: 600; font-size: 16px; color: #569cd6;">${
-      analysis.gcContent.toFixed(
-        1,
-      )
-    }%</div></div>`,
+    `<div style="background: #1e1e1e; padding: 8px; border-radius: 4px; border-left: 3px solid #569cd6;"><div style="color: #a0a0a0; font-size: 11px;">GC Content</div><div style="font-weight: 600; font-size: 16px; color: #569cd6;">${analysis.gcContent.toFixed(
+      1,
+    )}%</div></div>`,
   );
   html.push(
-    `<div style="background: #1e1e1e; padding: 8px; border-radius: 4px; border-left: 3px solid #dcdcaa;"><div style="color: #a0a0a0; font-size: 11px;">Complexity</div><div style="font-weight: 600; font-size: 16px; color: #dcdcaa;">${
-      (
-        analysis.signature.complexity * 100
-      ).toFixed(1)
-    }%</div></div>`,
+    `<div style="background: #1e1e1e; padding: 8px; border-radius: 4px; border-left: 3px solid #dcdcaa;"><div style="color: #a0a0a0; font-size: 11px;">Complexity</div><div style="font-weight: 600; font-size: 16px; color: #dcdcaa;">${(
+      analysis.signature.complexity * 100
+    ).toFixed(1)}%</div></div>`,
   );
   html.push("</div>");
 
   // Top codons
-  html.push("<div style=\"margin-bottom: 16px;\">");
+  html.push('<div style="margin-bottom: 16px;">');
   html.push(
-    "<div style=\"color: #4ec9b0; font-weight: 600; margin-bottom: 8px;\">Top 5 Codons</div>",
+    '<div style="color: #4ec9b0; font-weight: 600; margin-bottom: 8px;">Top 5 Codons</div>',
   );
-  html.push("<div style=\"display: flex; flex-direction: column; gap: 4px;\">");
+  html.push('<div style="display: flex; flex-direction: column; gap: 4px;">');
   for (const { codon, count, percentage } of analysis.topCodons) {
     html.push(
       `<div style="display: flex; justify-content: space-between; align-items: center; padding: 4px 8px; background: #1e1e1e; border-radius: 3px;">` +
         `<span style="font-family: 'Courier New', monospace; font-weight: 600; color: #dcdcaa;">${escapeHtml(codon)}</span>` +
-        `<span style="color: #a0a0a0; font-size: 11px;">${count}× (${
-          percentage.toFixed(
-            1,
-          )
-        }%)</span>` +
+        `<span style="color: #a0a0a0; font-size: 11px;">${count}× (${percentage.toFixed(
+          1,
+        )}%)</span>` +
         `<div style="width: 80px; height: 6px; background: #2d2d30; border-radius: 3px; overflow: hidden;"><div style="width: ${percentage}%; height: 100%; background: #4ec9b0;"></div></div>` +
         `</div>`,
     );
@@ -1974,11 +1969,11 @@ function renderAnalysis(analysis: CodonAnalysis) {
   html.push("</div></div>");
 
   // Opcode families (visual bars)
-  html.push("<div style=\"margin-bottom: 16px;\">");
+  html.push('<div style="margin-bottom: 16px;">');
   html.push(
-    "<div style=\"color: #4ec9b0; font-weight: 600; margin-bottom: 8px;\">Opcode Family Distribution</div>",
+    '<div style="color: #4ec9b0; font-weight: 600; margin-bottom: 8px;">Opcode Family Distribution</div>',
   );
-  html.push("<div style=\"display: flex; flex-direction: column; gap: 6px;\">");
+  html.push('<div style="display: flex; flex-direction: column; gap: 6px;">');
 
   const families = [
     {
@@ -2011,66 +2006,56 @@ function renderAnalysis(analysis: CodonAnalysis) {
         `<div style="flex: 1; height: 16px; background: #2d2d30; border-radius: 3px; overflow: hidden; position: relative;">` +
         `<div style="width: ${family.value}%; height: 100%; background: ${family.color}; transition: width 0.3s;"></div>` +
         `</div>` +
-        `<span style="width: 45px; text-align: right; color: #a0a0a0; font-size: 11px; font-weight: 600;">${
-          family.value.toFixed(
-            1,
-          )
-        }%</span>` +
+        `<span style="width: 45px; text-align: right; color: #a0a0a0; font-size: 11px; font-weight: 600;">${family.value.toFixed(
+          1,
+        )}%</span>` +
         `</div>`,
     );
   }
   html.push("</div></div>");
 
   // Genome signature
-  html.push("<div style=\"margin-bottom: 16px;\">");
+  html.push('<div style="margin-bottom: 16px;">');
   html.push(
-    "<div style=\"color: #4ec9b0; font-weight: 600; margin-bottom: 8px;\">Genome Signature</div>",
+    '<div style="color: #4ec9b0; font-weight: 600; margin-bottom: 8px;">Genome Signature</div>',
   );
   html.push(
-    "<div style=\"display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px;\">",
+    '<div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px;">',
   );
   html.push(
-    `<div style="background: #1e1e1e; padding: 8px; border-radius: 4px;"><div style="color: #a0a0a0; font-size: 11px;">Drawing Density</div><div style="color: #4ec9b0; font-weight: 600;">${
-      analysis.signature.drawingDensity.toFixed(
-        1,
-      )
-    }%</div></div>`,
+    `<div style="background: #1e1e1e; padding: 8px; border-radius: 4px;"><div style="color: #a0a0a0; font-size: 11px;">Drawing Density</div><div style="color: #4ec9b0; font-weight: 600;">${analysis.signature.drawingDensity.toFixed(
+      1,
+    )}%</div></div>`,
   );
   html.push(
-    `<div style="background: #1e1e1e; padding: 8px; border-radius: 4px;"><div style="color: #a0a0a0; font-size: 11px;">Transform Density</div><div style="color: #569cd6; font-weight: 600;">${
-      analysis.signature.transformDensity.toFixed(
-        1,
-      )
-    }%</div></div>`,
+    `<div style="background: #1e1e1e; padding: 8px; border-radius: 4px;"><div style="color: #a0a0a0; font-size: 11px;">Transform Density</div><div style="color: #569cd6; font-weight: 600;">${analysis.signature.transformDensity.toFixed(
+      1,
+    )}%</div></div>`,
   );
   html.push(
-    `<div style="background: #1e1e1e; padding: 8px; border-radius: 4px;"><div style="color: #a0a0a0; font-size: 11px;">Redundancy</div><div style="color: #dcdcaa; font-weight: 600;">${
-      analysis.signature.redundancy.toFixed(
-        2,
-      )
-    }</div></div>`,
+    `<div style="background: #1e1e1e; padding: 8px; border-radius: 4px;"><div style="color: #a0a0a0; font-size: 11px;">Redundancy</div><div style="color: #dcdcaa; font-weight: 600;">${analysis.signature.redundancy.toFixed(
+      2,
+    )}</div></div>`,
   );
   html.push(
-    `<div style="background: #1e1e1e; padding: 8px; border-radius: 4px;"><div style="color: #a0a0a0; font-size: 11px;">AT Content</div><div style="color: #c586c0; font-weight: 600;">${
-      analysis.atContent.toFixed(
-        1,
-      )
-    }%</div></div>`,
+    `<div style="background: #1e1e1e; padding: 8px; border-radius: 4px;"><div style="color: #a0a0a0; font-size: 11px;">AT Content</div><div style="color: #c586c0; font-weight: 600;">${analysis.atContent.toFixed(
+      1,
+    )}%</div></div>`,
   );
   html.push("</div></div>");
 
   // Info note
   html.push(
-    "<div style=\"padding: 8px; background: #1e1e1e; border-left: 3px solid #569cd6; border-radius: 3px; font-size: 11px; color: #a0a0a0; line-height: 1.5;\">",
+    '<div style="padding: 8px; background: #1e1e1e; border-left: 3px solid #569cd6; border-radius: 3px; font-size: 11px; color: #a0a0a0; line-height: 1.5;">',
   );
   html.push(
-    "💡 <strong style=\"color: #569cd6;\">Bioinformatics Insight:</strong> GC content and codon usage bias are real genomic metrics used in computational biology. This analysis connects programming to actual research techniques!",
+    '💡 <strong style="color: #569cd6;">Bioinformatics Insight:</strong> GC content and codon usage bias are real genomic metrics used in computational biology. This analysis connects programming to actual research techniques!',
   );
   html.push("</div>");
 
   // Build analyzer content safely
-  const tempDiv = document.createElement('div');
-  tempDiv.insertAdjacentHTML('afterbegin', html.join(""));
+  const tempDiv = document.createElement("div");
+  tempDiv.insertAdjacentHTML("afterbegin", html.join(""));
   analyzerContent.replaceChildren(...tempDiv.children);
 }
 
@@ -2550,100 +2535,133 @@ function createComparisonModal(): HTMLElement {
   overlay.style.display = "none";
 
   // Build comparison modal structure safely
-  const modal = document.createElement('div');
-  modal.className = 'comparison-modal';
+  const modal = document.createElement("div");
+  modal.className = "comparison-modal";
 
-  const header = document.createElement('div');
-  header.className = 'comparison-modal-header';
-  const h2 = document.createElement('h2');
-  h2.className = 'comparison-modal-title';
-  h2.textContent = '🧬 Genome Comparison Lab';
-  const closeBtn = document.createElement('button');
-  closeBtn.className = 'comparison-modal-close';
-  closeBtn.setAttribute('aria-label', 'Close comparison modal');
-  closeBtn.textContent = '✕';
+  const header = document.createElement("div");
+  header.className = "comparison-modal-header";
+  const h2 = document.createElement("h2");
+  h2.className = "comparison-modal-title";
+  h2.textContent = "🧬 Genome Comparison Lab";
+  const closeBtn = document.createElement("button");
+  closeBtn.className = "comparison-modal-close";
+  closeBtn.setAttribute("aria-label", "Close comparison modal");
+  closeBtn.textContent = "✕";
   header.appendChild(h2);
   header.appendChild(closeBtn);
 
-  const body = document.createElement('div');
-  body.className = 'comparison-modal-body';
+  const body = document.createElement("div");
+  body.className = "comparison-modal-body";
 
-  const inputs = document.createElement('div');
-  inputs.className = 'comparison-inputs';
+  const inputs = document.createElement("div");
+  inputs.className = "comparison-inputs";
 
-  const createInputGroup = (labelText: string, textareaId: string, btnId: string, placeholder: string) => {
-    const group = document.createElement('div');
-    group.className = 'comparison-input-group';
-    const label = document.createElement('label');
-    label.className = 'comparison-input-label';
+  const createInputGroup = (
+    labelText: string,
+    textareaId: string,
+    btnId: string,
+    placeholder: string,
+  ) => {
+    const group = document.createElement("div");
+    group.className = "comparison-input-group";
+    const label = document.createElement("label");
+    label.className = "comparison-input-label";
     label.textContent = labelText;
-    const textarea = document.createElement('textarea');
+    const textarea = document.createElement("textarea");
     textarea.id = textareaId;
-    textarea.className = 'comparison-textarea';
+    textarea.className = "comparison-textarea";
     textarea.placeholder = placeholder;
-    const btn = document.createElement('button');
+    const btn = document.createElement("button");
     btn.id = btnId;
-    btn.className = 'comparison-btn comparison-btn-secondary';
-    btn.textContent = 'Load Current →';
+    btn.className = "comparison-btn comparison-btn-secondary";
+    btn.textContent = "Load Current →";
     group.appendChild(label);
     group.appendChild(textarea);
     group.appendChild(btn);
     return group;
   };
 
-  inputs.appendChild(createInputGroup('Genome A', 'comparisonGenomeA', 'loadCurrentA',
-    'Paste first genome here...\nExample:\nATG GAA CCC GGA TAA'));
-  inputs.appendChild(createInputGroup('Genome B', 'comparisonGenomeB', 'loadCurrentB',
-    'Paste second genome here...'));
+  inputs.appendChild(
+    createInputGroup(
+      "Genome A",
+      "comparisonGenomeA",
+      "loadCurrentA",
+      "Paste first genome here...\nExample:\nATG GAA CCC GGA TAA",
+    ),
+  );
+  inputs.appendChild(
+    createInputGroup(
+      "Genome B",
+      "comparisonGenomeB",
+      "loadCurrentB",
+      "Paste second genome here...",
+    ),
+  );
 
-  const actions = document.createElement('div');
-  actions.className = 'comparison-actions';
-  const compareBtn = document.createElement('button');
-  compareBtn.id = 'compareGenomesBtn';
-  compareBtn.className = 'comparison-btn comparison-btn-primary';
-  compareBtn.textContent = '🔬 Compare Genomes';
-  const clearBtn = document.createElement('button');
-  clearBtn.id = 'clearComparisonBtn';
-  clearBtn.className = 'comparison-btn comparison-btn-secondary';
-  clearBtn.textContent = 'Clear';
+  const actions = document.createElement("div");
+  actions.className = "comparison-actions";
+  const compareBtn = document.createElement("button");
+  compareBtn.id = "compareGenomesBtn";
+  compareBtn.className = "comparison-btn comparison-btn-primary";
+  compareBtn.textContent = "🔬 Compare Genomes";
+  const clearBtn = document.createElement("button");
+  clearBtn.id = "clearComparisonBtn";
+  clearBtn.className = "comparison-btn comparison-btn-secondary";
+  clearBtn.textContent = "Clear";
   actions.appendChild(compareBtn);
   actions.appendChild(clearBtn);
 
-  const results = document.createElement('div');
-  results.id = 'comparisonResults';
-  results.className = 'comparison-results';
+  const results = document.createElement("div");
+  results.id = "comparisonResults";
+  results.className = "comparison-results";
 
-  const similarity = document.createElement('div');
-  similarity.id = 'comparisonSimilarity';
+  const similarity = document.createElement("div");
+  similarity.id = "comparisonSimilarity";
 
-  const canvases = document.createElement('div');
-  canvases.className = 'comparison-canvases';
+  const canvases = document.createElement("div");
+  canvases.className = "comparison-canvases";
 
-  const createCanvasContainer = (labelText: string, imgId: string, alt: string) => {
-    const container = document.createElement('div');
-    container.className = 'comparison-canvas-container';
-    const label = document.createElement('span');
-    label.className = 'comparison-canvas-label';
+  const createCanvasContainer = (
+    labelText: string,
+    imgId: string,
+    alt: string,
+  ) => {
+    const container = document.createElement("div");
+    container.className = "comparison-canvas-container";
+    const label = document.createElement("span");
+    label.className = "comparison-canvas-label";
     label.textContent = labelText;
-    const img = document.createElement('img');
+    const img = document.createElement("img");
     img.id = imgId;
-    img.className = 'comparison-canvas';
+    img.className = "comparison-canvas";
     img.alt = alt;
     container.appendChild(label);
     container.appendChild(img);
     return container;
   };
 
-  canvases.appendChild(createCanvasContainer('Genome A Output', 'comparisonCanvasA', 'Genome A visual output'));
-  canvases.appendChild(createCanvasContainer('Genome B Output', 'comparisonCanvasB', 'Genome B visual output'));
+  canvases.appendChild(
+    createCanvasContainer(
+      "Genome A Output",
+      "comparisonCanvasA",
+      "Genome A visual output",
+    ),
+  );
+  canvases.appendChild(
+    createCanvasContainer(
+      "Genome B Output",
+      "comparisonCanvasB",
+      "Genome B visual output",
+    ),
+  );
 
-  const metrics = document.createElement('div');
-  metrics.className = 'comparison-metrics';
-  metrics.id = 'comparisonMetrics';
+  const metrics = document.createElement("div");
+  metrics.className = "comparison-metrics";
+  metrics.id = "comparisonMetrics";
 
-  const analysis = document.createElement('div');
-  analysis.className = 'comparison-analysis';
-  analysis.id = 'comparisonAnalysis';
+  const analysis = document.createElement("div");
+  analysis.className = "comparison-analysis";
+  analysis.id = "comparisonAnalysis";
 
   results.appendChild(similarity);
   results.appendChild(canvases);
@@ -2809,16 +2827,16 @@ function displayComparisonResults(result: GenomeComparisonResult): void {
   ) as HTMLDivElement;
 
   const createMetric = (label: string, value: string, unit: string) => {
-    const metric = document.createElement('div');
-    metric.className = 'comparison-metric';
-    const labelDiv = document.createElement('div');
-    labelDiv.className = 'comparison-metric-label';
+    const metric = document.createElement("div");
+    metric.className = "comparison-metric";
+    const labelDiv = document.createElement("div");
+    labelDiv.className = "comparison-metric-label";
     labelDiv.textContent = label;
-    const valueDiv = document.createElement('div');
-    valueDiv.className = 'comparison-metric-value';
+    const valueDiv = document.createElement("div");
+    valueDiv.className = "comparison-metric-value";
     valueDiv.textContent = value;
-    const unitSpan = document.createElement('span');
-    unitSpan.className = 'comparison-metric-unit';
+    const unitSpan = document.createElement("span");
+    unitSpan.className = "comparison-metric-unit";
     unitSpan.textContent = unit;
     valueDiv.appendChild(unitSpan);
     metric.appendChild(labelDiv);
@@ -2827,14 +2845,35 @@ function displayComparisonResults(result: GenomeComparisonResult): void {
   };
 
   const metricsFragment = document.createDocumentFragment();
-  metricsFragment.appendChild(createMetric('Pixel Difference',
-    result.metrics.pixelDifferencePercent.toFixed(1), '%'));
-  metricsFragment.appendChild(createMetric('Codon Difference',
-    result.metrics.codonDifferencePercent.toFixed(1), '%'));
-  metricsFragment.appendChild(createMetric('Hamming Distance',
-    String(result.metrics.hammingDistance), 'codons'));
-  metricsFragment.appendChild(createMetric('Length Difference',
-    (result.metrics.lengthDifference > 0 ? "+" : "") + result.metrics.lengthDifference, 'codons'));
+  metricsFragment.appendChild(
+    createMetric(
+      "Pixel Difference",
+      result.metrics.pixelDifferencePercent.toFixed(1),
+      "%",
+    ),
+  );
+  metricsFragment.appendChild(
+    createMetric(
+      "Codon Difference",
+      result.metrics.codonDifferencePercent.toFixed(1),
+      "%",
+    ),
+  );
+  metricsFragment.appendChild(
+    createMetric(
+      "Hamming Distance",
+      String(result.metrics.hammingDistance),
+      "codons",
+    ),
+  );
+  metricsFragment.appendChild(
+    createMetric(
+      "Length Difference",
+      (result.metrics.lengthDifference > 0 ? "+" : "") +
+        result.metrics.lengthDifference,
+      "codons",
+    ),
+  );
   metricsDiv.replaceChildren(metricsFragment);
 
   // Analysis
@@ -2842,15 +2881,15 @@ function displayComparisonResults(result: GenomeComparisonResult): void {
     "comparisonAnalysis",
   ) as HTMLDivElement;
 
-  const descP = document.createElement('p');
-  descP.className = 'comparison-analysis-description';
+  const descP = document.createElement("p");
+  descP.className = "comparison-analysis-description";
   descP.textContent = result.analysis.description;
 
-  const insights = document.createElement('div');
-  insights.className = 'comparison-insights';
-  result.analysis.insights.forEach(insight => {
-    const insightDiv = document.createElement('div');
-    insightDiv.className = 'comparison-insight';
+  const insights = document.createElement("div");
+  insights.className = "comparison-insights";
+  result.analysis.insights.forEach((insight) => {
+    const insightDiv = document.createElement("div");
+    insightDiv.className = "comparison-insight";
     insightDiv.textContent = insight;
     insights.appendChild(insightDiv);
   });

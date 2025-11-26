@@ -97,7 +97,8 @@ class Stats {
   static sd(values: number[], sample = true): number {
     if (values.length === 0) return 0;
     const m = Stats.mean(values);
-    const variance = values.reduce((sum, val) => sum + (val - m) ** 2, 0) /
+    const variance =
+      values.reduce((sum, val) => sum + (val - m) ** 2, 0) /
       (sample ? values.length - 1 : values.length);
     return Math.sqrt(variance);
   }
@@ -170,8 +171,8 @@ class Stats {
     const sd2 = Stats.sd(group2);
 
     // Pooled standard deviation
-    const pooledVariance = ((n1 - 1) * sd1 * sd1 + (n2 - 1) * sd2 * sd2) /
-      (n1 + n2 - 2);
+    const pooledVariance =
+      ((n1 - 1) * sd1 * sd1 + (n2 - 1) * sd2 * sd2) / (n1 + n2 - 2);
     const pooledSD = Math.sqrt(pooledVariance);
     const seMean = pooledSD * Math.sqrt(1 / n1 + 1 / n2);
 
@@ -221,7 +222,8 @@ class Stats {
   static normalCDF(z: number): number {
     const t = 1 / (1 + 0.2316419 * Math.abs(z));
     const d = 0.3989423 * Math.exp((-z * z) / 2);
-    const prob = d *
+    const prob =
+      d *
       t *
       (0.3193815 +
         t * (-0.3565638 + t * (1.781478 + t * (-1.821256 + t * 1.330274))));
@@ -341,25 +343,19 @@ class ResearchAnalyzer {
     const tResult = Stats.pairedTTest(preScores, postScores);
 
     console.log(
-      `t(${tResult.df}) = ${tResult.t.toFixed(3)}, p = ${
-        ResearchAnalyzer.formatPValue(
-          tResult.p,
-        )
-      }`,
+      `t(${tResult.df}) = ${tResult.t.toFixed(3)}, p = ${ResearchAnalyzer.formatPValue(
+        tResult.p,
+      )}`,
     );
     console.log(
-      `Mean difference: ${tResult.mean_diff.toFixed(2)} (95% CI: [${
-        tResult.ci_lower.toFixed(
-          2,
-        )
-      }, ${tResult.ci_upper.toFixed(2)}])`,
+      `Mean difference: ${tResult.mean_diff.toFixed(2)} (95% CI: [${tResult.ci_lower.toFixed(
+        2,
+      )}, ${tResult.ci_upper.toFixed(2)}])`,
     );
     console.log(
-      `Cohen's d: ${tResult.cohens_d.toFixed(3)} (${
-        Stats.interpretEffectSize(
-          tResult.cohens_d,
-        )
-      })`,
+      `Cohen's d: ${tResult.cohens_d.toFixed(3)} (${Stats.interpretEffectSize(
+        tResult.cohens_d,
+      )})`,
     );
 
     if (tResult.p < 0.05) {
@@ -406,25 +402,19 @@ class ResearchAnalyzer {
 
     const preEquiv = Stats.independentTTest(treatmentPre, controlPre);
     console.log(
-      `Treatment pre-test: M = ${Stats.mean(treatmentPre).toFixed(2)}, SD = ${
-        Stats.sd(
-          treatmentPre,
-        ).toFixed(2)
-      }`,
+      `Treatment pre-test: M = ${Stats.mean(treatmentPre).toFixed(2)}, SD = ${Stats.sd(
+        treatmentPre,
+      ).toFixed(2)}`,
     );
     console.log(
-      `Control pre-test:   M = ${Stats.mean(controlPre).toFixed(2)}, SD = ${
-        Stats.sd(
-          controlPre,
-        ).toFixed(2)
-      }`,
+      `Control pre-test:   M = ${Stats.mean(controlPre).toFixed(2)}, SD = ${Stats.sd(
+        controlPre,
+      ).toFixed(2)}`,
     );
     console.log(
-      `t(${preEquiv.df}) = ${preEquiv.t.toFixed(3)}, p = ${
-        ResearchAnalyzer.formatPValue(
-          preEquiv.p,
-        )
-      }`,
+      `t(${preEquiv.df}) = ${preEquiv.t.toFixed(3)}, p = ${ResearchAnalyzer.formatPValue(
+        preEquiv.p,
+      )}`,
     );
 
     if (preEquiv.p >= 0.05) {
@@ -443,49 +433,37 @@ class ResearchAnalyzer {
     const postResult = Stats.independentTTest(treatmentPost, controlPost);
 
     console.log(
-      `Treatment post-test: M = ${Stats.mean(treatmentPost).toFixed(2)}, SD = ${
-        Stats.sd(
-          treatmentPost,
-        ).toFixed(2)
-      }`,
+      `Treatment post-test: M = ${Stats.mean(treatmentPost).toFixed(2)}, SD = ${Stats.sd(
+        treatmentPost,
+      ).toFixed(2)}`,
     );
     console.log(
-      `Control post-test:   M = ${Stats.mean(controlPost).toFixed(2)}, SD = ${
-        Stats.sd(
-          controlPost,
-        ).toFixed(2)
-      }`,
+      `Control post-test:   M = ${Stats.mean(controlPost).toFixed(2)}, SD = ${Stats.sd(
+        controlPost,
+      ).toFixed(2)}`,
     );
     console.log(
-      `\nt(${postResult.df}) = ${postResult.t.toFixed(3)}, p = ${
-        ResearchAnalyzer.formatPValue(
-          postResult.p,
-        )
-      }`,
+      `\nt(${postResult.df}) = ${postResult.t.toFixed(3)}, p = ${ResearchAnalyzer.formatPValue(
+        postResult.p,
+      )}`,
     );
     console.log(
-      `Mean difference: ${postResult.mean_diff.toFixed(2)} (95% CI: [${
-        postResult.ci_lower.toFixed(
-          2,
-        )
-      }, ${postResult.ci_upper.toFixed(2)}])`,
+      `Mean difference: ${postResult.mean_diff.toFixed(2)} (95% CI: [${postResult.ci_lower.toFixed(
+        2,
+      )}, ${postResult.ci_upper.toFixed(2)}])`,
     );
     console.log(
-      `Cohen's d: ${postResult.cohens_d.toFixed(3)} (${
-        Stats.interpretEffectSize(
-          postResult.cohens_d,
-        )
-      })`,
+      `Cohen's d: ${postResult.cohens_d.toFixed(3)} (${Stats.interpretEffectSize(
+        postResult.cohens_d,
+      )})`,
     );
 
     if (postResult.p < 0.05) {
       console.log("\n✅ SIGNIFICANT treatment effect detected (p < 0.05)");
       console.log(
-        `   CodonCanvas shows ${
-          Stats.interpretEffectSize(
-            postResult.cohens_d,
-          )
-        } effect size`,
+        `   CodonCanvas shows ${Stats.interpretEffectSize(
+          postResult.cohens_d,
+        )} effect size`,
       );
     } else {
       console.log("\n⚠️  No significant treatment effect (p >= 0.05)");
@@ -502,25 +480,19 @@ class ResearchAnalyzer {
 
     const gainResult = Stats.independentTTest(treatmentGains, controlGains);
     console.log(
-      `Treatment gain: M = ${Stats.mean(treatmentGains).toFixed(2)}, SD = ${
-        Stats.sd(
-          treatmentGains,
-        ).toFixed(2)
-      }`,
+      `Treatment gain: M = ${Stats.mean(treatmentGains).toFixed(2)}, SD = ${Stats.sd(
+        treatmentGains,
+      ).toFixed(2)}`,
     );
     console.log(
-      `Control gain:   M = ${Stats.mean(controlGains).toFixed(2)}, SD = ${
-        Stats.sd(
-          controlGains,
-        ).toFixed(2)
-      }`,
+      `Control gain:   M = ${Stats.mean(controlGains).toFixed(2)}, SD = ${Stats.sd(
+        controlGains,
+      ).toFixed(2)}`,
     );
     console.log(
-      `t(${gainResult.df}) = ${gainResult.t.toFixed(3)}, p = ${
-        ResearchAnalyzer.formatPValue(
-          gainResult.p,
-        )
-      }`,
+      `t(${gainResult.df}) = ${gainResult.t.toFixed(3)}, p = ${ResearchAnalyzer.formatPValue(
+        gainResult.p,
+      )}`,
     );
 
     console.log("\n" + "═".repeat(64) + "\n");
@@ -561,15 +533,11 @@ class ResearchAnalyzer {
       const d = Stats.mean(gains) / Stats.sd(gains);
 
       console.log(
-        `${
-          type.padEnd(
-            13,
-          )
-        } | ${preMean}(${preSD}) | ${postMean}(${postSD}) | ${gainMean}(${gainSD}) | ${
-          d.toFixed(
-            3,
-          )
-        } (${Stats.interpretEffectSize(d)})`,
+        `${type.padEnd(
+          13,
+        )} | ${preMean}(${preSD}) | ${postMean}(${postSD}) | ${gainMean}(${gainSD}) | ${d.toFixed(
+          3,
+        )} (${Stats.interpretEffectSize(d)})`,
       );
     }
   }
@@ -586,34 +554,26 @@ class ResearchAnalyzer {
     const retention = (delayedMean / postMean) * 100;
 
     console.log(
-      `Immediate post-test: M = ${postMean.toFixed(2)}, SD = ${
-        Stats.sd(
-          postScores,
-        ).toFixed(2)
-      }`,
+      `Immediate post-test: M = ${postMean.toFixed(2)}, SD = ${Stats.sd(
+        postScores,
+      ).toFixed(2)}`,
     );
     console.log(
-      `Delayed post-test:   M = ${delayedMean.toFixed(2)}, SD = ${
-        Stats.sd(
-          delayedScores,
-        ).toFixed(2)
-      }`,
+      `Delayed post-test:   M = ${delayedMean.toFixed(2)}, SD = ${Stats.sd(
+        delayedScores,
+      ).toFixed(2)}`,
     );
     console.log(
-      `Retention rate:      ${
-        retention.toFixed(
-          1,
-        )
-      }% of immediate post-test score`,
+      `Retention rate:      ${retention.toFixed(
+        1,
+      )}% of immediate post-test score`,
     );
 
     const retentionTest = Stats.pairedTTest(postScores, delayedScores);
     console.log(
-      `t(${retentionTest.df}) = ${retentionTest.t.toFixed(3)}, p = ${
-        ResearchAnalyzer.formatPValue(
-          retentionTest.p,
-        )
-      }`,
+      `t(${retentionTest.df}) = ${retentionTest.t.toFixed(3)}, p = ${ResearchAnalyzer.formatPValue(
+        retentionTest.p,
+      )}`,
     );
 
     if (retentionTest.p >= 0.05) {
@@ -668,25 +628,17 @@ class ResearchAnalyzer {
     const gains = pre.map((p, i) => post[i] - p);
 
     console.log(
-      `| Total Score | ${data.length} | ${Stats.mean(pre).toFixed(2)}(${
-        Stats.sd(
-          pre,
-        ).toFixed(
-          2,
-        )
-      }) | ${Stats.mean(post).toFixed(2)}(${Stats.sd(post).toFixed(2)}) | ${
-        Stats.mean(
-          gains,
-        ).toFixed(2)
-      }(${Stats.sd(gains).toFixed(2)}) | ${
-        result.t.toFixed(
-          2,
-        )
-      } | ${result.df} | ${ResearchAnalyzer.formatPValue(result.p)} | ${
-        result.cohens_d.toFixed(
-          2,
-        )
-      } |`,
+      `| Total Score | ${data.length} | ${Stats.mean(pre).toFixed(2)}(${Stats.sd(
+        pre,
+      ).toFixed(
+        2,
+      )}) | ${Stats.mean(post).toFixed(2)}(${Stats.sd(post).toFixed(2)}) | ${Stats.mean(
+        gains,
+      ).toFixed(2)}(${Stats.sd(gains).toFixed(2)}) | ${result.t.toFixed(
+        2,
+      )} | ${result.df} | ${ResearchAnalyzer.formatPValue(result.p)} | ${result.cohens_d.toFixed(
+        2,
+      )} |`,
     );
     console.log("```\n");
   }
@@ -855,7 +807,7 @@ function main(): void {
 
       if (treatment.length === 0 || control.length === 0) {
         console.error(
-          "Error: For RCT, either provide --control file or include \"group\" column in data",
+          'Error: For RCT, either provide --control file or include "group" column in data',
         );
         process.exit(1);
       }

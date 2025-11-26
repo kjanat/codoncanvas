@@ -108,26 +108,26 @@ export class AssessmentUI {
    */
   private createUI(): void {
     // Build assessment UI structure safely
-    const assessmentContainer = document.createElement('div');
-    assessmentContainer.className = 'assessment-container';
+    const assessmentContainer = document.createElement("div");
+    assessmentContainer.className = "assessment-container";
 
     // Header
-    const header = document.createElement('div');
-    header.className = 'assessment-header';
-    const h2 = document.createElement('h2');
-    h2.textContent = '🎓 Mutation Assessment Challenge';
+    const header = document.createElement("div");
+    header.className = "assessment-header";
+    const h2 = document.createElement("h2");
+    h2.textContent = "🎓 Mutation Assessment Challenge";
     header.appendChild(h2);
 
-    const controls = document.createElement('div');
-    controls.className = 'assessment-controls';
-    const label = document.createElement('label');
-    label.setAttribute('for', 'difficulty-select');
-    label.textContent = 'Difficulty:';
-    const select = document.createElement('select');
-    select.id = 'difficulty-select';
-    select.className = 'difficulty-select';
-    ['easy', 'medium', 'hard'].forEach(level => {
-      const opt = document.createElement('option');
+    const controls = document.createElement("div");
+    controls.className = "assessment-controls";
+    const label = document.createElement("label");
+    label.setAttribute("for", "difficulty-select");
+    label.textContent = "Difficulty:";
+    const select = document.createElement("select");
+    select.id = "difficulty-select";
+    select.className = "difficulty-select";
+    ["easy", "medium", "hard"].forEach((level) => {
+      const opt = document.createElement("option");
       opt.value = level;
       opt.textContent = level.charAt(0).toUpperCase() + level.slice(1);
       select.appendChild(opt);
@@ -137,75 +137,83 @@ export class AssessmentUI {
     header.appendChild(controls);
 
     // Challenge section
-    const challengeSection = document.createElement('div');
-    challengeSection.className = 'challenge-section';
+    const challengeSection = document.createElement("div");
+    challengeSection.className = "challenge-section";
 
-    const questionDiv = document.createElement('div');
-    questionDiv.className = 'challenge-question';
-    const h3 = document.createElement('h3');
-    h3.textContent = 'What type of mutation occurred?';
-    const instructions = document.createElement('p');
-    instructions.className = 'challenge-instructions';
-    instructions.textContent = 'Compare the two genomes below and identify the mutation type.';
+    const questionDiv = document.createElement("div");
+    questionDiv.className = "challenge-question";
+    const h3 = document.createElement("h3");
+    h3.textContent = "What type of mutation occurred?";
+    const instructions = document.createElement("p");
+    instructions.className = "challenge-instructions";
+    instructions.textContent =
+      "Compare the two genomes below and identify the mutation type.";
     questionDiv.appendChild(h3);
     questionDiv.appendChild(instructions);
 
-    const genomeComparison = document.createElement('div');
-    genomeComparison.className = 'genome-comparison';
+    const genomeComparison = document.createElement("div");
+    genomeComparison.className = "genome-comparison";
 
-    const origBox = document.createElement('div');
-    origBox.className = 'genome-box';
-    const origH4 = document.createElement('h4');
-    origH4.textContent = 'Original Genome:';
-    const origDisplay = document.createElement('div');
-    origDisplay.id = 'original-genome';
-    origDisplay.className = 'genome-display';
+    const origBox = document.createElement("div");
+    origBox.className = "genome-box";
+    const origH4 = document.createElement("h4");
+    origH4.textContent = "Original Genome:";
+    const origDisplay = document.createElement("div");
+    origDisplay.id = "original-genome";
+    origDisplay.className = "genome-display";
     origBox.appendChild(origH4);
     origBox.appendChild(origDisplay);
 
-    const mutBox = document.createElement('div');
-    mutBox.className = 'genome-box';
-    const mutH4 = document.createElement('h4');
-    mutH4.textContent = 'Mutated Genome:';
-    const mutDisplay = document.createElement('div');
-    mutDisplay.id = 'mutated-genome';
-    mutDisplay.className = 'genome-display';
+    const mutBox = document.createElement("div");
+    mutBox.className = "genome-box";
+    const mutH4 = document.createElement("h4");
+    mutH4.textContent = "Mutated Genome:";
+    const mutDisplay = document.createElement("div");
+    mutDisplay.id = "mutated-genome";
+    mutDisplay.className = "genome-display";
     mutBox.appendChild(mutH4);
     mutBox.appendChild(mutDisplay);
 
     genomeComparison.appendChild(origBox);
     genomeComparison.appendChild(mutBox);
 
-    const hintDisplay = document.createElement('div');
-    hintDisplay.id = 'hint-display';
-    hintDisplay.className = 'hint-display';
+    const hintDisplay = document.createElement("div");
+    hintDisplay.id = "hint-display";
+    hintDisplay.className = "hint-display";
 
-    const answerSection = document.createElement('div');
-    answerSection.className = 'answer-section';
-    const answerH4 = document.createElement('h4');
-    answerH4.textContent = 'Select your answer:';
-    const answerButtons = document.createElement('div');
-    answerButtons.className = 'answer-buttons';
-    ['silent', 'missense', 'nonsense', 'frameshift', 'insertion', 'deletion'].forEach(type => {
-      const btn = document.createElement('button');
-      btn.className = 'answer-btn';
-      btn.setAttribute('data-type', type);
+    const answerSection = document.createElement("div");
+    answerSection.className = "answer-section";
+    const answerH4 = document.createElement("h4");
+    answerH4.textContent = "Select your answer:";
+    const answerButtons = document.createElement("div");
+    answerButtons.className = "answer-buttons";
+    [
+      "silent",
+      "missense",
+      "nonsense",
+      "frameshift",
+      "insertion",
+      "deletion",
+    ].forEach((type) => {
+      const btn = document.createElement("button");
+      btn.className = "answer-btn";
+      btn.setAttribute("data-type", type);
       btn.textContent = type.charAt(0).toUpperCase() + type.slice(1);
       answerButtons.appendChild(btn);
     });
     answerSection.appendChild(answerH4);
     answerSection.appendChild(answerButtons);
 
-    const feedbackDisplay = document.createElement('div');
-    feedbackDisplay.id = 'feedback-display';
-    feedbackDisplay.className = 'feedback-display';
+    const feedbackDisplay = document.createElement("div");
+    feedbackDisplay.id = "feedback-display";
+    feedbackDisplay.className = "feedback-display";
 
-    const challengeActions = document.createElement('div');
-    challengeActions.className = 'challenge-actions';
-    const nextBtn = document.createElement('button');
-    nextBtn.id = 'next-challenge-btn';
-    nextBtn.className = 'next-challenge-btn';
-    nextBtn.textContent = 'Next Challenge →';
+    const challengeActions = document.createElement("div");
+    challengeActions.className = "challenge-actions";
+    const nextBtn = document.createElement("button");
+    nextBtn.id = "next-challenge-btn";
+    nextBtn.className = "next-challenge-btn";
+    nextBtn.textContent = "Next Challenge →";
     challengeActions.appendChild(nextBtn);
 
     challengeSection.appendChild(questionDiv);
@@ -215,9 +223,9 @@ export class AssessmentUI {
     challengeSection.appendChild(feedbackDisplay);
     challengeSection.appendChild(challengeActions);
 
-    const progressDisplay = document.createElement('div');
-    progressDisplay.id = 'progress-display';
-    progressDisplay.className = 'progress-display';
+    const progressDisplay = document.createElement("div");
+    progressDisplay.id = "progress-display";
+    progressDisplay.className = "progress-display";
 
     assessmentContainer.appendChild(header);
     assessmentContainer.appendChild(challengeSection);
@@ -265,9 +273,8 @@ export class AssessmentUI {
     });
 
     // Setup next challenge button
-    this.nextChallengeBtn.addEventListener(
-      "click",
-      () => this.startNewChallenge(),
+    this.nextChallengeBtn.addEventListener("click", () =>
+      this.startNewChallenge(),
     );
 
     // Add CSS styles
@@ -288,12 +295,12 @@ export class AssessmentUI {
 
     // Display hint if available
     if (this.currentChallenge.hint) {
-      const p = document.createElement('p');
-      const strong = document.createElement('strong');
-      strong.textContent = 'Hint:';
-      p.textContent = '💡 ';
+      const p = document.createElement("p");
+      const strong = document.createElement("strong");
+      strong.textContent = "Hint:";
+      p.textContent = "💡 ";
       p.appendChild(strong);
-      p.appendChild(document.createTextNode(' ' + this.currentChallenge.hint));
+      p.appendChild(document.createTextNode(" " + this.currentChallenge.hint));
       this.hintDisplay.replaceChildren(p);
       this.hintDisplay.style.display = "block";
     } else {
@@ -362,15 +369,15 @@ export class AssessmentUI {
       ? "feedback-correct"
       : "feedback-incorrect";
 
-    const container = document.createElement('div');
+    const container = document.createElement("div");
     container.className = className;
 
-    const p1 = document.createElement('p');
-    const strong = document.createElement('strong');
+    const p1 = document.createElement("p");
+    const strong = document.createElement("strong");
     strong.textContent = `${icon} ${result.correct ? "Correct!" : "Incorrect"}`;
     p1.appendChild(strong);
 
-    const p2 = document.createElement('p');
+    const p2 = document.createElement("p");
     p2.textContent = result.feedback;
 
     container.appendChild(p1);
@@ -397,40 +404,51 @@ export class AssessmentUI {
       this.achievementUI.handleUnlocks(unlocked);
     }
 
-    const accuracyColor = progress.accuracy >= 80
-      ? "#28a745"
-      : progress.accuracy >= 60
-      ? "#ffc107"
-      : "#dc3545";
+    const accuracyColor =
+      progress.accuracy >= 80
+        ? "#28a745"
+        : progress.accuracy >= 60
+          ? "#ffc107"
+          : "#dc3545";
 
-    const summary = document.createElement('div');
-    summary.className = 'progress-summary';
+    const summary = document.createElement("div");
+    summary.className = "progress-summary";
 
-    const h3 = document.createElement('h3');
-    h3.textContent = '📊 Your Progress';
+    const h3 = document.createElement("h3");
+    h3.textContent = "📊 Your Progress";
     summary.appendChild(h3);
 
-    const stats = document.createElement('div');
-    stats.className = 'progress-stats';
+    const stats = document.createElement("div");
+    stats.className = "progress-stats";
 
-    const createStatItem = (value: string | number, label: string, color?: string) => {
-      const item = document.createElement('div');
-      item.className = 'stat-item';
-      const valueDiv = document.createElement('div');
-      valueDiv.className = 'stat-value';
+    const createStatItem = (
+      value: string | number,
+      label: string,
+      color?: string,
+    ) => {
+      const item = document.createElement("div");
+      item.className = "stat-item";
+      const valueDiv = document.createElement("div");
+      valueDiv.className = "stat-value";
       valueDiv.textContent = String(value);
       if (color) valueDiv.style.color = color;
-      const labelDiv = document.createElement('div');
-      labelDiv.className = 'stat-label';
+      const labelDiv = document.createElement("div");
+      labelDiv.className = "stat-label";
       labelDiv.textContent = label;
       item.appendChild(valueDiv);
       item.appendChild(labelDiv);
       return item;
     };
 
-    stats.appendChild(createStatItem(progress.totalAttempts, 'Challenges'));
-    stats.appendChild(createStatItem(progress.correctAnswers, 'Correct'));
-    stats.appendChild(createStatItem(progress.accuracy.toFixed(1) + '%', 'Accuracy', accuracyColor));
+    stats.appendChild(createStatItem(progress.totalAttempts, "Challenges"));
+    stats.appendChild(createStatItem(progress.correctAnswers, "Correct"));
+    stats.appendChild(
+      createStatItem(
+        progress.accuracy.toFixed(1) + "%",
+        "Accuracy",
+        accuracyColor,
+      ),
+    );
 
     summary.appendChild(stats);
     this.progressDisplay.replaceChildren(summary);

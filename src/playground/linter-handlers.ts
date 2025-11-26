@@ -3,7 +3,13 @@
  * Manages linting and auto-fix functionality
  */
 
-import { editor, linterMessages, linterPanel, linterToggle, fixAllBtn } from "./dom-manager";
+import {
+  editor,
+  fixAllBtn,
+  linterMessages,
+  linterPanel,
+  linterToggle,
+} from "./dom-manager";
 import { lexer } from "./ui-state";
 import { setStatus } from "./ui-utils";
 
@@ -187,16 +193,18 @@ function displayLinterErrors(
     linterMessages.appendChild(successDiv);
   } else {
     errors.forEach((err) => {
-      const icon = err.severity === "error"
-        ? "🔴"
-        : err.severity === "warning"
-        ? "🟡"
-        : "ℹ️";
-      const color = err.severity === "error"
-        ? "#f48771"
-        : err.severity === "warning"
-        ? "#dcdcaa"
-        : "#4ec9b0";
+      const icon =
+        err.severity === "error"
+          ? "🔴"
+          : err.severity === "warning"
+            ? "🟡"
+            : "ℹ️";
+      const color =
+        err.severity === "error"
+          ? "#f48771"
+          : err.severity === "warning"
+            ? "#dcdcaa"
+            : "#4ec9b0";
 
       const errorDiv = document.createElement("div");
       errorDiv.style.cssText = `margin-bottom: 8px; padding: 6px 8px; border-left: 3px solid ${color}; background: rgba(255,255,255,0.03); display: flex; align-items: center;`;
@@ -219,7 +227,8 @@ function displayLinterErrors(
 
       if (err.position !== undefined) {
         const posSpan = document.createElement("span");
-        posSpan.style.cssText = "color: #858585; margin-left: 8px; font-size: 0.9em;";
+        posSpan.style.cssText =
+          "color: #858585; margin-left: 8px; font-size: 0.9em;";
         posSpan.textContent = `(pos: ${err.position})`;
         errorDiv.appendChild(posSpan);
       }
@@ -228,7 +237,8 @@ function displayLinterErrors(
         const fixButton = document.createElement("button");
         fixButton.className = "fix-button";
         fixButton.dataset.errorMsg = err.message;
-        fixButton.style.cssText = "margin-left: 12px; padding: 2px 8px; background: #4ec9b0; color: #1e1e1e; border: none; border-radius: 3px; cursor: pointer; font-size: 0.85em; font-weight: 500;";
+        fixButton.style.cssText =
+          "margin-left: 12px; padding: 2px 8px; background: #4ec9b0; color: #1e1e1e; border: none; border-radius: 3px; cursor: pointer; font-size: 0.85em; font-weight: 500;";
         fixButton.textContent = "Fix";
 
         fixButton.addEventListener("mouseover", () => {
@@ -238,7 +248,9 @@ function displayLinterErrors(
           fixButton.style.background = "#4ec9b0";
         });
         fixButton.addEventListener("click", (e) => {
-          const errorMsg = (e.target as HTMLElement).getAttribute("data-error-msg");
+          const errorMsg = (e.target as HTMLElement).getAttribute(
+            "data-error-msg",
+          );
           if (errorMsg) {
             applyAutoFix(errorMsg);
           }

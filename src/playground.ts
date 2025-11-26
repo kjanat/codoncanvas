@@ -8,20 +8,16 @@
 
 // Re-export all public modules for backward compatibility
 export * from "./playground/dom-manager";
-export * from "./playground/ui-state";
-export * from "./playground/ui-utils";
 export * from "./playground/export-handlers";
 export * from "./playground/genome-handlers";
 export * from "./playground/linter-handlers";
+export * from "./playground/ui-state";
+export * from "./playground/ui-utils";
 
 // Import all dependencies needed for initialization
 import { AudioRenderer } from "./audio-renderer";
 import { DiffViewer, injectDiffViewerStyles } from "./diff-viewer";
-import {
-  type ExampleKey,
-  type ExampleMetadata,
-  examples,
-} from "./examples";
+import { type ExampleKey, type ExampleMetadata, examples } from "./examples";
 import { CodonLexer } from "./lexer";
 import { Canvas2DRenderer } from "./renderer";
 import { injectShareStyles, ShareSystem } from "./share-system";
@@ -30,7 +26,6 @@ import { initializeTutorial } from "./tutorial-ui";
 import { CodonVM } from "./vm";
 import "./tutorial-ui.css";
 import "./achievement-ui.css";
-import { injectTimelineStyles } from "./timeline-scrubber";
 import { AssessmentUI } from "./assessment-ui";
 import {
   analyzeCodonUsage,
@@ -56,93 +51,99 @@ import {
   applySilentMutation,
   type MutationType,
 } from "./mutations";
-
 // Import DOM elements
 import {
-  editor,
-  canvas,
-  runBtn,
-  clearBtn,
-  exampleSelect,
-  exportBtn,
-  exportAudioBtn,
-  exportMidiBtn,
-  saveGenomeBtn,
-  loadGenomeBtn,
-  exportStudentProgressBtn,
-  genomeFileInput,
-  statusMessage,
-  statusBar,
-  silentMutationBtn,
-  missenseMutationBtn,
-  nonsenseMutationBtn,
-  frameshiftMutationBtn,
-  pointMutationBtn,
-  insertionMutationBtn,
-  deletionMutationBtn,
-  shareContainer,
-  difficultyFilter,
-  conceptFilter,
-  searchInput,
-  exampleInfo,
-  linterPanel,
-  linterToggle,
-  linterMessages,
-  fixAllBtn,
-  diffViewerPanel,
-  diffViewerToggle,
-  diffViewerClearBtn,
-  diffViewerContainer,
   analyzeBtn,
+  analyzerContent,
   analyzerPanel,
   analyzerToggle,
-  analyzerContent,
-  setCompareBtn,
-  audioToggleBtn,
-  timelineToggleBtn,
-  timelinePanel,
-  modeToggleBtns,
-  playgroundContainer,
   assessmentContainer,
+  audioToggleBtn,
+  canvas,
+  clearBtn,
+  conceptFilter,
+  deletionMutationBtn,
+  difficultyFilter,
+  diffViewerClearBtn,
+  diffViewerContainer,
+  diffViewerPanel,
+  diffViewerToggle,
+  editor,
+  exampleInfo,
+  exampleSelect,
+  exportAudioBtn,
+  exportBtn,
+  exportMidiBtn,
+  exportStudentProgressBtn,
+  fixAllBtn,
+  frameshiftMutationBtn,
+  genomeFileInput,
+  insertionMutationBtn,
+  linterMessages,
+  linterPanel,
+  linterToggle,
+  loadGenomeBtn,
+  missenseMutationBtn,
+  modeToggleBtns,
+  nonsenseMutationBtn,
+  playgroundContainer,
+  pointMutationBtn,
+  runBtn,
+  saveGenomeBtn,
+  searchInput,
+  setCompareBtn,
+  shareContainer,
+  silentMutationBtn,
+  statusBar,
+  statusMessage,
   themeToggleBtn,
+  timelinePanel,
+  timelineToggleBtn,
 } from "./playground/dom-manager";
-
+// Import handlers
+import {
+  exportImage,
+  exportMidi,
+  exportStudentProgress,
+  saveGenome,
+} from "./playground/export-handlers";
+import { handleFileLoad, loadGenome } from "./playground/genome-handlers";
+import {
+  fixAllErrors,
+  runLinter,
+  toggleLinter,
+} from "./playground/linter-handlers";
+import { applyMutation } from "./playground/mutation-handlers";
 // Import state managers
 import {
-  lexer,
-  renderer,
-  audioRenderer,
-  midiExporter,
-  renderMode,
-  vm,
-  lastSnapshots,
-  timelineScrubber,
-  timelineVisible,
-  themeManager,
   achievementEngine,
   achievementUI,
   assessmentEngine,
   assessmentUI,
+  audioRenderer,
+  lastSnapshots,
+  lexer,
+  midiExporter,
+  renderer,
+  renderMode,
   researchMetrics,
-  setRenderMode,
-  setTimelineVisible,
   setAssessmentUI,
   setLastSnapshots,
+  setRenderMode,
+  setTimelineVisible,
+  themeManager,
+  timelineScrubber,
+  timelineVisible,
+  vm,
 } from "./playground/ui-state";
-
 // Import UI utilities
-import { escapeHtml, setStatus, updateStats, updateThemeButton } from "./playground/ui-utils";
-
-// Import handlers
 import {
-  exportImage,
-  saveGenome,
-  exportMidi,
-  exportStudentProgress,
-} from "./playground/export-handlers";
-import { loadGenome, handleFileLoad } from "./playground/genome-handlers";
-import { runLinter, fixAllErrors, toggleLinter } from "./playground/linter-handlers";
-import { applyMutation } from "./playground/mutation-handlers";
+  escapeHtml,
+  setStatus,
+  updateStats,
+  updateThemeButton,
+} from "./playground/ui-utils";
+import { injectTimelineStyles } from "./timeline-scrubber";
 
 // Initialize UI button state
 updateThemeButton();
@@ -212,7 +213,9 @@ async function runProgram() {
     updateStats(tokens.length, 0);
 
     const structureErrors = lexer.validateStructure(tokens);
-    const criticalErrors = structureErrors.filter((e) => e.severity === "error");
+    const criticalErrors = structureErrors.filter(
+      (e) => e.severity === "error",
+    );
 
     if (criticalErrors.length > 0) {
       setStatus(`Error: ${criticalErrors[0].message}`, "error");
@@ -441,8 +444,7 @@ function updateExampleDropdown() {
   const filteredCount = filtered.length;
 
   if (filteredCount < totalCount) {
-    exampleSelect.options[0].textContent =
-      `Load Example... (${filteredCount} of ${totalCount})`;
+    exampleSelect.options[0].textContent = `Load Example... (${filteredCount} of ${totalCount})`;
   }
 }
 
@@ -466,7 +468,8 @@ function showExampleInfo(key: ExampleKey) {
   titleDiv.appendChild(titleStrong);
 
   const difficultySpan = document.createElement("span");
-  difficultySpan.style.cssText = "float: right; font-size: 0.85em; opacity: 0.7;";
+  difficultySpan.style.cssText =
+    "float: right; font-size: 0.85em; opacity: 0.7;";
   difficultySpan.textContent = ex.difficulty;
   titleDiv.appendChild(difficultySpan);
 
@@ -481,13 +484,17 @@ function showExampleInfo(key: ExampleKey) {
   const conceptsLabel = document.createElement("strong");
   conceptsLabel.textContent = "Concepts:";
   conceptsDiv.appendChild(conceptsLabel);
-  conceptsDiv.appendChild(document.createTextNode(" " + ex.concepts.join(", ")));
+  conceptsDiv.appendChild(
+    document.createTextNode(" " + ex.concepts.join(", ")),
+  );
 
   const mutationsDiv = document.createElement("div");
   const mutationsLabel = document.createElement("strong");
   mutationsLabel.textContent = "Good for mutations:";
   mutationsDiv.appendChild(mutationsLabel);
-  mutationsDiv.appendChild(document.createTextNode(" " + ex.goodForMutations.join(", ")));
+  mutationsDiv.appendChild(
+    document.createTextNode(" " + ex.goodForMutations.join(", ")),
+  );
 
   metaDiv.appendChild(conceptsDiv);
   metaDiv.appendChild(mutationsDiv);
@@ -605,9 +612,13 @@ linterToggle.addEventListener("click", toggleLinter);
 silentMutationBtn.addEventListener("click", () => applyMutation("silent"));
 missenseMutationBtn.addEventListener("click", () => applyMutation("missense"));
 nonsenseMutationBtn.addEventListener("click", () => applyMutation("nonsense"));
-frameshiftMutationBtn.addEventListener("click", () => applyMutation("frameshift"));
+frameshiftMutationBtn.addEventListener("click", () =>
+  applyMutation("frameshift"),
+);
 pointMutationBtn.addEventListener("click", () => applyMutation("point"));
-insertionMutationBtn.addEventListener("click", () => applyMutation("insertion"));
+insertionMutationBtn.addEventListener("click", () =>
+  applyMutation("insertion"),
+);
 deletionMutationBtn.addEventListener("click", () => applyMutation("deletion"));
 
 // Example filter listeners
@@ -642,10 +653,19 @@ document.addEventListener("keydown", (e) => {
 
 // Initialize tutorials
 const tutorialManager = new TutorialManager();
-const tutorialContainer = document.querySelector(".tutorial-container") as HTMLElement;
+const tutorialContainer = document.querySelector(
+  ".tutorial-container",
+) as HTMLElement;
 if (tutorialContainer) {
   initializeTutorial(tutorialContainer, tutorialManager, editor);
 }
 
 // Optional: Export individual pieces for testing
-export { runProgram, clearCanvas, loadExample, toggleAudio, toggleTimeline, switchMode };
+export {
+  runProgram,
+  clearCanvas,
+  loadExample,
+  toggleAudio,
+  toggleTimeline,
+  switchMode,
+};

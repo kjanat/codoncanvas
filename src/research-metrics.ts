@@ -213,8 +213,8 @@ export class ResearchMetrics {
     if (!this.currentSession) return;
 
     this.currentSession.endTime = Date.now();
-    this.currentSession.duration = this.currentSession.endTime -
-      this.currentSession.startTime;
+    this.currentSession.duration =
+      this.currentSession.endTime - this.currentSession.startTime;
 
     // Save final session
     this.saveSession();
@@ -245,8 +245,8 @@ export class ResearchMetrics {
 
     // Track time to first artifact
     if (event.success && this.currentSession!.timeToFirstArtifact === null) {
-      this.currentSession!.timeToFirstArtifact = Date.now() -
-        this.currentSession!.startTime;
+      this.currentSession!.timeToFirstArtifact =
+        Date.now() - this.currentSession!.startTime;
     }
 
     // Track errors
@@ -506,10 +506,11 @@ export class ResearchMetrics {
         0,
       ),
       totalMutations: sessions.reduce((sum, s) => sum + s.mutationsApplied, 0),
-      avgTimeToFirstArtifact: timeToFirstArtifacts.length > 0
-        ? timeToFirstArtifacts.reduce((sum, t) => sum + t, 0) /
-          timeToFirstArtifacts.length
-        : 0,
+      avgTimeToFirstArtifact:
+        timeToFirstArtifacts.length > 0
+          ? timeToFirstArtifacts.reduce((sum, t) => sum + t, 0) /
+            timeToFirstArtifacts.length
+          : 0,
       mutationTypeDistribution,
       renderModePreferences,
       featureUsage,

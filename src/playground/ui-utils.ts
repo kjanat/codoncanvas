@@ -4,10 +4,10 @@
  */
 
 import {
-  statusMessage,
-  statusBar,
   codonCount,
   instructionCount,
+  statusBar,
+  statusMessage,
   themeToggleBtn,
 } from "./dom-manager";
 import { themeManager } from "./ui-state";
@@ -28,10 +28,7 @@ export function escapeHtml(unsafe: string): string {
 /**
  * Set status message and bar styling
  */
-export function setStatus(
-  message: string,
-  type: "info" | "error" | "success",
-) {
+export function setStatus(message: string, type: "info" | "error" | "success") {
   statusMessage.textContent = message;
   statusBar.className = `status-bar ${type}`;
 }

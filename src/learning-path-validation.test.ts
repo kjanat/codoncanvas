@@ -186,7 +186,7 @@ describe("Learning Path Validation", () => {
       if (!dnaPath) return;
 
       const complexities = dnaPath.steps.map((s) =>
-        getComplexityScore(s.genome)
+        getComplexityScore(s.genome),
       );
 
       // Should generally trend upward (allow some variation)
@@ -203,7 +203,7 @@ describe("Learning Path Validation", () => {
       if (!visualPath) return;
 
       const complexities = visualPath.steps.map((s) =>
-        getComplexityScore(s.genome)
+        getComplexityScore(s.genome),
       );
 
       // Last step should be more complex than first
@@ -215,14 +215,14 @@ describe("Learning Path Validation", () => {
     test("complexity progression is generally reasonable", () => {
       pathsData.paths.forEach((path) => {
         const complexities = path.steps.map((s) =>
-          getComplexityScore(s.genome)
+          getComplexityScore(s.genome),
         );
 
         // Check overall trend rather than strict step-by-step (pedagogical paths may have intentional jumps)
-        const avgFirstHalf = complexities.slice(0, 3).reduce((a, b) =>
-          a + b, 0) / 3;
-        const avgSecondHalf = complexities.slice(3, 6).reduce((a, b) =>
-          a + b, 0) / 3;
+        const avgFirstHalf =
+          complexities.slice(0, 3).reduce((a, b) => a + b, 0) / 3;
+        const avgSecondHalf =
+          complexities.slice(3, 6).reduce((a, b) => a + b, 0) / 3;
 
         // Second half should not be dramatically simpler (regressing)
         if (avgFirstHalf > 20) {
@@ -236,13 +236,14 @@ describe("Learning Path Validation", () => {
   describe("Difficulty Calibration", () => {
     test("beginner paths start with simpler genomes", () => {
       const beginnerPaths = pathsData.paths.filter((p) =>
-        p.difficulty.toLowerCase().includes("beginner")
+        p.difficulty.toLowerCase().includes("beginner"),
       );
 
       beginnerPaths.forEach((path) => {
-        const firstStepComplexity = complexityData.analysis.find(
-          (a: any) => a.filename === path.steps[0].genome,
-        )?.complexityScore || 0;
+        const firstStepComplexity =
+          complexityData.analysis.find(
+            (a: any) => a.filename === path.steps[0].genome,
+          )?.complexityScore || 0;
 
         // Beginner first steps should be relatively simple
         expect(firstStepComplexity).toBeLessThan(150);
@@ -258,9 +259,10 @@ describe("Learning Path Validation", () => {
 
       // At least one advanced path should have non-trivial complexity
       const hasComplexStart = advancedPaths.some((path) => {
-        const firstStepComplexity = complexityData.analysis.find(
-          (a: any) => a.filename === path.steps[0].genome,
-        )?.complexityScore || 0;
+        const firstStepComplexity =
+          complexityData.analysis.find(
+            (a: any) => a.filename === path.steps[0].genome,
+          )?.complexityScore || 0;
         return firstStepComplexity > 80;
       });
 
@@ -271,7 +273,7 @@ describe("Learning Path Validation", () => {
   describe("Content Completeness", () => {
     test("paths cover diverse concepts", () => {
       const allConcepts = pathsData.paths.flatMap((p) =>
-        p.steps.map((s) => s.concept.toLowerCase())
+        p.steps.map((s) => s.concept.toLowerCase()),
       );
       const uniqueConcepts = new Set(allConcepts);
 
@@ -310,7 +312,8 @@ describe("Learning Path Validation", () => {
         .join(" ");
 
       // Should mention key mutation concepts
-      const hasMutationConcepts = concepts.includes("silent") ||
+      const hasMutationConcepts =
+        concepts.includes("silent") ||
         concepts.includes("mutation") ||
         concepts.includes("frameshift") ||
         concepts.includes("missense") ||
@@ -330,7 +333,8 @@ describe("Learning Path Validation", () => {
         .join(" ");
 
       // Should mention key visual programming concepts
-      const hasVisualConcepts = concepts.includes("shape") ||
+      const hasVisualConcepts =
+        concepts.includes("shape") ||
         concepts.includes("transform") ||
         concepts.includes("draw") ||
         concepts.includes("color") ||
@@ -343,7 +347,7 @@ describe("Learning Path Validation", () => {
       pathsData.paths.forEach((path) => {
         const validDifficulties = ["beginner", "intermediate", "advanced"];
         const hasDifficulty = validDifficulties.some((d) =>
-          path.difficulty.toLowerCase().includes(d)
+          path.difficulty.toLowerCase().includes(d),
         );
 
         expect(hasDifficulty).toBe(true);

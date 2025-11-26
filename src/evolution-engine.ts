@@ -89,9 +89,10 @@ export class EvolutionEngine {
 
     for (let i = 0; i < this.candidatesPerGeneration; i++) {
       // Select random mutation type
-      const mutationType = this.mutationTypes[
-        Math.floor(Math.random() * this.mutationTypes.length)
-      ];
+      const mutationType =
+        this.mutationTypes[
+          Math.floor(Math.random() * this.mutationTypes.length)
+        ];
 
       // Apply mutation
       let mutation: MutationResult;

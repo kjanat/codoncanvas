@@ -1,4 +1,4 @@
-import { beforeAll, afterEach, vi } from "vitest";
+import { afterEach, beforeAll, vi } from "vitest";
 
 // jsdom setup runs automatically via environment: "jsdom" in vite.config.ts
 // This setup file adds global test utilities and cleanup
@@ -42,9 +42,7 @@ beforeAll(() => {
   });
 
   // Mock canvas methods that jsdom doesn't fully implement
-  HTMLCanvasElement.prototype.getContext = function (
-    contextId: string,
-  ): any {
+  HTMLCanvasElement.prototype.getContext = (contextId: string): any => {
     if (contextId === "2d") {
       // Track canvas state for rendering validation
       let hasDrawn = false;
@@ -66,24 +64,44 @@ beforeAll(() => {
         lineJoin: "miter",
         miterLimit: 10,
         lineDashOffset: 0,
-        fillRect: () => { hasDrawn = true; },
-        strokeRect: () => { hasDrawn = true; },
+        fillRect: () => {
+          hasDrawn = true;
+        },
+        strokeRect: () => {
+          hasDrawn = true;
+        },
         clearRect: () => {},
-        fillText: () => { hasDrawn = true; },
-        strokeText: () => { hasDrawn = true; },
+        fillText: () => {
+          hasDrawn = true;
+        },
+        strokeText: () => {
+          hasDrawn = true;
+        },
         measureText: (text: string) => ({ width: text.length * 10 }),
         beginPath: () => {},
         closePath: () => {},
         moveTo: () => {},
         lineTo: () => {},
-        arc: () => { hasDrawn = true; },
-        arcTo: () => { hasDrawn = true; },
-        ellipse: () => { hasDrawn = true; },
-        rect: () => { hasDrawn = true; },
+        arc: () => {
+          hasDrawn = true;
+        },
+        arcTo: () => {
+          hasDrawn = true;
+        },
+        ellipse: () => {
+          hasDrawn = true;
+        },
+        rect: () => {
+          hasDrawn = true;
+        },
         quadraticCurveTo: () => {},
         bezierCurveTo: () => {},
-        stroke: () => { hasDrawn = true; },
-        fill: () => { hasDrawn = true; },
+        stroke: () => {
+          hasDrawn = true;
+        },
+        fill: () => {
+          hasDrawn = true;
+        },
         clip: () => {},
         isPointInPath: () => false,
         isPointInStroke: () => false,
@@ -95,7 +113,9 @@ beforeAll(() => {
         transform: () => {},
         setTransform: () => {},
         resetTransform: () => {},
-        drawImage: () => { hasDrawn = true; },
+        drawImage: () => {
+          hasDrawn = true;
+        },
         createLinearGradient: () => ({
           addColorStop: () => {},
         }),
@@ -112,7 +132,7 @@ beforeAll(() => {
           if (hasDrawn) {
             // Fill with non-transparent data to indicate rendering occurred
             for (let i = 0; i < size; i += 4) {
-              data[i] = 128;     // R
+              data[i] = 128; // R
               data[i + 1] = 128; // G
               data[i + 2] = 128; // B
               data[i + 3] = 255; // A (opaque)
@@ -136,16 +156,13 @@ beforeAll(() => {
   };
 
   // Mock toDataURL for canvas
-  HTMLCanvasElement.prototype.toDataURL = function () {
-    return "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==";
-  };
+  HTMLCanvasElement.prototype.toDataURL = () =>
+    "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==";
 
   // Mock toBlob for canvas
-  HTMLCanvasElement.prototype.toBlob = function (callback: BlobCallback) {
+  HTMLCanvasElement.prototype.toBlob = (callback: BlobCallback) => {
     setTimeout(() => {
-      callback(
-        new Blob([""], { type: "image/png" }),
-      );
+      callback(new Blob([""], { type: "image/png" }));
     }, 0);
   };
 });

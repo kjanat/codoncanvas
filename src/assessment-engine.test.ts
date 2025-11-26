@@ -251,7 +251,7 @@ describe("AssessmentEngine", () => {
     it("should provide corrective feedback for incorrect answers", () => {
       const result = engine.scoreResponse(challenge, "missense");
 
-      expect(result.feedback).toContain("correct answer is \"silent\"");
+      expect(result.feedback).toContain('correct answer is "silent"');
       expect(result.feedback).toContain("Silent mutations");
     });
 
@@ -420,11 +420,12 @@ describe("AssessmentEngine", () => {
         const challenge = engine.generateChallenge(difficulty);
 
         // Simulate correct answer 70% of the time
-        const studentAnswer = Math.random() < 0.7
-          ? challenge.correctAnswer
-          : (["silent", "missense"] as MutationType[])[
-            Math.floor(Math.random() * 2)
-          ];
+        const studentAnswer =
+          Math.random() < 0.7
+            ? challenge.correctAnswer
+            : (["silent", "missense"] as MutationType[])[
+                Math.floor(Math.random() * 2)
+              ];
 
         const result = engine.scoreResponse(challenge, studentAnswer);
         results.push(result);

@@ -206,19 +206,20 @@ function generateSession(
     ),
   );
 
-  const timeToFirstArtifact = genomesCreated > 0
-    ? Math.max(
-      10 * 1000, // Min 10 seconds
-      Math.round(
-        Random.boundedNormal(
-          char.timeToFirstArtifact.mean,
-          char.timeToFirstArtifact.sd,
-          0,
-          duration,
-        ),
-      ),
-    )
-    : 0;
+  const timeToFirstArtifact =
+    genomesCreated > 0
+      ? Math.max(
+          10 * 1000, // Min 10 seconds
+          Math.round(
+            Random.boundedNormal(
+              char.timeToFirstArtifact.mean,
+              char.timeToFirstArtifact.sd,
+              0,
+              duration,
+            ),
+          ),
+        )
+      : 0;
 
   // Render mode distribution (must sum to genomesExecuted)
   const renderModeRoll = Math.random();
@@ -239,7 +240,7 @@ function generateSession(
       bothMode = total - visualMode - audioMode;
     } else if (
       renderModeRoll <
-        char.renderModePreference.visual + char.renderModePreference.audio
+      char.renderModePreference.visual + char.renderModePreference.audio
     ) {
       audioMode = Math.max(
         1,
@@ -299,8 +300,8 @@ function generateSession(
   }
 
   // Feature usage (correlated with mutations and duration)
-  const featureUsageProbability = char.featureAdoption *
-    (duration / (30 * 60 * 1000)); // Higher for longer sessions
+  const featureUsageProbability =
+    char.featureAdoption * (duration / (30 * 60 * 1000)); // Higher for longer sessions
   const diffViewerUsage =
     mutationsApplied > 5 && Math.random() < featureUsageProbability
       ? Random.int(1, Math.ceil(mutationsApplied / 3))
@@ -316,9 +317,8 @@ function generateSession(
       ? Random.int(1, 5)
       : 0;
 
-  const assessmentUsage = Math.random() < featureUsageProbability * 0.4
-    ? Random.int(1, 3)
-    : 0;
+  const assessmentUsage =
+    Math.random() < featureUsageProbability * 0.4 ? Random.int(1, 3) : 0;
 
   const exportUsage =
     genomesCreated > 2 && Math.random() < featureUsageProbability * 0.7
@@ -326,9 +326,10 @@ function generateSession(
       : 0;
 
   // Error count
-  const errorCount = Math.random() < char.errorRate
-    ? Random.int(1, Math.ceil(mutationsApplied * 0.3))
-    : 0;
+  const errorCount =
+    Math.random() < char.errorRate
+      ? Random.int(1, Math.ceil(mutationsApplied * 0.3))
+      : 0;
 
   return {
     sessionId: id,
@@ -573,7 +574,7 @@ function main(): void {
   console.log("💡 Next steps:");
   console.log("  1. Open research-dashboard.html");
   console.log("  2. Import this CSV file");
-  console.log("  3. Click \"📈 Analyze Data\" to view statistics\n");
+  console.log('  3. Click "📈 Analyze Data" to view statistics\n');
 }
 
 main();

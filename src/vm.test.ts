@@ -685,7 +685,7 @@ describe("CodonVM", () => {
       // Second circle: 10 > 5? Yes → 10*(1-0)=10
       // Note: Renderer scales these, so we just check count and presence of 0
       const circles = renderer.operations.filter((op) =>
-        op.startsWith("circle")
+        op.startsWith("circle"),
       );
       expect(circles.length).toBeGreaterThan(0);
       expect(circles.some((op) => op.includes("0"))).toBe(true); // Has invisible circle

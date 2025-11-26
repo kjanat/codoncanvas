@@ -996,8 +996,7 @@ TAA`,
     title: "Fibonacci Spiral",
     description:
       "Mathematical golden ratio spiral using arithmetic and LOOP for elegant composition",
-    genome:
-      `; Fibonacci-inspired spiral: each square grows following 1,1,2,3,5,8,13...
+    genome: `; Fibonacci-inspired spiral: each square grows following 1,1,2,3,5,8,13...
 ; Using approximation within 0-63 literal range
 ATG
   ; Square 1: size 3
@@ -1131,8 +1130,7 @@ TAA`,
     title: "Parametric Star",
     description:
       "Mathematical star curve using LOOP with computed radius variations",
-    genome:
-      `; Parametric star with varying radius (r = base + amplitude × sin-like pattern)
+    genome: `; Parametric star with varying radius (r = base + amplitude × sin-like pattern)
 ; Approximating sine with discrete 8-point pattern: 0, 7, 10, 7, 0, -7, -10, -7
 ATG
   ; Base radius = 20, amplitude = 10 (radius varies 10-30)
@@ -1278,8 +1276,7 @@ TAA`,
     title: "Conditional Rainbow",
     description:
       "Draws circles conditionally based on arithmetic comparisons - demonstrates boolean-controlled visual output",
-    genome:
-      `; Conditional drawing: draw circles only when value exceeds threshold
+    genome: `; Conditional drawing: draw circles only when value exceeds threshold
 ; Pattern: check if radius > threshold, multiply by result to enable/disable drawing
 ATG
   ; Circle 1: radius=3, threshold=5 → 3<5 → false → invisible

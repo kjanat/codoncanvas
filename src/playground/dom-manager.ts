@@ -7,11 +7,15 @@
 export const editor = document.getElementById("editor") as HTMLTextAreaElement;
 export const canvas = document.getElementById("canvas") as HTMLCanvasElement;
 export const runBtn = document.getElementById("runBtn") as HTMLButtonElement;
-export const clearBtn = document.getElementById("clearBtn") as HTMLButtonElement;
+export const clearBtn = document.getElementById(
+  "clearBtn",
+) as HTMLButtonElement;
 export const exampleSelect = document.getElementById(
   "exampleSelect",
 ) as HTMLSelectElement;
-export const exportBtn = document.getElementById("exportBtn") as HTMLButtonElement;
+export const exportBtn = document.getElementById(
+  "exportBtn",
+) as HTMLButtonElement;
 export const exportAudioBtn = document.getElementById(
   "exportAudioBtn",
 ) as HTMLButtonElement;
@@ -33,11 +37,15 @@ export const genomeFileInput = document.getElementById(
 export const statusMessage = document.getElementById(
   "statusMessage",
 ) as HTMLSpanElement;
-export const codonCount = document.getElementById("codonCount") as HTMLSpanElement;
+export const codonCount = document.getElementById(
+  "codonCount",
+) as HTMLSpanElement;
 export const instructionCount = document.getElementById(
   "instructionCount",
 ) as HTMLSpanElement;
-export const statusBar = document.querySelector(".status-bar") as HTMLDivElement;
+export const statusBar = document.querySelector(
+  ".status-bar",
+) as HTMLDivElement;
 
 // Mutation buttons
 export const silentMutationBtn = document.getElementById(
@@ -74,18 +82,26 @@ export const difficultyFilter = document.getElementById(
 export const conceptFilter = document.getElementById(
   "conceptFilter",
 ) as HTMLSelectElement;
-export const searchInput = document.getElementById("searchInput") as HTMLInputElement;
-export const exampleInfo = document.getElementById("exampleInfo") as HTMLDivElement;
+export const searchInput = document.getElementById(
+  "searchInput",
+) as HTMLInputElement;
+export const exampleInfo = document.getElementById(
+  "exampleInfo",
+) as HTMLDivElement;
 
 // Linter elements
-export const linterPanel = document.getElementById("linterPanel") as HTMLDivElement;
+export const linterPanel = document.getElementById(
+  "linterPanel",
+) as HTMLDivElement;
 export const linterToggle = document.getElementById(
   "linterToggle",
 ) as HTMLButtonElement;
 export const linterMessages = document.getElementById(
   "linterMessages",
 ) as HTMLDivElement;
-export const fixAllBtn = document.getElementById("fixAllBtn") as HTMLButtonElement;
+export const fixAllBtn = document.getElementById(
+  "fixAllBtn",
+) as HTMLButtonElement;
 
 // DiffViewer elements
 export const diffViewerPanel = document.getElementById(
@@ -102,7 +118,9 @@ export const diffViewerContainer = document.getElementById(
 ) as HTMLDivElement;
 
 // Analyzer elements
-export const analyzeBtn = document.getElementById("analyzeBtn") as HTMLButtonElement;
+export const analyzeBtn = document.getElementById(
+  "analyzeBtn",
+) as HTMLButtonElement;
 export const analyzerPanel = document.getElementById(
   "analyzerPanel",
 ) as HTMLDivElement;
@@ -139,7 +157,7 @@ export const themeToggleBtn = document.getElementById(
 
 // Mode toggle elements
 export const modeToggleBtns = document.querySelectorAll(
-  "input[name=\"mode\"]",
+  'input[name="mode"]',
 ) as NodeListOf<HTMLInputElement>;
 export const playgroundContainer = document.getElementById(
   "playgroundContainer",

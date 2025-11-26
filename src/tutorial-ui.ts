@@ -53,8 +53,8 @@ export class TutorialUI {
     this.overlayElement.className = "tutorial-overlay";
 
     // Build modal safely
-    const tempDiv = document.createElement('div');
-    tempDiv.insertAdjacentHTML('afterbegin', this.renderModal(step));
+    const tempDiv = document.createElement("div");
+    tempDiv.insertAdjacentHTML("afterbegin", this.renderModal(step));
     this.overlayElement.replaceChildren(...tempDiv.children);
 
     document.body.appendChild(this.overlayElement);
@@ -82,8 +82,8 @@ export class TutorialUI {
               <div class="tutorial-progress-fill" style="width: ${progress.percent}%"></div>
             </div>
             <span class="tutorial-progress-text">${
-      progress.current + 1
-    }/${progress.total}</span>
+              progress.current + 1
+            }/${progress.total}</span>
           </div>
         </div>
 
@@ -100,14 +100,14 @@ export class TutorialUI {
           </button>
           <div style="display: flex; gap: 12px;">
             ${
-      !isFirstStep
-        ? `
+              !isFirstStep
+                ? `
               <button class="tutorial-button tutorial-button-secondary" data-action="previous">
                 ← Previous
               </button>
             `
-        : ""
-    }
+                : ""
+            }
             <button
               class="tutorial-button tutorial-button-primary"
               data-action="next"
@@ -128,7 +128,7 @@ export class TutorialUI {
 
     // Next button
     const nextBtn = this.overlayElement.querySelector(
-      "[data-action=\"next\"]",
+      '[data-action="next"]',
     ) as HTMLButtonElement;
     if (nextBtn) {
       nextBtn.addEventListener("click", () => this.handleNext());
@@ -136,14 +136,14 @@ export class TutorialUI {
 
     // Previous button
     const prevBtn = this.overlayElement.querySelector(
-      "[data-action=\"previous\"]",
+      '[data-action="previous"]',
     );
     if (prevBtn) {
       prevBtn.addEventListener("click", () => this.handlePrevious());
     }
 
     // Skip button
-    const skipBtn = this.overlayElement.querySelector("[data-action=\"skip\"]");
+    const skipBtn = this.overlayElement.querySelector('[data-action="skip"]');
     if (skipBtn) {
       skipBtn.addEventListener("click", () => this.handleSkip());
     }
@@ -224,37 +224,41 @@ export class TutorialUI {
     this.overlayElement.className = "tutorial-overlay";
 
     // Build success modal safely
-    const modal = document.createElement('div');
-    modal.className = 'tutorial-modal';
+    const modal = document.createElement("div");
+    modal.className = "tutorial-modal";
 
-    const body = document.createElement('div');
-    body.className = 'tutorial-body tutorial-success';
+    const body = document.createElement("div");
+    body.className = "tutorial-body tutorial-success";
 
-    const icon = document.createElement('div');
-    icon.className = 'tutorial-success-icon';
-    icon.textContent = '🎉';
+    const icon = document.createElement("div");
+    icon.className = "tutorial-success-icon";
+    icon.textContent = "🎉";
 
-    const h3 = document.createElement('h3');
-    h3.textContent = 'Congratulations!';
+    const h3 = document.createElement("h3");
+    h3.textContent = "Congratulations!";
 
-    const p = document.createElement('p');
+    const p = document.createElement("p");
     p.textContent = "You've completed your first CodonCanvas program!";
-    const br = document.createElement('br');
+    const br = document.createElement("br");
     p.appendChild(br);
-    p.appendChild(document.createTextNode('You now understand the basics of codon-based programming.'));
+    p.appendChild(
+      document.createTextNode(
+        "You now understand the basics of codon-based programming.",
+      ),
+    );
 
-    const actions = document.createElement('div');
-    actions.className = 'tutorial-success-actions';
+    const actions = document.createElement("div");
+    actions.className = "tutorial-success-actions";
 
-    const exploreBtn = document.createElement('button');
-    exploreBtn.className = 'tutorial-button tutorial-button-primary';
-    exploreBtn.setAttribute('data-action', 'explore');
-    exploreBtn.textContent = 'Explore Examples';
+    const exploreBtn = document.createElement("button");
+    exploreBtn.className = "tutorial-button tutorial-button-primary";
+    exploreBtn.setAttribute("data-action", "explore");
+    exploreBtn.textContent = "Explore Examples";
 
-    const mutationsBtn = document.createElement('button');
-    mutationsBtn.className = 'tutorial-button tutorial-button-secondary';
-    mutationsBtn.setAttribute('data-action', 'mutations');
-    mutationsBtn.textContent = 'Try Mutations';
+    const mutationsBtn = document.createElement("button");
+    mutationsBtn.className = "tutorial-button tutorial-button-secondary";
+    mutationsBtn.setAttribute("data-action", "mutations");
+    mutationsBtn.textContent = "Try Mutations";
 
     actions.appendChild(exploreBtn);
     actions.appendChild(mutationsBtn);
@@ -271,7 +275,7 @@ export class TutorialUI {
 
     // Attach success action listeners
     const exploreBtnSuccess = this.overlayElement.querySelector(
-      "[data-action=\"explore\"]",
+      '[data-action="explore"]',
     );
     if (exploreBtnSuccess) {
       exploreBtnSuccess.addEventListener("click", () => {
@@ -287,7 +291,7 @@ export class TutorialUI {
     }
 
     const mutationsBtnSuccess = this.overlayElement.querySelector(
-      "[data-action=\"mutations\"]",
+      '[data-action="mutations"]',
     );
     if (mutationsBtnSuccess) {
       mutationsBtnSuccess.addEventListener("click", () => {
@@ -329,7 +333,7 @@ export class TutorialUI {
     }
 
     const nextBtn = this.overlayElement.querySelector(
-      "[data-action=\"next\"]",
+      '[data-action="next"]',
     ) as HTMLButtonElement;
     if (!nextBtn) {
       return;

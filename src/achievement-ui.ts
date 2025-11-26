@@ -331,12 +331,12 @@ export class AchievementUI {
           </div>
           <div class="stat-card">
             <div class="stat-value">${
-      stats.challengesCompleted > 0
-        ? Math.round(
-          (stats.challengesCorrect / stats.challengesCompleted) * 100,
-        )
-        : 0
-    }%</div>
+              stats.challengesCompleted > 0
+                ? Math.round(
+                    (stats.challengesCorrect / stats.challengesCompleted) * 100,
+                  )
+                : 0
+            }%</div>
             <div class="stat-label">Accuracy</div>
           </div>
         </div>
@@ -351,8 +351,8 @@ export class AchievementUI {
     `;
 
     // Build DOM safely without innerHTML
-    const tempDiv = document.createElement('div');
-    tempDiv.insertAdjacentHTML('afterbegin', html);
+    const tempDiv = document.createElement("div");
+    tempDiv.insertAdjacentHTML("afterbegin", html);
     this.container.replaceChildren(...tempDiv.children);
   }
 
@@ -385,20 +385,18 @@ export class AchievementUI {
     const isUnlocked = this.engine.isUnlocked(achievement.id);
     const unlockedData = isUnlocked
       ? this.engine
-        .getUnlockedAchievements()
-        .find((u) => u.achievement.id === achievement.id)
+          .getUnlockedAchievements()
+          .find((u) => u.achievement.id === achievement.id)
       : null;
 
     const lockedClass = isUnlocked ? "" : "locked";
     const lockedOverlay = isUnlocked
       ? ""
-      : "<div class=\"badge-locked-overlay\">🔒 LOCKED</div>";
+      : '<div class="badge-locked-overlay">🔒 LOCKED</div>';
     const unlockedDate = unlockedData
-      ? `<div class="badge-unlocked-date">Unlocked: ${
-        this.formatDate(
+      ? `<div class="badge-unlocked-date">Unlocked: ${this.formatDate(
           unlockedData.unlockedAt,
-        )
-      }</div>`
+        )}</div>`
       : "";
 
     return `
@@ -449,26 +447,26 @@ export class AchievementUI {
     notification.className = "achievement-notification";
 
     // Build notification DOM safely
-    const notifHeader = document.createElement('div');
-    notifHeader.className = 'notification-header';
-    notifHeader.textContent = '🎉 Achievement Unlocked!';
+    const notifHeader = document.createElement("div");
+    notifHeader.className = "notification-header";
+    notifHeader.textContent = "🎉 Achievement Unlocked!";
 
-    const notifBody = document.createElement('div');
-    notifBody.className = 'notification-body';
+    const notifBody = document.createElement("div");
+    notifBody.className = "notification-body";
 
-    const notifIcon = document.createElement('div');
-    notifIcon.className = 'notification-icon';
+    const notifIcon = document.createElement("div");
+    notifIcon.className = "notification-icon";
     notifIcon.textContent = achievement.icon;
 
-    const notifContent = document.createElement('div');
-    notifContent.className = 'notification-content';
+    const notifContent = document.createElement("div");
+    notifContent.className = "notification-content";
 
-    const notifName = document.createElement('div');
-    notifName.className = 'notification-name';
+    const notifName = document.createElement("div");
+    notifName.className = "notification-name";
     notifName.textContent = achievement.name;
 
-    const notifDesc = document.createElement('div');
-    notifDesc.className = 'notification-description';
+    const notifDesc = document.createElement("div");
+    notifDesc.className = "notification-description";
     notifDesc.textContent = achievement.description;
 
     notifContent.appendChild(notifName);

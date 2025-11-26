@@ -256,10 +256,10 @@ export class GeneticAlgorithm {
     const crossoverCodon = 1 + Math.floor(Math.random() * (numCodons - 1));
     const crossoverPoint = crossoverCodon * 3;
 
-    const child1 = parent1.slice(0, crossoverPoint) +
-      parent2.slice(crossoverPoint);
-    const child2 = parent2.slice(0, crossoverPoint) +
-      parent1.slice(crossoverPoint);
+    const child1 =
+      parent1.slice(0, crossoverPoint) + parent2.slice(crossoverPoint);
+    const child2 =
+      parent2.slice(0, crossoverPoint) + parent1.slice(crossoverPoint);
 
     return [child1, child2];
   }
@@ -406,7 +406,7 @@ export class GeneticAlgorithm {
    */
   getBest(): GAIndividual {
     return this.population.reduce((best, ind) =>
-      ind.fitness > best.fitness ? ind : best
+      ind.fitness > best.fitness ? ind : best,
     );
   }
 

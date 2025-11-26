@@ -132,7 +132,7 @@ export function validateGenomeFile(content: string): {
       errors.push("Missing required field: genome");
     }
     if (parsed.genome && typeof parsed.genome !== "string") {
-      errors.push("Field \"genome\" must be a string");
+      errors.push('Field "genome" must be a string');
     }
 
     // Check genome contains valid bases (only if genome exists)
@@ -143,11 +143,9 @@ export function validateGenomeFile(content: string): {
       const invalidChars = cleanGenome.match(/[^ACGT]/g);
       if (invalidChars) {
         errors.push(
-          `Invalid characters in genome: ${
-            [...new Set(invalidChars)].join(
-              ", ",
-            )
-          }`,
+          `Invalid characters in genome: ${[...new Set(invalidChars)].join(
+            ", ",
+          )}`,
         );
       }
     }

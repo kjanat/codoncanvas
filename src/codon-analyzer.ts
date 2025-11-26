@@ -11,7 +11,7 @@
  * (codon usage bias, GC content, compositional analysis)
  */
 
-import { Codon, CODON_MAP, type CodonToken, Opcode } from "./types";
+import { CODON_MAP, Codon, type CodonToken, Opcode } from "./types";
 
 /**
  * Complete codon usage analysis results
@@ -255,12 +255,10 @@ function calculateSignature(
     }
   }
 
-  const drawingDensity = totalCodons > 0
-    ? (drawingCount / totalCodons) * 100
-    : 0;
-  const transformDensity = totalCodons > 0
-    ? (transformCount / totalCodons) * 100
-    : 0;
+  const drawingDensity =
+    totalCodons > 0 ? (drawingCount / totalCodons) * 100 : 0;
+  const transformDensity =
+    totalCodons > 0 ? (transformCount / totalCodons) * 100 : 0;
   const complexity = totalCodons > 0 ? uniqueOpcodes / totalCodons : 0;
 
   // Calculate redundancy (avg synonymous codons per opcode)
@@ -300,7 +298,7 @@ export function compareAnalyses(a: CodonAnalysis, b: CodonAnalysis): number {
     (100 - Math.abs(a.signature.drawingDensity - b.signature.drawingDensity)) *
       0.4 +
     (100 -
-        Math.abs(a.signature.transformDensity - b.signature.transformDensity)) *
+      Math.abs(a.signature.transformDensity - b.signature.transformDensity)) *
       0.3 +
     (100 - Math.abs(a.signature.complexity - b.signature.complexity) * 100) *
       0.3;

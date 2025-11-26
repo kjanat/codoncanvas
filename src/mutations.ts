@@ -12,7 +12,7 @@
  * - **Frameshift**: Insert/delete 1-2 bases (scrambles downstream codons)
  */
 
-import { type Base, type Codon, CODON_MAP, Opcode } from "./types";
+import { type Base, CODON_MAP, type Codon, Opcode } from "./types";
 
 /**
  * Mutation type classification for pedagogical purposes.
@@ -163,10 +163,9 @@ export function applySilentMutation(
     mutated: codons.join(" "),
     type: "silent",
     position: targetPos,
-    description:
-      `Silent mutation: ${originalCodon} → ${newCodon} (same opcode: ${
-        Opcode[CODON_MAP[originalCodon]]
-      })`,
+    description: `Silent mutation: ${originalCodon} → ${newCodon} (same opcode: ${
+      Opcode[CODON_MAP[originalCodon]]
+    })`,
   };
 }
 
@@ -278,8 +277,7 @@ export function applyNonsenseMutation(
     mutated: codons.join(" "),
     type: "nonsense",
     position: targetPos,
-    description:
-      `Nonsense mutation: ${originalCodon} → ${stopCodon} (early termination)`,
+    description: `Nonsense mutation: ${originalCodon} → ${stopCodon} (early termination)`,
   };
 }
 
@@ -313,7 +311,8 @@ export function applyPointMutation(
   const otherBases = BASES.filter((b) => b !== originalBase);
   const newBase = otherBases[Math.floor(Math.random() * otherBases.length)];
 
-  const mutated = cleaned.substring(0, targetPos) +
+  const mutated =
+    cleaned.substring(0, targetPos) +
     newBase +
     cleaned.substring(targetPos + 1);
 
@@ -328,8 +327,7 @@ export function applyPointMutation(
     mutated: codons.join(" "),
     type: "point",
     position: targetPos,
-    description:
-      `Point mutation at base ${targetPos}: ${originalBase} → ${newBase}`,
+    description: `Point mutation at base ${targetPos}: ${originalBase} → ${newBase}`,
   };
 }
 
@@ -368,8 +366,8 @@ export function applyInsertion(
     () => BASES[Math.floor(Math.random() * BASES.length)],
   ).join("");
 
-  const mutated = cleaned.substring(0, targetPos) + insertion +
-    cleaned.substring(targetPos);
+  const mutated =
+    cleaned.substring(0, targetPos) + insertion + cleaned.substring(targetPos);
 
   // Format as codons
   const codons: string[] = [];
@@ -382,10 +380,9 @@ export function applyInsertion(
     mutated: codons.join(" "),
     type: "insertion",
     position: targetPos,
-    description:
-      `Insertion at base ${targetPos}: +${insertion} (${length} base${
-        length > 1 ? "s" : ""
-      })`,
+    description: `Insertion at base ${targetPos}: +${insertion} (${length} base${
+      length > 1 ? "s" : ""
+    })`,
   };
 }
 
@@ -414,7 +411,8 @@ export function applyDeletion(
 ): MutationResult {
   const cleaned = genome.replace(/\s+/g, "").replace(/;.*/g, "");
 
-  const targetPos = position ??
+  const targetPos =
+    position ??
     Math.floor(Math.random() * Math.max(0, cleaned.length - length));
   if (targetPos + length > cleaned.length) {
     throw new Error(
@@ -423,8 +421,8 @@ export function applyDeletion(
   }
 
   const deleted = cleaned.substring(targetPos, targetPos + length);
-  const mutated = cleaned.substring(0, targetPos) +
-    cleaned.substring(targetPos + length);
+  const mutated =
+    cleaned.substring(0, targetPos) + cleaned.substring(targetPos + length);
 
   // Format as codons
   const codons: string[] = [];

@@ -200,11 +200,9 @@ function setupNonsenseDemo(): void {
 
   if (mutatedDisplay) {
     mutatedDisplay.textContent = ""; // Clear safely
-    mutatedDisplay.appendChild(highlightGenome(
-      mutated,
-      [mutatedIndex],
-      affectedIndices,
-    ));
+    mutatedDisplay.appendChild(
+      highlightGenome(mutated, [mutatedIndex], affectedIndices),
+    );
   }
 
   // Render canvases

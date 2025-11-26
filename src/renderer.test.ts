@@ -307,7 +307,7 @@ describe("Canvas2DRenderer", () => {
       renderer.ellipse(50, 30);
 
       const ellipseCall = ctx.operations.find((op) =>
-        op.startsWith("ellipse(")
+        op.startsWith("ellipse("),
       );
       expect(ellipseCall).toContain("ellipse(0,0,50,30,");
     });
@@ -354,13 +354,15 @@ describe("Canvas2DRenderer", () => {
 
     test("scales dot count with intensity", () => {
       renderer.noise(1, 5);
-      const lowIntensity =
-        ctx.operations.filter((op) => op.startsWith("fillRect(")).length;
+      const lowIntensity = ctx.operations.filter((op) =>
+        op.startsWith("fillRect("),
+      ).length;
 
       ctx.operations = [];
       renderer.noise(1, 50);
-      const highIntensity =
-        ctx.operations.filter((op) => op.startsWith("fillRect(")).length;
+      const highIntensity = ctx.operations.filter((op) =>
+        op.startsWith("fillRect("),
+      ).length;
 
       expect(highIntensity).toBeGreaterThan(lowIntensity);
     });
@@ -534,7 +536,7 @@ describe("Canvas2DRenderer", () => {
 
       // Should have translate and rotate calls in canvas operations
       const translateCall = ctx.operations.find((op) =>
-        op.includes("translate(300,200)")
+        op.includes("translate(300,200)"),
       ); // 200+100, 200+0
       const rotateCall = ctx.operations.find((op) => op.includes("rotate("));
 

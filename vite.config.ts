@@ -1,5 +1,5 @@
 import { resolve } from "path";
-import { defineConfig } from "vite";
+import { defineConfig } from "vitest/config";
 
 export default defineConfig({
   // GitHub Pages base path (will be /codoncanvas/ when deployed)
@@ -42,5 +42,6 @@ export default defineConfig({
     globals: true,
     environment: "jsdom",
     setupFiles: ["./vitest.setup.ts"],
+    pool: "forks",
   },
 });

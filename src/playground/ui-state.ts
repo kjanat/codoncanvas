@@ -3,19 +3,19 @@
  * Manages all application state and core initialization
  */
 
-import { AudioRenderer } from "../audio-renderer";
-import { Canvas2DRenderer, type Renderer } from "../renderer";
-import { CodonVM } from "../vm";
-import type { VMState } from "../types";
-import { TimelineScrubber } from "../timeline-scrubber";
-import { ThemeManager } from "../theme-manager";
 import { AchievementEngine } from "../achievement-engine";
 import { AchievementUI } from "../achievement-ui";
 import { AssessmentEngine } from "../assessment-engine";
-import { AssessmentUI } from "../assessment-ui";
-import { ResearchMetrics } from "../research-metrics";
+import type { AssessmentUI } from "../assessment-ui";
+import { AudioRenderer } from "../audio-renderer";
 import { CodonLexer } from "../lexer";
 import { MIDIExporter } from "../midi-exporter";
+import { Canvas2DRenderer, type Renderer } from "../renderer";
+import { ResearchMetrics } from "../research-metrics";
+import { ThemeManager } from "../theme-manager";
+import { TimelineScrubber } from "../timeline-scrubber";
+import type { VMState } from "../types";
+import { CodonVM } from "../vm";
 import { canvas, timelineContainer } from "./dom-manager";
 
 // Lexer, renderer, and VM initialization

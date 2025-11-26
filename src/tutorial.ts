@@ -111,9 +111,8 @@ export class TutorialManager {
    */
   getProgress(): { current: number; total: number; percent: number } {
     const total = this.config?.steps.length || 0;
-    const percent = total > 0
-      ? Math.round((this.currentStep / total) * 100)
-      : 0;
+    const percent =
+      total > 0 ? Math.round((this.currentStep / total) * 100) : 0;
     return { current: this.currentStep, total, percent };
   }
 
@@ -208,8 +207,7 @@ export const helloCircleTutorial: TutorialConfig = {
     {
       id: "welcome",
       title: "Welcome to CodonCanvas! 🧬",
-      content:
-        `CodonCanvas is a visual programming language that uses DNA-like triplets called <strong>codons</strong>.
+      content: `CodonCanvas is a visual programming language that uses DNA-like triplets called <strong>codons</strong>.
 
 Each codon is 3 letters from {A, C, G, T} and represents an instruction.
 
@@ -219,8 +217,7 @@ Let's create your first program: a simple circle!`,
     {
       id: "start-codon",
       title: "Step 1: Begin with START",
-      content:
-        `Every CodonCanvas program begins with the <code>ATG</code> codon (START).
+      content: `Every CodonCanvas program begins with the <code>ATG</code> codon (START).
 
 <strong>Type this in the editor:</strong>
 <code>ATG</code>
@@ -233,8 +230,7 @@ This is like the "start codon" in real DNA - it marks where translation begins!`
     {
       id: "push-value",
       title: "Step 2: Push a Number",
-      content:
-        `To draw a circle, we need to tell it how big to be. We'll push the number 10 onto the stack.
+      content: `To draw a circle, we need to tell it how big to be. We'll push the number 10 onto the stack.
 
 <strong>Add this after ATG:</strong>
 <code>GAA AGG</code>
@@ -315,8 +311,7 @@ export const mutationTutorial: TutorialConfig = {
     {
       id: "welcome",
       title: "Welcome to Mutation Concepts! 🧬",
-      content:
-        `In genetics, <strong>mutations</strong> are changes to DNA sequences. Some have no effect, some change function, and some break everything.
+      content: `In genetics, <strong>mutations</strong> are changes to DNA sequences. Some have no effect, some change function, and some break everything.
 
 CodonCanvas lets you explore these concepts visually!
 
@@ -331,8 +326,7 @@ This draws a circle. Let's see what happens when we mutate it!`,
     {
       id: "silent-mutation",
       title: "Silent Mutation: Same Result",
-      content:
-        `A <strong>silent mutation</strong> changes the codon but keeps the same function (synonymous codons).
+      content: `A <strong>silent mutation</strong> changes the codon but keeps the same function (synonymous codons).
 
 <strong>Try this change:</strong>
 Change <code>GGA</code> → <code>GGC</code>
@@ -358,8 +352,7 @@ This is like changing DNA without changing the protein - the "phenotype" (visual
     {
       id: "missense-mutation",
       title: "Missense Mutation: Changed Function",
-      content:
-        `A <strong>missense mutation</strong> changes the codon to a different operation (different function).
+      content: `A <strong>missense mutation</strong> changes the codon to a different operation (different function).
 
 <strong>Try this change:</strong>
 Change <code>GGC</code> → <code>GCA</code>
@@ -387,8 +380,7 @@ This is like a mutation that changes the protein's function.`,
     {
       id: "nonsense-mutation",
       title: "Nonsense Mutation: Early Stop",
-      content:
-        `A <strong>nonsense mutation</strong> introduces a premature STOP codon, ending the program early.
+      content: `A <strong>nonsense mutation</strong> introduces a premature STOP codon, ending the program early.
 
 <strong>Try this change:</strong>
 Change <code>GCA</code> → <code>TAA</code>
@@ -418,8 +410,7 @@ This is like a mutation that creates a truncated, non-functional protein.`,
     {
       id: "frameshift-mutation",
       title: "Frameshift Mutation: Total Scramble",
-      content:
-        `A <strong>frameshift mutation</strong> inserts or deletes bases (not multiples of 3), shifting how codons are read.
+      content: `A <strong>frameshift mutation</strong> inserts or deletes bases (not multiples of 3), shifting how codons are read.
 
 Let's reset to: <code>ATG GAA AGG GGA TAA</code>
 
@@ -482,8 +473,7 @@ export const timelineTutorial: TutorialConfig = {
     {
       id: "welcome",
       title: "Welcome to the Timeline! 🎬",
-      content:
-        `The <strong>Timeline Scrubber</strong> lets you watch your genome execute instruction-by-instruction, just like a ribosome reading DNA!
+      content: `The <strong>Timeline Scrubber</strong> lets you watch your genome execute instruction-by-instruction, just like a ribosome reading DNA!
 
 You can see:
 • Each codon as it's processed
@@ -531,13 +521,12 @@ Watch carefully:
 
 This is like watching the ribosome move codon-by-codon! 🧬`,
       targetElement: "#timelineContainer",
-      hint: "Click \"Step →\" to advance one instruction",
+      hint: 'Click "Step →" to advance one instruction',
     },
     {
       id: "observe-stack",
       title: "Watch the Stack",
-      content:
-        `The <strong>stack</strong> is where numbers are stored before being used.
+      content: `The <strong>stack</strong> is where numbers are stored before being used.
 
 Look at the "Current State" panel while stepping:
 
@@ -617,8 +606,7 @@ export const evolutionTutorial: TutorialConfig = {
     {
       id: "welcome",
       title: "Welcome to the Evolution Lab! 🧬",
-      content:
-        `The <strong>Evolution Lab</strong> demonstrates natural selection through code!
+      content: `The <strong>Evolution Lab</strong> demonstrates natural selection through code!
 
 You'll act as the <strong>fitness function</strong> - selecting which genomes survive to reproduce.
 
@@ -647,7 +635,7 @@ Each candidate has 1-2 random mutations from the parent genome.
 
 This is like natural genetic variation in a population! 🎲`,
       targetElement: "#generateBtn",
-      hint: "Click \"🧬 Generate Candidates\"",
+      hint: 'Click "🧬 Generate Candidates"',
       validationFn: (code: string) => {
         // Manual progression for evolution tutorial
         return true;

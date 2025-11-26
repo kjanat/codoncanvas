@@ -119,7 +119,7 @@ describe("CodonLexer", () => {
       const errors = lexer.validateStructure(tokens);
 
       const unreachableError = errors.find((e) =>
-        e.message.includes("START codon after STOP")
+        e.message.includes("START codon after STOP"),
       );
       expect(unreachableError).toBeDefined();
       expect(unreachableError?.severity).toBe("warning");

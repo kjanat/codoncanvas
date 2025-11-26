@@ -1,7 +1,7 @@
 import type { Renderer } from "./renderer";
 import {
-  type Codon,
   CODON_MAP,
+  type Codon,
   type CodonToken,
   Opcode,
   type VMState,
@@ -213,7 +213,9 @@ export class CodonVM implements VM {
     this.state.instructionCount++;
 
     if (this.state.instructionCount > this.maxInstructions) {
-      throw new Error(`Instruction limit exceeded (max ${this.maxInstructions})`);
+      throw new Error(
+        `Instruction limit exceeded (max ${this.maxInstructions})`,
+      );
     }
 
     // Track executed opcode for MIDI export
@@ -402,7 +404,8 @@ export class CodonVM implements VM {
         // Get the instructions to replay
         // Note: The last LOOP_PARAMETER_COUNT instructions in history are the PUSH operations for loop parameters
         // We want to replay instructions BEFORE those parameter PUSHes
-        const historyBeforeParams = this.instructionHistory.length - LOOP_PARAMETER_COUNT;
+        const historyBeforeParams =
+          this.instructionHistory.length - LOOP_PARAMETER_COUNT;
         const startIdx = historyBeforeParams - instructionCount;
         const instructionsToRepeat = this.instructionHistory.slice(
           startIdx,
@@ -411,13 +414,11 @@ export class CodonVM implements VM {
 
         // Execute the loop body loopCount times
         for (let iteration = 0; iteration < loopCount; iteration++) {
-          for (
-            const {
-              opcode: loopOpcode,
-              codon: loopCodon,
-              pushValue,
-            } of instructionsToRepeat
-          ) {
+          for (const {
+            opcode: loopOpcode,
+            codon: loopCodon,
+            pushValue,
+          } of instructionsToRepeat) {
             // Check instruction limit
             this.state.instructionCount++;
             if (this.state.instructionCount > this.maxInstructions) {

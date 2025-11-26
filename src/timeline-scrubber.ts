@@ -121,8 +121,8 @@ export class TimelineScrubber {
     `;
 
     // Build timeline UI safely
-    const tempDiv = document.createElement('div');
-    tempDiv.insertAdjacentHTML('afterbegin', html);
+    const tempDiv = document.createElement("div");
+    tempDiv.insertAdjacentHTML("afterbegin", html);
     this.container.replaceChildren(...tempDiv.children);
 
     // Get control elements
@@ -155,26 +155,21 @@ export class TimelineScrubber {
     ) as HTMLElement;
 
     // Attach event listeners
-    this.controls.slider?.addEventListener(
-      "input",
-      () => this.onSliderChange(),
+    this.controls.slider?.addEventListener("input", () =>
+      this.onSliderChange(),
     );
-    this.controls.playButton?.addEventListener(
-      "click",
-      () => this.togglePlay(),
+    this.controls.playButton?.addEventListener("click", () =>
+      this.togglePlay(),
     );
-    this.controls.stepBackButton?.addEventListener(
-      "click",
-      () => this.stepBack(),
+    this.controls.stepBackButton?.addEventListener("click", () =>
+      this.stepBack(),
     );
-    this.controls.stepForwardButton?.addEventListener(
-      "click",
-      () => this.stepForward(),
+    this.controls.stepForwardButton?.addEventListener("click", () =>
+      this.stepForward(),
     );
     this.controls.resetButton?.addEventListener("click", () => this.reset());
-    this.controls.speedSelect?.addEventListener(
-      "change",
-      () => this.onSpeedChange(),
+    this.controls.speedSelect?.addEventListener("change", () =>
+      this.onSpeedChange(),
     );
   }
 
@@ -224,11 +219,9 @@ export class TimelineScrubber {
       }
 
       if (this.controls.stackDisplay) {
-        this.controls.stackDisplay.textContent = `[${
-          snapshot.stack.join(
-            ", ",
-          )
-        }]`;
+        this.controls.stackDisplay.textContent = `[${snapshot.stack.join(
+          ", ",
+        )}]`;
       }
     }
 
@@ -252,8 +245,8 @@ export class TimelineScrubber {
     const fragment = document.createDocumentFragment();
     this.tokens.forEach((token, i) => {
       const position = (i / (this.tokens.length - 1)) * 100;
-      const marker = document.createElement('div');
-      marker.className = 'marker';
+      const marker = document.createElement("div");
+      marker.className = "marker";
       marker.style.left = `${position}%`;
       marker.title = token.text;
       fragment.appendChild(marker);

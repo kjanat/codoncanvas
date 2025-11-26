@@ -3,8 +3,8 @@ import {
   evolutionTutorial,
   helloCircleTutorial,
   mutationTutorial,
-  timelineTutorial,
   TutorialManager,
+  timelineTutorial,
 } from "./tutorial";
 
 // Mock localStorage

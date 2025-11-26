@@ -256,9 +256,10 @@ export class TeacherDashboard {
     const ttfaValues = students
       .map((s) => s.aggregateMetrics.avgTimeToFirstArtifact)
       .filter((t) => t > 0);
-    const avgTTFA = ttfaValues.length > 0
-      ? ttfaValues.reduce((sum, t) => sum + t, 0) / ttfaValues.length
-      : 0;
+    const avgTTFA =
+      ttfaValues.length > 0
+        ? ttfaValues.reduce((sum, t) => sum + t, 0) / ttfaValues.length
+        : 0;
 
     // Tutorial completion rate
     const tutorialCompletionRate =
@@ -300,9 +301,10 @@ export class TeacherDashboard {
         if (progress.completed) {
           tutorialCompletion[tutorialId].completed++;
         }
-        const progressPercent = progress.totalSteps > 0
-          ? (progress.currentStep / progress.totalSteps) * 100
-          : 0;
+        const progressPercent =
+          progress.totalSteps > 0
+            ? (progress.currentStep / progress.totalSteps) * 100
+            : 0;
         tutorialCompletion[tutorialId].avgProgress += progressPercent;
       });
     });
@@ -444,7 +446,8 @@ export class TeacherDashboard {
       const tutorialsCompleted = Object.values(s.tutorials).filter(
         (t) => t.completed,
       ).length;
-      const atRisk = s.aggregateMetrics.avgTimeToFirstArtifact === 0 ||
+      const atRisk =
+        s.aggregateMetrics.avgTimeToFirstArtifact === 0 ||
         s.aggregateMetrics.totalSessions < 1;
 
       return [
@@ -538,17 +541,17 @@ export function generateStudentExport(
   const ttfaValues = sessions
     .map((s) => s.timeToFirstArtifact)
     .filter((t): t is number => t !== null);
-  const avgTimeToFirstArtifact = ttfaValues.length > 0
-    ? ttfaValues.reduce((sum, t) => sum + t, 0) / ttfaValues.length
-    : 0;
+  const avgTimeToFirstArtifact =
+    ttfaValues.length > 0
+      ? ttfaValues.reduce((sum, t) => sum + t, 0) / ttfaValues.length
+      : 0;
 
   const tutorialsCompleted = Object.values(tutorials).filter(
     (t) => t.completed,
   ).length;
   const tutorialsTotal = Object.keys(tutorials).length;
-  const completionRate = tutorialsTotal > 0
-    ? tutorialsCompleted / tutorialsTotal
-    : 0;
+  const completionRate =
+    tutorialsTotal > 0 ? tutorialsCompleted / tutorialsTotal : 0;
 
   const studentProgress: StudentProgress = {
     studentId,

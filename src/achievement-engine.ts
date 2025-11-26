@@ -594,7 +594,7 @@ export class AchievementEngine {
       (a) => a.id !== "legend",
     );
     const allUnlocked = nonLegendAchievements.every((a) =>
-      this.unlockedAchievements.has(a.id)
+      this.unlockedAchievements.has(a.id),
     );
 
     if (allUnlocked && !this.unlockedAchievements.has("legend")) {

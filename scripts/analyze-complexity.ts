@@ -64,8 +64,8 @@ function analyzeGenome(filename: string, content: string): GenomeComplexity {
       if (opcode !== undefined) {
         uniqueOpcodes.add(opcode);
         const opcodeName = Opcode[opcode];
-        opcodeDistribution[opcodeName] = (opcodeDistribution[opcodeName] || 0) +
-          1;
+        opcodeDistribution[opcodeName] =
+          (opcodeDistribution[opcodeName] || 0) + 1;
       }
     });
 
@@ -110,9 +110,10 @@ function analyzeGenome(filename: string, content: string): GenomeComplexity {
     // Detect advanced features
     const hasPush = uniqueOpcodes.has(Opcode.PUSH);
     const hasLoop = uniqueOpcodes.has(Opcode.LOOP);
-    const hasConditional = uniqueOpcodes.has(Opcode.IF) ||
-      uniqueOpcodes.has(Opcode.IFELSE);
-    const hasArithmetic = uniqueOpcodes.has(Opcode.ADD) ||
+    const hasConditional =
+      uniqueOpcodes.has(Opcode.IF) || uniqueOpcodes.has(Opcode.IFELSE);
+    const hasArithmetic =
+      uniqueOpcodes.has(Opcode.ADD) ||
       uniqueOpcodes.has(Opcode.SUB) ||
       uniqueOpcodes.has(Opcode.MUL) ||
       uniqueOpcodes.has(Opcode.DIV);
@@ -171,15 +172,11 @@ function main() {
     analyses.push(analysis);
 
     console.log(
-      `✓ ${filename.padEnd(30)} | ${
-        analysis.instructionCount
-          .toString()
-          .padStart(3)
-      } instructions | ${
-        analysis.uniqueOpcodes
-          .toString()
-          .padStart(2)
-      } opcodes | complexity: ${analysis.complexityScore}`,
+      `✓ ${filename.padEnd(30)} | ${analysis.instructionCount
+        .toString()
+        .padStart(3)} instructions | ${analysis.uniqueOpcodes
+        .toString()
+        .padStart(2)} opcodes | complexity: ${analysis.complexityScore}`,
     );
   });
 
