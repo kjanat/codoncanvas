@@ -9,7 +9,7 @@ export interface GenomeFile {
   author?: string;
   created?: string;
   genome: string;
-  metadata?: Record<string, any>;
+  metadata?: Record<string, unknown>;
 }
 
 /**
@@ -21,7 +21,7 @@ export function exportGenome(
   options?: {
     description?: string;
     author?: string;
-    metadata?: Record<string, any>;
+    metadata?: Record<string, unknown>;
   },
 ): string {
   const genomeFile: GenomeFile = {
@@ -68,7 +68,7 @@ export function downloadGenomeFile(
   options?: {
     description?: string;
     author?: string;
-    metadata?: Record<string, any>;
+    metadata?: Record<string, unknown>;
   },
 ): void {
   const content = exportGenome(
@@ -151,7 +151,7 @@ export function validateGenomeFile(content: string): {
     }
 
     return { valid: errors.length === 0, errors };
-  } catch (error) {
+  } catch (_error) {
     return { valid: false, errors: ["Invalid JSON format"] };
   }
 }

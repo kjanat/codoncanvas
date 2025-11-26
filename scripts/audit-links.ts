@@ -4,8 +4,8 @@
  * Validates internal links across all markdown documentation
  */
 
-import * as fs from "fs";
-import * as path from "path";
+import * as fs from "node:fs";
+import * as path from "node:path";
 
 interface LinkRef {
   file: string;
@@ -33,8 +33,7 @@ function extractLinks(content: string, filepath: string): LinkRef[] {
   const lines = content.split("\n");
 
   lines.forEach((line, idx) => {
-    let match;
-    while ((match = LINK_REGEX.exec(line)) !== null) {
+    for (const match of line.matchAll(LINK_REGEX)) {
       const link = match[2];
 
       let type: "internal" | "external" | "anchor";
@@ -61,7 +60,7 @@ function extractLinks(content: string, filepath: string): LinkRef[] {
 
 function validateInternalLink(link: string, sourceFile: string): boolean {
   // Handle anchor links
-  const [filepath, anchor] = link.split("#");
+  const [filepath, _anchor] = link.split("#");
 
   // If no filepath (pure anchor), skip for now
   if (!filepath) return true;

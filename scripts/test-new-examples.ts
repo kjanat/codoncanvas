@@ -1,11 +1,12 @@
 #!/usr/bin/env tsx
+
 /**
  * Test new algorithmic showcase examples
  * Validates that all new .genome files parse and render without errors
  */
 
+import { readFileSync } from "node:fs";
 import { createCanvas } from "canvas";
-import { readFileSync } from "fs";
 import { CodonLexer } from "../src/lexer.js";
 import { Canvas2DRenderer } from "../src/renderer.js";
 import { CodonVM } from "../src/vm.js";
@@ -45,14 +46,18 @@ for (const example of examples) {
 
     // Create VM and render
     const canvas = createCanvas(400, 400);
-    const renderer = new Canvas2DRenderer(canvas);
+    const renderer = new Canvas2DRenderer(
+      canvas as unknown as HTMLCanvasElement,
+    );
     const vm = new CodonVM(renderer);
 
     const snapshots = vm.run(tokens);
     console.log(`  ✓ Rendered: ${snapshots.length} instructions executed`);
 
     // Check operations (may not be exposed in public API)
-    const opCount = (renderer as any).operations?.length || "N/A";
+    const opCount =
+      (renderer as unknown as { operations?: unknown[] }).operations?.length ||
+      "N/A";
     console.log(`  ✓ Drawing operations: ${opCount}`);
 
     // Basic success check - if we got here, rendering succeeded
@@ -60,7 +65,8 @@ for (const example of examples) {
 
     console.log(`  ✅ PASS\n`);
   } catch (error) {
-    console.log(`  ❌ FAIL: ${error.message}\n`);
+    const message = error instanceof Error ? error.message : String(error);
+    console.log(`  ❌ FAIL: ${message}\n`);
     allPassed = false;
   }
 }

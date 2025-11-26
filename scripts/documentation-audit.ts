@@ -4,8 +4,8 @@
  * Comprehensive validation of documentation consistency
  */
 
-import { existsSync, readdirSync, readFileSync, statSync } from "fs";
-import { join } from "path";
+import { existsSync, readdirSync, readFileSync, statSync } from "node:fs";
+import { join } from "node:path";
 
 interface AuditResult {
   category: string;
@@ -106,7 +106,7 @@ function checkTests() {
     const readme = readFileSync("README.md", "utf-8");
     const claimMatch = readme.match(/(\d+) tests/);
     if (claimMatch) {
-      const claimed = parseInt(claimMatch[1]);
+      const claimed = parseInt(claimMatch[1], 10);
       if (claimed === totalTests) {
         audit(
           "Tests",
@@ -177,9 +177,8 @@ function checkInternalLinks() {
 
     // Match markdown links: [text](path)
     const linkRegex = /\[([^\]]+)\]\(([^)]+)\)/g;
-    let match;
 
-    while ((match = linkRegex.exec(content)) !== null) {
+    for (const match of content.matchAll(linkRegex)) {
       const linkText = match[1];
       const linkPath = match[2];
 

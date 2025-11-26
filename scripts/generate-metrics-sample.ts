@@ -10,48 +10,46 @@
  *   npm run metrics:generate-sample -- --n 50 --output pilot-metrics.csv
  */
 
-import * as fs from "fs";
+import * as fs from "node:fs";
 
 // ============================================================================
 // Random Utilities
 // ============================================================================
 
-class Random {
-  static normal(mean: number = 0, sd: number = 1): number {
-    const u1 = Math.random();
-    const u2 = Math.random();
-    const z0 = Math.sqrt(-2.0 * Math.log(u1)) * Math.cos(2.0 * Math.PI * u2);
-    return z0 * sd + mean;
-  }
+function randomNormal(mean: number = 0, sd: number = 1): number {
+  const u1 = Math.random();
+  const u2 = Math.random();
+  const z0 = Math.sqrt(-2.0 * Math.log(u1)) * Math.cos(2.0 * Math.PI * u2);
+  return z0 * sd + mean;
+}
 
-  static boundedNormal(
-    mean: number,
-    sd: number,
-    min: number,
-    max: number,
-  ): number {
-    const value = Random.normal(mean, sd);
-    return Math.max(min, Math.min(max, value));
-  }
+function randomBoundedNormal(
+  mean: number,
+  sd: number,
+  min: number,
+  max: number,
+): number {
+  const value = randomNormal(mean, sd);
+  return Math.max(min, Math.min(max, value));
+}
 
-  static int(min: number, max: number): number {
-    return Math.floor(Math.random() * (max - min + 1)) + min;
-  }
+function randomInt(min: number, max: number): number {
+  return Math.floor(Math.random() * (max - min + 1)) + min;
+}
 
-  static choice<T>(arr: T[]): T {
-    return arr[Math.floor(Math.random() * arr.length)];
-  }
+function randomChoice<T>(arr: T[]): T {
+  return arr[Math.floor(Math.random() * arr.length)];
+}
 
-  static weighted<T>(choices: T[], weights: number[]): T {
-    const total = weights.reduce((a, b) => a + b, 0);
-    const rand = Math.random() * total;
-    let cumulative = 0;
-    for (let i = 0; i < choices.length; i++) {
-      cumulative += weights[i];
-      if (rand < cumulative) return choices[i];
-    }
-    return choices[choices.length - 1];
+function randomWeighted<T>(choices: T[], weights: number[]): T {
+  const total = weights.reduce((a, b) => a + b, 0);
+  const rand = Math.random() * total;
+  let cumulative = 0;
+  for (let i = 0; i < choices.length; i++) {
+    cumulative += weights[i];
+    if (rand < cumulative) return choices[i];
   }
+  return choices[choices.length - 1];
 }
 
 // ============================================================================
@@ -176,7 +174,7 @@ function generateSession(
   const duration = Math.max(
     60 * 1000, // Min 1 minute
     Math.round(
-      Random.boundedNormal(
+      randomBoundedNormal(
         char.sessionDuration.mean,
         char.sessionDuration.sd,
         0,
@@ -185,24 +183,24 @@ function generateSession(
     ),
   );
   const startTime = new Date(
-    baseTime.getTime() + Random.int(-7 * 24 * 60 * 60 * 1000, 0),
+    baseTime.getTime() + randomInt(-7 * 24 * 60 * 60 * 1000, 0),
   ); // Past week
 
   // Engagement metrics
   const genomesCreated = Math.max(
     0,
-    Math.round(Random.normal(char.genomesCreated.mean, char.genomesCreated.sd)),
+    Math.round(randomNormal(char.genomesCreated.mean, char.genomesCreated.sd)),
   );
   const genomesExecuted = Math.max(
     genomesCreated,
     Math.round(
-      Random.normal(char.genomesExecuted.mean, char.genomesExecuted.sd),
+      randomNormal(char.genomesExecuted.mean, char.genomesExecuted.sd),
     ),
   );
   const mutationsApplied = Math.max(
     0,
     Math.round(
-      Random.normal(char.mutationsApplied.mean, char.mutationsApplied.sd),
+      randomNormal(char.mutationsApplied.mean, char.mutationsApplied.sd),
     ),
   );
 
@@ -211,7 +209,7 @@ function generateSession(
       ? Math.max(
           10 * 1000, // Min 10 seconds
           Math.round(
-            Random.boundedNormal(
+            randomBoundedNormal(
               char.timeToFirstArtifact.mean,
               char.timeToFirstArtifact.sd,
               0,
@@ -279,13 +277,13 @@ function generateSession(
     for (let i = 0; i < mutationsApplied; i++) {
       if (Math.random() < 0.7 && focusSet.size > 0) {
         // 70% chance to use focused mutation
-        const type = Random.choice(
+        const type = randomChoice(
           char.mutationFocus,
         ) as keyof typeof mutationTypes;
         mutationTypes[type]++;
       } else {
         // 30% chance for random mutation
-        const type = Random.choice([
+        const type = randomChoice([
           "silent",
           "missense",
           "nonsense",
@@ -304,31 +302,31 @@ function generateSession(
     char.featureAdoption * (duration / (30 * 60 * 1000)); // Higher for longer sessions
   const diffViewerUsage =
     mutationsApplied > 5 && Math.random() < featureUsageProbability
-      ? Random.int(1, Math.ceil(mutationsApplied / 3))
+      ? randomInt(1, Math.ceil(mutationsApplied / 3))
       : 0;
 
   const timelineUsage =
     genomesExecuted > 5 && Math.random() < featureUsageProbability
-      ? Random.int(1, Math.ceil(genomesExecuted / 4))
+      ? randomInt(1, Math.ceil(genomesExecuted / 4))
       : 0;
 
   const evolutionUsage =
     mutationsApplied > 10 && Math.random() < featureUsageProbability * 0.6
-      ? Random.int(1, 5)
+      ? randomInt(1, 5)
       : 0;
 
   const assessmentUsage =
-    Math.random() < featureUsageProbability * 0.4 ? Random.int(1, 3) : 0;
+    Math.random() < featureUsageProbability * 0.4 ? randomInt(1, 3) : 0;
 
   const exportUsage =
     genomesCreated > 2 && Math.random() < featureUsageProbability * 0.7
-      ? Random.int(1, Math.ceil(genomesCreated / 2))
+      ? randomInt(1, Math.ceil(genomesCreated / 2))
       : 0;
 
   // Error count
   const errorCount =
     Math.random() < char.errorRate
-      ? Random.int(1, Math.ceil(mutationsApplied * 0.3))
+      ? randomInt(1, Math.ceil(mutationsApplied * 0.3))
       : 0;
 
   return {
@@ -378,7 +376,7 @@ function generateMetricsDataset(n: number): MetricsSession[] {
 
   for (let i = 0; i < n; i++) {
     const sessionId = `session_${String(i + 1).padStart(4, "0")}`;
-    const profile = Random.weighted(profiles, profileWeights);
+    const profile = randomWeighted(profiles, profileWeights);
     const session = generateSession(sessionId, profile, baseTime);
     sessions.push(session);
   }
@@ -550,7 +548,7 @@ function main(): void {
   const nIdx = args.indexOf("--n");
   const outputIdx = args.indexOf("--output");
 
-  const n = nIdx !== -1 ? parseInt(args[nIdx + 1]) : 20;
+  const n = nIdx !== -1 ? parseInt(args[nIdx + 1], 10) : 20;
   const output = outputIdx !== -1 ? args[outputIdx + 1] : "sample-metrics.csv";
 
   console.log(

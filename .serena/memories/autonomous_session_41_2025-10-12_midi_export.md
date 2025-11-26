@@ -265,7 +265,8 @@ if (renderMode === "visual") {
   exportBtn.style.display = "none";
   exportAudioBtn.style.display = "inline-block";
   exportMidiBtn.style.display = "inline-block"; // Show MIDI in audio mode
-} else { // 'both'
+} else {
+  // 'both'
   exportBtn.style.display = "inline-block";
   exportAudioBtn.style.display = "inline-block";
   exportMidiBtn.style.display = "inline-block"; // Show MIDI in both mode
@@ -286,8 +287,11 @@ async function runProgram() {
   } else if (renderMode === "visual") {
     const snapshots = vm.run(tokens);
     lastSnapshots = snapshots; // Store for MIDI export
-  } else { // 'both'
-    const [audioSnapshots, visualSnapshots] = await Promise.all([/*...*/]);
+  } else {
+    // 'both'
+    const [audioSnapshots, visualSnapshots] = await Promise.all([
+      /*...*/
+    ]);
     lastSnapshots = audioSnapshots; // Store audio snapshots
   }
 }

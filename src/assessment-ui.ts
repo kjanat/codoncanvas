@@ -36,9 +36,6 @@ export class AssessmentUI {
   private difficulty: DifficultyLevel = "easy";
   private achievementEngine?: AchievementEngine;
   private achievementUI?: AchievementUI;
-
-  // UI Elements (created dynamically)
-  private challengeSection!: HTMLDivElement;
   private originalGenome!: HTMLDivElement;
   private mutatedGenome!: HTMLDivElement;
   private hintDisplay!: HTMLDivElement;
@@ -233,26 +230,34 @@ export class AssessmentUI {
 
     this.container.replaceChildren(assessmentContainer);
 
-    // Cache element references
+    // Cache element references - elements are created above so guaranteed to exist
+    // biome-ignore lint/style/noNonNullAssertion: elements just created above
     this.challengeSection = this.container.querySelector(".challenge-section")!;
+    // biome-ignore lint/style/noNonNullAssertion: elements just created above
     this.originalGenome = document.getElementById(
       "original-genome",
     )! as HTMLDivElement;
+    // biome-ignore lint/style/noNonNullAssertion: elements just created above
     this.mutatedGenome = document.getElementById(
       "mutated-genome",
     )! as HTMLDivElement;
+    // biome-ignore lint/style/noNonNullAssertion: elements just created above
     this.hintDisplay = document.getElementById(
       "hint-display",
     )! as HTMLDivElement;
+    // biome-ignore lint/style/noNonNullAssertion: elements just created above
     this.feedbackDisplay = document.getElementById(
       "feedback-display",
     )! as HTMLDivElement;
+    // biome-ignore lint/style/noNonNullAssertion: elements just created above
     this.progressDisplay = document.getElementById(
       "progress-display",
     )! as HTMLDivElement;
+    // biome-ignore lint/style/noNonNullAssertion: elements just created above
     this.nextChallengeBtn = document.getElementById(
       "next-challenge-btn",
     )! as HTMLButtonElement;
+    // biome-ignore lint/style/noNonNullAssertion: elements just created above
     this.difficultySelect = document.getElementById(
       "difficulty-select",
     )! as HTMLSelectElement;
@@ -300,7 +305,7 @@ export class AssessmentUI {
       strong.textContent = "Hint:";
       p.textContent = "💡 ";
       p.appendChild(strong);
-      p.appendChild(document.createTextNode(" " + this.currentChallenge.hint));
+      p.appendChild(document.createTextNode(` ${this.currentChallenge.hint}`));
       this.hintDisplay.replaceChildren(p);
       this.hintDisplay.style.display = "block";
     } else {
@@ -345,7 +350,7 @@ export class AssessmentUI {
     // Disable answer buttons
     this.answerButtons.forEach((btn, type) => {
       btn.disabled = true;
-      if (type === this.currentChallenge!.correctAnswer) {
+      if (type === this.currentChallenge?.correctAnswer) {
         btn.classList.add("correct");
       } else if (type === answer) {
         btn.classList.add("incorrect");
@@ -444,7 +449,7 @@ export class AssessmentUI {
     stats.appendChild(createStatItem(progress.correctAnswers, "Correct"));
     stats.appendChild(
       createStatItem(
-        progress.accuracy.toFixed(1) + "%",
+        `${progress.accuracy.toFixed(1)}%`,
         "Accuracy",
         accuracyColor,
       ),

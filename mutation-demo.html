@@ -318,193 +318,186 @@
     </div>
 
     <script type="module">
-    import {
-      DiffViewer,
-      injectDiffViewerStyles,
-    } from "./src/diff-viewer.ts";
-    import { examples } from "./src/examples.ts";
-    import { CodonLexer } from "./src/lexer.ts";
-    import {
-      applyDeletion,
-      applyFrameshiftMutation,
-      applyInsertion,
-      applyMissenseMutation,
-      applyNonsenseMutation,
-      applyPointMutation,
-      applySilentMutation,
-    } from "./src/mutations.ts";
-    import { Canvas2DRenderer } from "./src/renderer.ts";
-    import { injectShareStyles, ShareSystem } from "./src/share-system.ts";
-    import { mutationTutorial, TutorialManager } from "./src/tutorial.ts";
-    import { TutorialUI } from "./src/tutorial-ui.ts";
-    import { CodonVM } from "./src/vm.ts";
-    import "./src/tutorial-ui.css";
+    import { DiffViewer, injectDiffViewerStyles } from "./src/diff-viewer.ts";
+import { examples } from "./src/examples.ts";
+import { CodonLexer } from "./src/lexer.ts";
+import {
+  applyDeletion,
+  applyFrameshiftMutation,
+  applyInsertion,
+  applyMissenseMutation,
+  applyNonsenseMutation,
+  applyPointMutation,
+  applySilentMutation,
+} from "./src/mutations.ts";
+import { Canvas2DRenderer } from "./src/renderer.ts";
+import { injectShareStyles, ShareSystem } from "./src/share-system.ts";
+import { mutationTutorial, TutorialManager } from "./src/tutorial.ts";
+import { TutorialUI } from "./src/tutorial-ui.ts";
+import { CodonVM } from "./src/vm.ts";
+import "./src/tutorial-ui.css";
 
-    // Inject styles
-    injectDiffViewerStyles();
-    injectShareStyles();
+// Inject styles
+injectDiffViewerStyles();
+injectShareStyles();
 
-    const editor = document.getElementById("editor");
-    const canvasOriginal = document.getElementById("canvasOriginal");
-    const canvasCurrent = document.getElementById("canvasCurrent");
-    const diffContainer = document.getElementById("diffContainer");
-    const statusContainer = document.getElementById("statusContainer");
-    const shareContainer = document.getElementById("shareContainer");
+const editor = document.getElementById("editor");
+const canvasOriginal = document.getElementById("canvasOriginal");
+const canvasCurrent = document.getElementById("canvasCurrent");
+const diffContainer = document.getElementById("diffContainer");
+const statusContainer = document.getElementById("statusContainer");
+const shareContainer = document.getElementById("shareContainer");
 
-    const lexer = new CodonLexer();
-    const rendererOriginal = new Canvas2DRenderer(canvasOriginal);
-    const rendererCurrent = new Canvas2DRenderer(canvasCurrent);
-    const vmOriginal = new CodonVM(rendererOriginal);
-    const vmCurrent = new CodonVM(rendererCurrent);
-    const diffViewer = new DiffViewer({
-      containerElement: diffContainer,
-      showCanvas: false,
-    });
+const lexer = new CodonLexer();
+const rendererOriginal = new Canvas2DRenderer(canvasOriginal);
+const rendererCurrent = new Canvas2DRenderer(canvasCurrent);
+const vmOriginal = new CodonVM(rendererOriginal);
+const vmCurrent = new CodonVM(rendererCurrent);
+const diffViewer = new DiffViewer({
+  containerElement: diffContainer,
+  showCanvas: false,
+});
 
-    // Initialize share system
-    const shareSystem = new ShareSystem({
-      containerElement: shareContainer,
-      getGenome: () => editor.value.trim(),
-      appTitle: "CodonCanvas Mutation Lab",
-      showQRCode: true,
-      socialPlatforms: ["twitter", "reddit", "email"],
-    });
+// Initialize share system
+const _shareSystem = new ShareSystem({
+  containerElement: shareContainer,
+  getGenome: () => editor.value.trim(),
+  appTitle: "CodonCanvas Mutation Lab",
+  showQRCode: true,
+  socialPlatforms: ["twitter", "reddit", "email"],
+});
 
-    let originalGenome = editor.value;
+let originalGenome = editor.value;
 
-    function showStatus(message, type = "info") {
-      statusContainer.innerHTML =
-        `<div class="status ${type}">${message}</div>`;
-      setTimeout(() => {
-        statusContainer.innerHTML = "";
-      }, 5000);
+function showStatus(message, type = "info") {
+  statusContainer.innerHTML = `<div class="status ${type}">${message}</div>`;
+  setTimeout(() => {
+    statusContainer.innerHTML = "";
+  }, 5000);
+}
+
+function renderGenome(genome, renderer, vm) {
+  try {
+    renderer.clear();
+    const tokens = lexer.tokenize(genome);
+    vm.reset();
+    vm.run(tokens);
+    return true;
+  } catch (error) {
+    console.error("Render error:", error);
+    showStatus(`Error: ${error.message}`, "error");
+    return false;
+  }
+}
+
+function updateVisualizations() {
+  const current = editor.value;
+  renderGenome(originalGenome, rendererOriginal, vmOriginal);
+  renderGenome(current, rendererCurrent, vmCurrent);
+}
+
+window.loadExample = (key) => {
+  if (examples[key]) {
+    editor.value = examples[key].genome;
+    originalGenome = editor.value;
+    updateVisualizations();
+    diffViewer.clear();
+    showStatus(`Loaded: ${examples[key].title}`, "success");
+  }
+};
+
+window.applyMutation = (type) => {
+  try {
+    const genome = editor.value;
+    let result;
+
+    switch (type) {
+      case "silent":
+        result = applySilentMutation(genome);
+        break;
+      case "missense":
+        result = applyMissenseMutation(genome);
+        break;
+      case "nonsense":
+        result = applyNonsenseMutation(genome);
+        break;
+      case "point":
+        result = applyPointMutation(genome);
+        break;
+      case "insertion":
+        result = applyInsertion(genome);
+        break;
+      case "deletion":
+        result = applyDeletion(genome);
+        break;
+      case "frameshift":
+        result = applyFrameshiftMutation(genome);
+        break;
+      default:
+        throw new Error(`Unknown mutation type: ${type}`);
     }
 
-    function renderGenome(genome, renderer, vm) {
-      try {
-        renderer.clear();
-        const tokens = lexer.tokenize(genome);
-        vm.reset();
-        vm.run(tokens);
-        return true;
-      } catch (error) {
-        console.error("Render error:", error);
-        showStatus(`Error: ${error.message}`, "error");
-        return false;
-      }
-    }
+    editor.value = result.mutated;
+    updateVisualizations();
+    diffViewer.renderMutation(result);
+    showStatus(`Applied ${type} mutation!`, "success");
+  } catch (error) {
+    console.error("Mutation error:", error);
+    showStatus(`Mutation failed: ${error.message}`, "error");
+  }
+};
 
-    function updateVisualizations() {
-      const current = editor.value;
-      renderGenome(originalGenome, rendererOriginal, vmOriginal);
-      renderGenome(current, rendererCurrent, vmCurrent);
-    }
+window.clearDiff = () => {
+  originalGenome = editor.value;
+  updateVisualizations();
+  diffViewer.clear();
+  showStatus("Diff cleared - current genome is now the original", "info");
+};
 
-    window.loadExample = (key) => {
-      if (examples[key]) {
-        editor.value = examples[key].genome;
-        originalGenome = editor.value;
-        updateVisualizations();
-        diffViewer.clear();
-        showStatus(`Loaded: ${examples[key].title}`, "success");
-      }
-    };
+// Load genome from URL if present
+const urlGenome = ShareSystem.loadFromURL();
+if (urlGenome) {
+  editor.value = urlGenome;
+  originalGenome = urlGenome;
+  showStatus("Loaded genome from share link", "success");
+  setTimeout(() => {
+    updateVisualizations();
+  }, 100);
+} else {
+  // Initial render
+  updateVisualizations();
+}
 
-    window.applyMutation = (type) => {
-      try {
-        const genome = editor.value;
-        let result;
-
-        switch (type) {
-          case "silent":
-            result = applySilentMutation(genome);
-            break;
-          case "missense":
-            result = applyMissenseMutation(genome);
-            break;
-          case "nonsense":
-            result = applyNonsenseMutation(genome);
-            break;
-          case "point":
-            result = applyPointMutation(genome);
-            break;
-          case "insertion":
-            result = applyInsertion(genome);
-            break;
-          case "deletion":
-            result = applyDeletion(genome);
-            break;
-          case "frameshift":
-            result = applyFrameshiftMutation(genome);
-            break;
-          default:
-            throw new Error(`Unknown mutation type: ${type}`);
-        }
-
-        editor.value = result.mutated;
-        updateVisualizations();
-        diffViewer.renderMutation(result);
-        showStatus(`Applied ${type} mutation!`, "success");
-      } catch (error) {
-        console.error("Mutation error:", error);
-        showStatus(`Mutation failed: ${error.message}`, "error");
-      }
-    };
-
-    window.clearDiff = () => {
-      originalGenome = editor.value;
-      updateVisualizations();
-      diffViewer.clear();
-      showStatus(
-        "Diff cleared - current genome is now the original",
-        "info",
-      );
-    };
-
-    // Load genome from URL if present
-    const urlGenome = ShareSystem.loadFromURL();
-    if (urlGenome) {
-      editor.value = urlGenome;
-      originalGenome = urlGenome;
-      showStatus("Loaded genome from share link", "success");
-      setTimeout(() => {
-        updateVisualizations();
-      }, 100);
-    } else {
-      // Initial render
-      updateVisualizations();
-    }
-
-    // Initialize mutation tutorial
-    const tutorialManager = new TutorialManager(
-      "codoncanvas_mutation_tutorial_completed",
+// Initialize mutation tutorial
+const tutorialManager = new TutorialManager(
+  "codoncanvas_mutation_tutorial_completed",
+);
+const tutorialUI = new TutorialUI(tutorialManager, {
+  onStepChange: () => {
+    // Re-render when user progresses
+    updateVisualizations();
+  },
+  onComplete: () => {
+    showStatus(
+      "Tutorial complete! You're now a mutation expert! 🏆",
+      "success",
     );
-    const tutorialUI = new TutorialUI(tutorialManager, {
-      onStepChange: () => {
-        // Re-render when user progresses
-        updateVisualizations();
-      },
-      onComplete: () => {
-        showStatus(
-          "Tutorial complete! You're now a mutation expert! 🏆",
-          "success",
-        );
-      },
-      getCodeFn: () => editor.value,
-    });
+  },
+  getCodeFn: () => editor.value,
+});
 
-    // Auto-show tutorial for first-time users (after 2 seconds for page load)
-    if (!tutorialManager.isCompleted()) {
-      setTimeout(() => {
-        tutorialUI.show(mutationTutorial);
-      }, 2000);
-    }
+// Auto-show tutorial for first-time users (after 2 seconds for page load)
+if (!tutorialManager.isCompleted()) {
+  setTimeout(() => {
+    tutorialUI.show(mutationTutorial);
+  }, 2000);
+}
 
-    // Add tutorial reset button for testing (hidden in UI, accessible via console)
-    window.resetMutationTutorial = () => {
-      tutorialManager.reset();
-      location.reload();
-    };
+// Add tutorial reset button for testing (hidden in UI, accessible via console)
+window.resetMutationTutorial = () => {
+  tutorialManager.reset();
+  location.reload();
+};
     </script>
   </body>
 </html>

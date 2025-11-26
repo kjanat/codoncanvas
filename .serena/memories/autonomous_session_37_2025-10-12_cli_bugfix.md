@@ -26,7 +26,7 @@ npm run cli -- lint "examples/*.genome"
 if (options.json) {
   // inline calculation
 } else {
-  const invalid = results.filter(r => !r.valid).length; // scoped to else
+  const invalid = results.filter((r) => !r.valid).length; // scoped to else
 }
 process.exit(invalid > 0 ? 1 : 0); // ERROR: invalid undefined
 ```

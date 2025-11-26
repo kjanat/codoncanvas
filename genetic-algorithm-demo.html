@@ -440,469 +440,462 @@
 
     <script type="module">
     import { GeneticAlgorithm } from "./src/genetic-algorithm.ts";
-    import { CodonLexer } from "./src/lexer.ts";
-    import { Canvas2DRenderer } from "./src/renderer.ts";
-    import { CodonVM } from "./src/vm.ts";
+import { CodonLexer } from "./src/lexer.ts";
+import { Canvas2DRenderer } from "./src/renderer.ts";
+import { CodonVM } from "./src/vm.ts";
 
-    // State
-    let ga = null;
-    let running = false;
-    let animationId = null;
+// State
+let ga = null;
+let running = false;
+let animationId = null;
 
-    // Elements
-    const targetCanvas = document.getElementById("targetCanvas");
-    const bestCanvas = document.getElementById("bestCanvas");
-    const chartCanvas = document.getElementById("chartCanvas");
-    const populationGrid = document.getElementById("populationGrid");
+// Elements
+const targetCanvas = document.getElementById("targetCanvas");
+const bestCanvas = document.getElementById("bestCanvas");
+const chartCanvas = document.getElementById("chartCanvas");
+const populationGrid = document.getElementById("populationGrid");
 
-    const startBtn = document.getElementById("startBtn");
-    const pauseBtn = document.getElementById("pauseBtn");
-    const stepBtn = document.getElementById("stepBtn");
-    const resetBtn = document.getElementById("resetBtn");
+const startBtn = document.getElementById("startBtn");
+const pauseBtn = document.getElementById("pauseBtn");
+const stepBtn = document.getElementById("stepBtn");
+const resetBtn = document.getElementById("resetBtn");
 
-    const fitnessGoalSelect = document.getElementById("fitnessGoal");
-    const populationSizeSlider = document.getElementById("populationSize");
-    const mutationRateSlider = document.getElementById("mutationRate");
-    const crossoverRateSlider = document.getElementById("crossoverRate");
-    const selectionStrategySelect = document.getElementById(
-      "selectionStrategy",
-    );
-    const crossoverStrategySelect = document.getElementById(
-      "crossoverStrategy",
-    );
+const fitnessGoalSelect = document.getElementById("fitnessGoal");
+const populationSizeSlider = document.getElementById("populationSize");
+const mutationRateSlider = document.getElementById("mutationRate");
+const crossoverRateSlider = document.getElementById("crossoverRate");
+const selectionStrategySelect = document.getElementById("selectionStrategy");
+const crossoverStrategySelect = document.getElementById("crossoverStrategy");
 
-    // Update range displays
-    populationSizeSlider.addEventListener("input", (e) => {
-      document.getElementById("populationSizeValue").textContent =
-        e.target.value;
-    });
+// Update range displays
+populationSizeSlider.addEventListener("input", (e) => {
+  document.getElementById("populationSizeValue").textContent = e.target.value;
+});
 
-    mutationRateSlider.addEventListener("input", (e) => {
-      document.getElementById("mutationRateValue").textContent = parseFloat(
-        e.target.value,
-      ).toFixed(2);
-    });
+mutationRateSlider.addEventListener("input", (e) => {
+  document.getElementById("mutationRateValue").textContent = parseFloat(
+    e.target.value,
+  ).toFixed(2);
+});
 
-    crossoverRateSlider.addEventListener("input", (e) => {
-      document.getElementById("crossoverRateValue").textContent =
-        parseFloat(e.target.value).toFixed(2);
-    });
+crossoverRateSlider.addEventListener("input", (e) => {
+  document.getElementById("crossoverRateValue").textContent = parseFloat(
+    e.target.value,
+  ).toFixed(2);
+});
 
-    // Fitness Functions
-    const fitnessFunctions = {
-      "center-circle": (genome, canvas) => {
-        const ctx = canvas.getContext("2d");
-        const imageData = ctx.getImageData(0, 0, 400, 400);
-        const data = imageData.data;
+// Fitness Functions
+const fitnessFunctions = {
+  "center-circle": (_genome, canvas) => {
+    const ctx = canvas.getContext("2d");
+    const imageData = ctx.getImageData(0, 0, 400, 400);
+    const data = imageData.data;
 
-        // Check for dark pixels in center circle (radius 100)
-        let centerPixels = 0;
-        let darkCenterPixels = 0;
+    // Check for dark pixels in center circle (radius 100)
+    let centerPixels = 0;
+    let darkCenterPixels = 0;
 
-        for (let y = 150; y < 250; y++) {
-          for (let x = 150; x < 250; x++) {
-            const dx = x - 200;
-            const dy = y - 200;
-            const dist = Math.sqrt(dx * dx + dy * dy);
+    for (let y = 150; y < 250; y++) {
+      for (let x = 150; x < 250; x++) {
+        const dx = x - 200;
+        const dy = y - 200;
+        const dist = Math.sqrt(dx * dx + dy * dy);
 
-            if (dist < 100) {
-              centerPixels++;
-              const idx = (y * 400 + x) * 4;
-              const r = data[idx];
-              const g = data[idx + 1];
-              const b = data[idx + 2];
-              const brightness = (r + g + b) / 3;
+        if (dist < 100) {
+          centerPixels++;
+          const idx = (y * 400 + x) * 4;
+          const r = data[idx];
+          const g = data[idx + 1];
+          const b = data[idx + 2];
+          const brightness = (r + g + b) / 3;
 
-              if (brightness < 200) {
-                darkCenterPixels++;
-              }
-            }
-          }
-        }
-
-        return darkCenterPixels / centerPixels;
-      },
-
-      "corners": (genome, canvas) => {
-        const ctx = canvas.getContext("2d");
-        const imageData = ctx.getImageData(0, 0, 400, 400);
-        const data = imageData.data;
-
-        const corners = [
-          { x: 50, y: 50 },
-          { x: 350, y: 50 },
-          { x: 50, y: 350 },
-          { x: 350, y: 350 },
-        ];
-
-        let totalScore = 0;
-
-        corners.forEach(corner => {
-          let darkPixels = 0;
-          let totalPixels = 0;
-
-          for (let y = corner.y - 30; y < corner.y + 30; y++) {
-            for (let x = corner.x - 30; x < corner.x + 30; x++) {
-              if (x >= 0 && x < 400 && y >= 0 && y < 400) {
-                totalPixels++;
-                const idx = (y * 400 + x) * 4;
-                const brightness =
-                  (data[idx] + data[idx + 1] + data[idx + 2]) / 3;
-
-                if (brightness < 200) {
-                  darkPixels++;
-                }
-              }
-            }
-          }
-
-          totalScore += darkPixels / totalPixels;
-        });
-
-        return totalScore / 4;
-      },
-
-      "symmetry": (genome, canvas) => {
-        const ctx = canvas.getContext("2d");
-        const imageData = ctx.getImageData(0, 0, 400, 400);
-        const data = imageData.data;
-
-        let symmetryScore = 0;
-        let totalPixels = 0;
-
-        for (let y = 0; y < 400; y++) {
-          for (let x = 0; x < 200; x++) {
-            const leftIdx = (y * 400 + x) * 4;
-            const rightIdx = (y * 400 + (399 - x)) * 4;
-
-            const leftBrightness =
-              (data[leftIdx] + data[leftIdx + 1] + data[leftIdx + 2]) / 3;
-            const rightBrightness =
-              (data[rightIdx] + data[rightIdx + 1] + data[rightIdx + 2]) /
-              3;
-
-            const diff = Math.abs(leftBrightness - rightBrightness);
-            symmetryScore += 1 - (diff / 255);
-            totalPixels++;
-          }
-        }
-
-        return symmetryScore / totalPixels;
-      },
-
-      "density": (genome, canvas) => {
-        const ctx = canvas.getContext("2d");
-        const imageData = ctx.getImageData(0, 0, 400, 400);
-        const data = imageData.data;
-
-        let darkPixels = 0;
-
-        for (let i = 0; i < data.length; i += 4) {
-          const brightness = (data[i] + data[i + 1] + data[i + 2]) / 3;
           if (brightness < 200) {
-            darkPixels++;
+            darkCenterPixels++;
           }
         }
+      }
+    }
 
-        const totalPixels = 400 * 400;
-        const density = darkPixels / totalPixels;
+    return darkCenterPixels / centerPixels;
+  },
 
-        // Target 30-50% density
-        if (density < 0.3) {
-          return density / 0.3;
-        } else if (density > 0.5) {
-          return 1 - ((density - 0.5) / 0.5);
-        } else {
-          return 1.0;
+  corners: (_genome, canvas) => {
+    const ctx = canvas.getContext("2d");
+    const imageData = ctx.getImageData(0, 0, 400, 400);
+    const data = imageData.data;
+
+    const corners = [
+      { x: 50, y: 50 },
+      { x: 350, y: 50 },
+      { x: 50, y: 350 },
+      { x: 350, y: 350 },
+    ];
+
+    let totalScore = 0;
+
+    corners.forEach((corner) => {
+      let darkPixels = 0;
+      let totalPixels = 0;
+
+      for (let y = corner.y - 30; y < corner.y + 30; y++) {
+        for (let x = corner.x - 30; x < corner.x + 30; x++) {
+          if (x >= 0 && x < 400 && y >= 0 && y < 400) {
+            totalPixels++;
+            const idx = (y * 400 + x) * 4;
+            const brightness = (data[idx] + data[idx + 1] + data[idx + 2]) / 3;
+
+            if (brightness < 200) {
+              darkPixels++;
+            }
+          }
         }
-      },
-    };
+      }
 
-    // Draw target pattern
-    function drawTarget() {
-      const goal = fitnessGoalSelect.value;
-      const ctx = targetCanvas.getContext("2d");
-      ctx.fillStyle = "white";
-      ctx.fillRect(0, 0, 400, 400);
-      ctx.fillStyle = "black";
+      totalScore += darkPixels / totalPixels;
+    });
 
-      switch (goal) {
-        case "center-circle":
+    return totalScore / 4;
+  },
+
+  symmetry: (_genome, canvas) => {
+    const ctx = canvas.getContext("2d");
+    const imageData = ctx.getImageData(0, 0, 400, 400);
+    const data = imageData.data;
+
+    let symmetryScore = 0;
+    let totalPixels = 0;
+
+    for (let y = 0; y < 400; y++) {
+      for (let x = 0; x < 200; x++) {
+        const leftIdx = (y * 400 + x) * 4;
+        const rightIdx = (y * 400 + (399 - x)) * 4;
+
+        const leftBrightness =
+          (data[leftIdx] + data[leftIdx + 1] + data[leftIdx + 2]) / 3;
+        const rightBrightness =
+          (data[rightIdx] + data[rightIdx + 1] + data[rightIdx + 2]) / 3;
+
+        const diff = Math.abs(leftBrightness - rightBrightness);
+        symmetryScore += 1 - diff / 255;
+        totalPixels++;
+      }
+    }
+
+    return symmetryScore / totalPixels;
+  },
+
+  density: (_genome, canvas) => {
+    const ctx = canvas.getContext("2d");
+    const imageData = ctx.getImageData(0, 0, 400, 400);
+    const data = imageData.data;
+
+    let darkPixels = 0;
+
+    for (let i = 0; i < data.length; i += 4) {
+      const brightness = (data[i] + data[i + 1] + data[i + 2]) / 3;
+      if (brightness < 200) {
+        darkPixels++;
+      }
+    }
+
+    const totalPixels = 400 * 400;
+    const density = darkPixels / totalPixels;
+
+    // Target 30-50% density
+    if (density < 0.3) {
+      return density / 0.3;
+    } else if (density > 0.5) {
+      return 1 - (density - 0.5) / 0.5;
+    } else {
+      return 1.0;
+    }
+  },
+};
+
+// Draw target pattern
+function drawTarget() {
+  const goal = fitnessGoalSelect.value;
+  const ctx = targetCanvas.getContext("2d");
+  ctx.fillStyle = "white";
+  ctx.fillRect(0, 0, 400, 400);
+  ctx.fillStyle = "black";
+
+  switch (goal) {
+    case "center-circle":
+      ctx.beginPath();
+      ctx.arc(200, 200, 100, 0, Math.PI * 2);
+      ctx.fill();
+      break;
+
+    case "corners":
+      [50, 350].forEach((x) => {
+        [50, 350].forEach((y) => {
           ctx.beginPath();
-          ctx.arc(200, 200, 100, 0, Math.PI * 2);
+          ctx.arc(x, y, 30, 0, Math.PI * 2);
           ctx.fill();
-          break;
-
-        case "corners":
-          [50, 350].forEach(x => {
-            [50, 350].forEach(y => {
-              ctx.beginPath();
-              ctx.arc(x, y, 30, 0, Math.PI * 2);
-              ctx.fill();
-            });
-          });
-          break;
-
-        case "symmetry":
-          ctx.font = "20px monospace";
-          ctx.textAlign = "center";
-          ctx.fillText("Horizontal", 200, 190);
-          ctx.fillText("Symmetry", 200, 220);
-          break;
-
-        case "density":
-          ctx.font = "16px monospace";
-          ctx.textAlign = "center";
-          ctx.fillText("Target:", 200, 180);
-          ctx.fillText("30-50%", 200, 210);
-          ctx.fillText("Pixel Density", 200, 240);
-          break;
-      }
-    }
-
-    // Render genome on canvas
-    function renderGenome(genome, canvas) {
-      try {
-        const ctx = canvas.getContext("2d");
-        ctx.fillStyle = "white";
-        ctx.fillRect(0, 0, 400, 400);
-
-        const lexer = new CodonLexer();
-        const tokens = lexer.tokenize(genome);
-        const renderer = new Canvas2DRenderer(canvas);
-        const vm = new CodonVM(renderer);
-        vm.run(tokens);
-      } catch (error) {
-        const ctx = canvas.getContext("2d");
-        ctx.fillStyle = "#ffcccc";
-        ctx.fillRect(0, 0, 400, 400);
-        ctx.fillStyle = "#cc0000";
-        ctx.font = "12px monospace";
-        ctx.textAlign = "center";
-        ctx.fillText("Invalid Genome", 200, 200);
-      }
-    }
-
-    // Draw fitness chart
-    function drawChart() {
-      if (!ga) return;
-
-      const stats = ga.getStats();
-      if (stats.length === 0) return;
-
-      const ctx = chartCanvas.getContext("2d");
-      const width = chartCanvas.width;
-      const height = chartCanvas.height;
-
-      ctx.fillStyle = "#1e1e1e";
-      ctx.fillRect(0, 0, width, height);
-
-      const maxGen = Math.max(stats.length - 1, 1);
-      const xScale = width / maxGen;
-      const yScale = height;
-
-      // Draw grid
-      ctx.strokeStyle = "#3e3e42";
-      ctx.lineWidth = 1;
-      for (let i = 0; i <= 10; i++) {
-        const y = height - (i * height / 10);
-        ctx.beginPath();
-        ctx.moveTo(0, y);
-        ctx.lineTo(width, y);
-        ctx.stroke();
-      }
-
-      // Draw best fitness line
-      ctx.strokeStyle = "#4ec9b0";
-      ctx.lineWidth = 2;
-      ctx.beginPath();
-      stats.forEach((stat, i) => {
-        const x = i * xScale;
-        const y = height - (stat.bestFitness * yScale);
-        if (i === 0) {
-          ctx.moveTo(x, y);
-        } else {
-          ctx.lineTo(x, y);
-        }
-      });
-      ctx.stroke();
-
-      // Draw avg fitness line
-      ctx.strokeStyle = "#858585";
-      ctx.lineWidth = 1;
-      ctx.beginPath();
-      stats.forEach((stat, i) => {
-        const x = i * xScale;
-        const y = height - (stat.avgFitness * yScale);
-        if (i === 0) {
-          ctx.moveTo(x, y);
-        } else {
-          ctx.lineTo(x, y);
-        }
-      });
-      ctx.stroke();
-
-      // Legend
-      ctx.font = "10px monospace";
-      ctx.fillStyle = "#4ec9b0";
-      ctx.fillText("Best", 10, 15);
-      ctx.fillStyle = "#858585";
-      ctx.fillText("Avg", 50, 15);
-    }
-
-    // Update population grid
-    function updatePopulationGrid() {
-      if (!ga) return;
-
-      const population = ga.getPopulation().slice(0, 10);
-      populationGrid.innerHTML = "";
-
-      population.forEach((individual, index) => {
-        const card = document.createElement("div");
-        card.className = "individual-card" + (index === 0 ? " best" : "");
-
-        const label = document.createElement("div");
-        label.className = "individual-label";
-        label.textContent = `#${index + 1}`;
-
-        const fitness = document.createElement("div");
-        fitness.className = "individual-fitness";
-        fitness.textContent = `Fitness: ${individual.fitness.toFixed(3)}`;
-
-        const canvas = document.createElement("canvas");
-        canvas.width = 100;
-        canvas.height = 100;
-
-        card.appendChild(label);
-        card.appendChild(fitness);
-        card.appendChild(canvas);
-
-        card.addEventListener("click", () => {
-          renderGenome(individual.genome, bestCanvas);
-          document.getElementById("bestFitnessLabel").textContent =
-            individual.fitness.toFixed(3);
         });
-
-        populationGrid.appendChild(card);
-
-        // Render on small canvas
-        renderGenome(individual.genome, canvas);
       });
+      break;
+
+    case "symmetry":
+      ctx.font = "20px monospace";
+      ctx.textAlign = "center";
+      ctx.fillText("Horizontal", 200, 190);
+      ctx.fillText("Symmetry", 200, 220);
+      break;
+
+    case "density":
+      ctx.font = "16px monospace";
+      ctx.textAlign = "center";
+      ctx.fillText("Target:", 200, 180);
+      ctx.fillText("30-50%", 200, 210);
+      ctx.fillText("Pixel Density", 200, 240);
+      break;
+  }
+}
+
+// Render genome on canvas
+function renderGenome(genome, canvas) {
+  try {
+    const ctx = canvas.getContext("2d");
+    ctx.fillStyle = "white";
+    ctx.fillRect(0, 0, 400, 400);
+
+    const lexer = new CodonLexer();
+    const tokens = lexer.tokenize(genome);
+    const renderer = new Canvas2DRenderer(canvas);
+    const vm = new CodonVM(renderer);
+    vm.run(tokens);
+  } catch (_error) {
+    const ctx = canvas.getContext("2d");
+    ctx.fillStyle = "#ffcccc";
+    ctx.fillRect(0, 0, 400, 400);
+    ctx.fillStyle = "#cc0000";
+    ctx.font = "12px monospace";
+    ctx.textAlign = "center";
+    ctx.fillText("Invalid Genome", 200, 200);
+  }
+}
+
+// Draw fitness chart
+function drawChart() {
+  if (!ga) return;
+
+  const stats = ga.getStats();
+  if (stats.length === 0) return;
+
+  const ctx = chartCanvas.getContext("2d");
+  const width = chartCanvas.width;
+  const height = chartCanvas.height;
+
+  ctx.fillStyle = "#1e1e1e";
+  ctx.fillRect(0, 0, width, height);
+
+  const maxGen = Math.max(stats.length - 1, 1);
+  const xScale = width / maxGen;
+  const yScale = height;
+
+  // Draw grid
+  ctx.strokeStyle = "#3e3e42";
+  ctx.lineWidth = 1;
+  for (let i = 0; i <= 10; i++) {
+    const y = height - (i * height) / 10;
+    ctx.beginPath();
+    ctx.moveTo(0, y);
+    ctx.lineTo(width, y);
+    ctx.stroke();
+  }
+
+  // Draw best fitness line
+  ctx.strokeStyle = "#4ec9b0";
+  ctx.lineWidth = 2;
+  ctx.beginPath();
+  stats.forEach((stat, i) => {
+    const x = i * xScale;
+    const y = height - stat.bestFitness * yScale;
+    if (i === 0) {
+      ctx.moveTo(x, y);
+    } else {
+      ctx.lineTo(x, y);
     }
+  });
+  ctx.stroke();
 
-    // Update stats
-    function updateStats() {
-      if (!ga) return;
-
-      const stats = ga.getStats();
-      const lastStat = stats[stats.length - 1];
-
-      document.getElementById("generationStat").textContent = ga
-        .getGeneration();
-      document.getElementById("bestFitnessStat").textContent = lastStat
-        .bestFitness.toFixed(3);
-      document.getElementById("avgFitnessStat").textContent = lastStat
-        .avgFitness.toFixed(3);
-      document.getElementById("diversityStat").textContent =
-        Math.round(lastStat.diversity * 100) + "%";
-
-      const best = ga.getBest();
-      document.getElementById("bestFitnessLabel").textContent = best.fitness
-        .toFixed(3);
-      renderGenome(best.genome, bestCanvas);
-
-      drawChart();
-      updatePopulationGrid();
+  // Draw avg fitness line
+  ctx.strokeStyle = "#858585";
+  ctx.lineWidth = 1;
+  ctx.beginPath();
+  stats.forEach((stat, i) => {
+    const x = i * xScale;
+    const y = height - stat.avgFitness * yScale;
+    if (i === 0) {
+      ctx.moveTo(x, y);
+    } else {
+      ctx.lineTo(x, y);
     }
+  });
+  ctx.stroke();
 
-    // Initialize GA
-    function initGA() {
-      const goal = fitnessGoalSelect.value;
-      const fitnessFunc = fitnessFunctions[goal];
+  // Legend
+  ctx.font = "10px monospace";
+  ctx.fillStyle = "#4ec9b0";
+  ctx.fillText("Best", 10, 15);
+  ctx.fillStyle = "#858585";
+  ctx.fillText("Avg", 50, 15);
+}
 
-      // Simple seed genome
-      const seedGenome = "ATG GAA AGG GGA TAA";
+// Update population grid
+function updatePopulationGrid() {
+  if (!ga) return;
 
-      ga = new GeneticAlgorithm([seedGenome], fitnessFunc, {
-        populationSize: parseInt(populationSizeSlider.value),
-        mutationRate: parseFloat(mutationRateSlider.value),
-        crossoverRate: parseFloat(crossoverRateSlider.value),
-        selectionStrategy: selectionStrategySelect.value,
-        crossoverStrategy: crossoverStrategySelect.value,
-      });
+  const population = ga.getPopulation().slice(0, 10);
+  populationGrid.innerHTML = "";
 
-      updateStats();
-    }
+  population.forEach((individual, index) => {
+    const card = document.createElement("div");
+    card.className = `individual-card${index === 0 ? " best" : ""}`;
 
-    // Evolution loop
-    function evolve() {
-      if (!running || !ga) return;
+    const label = document.createElement("div");
+    label.className = "individual-label";
+    label.textContent = `#${index + 1}`;
 
-      ga.evolveGeneration();
-      updateStats();
+    const fitness = document.createElement("div");
+    fitness.className = "individual-fitness";
+    fitness.textContent = `Fitness: ${individual.fitness.toFixed(3)}`;
 
-      animationId = setTimeout(evolve, 100);
-    }
+    const canvas = document.createElement("canvas");
+    canvas.width = 100;
+    canvas.height = 100;
 
-    // Event handlers
-    startBtn.addEventListener("click", () => {
-      if (!ga) {
-        initGA();
-      }
-      running = true;
-      startBtn.disabled = true;
-      pauseBtn.disabled = false;
-      evolve();
+    card.appendChild(label);
+    card.appendChild(fitness);
+    card.appendChild(canvas);
+
+    card.addEventListener("click", () => {
+      renderGenome(individual.genome, bestCanvas);
+      document.getElementById("bestFitnessLabel").textContent =
+        individual.fitness.toFixed(3);
     });
 
-    pauseBtn.addEventListener("click", () => {
-      running = false;
-      startBtn.disabled = false;
-      pauseBtn.disabled = true;
-      if (animationId) {
-        clearTimeout(animationId);
-        animationId = null;
-      }
-    });
+    populationGrid.appendChild(card);
 
-    stepBtn.addEventListener("click", () => {
-      if (!ga) {
-        initGA();
-      }
-      ga.evolveGeneration();
-      updateStats();
-    });
+    // Render on small canvas
+    renderGenome(individual.genome, canvas);
+  });
+}
 
-    resetBtn.addEventListener("click", () => {
-      running = false;
-      startBtn.disabled = false;
-      pauseBtn.disabled = true;
-      if (animationId) {
-        clearTimeout(animationId);
-        animationId = null;
-      }
-      ga = null;
-      document.getElementById("generationStat").textContent = "0";
-      document.getElementById("bestFitnessStat").textContent = "0.00";
-      document.getElementById("avgFitnessStat").textContent = "0.00";
-      document.getElementById("diversityStat").textContent = "100%";
-      document.getElementById("bestFitnessLabel").textContent = "0.00";
+// Update stats
+function updateStats() {
+  if (!ga) return;
 
-      const ctx = bestCanvas.getContext("2d");
-      ctx.fillStyle = "white";
-      ctx.fillRect(0, 0, 400, 400);
+  const stats = ga.getStats();
+  const lastStat = stats[stats.length - 1];
 
-      populationGrid.innerHTML = "";
+  document.getElementById("generationStat").textContent = ga.getGeneration();
+  document.getElementById("bestFitnessStat").textContent =
+    lastStat.bestFitness.toFixed(3);
+  document.getElementById("avgFitnessStat").textContent =
+    lastStat.avgFitness.toFixed(3);
+  document.getElementById("diversityStat").textContent =
+    `${Math.round(lastStat.diversity * 100)}%`;
 
-      const chartCtx = chartCanvas.getContext("2d");
-      chartCtx.fillStyle = "#1e1e1e";
-      chartCtx.fillRect(0, 0, chartCanvas.width, chartCanvas.height);
-    });
+  const best = ga.getBest();
+  document.getElementById("bestFitnessLabel").textContent =
+    best.fitness.toFixed(3);
+  renderGenome(best.genome, bestCanvas);
 
-    fitnessGoalSelect.addEventListener("change", drawTarget);
+  drawChart();
+  updatePopulationGrid();
+}
 
-    // Initial draw
-    drawTarget();
+// Initialize GA
+function initGA() {
+  const goal = fitnessGoalSelect.value;
+  const fitnessFunc = fitnessFunctions[goal];
+
+  // Simple seed genome
+  const seedGenome = "ATG GAA AGG GGA TAA";
+
+  ga = new GeneticAlgorithm([seedGenome], fitnessFunc, {
+    populationSize: parseInt(populationSizeSlider.value, 10),
+    mutationRate: parseFloat(mutationRateSlider.value),
+    crossoverRate: parseFloat(crossoverRateSlider.value),
+    selectionStrategy: selectionStrategySelect.value,
+    crossoverStrategy: crossoverStrategySelect.value,
+  });
+
+  updateStats();
+}
+
+// Evolution loop
+function evolve() {
+  if (!running || !ga) return;
+
+  ga.evolveGeneration();
+  updateStats();
+
+  animationId = setTimeout(evolve, 100);
+}
+
+// Event handlers
+startBtn.addEventListener("click", () => {
+  if (!ga) {
+    initGA();
+  }
+  running = true;
+  startBtn.disabled = true;
+  pauseBtn.disabled = false;
+  evolve();
+});
+
+pauseBtn.addEventListener("click", () => {
+  running = false;
+  startBtn.disabled = false;
+  pauseBtn.disabled = true;
+  if (animationId) {
+    clearTimeout(animationId);
+    animationId = null;
+  }
+});
+
+stepBtn.addEventListener("click", () => {
+  if (!ga) {
+    initGA();
+  }
+  ga.evolveGeneration();
+  updateStats();
+});
+
+resetBtn.addEventListener("click", () => {
+  running = false;
+  startBtn.disabled = false;
+  pauseBtn.disabled = true;
+  if (animationId) {
+    clearTimeout(animationId);
+    animationId = null;
+  }
+  ga = null;
+  document.getElementById("generationStat").textContent = "0";
+  document.getElementById("bestFitnessStat").textContent = "0.00";
+  document.getElementById("avgFitnessStat").textContent = "0.00";
+  document.getElementById("diversityStat").textContent = "100%";
+  document.getElementById("bestFitnessLabel").textContent = "0.00";
+
+  const ctx = bestCanvas.getContext("2d");
+  ctx.fillStyle = "white";
+  ctx.fillRect(0, 0, 400, 400);
+
+  populationGrid.innerHTML = "";
+
+  const chartCtx = chartCanvas.getContext("2d");
+  chartCtx.fillStyle = "#1e1e1e";
+  chartCtx.fillRect(0, 0, chartCanvas.width, chartCanvas.height);
+});
+
+fitnessGoalSelect.addEventListener("change", drawTarget);
+
+// Initial draw
+drawTarget();
     </script>
   </body>
 </html>

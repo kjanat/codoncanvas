@@ -279,7 +279,7 @@ class MockCanvasContext implements Partial<CanvasRenderingContext2D> {
 test("circle() draws with correct radius", () => {
   renderer.circle(50);
 
-  const arcCall = ctx.operations.find(op => op.startsWith("arc("));
+  const arcCall = ctx.operations.find((op) => op.startsWith("arc("));
   expect(arcCall).toContain("arc(0,0,50,"); // radius 50
   expect(ctx.operations).toContain("fill()");
   expect(ctx.operations).toContain("stroke()");

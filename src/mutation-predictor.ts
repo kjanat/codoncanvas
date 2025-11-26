@@ -235,7 +235,7 @@ function analyzeChanges(
 function generateDescription(
   impact: ImpactLevel,
   analysis: ReturnType<typeof analyzeChanges>,
-  mutationType: string,
+  _mutationType: string,
 ): string {
   if (impact === "SILENT") {
     return "Minimal visual change - outputs nearly identical (synonymous codon)";
@@ -343,7 +343,7 @@ export function predictMutationImpact(
     const tokens1 = lexer.tokenize(originalGenome);
     vm1.run(tokens1);
     originalRendered = true;
-  } catch (error) {
+  } catch (_error) {
     // Original genome invalid - prediction may be unreliable
   }
 
@@ -354,7 +354,7 @@ export function predictMutationImpact(
     const tokens2 = lexer.tokenize(mutationResult.mutated);
     vm2.run(tokens2);
     mutatedRendered = true;
-  } catch (error) {
+  } catch (_error) {
     // Mutated genome invalid (expected for frameshifts)
   }
 

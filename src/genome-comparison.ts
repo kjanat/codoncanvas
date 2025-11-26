@@ -151,7 +151,7 @@ function calculatePixelDifference(
     }
 
     return (differentPixels / totalPixels) * 100;
-  } catch (error) {
+  } catch (_error) {
     // If either genome is invalid, return 100% difference
     return 100;
   }
@@ -218,7 +218,7 @@ function generateDescription(
     );
   }
 
-  return parts.join(". ") + ".";
+  return `${parts.join(". ")}.`;
 }
 
 /**
@@ -300,7 +300,7 @@ function renderBothGenomes(
     const vm1 = new CodonVM(renderer1);
     vm1.run(tokens1);
     canvas1DataURL = canvas1.toDataURL();
-  } catch (error) {
+  } catch (_error) {
     bothValid = false;
     // Create blank canvas for invalid genome
     const canvas = document.createElement("canvas");
@@ -320,7 +320,7 @@ function renderBothGenomes(
     const vm2 = new CodonVM(renderer2);
     vm2.run(tokens2);
     canvas2DataURL = canvas2.toDataURL();
-  } catch (error) {
+  } catch (_error) {
     bothValid = false;
     // Create blank canvas for invalid genome
     const canvas = document.createElement("canvas");

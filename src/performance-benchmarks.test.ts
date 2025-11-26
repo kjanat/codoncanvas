@@ -1,5 +1,5 @@
-import { readFileSync } from "fs";
-import { join } from "path";
+import { readFileSync } from "node:fs";
+import { join } from "node:path";
 import { beforeEach, describe, expect, test } from "vitest";
 import { CodonLexer } from "./lexer";
 import { Canvas2DRenderer } from "./renderer";
@@ -66,7 +66,7 @@ describe("Performance Benchmarks", () => {
     });
 
     test("lexer handles 1000 codons efficiently", () => {
-      const largeGenome = "ATG " + "GAA AAA ".repeat(500) + "TAA"; // ~1000 codons
+      const largeGenome = `ATG ${"GAA AAA ".repeat(500)}TAA`; // ~1000 codons
       const start = performance.now();
       lexer.tokenize(largeGenome);
       const duration = performance.now() - start;

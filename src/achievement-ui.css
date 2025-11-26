@@ -125,6 +125,12 @@
   transform: translateY(-2px);
 }
 
+.badge-icon {
+  margin-bottom: 0.5rem;
+  font-size: 3rem;
+  line-height: 1;
+}
+
 .achievement-badge.locked {
   opacity: 0.6;
 }
@@ -148,12 +154,6 @@
   color: var(--color-text-secondary);
   background: rgba(0, 0, 0, 0.7);
   border-radius: 6px;
-}
-
-.badge-icon {
-  margin-bottom: 0.5rem;
-  font-size: 3rem;
-  line-height: 1;
 }
 
 .badge-name {

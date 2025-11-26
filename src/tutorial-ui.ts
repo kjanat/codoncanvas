@@ -10,10 +10,7 @@ export class TutorialUI {
   private overlayElement: HTMLElement | null = null;
   private highlightedElement: HTMLElement | null = null;
 
-  constructor(
-    private container: HTMLElement,
-    manager: TutorialManager,
-  ) {
+  constructor(_container: HTMLElement, manager: TutorialManager) {
     this.manager = manager;
     this.setupCallbacks();
   }

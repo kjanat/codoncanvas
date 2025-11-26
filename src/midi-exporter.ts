@@ -192,7 +192,7 @@ export class MIDIExporter {
 
       case Opcode.COLOR:
         if (state.stack.length >= 3) {
-          const [h, s, l] = state.stack.slice(-3);
+          const [h, _s, l] = state.stack.slice(-3);
           const panValue = Math.floor(((h % 360) / 360) * 127);
           const brightnessValue = Math.floor((l / 100) * 127);
           events.push(this.createControlChange(10, panValue, time, channel)); // Pan
@@ -246,7 +246,7 @@ export class MIDIExporter {
   private createNoteEvents(
     note: number,
     velocity: number,
-    startTime: number,
+    _startTime: number,
     duration: number,
     channel: number,
   ): MIDIEvent[] {
@@ -272,7 +272,7 @@ export class MIDIExporter {
   private createControlChange(
     controller: number,
     value: number,
-    time: number,
+    _time: number,
     channel: number,
   ): MIDIEvent {
     return {

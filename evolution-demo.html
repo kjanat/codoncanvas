@@ -406,279 +406,271 @@
 
     <script type="module">
     import { EvolutionEngine } from "./src/evolution-engine.ts";
-    import { examples } from "./src/examples.ts";
-    import { CodonLexer } from "./src/lexer.ts";
-    import { Canvas2DRenderer } from "./src/renderer.ts";
-    import { injectShareStyles, ShareSystem } from "./src/share-system.ts";
-    import { evolutionTutorial, TutorialManager } from "./src/tutorial.ts";
-    import { TutorialUI } from "./src/tutorial-ui.ts";
-    import { CodonVM } from "./src/vm.ts";
-    import "./src/tutorial-ui.css";
-    import { AchievementEngine } from "./src/achievement-engine.ts";
-    import { AchievementUI } from "./src/achievement-ui.ts";
-    import "./src/achievement-ui.css";
+import { examples } from "./src/examples.ts";
+import { CodonLexer } from "./src/lexer.ts";
+import { Canvas2DRenderer } from "./src/renderer.ts";
+import { injectShareStyles, ShareSystem } from "./src/share-system.ts";
+import { evolutionTutorial, TutorialManager } from "./src/tutorial.ts";
+import { TutorialUI } from "./src/tutorial-ui.ts";
+import { CodonVM } from "./src/vm.ts";
+import "./src/tutorial-ui.css";
+import { AchievementEngine } from "./src/achievement-engine.ts";
+import { AchievementUI } from "./src/achievement-ui.ts";
+import "./src/achievement-ui.css";
 
-    injectShareStyles();
+injectShareStyles();
 
-    const lexer = new CodonLexer();
-    let engine = null;
-    let currentCandidates = [];
+const lexer = new CodonLexer();
+let engine = null;
+let currentCandidates = [];
 
-    // Initialize achievement system
-    const achievementEngine = new AchievementEngine();
-    const achievementUI = new AchievementUI(
-      achievementEngine,
-      "achievementContainer",
+// Initialize achievement system
+const achievementEngine = new AchievementEngine();
+const achievementUI = new AchievementUI(
+  achievementEngine,
+  "achievementContainer",
+);
+
+const statusContainer = document.getElementById("statusContainer");
+const startPanel = document.getElementById("startPanel");
+const evolutionPanel = document.getElementById("evolutionPanel");
+const lineagePanel = document.getElementById("lineagePanel");
+const sharePanel = document.getElementById("sharePanel");
+const candidatesGrid = document.getElementById("candidatesGrid");
+const lineageContainer = document.getElementById("lineageContainer");
+const shareContainer = document.getElementById("shareContainer");
+const generateBtn = document.getElementById("generateBtn");
+
+// Initialize share system
+const _shareSystem = new ShareSystem({
+  containerElement: shareContainer,
+  getGenome: () => engine?.getCurrentParent() ?? "",
+  appTitle: "CodonCanvas Evolution Lab",
+  showQRCode: true,
+  socialPlatforms: ["twitter", "reddit", "email"],
+});
+
+function showStatus(message, type = "info") {
+  statusContainer.innerHTML = `<div class="status ${type}">${message}</div>`;
+  setTimeout(() => {
+    statusContainer.innerHTML = "";
+  }, 5000);
+}
+
+function renderGenome(genome, canvas) {
+  try {
+    const renderer = new Canvas2DRenderer(canvas);
+    const vm = new CodonVM(renderer);
+    renderer.clear();
+    const tokens = lexer.tokenize(genome);
+    vm.reset();
+    vm.run(tokens);
+    return true;
+  } catch (error) {
+    console.error("Render error:", error);
+    return false;
+  }
+}
+
+function updateStats() {
+  const gen = engine.getCurrentGeneration();
+  const history = engine.getHistory();
+  const totalMutations = history.reduce(
+    (sum, record) => sum + record.candidates.length,
+    0,
+  );
+  const lineage = engine.getLineage();
+
+  document.getElementById("generationNumber").textContent = gen;
+  document.getElementById("genStat").textContent = gen;
+  document.getElementById("mutationStat").textContent = totalMutations;
+  document.getElementById("lineageStat").textContent = lineage.length;
+}
+
+function updateLineage() {
+  const lineage = engine.getLineage();
+  lineageContainer.innerHTML = "";
+
+  lineage.forEach((genome, index) => {
+    if (index > 0) {
+      const arrow = document.createElement("div");
+      arrow.className = "lineage-arrow";
+      arrow.textContent = "→";
+      lineageContainer.appendChild(arrow);
+    }
+
+    const item = document.createElement("div");
+    item.className = "lineage-item";
+
+    const canvas = document.createElement("canvas");
+    canvas.className = "lineage-canvas";
+    canvas.width = 120;
+    canvas.height = 120;
+    renderGenome(genome, canvas);
+
+    const label = document.createElement("div");
+    label.className = "lineage-label";
+    label.textContent = index === 0 ? "Original" : `Gen ${index}`;
+
+    item.appendChild(canvas);
+    item.appendChild(label);
+    lineageContainer.appendChild(item);
+  });
+
+  lineagePanel.classList.remove("hidden");
+}
+
+window.startEvolution = (exampleKey) => {
+  const example = examples[exampleKey];
+  if (!example) {
+    showStatus("Example not found", "error");
+    return;
+  }
+
+  engine = new EvolutionEngine(example.genome, {
+    candidatesPerGeneration: 6,
+    mutationTypes: ["point", "silent", "missense", "insertion", "deletion"],
+  });
+
+  startPanel.classList.add("hidden");
+  evolutionPanel.classList.remove("hidden");
+  sharePanel.classList.remove("hidden");
+
+  updateStats();
+  showStatus(`Evolution started with: ${example.title}`, "success");
+};
+
+window.generateGeneration = () => {
+  if (!engine) return;
+
+  try {
+    currentCandidates = engine.generateGeneration();
+    renderCandidates();
+    generateBtn.disabled = true;
+    updateStats();
+    showStatus(
+      `Generated ${currentCandidates.length} candidates - select the fittest!`,
+      "info",
     );
+  } catch (error) {
+    showStatus(`Generation failed: ${error.message}`, "error");
+  }
+};
 
-    const statusContainer = document.getElementById("statusContainer");
-    const startPanel = document.getElementById("startPanel");
-    const evolutionPanel = document.getElementById("evolutionPanel");
-    const lineagePanel = document.getElementById("lineagePanel");
-    const sharePanel = document.getElementById("sharePanel");
-    const candidatesGrid = document.getElementById("candidatesGrid");
-    const lineageContainer = document.getElementById("lineageContainer");
-    const shareContainer = document.getElementById("shareContainer");
-    const generateBtn = document.getElementById("generateBtn");
+function renderCandidates() {
+  candidatesGrid.innerHTML = "";
 
-    // Initialize share system
-    const shareSystem = new ShareSystem({
-      containerElement: shareContainer,
-      getGenome: () => engine?.getCurrentParent() ?? "",
-      appTitle: "CodonCanvas Evolution Lab",
-      showQRCode: true,
-      socialPlatforms: ["twitter", "reddit", "email"],
+  currentCandidates.forEach((candidate, index) => {
+    const card = document.createElement("div");
+    card.className = "candidate-card";
+    card.onclick = () => selectCandidate(candidate.id);
+
+    const header = document.createElement("div");
+    header.className = "candidate-header";
+    header.innerHTML = `<span>Candidate ${
+      index + 1
+    }</span><span>${candidate.id}</span>`;
+
+    const canvas = document.createElement("canvas");
+    canvas.className = "candidate-canvas";
+    canvas.width = 250;
+    canvas.height = 250;
+    renderGenome(candidate.genome, canvas);
+
+    const mutation = document.createElement("div");
+    mutation.className = "candidate-mutation";
+    if (candidate.mutation) {
+      mutation.innerHTML = `<span class="mutation-type">${candidate.mutation.type}</span>: ${candidate.mutation.description}`;
+    }
+
+    card.appendChild(header);
+    card.appendChild(canvas);
+    card.appendChild(mutation);
+    candidatesGrid.appendChild(card);
+  });
+}
+
+window.selectCandidate = (candidateId) => {
+  if (!engine) return;
+
+  try {
+    engine.selectCandidate(candidateId);
+
+    // Track evolution generation for achievement
+    const unlocked = achievementEngine.trackEvolutionGeneration();
+    achievementUI.handleUnlocks(unlocked);
+
+    // Visual feedback
+    document.querySelectorAll(".candidate-card").forEach((card) => {
+      card.classList.remove("selected");
+      if (
+        card.querySelector(".candidate-header span:last-child").textContent ===
+        candidateId
+      ) {
+        card.classList.add("selected");
+      }
     });
 
-    function showStatus(message, type = "info") {
-      statusContainer.innerHTML =
-        `<div class="status ${type}">${message}</div>`;
-      setTimeout(() => {
-        statusContainer.innerHTML = "";
-      }, 5000);
-    }
-
-    function renderGenome(genome, canvas) {
-      try {
-        const renderer = new Canvas2DRenderer(canvas);
-        const vm = new CodonVM(renderer);
-        renderer.clear();
-        const tokens = lexer.tokenize(genome);
-        vm.reset();
-        vm.run(tokens);
-        return true;
-      } catch (error) {
-        console.error("Render error:", error);
-        return false;
-      }
-    }
-
-    function updateStats() {
-      const gen = engine.getCurrentGeneration();
-      const history = engine.getHistory();
-      const totalMutations = history.reduce(
-        (sum, record) => sum + record.candidates.length,
-        0,
-      );
-      const lineage = engine.getLineage();
-
-      document.getElementById("generationNumber").textContent = gen;
-      document.getElementById("genStat").textContent = gen;
-      document.getElementById("mutationStat").textContent = totalMutations;
-      document.getElementById("lineageStat").textContent = lineage.length;
-    }
-
-    function updateLineage() {
-      const lineage = engine.getLineage();
-      lineageContainer.innerHTML = "";
-
-      lineage.forEach((genome, index) => {
-        if (index > 0) {
-          const arrow = document.createElement("div");
-          arrow.className = "lineage-arrow";
-          arrow.textContent = "→";
-          lineageContainer.appendChild(arrow);
-        }
-
-        const item = document.createElement("div");
-        item.className = "lineage-item";
-
-        const canvas = document.createElement("canvas");
-        canvas.className = "lineage-canvas";
-        canvas.width = 120;
-        canvas.height = 120;
-        renderGenome(genome, canvas);
-
-        const label = document.createElement("div");
-        label.className = "lineage-label";
-        label.textContent = index === 0 ? "Original" : `Gen ${index}`;
-
-        item.appendChild(canvas);
-        item.appendChild(label);
-        lineageContainer.appendChild(item);
-      });
-
-      lineagePanel.classList.remove("hidden");
-    }
-
-    window.startEvolution = (exampleKey) => {
-      const example = examples[exampleKey];
-      if (!example) {
-        showStatus("Example not found", "error");
-        return;
-      }
-
-      engine = new EvolutionEngine(example.genome, {
-        candidatesPerGeneration: 6,
-        mutationTypes: [
-          "point",
-          "silent",
-          "missense",
-          "insertion",
-          "deletion",
-        ],
-      });
-
-      startPanel.classList.add("hidden");
-      evolutionPanel.classList.remove("hidden");
-      sharePanel.classList.remove("hidden");
-
-      updateStats();
-      showStatus(`Evolution started with: ${example.title}`, "success");
-    };
-
-    window.generateGeneration = () => {
-      if (!engine) return;
-
-      try {
-        currentCandidates = engine.generateGeneration();
-        renderCandidates();
-        generateBtn.disabled = true;
-        updateStats();
-        showStatus(
-          `Generated ${currentCandidates.length} candidates - select the fittest!`,
-          "info",
-        );
-      } catch (error) {
-        showStatus(`Generation failed: ${error.message}`, "error");
-      }
-    };
-
-    function renderCandidates() {
-      candidatesGrid.innerHTML = "";
-
-      currentCandidates.forEach((candidate, index) => {
-        const card = document.createElement("div");
-        card.className = "candidate-card";
-        card.onclick = () => selectCandidate(candidate.id);
-
-        const header = document.createElement("div");
-        header.className = "candidate-header";
-        header.innerHTML = `<span>Candidate ${
-          index + 1
-        }</span><span>${candidate.id}</span>`;
-
-        const canvas = document.createElement("canvas");
-        canvas.className = "candidate-canvas";
-        canvas.width = 250;
-        canvas.height = 250;
-        renderGenome(candidate.genome, canvas);
-
-        const mutation = document.createElement("div");
-        mutation.className = "candidate-mutation";
-        if (candidate.mutation) {
-          mutation.innerHTML =
-            `<span class="mutation-type">${candidate.mutation.type}</span>: ${candidate.mutation.description}`;
-        }
-
-        card.appendChild(header);
-        card.appendChild(canvas);
-        card.appendChild(mutation);
-        candidatesGrid.appendChild(card);
-      });
-    }
-
-    window.selectCandidate = (candidateId) => {
-      if (!engine) return;
-
-      try {
-        engine.selectCandidate(candidateId);
-
-        // Track evolution generation for achievement
-        const unlocked = achievementEngine.trackEvolutionGeneration();
-        achievementUI.handleUnlocks(unlocked);
-
-        // Visual feedback
-        document.querySelectorAll(".candidate-card").forEach(card => {
-          card.classList.remove("selected");
-          if (
-            card.querySelector(".candidate-header span:last-child")
-              .textContent === candidateId
-          ) {
-            card.classList.add("selected");
-          }
-        });
-
-        generateBtn.disabled = false;
-        updateStats();
-        updateLineage();
-        showStatus(
-          "✓ Candidate selected! Generate next generation to continue evolution.",
-          "success",
-        );
-      } catch (error) {
-        showStatus(`Selection failed: ${error.message}`, "error");
-      }
-    };
-
-    window.resetEvolution = () => {
-      if (confirm("Reset evolution and start over?")) {
-        engine = null;
-        currentCandidates = [];
-        startPanel.classList.remove("hidden");
-        evolutionPanel.classList.add("hidden");
-        lineagePanel.classList.add("hidden");
-        sharePanel.classList.add("hidden");
-        candidatesGrid.innerHTML = "";
-        lineageContainer.innerHTML = "";
-        showStatus("Evolution reset", "info");
-      }
-    };
-
-    // Load from URL if present
-    const urlGenome = ShareSystem.loadFromURL();
-    if (urlGenome) {
-      engine = new EvolutionEngine(urlGenome);
-      startPanel.classList.add("hidden");
-      evolutionPanel.classList.remove("hidden");
-      sharePanel.classList.remove("hidden");
-      updateStats();
-      showStatus("Loaded genome from share link", "success");
-    }
-
-    // Tutorial integration
-    const tutorialManager = new TutorialManager(
-      "codoncanvas_evolution_tutorial_completed",
+    generateBtn.disabled = false;
+    updateStats();
+    updateLineage();
+    showStatus(
+      "✓ Candidate selected! Generate next generation to continue evolution.",
+      "success",
     );
-    const tutorialUI = new TutorialUI(tutorialManager);
+  } catch (error) {
+    showStatus(`Selection failed: ${error.message}`, "error");
+  }
+};
 
-    // Show tutorial on first visit
-    if (!tutorialManager.isCompleted()) {
-      setTimeout(() => {
-        tutorialUI.show(evolutionTutorial);
-      }, 2000); // 2 second delay for page to settle
-    }
+window.resetEvolution = () => {
+  if (confirm("Reset evolution and start over?")) {
+    engine = null;
+    currentCandidates = [];
+    startPanel.classList.remove("hidden");
+    evolutionPanel.classList.add("hidden");
+    lineagePanel.classList.add("hidden");
+    sharePanel.classList.add("hidden");
+    candidatesGrid.innerHTML = "";
+    lineageContainer.innerHTML = "";
+    showStatus("Evolution reset", "info");
+  }
+};
 
-    // Tutorial callbacks
-    tutorialManager.onCompleteCallback(() => {
-      console.log("Evolution tutorial completed! 🏆");
-    });
+// Load from URL if present
+const urlGenome = ShareSystem.loadFromURL();
+if (urlGenome) {
+  engine = new EvolutionEngine(urlGenome);
+  startPanel.classList.add("hidden");
+  evolutionPanel.classList.remove("hidden");
+  sharePanel.classList.remove("hidden");
+  updateStats();
+  showStatus("Loaded genome from share link", "success");
+}
 
-    // Global function to reset tutorial (for testing)
-    window.resetEvolutionTutorial = () => {
-      tutorialManager.reset();
-      console.log("Evolution tutorial reset. Reload page to see it again.");
-    };
+// Tutorial integration
+const tutorialManager = new TutorialManager(
+  "codoncanvas_evolution_tutorial_completed",
+);
+const tutorialUI = new TutorialUI(tutorialManager);
+
+// Show tutorial on first visit
+if (!tutorialManager.isCompleted()) {
+  setTimeout(() => {
+    tutorialUI.show(evolutionTutorial);
+  }, 2000); // 2 second delay for page to settle
+}
+
+// Tutorial callbacks
+tutorialManager.onCompleteCallback(() => {
+  console.log("Evolution tutorial completed! 🏆");
+});
+
+// Global function to reset tutorial (for testing)
+window.resetEvolutionTutorial = () => {
+  tutorialManager.reset();
+  console.log("Evolution tutorial reset. Reload page to see it again.");
+};
     </script>
   </body>
 </html>

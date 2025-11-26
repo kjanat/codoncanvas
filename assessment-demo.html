@@ -107,35 +107,35 @@
 
     <script type="module">
     import { AssessmentEngine } from "./dist/assessment-engine.js";
-    import { AssessmentUI } from "./dist/assessment-ui.js";
+import { AssessmentUI } from "./dist/assessment-ui.js";
 
-    // Initialize assessment system
-    const engine = new AssessmentEngine();
-    const container = document.getElementById("assessment-container");
-    const assessmentUI = new AssessmentUI(engine, container);
+// Initialize assessment system
+const engine = new AssessmentEngine();
+const container = document.getElementById("assessment-container");
+const assessmentUI = new AssessmentUI(engine, container);
 
-    // Show assessment UI
-    assessmentUI.show();
+// Show assessment UI
+assessmentUI.show();
 
-    // Setup export button
-    document.getElementById("export-btn").addEventListener("click", () => {
-      const results = assessmentUI.exportResults();
+// Setup export button
+document.getElementById("export-btn").addEventListener("click", () => {
+  const results = assessmentUI.exportResults();
 
-      // Download as JSON file
-      const blob = new Blob([results], { type: "application/json" });
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement("a");
-      a.href = url;
-      a.download = `codoncanvas-assessment-${
-        new Date().toISOString().split("T")[0]
-      }.json`;
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
-      URL.revokeObjectURL(url);
+  // Download as JSON file
+  const blob = new Blob([results], { type: "application/json" });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = `codoncanvas-assessment-${
+    new Date().toISOString().split("T")[0]
+  }.json`;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
 
-      alert("✅ Results exported! Check your downloads folder.");
-    });
+  alert("✅ Results exported! Check your downloads folder.");
+});
     </script>
   </body>
 </html>

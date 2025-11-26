@@ -57,17 +57,13 @@ export class TimelineScrubber {
    * Load a genome and prepare for execution
    */
   loadGenome(genome: string): void {
-    try {
-      this.tokens = this.lexer.tokenize(genome);
-      this.snapshots = this.vm.run(this.tokens);
-      this.currentStep = 0;
-      this.isPlaying = false;
+    this.tokens = this.lexer.tokenize(genome);
+    this.snapshots = this.vm.run(this.tokens);
+    this.currentStep = 0;
+    this.isPlaying = false;
 
-      this.updateUI();
-      this.renderStep(0);
-    } catch (error) {
-      throw error;
-    }
+    this.updateUI();
+    this.renderStep(0);
   }
 
   /**
@@ -262,7 +258,7 @@ export class TimelineScrubber {
     if (!this.controls.slider) {
       return;
     }
-    this.currentStep = parseInt(this.controls.slider.value);
+    this.currentStep = parseInt(this.controls.slider.value, 10);
     this.renderStep(this.currentStep);
     this.updateUI();
   }
@@ -271,7 +267,7 @@ export class TimelineScrubber {
     if (!this.controls.speedSelect) {
       return;
     }
-    this.playbackSpeed = parseInt(this.controls.speedSelect.value);
+    this.playbackSpeed = parseInt(this.controls.speedSelect.value, 10);
   }
 
   private togglePlay(): void {
@@ -380,17 +376,11 @@ export class TimelineScrubber {
     this.currentStep = originalStep;
     this.renderStep(originalStep);
     this.updateUI();
-
-    // Export to GIF
-    try {
-      const blob = await exporter.exportFrames(frames, onProgress);
-      const filename = options.genomeName
-        ? `${options.genomeName}-animation.gif`
-        : "codoncanvas-animation.gif";
-      exporter.downloadGif(blob, filename);
-    } catch (error) {
-      throw error;
-    }
+    const blob = await exporter.exportFrames(frames, onProgress);
+    const filename = options.genomeName
+      ? `${options.genomeName}-animation.gif`
+      : "codoncanvas-animation.gif";
+    exporter.downloadGif(blob, filename);
   }
 
   destroy(): void {

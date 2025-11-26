@@ -209,7 +209,7 @@ export class CodonVM implements VM {
     return (value / STACK_VALUE_RANGE) * this.renderer.width;
   }
 
-  execute(opcode: Opcode, codon: string): void {
+  execute(opcode: Opcode, _codon: string): void {
     this.state.instructionCount++;
 
     if (this.state.instructionCount > this.maxInstructions) {

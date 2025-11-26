@@ -12,50 +12,47 @@
  *   npm run research:generate-data -- --design rct --n 150 --effect 0.5
  */
 
-import * as fs from "fs";
-import * as path from "path";
+import * as fs from "node:fs";
 
 // ============================================================================
 // Random Number Generation
 // ============================================================================
 
-class Random {
-  /**
-   * Normal distribution (Box-Muller transform)
-   */
-  static normal(mean: number = 0, sd: number = 1): number {
-    const u1 = Math.random();
-    const u2 = Math.random();
-    const z0 = Math.sqrt(-2.0 * Math.log(u1)) * Math.cos(2.0 * Math.PI * u2);
-    return z0 * sd + mean;
-  }
+/**
+ * Normal distribution (Box-Muller transform)
+ */
+function randomNormal(mean: number = 0, sd: number = 1): number {
+  const u1 = Math.random();
+  const u2 = Math.random();
+  const z0 = Math.sqrt(-2.0 * Math.log(u1)) * Math.cos(2.0 * Math.PI * u2);
+  return z0 * sd + mean;
+}
 
-  /**
-   * Bounded normal (clips to min/max)
-   */
-  static boundedNormal(
-    mean: number,
-    sd: number,
-    min: number,
-    max: number,
-  ): number {
-    const value = Random.normal(mean, sd);
-    return Math.max(min, Math.min(max, value));
-  }
+/**
+ * Bounded normal (clips to min/max)
+ */
+function randomBoundedNormal(
+  mean: number,
+  sd: number,
+  min: number,
+  max: number,
+): number {
+  const value = randomNormal(mean, sd);
+  return Math.max(min, Math.min(max, value));
+}
 
-  /**
-   * Random integer in range [min, max]
-   */
-  static int(min: number, max: number): number {
-    return Math.floor(Math.random() * (max - min + 1)) + min;
-  }
+/**
+ * Random integer in range [min, max]
+ */
+function randomInt(min: number, max: number): number {
+  return Math.floor(Math.random() * (max - min + 1)) + min;
+}
 
-  /**
-   * Random choice from array
-   */
-  static choice<T>(arr: T[]): T {
-    return arr[Math.floor(Math.random() * arr.length)];
-  }
+/**
+ * Random choice from array
+ */
+function randomChoice<T>(arr: T[]): T {
+  return arr[Math.floor(Math.random() * arr.length)];
 }
 
 // ============================================================================
@@ -71,24 +68,55 @@ interface GenerationParams {
   ceiling: number;
 }
 
+/** Subscale scores for mutation types */
+interface SubscaleScores {
+  pretest_silent: number;
+  posttest_silent: number;
+  pretest_missense: number;
+  posttest_missense: number;
+  pretest_nonsense: number;
+  posttest_nonsense: number;
+  pretest_frameshift: number;
+  posttest_frameshift: number;
+  pretest_indel: number;
+  posttest_indel: number;
+}
+
+/** Research participant data record */
+interface ParticipantData extends SubscaleScores {
+  id: string;
+  pretest_total: number;
+  posttest_total: number;
+  delayed_total: number;
+  mtt_score: string;
+  imi_interest: string;
+  imi_competence: string;
+  imi_effort: string;
+  imi_value: string;
+  gpa: string;
+  prior_programming: number;
+  institution: string;
+  group?: string;
+}
+
 /**
  * Generate pre-post pilot data
  */
-function generatePrePostData(params: GenerationParams): any[] {
-  const data: any[] = [];
+function generatePrePostData(params: GenerationParams): ParticipantData[] {
+  const data: ParticipantData[] = [];
 
   for (let i = 0; i < params.n; i++) {
     const id = `S${String(i + 1).padStart(3, "0")}`;
 
     // Pre-test score (out of 100)
     const pretest_total = Math.round(
-      Random.boundedNormal(params.pre_mean, params.pre_sd, 0, params.ceiling),
+      randomBoundedNormal(params.pre_mean, params.pre_sd, 0, params.ceiling),
     );
 
     // Learning gain (effect size controls magnitude)
     // Post = Pre + (effect_size * SD) + noise
     const true_gain = params.effect_size * params.pre_sd;
-    const noise = Random.normal(0, params.pre_sd * (1 - params.reliability));
+    const noise = randomNormal(0, params.pre_sd * (1 - params.reliability));
     let posttest_total = Math.round(pretest_total + true_gain + noise);
 
     // Apply ceiling effect
@@ -105,13 +133,13 @@ function generatePrePostData(params: GenerationParams): any[] {
       "frameshift",
       "indel",
     ];
-    const subscales: any = {};
+    const subscales = {} as Record<string, number>;
 
     for (const type of mutation_types) {
       const pre_sub = Math.round(
-        Random.boundedNormal(pretest_total / 5, 4, 0, 20),
+        randomBoundedNormal(pretest_total / 5, 4, 0, 20),
       );
-      let post_sub = Math.round(pre_sub + true_gain / 5 + Random.normal(0, 2));
+      let post_sub = Math.round(pre_sub + true_gain / 5 + randomNormal(0, 2));
       post_sub = Math.max(0, Math.min(20, post_sub));
 
       subscales[`pretest_${type}`] = pre_sub;
@@ -119,7 +147,7 @@ function generatePrePostData(params: GenerationParams): any[] {
     }
 
     // Delayed retention (4-6 weeks later, slight decay)
-    const retention_rate = Random.boundedNormal(0.9, 0.1, 0.7, 1.0);
+    const retention_rate = randomBoundedNormal(0.9, 0.1, 0.7, 1.0);
     const gain = posttest_total - pretest_total;
     let delayed_total = Math.round(pretest_total + gain * retention_rate);
     delayed_total = Math.max(0, Math.min(params.ceiling, delayed_total));
@@ -127,7 +155,7 @@ function generatePrePostData(params: GenerationParams): any[] {
     // Transfer task (MTT, 0-15 points)
     // Correlates with post-test but adds measurement error
     const mtt_score = Math.round(
-      Random.boundedNormal((posttest_total / 100) * 15, 2, 0, 15),
+      randomBoundedNormal((posttest_total / 100) * 15, 2, 0, 15),
     );
 
     // Motivation (IMI, 1-7 scale)
@@ -135,14 +163,14 @@ function generatePrePostData(params: GenerationParams): any[] {
     const success = (posttest_total - pretest_total) / params.pre_sd;
     const imi_base = 4 + success * 0.5;
 
-    const imi_interest = Random.boundedNormal(imi_base + 0.5, 0.8, 1, 7);
-    const imi_competence = Random.boundedNormal(imi_base, 0.9, 1, 7);
-    const imi_effort = Random.boundedNormal(imi_base - 0.3, 0.7, 1, 7);
-    const imi_value = Random.boundedNormal(imi_base + 0.3, 0.8, 1, 7);
+    const imi_interest = randomBoundedNormal(imi_base + 0.5, 0.8, 1, 7);
+    const imi_competence = randomBoundedNormal(imi_base, 0.9, 1, 7);
+    const imi_effort = randomBoundedNormal(imi_base - 0.3, 0.7, 1, 7);
+    const imi_value = randomBoundedNormal(imi_base + 0.3, 0.8, 1, 7);
 
     // Demographics
-    const gpa = Random.boundedNormal(3.2, 0.5, 2.0, 4.0);
-    const prior_programming = Random.choice([0, 0, 1, 1, 2, 3]); // Most have little/no experience
+    const gpa = randomBoundedNormal(3.2, 0.5, 2.0, 4.0);
+    const prior_programming = randomChoice([0, 0, 1, 1, 2, 3]); // Most have little/no experience
     const institution = "University A";
 
     data.push({
@@ -150,7 +178,7 @@ function generatePrePostData(params: GenerationParams): any[] {
       pretest_total,
       posttest_total,
       delayed_total,
-      ...subscales,
+      ...(subscales as SubscaleScores),
       mtt_score: mtt_score.toFixed(1),
       imi_interest: imi_interest.toFixed(1),
       imi_competence: imi_competence.toFixed(1),
@@ -173,8 +201,8 @@ function generateRCTData(
   treatment_effect: number,
   pre_mean: number = 55,
   pre_sd: number = 15,
-): any[] {
-  const data: any[] = [];
+): ParticipantData[] {
+  const data: ParticipantData[] = [];
 
   // Generate treatment group
   const treatmentParams: GenerationParams = {
@@ -216,8 +244,8 @@ function generateRCTData(
 /**
  * Write data to CSV
  */
-function writeCSV(data: any[], filename: string): void {
-  const headers = Object.keys(data[0]);
+function writeCSV(data: ParticipantData[], filename: string): void {
+  const headers = Object.keys(data[0]) as (keyof ParticipantData)[];
   const rows = data.map((row) => headers.map((h) => row[h]).join(","));
   const csv = [headers.join(","), ...rows].join("\n");
 
@@ -270,7 +298,7 @@ function main(): void {
   const outputIdx = args.indexOf("--output");
 
   const design = designIdx !== -1 ? args[designIdx + 1] : "prepost";
-  const n = nIdx !== -1 ? parseInt(args[nIdx + 1]) : 50;
+  const n = nIdx !== -1 ? parseInt(args[nIdx + 1], 10) : 50;
   const effect = effectIdx !== -1 ? parseFloat(args[effectIdx + 1]) : 0.6;
   const output = outputIdx !== -1 ? args[outputIdx + 1] : "sample_data.csv";
 
@@ -285,7 +313,7 @@ function main(): void {
   );
 
   console.log(`Design:      ${design}`);
-  console.log(`Sample size: ${design === "rct" ? n + " per group" : n}`);
+  console.log(`Sample size: ${design === "rct" ? `${n} per group` : n}`);
   console.log(
     `Effect size: ${effect} (${
       effect < 0.3 ? "small" : effect < 0.6 ? "medium" : "large"
@@ -293,7 +321,7 @@ function main(): void {
   );
   console.log(`Output:      ${output}\n`);
 
-  let data: any[];
+  let data: ParticipantData[];
 
   if (design === "prepost") {
     const params: GenerationParams = {
@@ -339,10 +367,18 @@ function main(): void {
     console.log(`  Difference:     ${(tMean - cMean).toFixed(2)} points`);
   }
 
-  console.log("\n═".repeat(64) + "\n");
+  console.log(`${"\n═".repeat(64)}\n`);
 }
 
 // Run if executed directly
 main();
 
-export { generatePrePostData, generateRCTData, Random, writeCSV };
+export {
+  generatePrePostData,
+  generateRCTData,
+  randomBoundedNormal,
+  randomChoice,
+  randomInt,
+  randomNormal,
+  writeCSV,
+};

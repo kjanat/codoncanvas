@@ -1,5 +1,5 @@
-import { readFileSync } from "fs";
-import { join } from "path";
+import { readFileSync } from "node:fs";
+import { join } from "node:path";
 import { describe, expect, test } from "vitest";
 
 /**
@@ -52,7 +52,7 @@ describe("Learning Path Validation", () => {
       "utf-8",
     );
     complexityData = JSON.parse(complexityJson);
-  } catch (e) {
+  } catch (_e) {
     pathsData = { version: "", paths: [] };
     complexityData = { analysis: [] };
   }

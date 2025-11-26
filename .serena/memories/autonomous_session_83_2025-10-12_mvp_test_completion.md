@@ -111,12 +111,12 @@ test("missense mutation changes shape type", () => {
   const opsRect = [...renderer.operations];
 
   // Circle should have exactly 1 circle operation
-  expect(opsCircle.filter(op => op.startsWith("circle"))).toHaveLength(1);
-  expect(opsCircle.filter(op => op.startsWith("rect"))).toHaveLength(0);
+  expect(opsCircle.filter((op) => op.startsWith("circle"))).toHaveLength(1);
+  expect(opsCircle.filter((op) => op.startsWith("rect"))).toHaveLength(0);
 
   // Rect should have exactly 1 rect operation
-  expect(opsRect.filter(op => op.startsWith("rect"))).toHaveLength(1);
-  expect(opsRect.filter(op => op.startsWith("circle"))).toHaveLength(0);
+  expect(opsRect.filter((op) => op.startsWith("rect"))).toHaveLength(1);
+  expect(opsRect.filter((op) => op.startsWith("circle"))).toHaveLength(0);
 });
 ```
 

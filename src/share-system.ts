@@ -144,7 +144,7 @@ export class ShareSystem {
     try {
       await navigator.clipboard.writeText(genome);
       this.showFeedback("✅ Copied to clipboard!", "success");
-    } catch (error) {
+    } catch (_error) {
       // Fallback for older browsers
       const textarea = document.createElement("textarea");
       textarea.value = genome;
@@ -156,7 +156,7 @@ export class ShareSystem {
       try {
         document.execCommand("copy");
         this.showFeedback("✅ Copied to clipboard!", "success");
-      } catch (err) {
+      } catch (_err) {
         this.showFeedback("❌ Failed to copy", "error");
       }
 
@@ -404,7 +404,7 @@ export class ShareSystem {
         .replace(/\+/g, "-")
         .replace(/\//g, "_")
         .replace(/=/g, "");
-    } catch (error) {
+    } catch (_error) {
       return encodeURIComponent(genome);
     }
   }
@@ -419,7 +419,7 @@ export class ShareSystem {
       const base64 = encoded.replace(/-/g, "+").replace(/_/g, "/") + padding;
 
       return atob(base64);
-    } catch (error) {
+    } catch (_error) {
       return decodeURIComponent(encoded);
     }
   }

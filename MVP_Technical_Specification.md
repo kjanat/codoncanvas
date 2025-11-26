@@ -267,12 +267,12 @@ enum Opcode {
 
 // Codon to Opcode map (hardcoded for v1.0)
 const CODON_MAP: Record<Codon, Opcode> = {
-  "ATG": Opcode.START,
-  "TAA": Opcode.STOP,
-  "TAG": Opcode.STOP,
-  "TGA": Opcode.STOP,
-  "GGA": Opcode.CIRCLE,
-  "GGC": Opcode.CIRCLE,
+  ATG: Opcode.START,
+  TAA: Opcode.STOP,
+  TAG: Opcode.STOP,
+  TGA: Opcode.STOP,
+  GGA: Opcode.CIRCLE,
+  GGC: Opcode.CIRCLE,
   // ... (all 64 mappings)
 };
 ```

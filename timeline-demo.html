@@ -290,172 +290,167 @@
 
     <script type="module">
     import { examples } from "./src/examples.ts";
-    import { injectShareStyles, ShareSystem } from "./src/share-system.ts";
-    import {
-      injectTimelineStyles,
-      TimelineScrubber,
-    } from "./src/timeline-scrubber.ts";
-    import { TutorialManager, timelineTutorial } from "./src/tutorial.ts";
-    import { TutorialUI } from "./src/tutorial-ui.ts";
-    import "./src/tutorial-ui.css";
+import { injectShareStyles, ShareSystem } from "./src/share-system.ts";
+import {
+  injectTimelineStyles,
+  TimelineScrubber,
+} from "./src/timeline-scrubber.ts";
+import { TutorialManager, timelineTutorial } from "./src/tutorial.ts";
+import { TutorialUI } from "./src/tutorial-ui.ts";
+import "./src/tutorial-ui.css";
 
-    // Inject styles
-    injectTimelineStyles();
-    injectShareStyles();
+// Inject styles
+injectTimelineStyles();
+injectShareStyles();
 
-    const editor = document.getElementById("editor");
-    const canvas = document.getElementById("canvas");
-    const timelineContainer = document.getElementById("timelineContainer");
-    const statusContainer = document.getElementById("statusContainer");
-    const shareContainer = document.getElementById("shareContainer");
+const editor = document.getElementById("editor");
+const canvas = document.getElementById("canvas");
+const timelineContainer = document.getElementById("timelineContainer");
+const statusContainer = document.getElementById("statusContainer");
+const shareContainer = document.getElementById("shareContainer");
 
-    // Initialize share system
-    const shareSystem = new ShareSystem({
-      containerElement: shareContainer,
-      getGenome: () => editor.value.trim(),
-      appTitle: "CodonCanvas Timeline Demo",
-      showQRCode: true,
-      socialPlatforms: ["twitter", "reddit", "email"],
+// Initialize share system
+const _shareSystem = new ShareSystem({
+  containerElement: shareContainer,
+  getGenome: () => editor.value.trim(),
+  appTitle: "CodonCanvas Timeline Demo",
+  showQRCode: true,
+  socialPlatforms: ["twitter", "reddit", "email"],
+});
+
+let timeline = null;
+
+function showStatus(message, type = "success") {
+  statusContainer.innerHTML = `<div class="status ${type}">${message}</div>`;
+  setTimeout(() => {
+    statusContainer.innerHTML = "";
+  }, 5000);
+}
+
+window.loadExample = (key) => {
+  if (examples[key]) {
+    editor.value = examples[key].genome;
+    showStatus(`Loaded: ${examples[key].title}`, "success");
+  }
+};
+
+window.loadAndExecute = () => {
+  try {
+    const genome = editor.value;
+
+    // Destroy existing timeline if any
+    if (timeline) {
+      timeline.destroy();
+    }
+
+    // Create new timeline
+    timeline = new TimelineScrubber({
+      containerElement: timelineContainer,
+      canvasElement: canvas,
+      playbackSpeed: 500,
     });
 
-    let timeline = null;
+    // Load genome
+    timeline.loadGenome(genome);
 
-    function showStatus(message, type = "success") {
-      statusContainer.innerHTML =
-        `<div class="status ${type}">${message}</div>`;
-      setTimeout(() => {
-        statusContainer.innerHTML = "";
-      }, 5000);
-    }
-
-    window.loadExample = (key) => {
-      if (examples[key]) {
-        editor.value = examples[key].genome;
-        showStatus(`Loaded: ${examples[key].title}`, "success");
-      }
-    };
-
-    window.loadAndExecute = () => {
-      try {
-        const genome = editor.value;
-
-        // Destroy existing timeline if any
-        if (timeline) {
-          timeline.destroy();
-        }
-
-        // Create new timeline
-        timeline = new TimelineScrubber({
-          containerElement: timelineContainer,
-          canvasElement: canvas,
-          playbackSpeed: 500,
-        });
-
-        // Load genome
-        timeline.loadGenome(genome);
-
-        showStatus(
-          "Genome loaded! Use timeline controls to step through execution.",
-          "success",
-        );
-      } catch (error) {
-        console.error("Load error:", error);
-        showStatus(`Error: ${error.message}`, "error");
-      }
-    };
-
-    window.clearCanvas = () => {
-      if (timeline) {
-        timeline.destroy();
-        timeline = null;
-      }
-      const ctx = canvas.getContext("2d");
-      if (ctx) {
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-      }
-      timelineContainer.innerHTML = "";
-      showStatus("Canvas and timeline cleared", "success");
-    };
-
-    window.exportGif = async () => {
-      if (!timeline) {
-        showStatus("Please load a genome first", "error");
-        return;
-      }
-
-      try {
-        const fpsSelect = document.getElementById("gifFps");
-        const qualitySelect = document.getElementById("gifQuality");
-        const progressContainer = document.getElementById("gifProgress");
-        const progressBar = document.getElementById("gifProgressBar");
-        const progressText = document.getElementById("gifProgressText");
-
-        const fps = parseInt(fpsSelect.value);
-        const quality = parseInt(qualitySelect.value);
-        const genomeName = "timeline-animation";
-
-        // Show progress
-        progressContainer.style.display = "block";
-        progressBar.style.width = "0%";
-        progressText.textContent = "0%";
-
-        await timeline.exportToGif(
-          { fps, quality, genomeName },
-          (progress) => {
-            progressBar.style.width = `${progress.percent}%`;
-            progressText.textContent =
-              `${progress.percent}% (Frame ${progress.currentFrame}/${progress.totalFrames})`;
-          },
-        );
-
-        // Hide progress and show success
-        setTimeout(() => {
-          progressContainer.style.display = "none";
-          showStatus("GIF exported successfully! 📹", "success");
-        }, 500);
-      } catch (error) {
-        console.error("GIF export error:", error);
-        showStatus(`GIF export failed: ${error.message}`, "error");
-        document.getElementById("gifProgress").style.display = "none";
-      }
-    };
-
-    // Load genome from URL if present, otherwise auto-load default
-    const urlGenome = ShareSystem.loadFromURL();
-    if (urlGenome) {
-      editor.value = urlGenome;
-      showStatus("Loaded genome from share link", "success");
-      setTimeout(() => {
-        window.loadAndExecute();
-      }, 100);
-    } else {
-      // Auto-load on start
-      window.loadAndExecute();
-    }
-
-    // Initialize tutorial system
-    const tutorialManager = new TutorialManager(
-      "codoncanvas_timeline_tutorial_completed",
+    showStatus(
+      "Genome loaded! Use timeline controls to step through execution.",
+      "success",
     );
-    const tutorialUI = new TutorialUI(tutorialManager);
+  } catch (error) {
+    console.error("Load error:", error);
+    showStatus(`Error: ${error.message}`, "error");
+  }
+};
 
-    // Show tutorial on first visit
-    if (!tutorialManager.isCompleted()) {
-      setTimeout(() => {
-        tutorialUI.show(timelineTutorial);
-      }, 2000); // 2 second delay for page to settle
-    }
+window.clearCanvas = () => {
+  if (timeline) {
+    timeline.destroy();
+    timeline = null;
+  }
+  const ctx = canvas.getContext("2d");
+  if (ctx) {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+  }
+  timelineContainer.innerHTML = "";
+  showStatus("Canvas and timeline cleared", "success");
+};
 
-    // Tutorial callbacks
-    tutorialManager.onCompleteCallback(() => {
-      console.log("Timeline tutorial completed! 🏆");
+window.exportGif = async () => {
+  if (!timeline) {
+    showStatus("Please load a genome first", "error");
+    return;
+  }
+
+  try {
+    const fpsSelect = document.getElementById("gifFps");
+    const qualitySelect = document.getElementById("gifQuality");
+    const progressContainer = document.getElementById("gifProgress");
+    const progressBar = document.getElementById("gifProgressBar");
+    const progressText = document.getElementById("gifProgressText");
+
+    const fps = parseInt(fpsSelect.value, 10);
+    const quality = parseInt(qualitySelect.value, 10);
+    const genomeName = "timeline-animation";
+
+    // Show progress
+    progressContainer.style.display = "block";
+    progressBar.style.width = "0%";
+    progressText.textContent = "0%";
+
+    await timeline.exportToGif({ fps, quality, genomeName }, (progress) => {
+      progressBar.style.width = `${progress.percent}%`;
+      progressText.textContent = `${progress.percent}% (Frame ${progress.currentFrame}/${progress.totalFrames})`;
     });
 
-    // Global function to reset tutorial (for testing)
-    window.resetTimelineTutorial = () => {
-      tutorialManager.reset();
-      console.log("Timeline tutorial reset. Reload page to see it again.");
-    };
+    // Hide progress and show success
+    setTimeout(() => {
+      progressContainer.style.display = "none";
+      showStatus("GIF exported successfully! 📹", "success");
+    }, 500);
+  } catch (error) {
+    console.error("GIF export error:", error);
+    showStatus(`GIF export failed: ${error.message}`, "error");
+    document.getElementById("gifProgress").style.display = "none";
+  }
+};
+
+// Load genome from URL if present, otherwise auto-load default
+const urlGenome = ShareSystem.loadFromURL();
+if (urlGenome) {
+  editor.value = urlGenome;
+  showStatus("Loaded genome from share link", "success");
+  setTimeout(() => {
+    window.loadAndExecute();
+  }, 100);
+} else {
+  // Auto-load on start
+  window.loadAndExecute();
+}
+
+// Initialize tutorial system
+const tutorialManager = new TutorialManager(
+  "codoncanvas_timeline_tutorial_completed",
+);
+const tutorialUI = new TutorialUI(tutorialManager);
+
+// Show tutorial on first visit
+if (!tutorialManager.isCompleted()) {
+  setTimeout(() => {
+    tutorialUI.show(timelineTutorial);
+  }, 2000); // 2 second delay for page to settle
+}
+
+// Tutorial callbacks
+tutorialManager.onCompleteCallback(() => {
+  console.log("Timeline tutorial completed! 🏆");
+});
+
+// Global function to reset tutorial (for testing)
+window.resetTimelineTutorial = () => {
+  tutorialManager.reset();
+  console.log("Timeline tutorial reset. Reload page to see it again.");
+};
     </script>
   </body>
 </html>

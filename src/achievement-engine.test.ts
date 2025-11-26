@@ -107,7 +107,7 @@ describe("AchievementEngine", () => {
     });
 
     it("should unlock Elite Coder achievement for 100+ codon genome", () => {
-      const unlocked = engine.trackGenomeCreated(101);
+      const _unlocked = engine.trackGenomeCreated(101);
       engine.trackGenomeExecuted(["CIRCLE"]); // Execute to trigger checks
       expect(engine.isUnlocked("elite_coder")).toBe(true);
     });
@@ -419,7 +419,7 @@ describe("AchievementEngine", () => {
 
       // Get all achievements
       const allAchievements = engine.getAchievements();
-      const nonLegendCount = allAchievements.filter(
+      const _nonLegendCount = allAchievements.filter(
         (a) => a.id !== "legend",
       ).length;
 
@@ -453,7 +453,7 @@ describe("AchievementEngine", () => {
   describe("Multiple Unlocks", () => {
     it("should unlock multiple achievements from single action", () => {
       // First genome execution should unlock both "first_genome" and "first_draw"
-      const unlocked = engine.trackShapeDrawn("CIRCLE");
+      const _unlocked = engine.trackShapeDrawn("CIRCLE");
       engine.trackGenomeExecuted(["CIRCLE"]);
 
       expect(engine.isUnlocked("first_genome")).toBe(true);

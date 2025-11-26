@@ -897,7 +897,7 @@ class Playground {
   }
 
   onGenomeCreated(genome: string): void {
-    const codonCount = genome.split(/\s+/).filter(c => c.length === 3).length;
+    const codonCount = genome.split(/\s+/).filter((c) => c.length === 3).length;
     const newUnlocks = this.achievementEngine.trackGenomeCreated(codonCount);
     this.achievementUI.handleUnlocks(newUnlocks);
   }

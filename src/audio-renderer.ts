@@ -248,7 +248,7 @@ export class AudioRenderer implements Renderer {
     // Modulate filter during note to create FM-like effect
     if (this.audioContext && this.filter) {
       const now = this.audioContext.currentTime + this.currentTime;
-      const modFreq = carrierFreq * 0.5; // Modulation at half carrier
+      const _modFreq = carrierFreq * 0.5; // Modulation at half carrier
 
       this.filter.frequency.setValueAtTime(this.currentFilterFreq, now);
       this.filter.frequency.linearRampToValueAtTime(
@@ -269,7 +269,7 @@ export class AudioRenderer implements Renderer {
    * Seed = random seed (currently unused, could control noise color)
    * Intensity = duration and volume
    */
-  noise(seed: number, intensity: number): void {
+  noise(_seed: number, intensity: number): void {
     if (!this.audioContext || !this.filter) return;
 
     const duration = 0.05 + (intensity / 64) * 0.3; // 0.05-0.35 seconds
@@ -309,7 +309,7 @@ export class AudioRenderer implements Renderer {
    * dx = pan position (-63 to 63 → -1 to 1, left to right)
    * dy = ignored (no vertical dimension in audio)
    */
-  translate(dx: number, dy: number): void {
+  translate(dx: number, _dy: number): void {
     // Map -63 to 63 → -1 to 1
     this.currentPan = Math.max(-1, Math.min(1, dx / 63));
     if (this.panner) {
@@ -317,7 +317,7 @@ export class AudioRenderer implements Renderer {
     }
   }
 
-  setPosition(x: number, y: number): void {
+  setPosition(x: number, _y: number): void {
     // For audio rendering, position maps to time offset
     this.currentTime = x / 100; // Normalize to reasonable time range
   }

@@ -124,7 +124,7 @@ export class EvolutionEngine {
           parent: parent,
           mutation: mutation,
         });
-      } catch (error) {
+      } catch (_error) {
         // If mutation fails, try again with different type
         mutation = applyPointMutation(parent);
         candidates.push({

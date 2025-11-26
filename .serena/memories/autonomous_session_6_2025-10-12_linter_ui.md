@@ -235,7 +235,9 @@ try {
   // ... validation
 } catch (error) {
   // Graceful error display
-  displayLinterErrors([/* error object */]);
+  displayLinterErrors([
+    /* error object */
+  ]);
 }
 ```
 
@@ -243,13 +245,17 @@ try {
 
 ```typescript
 // Template literals for readable HTML generation
-const errorHTML = errors.map(err => `
+const errorHTML = errors
+  .map(
+    (err) => `
   <div style="...">
     <span>${icon}</span>
     <span>${err.severity.toUpperCase()}</span>
     <span>${err.message}</span>
   </div>
-`).join("");
+`,
+  )
+  .join("");
 ```
 
 ### Validation Results

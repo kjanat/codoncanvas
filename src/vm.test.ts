@@ -347,7 +347,7 @@ describe("CodonVM", () => {
       // Frameshift: ATG GA AAG GGG ATA A (delete first A from GAA)
       // Result: ATG GA? AAG GGG ATA A?? - invalid codons after frame break
       const original = "ATG GAA AGG GGA TAA";
-      const frameshift = "ATG GAAAG GGG ATA"; // Delete A, breaks frame
+      const _frameshift = "ATG GAAAG GGG ATA"; // Delete A, breaks frame
 
       const tokensOriginal = lexer.tokenize(original);
 
@@ -387,7 +387,7 @@ describe("CodonVM", () => {
     test("ADD operation", () => {
       const genome = "ATG GAA AAC GAA AAT CTG TAA"; // PUSH 1, PUSH 3, ADD → 4
       const tokens = lexer.tokenize(genome);
-      const states = vm.run(tokens);
+      const _states = vm.run(tokens);
 
       expect(vm.state.stack).toHaveLength(1);
       expect(vm.state.stack[0]).toBe(4);
@@ -396,7 +396,7 @@ describe("CodonVM", () => {
     test("MUL operation", () => {
       const genome = "ATG GAA AAC GAA ATT CTT TAA"; // PUSH 1, PUSH 15, MUL → 15
       const tokens = lexer.tokenize(genome);
-      const states = vm.run(tokens);
+      const _states = vm.run(tokens);
 
       expect(vm.state.stack).toHaveLength(1);
       expect(vm.state.stack[0]).toBe(15);

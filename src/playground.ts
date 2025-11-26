@@ -14,73 +14,33 @@ export * from "./playground/linter-handlers";
 export * from "./playground/ui-state";
 export * from "./playground/ui-utils";
 
-// Import all dependencies needed for initialization
-import { AudioRenderer } from "./audio-renderer";
 import { DiffViewer, injectDiffViewerStyles } from "./diff-viewer";
 import { type ExampleKey, type ExampleMetadata, examples } from "./examples";
-import { CodonLexer } from "./lexer";
-import { Canvas2DRenderer } from "./renderer";
 import { injectShareStyles, ShareSystem } from "./share-system";
-import { helloCircleTutorial, TutorialManager } from "./tutorial";
+import { TutorialManager } from "./tutorial";
 import { initializeTutorial } from "./tutorial-ui";
 import { CodonVM } from "./vm";
 import "./tutorial-ui.css";
 import "./achievement-ui.css";
 import { AssessmentUI } from "./assessment-ui";
-import {
-  analyzeCodonUsage,
-  type CodonAnalysis,
-  formatAnalysis,
-} from "./codon-analyzer";
-import {
-  compareGenomesDetailed,
-  type GenomeComparisonResult,
-} from "./genome-comparison";
-import {
-  type ImpactLevel,
-  type MutationPrediction,
-  predictMutationImpact,
-} from "./mutation-predictor";
-import {
-  applyDeletion,
-  applyFrameshiftMutation,
-  applyInsertion,
-  applyMissenseMutation,
-  applyNonsenseMutation,
-  applyPointMutation,
-  applySilentMutation,
-  type MutationType,
-} from "./mutations";
 // Import DOM elements
 import {
-  analyzeBtn,
-  analyzerContent,
-  analyzerPanel,
-  analyzerToggle,
   assessmentContainer,
   audioToggleBtn,
-  canvas,
   clearBtn,
   conceptFilter,
   deletionMutationBtn,
   difficultyFilter,
-  diffViewerClearBtn,
   diffViewerContainer,
-  diffViewerPanel,
-  diffViewerToggle,
   editor,
   exampleInfo,
   exampleSelect,
-  exportAudioBtn,
   exportBtn,
-  exportMidiBtn,
   exportStudentProgressBtn,
   fixAllBtn,
   frameshiftMutationBtn,
   genomeFileInput,
   insertionMutationBtn,
-  linterMessages,
-  linterPanel,
   linterToggle,
   loadGenomeBtn,
   missenseMutationBtn,
@@ -91,11 +51,8 @@ import {
   runBtn,
   saveGenomeBtn,
   searchInput,
-  setCompareBtn,
   shareContainer,
   silentMutationBtn,
-  statusBar,
-  statusMessage,
   themeToggleBtn,
   timelinePanel,
   timelineToggleBtn,
@@ -103,7 +60,6 @@ import {
 // Import handlers
 import {
   exportImage,
-  exportMidi,
   exportStudentProgress,
   saveGenome,
 } from "./playground/export-handlers";
@@ -121,9 +77,7 @@ import {
   assessmentEngine,
   assessmentUI,
   audioRenderer,
-  lastSnapshots,
   lexer,
-  midiExporter,
   renderer,
   renderMode,
   researchMetrics,
@@ -138,7 +92,6 @@ import {
 } from "./playground/ui-state";
 // Import UI utilities
 import {
-  escapeHtml,
   setStatus,
   updateStats,
   updateThemeButton,
@@ -150,13 +103,13 @@ updateThemeButton();
 
 // DiffViewer initialization
 injectDiffViewerStyles();
-const diffViewer = new DiffViewer({
+const _diffViewer = new DiffViewer({
   containerElement: diffViewerContainer,
 });
 
 // Share system initialization
 injectShareStyles();
-const shareSystem = new ShareSystem({
+const _shareSystem = new ShareSystem({
   containerElement: shareContainer,
   getGenome: () => editor.value,
 });
@@ -284,7 +237,7 @@ async function runProgram() {
       audioVM.reset();
       vm.reset();
 
-      const [audioSnapshots, visualSnapshots] = await Promise.all([
+      const [audioSnapshots, _visualSnapshots] = await Promise.all([
         Promise.resolve(audioVM.run(tokens)),
         Promise.resolve(vm.run(tokens)),
       ]);
@@ -341,7 +294,7 @@ function getFilteredExamples(): Array<[ExampleKey, ExampleMetadata]> {
   const concept = conceptFilter.value as any;
   const search = searchInput.value.toLowerCase().trim();
 
-  return Object.entries(examples).filter(([key, ex]) => {
+  return Object.entries(examples).filter(([_key, ex]) => {
     if (difficulty && ex.difficulty !== difficulty) {
       return false;
     }
@@ -485,7 +438,7 @@ function showExampleInfo(key: ExampleKey) {
   conceptsLabel.textContent = "Concepts:";
   conceptsDiv.appendChild(conceptsLabel);
   conceptsDiv.appendChild(
-    document.createTextNode(" " + ex.concepts.join(", ")),
+    document.createTextNode(` ${ex.concepts.join(", ")}`),
   );
 
   const mutationsDiv = document.createElement("div");
@@ -493,7 +446,7 @@ function showExampleInfo(key: ExampleKey) {
   mutationsLabel.textContent = "Good for mutations:";
   mutationsDiv.appendChild(mutationsLabel);
   mutationsDiv.appendChild(
-    document.createTextNode(" " + ex.goodForMutations.join(", ")),
+    document.createTextNode(` ${ex.goodForMutations.join(", ")}`),
   );
 
   metaDiv.appendChild(conceptsDiv);

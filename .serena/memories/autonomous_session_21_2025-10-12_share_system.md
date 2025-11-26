@@ -745,7 +745,7 @@ Session 21 built comprehensive share system and integrated into 2 of 4 pages. Pr
 **1. Callback Pattern for Reusability:**
 
 ```typescript
-getGenome: (() => string); // Let each page define what to share
+getGenome: () => string; // Let each page define what to share
 ```
 
 Enables universal module with page-specific behavior.

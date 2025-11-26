@@ -19,7 +19,7 @@ export function exportImage() {
     link.href = dataURL;
     link.click();
     setStatus("Image exported successfully", "success");
-  } catch (error) {
+  } catch (_error) {
     setStatus("Failed to export image", "error");
   }
 }
@@ -41,7 +41,7 @@ export function saveGenome() {
 
     // Use the genome content as title (first line or first 30 chars)
     const firstLine = genome.split("\n")[0].replace(/;.*$/, "").trim();
-    const title = firstLine.slice(0, 30) || "CodonCanvas Genome";
+    const _title = firstLine.slice(0, 30) || "CodonCanvas Genome";
 
     downloadGenomeFile(genome, filename, {
       description: "Created with CodonCanvas Playground",
@@ -49,7 +49,7 @@ export function saveGenome() {
     });
 
     setStatus("Genome saved successfully", "success");
-  } catch (error) {
+  } catch (_error) {
     setStatus("Failed to save genome", "error");
   }
 }

@@ -34,7 +34,7 @@ import {
   applySilentMutation,
   type MutationType,
 } from "./mutations";
-import { Canvas2DRenderer, type Renderer } from "./renderer";
+import { Canvas2DRenderer } from "./renderer";
 import { injectShareStyles, ShareSystem } from "./share-system";
 import { helloCircleTutorial, TutorialManager } from "./tutorial";
 import { initializeTutorial } from "./tutorial-ui";
@@ -48,11 +48,7 @@ import { injectTimelineStyles, TimelineScrubber } from "./timeline-scrubber";
 import "./achievement-ui.css";
 import { AssessmentEngine } from "./assessment-engine";
 import { AssessmentUI } from "./assessment-ui";
-import {
-  analyzeCodonUsage,
-  type CodonAnalysis,
-  formatAnalysis,
-} from "./codon-analyzer";
+import { analyzeCodonUsage, type CodonAnalysis } from "./codon-analyzer";
 import {
   compareGenomesDetailed,
   type GenomeComparisonResult,
@@ -412,7 +408,7 @@ async function runProgram() {
       vm.reset();
 
       // Execute both simultaneously
-      const [audioSnapshots, visualSnapshots] = await Promise.all([
+      const [audioSnapshots, _visualSnapshots] = await Promise.all([
         Promise.resolve(audioVM.run(tokens)),
         Promise.resolve(vm.run(tokens)),
       ]);
@@ -466,7 +462,7 @@ function getFilteredExamples(): Array<[ExampleKey, ExampleMetadata]> {
   const concept = conceptFilter.value as Concept | "";
   const search = searchInput.value.toLowerCase().trim();
 
-  return Object.entries(examples).filter(([key, ex]) => {
+  return Object.entries(examples).filter(([_key, ex]) => {
     // Difficulty filter
     if (difficulty && ex.difficulty !== difficulty) {
       return false;
@@ -615,7 +611,7 @@ function showExampleInfo(key: ExampleKey) {
   conceptsLabel.textContent = "Concepts:";
   conceptsDiv.appendChild(conceptsLabel);
   conceptsDiv.appendChild(
-    document.createTextNode(" " + ex.concepts.join(", ")),
+    document.createTextNode(` ${ex.concepts.join(", ")}`),
   );
 
   const mutationsDiv = document.createElement("div");
@@ -623,7 +619,7 @@ function showExampleInfo(key: ExampleKey) {
   mutationsLabel.textContent = "Good for mutations:";
   mutationsDiv.appendChild(mutationsLabel);
   mutationsDiv.appendChild(
-    document.createTextNode(" " + ex.goodForMutations.join(", ")),
+    document.createTextNode(` ${ex.goodForMutations.join(", ")}`),
   );
 
   metaDiv.appendChild(conceptsDiv);
@@ -689,12 +685,12 @@ function canAutoFix(errorMessage: string): boolean {
 function autoFixError(errorMessage: string, source: string): string | null {
   // Missing START codon
   if (/Program should begin with START codon/.test(errorMessage)) {
-    return "ATG " + source.trim();
+    return `ATG ${source.trim()}`;
   }
 
   // Missing STOP codon
   if (/Program should end with STOP codon/.test(errorMessage)) {
-    return source.trim() + " TAA";
+    return `${source.trim()} TAA`;
   }
 
   // Mid-triplet break - remove all whitespace and re-space by triplets
@@ -711,7 +707,7 @@ function autoFixError(errorMessage: string, source: string): string | null {
   if (/Source length (\d+) is not divisible by 3/.test(errorMessage)) {
     const match = errorMessage.match(/Missing (\d+) bases/);
     if (match) {
-      const missing = parseInt(match[1]);
+      const missing = parseInt(match[1], 10);
       return source.trim() + "A".repeat(missing);
     }
   }
@@ -921,7 +917,7 @@ function toggleDiffViewer(): void {
 function clearDiffViewer(): void {
   diffViewer.clear();
   diffViewerPanel.style.display = "none";
-  originalGenomeBeforeMutation = "";
+  _originalGenomeBeforeMutation = "";
 }
 
 function loadExample() {
@@ -943,7 +939,7 @@ function exportImage() {
     link.href = dataURL;
     link.click();
     setStatus("Image exported successfully", "success");
-  } catch (error) {
+  } catch (_error) {
     setStatus("Failed to export image", "error");
   }
 }
@@ -962,7 +958,7 @@ function saveGenome() {
 
     // Use the genome content as title (first line or first 30 chars)
     const firstLine = genome.split("\n")[0].replace(/;.*$/, "").trim();
-    const title = firstLine.slice(0, 30) || "CodonCanvas Genome";
+    const _title = firstLine.slice(0, 30) || "CodonCanvas Genome";
 
     downloadGenomeFile(genome, filename, {
       description: "Created with CodonCanvas Playground",
@@ -970,7 +966,7 @@ function saveGenome() {
     });
 
     setStatus("Genome saved successfully", "success");
-  } catch (error) {
+  } catch (_error) {
     setStatus("Failed to save genome", "error");
   }
 }
@@ -1024,7 +1020,7 @@ function applyMutation(type: MutationType) {
     }
 
     // Store original genome before mutation
-    originalGenomeBeforeMutation = genome;
+    _originalGenomeBeforeMutation = genome;
 
     let result;
 
@@ -1343,7 +1339,7 @@ function createPreviewModal() {
     const stat = document.createElement("div");
     stat.className = "preview-stat";
     const strong = document.createElement("strong");
-    strong.textContent = label + ": ";
+    strong.textContent = `${label}: `;
     const span = document.createElement("span");
     span.id = id;
     span.textContent = value;
@@ -1407,7 +1403,7 @@ function showPreviewModal(
   prediction: MutationPrediction,
   mutationType: MutationType,
 ) {
-  currentPrediction = prediction;
+  _currentPrediction = prediction;
   currentMutationType = mutationType;
 
   const overlay = document.getElementById(
@@ -1481,7 +1477,7 @@ function closePreviewModal() {
     "previewModalOverlay",
   ) as HTMLDivElement;
   overlay.classList.remove("active");
-  currentPrediction = null;
+  _currentPrediction = null;
   currentMutationType = null;
 }
 
@@ -1605,7 +1601,7 @@ function addPreviewButtons() {
       "insertion",
       "deletion",
     ];
-    const index = parseInt(mutationType) - 1;
+    const index = parseInt(mutationType, 10) - 1;
     if (index >= 0 && index < types.length) {
       previewMutation(types[index]);
     }
@@ -1656,7 +1652,7 @@ async function toggleAudio() {
       achievementUI.handleUnlocks(unlocked);
     } catch (error) {
       setStatus(
-        "Error initializing audio: " + (error as Error).message,
+        `Error initializing audio: ${(error as Error).message}`,
         "error",
       );
       return;
@@ -1708,7 +1704,7 @@ async function exportAudio() {
     URL.revokeObjectURL(url);
     setStatus("Audio exported successfully", "success");
   } catch (error) {
-    setStatus("Error exporting audio: " + (error as Error).message, "error");
+    setStatus(`Error exporting audio: ${(error as Error).message}`, "error");
   }
 }
 
@@ -1732,7 +1728,7 @@ function exportMidi() {
       "success",
     );
   } catch (error) {
-    setStatus("Error exporting MIDI: " + (error as Error).message, "error");
+    setStatus(`Error exporting MIDI: ${(error as Error).message}`, "error");
   }
 }
 
@@ -1775,7 +1771,7 @@ async function exportStudentProgress() {
             startedAt: progress.startedAt || null,
             completedAt: progress.completedAt || null,
           };
-        } catch (e) {
+        } catch (_e) {
           // If parsing fails, record as not started
           tutorials[id] = {
             completed: false,
@@ -1821,7 +1817,7 @@ async function exportStudentProgress() {
     setStatus(`Student progress exported for ${studentId}`, "success");
   } catch (error) {
     setStatus(
-      "Error exporting student progress: " + (error as Error).message,
+      `Error exporting student progress: ${(error as Error).message}`,
       "error",
     );
   }
@@ -2150,7 +2146,7 @@ injectPreviewModalStyles();
 createPreviewModal();
 addPreviewButtons();
 
-const shareSystem = new ShareSystem({
+const _shareSystem = new ShareSystem({
   containerElement: shareContainer,
   getGenome: () => editor.value.trim(),
   appTitle: "CodonCanvas Playground",
@@ -2168,16 +2164,16 @@ const diffViewer = new DiffViewer({
 });
 
 // Track original genome for comparison
-let originalGenomeBeforeMutation: string = "";
+let _originalGenomeBeforeMutation: string = "";
 
 // Track current prediction for preview modal
-let currentPrediction: MutationPrediction | null = null;
+let _currentPrediction: MutationPrediction | null = null;
 let currentMutationType: MutationType | null = null;
 
 // Initialize tutorial system
 const tutorialManager = new TutorialManager();
 tutorialManager.start(helloCircleTutorial);
-const tutorialUI = initializeTutorial(document.body, tutorialManager, editor);
+const _tutorialUI = initializeTutorial(document.body, tutorialManager, editor);
 
 // Load genome from URL if present
 const urlGenome = ShareSystem.loadFromURL();
@@ -2685,18 +2681,18 @@ function createComparisonModal(): HTMLElement {
 
   // Close button
   overlay
-    .querySelector(".comparison-modal-close")!
-    .addEventListener("click", closeComparisonModal);
+    .querySelector(".comparison-modal-close")
+    ?.addEventListener("click", closeComparisonModal);
 
   // Load current genome buttons
-  overlay.querySelector("#loadCurrentA")!.addEventListener("click", () => {
+  overlay.querySelector("#loadCurrentA")?.addEventListener("click", () => {
     const textarea = document.getElementById(
       "comparisonGenomeA",
     ) as HTMLTextAreaElement;
     textarea.value = editor.value;
   });
 
-  overlay.querySelector("#loadCurrentB")!.addEventListener("click", () => {
+  overlay.querySelector("#loadCurrentB")?.addEventListener("click", () => {
     const textarea = document.getElementById(
       "comparisonGenomeB",
     ) as HTMLTextAreaElement;
@@ -2705,13 +2701,13 @@ function createComparisonModal(): HTMLElement {
 
   // Compare button
   overlay
-    .querySelector("#compareGenomesBtn")!
-    .addEventListener("click", performComparison);
+    .querySelector("#compareGenomesBtn")
+    ?.addEventListener("click", performComparison);
 
   // Clear button
   overlay
-    .querySelector("#clearComparisonBtn")!
-    .addEventListener("click", () => {
+    .querySelector("#clearComparisonBtn")
+    ?.addEventListener("click", () => {
       (
         document.getElementById("comparisonGenomeA") as HTMLTextAreaElement
       ).value = "";

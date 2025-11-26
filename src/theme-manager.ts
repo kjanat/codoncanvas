@@ -93,7 +93,7 @@ export class ThemeManager {
   private saveTheme(theme: Theme): void {
     try {
       localStorage.setItem(ThemeManager.STORAGE_KEY, theme);
-    } catch (error) {
+    } catch (_error) {
       // Save failed - fail silently
     }
   }
@@ -107,7 +107,7 @@ export class ThemeManager {
       if (saved && this.isValidTheme(saved)) {
         return saved as Theme;
       }
-    } catch (error) {
+    } catch (_error) {
       // Load failed - fail silently
     }
     return null;
@@ -157,7 +157,7 @@ export class ThemeManager {
   resetToSystemTheme(): void {
     try {
       localStorage.removeItem(ThemeManager.STORAGE_KEY);
-    } catch (error) {
+    } catch (_error) {
       // Reset failed - fail silently
     }
     const systemTheme = this.getSystemTheme();

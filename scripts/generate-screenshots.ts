@@ -1,4 +1,5 @@
 #!/usr/bin/env tsx
+
 /**
  * Screenshot generation utility for CodonCanvas showcase genomes.
  * Renders genome files to PNG images using node-canvas for visual documentation.
@@ -7,13 +8,12 @@
  * Output: examples/screenshots/*.png (full size 400x400)
  */
 
+import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
+import { dirname, join } from "node:path";
+import { fileURLToPath } from "node:url";
 import { type Canvas, createCanvas } from "canvas";
-import { mkdirSync, readFileSync, writeFileSync } from "fs";
-import { dirname, join } from "path";
-import { fileURLToPath } from "url";
 import { CodonLexer } from "../src/lexer";
 import type { Renderer } from "../src/renderer";
-import { VMState } from "../src/types";
 import { CodonVM } from "../src/vm";
 
 // ES module equivalents for __dirname
@@ -26,7 +26,7 @@ const __dirname = dirname(__filename);
  */
 class NodeCanvasRenderer implements Renderer {
   private canvas: Canvas;
-  private ctx: any;
+  private ctx: ReturnType<Canvas["getContext"]>;
   private _x = 200;
   private _y = 200;
   private _rotation = 0;

@@ -11,7 +11,7 @@
  * (codon usage bias, GC content, compositional analysis)
  */
 
-import { CODON_MAP, Codon, type CodonToken, Opcode } from "./types";
+import { CODON_MAP, type CodonToken, Opcode } from "./types";
 
 /**
  * Complete codon usage analysis results

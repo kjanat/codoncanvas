@@ -14,11 +14,13 @@ CodonCanvas is designed with student privacy as a fundamental principle:
 ## Data Collection
 
 ### What We Collect
+
 - **Learning Progress:** Achievement unlocks, genomes created, mutations applied (stored locally)
 - **Code History:** Student-created genomes and their execution results (stored locally)
 - **Session State:** Current workspace state for continuity across browser sessions (stored locally)
 
 ### What We DO NOT Collect
+
 - Personal identifying information (names, emails, etc.)
 - Student demographics or sensitive data
 - Usage telemetry or behavioral analytics (unless explicitly opted-in for research)

@@ -19,8 +19,7 @@
  *   npm run research:analyze -- --power-analysis --effect 0.5 --alpha 0.05
  */
 
-import * as fs from "fs";
-import * as path from "path";
+import * as fs from "node:fs";
 
 // ============================================================================
 // Data Structures
@@ -375,7 +374,7 @@ class ResearchAnalyzer {
       ResearchAnalyzer.analyzeRetention(withDelayed);
     }
 
-    console.log("\n" + "═".repeat(64) + "\n");
+    console.log(`\n${"═".repeat(64)}\n`);
   }
 
   /**
@@ -495,7 +494,7 @@ class ResearchAnalyzer {
       )}`,
     );
 
-    console.log("\n" + "═".repeat(64) + "\n");
+    console.log(`\n${"═".repeat(64)}\n`);
   }
 
   /**
@@ -611,7 +610,7 @@ class ResearchAnalyzer {
    */
   static generateTable(
     data: StudentData[],
-    group: "treatment" | "control" | "all",
+    _group: "treatment" | "control" | "all",
   ): void {
     console.log("\n📋 PUBLICATION TABLE (Markdown format)\n");
     console.log("```markdown");
@@ -768,7 +767,7 @@ function main(): void {
     console.log(`  Per group:               ${result.inflated_n_per_group}`);
     console.log(`  Total (2 groups):        ${result.inflated_total}\n`);
 
-    console.log("═".repeat(64) + "\n");
+    console.log(`${"═".repeat(64)}\n`);
     return;
   }
 

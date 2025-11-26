@@ -162,7 +162,7 @@ export class TeacherDashboard {
       let imported = 0;
       let errors = 0;
 
-      files.forEach((file, index) => {
+      files.forEach((file, _index) => {
         const reader = new FileReader();
 
         reader.onload = (e) => {
@@ -170,7 +170,7 @@ export class TeacherDashboard {
             const content = e.target?.result as string;
             this.importStudentData(content);
             imported++;
-          } catch (error) {
+          } catch (_error) {
             errors++;
           }
 

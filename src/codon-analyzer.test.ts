@@ -8,7 +8,7 @@ import {
   compareAnalyses,
   formatAnalysis,
 } from "./codon-analyzer";
-import { type CodonToken, Opcode } from "./types";
+import type { CodonToken } from "./types";
 
 describe("CodonAnalyzer", () => {
   describe("analyzeCodonUsage", () => {

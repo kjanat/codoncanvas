@@ -8,10 +8,10 @@
  * and developers integrating genome validation into CI/CD pipelines.
  */
 
+import { readdirSync, readFileSync, statSync } from "node:fs";
+import { join } from "node:path";
 import chalk from "chalk";
 import { Command } from "commander";
-import { readdirSync, readFileSync, statSync } from "fs";
-import { extname, join } from "path";
 import { CodonLexer } from "./src/lexer";
 import type { ParseError } from "./src/types";
 

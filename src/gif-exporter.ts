@@ -5,7 +5,6 @@
 
 // @ts-expect-error - gif.js doesn't have TypeScript definitions
 import GIF from "gif.js";
-import type { VMState } from "./types";
 
 export interface GifExportOptions {
   width?: number;

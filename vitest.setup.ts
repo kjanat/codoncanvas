@@ -42,7 +42,9 @@ beforeAll(() => {
   });
 
   // Mock canvas methods that jsdom doesn't fully implement
-  HTMLCanvasElement.prototype.getContext = (contextId: string): any => {
+  HTMLCanvasElement.prototype.getContext = ((
+    contextId: string,
+  ): RenderingContext | null => {
     if (contextId === "2d") {
       // Track canvas state for rendering validation
       let hasDrawn = false;
@@ -125,7 +127,7 @@ beforeAll(() => {
         createPattern: () => null,
         setLineDash: () => {},
         getLineDash: () => [],
-        getImageData: (sx: number, sy: number, sw: number, sh: number) => {
+        getImageData: (_sx: number, _sy: number, sw: number, sh: number) => {
           const size = sw * sh * 4;
           // Return non-empty data to simulate actual rendering
           const data = new Uint8ClampedArray(size);
@@ -153,7 +155,7 @@ beforeAll(() => {
       };
     }
     return null;
-  };
+  }) as typeof HTMLCanvasElement.prototype.getContext;
 
   // Mock toDataURL for canvas
   HTMLCanvasElement.prototype.toDataURL = () =>

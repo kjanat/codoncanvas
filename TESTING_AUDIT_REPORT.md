@@ -1069,9 +1069,9 @@ export function assertAchievementUnlocked(
   description?: string,
 ) {
   const isUnlocked = engine.isUnlocked(achievementId);
-  const achievement = engine.getAchievements().find(a =>
-    a.id === achievementId
-  );
+  const achievement = engine
+    .getAchievements()
+    .find((a) => a.id === achievementId);
 
   expect(isUnlocked, `${description || achievementId} unlock state`).toBe(
     expectedUnlocked,
@@ -1193,10 +1193,7 @@ describe("Security: XSS Prevention", () => {
 
   describe("localStorage data integrity", () => {
     it("validates achievement data before loading", () => {
-      localStorage.setItem(
-        "achievements",
-        "\"><script>alert(\"xss\")</script>",
-      );
+      localStorage.setItem("achievements", '"><script>alert("xss")</script>');
       // Should not execute, should validate/sanitize
       const achievements = loadAchievements();
       expect(achievements).toBeDefined();

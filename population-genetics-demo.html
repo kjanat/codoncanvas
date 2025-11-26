@@ -474,257 +474,251 @@
 
     <script type="module">
     import { CodonLexer } from "./src/lexer.ts";
-    import {
-      applyDeletion,
-      applyFrameshiftMutation,
-      applyInsertion,
-      applyPointMutation,
-    } from "./src/mutations.ts";
-    import { Canvas2DRenderer } from "./src/renderer.ts";
-    import { CodonVM } from "./src/vm.ts";
+import {
+  applyDeletion,
+  applyFrameshiftMutation,
+  applyInsertion,
+  applyPointMutation,
+} from "./src/mutations.ts";
+import { Canvas2DRenderer } from "./src/renderer.ts";
+import { CodonVM } from "./src/vm.ts";
 
-    // Population state
-    let population = [];
-    let generation = 0;
-    let totalMutations = 0;
-    let isRunning = false;
-    let intervalId = null;
-    let founderGenome = "";
+// Population state
+let population = [];
+let generation = 0;
+let totalMutations = 0;
+let isRunning = false;
+let intervalId = null;
+let founderGenome = "";
 
-    // DOM elements
-    const founderGenomeInput = document.getElementById("founderGenome");
-    const popSizeInput = document.getElementById("popSize");
-    const mutationRateInput = document.getElementById("mutationRate");
-    const generationDelayInput = document.getElementById("generationDelay");
-    const mutationTypeSelect = document.getElementById("mutationType");
-    const startBtn = document.getElementById("startBtn");
-    const pauseBtn = document.getElementById("pauseBtn");
-    const resetBtn = document.getElementById("resetBtn");
-    const stepBtn = document.getElementById("stepBtn");
-    const populationGrid = document.getElementById("populationGrid");
-    const currentGenSpan = document.getElementById("currentGen");
-    const totalMutationsSpan = document.getElementById("totalMutations");
-    const diversitySpan = document.getElementById("diversity");
-    const uniqueGenomesSpan = document.getElementById("uniqueGenomes");
-    const generationDisplay = document.getElementById("generationDisplay");
+// DOM elements
+const founderGenomeInput = document.getElementById("founderGenome");
+const popSizeInput = document.getElementById("popSize");
+const mutationRateInput = document.getElementById("mutationRate");
+const generationDelayInput = document.getElementById("generationDelay");
+const mutationTypeSelect = document.getElementById("mutationType");
+const startBtn = document.getElementById("startBtn");
+const pauseBtn = document.getElementById("pauseBtn");
+const resetBtn = document.getElementById("resetBtn");
+const stepBtn = document.getElementById("stepBtn");
+const populationGrid = document.getElementById("populationGrid");
+const currentGenSpan = document.getElementById("currentGen");
+const totalMutationsSpan = document.getElementById("totalMutations");
+const diversitySpan = document.getElementById("diversity");
+const uniqueGenomesSpan = document.getElementById("uniqueGenomes");
+const generationDisplay = document.getElementById("generationDisplay");
 
-    // Initialize population
-    function initializePopulation() {
-      const popSize = parseInt(popSizeInput.value);
-      founderGenome = founderGenomeInput.value.trim();
+// Initialize population
+function initializePopulation() {
+  const popSize = parseInt(popSizeInput.value, 10);
+  founderGenome = founderGenomeInput.value.trim();
 
-      population = Array.from({ length: popSize }, (_, i) => ({
-        id: i,
-        genome: founderGenome,
-        generation: 0,
-        mutations: [],
-        parentId: null,
-      }));
+  population = Array.from({ length: popSize }, (_, i) => ({
+    id: i,
+    genome: founderGenome,
+    generation: 0,
+    mutations: [],
+    parentId: null,
+  }));
 
-      generation = 0;
-      totalMutations = 0;
-      renderPopulation();
-      updateStats();
-    }
+  generation = 0;
+  totalMutations = 0;
+  renderPopulation();
+  updateStats();
+}
 
-    // Apply mutation based on type distribution
-    function applyMutation(genome) {
-      const mutationType = mutationTypeSelect.value;
-      const rand = Math.random();
+// Apply mutation based on type distribution
+function applyMutation(genome) {
+  const mutationType = mutationTypeSelect.value;
+  const rand = Math.random();
 
-      let result;
-      switch (mutationType) {
-        case "point-only":
-          result = applyPointMutation(genome);
-          break;
-        case "frameshift-heavy":
-          if (rand < 0.6) {
-            result = applyFrameshiftMutation(genome);
-          } else if (rand < 0.8) {
-            result = applyInsertion(genome);
-          } else {
-            result = applyPointMutation(genome);
-          }
-          break;
-        case "conservative":
-          if (rand < 0.7) {
-            // Silent mutation - pick a codon and replace with synonymous
-            result = applyPointMutation(genome);
-          } else if (rand < 0.9) {
-            result = applyPointMutation(genome);
-          } else {
-            result = applyInsertion(genome);
-          }
-          break;
-        default: // balanced
-          if (rand < 0.5) {
-            result = applyPointMutation(genome);
-          } else if (rand < 0.7) {
-            result = applyInsertion(genome);
-          } else if (rand < 0.85) {
-            result = applyDeletion(genome);
-          } else {
-            result = applyFrameshiftMutation(genome);
-          }
+  let result;
+  switch (mutationType) {
+    case "point-only":
+      result = applyPointMutation(genome);
+      break;
+    case "frameshift-heavy":
+      if (rand < 0.6) {
+        result = applyFrameshiftMutation(genome);
+      } else if (rand < 0.8) {
+        result = applyInsertion(genome);
+      } else {
+        result = applyPointMutation(genome);
       }
+      break;
+    case "conservative":
+      if (rand < 0.7) {
+        // Silent mutation - pick a codon and replace with synonymous
+        result = applyPointMutation(genome);
+      } else if (rand < 0.9) {
+        result = applyPointMutation(genome);
+      } else {
+        result = applyInsertion(genome);
+      }
+      break;
+    default: // balanced
+      if (rand < 0.5) {
+        result = applyPointMutation(genome);
+      } else if (rand < 0.7) {
+        result = applyInsertion(genome);
+      } else if (rand < 0.85) {
+        result = applyDeletion(genome);
+      } else {
+        result = applyFrameshiftMutation(genome);
+      }
+  }
 
-      return result;
+  return result;
+}
+
+// Advance one generation
+function advanceGeneration() {
+  generation++;
+  const mutationRate = parseFloat(mutationRateInput.value) / 100;
+
+  population = population.map((organism, _idx) => {
+    let newGenome = organism.genome;
+    const mutations = [];
+
+    // Apply mutations based on rate
+    if (Math.random() < mutationRate) {
+      const mutationResult = applyMutation(newGenome);
+      newGenome = mutationResult.mutated;
+      mutations.push(mutationResult.description);
+      totalMutations++;
     }
 
-    // Advance one generation
-    function advanceGeneration() {
-      generation++;
-      const mutationRate = parseFloat(mutationRateInput.value) / 100;
+    return {
+      id: organism.id,
+      genome: newGenome,
+      generation,
+      mutations,
+      parentId: organism.id,
+    };
+  });
 
-      population = population.map((organism, idx) => {
-        let newGenome = organism.genome;
-        const mutations = [];
+  renderPopulation();
+  updateStats();
+}
 
-        // Apply mutations based on rate
-        if (Math.random() < mutationRate) {
-          const mutationResult = applyMutation(newGenome);
-          newGenome = mutationResult.mutated;
-          mutations.push(mutationResult.description);
-          totalMutations++;
-        }
+// Render population grid
+function renderPopulation() {
+  populationGrid.innerHTML = "";
+  generationDisplay.textContent = generation;
 
-        return {
-          id: organism.id,
-          genome: newGenome,
-          generation,
-          mutations,
-          parentId: organism.id,
-        };
-      });
+  population.forEach((organism, idx) => {
+    const card = document.createElement("div");
+    card.className = "organism-card";
 
-      renderPopulation();
-      updateStats();
-    }
-
-    // Render population grid
-    function renderPopulation() {
-      populationGrid.innerHTML = "";
-      generationDisplay.textContent = generation;
-
-      population.forEach((organism, idx) => {
-        const card = document.createElement("div");
-        card.className = "organism-card";
-
-        const header = document.createElement("div");
-        header.className = "organism-header";
-        header.innerHTML = `
+    const header = document.createElement("div");
+    header.className = "organism-header";
+    header.innerHTML = `
           <span>Organism ${idx + 1}</span>
           <span class="generation-badge">Gen ${organism.generation}</span>
         `;
 
-        const canvas = document.createElement("canvas");
-        canvas.className = "organism-canvas";
-        canvas.width = 400;
-        canvas.height = 400;
+    const canvas = document.createElement("canvas");
+    canvas.className = "organism-canvas";
+    canvas.width = 400;
+    canvas.height = 400;
 
-        const genomeDiv = document.createElement("div");
-        genomeDiv.className = "organism-genome";
+    const genomeDiv = document.createElement("div");
+    genomeDiv.className = "organism-genome";
 
-        // Highlight mutations if any
-        let genomeDisplay = organism.genome;
-        if (organism.mutations.length > 0) {
-          genomeDisplay = `<span class="mutation-highlight" title="${
-            organism.mutations.join(", ")
-          }">${organism.genome}</span>`;
-          genomeDiv.innerHTML = genomeDisplay;
-        } else {
-          genomeDiv.textContent = organism.genome;
-        }
-
-        card.appendChild(header);
-        card.appendChild(canvas);
-        card.appendChild(genomeDiv);
-        populationGrid.appendChild(card);
-
-        // Render genome on canvas
-        try {
-          const lexer = new CodonLexer();
-          const tokens = lexer.tokenize(organism.genome);
-          const renderer = new Canvas2DRenderer(canvas);
-          const vm = new CodonVM(renderer);
-          vm.run(tokens);
-        } catch (error) {
-          const ctx = canvas.getContext("2d");
-          ctx.fillStyle = "#ffebee";
-          ctx.fillRect(0, 0, canvas.width, canvas.height);
-          ctx.fillStyle = "#c62828";
-          ctx.font = "14px sans-serif";
-          ctx.textAlign = "center";
-          ctx.fillText(
-            "Render Error",
-            canvas.width / 2,
-            canvas.height / 2 - 10,
-          );
-          ctx.font = "11px sans-serif";
-          ctx.fillText(
-            error.message.substring(0, 40),
-            canvas.width / 2,
-            canvas.height / 2 + 10,
-          );
-        }
-      });
+    // Highlight mutations if any
+    let genomeDisplay = organism.genome;
+    if (organism.mutations.length > 0) {
+      genomeDisplay = `<span class="mutation-highlight" title="${organism.mutations.join(
+        ", ",
+      )}">${organism.genome}</span>`;
+      genomeDiv.innerHTML = genomeDisplay;
+    } else {
+      genomeDiv.textContent = organism.genome;
     }
 
-    // Update statistics
-    function updateStats() {
-      currentGenSpan.textContent = generation;
-      totalMutationsSpan.textContent = totalMutations;
+    card.appendChild(header);
+    card.appendChild(canvas);
+    card.appendChild(genomeDiv);
+    populationGrid.appendChild(card);
 
-      // Calculate genetic diversity (unique genomes / total)
-      const uniqueGenomes = new Set(population.map(org => org.genome)).size;
-      const diversity = ((uniqueGenomes / population.length) * 100).toFixed(
-        0,
+    // Render genome on canvas
+    try {
+      const lexer = new CodonLexer();
+      const tokens = lexer.tokenize(organism.genome);
+      const renderer = new Canvas2DRenderer(canvas);
+      const vm = new CodonVM(renderer);
+      vm.run(tokens);
+    } catch (error) {
+      const ctx = canvas.getContext("2d");
+      ctx.fillStyle = "#ffebee";
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      ctx.fillStyle = "#c62828";
+      ctx.font = "14px sans-serif";
+      ctx.textAlign = "center";
+      ctx.fillText("Render Error", canvas.width / 2, canvas.height / 2 - 10);
+      ctx.font = "11px sans-serif";
+      ctx.fillText(
+        error.message.substring(0, 40),
+        canvas.width / 2,
+        canvas.height / 2 + 10,
       );
-
-      diversitySpan.textContent = diversity + "%";
-      uniqueGenomesSpan.textContent = uniqueGenomes;
     }
+  });
+}
 
-    // Event handlers
-    startBtn.addEventListener("click", () => {
-      if (!isRunning) {
-        isRunning = true;
-        startBtn.disabled = true;
-        pauseBtn.disabled = false;
-        stepBtn.disabled = true;
+// Update statistics
+function updateStats() {
+  currentGenSpan.textContent = generation;
+  totalMutationsSpan.textContent = totalMutations;
 
-        const delay = parseInt(generationDelayInput.value);
-        intervalId = setInterval(advanceGeneration, delay);
-      }
-    });
+  // Calculate genetic diversity (unique genomes / total)
+  const uniqueGenomes = new Set(population.map((org) => org.genome)).size;
+  const diversity = ((uniqueGenomes / population.length) * 100).toFixed(0);
 
-    pauseBtn.addEventListener("click", () => {
-      if (isRunning) {
-        isRunning = false;
-        startBtn.disabled = false;
-        pauseBtn.disabled = true;
-        stepBtn.disabled = false;
-        clearInterval(intervalId);
-      }
-    });
+  diversitySpan.textContent = `${diversity}%`;
+  uniqueGenomesSpan.textContent = uniqueGenomes;
+}
 
-    resetBtn.addEventListener("click", () => {
-      if (isRunning) {
-        clearInterval(intervalId);
-        isRunning = false;
-        startBtn.disabled = false;
-        pauseBtn.disabled = true;
-      }
-      stepBtn.disabled = false;
-      initializePopulation();
-    });
+// Event handlers
+startBtn.addEventListener("click", () => {
+  if (!isRunning) {
+    isRunning = true;
+    startBtn.disabled = true;
+    pauseBtn.disabled = false;
+    stepBtn.disabled = true;
 
-    stepBtn.addEventListener("click", () => {
-      advanceGeneration();
-    });
+    const delay = parseInt(generationDelayInput.value, 10);
+    intervalId = setInterval(advanceGeneration, delay);
+  }
+});
 
-    // Initialize on load
-    initializePopulation();
+pauseBtn.addEventListener("click", () => {
+  if (isRunning) {
+    isRunning = false;
+    startBtn.disabled = false;
+    pauseBtn.disabled = true;
+    stepBtn.disabled = false;
+    clearInterval(intervalId);
+  }
+});
+
+resetBtn.addEventListener("click", () => {
+  if (isRunning) {
+    clearInterval(intervalId);
+    isRunning = false;
+    startBtn.disabled = false;
+    pauseBtn.disabled = true;
+  }
+  stepBtn.disabled = false;
+  initializePopulation();
+});
+
+stepBtn.addEventListener("click", () => {
+  advanceGeneration();
+});
+
+// Initialize on load
+initializePopulation();
     </script>
   </body>
 </html>

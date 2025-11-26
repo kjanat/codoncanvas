@@ -174,7 +174,8 @@ document.getElementById("search").addEventListener("input", (e) => {
 });
 
 // Match against name, concepts, description
-const matchesSearch = !searchQuery ||
+const matchesSearch =
+  !searchQuery ||
   ex.name.toLowerCase().includes(searchQuery) ||
   ex.concepts.toLowerCase().includes(searchQuery) ||
   ex.description.toLowerCase().includes(searchQuery);
@@ -183,10 +184,10 @@ const matchesSearch = !searchQuery ||
 **Difficulty Filtering:**
 
 ```javascript
-document.querySelectorAll("#difficultyFilters .chip").forEach(chip => {
+document.querySelectorAll("#difficultyFilters .chip").forEach((chip) => {
   chip.addEventListener("click", (e) => {
     // Clear active state
-    chips.forEach(c => c.classList.remove("active"));
+    chips.forEach((c) => c.classList.remove("active"));
     e.target.classList.add("active");
 
     // Update filter
@@ -199,7 +200,7 @@ document.querySelectorAll("#difficultyFilters .chip").forEach(chip => {
 **Playground Integration:**
 
 ```javascript
-window.openInPlayground = async function() {
+window.openInPlayground = async function () {
   const response = await fetch(`examples/${currentExample.id}.genome`);
   const code = await response.text();
 

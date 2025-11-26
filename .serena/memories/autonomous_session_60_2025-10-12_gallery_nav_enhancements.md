@@ -126,7 +126,7 @@ Playground (with loaded example)
 **JavaScript Implementation:**
 
 ```javascript
-window.filterByConcept = function(concept) {
+window.filterByConcept = function (concept) {
   document.getElementById("search").value = concept;
   searchQuery = concept.toLowerCase();
   renderGallery();
@@ -155,9 +155,9 @@ window.filterByConcept = function(concept) {
 
 ```javascript
 const difficultyOrder = {
-  "beginner": 1,
-  "intermediate": 2,
-  "advanced": 3,
+  beginner: 1,
+  intermediate: 2,
+  advanced: 3,
   "advanced-showcase": 4,
 };
 ```
@@ -175,12 +175,12 @@ const difficultyOrder = {
 if (currentSort === "name") {
   filtered.sort((a, b) => a.name.localeCompare(b.name));
 } else if (currentSort === "difficulty") {
-  filtered.sort((a, b) =>
-    difficultyOrder[a.difficulty] - difficultyOrder[b.difficulty]
+  filtered.sort(
+    (a, b) => difficultyOrder[a.difficulty] - difficultyOrder[b.difficulty],
   );
 } else if (currentSort === "difficulty-desc") {
-  filtered.sort((a, b) =>
-    difficultyOrder[b.difficulty] - difficultyOrder[a.difficulty]
+  filtered.sort(
+    (a, b) => difficultyOrder[b.difficulty] - difficultyOrder[a.difficulty],
   );
 }
 // 'default' preserves original array order

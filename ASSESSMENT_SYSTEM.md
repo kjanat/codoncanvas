@@ -72,12 +72,11 @@ const assessmentUI = new AssessmentUI(
 );
 
 // Toggle assessment mode
-document.getElementById("assessment-toggle-btn").addEventListener(
-  "click",
-  () => {
+document
+  .getElementById("assessment-toggle-btn")
+  .addEventListener("click", () => {
     assessmentUI.show();
-  },
-);
+  });
 ```
 
 ---

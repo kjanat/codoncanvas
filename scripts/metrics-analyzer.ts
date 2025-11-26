@@ -20,8 +20,8 @@
  *   npm run metrics:analyze -- --data metrics.csv --report full
  */
 
-import * as fs from "fs";
-import * as path from "path";
+import * as fs from "node:fs";
+import * as path from "node:path";
 
 // ============================================================================
 // Data Structures
@@ -901,7 +901,7 @@ function main() {
   let dataFile = "";
   let groupName = "Group 1";
   let baselineFile = "";
-  let reportType = "full";
+  let _reportType = "full";
   let outputDir = ".";
 
   for (let i = 0; i < args.length; i++) {
@@ -912,7 +912,7 @@ function main() {
     } else if (args[i] === "--baseline" && i + 1 < args.length) {
       baselineFile = args[++i];
     } else if (args[i] === "--report" && i + 1 < args.length) {
-      reportType = args[++i];
+      _reportType = args[++i];
     } else if (args[i] === "--output" && i + 1 < args.length) {
       outputDir = args[++i];
     }

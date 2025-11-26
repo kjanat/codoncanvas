@@ -498,7 +498,7 @@ Watch as the timeline advances automatically! The current instruction is highlig
 You're in control - you decide the pace of execution!`,
       targetElement: "#timelineContainer",
       hint: "Click the Play button, then Pause",
-      validationFn: (code: string) => {
+      validationFn: (_code: string) => {
         // For timeline tutorial, we validate user interactions differently
         // This is a manual progression step
         return true;
@@ -636,7 +636,7 @@ Each candidate has 1-2 random mutations from the parent genome.
 This is like natural genetic variation in a population! 🎲`,
       targetElement: "#generateBtn",
       hint: 'Click "🧬 Generate Candidates"',
-      validationFn: (code: string) => {
+      validationFn: (_code: string) => {
         // Manual progression for evolution tutorial
         return true;
       },

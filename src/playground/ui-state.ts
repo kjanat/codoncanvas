@@ -10,7 +10,7 @@ import type { AssessmentUI } from "../assessment-ui";
 import { AudioRenderer } from "../audio-renderer";
 import { CodonLexer } from "../lexer";
 import { MIDIExporter } from "../midi-exporter";
-import { Canvas2DRenderer, type Renderer } from "../renderer";
+import { Canvas2DRenderer } from "../renderer";
 import { ResearchMetrics } from "../research-metrics";
 import { ThemeManager } from "../theme-manager";
 import { TimelineScrubber } from "../timeline-scrubber";

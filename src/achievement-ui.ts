@@ -3,11 +3,10 @@
  * Displays badges, notifications, and progress tracking for gamification system
  */
 
-import {
-  type Achievement,
-  type AchievementCategory,
-  type AchievementEngine,
-  UnlockedAchievement,
+import type {
+  Achievement,
+  AchievementCategory,
+  AchievementEngine,
 } from "./achievement-engine.js";
 
 export class AchievementUI {
@@ -441,7 +440,8 @@ export class AchievementUI {
     }
 
     this.isShowingNotification = true;
-    const achievement = this.notificationQueue.shift()!;
+    const achievement = this.notificationQueue.shift();
+    if (!achievement) return;
 
     const notification = document.createElement("div");
     notification.className = "achievement-notification";

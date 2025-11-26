@@ -317,10 +317,7 @@ const canvas = document.getElementById("canvas") as HTMLCanvasElement;
 
 ```typescript
 // Type-safe DOM utility
-function getElement<T extends HTMLElement>(
-  id: string,
-  type: new() => T,
-): T {
+function getElement<T extends HTMLElement>(id: string, type: new () => T): T {
   const element = document.getElementById(id);
   if (!element) throw new Error(`Element #${id} not found`);
   if (!(element instanceof type)) {
@@ -639,7 +636,7 @@ export class DOMManager {
     // ... initialize all elements
   }
 
-  private getElement<T extends HTMLElement>(id: string, type: new() => T): T {
+  private getElement<T extends HTMLElement>(id: string, type: new () => T): T {
     // Type-safe element getter
   }
 }
@@ -653,8 +650,12 @@ export class EventHandlers {
     private renderer: Renderer,
   ) {}
 
-  setupRunButton() {/* ... */}
-  setupClearButton() {/* ... */}
+  setupRunButton() {
+    /* ... */
+  }
+  setupClearButton() {
+    /* ... */
+  }
   // ... all event handlers
 }
 

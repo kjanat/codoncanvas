@@ -399,10 +399,10 @@ describe("Security: XSS Prevention", () => {
     });
 
     it("should escape quotes in JSON strings", () => {
-      const payload = "\"; alert(\"xss\"); //";
+      const payload = '"; alert("xss"); //';
       // Simulate JSON serialization
       const json = JSON.stringify({ name: payload });
-      expect(json).toContain("\\\"");
+      expect(json).toContain('\\"');
     });
 
     it("should handle null bytes safely", () => {
@@ -426,7 +426,7 @@ describe("Security: XSS Prevention", () => {
   describe("localStorage data integrity", () => {
     it("should validate achievement data before loading", () => {
       // localStorage might contain malicious data
-      const malicious = "\"><script>alert(\"xss\")</script>";
+      const malicious = '"><script>alert("xss")</script>';
       localStorage.setItem("achievements", malicious);
 
       // TODO: Test that loading doesn't execute script

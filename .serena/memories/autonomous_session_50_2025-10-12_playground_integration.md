@@ -80,7 +80,7 @@ achievementUI.handleUnlocks(unlocked1);
 
 ```typescript
 // Track genome execution and drawing operations
-const opcodes = tokens.map(t => t.text);
+const opcodes = tokens.map((t) => t.text);
 const unlocked2 = achievementEngine.trackGenomeExecuted(opcodes);
 const unlocked3 = trackDrawingOperations(tokens);
 achievementUI.handleUnlocks([...unlocked2, ...unlocked3]);
@@ -645,7 +645,7 @@ npm run dev -- --port 5173
 - Modify `condition: (stats: PlayerStats) => boolean` for each achievement
 - Example: Change Mad Scientist from 100 to 50 mutations:
   ```typescript
-  condition: ((stats) => stats.mutationsApplied >= 50); // Was 100
+  condition: (stats) => stats.mutationsApplied >= 50; // Was 100
   ```
 - See GAMIFICATION_GUIDE.md "Customization Options" section
 

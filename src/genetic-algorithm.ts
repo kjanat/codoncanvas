@@ -144,7 +144,7 @@ export class GeneticAlgorithm {
 
       // Calculate fitness
       return this.fitnessFunction(genome, this.offscreenCanvas);
-    } catch (error) {
+    } catch (_error) {
       // Invalid genomes get 0 fitness
       return 0;
     }
@@ -316,7 +316,7 @@ export class GeneticAlgorithm {
       }
 
       return result.mutated;
-    } catch (error) {
+    } catch (_error) {
       return genome; // Return original if mutation fails
     }
   }

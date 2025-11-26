@@ -421,7 +421,7 @@ export class DOMManager {
     this.editor = this.getElement("editor", HTMLTextAreaElement);
   }
 
-  private getElement<T extends HTMLElement>(id: string, type: new() => T): T {
+  private getElement<T extends HTMLElement>(id: string, type: new () => T): T {
     // Type-safe element getter
   }
 }
@@ -434,8 +434,12 @@ export class EventHandlers {
     private vm: CodonVM,
   ) {}
 
-  setupRunButton() {/* ... */}
-  setupClearButton() {/* ... */}
+  setupRunButton() {
+    /* ... */
+  }
+  setupClearButton() {
+    /* ... */
+  }
 }
 
 // src/playground/main.ts (REFACTORED)
@@ -462,7 +466,7 @@ const handlers = new EventHandlers(dom, lexer, vm, renderer);
 // src/utils/dom.ts (NEW)
 export function getElement<T extends HTMLElement>(
   id: string,
-  type: new() => T,
+  type: new () => T,
 ): T {
   const element = document.getElementById(id);
   if (!element) throw new Error(`Element #${id} not found`);

@@ -83,7 +83,7 @@ function renderGenome(genome: string, canvasId: string): void {
     const tokens = lexer.tokenize(genome);
     vm.reset();
     vm.run(tokens);
-  } catch (error) {
+  } catch (_error) {
     // Draw error indicator on canvas
     const ctx = canvas.getContext("2d");
     if (ctx) {
@@ -241,7 +241,7 @@ function setupFrameshiftDemo(): void {
   const frameshiftCodonIndex = Math.floor(frameshiftPosition / 3);
 
   // All codons from frameshift onwards are affected
-  const originalCodons = original.split(/\s+/).filter((c) => c.length > 0);
+  const _originalCodons = original.split(/\s+/).filter((c) => c.length > 0);
   const mutatedCodons = mutated.split(/\s+/).filter((c) => c.length > 0);
 
   const affectedIndices = Array.from(
@@ -280,7 +280,7 @@ function initializeDemos(): void {
 
     // Initialize share system
     initializeShareSystem();
-  } catch (error) {
+  } catch (_error) {
     // Initialization error - fail silently
   }
 }

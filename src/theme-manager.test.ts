@@ -1,5 +1,5 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-import { type Theme, ThemeManager } from "./theme-manager";
+import { ThemeManager } from "./theme-manager";
 
 // jsdom provides localStorage automatically via vitest.setup.ts
 // No need for manual mocking

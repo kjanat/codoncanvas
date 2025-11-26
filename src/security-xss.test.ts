@@ -94,7 +94,7 @@ describe("Security: XSS Prevention", () => {
 
     test("validates proper codon triplets", () => {
       const valid = "ATG AAA GGG TAA";
-      const tokens = lexer.tokenize(valid);
+      const _tokens = lexer.tokenize(valid);
       const errors = lexer.validateFrame(valid);
       expect(errors.length).toBe(0);
     });
@@ -145,7 +145,7 @@ describe("Security: XSS Prevention", () => {
     });
 
     test("handles extremely long input", () => {
-      const veryLong = "ATG " + "AAA ".repeat(10000) + "TAA";
+      const veryLong = `ATG ${"AAA ".repeat(10000)}TAA`;
       const result = lexer.tokenize(veryLong);
       expect(result.length).toBeGreaterThan(0);
     });

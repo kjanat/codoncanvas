@@ -3,7 +3,7 @@
  * Handles genome mutation operations and preview functionality
  */
 
-import { type ImpactLevel, predictMutationImpact } from "../mutation-predictor";
+import { predictMutationImpact } from "../mutation-predictor";
 import {
   applyDeletion,
   applyFrameshiftMutation,

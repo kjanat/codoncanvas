@@ -312,7 +312,7 @@ export class AchievementEngine {
         description: "Unlock all other achievements",
         icon: "🌟",
         category: "perfection",
-        condition: (stats) => {
+        condition: (_stats) => {
           // Special logic handled in checkAchievements()
           return false; // Will be manually unlocked when all others complete
         },
@@ -367,7 +367,7 @@ export class AchievementEngine {
         parsed.firstGenomeDate = new Date(parsed.firstGenomeDate);
       }
       return parsed;
-    } catch (e) {
+    } catch (_e) {
       return this.getDefaultStats();
     }
   }
@@ -384,7 +384,7 @@ export class AchievementEngine {
       const map = new Map<string, UnlockedAchievement>();
 
       for (const [id, data] of Object.entries(parsed)) {
-        const unlocked = data as any;
+        const unlocked = data as { unlockedAt: string; progress: number };
         const achievement = this.achievements.find((a) => a.id === id);
         if (achievement) {
           map.set(id, {
@@ -396,7 +396,7 @@ export class AchievementEngine {
       }
 
       return map;
-    } catch (e) {
+    } catch (_e) {
       return new Map();
     }
   }
@@ -417,7 +417,10 @@ export class AchievementEngine {
       );
 
       // Save unlocked achievements
-      const unlockedToSave: Record<string, any> = {};
+      const unlockedToSave: Record<
+        string,
+        { achievementId: string; unlockedAt: string; progress?: number }
+      > = {};
       this.unlockedAchievements.forEach((data, id) => {
         unlockedToSave[id] = {
           achievementId: id,
@@ -429,7 +432,7 @@ export class AchievementEngine {
         `${this.storageKey}_unlocked`,
         JSON.stringify(unlockedToSave),
       );
-    } catch (e) {
+    } catch (_e) {
       // Save failed - fail silently
     }
   }
@@ -453,7 +456,9 @@ export class AchievementEngine {
    */
   trackGenomeExecuted(opcodes: string[]): Achievement[] {
     this.stats.genomesExecuted++;
-    opcodes.forEach((op) => this.stats.opcodesUsed.add(op));
+    for (const op of opcodes) {
+      this.stats.opcodesUsed.add(op);
+    }
     return this.checkAchievements();
   }
 
@@ -600,12 +605,14 @@ export class AchievementEngine {
     if (allUnlocked && !this.unlockedAchievements.has("legend")) {
       const legendAchievement = this.achievements.find(
         (a) => a.id === "legend",
-      )!;
-      this.unlockedAchievements.set("legend", {
-        achievement: legendAchievement,
-        unlockedAt: new Date(),
-      });
-      newlyUnlocked.push(legendAchievement);
+      );
+      if (legendAchievement) {
+        this.unlockedAchievements.set("legend", {
+          achievement: legendAchievement,
+          unlockedAt: new Date(),
+        });
+        newlyUnlocked.push(legendAchievement);
+      }
     }
 
     // Save if anything changed

@@ -1,4 +1,4 @@
-import { Base, type Codon, type CodonToken, type ParseError } from "./types";
+import type { Codon, CodonToken, ParseError } from "./types";
 
 /**
  * Lexer interface for CodonCanvas genome parsing.

@@ -283,7 +283,7 @@ describe("Canvas2DRenderer", () => {
 
     test("uses correct geometry for equilateral triangle", () => {
       const size = 60;
-      const height = (size * Math.sqrt(3)) / 2;
+      const _height = (size * Math.sqrt(3)) / 2;
 
       renderer.triangle(size);
 

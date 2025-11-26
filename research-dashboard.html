@@ -469,7 +469,7 @@
 
       recentSessions.forEach(session => {
         const row = tbody.insertRow();
-        row.insertCell().textContent = session.sessionId.substring(0, 20) + '...';
+        row.insertCell().textContent = `${session.sessionId.substring(0, 20)}...`;
         row.insertCell().textContent = new Date(session.startTime).toLocaleString();
         row.insertCell().textContent = formatDuration(session.duration);
         row.insertCell().textContent = session.genomesCreated;

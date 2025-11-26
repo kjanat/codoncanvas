@@ -11,6 +11,8 @@ import { CodonLexer } from "../src/lexer";
 import { Canvas2DRenderer } from "../src/renderer";
 import { CodonVM } from "../src/vm";
 
+// Node canvas type imported but cast needed for Canvas2DRenderer compatibility
+
 // Benchmark configuration
 const ITERATIONS = 20;
 const WARMUP_ITERATIONS = 5;
@@ -45,7 +47,7 @@ function generateComplexGenome(numCodeons: number): string {
   return `ATG ${body}TAA`;
 }
 
-function generateTransformHeavy(numCodeons: number): string {
+function _generateTransformHeavy(numCodeons: number): string {
   // Heavy on transforms and state management
   const pattern = "GAA AAT ACA GAA AGG AGA GAA AAC CGA TCA "; // translate, rotate, scale, save_state
   const body = pattern.repeat(Math.floor((numCodeons - 2) / 10));
@@ -100,7 +102,9 @@ function benchmarkVM(genome: string, iterations: number): number[] {
 
   for (let i = 0; i < iterations; i++) {
     const canvas = createCanvas(400, 400);
-    const renderer = new Canvas2DRenderer(canvas as any);
+    const renderer = new Canvas2DRenderer(
+      canvas as unknown as HTMLCanvasElement,
+    );
     const vm = new CodonVM(renderer);
 
     const start = performance.now();
@@ -118,7 +122,9 @@ function benchmarkEndToEnd(genome: string, iterations: number): number[] {
   for (let i = 0; i < iterations; i++) {
     const lexer = new CodonLexer();
     const canvas = createCanvas(400, 400);
-    const renderer = new Canvas2DRenderer(canvas as any);
+    const renderer = new Canvas2DRenderer(
+      canvas as unknown as HTMLCanvasElement,
+    );
     const vm = new CodonVM(renderer);
 
     const start = performance.now();

@@ -143,7 +143,8 @@ async function runProgram() {
       `Executed ${vm.state.instructionCount} instructions successfully`,
       "success",
     );
-  } else { // 'both'
+  } else {
+    // 'both'
     // Multi-sensory: run both renderers simultaneously
     const audioVM = new CodonVM(audioRenderer);
 

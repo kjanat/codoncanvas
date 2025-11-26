@@ -138,7 +138,7 @@ export class DiffViewer {
       .join(" ");
   }
 
-  private renderCanvasDiff(original: string, mutated: string): string {
+  private renderCanvasDiff(_original: string, _mutated: string): string {
     return `
       <div class="diff-canvas-container">
         <div class="canvas-wrapper">
@@ -177,7 +177,7 @@ export class DiffViewer {
       const mutatedVM = new CodonVM(mutatedRenderer);
       const mutatedTokens = this.lexer.tokenize(mutated);
       mutatedVM.run(mutatedTokens);
-    } catch (error) {
+    } catch (_error) {
       // Render failed - fail silently
     }
   }

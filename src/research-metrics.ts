@@ -228,7 +228,7 @@ export class ResearchMetrics {
   /**
    * Track genome creation event.
    */
-  trackGenomeCreated(genomeLength: number): void {
+  trackGenomeCreated(_genomeLength: number): void {
     if (!this.isEnabled()) return;
 
     this.currentSession!.genomesCreated++;
@@ -241,17 +241,17 @@ export class ResearchMetrics {
     if (!this.isEnabled()) return;
 
     this.currentSession!.genomesExecuted++;
-    this.currentSession!.renderModeUsage[event.renderMode]++;
+    this.currentSession?.renderModeUsage[event.renderMode]++;
 
     // Track time to first artifact
-    if (event.success && this.currentSession!.timeToFirstArtifact === null) {
+    if (event.success && this.currentSession?.timeToFirstArtifact === null) {
       this.currentSession!.timeToFirstArtifact =
-        Date.now() - this.currentSession!.startTime;
+        Date.now() - this.currentSession?.startTime;
     }
 
     // Track errors
     if (!event.success && event.errorMessage) {
-      this.currentSession!.errors.push({
+      this.currentSession?.errors.push({
         timestamp: Date.now(),
         type: "execution",
         message: event.errorMessage,
@@ -266,7 +266,7 @@ export class ResearchMetrics {
     if (!this.isEnabled()) return;
 
     this.currentSession!.mutationsApplied++;
-    this.currentSession!.mutationTypes[event.type]++;
+    this.currentSession?.mutationTypes[event.type]++;
   }
 
   /**
@@ -276,7 +276,7 @@ export class ResearchMetrics {
     if (!this.isEnabled()) return;
 
     if (event.action === "open" || event.action === "interact") {
-      this.currentSession!.features[event.feature]++;
+      this.currentSession?.features[event.feature]++;
     }
   }
 
@@ -286,7 +286,7 @@ export class ResearchMetrics {
   trackError(type: string, message: string): void {
     if (!this.isEnabled()) return;
 
-    this.currentSession!.errors.push({
+    this.currentSession?.errors.push({
       timestamp: Date.now(),
       type,
       message,
@@ -307,7 +307,7 @@ export class ResearchMetrics {
     try {
       const stored = localStorage.getItem(this.STORAGE_KEY);
       return stored ? JSON.parse(stored) : [];
-    } catch (error) {
+    } catch (_error) {
       return [];
     }
   }
@@ -537,7 +537,7 @@ export class ResearchMetrics {
 
       // Add or update current session
       const existingIndex = sessions.findIndex(
-        (s) => s.sessionId === this.currentSession!.sessionId,
+        (s) => s.sessionId === this.currentSession?.sessionId,
       );
       if (existingIndex >= 0) {
         sessions[existingIndex] = this.currentSession;
@@ -551,7 +551,7 @@ export class ResearchMetrics {
       }
 
       localStorage.setItem(this.STORAGE_KEY, JSON.stringify(sessions));
-    } catch (error) {
+    } catch (_error) {
       // Save failed - fail silently
     }
   }

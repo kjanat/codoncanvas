@@ -10,9 +10,9 @@
  * Output: JSON report with complexity scores for each genome
  */
 
-import { readdirSync, readFileSync, writeFileSync } from "fs";
-import { dirname, join } from "path";
-import { fileURLToPath } from "url";
+import { readdirSync, readFileSync, writeFileSync } from "node:fs";
+import { dirname, join } from "node:path";
+import { fileURLToPath } from "node:url";
 import { CodonLexer } from "../src/lexer";
 import { CODON_MAP, Opcode } from "../src/types";
 
@@ -138,7 +138,7 @@ function analyzeGenome(filename: string, content: string): GenomeComplexity {
       hasConditional,
       hasArithmetic,
     };
-  } catch (error) {
+  } catch (_error) {
     // Return minimal analysis for invalid genomes
     return {
       filename,

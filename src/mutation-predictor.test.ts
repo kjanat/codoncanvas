@@ -3,7 +3,7 @@
  * Validates prediction accuracy across all mutation types.
  */
 
-import { beforeEach, describe, expect, it } from "vitest";
+import { describe, expect, it } from "vitest";
 import {
   predictMutationImpact,
   predictMutationImpactBatch,
@@ -210,7 +210,7 @@ describe("Mutation Impact Predictor", () => {
 
       expect(predictions).toHaveLength(2);
       // Each prediction should correspond to its mutation
-      predictions.forEach((pred, i) => {
+      predictions.forEach((pred, _i) => {
         expect(pred).toBeDefined();
         expect(pred.impact).toBeDefined();
       });
@@ -344,7 +344,7 @@ describe("Mutation Impact Predictor", () => {
 
     it("should handle very long genomes", () => {
       // Create genome with many instructions
-      const longGenome = "ATG " + "GAA AAT GGA ".repeat(20) + "TAA";
+      const longGenome = `ATG ${"GAA AAT GGA ".repeat(20)}TAA`;
       const mutation = applySilentMutation(longGenome, 10);
       const prediction = predictMutationImpact(longGenome, mutation);
 

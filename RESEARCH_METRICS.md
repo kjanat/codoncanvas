@@ -107,7 +107,7 @@ See [IRB Submission Guide](#irb-submission-guide) for consent form templates.
 
 ```javascript
 // Open browser console (F12), paste:
-import("./src/research-metrics.js").then(m => {
+import("./src/research-metrics.js").then((m) => {
   const metrics = new m.ResearchMetrics();
   metrics.enable();
   console.log("Research metrics enabled ✓");
@@ -137,7 +137,7 @@ Data saves every 30 seconds to browser localStorage.
 **Method 2: Browser Console Export**
 
 ```javascript
-import("./src/research-metrics.js").then(m => {
+import("./src/research-metrics.js").then((m) => {
   const metrics = new m.ResearchMetrics();
   const csv = metrics.exportCSV();
 

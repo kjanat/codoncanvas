@@ -4,8 +4,8 @@
  * Creates examples/ directory with all 18 examples
  */
 
-import { mkdirSync, writeFileSync } from "fs";
-import { join } from "path";
+import { mkdirSync, writeFileSync } from "node:fs";
+import { join } from "node:path";
 import { examples } from "../src/examples";
 
 const OUTPUT_DIR = "examples";
@@ -76,11 +76,11 @@ const advanced = metadataList.filter((e) => e.difficulty === "advanced");
 let readme = README_TEMPLATE;
 
 readme += beginner.map((e) => `- **${e.key}.genome** - ${e.title}`).join("\n");
-readme += "\n\n### Intermediate (" + intermediate.length + " examples)\n";
+readme += `\n\n### Intermediate (${intermediate.length} examples)\n`;
 readme += intermediate
   .map((e) => `- **${e.key}.genome** - ${e.title}`)
   .join("\n");
-readme += "\n\n### Advanced (" + advanced.length + " examples)\n";
+readme += `\n\n### Advanced (${advanced.length} examples)\n`;
 readme += advanced.map((e) => `- **${e.key}.genome** - ${e.title}`).join("\n");
 
 readme += `

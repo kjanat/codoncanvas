@@ -1,5 +1,5 @@
-import { readFileSync } from "fs";
-import { join } from "path";
+import { readFileSync } from "node:fs";
+import { join } from "node:path";
 import { beforeEach, describe, expect, test } from "vitest";
 import { CodonLexer } from "./lexer";
 import {
@@ -362,34 +362,34 @@ describe("Educational Validation Suite", () => {
 
     test("Codon map matches MVP specification", () => {
       // Control flow
-      expect(CODON_MAP["ATG"]).toBe(Opcode.START);
-      expect(CODON_MAP["TAA"]).toBe(Opcode.STOP);
-      expect(CODON_MAP["TAG"]).toBe(Opcode.STOP);
-      expect(CODON_MAP["TGA"]).toBe(Opcode.STOP);
+      expect(CODON_MAP.ATG).toBe(Opcode.START);
+      expect(CODON_MAP.TAA).toBe(Opcode.STOP);
+      expect(CODON_MAP.TAG).toBe(Opcode.STOP);
+      expect(CODON_MAP.TGA).toBe(Opcode.STOP);
 
       // Drawing primitives (CIRCLE family)
-      expect(CODON_MAP["GGA"]).toBe(Opcode.CIRCLE);
-      expect(CODON_MAP["GGC"]).toBe(Opcode.CIRCLE);
-      expect(CODON_MAP["GGG"]).toBe(Opcode.CIRCLE);
-      expect(CODON_MAP["GGT"]).toBe(Opcode.CIRCLE);
+      expect(CODON_MAP.GGA).toBe(Opcode.CIRCLE);
+      expect(CODON_MAP.GGC).toBe(Opcode.CIRCLE);
+      expect(CODON_MAP.GGG).toBe(Opcode.CIRCLE);
+      expect(CODON_MAP.GGT).toBe(Opcode.CIRCLE);
 
       // RECT family
-      expect(CODON_MAP["CCA"]).toBe(Opcode.RECT);
-      expect(CODON_MAP["CCC"]).toBe(Opcode.RECT);
-      expect(CODON_MAP["CCG"]).toBe(Opcode.RECT);
-      expect(CODON_MAP["CCT"]).toBe(Opcode.RECT);
+      expect(CODON_MAP.CCA).toBe(Opcode.RECT);
+      expect(CODON_MAP.CCC).toBe(Opcode.RECT);
+      expect(CODON_MAP.CCG).toBe(Opcode.RECT);
+      expect(CODON_MAP.CCT).toBe(Opcode.RECT);
 
       // Transform operations (TRANSLATE family)
-      expect(CODON_MAP["ACA"]).toBe(Opcode.TRANSLATE);
-      expect(CODON_MAP["ACC"]).toBe(Opcode.TRANSLATE);
-      expect(CODON_MAP["ACG"]).toBe(Opcode.TRANSLATE);
-      expect(CODON_MAP["ACT"]).toBe(Opcode.TRANSLATE);
+      expect(CODON_MAP.ACA).toBe(Opcode.TRANSLATE);
+      expect(CODON_MAP.ACC).toBe(Opcode.TRANSLATE);
+      expect(CODON_MAP.ACG).toBe(Opcode.TRANSLATE);
+      expect(CODON_MAP.ACT).toBe(Opcode.TRANSLATE);
 
       // Stack operations (PUSH family)
-      expect(CODON_MAP["GAA"]).toBe(Opcode.PUSH);
-      expect(CODON_MAP["GAG"]).toBe(Opcode.PUSH);
-      expect(CODON_MAP["GAC"]).toBe(Opcode.PUSH);
-      expect(CODON_MAP["GAT"]).toBe(Opcode.PUSH);
+      expect(CODON_MAP.GAA).toBe(Opcode.PUSH);
+      expect(CODON_MAP.GAG).toBe(Opcode.PUSH);
+      expect(CODON_MAP.GAC).toBe(Opcode.PUSH);
+      expect(CODON_MAP.GAT).toBe(Opcode.PUSH);
     });
 
     test("Redundancy pattern matches genetic code pedagogy", () => {

@@ -600,7 +600,7 @@ it("should generate challenges where identifyMutation matches correctAnswer", ()
 window.simulateAllShapes = () => {
   const shapes = ["CIRCLE", "RECT", "LINE", "TRIANGLE", "ELLIPSE"];
   let allUnlocked = [];
-  shapes.forEach(shape => {
+  shapes.forEach((shape) => {
     const unlocked = engine.trackShapeDrawn(shape);
     allUnlocked.push(...unlocked);
   });

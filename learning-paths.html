@@ -357,68 +357,72 @@
 
     <script type="module">
     let pathsData = null;
-    let currentPath = null;
-    let currentStepIndex = 0;
+let currentPath = null;
+let currentStepIndex = 0;
 
-    async function loadPaths() {
-      const response = await fetch("examples/learning-paths.json");
-      pathsData = await response.json();
-      renderPathSelector();
-    }
+async function loadPaths() {
+  const response = await fetch("examples/learning-paths.json");
+  pathsData = await response.json();
+  renderPathSelector();
+}
 
-    function renderPathSelector() {
-      const container = document.getElementById("pathSelector");
-      container.innerHTML = pathsData.paths.map(path => `
+function renderPathSelector() {
+  const container = document.getElementById("pathSelector");
+  container.innerHTML = pathsData.paths
+    .map(
+      (path) => `
         <div class="path-card" data-path-id="${path.id}">
           <div class="path-title">${path.title}</div>
           <div class="path-meta">
-            <span class="difficulty ${path.difficulty}">${
-        path.difficulty.replace(/-/g, " ")
-      }</span>
+            <span class="difficulty ${path.difficulty}">${path.difficulty.replace(
+              /-/g,
+              " ",
+            )}</span>
             <span>⏱ ${path.duration}</span>
           </div>
           <div class="path-description">${path.description}</div>
           <div class="objectives">
             <div class="objectives-title">Learning Objectives:</div>
             <ul>
-              ${
-        path.learningObjectives.map(obj => `<li>${obj}</li>`).join("")
-      }
+              ${path.learningObjectives
+                .map((obj) => `<li>${obj}</li>`)
+                .join("")}
             </ul>
           </div>
         </div>
-      `).join("");
+      `,
+    )
+    .join("");
 
-      // Add click handlers
-      document.querySelectorAll(".path-card").forEach(card => {
-        card.addEventListener("click", () => {
-          const pathId = card.dataset.pathId;
-          startPath(pathId);
-        });
-      });
-    }
+  // Add click handlers
+  document.querySelectorAll(".path-card").forEach((card) => {
+    card.addEventListener("click", () => {
+      const pathId = card.dataset.pathId;
+      startPath(pathId);
+    });
+  });
+}
 
-    function startPath(pathId) {
-      currentPath = pathsData.paths.find(p => p.id === pathId);
-      currentStepIndex = 0;
+function startPath(pathId) {
+  currentPath = pathsData.paths.find((p) => p.id === pathId);
+  currentStepIndex = 0;
 
-      // Hide selector, show viewer
-      document.getElementById("pathSelector").style.display = "none";
-      document.getElementById("pathViewer").classList.add("active");
+  // Hide selector, show viewer
+  document.getElementById("pathSelector").style.display = "none";
+  document.getElementById("pathViewer").classList.add("active");
 
-      // Set total steps
-      document.getElementById("totalSteps").textContent =
-        currentPath.steps.length;
+  // Set total steps
+  document.getElementById("totalSteps").textContent = currentPath.steps.length;
 
-      // Render first step
-      renderStep();
-    }
+  // Render first step
+  renderStep();
+}
 
-    function renderStep() {
-      const step = currentPath.steps[currentStepIndex];
-      const stepContent = document.getElementById("stepContent");
+function renderStep() {
+  const step = currentPath.steps[currentStepIndex];
+  const stepContent = document.getElementById("stepContent");
 
-      stepContent.innerHTML = `
+  stepContent.innerHTML = `
         <div class="step-header">
           <h2 class="step-title">${step.title}</h2>
           <div class="step-concept">${step.concept}</div>
@@ -436,104 +440,95 @@
           <strong>🧪 Try It:</strong> ${step.tryIt}
         </div>
 
-        <a href="index.html?example=${
-        step.genome.replace(".genome", "")
-      }" class="genome-link" target="_blank">
+        <a href="index.html?example=${step.genome.replace(
+          ".genome",
+          "",
+        )}" class="genome-link" target="_blank">
           🧬 Open ${step.genome} in Playground →
         </a>
       `;
 
-      // Update progress
-      const progress = ((currentStepIndex + 1) / currentPath.steps.length) *
-        100;
-      document.getElementById("progressFill").style.width = `${progress}%`;
-      document.getElementById("currentStep").textContent =
-        currentStepIndex + 1;
+  // Update progress
+  const progress = ((currentStepIndex + 1) / currentPath.steps.length) * 100;
+  document.getElementById("progressFill").style.width = `${progress}%`;
+  document.getElementById("currentStep").textContent = currentStepIndex + 1;
 
-      // Update navigation buttons
-      document.getElementById("prevButton").disabled =
-        currentStepIndex === 0;
-      document.getElementById("nextButton").disabled =
-        currentStepIndex === currentPath.steps.length - 1;
+  // Update navigation buttons
+  document.getElementById("prevButton").disabled = currentStepIndex === 0;
+  document.getElementById("nextButton").disabled =
+    currentStepIndex === currentPath.steps.length - 1;
 
-      // Change "Next" to "Complete" on last step
-      if (currentStepIndex === currentPath.steps.length - 1) {
-        document.getElementById("nextButton").textContent =
-          "✓ Complete Path";
-      } else {
-        document.getElementById("nextButton").textContent = "Next →";
-      }
-    }
+  // Change "Next" to "Complete" on last step
+  if (currentStepIndex === currentPath.steps.length - 1) {
+    document.getElementById("nextButton").textContent = "✓ Complete Path";
+  } else {
+    document.getElementById("nextButton").textContent = "Next →";
+  }
+}
 
-    function nextStep() {
-      if (currentStepIndex < currentPath.steps.length - 1) {
-        currentStepIndex++;
-        renderStep();
-        window.scrollTo({ top: 0, behavior: "smooth" });
-      } else {
-        // Path completed
-        alert(
-          `🎉 Congratulations! You've completed the "${currentPath.title}" learning path!\n\nYou've learned:\n${
-            currentPath.learningObjectives.map((obj, i) =>
-              `${i + 1}. ${obj}`
-            ).join("\n")
-          }\n\nExplore another path or start creating your own genomes!`,
-        );
-        backToSelector();
-      }
-    }
-
-    function prevStep() {
-      if (currentStepIndex > 0) {
-        currentStepIndex--;
-        renderStep();
-        window.scrollTo({ top: 0, behavior: "smooth" });
-      }
-    }
-
-    function backToSelector() {
-      document.getElementById("pathViewer").classList.remove("active");
-      document.getElementById("pathSelector").style.display = "grid";
-      currentPath = null;
-      currentStepIndex = 0;
-    }
-
-    // Event listeners
-    document.getElementById("nextButton").addEventListener(
-      "click",
-      nextStep,
+function nextStep() {
+  if (currentStepIndex < currentPath.steps.length - 1) {
+    currentStepIndex++;
+    renderStep();
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  } else {
+    // Path completed
+    alert(
+      `🎉 Congratulations! You've completed the "${currentPath.title}" learning path!\n\nYou've learned:\n${currentPath.learningObjectives
+        .map((obj, i) => `${i + 1}. ${obj}`)
+        .join(
+          "\n",
+        )}\n\nExplore another path or start creating your own genomes!`,
     );
-    document.getElementById("prevButton").addEventListener(
-      "click",
-      prevStep,
-    );
-    document.getElementById("backButton").addEventListener("click", (e) => {
-      e.preventDefault();
-      if (
-        confirm(
-          "Are you sure you want to exit this learning path? Your progress will not be saved.",
-        )
-      ) {
-        backToSelector();
-      }
-    });
+    backToSelector();
+  }
+}
 
-    // Keyboard navigation
-    document.addEventListener("keydown", (e) => {
-      if (currentPath) {
-        if (
-          e.key === "ArrowRight" &&
-          currentStepIndex < currentPath.steps.length - 1
-        ) {
-          nextStep();
-        } else if (e.key === "ArrowLeft" && currentStepIndex > 0) {
-          prevStep();
-        }
-      }
-    });
+function prevStep() {
+  if (currentStepIndex > 0) {
+    currentStepIndex--;
+    renderStep();
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }
+}
 
-    // Initialize
-    loadPaths();
+function backToSelector() {
+  document.getElementById("pathViewer").classList.remove("active");
+  document.getElementById("pathSelector").style.display = "grid";
+  currentPath = null;
+  currentStepIndex = 0;
+}
+
+// Event listeners
+document.getElementById("nextButton").addEventListener("click", nextStep);
+document.getElementById("prevButton").addEventListener("click", prevStep);
+document.getElementById("backButton").addEventListener("click", (e) => {
+  e.preventDefault();
+  if (
+    confirm(
+      "Are you sure you want to exit this learning path? Your progress will not be saved.",
+    )
+  ) {
+    backToSelector();
+  }
+});
+
+// Keyboard navigation
+document.addEventListener("keydown", (e) => {
+  if (currentPath) {
+    if (
+      e.key === "ArrowRight" &&
+      currentStepIndex < currentPath.steps.length - 1
+    ) {
+      nextStep();
+    } else if (e.key === "ArrowLeft" && currentStepIndex > 0) {
+      prevStep();
+    }
+  }
+});
+
+// Initialize
+loadPaths();
     </script>
   </body>
 </html>

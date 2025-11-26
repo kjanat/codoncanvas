@@ -5,7 +5,6 @@
 
 import {
   editor,
-  fixAllBtn,
   linterMessages,
   linterPanel,
   linterToggle,
@@ -70,12 +69,12 @@ function canAutoFix(errorMessage: string): boolean {
 function autoFixError(errorMessage: string, source: string): string | null {
   // Missing START codon
   if (/Program should begin with START codon/.test(errorMessage)) {
-    return "ATG " + source.trim();
+    return `ATG ${source.trim()}`;
   }
 
   // Missing STOP codon
   if (/Program should end with STOP codon/.test(errorMessage)) {
-    return source.trim() + " TAA";
+    return `${source.trim()} TAA`;
   }
 
   // Mid-triplet break - remove all whitespace and re-space by triplets
@@ -92,7 +91,7 @@ function autoFixError(errorMessage: string, source: string): string | null {
   if (/Source length (\d+) is not divisible by 3/.test(errorMessage)) {
     const match = errorMessage.match(/Missing (\d+) bases/);
     if (match) {
-      const missing = parseInt(match[1]);
+      const missing = parseInt(match[1], 10);
       return source.trim() + "A".repeat(missing);
     }
   }

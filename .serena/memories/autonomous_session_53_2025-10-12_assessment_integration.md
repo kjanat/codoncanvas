@@ -57,7 +57,7 @@ import { AssessmentUI } from "./assessment-ui";
 **DOM Elements** (lines 84-86):
 
 ```typescript
-const modeToggleBtns = document.querySelectorAll("input[name=\"mode\"]");
+const modeToggleBtns = document.querySelectorAll('input[name="mode"]');
 const playgroundContainer = document.getElementById("playgroundContainer");
 const assessmentContainer = document.getElementById("assessmentContainer");
 ```
