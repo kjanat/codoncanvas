@@ -1,4 +1,4 @@
-import { describe, expect, test } from "vitest";
+import { describe, expect, test } from "bun:test";
 import { exportGenome, importGenome, validateGenomeFile } from "./genome-io";
 
 describe("Genome I/O", () => {

@@ -3,7 +3,7 @@
  * Validates mutation identification, challenge generation, and scoring logic.
  */
 
-import { beforeEach, describe, expect, it } from "vitest";
+import { beforeEach, describe, expect, test } from "bun:test";
 import type {
   AssessmentResult,
   Challenge,
@@ -19,7 +19,7 @@ describe("AssessmentEngine", () => {
   });
 
   describe("identifyMutation", () => {
-    it("should identify silent mutations (same opcode)", () => {
+    test("should identify silent mutations (same opcode)", () => {
       const original = "ATG GGA TAA"; // START CIRCLE STOP
       const mutated = "ATG GGC TAA"; // START CIRCLE(synonym) STOP
 
@@ -28,7 +28,7 @@ describe("AssessmentEngine", () => {
       expect(result).toBe("silent");
     });
 
-    it("should identify missense mutations (different opcode)", () => {
+    test("should identify missense mutations (different opcode)", () => {
       const original = "ATG GGA TAA"; // START CIRCLE STOP
       const mutated = "ATG GCA TAA"; // START TRIANGLE STOP
 
@@ -37,7 +37,7 @@ describe("AssessmentEngine", () => {
       expect(result).toBe("missense");
     });
 
-    it("should identify nonsense mutations (introduces STOP)", () => {
+    test("should identify nonsense mutations (introduces STOP)", () => {
       const original = "ATG GGA CCA TAA"; // START CIRCLE RECT STOP
       const mutated = "ATG GGA TAG TAA"; // START CIRCLE STOP(early) STOP
 
@@ -46,7 +46,7 @@ describe("AssessmentEngine", () => {
       expect(result).toBe("nonsense");
     });
 
-    it("should identify frameshift mutations (length not divisible by 3)", () => {
+    test("should identify frameshift mutations (length not divisible by 3)", () => {
       const original = "ATGGGATAAA"; // 9 bases
       const mutated = "ATGGGTAAA"; // 8 bases (deleted one A → frameshift)
 
@@ -55,7 +55,7 @@ describe("AssessmentEngine", () => {
       expect(result).toBe("frameshift");
     });
 
-    it("should identify insertion mutations (length +3)", () => {
+    test("should identify insertion mutations (length +3)", () => {
       const original = "ATG GGA TAA"; // START CIRCLE STOP
       const mutated = "ATG GGA CCA TAA"; // START CIRCLE RECT STOP
 
@@ -64,7 +64,7 @@ describe("AssessmentEngine", () => {
       expect(result).toBe("insertion");
     });
 
-    it("should identify deletion mutations (length -3)", () => {
+    test("should identify deletion mutations (length -3)", () => {
       const original = "ATG GGA CCA TAA"; // START CIRCLE RECT STOP
       const mutated = "ATG GGA TAA"; // START CIRCLE STOP
 
@@ -73,7 +73,7 @@ describe("AssessmentEngine", () => {
       expect(result).toBe("deletion");
     });
 
-    it("should handle genomes with whitespace and comments", () => {
+    test("should handle genomes with whitespace and comments", () => {
       const original = `
         ATG     ; Start codon
         GGA     ; Draw circle
@@ -90,7 +90,7 @@ describe("AssessmentEngine", () => {
       expect(result).toBe("silent");
     });
 
-    it("should handle case-insensitive genomes", () => {
+    test("should handle case-insensitive genomes", () => {
       const original = "atg gga taa";
       const mutated = "atg ggc taa";
 
@@ -99,7 +99,7 @@ describe("AssessmentEngine", () => {
       expect(result).toBe("silent");
     });
 
-    it("should identify frameshift with +1 base", () => {
+    test("should identify frameshift with +1 base", () => {
       const original = "ATGGGATAAA"; // 9 bases
       const mutated = "ATGGGATAAA C"; // 10 bases (not divisible by 3)
 
@@ -108,7 +108,7 @@ describe("AssessmentEngine", () => {
       expect(result).toBe("frameshift");
     });
 
-    it("should identify frameshift with -2 bases", () => {
+    test("should identify frameshift with -2 bases", () => {
       const original = "ATGGGATAAA"; // 9 bases
       const mutated = "ATGGATAA"; // 7 bases (not divisible by 3)
 
@@ -117,7 +117,7 @@ describe("AssessmentEngine", () => {
       expect(result).toBe("frameshift");
     });
 
-    it("should identify insertion with +6 bases", () => {
+    test("should identify insertion with +6 bases", () => {
       const original = "ATG GGA TAA"; // 9 bases
       const mutated = "ATG GGA CCA CCA TAA"; // 15 bases (+6, divisible by 3)
 
@@ -128,7 +128,7 @@ describe("AssessmentEngine", () => {
   });
 
   describe("generateChallenge", () => {
-    it("should generate easy challenges", () => {
+    test("should generate easy challenges", () => {
       const challenge = engine.generateChallenge("easy");
 
       expect(challenge.id).toContain("challenge-");
@@ -139,7 +139,7 @@ describe("AssessmentEngine", () => {
       expect(challenge.hint).toBeTruthy(); // Easy challenges have hints
     });
 
-    it("should generate medium challenges", () => {
+    test("should generate medium challenges", () => {
       const challenge = engine.generateChallenge("medium");
 
       expect(challenge.difficulty).toBe("medium");
@@ -149,7 +149,7 @@ describe("AssessmentEngine", () => {
       expect(challenge.hint).toBeTruthy(); // Medium challenges have hints
     });
 
-    it("should generate hard challenges", () => {
+    test("should generate hard challenges", () => {
       const challenge = engine.generateChallenge("hard");
 
       expect(challenge.difficulty).toBe("hard");
@@ -164,21 +164,21 @@ describe("AssessmentEngine", () => {
       expect(challenge.hint).toBeUndefined(); // Hard challenges have no hints
     });
 
-    it("should generate unique challenge IDs", () => {
+    test("should generate unique challenge IDs", () => {
       const challenge1 = engine.generateChallenge("easy");
       const challenge2 = engine.generateChallenge("easy");
 
       expect(challenge1.id).not.toBe(challenge2.id);
     });
 
-    it("should generate valid genomes (start with ATG, end with STOP)", () => {
+    test("should generate valid genomes (start with ATG, end with STOP)", () => {
       const challenge = engine.generateChallenge("medium");
 
       expect(challenge.original).toMatch(/^ATG/);
       expect(challenge.original).toMatch(/(TAA|TAG|TGA)$/);
     });
 
-    it("should generate challenges where identifyMutation matches correctAnswer", () => {
+    test("should generate challenges where identifyMutation matches correctAnswer", () => {
       for (let i = 0; i < 20; i++) {
         const difficulty = ["easy", "medium", "hard"][i % 3] as
           | "easy"
@@ -195,7 +195,7 @@ describe("AssessmentEngine", () => {
       }
     });
 
-    it("should include mutation position", () => {
+    test("should include mutation position", () => {
       const challenge = engine.generateChallenge("easy");
 
       expect(challenge.mutationPosition).toBeGreaterThanOrEqual(0);
@@ -217,7 +217,7 @@ describe("AssessmentEngine", () => {
       };
     });
 
-    it("should score correct answers as correct", () => {
+    test("should score correct answers as correct", () => {
       const result = engine.scoreResponse(challenge, "silent");
 
       expect(result.correct).toBe(true);
@@ -226,7 +226,7 @@ describe("AssessmentEngine", () => {
       expect(result.feedback).toContain("Correct");
     });
 
-    it("should score incorrect answers as incorrect", () => {
+    test("should score incorrect answers as incorrect", () => {
       const result = engine.scoreResponse(challenge, "missense");
 
       expect(result.correct).toBe(false);
@@ -235,27 +235,27 @@ describe("AssessmentEngine", () => {
       expect(result.feedback).toContain("silent");
     });
 
-    it("should include timestamp", () => {
+    test("should include timestamp", () => {
       const result = engine.scoreResponse(challenge, "silent");
 
       expect(result.timestamp).toBeInstanceOf(Date);
     });
 
-    it("should provide detailed feedback for correct answers", () => {
+    test("should provide detailed feedback for correct answers", () => {
       const result = engine.scoreResponse(challenge, "silent");
 
       expect(result.feedback).toContain("silent mutation");
       expect(result.feedback).toContain("same opcode");
     });
 
-    it("should provide corrective feedback for incorrect answers", () => {
+    test("should provide corrective feedback for incorrect answers", () => {
       const result = engine.scoreResponse(challenge, "missense");
 
       expect(result.feedback).toContain('correct answer is "silent"');
       expect(result.feedback).toContain("Silent mutations");
     });
 
-    it("should handle all mutation types correctly", () => {
+    test("should handle all mutation types correctly", () => {
       const types: MutationType[] = [
         "silent",
         "missense",
@@ -332,20 +332,20 @@ describe("AssessmentEngine", () => {
       ];
     });
 
-    it("should calculate total attempts and correct answers", () => {
+    test("should calculate total attempts and correct answers", () => {
       const progress = engine.calculateProgress(results);
 
       expect(progress.totalAttempts).toBe(3);
       expect(progress.correctAnswers).toBe(2);
     });
 
-    it("should calculate accuracy percentage", () => {
+    test("should calculate accuracy percentage", () => {
       const progress = engine.calculateProgress(results);
 
       expect(progress.accuracy).toBeCloseTo(66.67, 1);
     });
 
-    it("should track performance by mutation type", () => {
+    test("should track performance by mutation type", () => {
       const progress = engine.calculateProgress(results);
 
       expect(progress.byType.silent.total).toBe(1);
@@ -356,7 +356,7 @@ describe("AssessmentEngine", () => {
       expect(progress.byType.nonsense.correct).toBe(1);
     });
 
-    it("should track performance by difficulty", () => {
+    test("should track performance by difficulty", () => {
       const progress = engine.calculateProgress(results);
 
       expect(progress.byDifficulty.easy.total).toBe(1);
@@ -367,7 +367,7 @@ describe("AssessmentEngine", () => {
       expect(progress.byDifficulty.hard.correct).toBe(1);
     });
 
-    it("should handle empty results", () => {
+    test("should handle empty results", () => {
       const progress = engine.calculateProgress([]);
 
       expect(progress.totalAttempts).toBe(0);
@@ -375,14 +375,14 @@ describe("AssessmentEngine", () => {
       expect(progress.accuracy).toBe(0);
     });
 
-    it("should handle 100% accuracy", () => {
+    test("should handle 100% accuracy", () => {
       const perfectResults = results.map((r) => ({ ...r, correct: true }));
       const progress = engine.calculateProgress(perfectResults);
 
       expect(progress.accuracy).toBe(100);
     });
 
-    it("should handle 0% accuracy", () => {
+    test("should handle 0% accuracy", () => {
       const failedResults = results.map((r) => ({ ...r, correct: false }));
       const progress = engine.calculateProgress(failedResults);
 
@@ -391,7 +391,7 @@ describe("AssessmentEngine", () => {
   });
 
   describe("Integration tests", () => {
-    it("should complete a full assessment workflow", () => {
+    test("should complete a full assessment workflow", () => {
       // Generate challenge
       const challenge = engine.generateChallenge("medium");
 
@@ -408,7 +408,7 @@ describe("AssessmentEngine", () => {
       expect(result.feedback).toContain("Correct");
     });
 
-    it("should handle multiple challenges and calculate progress", () => {
+    test("should handle multiple challenges and calculate progress", () => {
       const results: AssessmentResult[] = [];
 
       // Generate and answer 10 challenges

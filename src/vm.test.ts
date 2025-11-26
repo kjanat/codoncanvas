@@ -1,4 +1,4 @@
-import { beforeEach, describe, expect, test } from "vitest";
+import { beforeEach, describe, expect, test } from "bun:test";
 import { CodonLexer } from "./lexer";
 import type { Renderer } from "./renderer";
 import type { Codon } from "./types";

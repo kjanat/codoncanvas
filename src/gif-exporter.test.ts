@@ -1,4 +1,4 @@
-import { beforeEach, describe, expect, it } from "vitest";
+import { beforeEach, describe, expect, test } from "bun:test";
 import { GifExporter } from "./gif-exporter";
 
 describe("GifExporter", () => {
@@ -9,36 +9,36 @@ describe("GifExporter", () => {
   });
 
   describe("Constructor", () => {
-    it("should use default values when no options provided", () => {
+    test("should use default values when no options provided", () => {
       const exp = new GifExporter();
       expect(exp).toBeDefined();
     });
 
-    it("should accept custom width and height", () => {
+    test("should accept custom width and height", () => {
       const exp = new GifExporter({ width: 800, height: 600 });
       expect(exp).toBeDefined();
     });
 
-    it("should accept custom FPS and quality", () => {
+    test("should accept custom FPS and quality", () => {
       const exp = new GifExporter({ fps: 8, quality: 5 });
       expect(exp).toBeDefined();
     });
   });
 
   describe("setFps", () => {
-    it("should set FPS within valid range", () => {
+    test("should set FPS within valid range", () => {
       exporter.setFps(10);
       // No error should be thrown
       expect(true).toBe(true);
     });
 
-    it("should clamp FPS to minimum 1", () => {
+    test("should clamp FPS to minimum 1", () => {
       exporter.setFps(0);
       // Should clamp to 1, no error
       expect(true).toBe(true);
     });
 
-    it("should clamp FPS to maximum 30", () => {
+    test("should clamp FPS to maximum 30", () => {
       exporter.setFps(50);
       // Should clamp to 30, no error
       expect(true).toBe(true);
@@ -46,17 +46,17 @@ describe("GifExporter", () => {
   });
 
   describe("setQuality", () => {
-    it("should set quality within valid range", () => {
+    test("should set quality within valid range", () => {
       exporter.setQuality(15);
       expect(true).toBe(true);
     });
 
-    it("should clamp quality to minimum 1", () => {
+    test("should clamp quality to minimum 1", () => {
       exporter.setQuality(0);
       expect(true).toBe(true);
     });
 
-    it("should clamp quality to maximum 30", () => {
+    test("should clamp quality to maximum 30", () => {
       exporter.setQuality(50);
       expect(true).toBe(true);
     });

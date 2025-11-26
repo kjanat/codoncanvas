@@ -2,7 +2,7 @@
  * @fileoverview Tests for codon usage analyzer
  */
 
-import { describe, expect, it } from "vitest";
+import { describe, expect, test } from "bun:test";
 import {
   analyzeCodonUsage,
   compareAnalyses,
@@ -12,7 +12,7 @@ import type { CodonToken } from "./types";
 
 describe("CodonAnalyzer", () => {
   describe("analyzeCodonUsage", () => {
-    it("should count total codons correctly", () => {
+    test("should count total codons correctly", () => {
       const tokens: CodonToken[] = [
         { text: "ATG", position: 0, line: 1 },
         { text: "GGA", position: 3, line: 1 },
@@ -23,7 +23,7 @@ describe("CodonAnalyzer", () => {
       expect(analysis.totalCodons).toBe(3);
     });
 
-    it("should calculate GC content correctly", () => {
+    test("should calculate GC content correctly", () => {
       // GGA has 2 Gs and 1 A → GC% = 2/3 = 66.67%
       const tokens: CodonToken[] = [{ text: "GGA", position: 0, line: 1 }];
 
@@ -32,7 +32,7 @@ describe("CodonAnalyzer", () => {
       expect(analysis.atContent).toBeCloseTo(33.33, 1);
     });
 
-    it("should handle RNA codons (normalize U→T)", () => {
+    test("should handle RNA codons (normalize U→T)", () => {
       const tokens: CodonToken[] = [
         { text: "AUG", position: 0, line: 1 }, // RNA start codon
         { text: "GGA", position: 3, line: 1 },
@@ -45,7 +45,7 @@ describe("CodonAnalyzer", () => {
       expect(analysis.opcodeDistribution.get("STOP")).toBe(1);
     });
 
-    it("should count codon frequency correctly", () => {
+    test("should count codon frequency correctly", () => {
       const tokens: CodonToken[] = [
         { text: "GGA", position: 0, line: 1 },
         { text: "GGA", position: 3, line: 1 },
@@ -59,7 +59,7 @@ describe("CodonAnalyzer", () => {
       expect(analysis.codonFrequency.get("CCA")).toBe(1);
     });
 
-    it("should calculate opcode distribution correctly", () => {
+    test("should calculate opcode distribution correctly", () => {
       const tokens: CodonToken[] = [
         { text: "ATG", position: 0, line: 1 }, // START
         { text: "GGA", position: 3, line: 1 }, // CIRCLE
@@ -75,7 +75,7 @@ describe("CodonAnalyzer", () => {
       expect(analysis.opcodeDistribution.get("STOP")).toBe(1);
     });
 
-    it("should calculate opcode family percentages", () => {
+    test("should calculate opcode family percentages", () => {
       const tokens: CodonToken[] = [
         { text: "ATG", position: 0, line: 1 }, // control
         { text: "GGA", position: 3, line: 1 }, // drawing
@@ -88,8 +88,8 @@ describe("CodonAnalyzer", () => {
 
       const analysis = analyzeCodonUsage(tokens);
       // 7 total codons: 2 control, 3 drawing (2 GGA count), 1 transform, 3 stack (GAA + AAA both map to opcodes)
-      // Wait - need to check: does AAA map to LINE or is it treated as literal?
-      // AAA maps to LINE opcode in CODON_MAP, so it's a drawing opcode!
+      // Wait - need to check: does AAA map to LINE or is test treated as literal?
+      // AAA maps to LINE opcode in CODON_MAP, so test's a drawing opcode!
       // Corrected: 2 control, 3 drawing (GGA, GGA, AAA=LINE), 1 transform, 1 stack (GAA=PUSH)
       expect(analysis.opcodeFamilies.control).toBeCloseTo(28.57, 1); // 2/7
       expect(analysis.opcodeFamilies.drawing).toBeCloseTo(42.86, 1); // 3/7 (GGA+GGA+AAA)
@@ -97,7 +97,7 @@ describe("CodonAnalyzer", () => {
       expect(analysis.opcodeFamilies.stack).toBeCloseTo(14.29, 1); // 1/7 (GAA only)
     });
 
-    it("should identify top codons", () => {
+    test("should identify top codons", () => {
       const tokens: CodonToken[] = [
         { text: "GGA", position: 0, line: 1 },
         { text: "GGA", position: 3, line: 1 },
@@ -114,7 +114,7 @@ describe("CodonAnalyzer", () => {
       expect(analysis.topCodons[0].percentage).toBeCloseTo(50, 1);
     });
 
-    it("should calculate genome signature metrics", () => {
+    test("should calculate genome signature metrics", () => {
       const tokens: CodonToken[] = [
         { text: "ATG", position: 0, line: 1 }, // control
         { text: "GGA", position: 3, line: 1 }, // drawing
@@ -128,7 +128,7 @@ describe("CodonAnalyzer", () => {
       expect(analysis.signature.complexity).toBeGreaterThan(0); // unique opcodes / total
     });
 
-    it("should calculate codon family usage", () => {
+    test("should calculate codon family usage", () => {
       const tokens: CodonToken[] = [
         { text: "GGA", position: 0, line: 1 }, // GG* family
         { text: "GGC", position: 3, line: 1 }, // GG* family
@@ -142,7 +142,7 @@ describe("CodonAnalyzer", () => {
   });
 
   describe("compareAnalyses", () => {
-    it("should return 100 for identical analyses", () => {
+    test("should return 100 for identical analyses", () => {
       const tokens: CodonToken[] = [
         { text: "ATG", position: 0, line: 1 },
         { text: "GGA", position: 3, line: 1 },
@@ -156,7 +156,7 @@ describe("CodonAnalyzer", () => {
       expect(similarity).toBeCloseTo(100, 0);
     });
 
-    it("should return lower score for different analyses", () => {
+    test("should return lower score for different analyses", () => {
       const tokens1: CodonToken[] = [
         { text: "ATG", position: 0, line: 1 },
         { text: "GGA", position: 3, line: 1 }, // drawing-heavy
@@ -183,7 +183,7 @@ describe("CodonAnalyzer", () => {
   });
 
   describe("formatAnalysis", () => {
-    it("should produce readable text output", () => {
+    test("should produce readable text output", () => {
       const tokens: CodonToken[] = [
         { text: "ATG", position: 0, line: 1 },
         { text: "GGA", position: 3, line: 1 },
@@ -203,7 +203,7 @@ describe("CodonAnalyzer", () => {
   });
 
   describe("Real-world genome examples", () => {
-    it("should analyze a simple circle genome", () => {
+    test("should analyze a simple circle genome", () => {
       const tokens: CodonToken[] = [
         { text: "ATG", position: 0, line: 1 }, // START
         { text: "GAA", position: 3, line: 1 }, // PUSH
@@ -221,7 +221,7 @@ describe("CodonAnalyzer", () => {
       expect(analysis.opcodeFamilies.stack).toBeGreaterThan(0);
     });
 
-    it("should analyze a complex multi-shape genome", () => {
+    test("should analyze a complex multi-shape genome", () => {
       const tokens: CodonToken[] = [
         { text: "ATG", position: 0, line: 1 }, // START
         { text: "GAA", position: 3, line: 1 }, // PUSH

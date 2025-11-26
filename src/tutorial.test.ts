@@ -1,4 +1,4 @@
-import { beforeEach, describe, expect, it } from "vitest";
+import { beforeEach, describe, expect, test } from "bun:test";
 import {
   evolutionTutorial,
   helloCircleTutorial,
@@ -35,11 +35,11 @@ describe("TutorialManager", () => {
   });
 
   describe("initialization", () => {
-    it("should start uncompleted", () => {
+    test("should start uncompleted", () => {
       expect(manager.isCompleted()).toBe(false);
     });
 
-    it("should start tutorial with config", () => {
+    test("should start tutorial with config", () => {
       manager.start(helloCircleTutorial);
       const step = manager.getCurrentStep();
       expect(step).toBeTruthy();
@@ -52,21 +52,21 @@ describe("TutorialManager", () => {
       manager.start(helloCircleTutorial);
     });
 
-    it("should get progress correctly", () => {
+    test("should get progress correctly", () => {
       const progress = manager.getProgress();
       expect(progress.current).toBe(0);
       expect(progress.total).toBe(6);
       expect(progress.percent).toBe(0);
     });
 
-    it("should move to next step when validation passes", () => {
+    test("should move to next step when validation passes", () => {
       // First step has no validation
       const success = manager.nextStep("");
       expect(success).toBe(true);
       expect(manager.getCurrentStep()?.id).toBe("start-codon");
     });
 
-    it("should not advance if validation fails", () => {
+    test("should not advance if validation fails", () => {
       manager.nextStep(""); // Move to step 1
       const currentStep = manager.getCurrentStep();
 
@@ -76,7 +76,7 @@ describe("TutorialManager", () => {
       expect(manager.getCurrentStep()).toEqual(currentStep);
     });
 
-    it("should advance when validation passes", () => {
+    test("should advance when validation passes", () => {
       manager.nextStep(""); // Move to step 1 (start-codon)
 
       // Correct code for step 1
@@ -85,7 +85,7 @@ describe("TutorialManager", () => {
       expect(manager.getCurrentStep()?.id).toBe("push-value");
     });
 
-    it("should move backwards", () => {
+    test("should move backwards", () => {
       manager.nextStep("");
       manager.nextStep("ATG");
 
@@ -93,7 +93,7 @@ describe("TutorialManager", () => {
       expect(manager.getCurrentStep()?.id).toBe("start-codon");
     });
 
-    it("should not go before first step", () => {
+    test("should not go before first step", () => {
       manager.previousStep();
       expect(manager.getCurrentStep()?.id).toBe("welcome");
     });
@@ -105,19 +105,19 @@ describe("TutorialManager", () => {
       manager.nextStep(""); // Move to step 1
     });
 
-    it("should validate case-insensitively", () => {
+    test("should validate case-insensitively", () => {
       expect(manager.validateStep("atg")).toBe(true);
       expect(manager.validateStep("ATG")).toBe(true);
       expect(manager.validateStep("AtG")).toBe(true);
     });
 
-    it("should validate with whitespace", () => {
+    test("should validate with whitespace", () => {
       expect(manager.validateStep("  ATG  ")).toBe(true);
       expect(manager.validateStep("ATG   ")).toBe(true);
       expect(manager.validateStep("\n\nATG\n")).toBe(true);
     });
 
-    it("should validate partial matches", () => {
+    test("should validate partial matches", () => {
       manager.nextStep("ATG"); // Move to push-value step (expects "ATG GAA AGG")
 
       // Should allow extra content as long as expected is present
@@ -131,7 +131,7 @@ describe("TutorialManager", () => {
       manager.start(helloCircleTutorial);
     });
 
-    it("should mark as completed when all steps finished", () => {
+    test("should mark as completed when all steps finished", () => {
       // Complete all steps
       manager.nextStep(""); // welcome
       manager.nextStep("ATG"); // start-codon
@@ -144,14 +144,14 @@ describe("TutorialManager", () => {
       expect(manager.getCurrentStep()).toBeNull();
     });
 
-    it("should persist completion in localStorage", () => {
+    test("should persist completion in localStorage", () => {
       manager.markCompleted();
 
       const newManager = new TutorialManager("test_tutorial");
       expect(newManager.isCompleted()).toBe(true);
     });
 
-    it("should allow reset", () => {
+    test("should allow reset", () => {
       manager.markCompleted();
       manager.reset();
 
@@ -166,7 +166,7 @@ describe("TutorialManager", () => {
       manager.start(helloCircleTutorial);
     });
 
-    it("should mark as completed when skipped", () => {
+    test("should mark as completed when skipped", () => {
       manager.skip();
       expect(manager.isCompleted()).toBe(true);
     });
@@ -177,7 +177,7 @@ describe("TutorialManager", () => {
       manager.start(helloCircleTutorial);
     });
 
-    it("should call onStepChange callback", () => {
+    test("should call onStepChange callback", () => {
       let called = false;
       let stepNumber = -1;
 
@@ -192,7 +192,7 @@ describe("TutorialManager", () => {
       expect(stepNumber).toBe(1);
     });
 
-    it("should call onComplete callback", () => {
+    test("should call onComplete callback", () => {
       let called = false;
 
       manager.onCompleteCallback(() => {
@@ -207,11 +207,11 @@ describe("TutorialManager", () => {
 });
 
 describe("helloCircleTutorial", () => {
-  it("should have 6 steps", () => {
+  test("should have 6 steps", () => {
     expect(helloCircleTutorial.steps).toHaveLength(6);
   });
 
-  it("should have correct step order", () => {
+  test("should have correct step order", () => {
     const stepIds = helloCircleTutorial.steps.map((s) => s.id);
     expect(stepIds).toEqual([
       "welcome",
@@ -223,7 +223,7 @@ describe("helloCircleTutorial", () => {
     ]);
   });
 
-  it("should have validation for code steps", () => {
+  test("should have validation for code steps", () => {
     const codeSteps = helloCircleTutorial.steps.filter((s) => s.expectedCode);
     expect(codeSteps.length).toBeGreaterThan(0);
 
@@ -236,11 +236,11 @@ describe("helloCircleTutorial", () => {
 });
 
 describe("mutationTutorial", () => {
-  it("should have 6 steps", () => {
+  test("should have 6 steps", () => {
     expect(mutationTutorial.steps).toHaveLength(6);
   });
 
-  it("should have correct step order", () => {
+  test("should have correct step order", () => {
     const stepIds = mutationTutorial.steps.map((s) => s.id);
     expect(stepIds).toEqual([
       "welcome",
@@ -252,7 +252,7 @@ describe("mutationTutorial", () => {
     ]);
   });
 
-  it("should have custom validation functions", () => {
+  test("should have custom validation functions", () => {
     const stepsWithValidation = mutationTutorial.steps.filter(
       (s) => s.validationFn,
     );
@@ -269,12 +269,12 @@ describe("mutationTutorial", () => {
       manager.nextStep(""); // Skip welcome
     });
 
-    it("should validate GGC codon", () => {
+    test("should validate GGC codon", () => {
       const result = manager.validateStep("ATG GAA AGG GGC TAA");
       expect(result).toBe(true);
     });
 
-    it("should reject if missing GGC", () => {
+    test("should reject if missing GGC", () => {
       const result = manager.validateStep("ATG GAA AGG GGA TAA");
       expect(result).toBe(false);
     });
@@ -291,12 +291,12 @@ describe("mutationTutorial", () => {
       manager.nextStep("ATG GAA AGG GGC TAA"); // Complete silent
     });
 
-    it("should validate GCA codon", () => {
+    test("should validate GCA codon", () => {
       const result = manager.validateStep("ATG GAA AGG GCA TAA");
       expect(result).toBe(true);
     });
 
-    it("should reject if has GGC instead", () => {
+    test("should reject if has GGC instead", () => {
       const result = manager.validateStep("ATG GAA AGG GGC TAA");
       expect(result).toBe(false);
     });
@@ -314,12 +314,12 @@ describe("mutationTutorial", () => {
       manager.nextStep("ATG GAA AGG GCA TAA"); // missense
     });
 
-    it("should validate premature TAA", () => {
+    test("should validate premature TAA", () => {
       const result = manager.validateStep("ATG GAA AGG TAA");
       expect(result).toBe(true);
     });
 
-    it("should reject if still has GCA", () => {
+    test("should reject if still has GCA", () => {
       const result = manager.validateStep("ATG GAA AGG GCA TAA");
       expect(result).toBe(false);
     });
@@ -339,22 +339,22 @@ describe("mutationTutorial", () => {
       manager.nextStep("ATG GAA AGG TAA"); // nonsense
     });
 
-    it("should validate frameshift (length not divisible by 3)", () => {
+    test("should validate frameshift (length not divisible by 3)", () => {
       const result = manager.validateStep("ATG GA AGG GGA TAA");
       expect(result).toBe(true);
     });
 
-    it("should reject if still in frame", () => {
+    test("should reject if still in frame", () => {
       const result = manager.validateStep("ATG GAA AGG GGA TAA");
       expect(result).toBe(false);
     });
 
-    it("should accept deletion of one base", () => {
+    test("should accept deletion of one base", () => {
       const result = manager.validateStep("ATG GAA GG GGA TAA");
       expect(result).toBe(true);
     });
 
-    it("should accept insertion of one base", () => {
+    test("should accept insertion of one base", () => {
       const result = manager.validateStep("ATG GAAA AGG GGA TAA");
       expect(result).toBe(true);
     });
@@ -362,11 +362,11 @@ describe("mutationTutorial", () => {
 });
 
 describe("Timeline Tutorial", () => {
-  it("should have correct number of steps", () => {
+  test("should have correct number of steps", () => {
     expect(timelineTutorial.steps).toHaveLength(6);
   });
 
-  it("should have correct step order", () => {
+  test("should have correct step order", () => {
     const stepIds = timelineTutorial.steps.map((s) => s.id);
     expect(stepIds).toEqual([
       "welcome",
@@ -378,7 +378,7 @@ describe("Timeline Tutorial", () => {
     ]);
   });
 
-  it("should have validation functions for interactive steps", () => {
+  test("should have validation functions for interactive steps", () => {
     const playPauseStep = timelineTutorial.steps.find(
       (s) => s.id === "play-pause",
     );
@@ -395,12 +395,12 @@ describe("Timeline Tutorial", () => {
       manager.nextStep(""); // welcome
     });
 
-    it("should allow manual progression (always true)", () => {
+    test("should allow manual progression (always true)", () => {
       const result = manager.validateStep("ATG GAA AGG GGA TAA");
       expect(result).toBe(true);
     });
 
-    it("should allow empty code for timeline interactions", () => {
+    test("should allow empty code for timeline interactions", () => {
       const result = manager.validateStep("");
       expect(result).toBe(true);
     });
@@ -414,13 +414,13 @@ describe("Timeline Tutorial", () => {
       manager = new TutorialManager("test_timeline");
     });
 
-    it("should start at welcome step", () => {
+    test("should start at welcome step", () => {
       manager.start(timelineTutorial);
       const step = manager.getCurrentStep();
       expect(step?.id).toBe("welcome");
     });
 
-    it("should progress through all steps", () => {
+    test("should progress through all steps", () => {
       manager.start(timelineTutorial);
 
       expect(manager.nextStep("")).toBe(true); // welcome -> play-pause
@@ -439,7 +439,7 @@ describe("Timeline Tutorial", () => {
       expect(manager.getCurrentStep()?.id).toBe("complete");
     });
 
-    it("should mark as completed after final step", () => {
+    test("should mark as completed after final step", () => {
       manager.start(timelineTutorial);
 
       // Go through all steps
@@ -450,7 +450,7 @@ describe("Timeline Tutorial", () => {
       expect(manager.isCompleted()).toBe(true);
     });
 
-    it("should use separate storage key from other tutorials", () => {
+    test("should use separate storage key from other tutorials", () => {
       const timelineManager = new TutorialManager(
         "codoncanvas_timeline_tutorial_completed",
       );
@@ -466,12 +466,12 @@ describe("Timeline Tutorial", () => {
   });
 
   describe("timeline tutorial content", () => {
-    it("should mention ribosome metaphor", () => {
+    test("should mention ribosome metaphor", () => {
       const welcomeStep = timelineTutorial.steps[0];
       expect(welcomeStep.content.toLowerCase()).toContain("ribosome");
     });
 
-    it("should explain stack concept", () => {
+    test("should explain stack concept", () => {
       const stackStep = timelineTutorial.steps.find(
         (s) => s.id === "observe-stack",
       );
@@ -479,7 +479,7 @@ describe("Timeline Tutorial", () => {
       expect(stackStep?.content.toLowerCase()).toContain("storage");
     });
 
-    it("should explain VM state", () => {
+    test("should explain VM state", () => {
       const stateStep = timelineTutorial.steps.find(
         (s) => s.id === "state-changes",
       );
@@ -487,7 +487,7 @@ describe("Timeline Tutorial", () => {
       expect(stateStep?.content.toLowerCase()).toContain("rotation");
     });
 
-    it("should provide next steps in completion", () => {
+    test("should provide next steps in completion", () => {
       const completeStep = timelineTutorial.steps.find(
         (s) => s.id === "complete",
       );
@@ -497,19 +497,19 @@ describe("Timeline Tutorial", () => {
 });
 
 describe("evolutionTutorial", () => {
-  it("should have correct structure", () => {
+  test("should have correct structure", () => {
     expect(evolutionTutorial.id).toBe("evolution-lab");
     expect(evolutionTutorial.title).toContain("Evolution");
     expect(evolutionTutorial.steps.length).toBeGreaterThan(4);
   });
 
-  it("should start with welcome step", () => {
+  test("should start with welcome step", () => {
     const firstStep = evolutionTutorial.steps[0];
     expect(firstStep.id).toBe("welcome");
     expect(firstStep.title.toLowerCase()).toContain("welcome");
   });
 
-  it("should include key evolution concepts", () => {
+  test("should include key evolution concepts", () => {
     const allContent = evolutionTutorial.steps
       .map((s) => s.content)
       .join(" ")
@@ -522,7 +522,7 @@ describe("evolutionTutorial", () => {
     expect(allContent).toContain("mutation");
   });
 
-  it("should explain candidate generation", () => {
+  test("should explain candidate generation", () => {
     const genStep = evolutionTutorial.steps.find(
       (s) => s.id === "generate-candidates",
     );
@@ -531,7 +531,7 @@ describe("evolutionTutorial", () => {
     expect(genStep?.content.toLowerCase()).toContain("generate");
   });
 
-  it("should explain visual comparison", () => {
+  test("should explain visual comparison", () => {
     const compareStep = evolutionTutorial.steps.find(
       (s) => s.id === "visual-comparison",
     );
@@ -541,7 +541,7 @@ describe("evolutionTutorial", () => {
     expect(compareStep?.targetElement).toBe("#candidatesGrid");
   });
 
-  it("should explain selection process", () => {
+  test("should explain selection process", () => {
     const selectStep = evolutionTutorial.steps.find(
       (s) => s.id === "selection",
     );
@@ -550,7 +550,7 @@ describe("evolutionTutorial", () => {
     expect(selectStep?.content.toLowerCase()).toContain("selection");
   });
 
-  it("should explain multi-generation evolution", () => {
+  test("should explain multi-generation evolution", () => {
     const multiGenStep = evolutionTutorial.steps.find(
       (s) => s.id === "multi-generation",
     );
@@ -559,7 +559,7 @@ describe("evolutionTutorial", () => {
     expect(multiGenStep?.content.toLowerCase()).toContain("lineage");
   });
 
-  it("should have completion step", () => {
+  test("should have completion step", () => {
     const completeStep = evolutionTutorial.steps.find(
       (s) => s.id === "complete",
     );
@@ -567,21 +567,21 @@ describe("evolutionTutorial", () => {
     expect(completeStep?.title.toLowerCase()).toContain("master");
   });
 
-  it("should mention natural selection metaphor", () => {
+  test("should mention natural selection metaphor", () => {
     const completeStep = evolutionTutorial.steps.find(
       (s) => s.id === "complete",
     );
     expect(completeStep?.content.toLowerCase()).toContain("natural selection");
   });
 
-  it("should provide challenges in completion", () => {
+  test("should provide challenges in completion", () => {
     const completeStep = evolutionTutorial.steps.find(
       (s) => s.id === "complete",
     );
     expect(completeStep?.content.toLowerCase()).toContain("challenge");
   });
 
-  it("should target correct DOM elements", () => {
+  test("should target correct DOM elements", () => {
     expect(evolutionTutorial.steps[0].targetElement).toBe("#evolutionPanel");
 
     const genStep = evolutionTutorial.steps.find(
@@ -592,7 +592,7 @@ describe("evolutionTutorial", () => {
 });
 
 describe("evolution tutorial isolation", () => {
-  it("should have separate storage key", () => {
+  test("should have separate storage key", () => {
     const evolutionManager = new TutorialManager(
       "codoncanvas_evolution_tutorial_completed",
     );

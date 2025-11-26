@@ -23,10 +23,9 @@
     "preview": "vite preview",
     "research:analyze": "bun scripts/research-data-analyzer.ts",
     "research:generate-data": "bun scripts/generate-sample-data.ts",
-    "test": "bunx vitest run",
-    "test:ui": "bunx vitest --ui",
-    "test:watch": "bunx vitest",
-    "typecheck": "bun tsgo --noEmit",
+    "test": "bun test --preload ./bun-test-setup.ts",
+    "test:watch": "bun test --watch --preload ./bun-test-setup.ts",
+    "typecheck": "bun tsc --noEmit",
     "zip-examples": "./scripts/zip-examples.sh"
   },
   "dependencies": {

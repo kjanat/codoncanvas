@@ -2,35 +2,10 @@
  * Test suite for Achievement Engine
  */
 
-import { beforeEach, describe, expect, it, vi } from "vitest";
+import { beforeEach, describe, expect, test } from "bun:test";
 import { AchievementEngine } from "./achievement-engine.js";
 
-// Mock localStorage globally with state tracking
-const localStorageMock = (() => {
-  let store: Record<string, string> = {};
-  return {
-    clear: vi.fn(() => {
-      store = {};
-    }),
-    getItem: vi.fn((key: string) => store[key] || null),
-    setItem: vi.fn((key: string, value: string) => {
-      store[key] = value;
-    }),
-    removeItem: vi.fn((key: string) => {
-      delete store[key];
-    }),
-    key: vi.fn((index: number) => {
-      const keys = Object.keys(store);
-      return keys[index] || null;
-    }),
-    get length() {
-      return Object.keys(store).length;
-    },
-  };
-})();
-
-// biome-ignore lint/suspicious/noExplicitAny: Mock requires any to match global.localStorage type
-global.localStorage = localStorageMock as any;
+// localStorage is mocked in bun-test-setup.ts
 
 describe("AchievementEngine", () => {
   let engine: AchievementEngine;
@@ -42,7 +17,7 @@ describe("AchievementEngine", () => {
   });
 
   describe("Initialization", () => {
-    it("should initialize with default stats", () => {
+    test("should initialize with default stats", () => {
       const stats = engine.getStats();
       expect(stats.genomesCreated).toBe(0);
       expect(stats.genomesExecuted).toBe(0);
@@ -50,7 +25,7 @@ describe("AchievementEngine", () => {
       expect(stats.challengesCompleted).toBe(0);
     });
 
-    it("should load all achievements", () => {
+    test("should load all achievements", () => {
       const achievements = engine.getAchievements();
       expect(achievements.length).toBeGreaterThan(0);
       expect(achievements.every((a) => a.id && a.name && a.description)).toBe(
@@ -58,7 +33,7 @@ describe("AchievementEngine", () => {
       );
     });
 
-    it("should have 4 achievement categories", () => {
+    test("should have 4 achievement categories", () => {
       const categories = [
         "basics",
         "mastery",
@@ -71,24 +46,24 @@ describe("AchievementEngine", () => {
       });
     });
 
-    it("should start with 0% progress", () => {
+    test("should start with 0% progress", () => {
       expect(engine.getProgressPercentage()).toBe(0);
     });
 
-    it("should have no unlocked achievements initially", () => {
+    test("should have no unlocked achievements initially", () => {
       expect(engine.getUnlockedAchievements().length).toBe(0);
     });
   });
 
   describe("Genome Tracking", () => {
-    it("should track genome creation", () => {
+    test("should track genome creation", () => {
       engine.trackGenomeCreated(15);
       const stats = engine.getStats();
       expect(stats.genomesCreated).toBe(1);
       expect(stats.longestGenomeLength).toBe(15);
     });
 
-    it("should track longest genome", () => {
+    test("should track longest genome", () => {
       engine.trackGenomeCreated(10);
       engine.trackGenomeCreated(20);
       engine.trackGenomeCreated(15);
@@ -96,7 +71,7 @@ describe("AchievementEngine", () => {
       expect(stats.longestGenomeLength).toBe(20);
     });
 
-    it("should track genome execution", () => {
+    test("should track genome execution", () => {
       engine.trackGenomeExecuted(["CIRCLE", "RECT", "LINE"]);
       const stats = engine.getStats();
       expect(stats.genomesExecuted).toBe(1);
@@ -105,14 +80,14 @@ describe("AchievementEngine", () => {
       expect(stats.opcodesUsed.has("LINE")).toBe(true);
     });
 
-    it("should unlock First Genome achievement", () => {
+    test("should unlock First Genome achievement", () => {
       const unlocked = engine.trackGenomeExecuted(["CIRCLE"]);
       expect(unlocked.length).toBeGreaterThan(0);
       expect(unlocked.some((a) => a.id === "first_genome")).toBe(true);
       expect(engine.isUnlocked("first_genome")).toBe(true);
     });
 
-    it("should unlock Elite Coder achievement for 100+ codon genome", () => {
+    test("should unlock Elite Coder achievement for 100+ codon genome", () => {
       const _unlocked = engine.trackGenomeCreated(101);
       engine.trackGenomeExecuted(["CIRCLE"]); // Execute to trigger checks
       expect(engine.isUnlocked("elite_coder")).toBe(true);
@@ -120,26 +95,26 @@ describe("AchievementEngine", () => {
   });
 
   describe("Mutation Tracking", () => {
-    it("should track mutation application", () => {
+    test("should track mutation application", () => {
       engine.trackMutationApplied();
       const stats = engine.getStats();
       expect(stats.mutationsApplied).toBe(1);
     });
 
-    it("should unlock First Mutation achievement", () => {
+    test("should unlock First Mutation achievement", () => {
       const unlocked = engine.trackMutationApplied();
       expect(engine.isUnlocked("first_mutation")).toBe(true);
       expect(unlocked.some((a) => a.id === "first_mutation")).toBe(true);
     });
 
-    it("should unlock Mad Scientist achievement after 100 mutations", () => {
+    test("should unlock Mad Scientist achievement after 100 mutations", () => {
       for (let i = 0; i < 100; i++) {
         engine.trackMutationApplied();
       }
       expect(engine.isUnlocked("mad_scientist")).toBe(true);
     });
 
-    it("should not unlock Mad Scientist before 100 mutations", () => {
+    test("should not unlock Mad Scientist before 100 mutations", () => {
       for (let i = 0; i < 99; i++) {
         engine.trackMutationApplied();
       }
@@ -148,20 +123,20 @@ describe("AchievementEngine", () => {
   });
 
   describe("Drawing Tracking", () => {
-    it("should track shape drawing", () => {
+    test("should track shape drawing", () => {
       engine.trackShapeDrawn("CIRCLE");
       const stats = engine.getStats();
       expect(stats.shapesDrawn).toBe(1);
       expect(stats.opcodesUsed.has("CIRCLE")).toBe(true);
     });
 
-    it("should unlock First Draw achievement", () => {
+    test("should unlock First Draw achievement", () => {
       const unlocked = engine.trackShapeDrawn("CIRCLE");
       expect(engine.isUnlocked("first_draw")).toBe(true);
       expect(unlocked.some((a) => a.id === "first_draw")).toBe(true);
     });
 
-    it("should unlock Shape Explorer after using all 5 shapes", () => {
+    test("should unlock Shape Explorer after using all 5 shapes", () => {
       engine.trackShapeDrawn("CIRCLE");
       engine.trackShapeDrawn("RECT");
       engine.trackShapeDrawn("LINE");
@@ -173,21 +148,21 @@ describe("AchievementEngine", () => {
       expect(unlocked.some((a) => a.id === "shape_explorer")).toBe(true);
     });
 
-    it("should track color usage", () => {
+    test("should track color usage", () => {
       engine.trackColorUsed();
       const stats = engine.getStats();
       expect(stats.colorsUsed).toBe(1);
       expect(stats.opcodesUsed.has("COLOR")).toBe(true);
     });
 
-    it("should unlock Color Artist after 10 color uses", () => {
+    test("should unlock Color Artist after 10 color uses", () => {
       for (let i = 0; i < 10; i++) {
         engine.trackColorUsed();
       }
       expect(engine.isUnlocked("color_artist")).toBe(true);
     });
 
-    it("should track transform usage", () => {
+    test("should track transform usage", () => {
       engine.trackTransformApplied("ROTATE");
       const stats = engine.getStats();
       expect(stats.transformsApplied).toBe(1);
@@ -196,7 +171,7 @@ describe("AchievementEngine", () => {
   });
 
   describe("Assessment Tracking", () => {
-    it("should track correct challenge completion", () => {
+    test("should track correct challenge completion", () => {
       engine.trackChallengeCompleted(true, "silent");
       const stats = engine.getStats();
       expect(stats.challengesCompleted).toBe(1);
@@ -205,7 +180,7 @@ describe("AchievementEngine", () => {
       expect(stats.silentIdentified).toBe(1);
     });
 
-    it("should track incorrect challenge completion", () => {
+    test("should track incorrect challenge completion", () => {
       engine.trackChallengeCompleted(false, "silent");
       const stats = engine.getStats();
       expect(stats.challengesCompleted).toBe(1);
@@ -213,7 +188,7 @@ describe("AchievementEngine", () => {
       expect(stats.consecutiveCorrect).toBe(0);
     });
 
-    it("should reset consecutive correct on wrong answer", () => {
+    test("should reset consecutive correct on wrong answer", () => {
       engine.trackChallengeCompleted(true, "silent");
       engine.trackChallengeCompleted(true, "missense");
       engine.trackChallengeCompleted(false, "nonsense");
@@ -221,21 +196,21 @@ describe("AchievementEngine", () => {
       expect(stats.consecutiveCorrect).toBe(0);
     });
 
-    it("should unlock Mutation Expert after 10 correct", () => {
+    test("should unlock Mutation Expert after 10 correct", () => {
       for (let i = 0; i < 10; i++) {
         engine.trackChallengeCompleted(true, "silent");
       }
       expect(engine.isUnlocked("mutation_expert")).toBe(true);
     });
 
-    it("should unlock Flawless after 10 consecutive correct", () => {
+    test("should unlock Flawless after 10 consecutive correct", () => {
       for (let i = 0; i < 10; i++) {
         engine.trackChallengeCompleted(true, "silent");
       }
       expect(engine.isUnlocked("flawless")).toBe(true);
     });
 
-    it("should track all mutation types", () => {
+    test("should track all mutation types", () => {
       engine.trackChallengeCompleted(true, "silent");
       engine.trackChallengeCompleted(true, "missense");
       engine.trackChallengeCompleted(true, "nonsense");
@@ -252,7 +227,7 @@ describe("AchievementEngine", () => {
       expect(stats.deletionIdentified).toBe(1);
     });
 
-    it("should unlock Pattern Master after identifying all 6 types", () => {
+    test("should unlock Pattern Master after identifying all 6 types", () => {
       engine.trackChallengeCompleted(true, "silent");
       engine.trackChallengeCompleted(true, "missense");
       engine.trackChallengeCompleted(true, "nonsense");
@@ -263,19 +238,19 @@ describe("AchievementEngine", () => {
       expect(engine.isUnlocked("pattern_master")).toBe(true);
     });
 
-    it("should track perfect score", () => {
+    test("should track perfect score", () => {
       engine.trackPerfectScore();
       const stats = engine.getStats();
       expect(stats.perfectScores).toBe(1);
     });
 
-    it("should unlock Perfect Score achievement", () => {
+    test("should unlock Perfect Score achievement", () => {
       const unlocked = engine.trackPerfectScore();
       expect(engine.isUnlocked("perfect_score")).toBe(true);
       expect(unlocked.some((a) => a.id === "perfect_score")).toBe(true);
     });
 
-    it("should unlock Professor after 50+ challenges at 95%+", () => {
+    test("should unlock Professor after 50+ challenges at 95%+", () => {
       // Complete 50 challenges with 48 correct (96% accuracy)
       for (let i = 0; i < 48; i++) {
         engine.trackChallengeCompleted(true, "silent");
@@ -287,7 +262,7 @@ describe("AchievementEngine", () => {
       expect(engine.isUnlocked("professor")).toBe(true);
     });
 
-    it("should NOT unlock Professor below 95% accuracy", () => {
+    test("should NOT unlock Professor below 95% accuracy", () => {
       // Complete 50 challenges with 47 correct (94% accuracy)
       for (let i = 0; i < 47; i++) {
         engine.trackChallengeCompleted(true, "silent");
@@ -301,32 +276,32 @@ describe("AchievementEngine", () => {
   });
 
   describe("Advanced Features Tracking", () => {
-    it("should track evolution generations", () => {
+    test("should track evolution generations", () => {
       engine.trackEvolutionGeneration();
       const stats = engine.getStats();
       expect(stats.evolutionGenerations).toBe(1);
     });
 
-    it("should unlock Evolution Master after 50 generations", () => {
+    test("should unlock Evolution Master after 50 generations", () => {
       for (let i = 0; i < 50; i++) {
         engine.trackEvolutionGeneration();
       }
       expect(engine.isUnlocked("evolution_master")).toBe(true);
     });
 
-    it("should track audio synthesis usage", () => {
+    test("should track audio synthesis usage", () => {
       engine.trackAudioSynthesis();
       const stats = engine.getStats();
       expect(stats.audioSynthesisUsed).toBe(true);
     });
 
-    it("should unlock Audio Pioneer achievement", () => {
+    test("should unlock Audio Pioneer achievement", () => {
       const unlocked = engine.trackAudioSynthesis();
       expect(engine.isUnlocked("audio_pioneer")).toBe(true);
       expect(unlocked.some((a) => a.id === "audio_pioneer")).toBe(true);
     });
 
-    it("should track timeline step-throughs", () => {
+    test("should track timeline step-throughs", () => {
       engine.trackTimelineStepThrough();
       const stats = engine.getStats();
       expect(stats.timelineStepThroughs).toBe(1);
@@ -334,7 +309,7 @@ describe("AchievementEngine", () => {
   });
 
   describe("Progress and Statistics", () => {
-    it("should calculate progress percentage correctly", () => {
+    test("should calculate progress percentage correctly", () => {
       expect(engine.getProgressPercentage()).toBe(0);
 
       // Unlock one achievement (First Genome)
@@ -349,7 +324,7 @@ describe("AchievementEngine", () => {
       expect(progress2).toBeGreaterThan(progress1);
     });
 
-    it("should return unlocked achievements sorted by date", () => {
+    test("should return unlocked achievements sorted by date", () => {
       engine.trackGenomeExecuted(["CIRCLE"]);
       engine.trackMutationApplied();
       engine.trackShapeDrawn("RECT");
@@ -365,7 +340,7 @@ describe("AchievementEngine", () => {
       }
     });
 
-    it("should export achievement data", () => {
+    test("should export achievement data", () => {
       engine.trackGenomeExecuted(["CIRCLE"]);
       engine.trackMutationApplied();
 
@@ -380,7 +355,7 @@ describe("AchievementEngine", () => {
   });
 
   describe("Persistence", () => {
-    it("should save to localStorage", () => {
+    test("should save to localStorage", () => {
       engine.trackGenomeExecuted(["CIRCLE"]);
       engine.trackMutationApplied();
 
@@ -394,7 +369,7 @@ describe("AchievementEngine", () => {
       expect(engine2.getStats().mutationsApplied).toBe(1);
     });
 
-    it("should persist opcodesUsed as Set", () => {
+    test("should persist opcodesUsed as Set", () => {
       engine.trackGenomeExecuted(["CIRCLE", "RECT"]);
 
       const engine2 = new AchievementEngine();
@@ -405,7 +380,7 @@ describe("AchievementEngine", () => {
       expect(stats.opcodesUsed.has("RECT")).toBe(true);
     });
 
-    it("should reset all progress", () => {
+    test("should reset all progress", () => {
       engine.trackGenomeExecuted(["CIRCLE"]);
       engine.trackMutationApplied();
       expect(engine.getProgressPercentage()).toBeGreaterThan(0);
@@ -419,7 +394,7 @@ describe("AchievementEngine", () => {
   });
 
   describe("Legend Achievement", () => {
-    it("should unlock Legend when all other achievements are unlocked", () => {
+    test("should unlock Legend when all other achievements are unlocked", () => {
       // Manually unlock all non-legend achievements
       // This is a simplified test - in reality would require completing all conditions
 
@@ -441,7 +416,7 @@ describe("AchievementEngine", () => {
       expect(engine.isUnlocked("legend")).toBe(false);
     });
 
-    it("should not unlock Legend if any achievement is missing", () => {
+    test("should not unlock Legend if any achievement is missing", () => {
       // Unlock most achievements except one
       engine.trackGenomeExecuted([
         "CIRCLE",
@@ -458,7 +433,7 @@ describe("AchievementEngine", () => {
   });
 
   describe("Multiple Unlocks", () => {
-    it("should unlock multiple achievements from single action", () => {
+    test("should unlock multiple achievements from single action", () => {
       // First genome execution should unlock both "first_genome" and "first_draw"
       const _unlocked = engine.trackShapeDrawn("CIRCLE");
       engine.trackGenomeExecuted(["CIRCLE"]);
@@ -467,7 +442,7 @@ describe("AchievementEngine", () => {
       expect(engine.isUnlocked("first_draw")).toBe(true);
     });
 
-    it("should return array of newly unlocked achievements", () => {
+    test("should return array of newly unlocked achievements", () => {
       const unlocked1 = engine.trackGenomeExecuted(["CIRCLE"]);
       expect(unlocked1.length).toBeGreaterThan(0);
       expect(unlocked1.some((a) => a.id === "first_genome")).toBe(true);
@@ -477,7 +452,7 @@ describe("AchievementEngine", () => {
       expect(unlocked2.some((a) => a.id === "first_genome")).toBe(false);
     });
 
-    it("should not return already unlocked achievements", () => {
+    test("should not return already unlocked achievements", () => {
       engine.trackMutationApplied();
       expect(engine.isUnlocked("first_mutation")).toBe(true);
 
@@ -487,25 +462,25 @@ describe("AchievementEngine", () => {
   });
 
   describe("Achievement Categories", () => {
-    it("should have basics category", () => {
+    test("should have basics category", () => {
       const basics = engine.getAchievementsByCategory("basics");
       expect(basics.length).toBeGreaterThan(0);
       expect(basics.every((a) => a.category === "basics")).toBe(true);
     });
 
-    it("should have mastery category", () => {
+    test("should have mastery category", () => {
       const mastery = engine.getAchievementsByCategory("mastery");
       expect(mastery.length).toBeGreaterThan(0);
       expect(mastery.every((a) => a.category === "mastery")).toBe(true);
     });
 
-    it("should have exploration category", () => {
+    test("should have exploration category", () => {
       const exploration = engine.getAchievementsByCategory("exploration");
       expect(exploration.length).toBeGreaterThan(0);
       expect(exploration.every((a) => a.category === "exploration")).toBe(true);
     });
 
-    it("should have perfection category", () => {
+    test("should have perfection category", () => {
       const perfection = engine.getAchievementsByCategory("perfection");
       expect(perfection.length).toBeGreaterThan(0);
       expect(perfection.every((a) => a.category === "perfection")).toBe(true);

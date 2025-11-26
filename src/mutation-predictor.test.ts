@@ -3,7 +3,7 @@
  * Validates prediction accuracy across all mutation types.
  */
 
-import { describe, expect, it } from "vitest";
+import { describe, expect, test } from "bun:test";
 import {
   predictMutationImpact,
   predictMutationImpactBatch,
@@ -31,7 +31,7 @@ describe("Mutation Impact Predictor", () => {
   `;
 
   describe("predictMutationImpact()", () => {
-    it("should predict SILENT impact for synonymous codon changes", () => {
+    test("should predict SILENT impact for synonymous codon changes", () => {
       const mutation = applySilentMutation(testGenome, 1); // Mutate first shape codon
       const prediction = predictMutationImpact(testGenome, mutation);
 
@@ -42,7 +42,7 @@ describe("Mutation Impact Predictor", () => {
       expect(prediction.description).toContain("Minimal visual change");
     });
 
-    it("should predict LOCAL impact for missense mutations", () => {
+    test("should predict LOCAL impact for missense mutations", () => {
       const mutation = applyMissenseMutation(testGenome, 2); // Change circle to different shape
       const prediction = predictMutationImpact(testGenome, mutation);
 
@@ -53,7 +53,7 @@ describe("Mutation Impact Predictor", () => {
       expect(prediction.description).toBeDefined();
     });
 
-    it("should predict MAJOR impact for nonsense mutations", () => {
+    test("should predict MAJOR impact for nonsense mutations", () => {
       const mutation = applyNonsenseMutation(testGenome, 3); // Early stop
       const prediction = predictMutationImpact(testGenome, mutation);
 
@@ -65,7 +65,7 @@ describe("Mutation Impact Predictor", () => {
       expect(typeof prediction.analysis.truncated).toBe("boolean");
     });
 
-    it("should predict CATASTROPHIC impact for frameshift mutations", () => {
+    test("should predict CATASTROPHIC impact for frameshift mutations", () => {
       const mutation = applyFrameshiftMutation(testGenome, 6); // Shift reading frame
       const prediction = predictMutationImpact(testGenome, mutation);
 
@@ -76,7 +76,7 @@ describe("Mutation Impact Predictor", () => {
       expect(prediction.pixelDiffPercent).toBeGreaterThan(0);
     });
 
-    it("should handle point mutations with variable impact", () => {
+    test("should handle point mutations with variable impact", () => {
       const mutation = applyPointMutation(testGenome, 3); // Random base change
       const prediction = predictMutationImpact(testGenome, mutation);
 
@@ -86,7 +86,7 @@ describe("Mutation Impact Predictor", () => {
       expect(prediction.description).toBeDefined();
     });
 
-    it("should predict impact for 3-base insertions (no frameshift)", () => {
+    test("should predict impact for 3-base insertions (no frameshift)", () => {
       const mutation = applyInsertion(testGenome, 9, 3); // Insert whole codon
       const prediction = predictMutationImpact(testGenome, mutation);
 
@@ -95,7 +95,7 @@ describe("Mutation Impact Predictor", () => {
       expect(prediction.impact).toBeDefined();
     });
 
-    it("should predict impact for 1-base insertions (frameshift)", () => {
+    test("should predict impact for 1-base insertions (frameshift)", () => {
       const mutation = applyInsertion(testGenome, 9, 1); // Shift frame
       const prediction = predictMutationImpact(testGenome, mutation);
 
@@ -104,7 +104,7 @@ describe("Mutation Impact Predictor", () => {
       expect(prediction.pixelDiffPercent).toBeGreaterThan(0);
     });
 
-    it("should predict impact for 3-base deletions (removes codon)", () => {
+    test("should predict impact for 3-base deletions (removes codon)", () => {
       const mutation = applyDeletion(testGenome, 9, 3); // Delete whole codon
       const prediction = predictMutationImpact(testGenome, mutation);
 
@@ -113,7 +113,7 @@ describe("Mutation Impact Predictor", () => {
       expect(prediction.impact).toBeDefined();
     });
 
-    it("should predict impact for 1-base deletions (frameshift)", () => {
+    test("should predict impact for 1-base deletions (frameshift)", () => {
       const mutation = applyDeletion(testGenome, 9, 1); // Shift frame
       const prediction = predictMutationImpact(testGenome, mutation);
 
@@ -122,7 +122,7 @@ describe("Mutation Impact Predictor", () => {
       expect(prediction.pixelDiffPercent).toBeGreaterThan(0);
     });
 
-    it("should generate preview images as data URLs", () => {
+    test("should generate preview images as data URLs", () => {
       const mutation = applySilentMutation(testGenome, 1);
       const prediction = predictMutationImpact(testGenome, mutation);
 
@@ -133,7 +133,7 @@ describe("Mutation Impact Predictor", () => {
       expect(prediction.mutatedPreview).toBeDefined();
     });
 
-    it("should provide detailed change analysis", () => {
+    test("should provide detailed change analysis", () => {
       const mutation = applyNonsenseMutation(testGenome, 5);
       const prediction = predictMutationImpact(testGenome, mutation);
 
@@ -145,7 +145,7 @@ describe("Mutation Impact Predictor", () => {
       expect(prediction.analysis).toHaveProperty("frameshifted");
     });
 
-    it("should handle custom canvas dimensions", () => {
+    test("should handle custom canvas dimensions", () => {
       const mutation = applySilentMutation(testGenome, 1);
       const prediction = predictMutationImpact(testGenome, mutation, 400, 400);
 
@@ -155,7 +155,7 @@ describe("Mutation Impact Predictor", () => {
       expect(prediction.impact).toBe("SILENT");
     });
 
-    it("should handle invalid genomes gracefully", () => {
+    test("should handle invalid genomes gracefully", () => {
       const invalidGenome = "ATG XYZ TAA"; // Invalid codon XYZ
       const mutation = {
         original: invalidGenome,
@@ -169,7 +169,7 @@ describe("Mutation Impact Predictor", () => {
       expect(() => predictMutationImpact(invalidGenome, mutation)).toThrow();
     });
 
-    it("should handle empty genomes", () => {
+    test("should handle empty genomes", () => {
       const emptyGenome = "";
       const mutation = {
         original: "",
@@ -185,7 +185,7 @@ describe("Mutation Impact Predictor", () => {
   });
 
   describe("predictMutationImpactBatch()", () => {
-    it("should predict impacts for multiple mutations", () => {
+    test("should predict impacts for multiple mutations", () => {
       const mutations = [
         applySilentMutation(testGenome, 1),
         applyMissenseMutation(testGenome, 2),
@@ -200,7 +200,7 @@ describe("Mutation Impact Predictor", () => {
       expect(predictions[2].impact).toBeDefined(); // Nonsense (variable impact)
     });
 
-    it("should maintain order of predictions", () => {
+    test("should maintain order of predictions", () => {
       const mutations = [
         applyPointMutation(testGenome, 5),
         applyPointMutation(testGenome, 10),
@@ -216,7 +216,7 @@ describe("Mutation Impact Predictor", () => {
       });
     });
 
-    it("should handle empty mutation array", () => {
+    test("should handle empty mutation array", () => {
       const predictions = predictMutationImpactBatch(testGenome, []);
 
       expect(predictions).toHaveLength(0);
@@ -224,7 +224,7 @@ describe("Mutation Impact Predictor", () => {
   });
 
   describe("Impact Classification", () => {
-    it("should classify <5% change as SILENT", () => {
+    test("should classify <5% change as SILENT", () => {
       // Silent mutations should produce <5% pixel diff
       const mutation = applySilentMutation(testGenome, 1);
       const prediction = predictMutationImpact(testGenome, mutation);
@@ -234,7 +234,7 @@ describe("Mutation Impact Predictor", () => {
       }
     });
 
-    it("should classify 5-25% change as LOCAL", () => {
+    test("should classify 5-25% change as LOCAL", () => {
       // Create specific mutation likely to produce local change
       const genome = "ATG GAA AAT GGA TAA"; // Simple circle
       const mutation = applyMissenseMutation(genome, 2); // Change to different shape
@@ -248,7 +248,7 @@ describe("Mutation Impact Predictor", () => {
       }
     });
 
-    it("should classify >60% change as CATASTROPHIC", () => {
+    test("should classify >60% change as CATASTROPHIC", () => {
       // Frameshift should produce significant change
       const mutation = applyFrameshiftMutation(testGenome, 6);
       const prediction = predictMutationImpact(testGenome, mutation);
@@ -260,7 +260,7 @@ describe("Mutation Impact Predictor", () => {
   });
 
   describe("Confidence Scoring", () => {
-    it("should have HIGH confidence for silent mutations", () => {
+    test("should have HIGH confidence for silent mutations", () => {
       const mutation = applySilentMutation(testGenome, 1);
       const prediction = predictMutationImpact(testGenome, mutation);
 
@@ -268,7 +268,7 @@ describe("Mutation Impact Predictor", () => {
       expect(prediction.confidence).toBeGreaterThan(0.9);
     });
 
-    it("should have HIGH confidence for nonsense mutations", () => {
+    test("should have HIGH confidence for nonsense mutations", () => {
       const mutation = applyNonsenseMutation(testGenome, 5);
       const prediction = predictMutationImpact(testGenome, mutation);
 
@@ -276,7 +276,7 @@ describe("Mutation Impact Predictor", () => {
       expect(prediction.confidence).toBeGreaterThan(0.85);
     });
 
-    it("should have MEDIUM confidence for point mutations", () => {
+    test("should have MEDIUM confidence for point mutations", () => {
       const mutation = applyPointMutation(testGenome, 5);
       const prediction = predictMutationImpact(testGenome, mutation);
 
@@ -284,7 +284,7 @@ describe("Mutation Impact Predictor", () => {
       expect(prediction.confidence).toBeGreaterThan(0.6);
     });
 
-    it("should have lower confidence for frameshift mutations", () => {
+    test("should have lower confidence for frameshift mutations", () => {
       const mutation = applyFrameshiftMutation(testGenome, 6);
       const prediction = predictMutationImpact(testGenome, mutation);
 
@@ -295,14 +295,14 @@ describe("Mutation Impact Predictor", () => {
   });
 
   describe("Description Generation", () => {
-    it("should describe silent mutations appropriately", () => {
+    test("should describe silent mutations appropriately", () => {
       const mutation = applySilentMutation(testGenome, 1);
       const prediction = predictMutationImpact(testGenome, mutation);
 
       expect(prediction.description).toMatch(/minimal|identical|synonymous/i);
     });
 
-    it("should describe local changes appropriately", () => {
+    test("should describe local changes appropriately", () => {
       const genome = "ATG GAA AAT GGA TAA";
       const mutation = applyMissenseMutation(genome, 2);
       const prediction = predictMutationImpact(genome, mutation);
@@ -312,7 +312,7 @@ describe("Mutation Impact Predictor", () => {
       }
     });
 
-    it("should describe truncation for nonsense mutations", () => {
+    test("should describe truncation for nonsense mutations", () => {
       const mutation = applyNonsenseMutation(testGenome, 5);
       const prediction = predictMutationImpact(testGenome, mutation);
 
@@ -321,7 +321,7 @@ describe("Mutation Impact Predictor", () => {
       expect(prediction.description.length).toBeGreaterThan(10);
     });
 
-    it("should describe frameshift catastrophically", () => {
+    test("should describe frameshift catastrophically", () => {
       const mutation = applyFrameshiftMutation(testGenome, 6);
       const prediction = predictMutationImpact(testGenome, mutation);
 
@@ -333,7 +333,7 @@ describe("Mutation Impact Predictor", () => {
   });
 
   describe("Edge Cases", () => {
-    it("should handle genome with only START and STOP", () => {
+    test("should handle genome with only START and STOP", () => {
       const minimalGenome = "ATG TAA";
       const mutation = applyInsertion(minimalGenome, 3, 3);
       const prediction = predictMutationImpact(minimalGenome, mutation);
@@ -342,7 +342,7 @@ describe("Mutation Impact Predictor", () => {
       expect(prediction.impact).toBeDefined();
     });
 
-    it("should handle very long genomes", () => {
+    test("should handle very long genomes", () => {
       // Create genome with many instructions
       const longGenome = `ATG ${"GAA AAT GGA ".repeat(20)}TAA`;
       const mutation = applySilentMutation(longGenome, 10);
@@ -351,7 +351,7 @@ describe("Mutation Impact Predictor", () => {
       expect(prediction.impact).toBe("SILENT");
     });
 
-    it("should handle mutations at genome boundaries", () => {
+    test("should handle mutations at genome boundaries", () => {
       const genome = "ATG GAA AAT GGA TAA";
 
       // Mutation near end

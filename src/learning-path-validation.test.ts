@@ -1,6 +1,6 @@
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
-import { describe, expect, test } from "vitest";
+import { describe, expect, test } from "bun:test";
 
 /**
  * Learning Path Validation Test Suite
@@ -156,7 +156,7 @@ describe("Learning Path Validation", () => {
       });
     });
 
-    test("try-it activities are meaningful (>20 characters)", () => {
+    test("try-test activities are meaningful (>20 characters)", () => {
       pathsData.paths.forEach((path) => {
         path.steps.forEach((step) => {
           expect(step.tryIt.length).toBeGreaterThan(20);

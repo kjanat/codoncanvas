@@ -1,6 +1,6 @@
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
-import { beforeEach, describe, expect, test } from "vitest";
+import { beforeEach, describe, expect, test } from "bun:test";
 import { CodonLexer } from "./lexer";
 import { Canvas2DRenderer } from "./renderer";
 import { CodonVM } from "./vm";

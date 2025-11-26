@@ -2,7 +2,7 @@
  * Tests for Evolution Engine
  */
 
-import { beforeEach, describe, expect, test } from "vitest";
+import { beforeEach, describe, expect, test } from "bun:test";
 import { EvolutionEngine } from "./evolution-engine.js";
 
 describe("EvolutionEngine", () => {

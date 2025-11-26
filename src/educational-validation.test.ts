@@ -1,6 +1,6 @@
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
-import { beforeEach, describe, expect, test } from "vitest";
+import { beforeEach, describe, expect, test } from "bun:test";
 import { CodonLexer } from "./lexer";
 import {
   applyMissenseMutation,
@@ -449,8 +449,8 @@ describe("Educational Validation Suite", () => {
       try {
         mutatedSnapshots = vm.run(mutatedTokens);
       } catch {
-        // Nonsense might cause stack underflow if it truncates PUSHes, which is valid
-        // The key is that it terminates early, which is the educational point
+        // Nonsense might cause stack underflow if test truncates PUSHes, which is valid
+        // The key is that test terminates early, which is the educational point
         expect(true).toBe(true); // Test passes - nonsense caused early termination
         return;
       }
