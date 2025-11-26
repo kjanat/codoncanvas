@@ -1,7 +1,11 @@
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
-import { beforeEach, describe, expect, test } from "bun:test";
+import { afterEach, beforeEach, describe, expect, test } from "bun:test";
 import { CodonLexer } from "./lexer";
+import {
+  mockCanvasContext,
+  restoreCanvasContext,
+} from "./test-utils/canvas-mock";
 import {
   applyMissenseMutation,
   applyNonsenseMutation,
@@ -25,6 +29,10 @@ import { CodonVM } from "./vm";
  */
 
 describe("Educational Validation Suite", () => {
+  // Canvas mock needed for VM execution tests
+  beforeEach(() => mockCanvasContext());
+  afterEach(() => restoreCanvasContext());
+
   describe("Core Educational Claims", () => {
     test("CLAIM 1: Silent mutations preserve functionality (same opcode)", () => {
       const genome = "ATG GGA CCA TAA";

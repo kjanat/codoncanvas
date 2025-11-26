@@ -3,7 +3,11 @@
  * Validates prediction accuracy across all mutation types.
  */
 
-import { describe, expect, test } from "bun:test";
+import { afterEach, beforeEach, describe, expect, test } from "bun:test";
+import {
+  mockCanvasContext,
+  restoreCanvasContext,
+} from "./test-utils/canvas-mock";
 import {
   predictMutationImpact,
   predictMutationImpactBatch,
@@ -19,6 +23,10 @@ import {
 } from "./mutations";
 
 describe("Mutation Impact Predictor", () => {
+  // Canvas mock needed for rendering comparisons
+  beforeEach(() => mockCanvasContext());
+  afterEach(() => restoreCanvasContext());
+
   // Test genome: simple circle + rectangle
   const testGenome = `
     ATG

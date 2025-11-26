@@ -1,5 +1,9 @@
 import { afterEach, beforeEach, describe, expect, test } from "bun:test";
 import { GifExporter } from "./gif-exporter";
+import {
+  mockCanvasContext,
+  restoreCanvasContext,
+} from "./test-utils/canvas-mock";
 
 describe("GifExporter", () => {
   let exporter: GifExporter;
@@ -326,6 +330,10 @@ describe("GifExporter", () => {
   // Tests for captureFrame (canvas snapshot for GIF frame)
   // =========================================================================
   describe("captureFrame", () => {
+    // Canvas tests need the 2D context mock
+    beforeEach(() => mockCanvasContext());
+    afterEach(() => restoreCanvasContext());
+
     // HAPPY PATHS
     test("creates new canvas with configured dimensions and draws source canvas onto it", () => {
       const exp = new GifExporter({ width: 200, height: 150 });

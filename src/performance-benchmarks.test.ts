@@ -1,8 +1,12 @@
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
-import { beforeEach, describe, expect, test } from "bun:test";
+import { afterEach, beforeEach, describe, expect, test } from "bun:test";
 import { CodonLexer } from "./lexer";
 import { Canvas2DRenderer } from "./renderer";
+import {
+  mockCanvasContext,
+  restoreCanvasContext,
+} from "./test-utils/canvas-mock";
 import { CodonVM } from "./vm";
 
 /**
@@ -19,7 +23,12 @@ describe("Performance Benchmarks", () => {
   let lexer: CodonLexer;
 
   beforeEach(() => {
+    mockCanvasContext();
     lexer = new CodonLexer();
+  });
+
+  afterEach(() => {
+    restoreCanvasContext();
   });
 
   function loadGenome(filename: string): string {
