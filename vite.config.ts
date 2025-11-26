@@ -9,6 +9,9 @@ export default defineConfig({
   resolve: {
     alias: {
       "@": resolve(__dirname, "src"),
+      "@/types": resolve(__dirname, "src/types"),
+      "@/utils": resolve(__dirname, "src/utils"),
+      "@/playground": resolve(__dirname, "src/playground"),
     },
   },
 
@@ -47,10 +50,10 @@ export default defineConfig({
 
   test: {
     globals: true,
-    environment: "jsdom",
+    environment: "happy-dom",
     setupFiles: ["./vitest.setup.ts"],
-    // Disable file parallelism to prevent jsdom race conditions
-    // Each test file gets its own jsdom environment sequentially
+    // Disable file parallelism to prevent DOM environment race conditions
+    // Each test file gets its own DOM environment sequentially
     // This ensures DOM globals are properly initialized before tests run
     fileParallelism: false,
     // Tests within a file still run in parallel for performance

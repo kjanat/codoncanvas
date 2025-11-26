@@ -1,16 +1,16 @@
 import { afterEach, beforeAll, vi } from "vitest";
 
-// jsdom setup runs automatically via environment: "jsdom" in vite.config.ts
+// happy-dom setup runs automatically via environment: "happy-dom" in vite.config.ts
 // This setup file adds global test utilities and cleanup
 
 beforeAll(() => {
   // Ensure DOM APIs are available
   if (typeof document === "undefined") {
-    throw new Error("jsdom environment not initialized properly");
+    throw new Error("DOM environment not initialized properly");
   }
 
   // Ensure localStorage is properly initialized with all methods
-  // jsdom provides localStorage but it may not work properly in all contexts
+  // happy-dom provides localStorage but we enhance it for comprehensive testing
   const localStorageMock = (() => {
     let store: Record<string, string> = {};
     return {
