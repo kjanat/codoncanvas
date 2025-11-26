@@ -12,6 +12,8 @@
     "cli": "bun cli.ts",
     "dev": "bun --bun run vite",
     "export-examples": "bun scripts/export-examples.ts",
+    "fmt": "bunx dprint fmt",
+    "format": "bun fmt",
     "generate-screenshots": "bun scripts/generate-screenshots.ts",
     "lint": "biome lint",
     "lint:fix": "biome check --write",

@@ -187,9 +187,7 @@
   border: 2px solid var(--color-success);
   border-radius: 8px;
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
-  animation:
-    slideIn 0.5s ease,
-    pulse 0.5s ease 0.5s;
+  animation: slideIn 0.5s ease, pulse 0.5s ease 0.5s;
 }
 
 @media (max-width: 768px) {

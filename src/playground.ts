@@ -87,6 +87,7 @@ import {
   lexer,
   renderer,
   renderMode,
+  type RenderMode,
   researchMetrics,
   setAssessmentUI,
   setLastSnapshots,
@@ -483,9 +484,8 @@ function loadExample() {
  * Toggle audio rendering mode
  */
 async function toggleAudio() {
-  type AudioMode = "visual" | "audio" | "both";
-  const modes: AudioMode[] = ["visual", "audio", "both"];
-  const currentIndex = modes.indexOf(renderMode as AudioMode);
+  const modes: RenderMode[] = ["visual", "audio", "both"];
+  const currentIndex = modes.indexOf(renderMode);
   const nextIndex = (currentIndex + 1) % modes.length;
   const newMode = modes[nextIndex];
 
