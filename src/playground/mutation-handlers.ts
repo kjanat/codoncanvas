@@ -104,7 +104,7 @@ export function applyMutation(type: MutationType) {
 /**
  * Preview mutation before applying
  */
-export async function previewMutation(type: MutationType) {
+export function previewMutation(type: MutationType) {
   try {
     const genome = editor.value.trim();
 
