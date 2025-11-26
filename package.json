@@ -23,7 +23,7 @@
     "preview": "vite preview",
     "research:analyze": "bun scripts/research-data-analyzer.ts",
     "research:generate-data": "bun scripts/generate-sample-data.ts",
-    "test": "bun vitest --run",
+    "test": "vitest run",
     "test:ui": "bun vitest --ui",
     "test:watch": "bun vitest",
     "typecheck": "bun tsgo --noEmit",

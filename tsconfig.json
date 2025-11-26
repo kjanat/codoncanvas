@@ -25,7 +25,15 @@
     "rootDir": "./src",
     "declaration": true,
     "declarationMap": true,
-    "sourceMap": true
+    "sourceMap": true,
+
+    // Path aliases for cleaner imports
+    "paths": {
+      "@/*": ["./src/*"],
+      "@/types": ["./src/types"],
+      "@/utils/*": ["./src/utils/*"],
+      "@/playground/*": ["./src/playground/*"]
+    }
   },
   "include": ["src/**/*"],
   "exclude": ["node_modules", "dist", "**/*.test.ts"]

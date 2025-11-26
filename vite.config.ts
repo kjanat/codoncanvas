@@ -5,6 +5,13 @@ export default defineConfig({
   // GitHub Pages base path (will be /codoncanvas/ when deployed)
   base: process.env.NODE_ENV === "production" ? "/codoncanvas/" : "/",
 
+  // Path aliases matching tsconfig.json
+  resolve: {
+    alias: {
+      "@": resolve(__dirname, "src"),
+    },
+  },
+
   // SECURITY: Content Security Policy headers
   server: {
     headers: {
