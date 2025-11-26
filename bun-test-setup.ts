@@ -18,6 +18,12 @@ globalThis.window = window as unknown as Window & typeof globalThis;
 globalThis.document = document;
 globalThis.HTMLElement = window.HTMLElement;
 globalThis.HTMLCanvasElement = window.HTMLCanvasElement;
+globalThis.HTMLAnchorElement = window.HTMLAnchorElement;
+
+// File APIs needed for genome-io tests
+// Note: Don't override Blob - native Blob is needed for URL.createObjectURL
+globalThis.FileReader = window.FileReader;
+globalThis.File = window.File;
 
 // Storage factory - creates isolated storage instances
 function createStorageMock(): Storage {
