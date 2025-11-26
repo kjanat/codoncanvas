@@ -83,7 +83,7 @@ export { CodonLexer } from "./lexer";
  * Implementers handle drawing primitives (circle, rect, line, etc.)
  * and graphics state transformations (translate, rotate, scale, color).
  */
-export type { Renderer } from "./renderer";
+export type { Renderer, TransformState } from "./renderer";
 
 /**
  * Canvas2D Renderer - Draws CodonCanvas programs to HTML5 Canvas

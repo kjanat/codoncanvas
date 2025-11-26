@@ -4,12 +4,23 @@
     "module": "ESNext",
     "lib": ["ES2020", "DOM", "DOM.Iterable"],
     "moduleResolution": "bundler",
+
+    // Strict type checking
     "strict": true,
+    // noUncheckedIndexedAccess: Disabled - requires extensive codebase changes
+    // Consider enabling incrementally for new code
+    "noImplicitReturns": true,
+    "noFallthroughCasesInSwitch": true,
+    "noPropertyAccessFromIndexSignature": true,
+
+    // Module interop
     "esModuleInterop": true,
-    "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
     "resolveJsonModule": true,
     "isolatedModules": true,
+    "skipLibCheck": true,
+
+    // Output
     "outDir": "./dist",
     "rootDir": "./src",
     "declaration": true,

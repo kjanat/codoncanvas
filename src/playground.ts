@@ -14,8 +14,15 @@ export * from "./playground/linter-handlers";
 export * from "./playground/ui-state";
 export * from "./playground/ui-utils";
 
+import type { Achievement } from "./achievement-engine";
 import { DiffViewer, injectDiffViewerStyles } from "./diff-viewer";
-import { type ExampleKey, type ExampleMetadata, examples } from "./examples";
+import {
+  type Concept,
+  type ExampleDifficulty,
+  type ExampleKey,
+  type ExampleMetadata,
+  examples,
+} from "./examples";
 import { injectShareStyles, ShareSystem } from "./share-system";
 import { TutorialManager } from "./tutorial";
 import { initializeTutorial } from "./tutorial-ui";
@@ -119,7 +126,7 @@ injectTimelineStyles();
 
 // Track drawing operations from executed tokens
 function trackDrawingOperations(tokens: { text: string }[]) {
-  const allUnlocked: any[] = [];
+  const allUnlocked: Achievement[] = [];
 
   for (const token of tokens) {
     const codon = token.text;
@@ -290,8 +297,8 @@ function clearCanvas() {
  * Get filtered examples based on current filter selections
  */
 function getFilteredExamples(): Array<[ExampleKey, ExampleMetadata]> {
-  const difficulty = difficultyFilter.value as any;
-  const concept = conceptFilter.value as any;
+  const difficulty = difficultyFilter.value as ExampleDifficulty | "";
+  const concept = conceptFilter.value as Concept | "";
   const search = searchInput.value.toLowerCase().trim();
 
   return Object.entries(examples).filter(([_key, ex]) => {

@@ -3,6 +3,49 @@
  * Defines core types, opcodes, VM state, and codon-to-opcode mapping.
  */
 
+// ============================================================================
+// Geometric Types
+// ============================================================================
+
+/**
+ * 2D coordinate point for canvas positions.
+ * Used throughout VM state and rendering operations.
+ */
+export interface Point2D {
+  x: number;
+  y: number;
+}
+
+/**
+ * HSL color representation.
+ * - h: Hue (0-360 degrees)
+ * - s: Saturation (0-100 percent)
+ * - l: Lightness (0-100 percent)
+ */
+export interface HSLColor {
+  h: number;
+  s: number;
+  l: number;
+}
+
+// ============================================================================
+// Common Severity/Status Types
+// ============================================================================
+
+/**
+ * General severity level for errors, warnings, and diagnostics.
+ */
+export type Severity = "error" | "warning" | "info";
+
+/**
+ * Risk or priority level indicator.
+ */
+export type RiskLevel = "high" | "medium" | "low";
+
+// ============================================================================
+// DNA/RNA Core Types
+// ============================================================================
+
 /**
  * Valid DNA/RNA base character.
  * - DNA: Adenine, Cytosine, Guanine, Thymine
@@ -10,6 +53,34 @@
  * Note: U and T are treated as synonyms (both map to same codons).
  */
 export type Base = "A" | "C" | "G" | "T" | "U";
+
+/**
+ * Types of genetic mutations supported by the mutation engine.
+ *
+ * - **silent**: Base change with no opcode change (synonymous codon)
+ * - **missense**: Base change resulting in different opcode
+ * - **nonsense**: Mutation creating premature STOP codon
+ * - **point**: Single base substitution (general)
+ * - **insertion**: One or more bases inserted
+ * - **deletion**: One or more bases removed
+ * - **frameshift**: Insertion/deletion not divisible by 3, shifts reading frame
+ */
+export type MutationType =
+  | "silent"
+  | "missense"
+  | "nonsense"
+  | "point"
+  | "insertion"
+  | "deletion"
+  | "frameshift";
+
+/**
+ * Rendering output mode for the CodonCanvas application.
+ * - **visual**: Canvas-only rendering (default)
+ * - **audio**: Audio synthesis only
+ * - **both**: Multimodal rendering with synchronized visual and audio output
+ */
+export type RenderMode = "visual" | "audio" | "both";
 
 /**
  * Three-character DNA/RNA triplet (codon).
@@ -41,7 +112,7 @@ export interface ParseError {
   /** Character position where error occurred */
   position: number;
   /** Error severity level */
-  severity: "error" | "warning" | "info";
+  severity: Severity;
   /** Optional suggested fix for linter UI */
   fix?: string;
 }
@@ -94,13 +165,13 @@ export enum Opcode {
 export interface VMState {
   // Drawing state
   /** Current drawing position (canvas coordinates) */
-  position: { x: number; y: number };
+  position: Point2D;
   /** Current rotation in degrees (0 = right/east) */
   rotation: number;
   /** Current scale factor (1.0 = normal) */
   scale: number;
   /** Current color in HSL (hue: 0-360, saturation: 0-100, lightness: 0-100) */
-  color: { h: number; s: number; l: number };
+  color: HSLColor;
 
   // Execution state
   /** Value stack for operations (numeric literals and intermediate values) */

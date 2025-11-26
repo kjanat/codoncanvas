@@ -38,6 +38,7 @@ interface LearningPathsData {
 
 describe("Learning Path Validation", () => {
   let pathsData: LearningPathsData;
+  // biome-ignore lint/suspicious/noExplicitAny: External JSON data with unknown structure
   let complexityData: any;
 
   try {
@@ -176,6 +177,7 @@ describe("Learning Path Validation", () => {
   describe("Complexity Progression", () => {
     function getComplexityScore(genome: string): number {
       const analysis = complexityData.analysis.find(
+        // biome-ignore lint/suspicious/noExplicitAny: External JSON analysis data
         (a: any) => a.filename === genome,
       );
       return analysis ? analysis.complexityScore : 0;
@@ -242,6 +244,7 @@ describe("Learning Path Validation", () => {
       beginnerPaths.forEach((path) => {
         const firstStepComplexity =
           complexityData.analysis.find(
+            // biome-ignore lint/suspicious/noExplicitAny: External JSON analysis data
             (a: any) => a.filename === path.steps[0].genome,
           )?.complexityScore || 0;
 
@@ -261,6 +264,7 @@ describe("Learning Path Validation", () => {
       const hasComplexStart = advancedPaths.some((path) => {
         const firstStepComplexity =
           complexityData.analysis.find(
+            // biome-ignore lint/suspicious/noExplicitAny: External JSON analysis data
             (a: any) => a.filename === path.steps[0].genome,
           )?.complexityScore || 0;
         return firstStepComplexity > 80;

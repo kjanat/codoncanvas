@@ -14,9 +14,12 @@ import { Canvas2DRenderer } from "../renderer";
 import { ResearchMetrics } from "../research-metrics";
 import { ThemeManager } from "../theme-manager";
 import { TimelineScrubber } from "../timeline-scrubber";
-import type { VMState } from "../types";
+import type { RenderMode, VMState } from "../types";
 import { CodonVM } from "../vm";
 import { canvas, timelineContainer } from "./dom-manager";
+
+// Re-export RenderMode for consumers that import from this module
+export type { RenderMode };
 
 // Lexer, renderer, and VM initialization
 export const lexer = new CodonLexer();
@@ -24,7 +27,6 @@ export const renderer = new Canvas2DRenderer(canvas);
 export const audioRenderer = new AudioRenderer();
 export const midiExporter = new MIDIExporter();
 
-export type RenderMode = "visual" | "audio" | "both";
 export let renderMode: RenderMode = "visual";
 
 export const vm = new CodonVM(renderer);

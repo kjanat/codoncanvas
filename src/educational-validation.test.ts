@@ -8,7 +8,7 @@ import {
   applySilentMutation,
 } from "./mutations";
 import { Canvas2DRenderer } from "./renderer";
-import { CODON_MAP, Opcode } from "./types";
+import { CODON_MAP, Opcode, type VMState } from "./types";
 import { CodonVM } from "./vm";
 
 /**
@@ -432,7 +432,7 @@ describe("Educational Validation Suite", () => {
 
       // Original should execute more instructions
       const originalTokens = lexer.tokenize(genome);
-      let originalSnapshots;
+      let originalSnapshots: VMState[];
       try {
         originalSnapshots = vm.run(originalTokens);
       } catch {
@@ -445,7 +445,7 @@ describe("Educational Validation Suite", () => {
 
       // Mutated should execute fewer (due to early STOP)
       const mutatedTokens = lexer.tokenize(result.mutated);
-      let mutatedSnapshots;
+      let mutatedSnapshots: VMState[];
       try {
         mutatedSnapshots = vm.run(mutatedTokens);
       } catch {

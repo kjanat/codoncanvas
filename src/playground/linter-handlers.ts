@@ -235,7 +235,7 @@ function displayLinterErrors(
       if (canAutoFix(err.message)) {
         const fixButton = document.createElement("button");
         fixButton.className = "fix-button";
-        fixButton.dataset.errorMsg = err.message;
+        fixButton.dataset["errorMsg"] = err.message;
         fixButton.style.cssText =
           "margin-left: 12px; padding: 2px 8px; background: #4ec9b0; color: #1e1e1e; border: none; border-radius: 3px; cursor: pointer; font-size: 0.85em; font-weight: 500;";
         fixButton.textContent = "Fix";

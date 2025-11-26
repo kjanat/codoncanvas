@@ -229,6 +229,7 @@ export interface AnalysisReport {
  * const q1 = Stats.quartile(values, 1); // 20
  * ```
  */
+// biome-ignore lint/complexity/noStaticOnlyClass: Intentional grouping for statistical utilities
 export class Stats {
   static mean(values: number[]): number {
     if (values.length === 0) return 0;
@@ -473,7 +474,7 @@ export class MetricsAnalyzer {
       "assessment",
       "export",
     ] as const;
-    const result: any = {};
+    const result: Partial<ToolAdoption> = {};
 
     for (const tool of tools) {
       const key = `feature_${tool}` as keyof MetricsSession;
@@ -533,7 +534,7 @@ export class MetricsAnalyzer {
       "insertion",
       "deletion",
     ] as const;
-    const result: any = {};
+    const result: Partial<MutationPatterns> = {};
     let total = 0;
 
     for (const type of types) {
@@ -647,7 +648,7 @@ export class MetricsAnalyzer {
   ): ComparisonResult {
     const m1 = Stats.mean(values1);
     const m2 = Stats.mean(values2);
-    const { t, df, p } = Stats.tTest(values1, values2);
+    const { t, df: _df, p } = Stats.tTest(values1, values2);
     const d = Stats.cohensD(values1, values2);
 
     return {
@@ -687,6 +688,7 @@ export function parseCSVContent(content: string): MetricsSession[] {
 
   for (let i = 1; i < lines.length; i++) {
     const values = parseCSVLine(lines[i]);
+    // biome-ignore lint/suspicious/noExplicitAny: Dynamic CSV parsing builds object incrementally
     const session: any = {};
 
     header.forEach((key, idx) => {

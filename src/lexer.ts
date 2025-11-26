@@ -79,11 +79,13 @@ export class CodonLexer implements Lexer {
     // Strip comments and track positions
     for (let lineIdx = 0; lineIdx < lines.length; lineIdx++) {
       const line = lines[lineIdx];
+      if (line === undefined) continue;
       const commentIdx = line.indexOf(";");
       const codeLine = commentIdx >= 0 ? line.slice(0, commentIdx) : line;
 
       for (let charIdx = 0; charIdx < codeLine.length; charIdx++) {
         const char = codeLine[charIdx];
+        if (char === undefined) continue;
         if (this.validBases.has(char)) {
           // Normalize U→T (RNA to DNA notation)
           const normalizedChar = char === "U" ? "T" : char;
@@ -144,6 +146,7 @@ export class CodonLexer implements Lexer {
 
     for (let lineIdx = 0; lineIdx < lines.length; lineIdx++) {
       const line = lines[lineIdx];
+      if (line === undefined) continue;
       const commentIdx = line.indexOf(";");
       const codeLine = commentIdx >= 0 ? line.slice(0, commentIdx) : line;
 
@@ -151,6 +154,7 @@ export class CodonLexer implements Lexer {
       let baseCount = 0;
       for (let charIdx = 0; charIdx < codeLine.length; charIdx++) {
         const char = codeLine[charIdx];
+        if (char === undefined) continue;
         if (this.validBases.has(char)) {
           baseCount++;
         } else if (char.trim() === "") {
@@ -200,7 +204,8 @@ export class CodonLexer implements Lexer {
     }
 
     // Check for START codon
-    if (tokens[0].text !== "ATG") {
+    const firstToken = tokens[0];
+    if (firstToken && firstToken.text !== "ATG") {
       errors.push({
         message: "Program should begin with START codon (ATG)",
         position: 0,
@@ -215,6 +220,7 @@ export class CodonLexer implements Lexer {
 
     for (let i = 0; i < tokens.length; i++) {
       const token = tokens[i];
+      if (!token) continue;
 
       if (stopCodons.has(token.text)) {
         if (firstStopIdx === -1) {
@@ -232,10 +238,11 @@ export class CodonLexer implements Lexer {
     }
 
     // Check if program ends with STOP
-    if (tokens.length > 0 && !stopCodons.has(tokens[tokens.length - 1].text)) {
+    const lastToken = tokens[tokens.length - 1];
+    if (lastToken && !stopCodons.has(lastToken.text)) {
       errors.push({
         message: "Program should end with STOP codon (TAA, TAG, or TGA)",
-        position: tokens[tokens.length - 1].position,
+        position: lastToken.position,
         severity: "warning",
         fix: "Add TAA at the end",
       });

@@ -127,8 +127,11 @@ function calculatePixelDifference(
     vm2.run(tokens2);
 
     // Compare pixels
-    const ctx1 = canvas1.getContext("2d")!;
-    const ctx2 = canvas2.getContext("2d")!;
+    const ctx1 = canvas1.getContext("2d");
+    const ctx2 = canvas2.getContext("2d");
+    if (!ctx1 || !ctx2) {
+      throw new Error("Failed to create canvas rendering context");
+    }
     const imageData1 = ctx1.getImageData(0, 0, width, height);
     const imageData2 = ctx2.getImageData(0, 0, width, height);
 

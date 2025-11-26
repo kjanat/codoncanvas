@@ -29,6 +29,7 @@ const localStorageMock = (() => {
   };
 })();
 
+// biome-ignore lint/suspicious/noExplicitAny: Mock requires any to match global.localStorage type
 global.localStorage = localStorageMock as any;
 
 describe("AchievementEngine", () => {
@@ -58,9 +59,14 @@ describe("AchievementEngine", () => {
     });
 
     it("should have 4 achievement categories", () => {
-      const categories = ["basics", "mastery", "exploration", "perfection"];
+      const categories = [
+        "basics",
+        "mastery",
+        "exploration",
+        "perfection",
+      ] as const;
       categories.forEach((category) => {
-        const achievements = engine.getAchievementsByCategory(category as any);
+        const achievements = engine.getAchievementsByCategory(category);
         expect(achievements.length).toBeGreaterThan(0);
       });
     });
@@ -427,8 +433,9 @@ describe("AchievementEngine", () => {
       expect(allAchievements.some((a) => a.id === "legend")).toBe(true);
 
       // Legend should be hidden initially
-      const legend = allAchievements.find((a) => a.id === "legend")!;
-      expect(legend.hidden).toBe(true);
+      const legend = allAchievements.find((a) => a.id === "legend");
+      expect(legend).toBeDefined();
+      expect(legend?.hidden).toBe(true);
 
       // Initially not unlocked
       expect(engine.isUnlocked("legend")).toBe(false);

@@ -131,7 +131,8 @@ export class GeneticAlgorithm {
   private evaluateFitness(genome: string): number {
     try {
       // Clear canvas
-      const ctx = this.offscreenCanvas.getContext("2d")!;
+      const ctx = this.offscreenCanvas.getContext("2d");
+      if (!ctx) return 0; // Can't evaluate fitness without rendering context
       ctx.clearRect(0, 0, 400, 400);
       ctx.fillStyle = "white";
       ctx.fillRect(0, 0, 400, 400);
@@ -172,17 +173,22 @@ export class GeneticAlgorithm {
    * Tournament selection
    */
   private tournamentSelection(): GAIndividual {
-    let best: GAIndividual | null = null;
+    // Population guaranteed non-empty from initialize(), but guard against edge case
+    if (this.population.length === 0) {
+      throw new Error("Cannot select from empty population");
+    }
+
+    let best = this.population[0];
 
     for (let i = 0; i < this.tournamentSize; i++) {
       const candidate =
         this.population[Math.floor(Math.random() * this.population.length)];
-      if (!best || candidate.fitness > best.fitness) {
+      if (candidate.fitness > best.fitness) {
         best = candidate;
       }
     }
 
-    return best!;
+    return best;
   }
 
   /**

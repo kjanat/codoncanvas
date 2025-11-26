@@ -331,7 +331,10 @@ export class CodonVM implements VM {
         if (this.state.stateStack.length === 0) {
           throw new Error("RESTORE_STATE with empty state stack");
         }
-        const savedState = this.state.stateStack.pop()!;
+        const savedState = this.state.stateStack.pop();
+        if (!savedState) {
+          throw new Error("RESTORE_STATE failed to pop state");
+        }
         // Restore transform state (position, rotation, scale, color)
         this.state.position = { ...savedState.position };
         this.state.rotation = savedState.rotation;

@@ -17,12 +17,12 @@
 import type { AchievementEngine } from "./achievement-engine";
 import type { AchievementUI } from "./achievement-ui";
 import type {
+  AssessmentDifficulty,
   AssessmentEngine,
   AssessmentResult,
   Challenge,
-  DifficultyLevel,
 } from "./assessment-engine";
-import type { MutationType } from "./mutations";
+import type { MutationType } from "./types";
 
 /**
  * UI manager for assessment mode.
@@ -33,7 +33,7 @@ export class AssessmentUI {
   private container: HTMLElement;
   private currentChallenge: Challenge | null = null;
   private results: AssessmentResult[] = [];
-  private difficulty: DifficultyLevel = "easy";
+  private difficulty: AssessmentDifficulty = "easy";
   private achievementEngine?: AchievementEngine;
   private achievementUI?: AchievementUI;
   private originalGenome!: HTMLDivElement;
@@ -232,8 +232,6 @@ export class AssessmentUI {
 
     // Cache element references - elements are created above so guaranteed to exist
     // biome-ignore lint/style/noNonNullAssertion: elements just created above
-    this.challengeSection = this.container.querySelector(".challenge-section")!;
-    // biome-ignore lint/style/noNonNullAssertion: elements just created above
     this.originalGenome = document.getElementById(
       "original-genome",
     )! as HTMLDivElement;
@@ -265,7 +263,7 @@ export class AssessmentUI {
     // Setup answer buttons
     const buttons = this.container.querySelectorAll(".answer-btn");
     buttons.forEach((btn) => {
-      const type = (btn as HTMLButtonElement).dataset.type as MutationType;
+      const type = (btn as HTMLButtonElement).dataset["type"] as MutationType;
       this.answerButtons.set(type, btn as HTMLButtonElement);
 
       btn.addEventListener("click", () => this.submitAnswer(type));
@@ -273,7 +271,7 @@ export class AssessmentUI {
 
     // Setup difficulty selector
     this.difficultySelect.addEventListener("change", () => {
-      this.difficulty = this.difficultySelect.value as DifficultyLevel;
+      this.difficulty = this.difficultySelect.value as AssessmentDifficulty;
       this.startNewChallenge();
     });
 

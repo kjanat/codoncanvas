@@ -229,29 +229,29 @@ export class ResearchMetrics {
    * Track genome creation event.
    */
   trackGenomeCreated(_genomeLength: number): void {
-    if (!this.isEnabled()) return;
+    if (!this.currentSession) return;
 
-    this.currentSession!.genomesCreated++;
+    this.currentSession.genomesCreated++;
   }
 
   /**
    * Track genome execution event.
    */
   trackGenomeExecuted(event: ExecutionEvent): void {
-    if (!this.isEnabled()) return;
+    if (!this.currentSession) return;
 
-    this.currentSession!.genomesExecuted++;
-    this.currentSession?.renderModeUsage[event.renderMode]++;
+    this.currentSession.genomesExecuted++;
+    this.currentSession.renderModeUsage[event.renderMode]++;
 
     // Track time to first artifact
-    if (event.success && this.currentSession?.timeToFirstArtifact === null) {
-      this.currentSession!.timeToFirstArtifact =
-        Date.now() - this.currentSession?.startTime;
+    if (event.success && this.currentSession.timeToFirstArtifact === null) {
+      this.currentSession.timeToFirstArtifact =
+        Date.now() - this.currentSession.startTime;
     }
 
     // Track errors
     if (!event.success && event.errorMessage) {
-      this.currentSession?.errors.push({
+      this.currentSession.errors.push({
         timestamp: Date.now(),
         type: "execution",
         message: event.errorMessage,
@@ -263,20 +263,20 @@ export class ResearchMetrics {
    * Track mutation application event.
    */
   trackMutation(event: MutationEvent): void {
-    if (!this.isEnabled()) return;
+    if (!this.currentSession) return;
 
-    this.currentSession!.mutationsApplied++;
-    this.currentSession?.mutationTypes[event.type]++;
+    this.currentSession.mutationsApplied++;
+    this.currentSession.mutationTypes[event.type]++;
   }
 
   /**
    * Track feature usage event.
    */
   trackFeatureUsage(event: FeatureEvent): void {
-    if (!this.isEnabled()) return;
+    if (!this.currentSession) return;
 
     if (event.action === "open" || event.action === "interact") {
-      this.currentSession?.features[event.feature]++;
+      this.currentSession.features[event.feature]++;
     }
   }
 

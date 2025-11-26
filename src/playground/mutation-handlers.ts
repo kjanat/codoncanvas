@@ -12,19 +12,20 @@ import {
   applyNonsenseMutation,
   applyPointMutation,
   applySilentMutation,
-  type MutationType,
+  type MutationResult,
 } from "../mutations";
+import type { MutationType } from "../types";
 import { diffViewerContainer, diffViewerPanel, editor } from "./dom-manager";
 import { achievementEngine, achievementUI } from "./ui-state";
 import { setStatus } from "./ui-utils";
 
 let originalGenomeBeforeMutation = "";
-let diffViewerInstance: any = null; // Cached DiffViewer instance
+let diffViewerInstance: import("../diff-viewer").DiffViewer | null = null; // Cached DiffViewer instance
 
 /**
  * Initialize or get DiffViewer instance
  */
-function getDiffViewer() {
+function getDiffViewer(): import("../diff-viewer").DiffViewer {
   if (!diffViewerInstance) {
     // Lazy import to avoid circular dependencies
     const { DiffViewer } = require("../diff-viewer");
@@ -32,7 +33,8 @@ function getDiffViewer() {
       containerElement: diffViewerContainer,
     });
   }
-  return diffViewerInstance;
+  // Instance is guaranteed to exist after the if block above
+  return diffViewerInstance as import("../diff-viewer").DiffViewer;
 }
 
 /**
@@ -49,7 +51,7 @@ export function applyMutation(type: MutationType) {
 
     originalGenomeBeforeMutation = genome;
 
-    let result;
+    let result: MutationResult;
 
     switch (type) {
       case "silent":
@@ -110,7 +112,7 @@ export function previewMutation(type: MutationType) {
       return;
     }
 
-    let result;
+    let result: MutationResult;
     switch (type) {
       case "silent":
         result = applySilentMutation(genome);

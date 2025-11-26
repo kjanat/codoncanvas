@@ -12,19 +12,13 @@
  * - **Frameshift**: Insert/delete 1-2 bases (scrambles downstream codons)
  */
 
-import { type Base, CODON_MAP, type Codon, Opcode } from "./types";
-
-/**
- * Mutation type classification for pedagogical purposes.
- */
-export type MutationType =
-  | "silent"
-  | "missense"
-  | "nonsense"
-  | "point"
-  | "insertion"
-  | "deletion"
-  | "frameshift";
+import {
+  type Base,
+  CODON_MAP,
+  type Codon,
+  type MutationType,
+  Opcode,
+} from "./types";
 
 /**
  * Result of applying a mutation to a genome.
@@ -143,11 +137,19 @@ export function applySilentMutation(
       throw new Error("No synonymous mutations available in this genome");
     }
 
-    targetPos = candidates[Math.floor(Math.random() * candidates.length)].index;
+    const selectedCandidate =
+      candidates[Math.floor(Math.random() * candidates.length)];
+    if (!selectedCandidate) {
+      throw new Error("No synonymous mutations available in this genome");
+    }
+    targetPos = selectedCandidate.index;
   }
 
-  const originalCodon = codons[targetPos] as Codon;
-  const synonymous = getSynonymousCodons(originalCodon);
+  const originalCodon = codons[targetPos];
+  if (!originalCodon) {
+    throw new Error(`Invalid position ${targetPos}`);
+  }
+  const synonymous = getSynonymousCodons(originalCodon as Codon);
 
   if (synonymous.length === 0) {
     throw new Error(
@@ -156,6 +158,9 @@ export function applySilentMutation(
   }
 
   const newCodon = synonymous[Math.floor(Math.random() * synonymous.length)];
+  if (!newCodon) {
+    throw new Error("Failed to select synonymous codon");
+  }
   codons[targetPos] = newCodon;
 
   return {
@@ -201,11 +206,19 @@ export function applyMissenseMutation(
       throw new Error("No missense mutations available in this genome");
     }
 
-    targetPos = candidates[Math.floor(Math.random() * candidates.length)].index;
+    const selectedCandidate =
+      candidates[Math.floor(Math.random() * candidates.length)];
+    if (!selectedCandidate) {
+      throw new Error("No missense mutations available in this genome");
+    }
+    targetPos = selectedCandidate.index;
   }
 
-  const originalCodon = codons[targetPos] as Codon;
-  const missense = getMissenseCodons(originalCodon);
+  const originalCodon = codons[targetPos];
+  if (!originalCodon) {
+    throw new Error(`Invalid position ${targetPos}`);
+  }
+  const missense = getMissenseCodons(originalCodon as Codon);
 
   if (missense.length === 0) {
     throw new Error(
@@ -214,6 +227,9 @@ export function applyMissenseMutation(
   }
 
   const newCodon = missense[Math.floor(Math.random() * missense.length)];
+  if (!newCodon) {
+    throw new Error("Failed to select missense codon");
+  }
   codons[targetPos] = newCodon;
 
   return {
@@ -264,10 +280,18 @@ export function applyNonsenseMutation(
       throw new Error("No nonsense mutation positions available");
     }
 
-    targetPos = candidates[Math.floor(Math.random() * candidates.length)].index;
+    const selectedCandidate =
+      candidates[Math.floor(Math.random() * candidates.length)];
+    if (!selectedCandidate) {
+      throw new Error("No nonsense mutation positions available");
+    }
+    targetPos = selectedCandidate.index;
   }
 
-  const originalCodon = codons[targetPos] as Codon;
+  const originalCodon = codons[targetPos];
+  if (!originalCodon) {
+    throw new Error(`Invalid position ${targetPos}`);
+  }
   const stopCodon = "TAA"; // Use TAA as standard STOP
 
   codons[targetPos] = stopCodon;

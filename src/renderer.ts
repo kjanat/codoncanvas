@@ -1,3 +1,14 @@
+import type { Point2D } from "./types";
+
+/**
+ * Transform state for VM tracking.
+ * Extends Point2D with rotation and scale.
+ */
+export interface TransformState extends Point2D {
+  rotation: number;
+  scale: number;
+}
+
 /**
  * Seeded pseudo-random number generator (Linear Congruential Generator).
  * Provides deterministic randomness for NOISE opcode.
@@ -73,12 +84,7 @@ export interface Renderer {
   setColor(h: number, s: number, l: number): void;
 
   /** Get current transform state for VM tracking */
-  getCurrentTransform(): {
-    x: number;
-    y: number;
-    rotation: number;
-    scale: number;
-  };
+  getCurrentTransform(): TransformState;
 
   /** Export canvas as data URL (for image download) */
   toDataURL(): string;
@@ -204,7 +210,8 @@ export class Canvas2DRenderer implements Renderer {
     // Draw random dots within circular region
     for (let i = 0; i < dotCount; i++) {
       // Random point in circle using rejection sampling
-      let px, py;
+      let px: number;
+      let py: number;
       do {
         px = (rng.next() * 2 - 1) * radius;
         py = (rng.next() * 2 - 1) * radius;

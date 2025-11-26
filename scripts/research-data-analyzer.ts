@@ -81,6 +81,7 @@ interface PowerAnalysis {
 // Statistical Functions
 // ============================================================================
 
+// biome-ignore lint/complexity/noStaticOnlyClass: Intentional grouping for statistical utilities
 class Stats {
   /**
    * Calculate mean
@@ -308,6 +309,7 @@ class Stats {
 // Analysis Workflows
 // ============================================================================
 
+// biome-ignore lint/complexity/noStaticOnlyClass: Intentional grouping for analysis workflows
 class ResearchAnalyzer {
   /**
    * Analyze pre-post design (pilot study)
@@ -546,7 +548,9 @@ class ResearchAnalyzer {
    */
   static analyzeRetention(data: StudentData[]): void {
     const postScores = data.map((d) => d.posttest_total);
-    const delayedScores = data.map((d) => d.delayed_total!);
+    const delayedScores = data
+      .map((d) => d.delayed_total)
+      .filter((s): s is number => s !== undefined);
 
     const postMean = Stats.mean(postScores);
     const delayedMean = Stats.mean(delayedScores);
@@ -654,7 +658,7 @@ function parseCSV(filepath: string): StudentData[] {
 
   return lines.slice(1).map((line) => {
     const values = line.split(",").map((v) => v.trim());
-    const row: any = {};
+    const row: Record<string, string | number | undefined> = {};
     headers.forEach((header, i) => {
       const value = values[i];
       // Convert numeric fields

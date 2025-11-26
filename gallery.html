@@ -851,16 +851,16 @@ document.getElementById("search").addEventListener("input", (e) => {
 });
 
 // Difficulty filters
-document.querySelectorAll("#difficultyFilters .chip").forEach((chip) => {
+for (const chip of document.querySelectorAll("#difficultyFilters .chip")) {
   chip.addEventListener("click", (e) => {
-    document
-      .querySelectorAll("#difficultyFilters .chip")
-      .forEach((c) => c.classList.remove("active"));
+    for (const c of document.querySelectorAll("#difficultyFilters .chip")) {
+      c.classList.remove("active");
+    }
     e.target.classList.add("active");
     currentFilter = e.target.dataset.difficulty;
     renderGallery();
   });
-});
+}
 
 // Sort functionality
 document.getElementById("sortBy").addEventListener("change", (e) => {

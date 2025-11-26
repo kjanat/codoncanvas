@@ -15,7 +15,12 @@
   "linter": {
     "enabled": true,
     "rules": {
-      "recommended": true
+      "recommended": true,
+      "complexity": {
+        // Allow bracket notation for dataset properties - required by TypeScript's noPropertyAccessFromIndexSignature
+        // DOMStringMap (dataset) has index signature, TypeScript requires bracket notation
+        "useLiteralKeys": "off"
+      }
     },
     "domains": {}
   },

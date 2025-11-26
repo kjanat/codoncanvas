@@ -402,11 +402,14 @@ export class MIDIExporter {
    */
   private encodeVariableLength(value: number): number[] {
     const bytes: number[] = [];
-    let buffer = value & 0x7f;
+    let remaining = value;
+    let buffer = remaining & 0x7f;
 
-    while ((value >>= 7)) {
+    remaining >>= 7;
+    while (remaining > 0) {
       bytes.unshift((buffer & 0x7f) | 0x80);
-      buffer = value & 0x7f;
+      buffer = remaining & 0x7f;
+      remaining >>= 7;
     }
 
     bytes.push(buffer);

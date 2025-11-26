@@ -42,6 +42,11 @@ export default defineConfig({
     globals: true,
     environment: "jsdom",
     setupFiles: ["./vitest.setup.ts"],
-    pool: "forks",
+    // Disable file parallelism to prevent jsdom race conditions
+    // Each test file gets its own jsdom environment sequentially
+    // This ensures DOM globals are properly initialized before tests run
+    fileParallelism: false,
+    // Tests within a file still run in parallel for performance
+    pool: "threads",
   },
 });

@@ -18,6 +18,7 @@
  */
 
 import type { ResearchSession } from "./research-metrics";
+import type { RiskLevel } from "./types";
 
 /**
  * Student progress data exported for teacher dashboard analysis
@@ -33,7 +34,7 @@ import type { ResearchSession } from "./research-metrics";
  *
  * @example
  * ```typescript
- * const progress: StudentProgress = {
+ * const progress: TeacherStudentProgress = {
  *   studentId: 'student_001',
  *   exportDate: new Date().toISOString(),
  *   tutorials: {
@@ -49,7 +50,7 @@ import type { ResearchSession } from "./research-metrics";
  * };
  * ```
  */
-export interface StudentProgress {
+export interface TeacherStudentProgress {
   /** Student identifier (anonymous ID, not PII) */
   studentId: string;
   /** Optional student name (teacher-assigned label, not PII) */
@@ -118,7 +119,7 @@ export interface AtRiskStudent {
   studentId: string;
   studentName?: string;
   reasons: string[];
-  severity: "high" | "medium" | "low";
+  severity: RiskLevel;
   metrics: {
     sessions: number;
     timeToFirstArtifact: number | null;
@@ -132,14 +133,14 @@ export interface AtRiskStudent {
  * Aggregates student progress data and provides classroom analytics
  */
 export class TeacherDashboard {
-  private students: Map<string, StudentProgress> = new Map();
+  private students: Map<string, TeacherStudentProgress> = new Map();
 
   /**
    * Import student progress data from JSON
    */
   importStudentData(jsonData: string): void {
     try {
-      const data = JSON.parse(jsonData) as StudentProgress;
+      const data = JSON.parse(jsonData) as TeacherStudentProgress;
 
       // Validate required fields
       if (!data.studentId || !data.exportDate) {
@@ -199,14 +200,14 @@ export class TeacherDashboard {
   /**
    * Get all imported students
    */
-  getStudents(): StudentProgress[] {
+  getStudents(): TeacherStudentProgress[] {
     return Array.from(this.students.values());
   }
 
   /**
    * Get student by ID
    */
-  getStudent(studentId: string): StudentProgress | undefined {
+  getStudent(studentId: string): TeacherStudentProgress | undefined {
     return this.students.get(studentId);
   }
 
@@ -519,7 +520,7 @@ export class TeacherDashboard {
 export function generateStudentExport(
   studentId: string,
   studentName: string | undefined,
-  tutorials: StudentProgress["tutorials"],
+  tutorials: TeacherStudentProgress["tutorials"],
   sessions: ResearchSession[],
 ): string {
   // Calculate aggregate metrics from sessions
@@ -553,7 +554,7 @@ export function generateStudentExport(
   const completionRate =
     tutorialsTotal > 0 ? tutorialsCompleted / tutorialsTotal : 0;
 
-  const studentProgress: StudentProgress = {
+  const studentProgress: TeacherStudentProgress = {
     studentId,
     studentName,
     exportDate: new Date().toISOString(),

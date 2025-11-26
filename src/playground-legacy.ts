@@ -16,7 +16,7 @@ function escapeHtml(unsafe: string): string {
 import { DiffViewer, injectDiffViewerStyles } from "./diff-viewer";
 import {
   type Concept,
-  type DifficultyLevel,
+  type ExampleDifficulty,
   type ExampleKey,
   type ExampleMetadata,
   examples,
@@ -32,16 +32,16 @@ import {
   applyNonsenseMutation,
   applyPointMutation,
   applySilentMutation,
-  type MutationType,
+  type MutationResult,
 } from "./mutations";
 import { Canvas2DRenderer } from "./renderer";
 import { injectShareStyles, ShareSystem } from "./share-system";
 import { helloCircleTutorial, TutorialManager } from "./tutorial";
 import { initializeTutorial } from "./tutorial-ui";
-import type { VMState } from "./types";
+import type { MutationType, RenderMode, VMState } from "./types";
 import { CodonVM } from "./vm";
 import "./tutorial-ui.css";
-import { AchievementEngine } from "./achievement-engine";
+import { type Achievement, AchievementEngine } from "./achievement-engine";
 import { AchievementUI } from "./achievement-ui";
 import { ThemeManager } from "./theme-manager";
 import { injectTimelineStyles, TimelineScrubber } from "./timeline-scrubber";
@@ -210,7 +210,6 @@ const lexer = new CodonLexer();
 const renderer = new Canvas2DRenderer(canvas);
 const audioRenderer = new AudioRenderer();
 const midiExporter = new MIDIExporter();
-type RenderMode = "visual" | "audio" | "both";
 let renderMode: RenderMode = "visual"; // Start with visual mode
 const vm = new CodonVM(renderer);
 let lastSnapshots: VMState[] = []; // Store last execution snapshots for MIDI export
@@ -267,7 +266,7 @@ function updateStats(codons: number, instructions: number) {
 
 // Track drawing operations from executed tokens
 function trackDrawingOperations(tokens: { text: string }[]) {
-  const allUnlocked: any[] = [];
+  const allUnlocked: Achievement[] = [];
 
   for (const token of tokens) {
     const codon = token.text;
@@ -458,7 +457,7 @@ function clearCanvas() {
 }
 
 function getFilteredExamples(): Array<[ExampleKey, ExampleMetadata]> {
-  const difficulty = difficultyFilter.value as DifficultyLevel | "";
+  const difficulty = difficultyFilter.value as ExampleDifficulty | "";
   const concept = conceptFilter.value as Concept | "";
   const search = searchInput.value.toLowerCase().trim();
 
@@ -855,7 +854,7 @@ function displayLinterErrors(
       if (fixable) {
         const fixButton = document.createElement("button");
         fixButton.className = "fix-button";
-        fixButton.dataset.errorMsg = err.message; // Store for handler
+        fixButton.dataset["errorMsg"] = err.message; // Store for handler
         fixButton.style.cssText =
           "margin-left: 12px; padding: 2px 8px; background: #4ec9b0; color: #1e1e1e; border: none; border-radius: 3px; cursor: pointer; font-size: 0.85em; font-weight: 500;";
         fixButton.textContent = "Fix";
@@ -1022,7 +1021,7 @@ function applyMutation(type: MutationType) {
     // Store original genome before mutation
     _originalGenomeBeforeMutation = genome;
 
-    let result;
+    let result: MutationResult;
 
     switch (type) {
       case "silent":
@@ -1520,7 +1519,7 @@ async function previewMutation(type: MutationType) {
       return;
     }
 
-    let result;
+    let result: MutationResult;
 
     switch (type) {
       case "silent":

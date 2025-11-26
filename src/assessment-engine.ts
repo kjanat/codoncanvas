@@ -23,17 +23,17 @@ import {
   applyPointMutation,
   applySilentMutation,
   type MutationResult,
-  type MutationType,
 } from "./mutations";
-import { CODON_MAP, type Codon, Opcode } from "./types";
+import { CODON_MAP, type Codon, type MutationType, Opcode } from "./types";
 
 /**
- * Difficulty level for generated challenges.
+ * Difficulty level for generated assessment challenges.
+ * Different from ExampleDifficulty which uses beginner/intermediate/advanced scale.
  * - easy: Clear examples with obvious changes
  * - medium: Subtle differences requiring analysis
  * - hard: Complex scenarios with multiple mutations
  */
-export type DifficultyLevel = "easy" | "medium" | "hard";
+export type AssessmentDifficulty = "easy" | "medium" | "hard";
 
 /**
  * A mutation identification challenge for students.
@@ -48,7 +48,7 @@ export interface Challenge {
   /** Correct answer (mutation type) */
   correctAnswer: MutationType;
   /** Difficulty level of challenge */
-  difficulty: DifficultyLevel;
+  difficulty: AssessmentDifficulty;
   /** Optional hint for students */
   hint?: string;
   /** Position where mutation occurred (character offset) */
@@ -72,9 +72,10 @@ export interface AssessmentResult {
 }
 
 /**
- * Student progress tracking data.
+ * Student progress tracking for assessment challenges.
+ * Different from TeacherStudentProgress which includes full session/tutorial data.
  */
-export interface StudentProgress {
+export interface AssessmentProgress {
   /** Number of challenges attempted */
   totalAttempts: number;
   /** Number of correct answers */
@@ -84,7 +85,10 @@ export interface StudentProgress {
   /** Performance by mutation type */
   byType: Record<MutationType, { correct: number; total: number }>;
   /** Performance by difficulty */
-  byDifficulty: Record<DifficultyLevel, { correct: number; total: number }>;
+  byDifficulty: Record<
+    AssessmentDifficulty,
+    { correct: number; total: number }
+  >;
 }
 
 /**
@@ -139,7 +143,7 @@ export class AssessmentEngine {
    * @param difficulty - Challenge difficulty level
    * @returns Generated challenge with correct answer
    */
-  generateChallenge(difficulty: DifficultyLevel): Challenge {
+  generateChallenge(difficulty: AssessmentDifficulty): Challenge {
     const id = `challenge-${++this.challengeCounter}`;
 
     // Generate base genome based on difficulty
@@ -202,7 +206,7 @@ export class AssessmentEngine {
    * @param results - Array of assessment results
    * @returns Student progress summary
    */
-  calculateProgress(results: AssessmentResult[]): StudentProgress {
+  calculateProgress(results: AssessmentResult[]): AssessmentProgress {
     const totalAttempts = results.length;
     const correctAnswers = results.filter((r) => r.correct).length;
     const accuracy =
@@ -220,7 +224,7 @@ export class AssessmentEngine {
     };
 
     const byDifficulty: Record<
-      DifficultyLevel,
+      AssessmentDifficulty,
       { correct: number; total: number }
     > = {
       easy: { correct: 0, total: 0 },
@@ -343,7 +347,7 @@ export class AssessmentEngine {
    * Generate base genome for challenge based on difficulty.
    * @internal
    */
-  private generateBaseGenome(difficulty: DifficultyLevel): string {
+  private generateBaseGenome(difficulty: AssessmentDifficulty): string {
     const lengths = {
       easy: 5, // 5 codons = 15 bases
       medium: 8, // 8 codons = 24 bases
@@ -376,8 +380,8 @@ export class AssessmentEngine {
    * Hard: Add frameshift/insertion/deletion
    * @internal
    */
-  private selectMutationType(difficulty: DifficultyLevel): MutationType {
-    const types: Record<DifficultyLevel, MutationType[]> = {
+  private selectMutationType(difficulty: AssessmentDifficulty): MutationType {
+    const types: Record<AssessmentDifficulty, MutationType[]> = {
       easy: ["silent", "missense"],
       medium: ["silent", "missense", "nonsense"],
       hard: [
@@ -400,7 +404,7 @@ export class AssessmentEngine {
    */
   private generateHint(
     mutationType: MutationType,
-    difficulty: DifficultyLevel,
+    difficulty: AssessmentDifficulty,
   ): string {
     if (difficulty === "easy") {
       const hints: Record<MutationType, string> = {

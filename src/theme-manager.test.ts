@@ -173,6 +173,7 @@ describe("ThemeManager", () => {
 
       // Simulate system theme change event
       const mockEvent = { matches: true } as MediaQueryListEvent;
+      // biome-ignore lint/suspicious/noExplicitAny: Accessing private method for testing
       (themeManager as any).handleSystemThemeChange(mockEvent);
 
       // Should not change from manually selected theme

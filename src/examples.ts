@@ -2,11 +2,21 @@
  * Built-in example genomes for the playground
  */
 
-export type DifficultyLevel =
+import type { MutationType } from "./types";
+
+/**
+ * Difficulty level for example genomes in the gallery.
+ * Different from AssessmentDifficulty which uses easy/medium/hard scale.
+ */
+export type ExampleDifficulty =
   | "beginner"
   | "intermediate"
   | "advanced"
   | "advanced-showcase";
+
+/**
+ * Learning concepts covered by example genomes.
+ */
 export type Concept =
   | "drawing"
   | "transforms"
@@ -18,7 +28,6 @@ export type Concept =
   | "arithmetic"
   | "comparison"
   | "logic";
-export type MutationType = "silent" | "missense" | "nonsense" | "frameshift";
 
 /**
  * Metadata describing a pedagogical example genome
@@ -48,7 +57,7 @@ export interface ExampleMetadata {
   /** Complete genome code (codons with optional comments/whitespace) */
   genome: string;
   /** Educational difficulty level (beginner, intermediate, advanced, expert) */
-  difficulty: DifficultyLevel;
+  difficulty: ExampleDifficulty;
   /** Learning concepts this example teaches */
   concepts: Concept[];
   /** Mutation types that produce interesting effects on this genome */

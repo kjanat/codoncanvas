@@ -1,9 +1,8 @@
 /**
  * GIF animation exporter for CodonCanvas timeline animations
- * Uses gif.js library for encoding
+ * Uses gif.js library for encoding (types defined in gif.js.d.ts)
  */
 
-// @ts-expect-error - gif.js doesn't have TypeScript definitions
 import GIF from "gif.js";
 
 export interface GifExportOptions {
@@ -84,7 +83,14 @@ export class GifExporter {
     onProgress?: (progress: ExportProgress) => void,
   ): Promise<Blob> {
     return new Promise((resolve, reject) => {
-      const gifOptions: any = {
+      const gifOptions: {
+        workers: number;
+        quality: number;
+        width: number;
+        height: number;
+        repeat: number;
+        workerScript?: string;
+      } = {
         workers: 2,
         quality: this.quality,
         width: this.width,

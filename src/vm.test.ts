@@ -1,6 +1,7 @@
 import { beforeEach, describe, expect, test } from "vitest";
 import { CodonLexer } from "./lexer";
 import type { Renderer } from "./renderer";
+import type { Codon } from "./types";
 import { CodonVM } from "./vm";
 
 // Mock renderer for testing
@@ -362,11 +363,11 @@ describe("CodonVM", () => {
 
       // For frameshift, manually create shifted tokens to simulate mutation
       const tokensFrameshift = [
-        { text: "ATG" as any, position: 0, line: 1 }, // START
-        { text: "GAA" as any, position: 3, line: 1 }, // PUSH (but different literal coming)
-        { text: "AGG" as any, position: 6, line: 1 }, // Now reading shifted codon (was part of AGG)
-        { text: "GGG" as any, position: 9, line: 1 }, // Shifted: GA+GG → scrambled
-        { text: "ATA" as any, position: 12, line: 1 }, // Shifted codon (DUP instead of TAA)
+        { text: "ATG" as Codon, position: 0, line: 1 }, // START
+        { text: "GAA" as Codon, position: 3, line: 1 }, // PUSH (but different literal coming)
+        { text: "AGG" as Codon, position: 6, line: 1 }, // Now reading shifted codon (was part of AGG)
+        { text: "GGG" as Codon, position: 9, line: 1 }, // Shifted: GA+GG → scrambled
+        { text: "ATA" as Codon, position: 12, line: 1 }, // Shifted codon (DUP instead of TAA)
       ];
 
       try {
@@ -740,8 +741,11 @@ describe("CodonVM", () => {
   describe("Error handling", () => {
     test("throws on unknown codon", () => {
       const tokens = [
+        // biome-ignore lint/suspicious/noExplicitAny: Testing invalid codon handling
         { text: "ATG" as any, position: 0, line: 1 },
+        // biome-ignore lint/suspicious/noExplicitAny: Testing invalid codon handling
         { text: "XXX" as any, position: 3, line: 1 },
+        // biome-ignore lint/suspicious/noExplicitAny: Testing invalid codon handling
         { text: "TAA" as any, position: 6, line: 1 },
       ];
 
