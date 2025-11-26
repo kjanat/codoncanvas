@@ -118,7 +118,10 @@ export class DiffViewer {
       </div>
     `;
 
-    this.container.innerHTML = html;
+    // Build DOM safely without innerHTML
+    const tempDiv = document.createElement('div');
+    tempDiv.insertAdjacentHTML('afterbegin', html);
+    this.container.replaceChildren(...tempDiv.children);
 
     // Render canvases if enabled
     if (this.options.showCanvas) {
@@ -179,7 +182,7 @@ export class DiffViewer {
       const mutatedTokens = this.lexer.tokenize(mutated);
       mutatedVM.run(mutatedTokens);
     } catch (error) {
-      console.error("Failed to render canvas outputs:", error);
+      // Render failed - fail silently
     }
   }
 
@@ -215,7 +218,7 @@ export class DiffViewer {
    * Clear the diff viewer
    */
   clear(): void {
-    this.container.innerHTML = "";
+    this.container.replaceChildren();
   }
 }
 

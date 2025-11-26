@@ -8,6 +8,65 @@ import {
 } from "./types";
 
 /**
+ * Stack values are 6-bit (0-63 range).
+ * This is the maximum value used for normalization to coordinate/color spaces.
+ */
+const STACK_VALUE_RANGE = 64;
+
+/**
+ * Maximum degrees in a full circle for hue calculations.
+ * Hue values from stack (0-63) are mapped to 0-360 degrees.
+ */
+const HUE_DEGREES = 360;
+
+/**
+ * Percentage scale (0-100) for lightness and saturation.
+ * Stack values (0-63) are mapped to 0-100% range.
+ */
+const PERCENT_SCALE = 100;
+
+/**
+ * Scaling factor for general-purpose transformations.
+ * Stack values are divided by this to produce reasonable scale multipliers.
+ */
+const SCALE_DIVISOR = 32;
+
+/**
+ * Default maximum instruction count to prevent infinite loops.
+ * Programs exceeding this limit will throw an error.
+ */
+const DEFAULT_MAX_INSTRUCTIONS = 10000;
+
+/**
+ * Base-4 encoding weight for first digit position (4^2).
+ * Used in decoding three-letter codons to 0-63 numeric literals.
+ */
+const BASE4_DIGIT1_WEIGHT = 16;
+
+/**
+ * Base-4 encoding weight for second digit position (4^1).
+ * Used in decoding three-letter codons to 0-63 numeric literals.
+ */
+const BASE4_DIGIT2_WEIGHT = 4;
+
+/**
+ * Number of PUSH instructions used for LOOP parameters.
+ * LOOP expects two values on stack (instructionCount, loopCount),
+ * so we skip the last 2 history entries when replaying.
+ */
+const LOOP_PARAMETER_COUNT = 2;
+
+/**
+ * Boolean true value for comparison operations (EQ, LT).
+ */
+const BOOLEAN_TRUE = 1;
+
+/**
+ * Boolean false value for comparison operations (EQ, LT).
+ */
+const BOOLEAN_FALSE = 0;
+
+/**
  * Virtual Machine interface for CodonCanvas execution.
  * Stack-based VM with drawing primitives and transform state.
  */
@@ -78,7 +137,7 @@ export interface VM {
 export class CodonVM implements VM {
   state: VMState;
   renderer: Renderer;
-  private maxInstructions: number = 10000;
+  private maxInstructions: number = DEFAULT_MAX_INSTRUCTIONS;
   private instructionHistory: {
     opcode: Opcode;
     codon: Codon;
@@ -140,21 +199,21 @@ export class CodonVM implements VM {
     const d1 = baseMap[codon[0]] || 0;
     const d2 = baseMap[codon[1]] || 0;
     const d3 = baseMap[codon[2]] || 0;
-    return d1 * 16 + d2 * 4 + d3;
+    return d1 * BASE4_DIGIT1_WEIGHT + d2 * BASE4_DIGIT2_WEIGHT + d3;
   }
 
   /**
    * Scale value from 0-63 range to canvas coordinates
    */
   private scaleValue(value: number): number {
-    return (value / 64) * this.renderer.width;
+    return (value / STACK_VALUE_RANGE) * this.renderer.width;
   }
 
   execute(opcode: Opcode, codon: string): void {
     this.state.instructionCount++;
 
     if (this.state.instructionCount > this.maxInstructions) {
-      throw new Error("Instruction limit exceeded (max 10,000)");
+      throw new Error(`Instruction limit exceeded (max ${this.maxInstructions})`);
     }
 
     // Track executed opcode for MIDI export
@@ -218,16 +277,16 @@ export class CodonVM implements VM {
       }
 
       case Opcode.SCALE: {
-        const factor = this.pop() / 32; // Scale to reasonable range
+        const factor = this.pop() / SCALE_DIVISOR;
         this.renderer.scale(factor);
         this.state.scale = this.renderer.getCurrentTransform().scale;
         break;
       }
 
       case Opcode.COLOR: {
-        const l = this.pop() * (100 / 64); // Map 0-63 to 0-100%
-        const s = this.pop() * (100 / 64); // Map 0-63 to 0-100%
-        const h = this.pop() * (360 / 64); // Map 0-63 to 0-360
+        const l = this.pop() * (PERCENT_SCALE / STACK_VALUE_RANGE);
+        const s = this.pop() * (PERCENT_SCALE / STACK_VALUE_RANGE);
+        const h = this.pop() * (HUE_DEGREES / STACK_VALUE_RANGE);
         this.renderer.setColor(h, s, l);
         this.state.color = { h, s, l };
         break;
@@ -341,9 +400,9 @@ export class CodonVM implements VM {
         }
 
         // Get the instructions to replay
-        // Note: The last 2 instructions in history are the PUSH operations for loop parameters
+        // Note: The last LOOP_PARAMETER_COUNT instructions in history are the PUSH operations for loop parameters
         // We want to replay instructions BEFORE those parameter PUSHes
-        const historyBeforeParams = this.instructionHistory.length - 2;
+        const historyBeforeParams = this.instructionHistory.length - LOOP_PARAMETER_COUNT;
         const startIdx = historyBeforeParams - instructionCount;
         const instructionsToRepeat = this.instructionHistory.slice(
           startIdx,
@@ -383,7 +442,7 @@ export class CodonVM implements VM {
         // Equality comparison: [a, b] → [1 if a==b else 0]
         const b = this.pop();
         const a = this.pop();
-        this.push(a === b ? 1 : 0);
+        this.push(a === b ? BOOLEAN_TRUE : BOOLEAN_FALSE);
         break;
       }
 
@@ -391,7 +450,7 @@ export class CodonVM implements VM {
         // Less than comparison: [a, b] → [1 if a<b else 0]
         const b = this.pop();
         const a = this.pop();
-        this.push(a < b ? 1 : 0);
+        this.push(a < b ? BOOLEAN_TRUE : BOOLEAN_FALSE);
         break;
       }
 

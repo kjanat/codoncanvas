@@ -35,17 +35,46 @@ export interface MetricsSession {
   errorTypes: string; // JSON array
 }
 
+/**
+ * Descriptive statistics summary (mean, SD, quartiles, min/max)
+ *
+ * Standard statistical measures computed from a distribution of values.
+ * Enables comparison of learning metrics across different student populations.
+ *
+ * Fields:
+ * - n: sample size
+ * - mean: arithmetic average
+ * - sd: standard deviation
+ * - min/max: range bounds
+ * - median: 50th percentile
+ * - q1/q3: 25th and 75th percentiles
+ */
 export interface DescriptiveStats {
+  /** Sample size (number of observations) */
   n: number;
+  /** Arithmetic mean */
   mean: number;
+  /** Standard deviation */
   sd: number;
+  /** Minimum value */
   min: number;
+  /** Maximum value */
   max: number;
+  /** Median (50th percentile) */
   median: number;
+  /** First quartile (25th percentile) */
   q1: number;
+  /** Third quartile (75th percentile) */
   q3: number;
 }
 
+/**
+ * Classroom-level engagement metrics
+ *
+ * Aggregated statistics on student participation including session counts,
+ * genome creation rates, execution frequency, and retention patterns.
+ * Used for classroom-wide learning analytics.
+ */
 export interface EngagementMetrics {
   totalSessions: number;
   uniqueUsers: number;
@@ -56,14 +85,38 @@ export interface EngagementMetrics {
   retentionRate: number;
 }
 
+/**
+ * Learning velocity analysis (time to first successful creation)
+ *
+ * Measures how quickly students begin producing visual output. Fast time-to-artifact
+ * indicates pedagogical effectiveness in helping students succeed early and build confidence.
+ *
+ * Categories:
+ * - Fast learners: first artifact < 5 minutes
+ * - Moderate learners: 5-15 minutes
+ * - Slow learners: > 15 minutes
+ * - No artifact: never achieved successful execution
+ */
 export interface LearningVelocity {
+  /** Distribution of time-to-first-artifact across all students */
   timeToFirstArtifact: DescriptiveStats;
-  fastLearners: number; // <5 minutes
-  moderateLearners: number; // 5-15 minutes
-  slowLearners: number; // >15 minutes
+  /** Number of students achieving artifact in < 5 minutes */
+  fastLearners: number;
+  /** Number of students achieving artifact in 5-15 minutes */
+  moderateLearners: number;
+  /** Number of students achieving artifact in > 15 minutes */
+  slowLearners: number;
+  /** Number of students never achieving successful execution */
   noArtifact: number;
 }
 
+/**
+ * Feature adoption statistics (tool usage across classroom)
+ *
+ * Tracks which advanced features (diff viewer, timeline, evolution engine, etc.)
+ * students actually use, enabling instructors to identify under-utilized tools
+ * and adjust pedagogy accordingly.
+ */
 export interface ToolAdoption {
   diffViewer: { users: number; avgUsage: number };
   timeline: { users: number; avgUsage: number };
@@ -72,12 +125,28 @@ export interface ToolAdoption {
   export: { users: number; avgUsage: number };
 }
 
+/**
+ * Render mode usage preferences across classroom
+ *
+ * Tracks student preference for visual drawing, audio synthesis, or multimodal
+ * (both) rendering modes. Indicates engagement with different sensory modalities.
+ */
 export interface RenderModePreferences {
+  /** Sessions using visual-only rendering */
   visualOnly: { sessions: number; percentage: number };
+  /** Sessions using audio-only rendering */
   audioOnly: { sessions: number; percentage: number };
+  /** Sessions using multimodal (visual + audio) rendering */
   multiSensory: { sessions: number; percentage: number };
 }
 
+/**
+ * Mutation type usage patterns (distribution and frequency)
+ *
+ * Breaks down mutation application frequency by type (silent, missense, nonsense,
+ * frameshift, point, insertion, deletion) with descriptive statistics.
+ * Shows which mutation types students explore most.
+ */
 export interface MutationPatterns {
   silent: DescriptiveStats;
   missense: DescriptiveStats;
@@ -89,20 +158,49 @@ export interface MutationPatterns {
   totalMutations: number;
 }
 
+/**
+ * Statistical comparison result between two groups
+ *
+ * T-test result comparing a metric between two student groups (e.g., comparing
+ * achievement rates between different learning pathway cohorts). Includes effect size
+ * (Cohen's d) and statistical interpretation for validity assessment.
+ *
+ * Interpretation ranges:
+ * - p < 0.05: Statistically significant difference
+ * - Cohen's d: 0.2 (small), 0.5 (medium), 0.8+ (large) effect
+ */
 export interface ComparisonResult {
+  /** Label for first group (e.g., "Control") */
   group1: string;
+  /** Label for second group (e.g., "Treatment") */
   group2: string;
+  /** Which metric was compared (e.g., "time-to-artifact") */
   metric: string;
+  /** Mean value for group 1 */
   group1Mean: number;
+  /** Mean value for group 2 */
   group2Mean: number;
+  /** Absolute difference between means */
   diff: number;
+  /** Percentage change from group1 to group2 */
   percentChange: number;
+  /** T-test statistic */
   t: number;
+  /** P-value (significance level, <0.05 is significant) */
   p: number;
+  /** Cohen's d effect size (0.2 small, 0.5 medium, 0.8 large) */
   cohensD: number;
+  /** Human-readable interpretation of results */
   interpretation: string;
 }
 
+/**
+ * Complete classroom analytics report
+ *
+ * Aggregates all metrics (engagement, learning velocity, tool adoption,
+ * render modes, mutation patterns) into a single comprehensive report.
+ * Used by teacher dashboard for classroom-wide analysis.
+ */
 export interface AnalysisReport {
   engagement: EngagementMetrics;
   velocity: LearningVelocity;
@@ -115,6 +213,22 @@ export interface AnalysisReport {
 // Statistical Functions
 // ============================================================================
 
+/**
+ * Static utility methods for statistical calculations
+ *
+ * Provides standard descriptive statistics functions (mean, SD, median, quartiles)
+ * used to summarize distributions of learning metrics across student populations.
+ * All methods handle empty arrays gracefully by returning 0.
+ *
+ * @example
+ * ```typescript
+ * const values = [10, 20, 30, 40, 50];
+ * const mean = Stats.mean(values); // 30
+ * const sd = Stats.sd(values); // 15.8
+ * const median = Stats.median(values); // 30
+ * const q1 = Stats.quartile(values, 1); // 20
+ * ```
+ */
 export class Stats {
   static mean(values: number[]): number {
     if (values.length === 0) return 0;
@@ -258,6 +372,39 @@ export class Stats {
 // Metrics Analyzer
 // ============================================================================
 
+/**
+ * Metrics Analyzer - Aggregates and analyzes learning metrics from sessions
+ *
+ * Processes individual student sessions (exported ResearchSession data) to produce
+ * comprehensive classroom-level analytics reports. Computes descriptive statistics,
+ * engagement metrics, learning velocity, feature adoption, and enables group comparisons.
+ *
+ * Used by teacher dashboard to answer research questions:
+ * - RQ2: How does different pedagogy affect engagement?
+ * - RQ3: Do visual/audio modes differ in effectiveness?
+ * - RQ4: Which features are most adopted?
+ *
+ * Features:
+ * - Aggregates multiple student sessions into cohort statistics
+ * - Compares metrics between student groups (e.g., control vs treatment)
+ * - Analyzes learning velocity (time to first success)
+ * - Tracks feature adoption patterns
+ * - Computes mutation type preferences
+ *
+ * @example
+ * ```typescript
+ * const analyzer = new MetricsAnalyzer(sessions);
+ * const engagement = analyzer.engagementMetrics();
+ * const velocity = analyzer.learningVelocity();
+ * const report = analyzer.generateReport();
+ *
+ * const comparison = analyzer.compareGroups(
+ *   sessions.filter(s => s.treatment === 'A'),
+ *   sessions.filter(s => s.treatment === 'B'),
+ *   'time-to-first-artifact'
+ * );
+ * ```
+ */
 export class MetricsAnalyzer {
   private sessions: MetricsSession[] = [];
 
@@ -599,6 +746,21 @@ function parseCSVLine(line: string): string[] {
 // Formatting Utilities
 // ============================================================================
 
+/**
+ * Format milliseconds to human-readable duration string
+ *
+ * Converts milliseconds to appropriate unit (hours, minutes, seconds).
+ * Used to display session duration and time-to-first-artifact metrics
+ * in dashboard and reports.
+ *
+ * @param ms - Milliseconds to format
+ * @returns Formatted string like "2h 30m", "5m 30s", or "45s"
+ * @example
+ * ```typescript
+ * formatDuration(90000); // "1m 30s"
+ * formatDuration(3661000); // "1h 1m"
+ * ```
+ */
 export function formatDuration(ms: number): string {
   const seconds = Math.floor(ms / 1000);
   const minutes = Math.floor(seconds / 60);
@@ -613,10 +775,34 @@ export function formatDuration(ms: number): string {
   }
 }
 
+/**
+ * Format percentage value to string with 1 decimal place
+ *
+ * @param value - Percentage value (0-100)
+ * @returns Formatted string like "85.5%"
+ * @example
+ * ```typescript
+ * formatPercentage(85.5); // "85.5%"
+ * formatPercentage(100); // "100.0%"
+ * ```
+ */
 export function formatPercentage(value: number): string {
   return `${value.toFixed(1)}%`;
 }
 
+/**
+ * Format numeric value with specified decimal places
+ *
+ * @param value - Number to format
+ * @param decimals - Number of decimal places (default: 1)
+ * @returns Formatted string with specified precision
+ * @example
+ * ```typescript
+ * formatNumber(3.14159); // "3.1"
+ * formatNumber(3.14159, 2); // "3.14"
+ * formatNumber(42, 0); // "42"
+ * ```
+ */
 export function formatNumber(value: number, decimals = 1): string {
   return value.toFixed(decimals);
 }

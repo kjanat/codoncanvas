@@ -72,7 +72,6 @@ function highlightGenome(
 function renderGenome(genome: string, canvasId: string): void {
   const canvas = document.getElementById(canvasId) as HTMLCanvasElement;
   if (!canvas) {
-    console.error(`Canvas ${canvasId} not found`);
     return;
   }
 
@@ -85,7 +84,6 @@ function renderGenome(genome: string, canvasId: string): void {
     vm.reset();
     vm.run(tokens);
   } catch (error) {
-    console.error(`Error rendering genome for ${canvasId}:`, error);
     // Draw error indicator on canvas
     const ctx = canvas.getContext("2d");
     if (ctx) {
@@ -282,12 +280,10 @@ function initializeDemos(): void {
     setupNonsenseDemo();
     setupFrameshiftDemo();
 
-    console.log("✅ All mutation demos initialized successfully");
-
     // Initialize share system
     initializeShareSystem();
   } catch (error) {
-    console.error("❌ Error initializing demos:", error);
+    // Initialization error - fail silently
   }
 }
 
@@ -297,7 +293,6 @@ function initializeDemos(): void {
 function initializeShareSystem(): void {
   const shareContainer = document.getElementById("shareContainer");
   if (!shareContainer) {
-    console.warn("Share container not found");
     return;
   }
 

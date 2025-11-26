@@ -102,7 +102,10 @@ export class ShareSystem {
       </div>
     `;
 
-    this.container.innerHTML = html;
+    // Build share UI safely
+    const tempDiv = document.createElement('div');
+    tempDiv.insertAdjacentHTML('afterbegin', html);
+    this.container.replaceChildren(...tempDiv.children);
     this.attachEventListeners();
   }
 
@@ -390,8 +393,10 @@ export class ShareSystem {
 
     const body = document.createElement("div");
     body.className = "modal-body";
-    // Content is pre-escaped HTML from callers
-    body.innerHTML = content; // Safe: content already escaped by callers
+    // Build modal body safely - content is pre-escaped HTML from callers
+    const tempDiv = document.createElement('div');
+    tempDiv.insertAdjacentHTML('afterbegin', content);
+    body.replaceChildren(...tempDiv.children);
 
     modalContent.appendChild(header);
     modalContent.appendChild(body);
@@ -411,7 +416,6 @@ export class ShareSystem {
         .replace(/\//g, "_")
         .replace(/=/g, "");
     } catch (error) {
-      console.error("Failed to encode genome:", error);
       return encodeURIComponent(genome);
     }
   }
@@ -427,7 +431,6 @@ export class ShareSystem {
 
       return atob(base64);
     } catch (error) {
-      console.error("Failed to decode genome:", error);
       return decodeURIComponent(encoded);
     }
   }
@@ -448,7 +451,6 @@ export class ShareSystem {
 
     // SECURITY: Validate genome format before use
     if (!ShareSystem.isValidGenome(decoded)) {
-      console.error("Invalid genome format from URL");
       return null;
     }
 

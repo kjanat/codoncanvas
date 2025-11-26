@@ -51,7 +51,11 @@ export class TutorialUI {
     // Create overlay
     this.overlayElement = document.createElement("div");
     this.overlayElement.className = "tutorial-overlay";
-    this.overlayElement.innerHTML = this.renderModal(step);
+
+    // Build modal safely
+    const tempDiv = document.createElement('div');
+    tempDiv.insertAdjacentHTML('afterbegin', this.renderModal(step));
+    this.overlayElement.replaceChildren(...tempDiv.children);
 
     document.body.appendChild(this.overlayElement);
 
@@ -218,35 +222,59 @@ export class TutorialUI {
 
     this.overlayElement = document.createElement("div");
     this.overlayElement.className = "tutorial-overlay";
-    this.overlayElement.innerHTML = `
-      <div class="tutorial-modal">
-        <div class="tutorial-body tutorial-success">
-          <div class="tutorial-success-icon">🎉</div>
-          <h3>Congratulations!</h3>
-          <p>
-            You've completed your first CodonCanvas program!<br>
-            You now understand the basics of codon-based programming.
-          </p>
-          <div class="tutorial-success-actions">
-            <button class="tutorial-button tutorial-button-primary" data-action="explore">
-              Explore Examples
-            </button>
-            <button class="tutorial-button tutorial-button-secondary" data-action="mutations">
-              Try Mutations
-            </button>
-          </div>
-        </div>
-      </div>
-    `;
+
+    // Build success modal safely
+    const modal = document.createElement('div');
+    modal.className = 'tutorial-modal';
+
+    const body = document.createElement('div');
+    body.className = 'tutorial-body tutorial-success';
+
+    const icon = document.createElement('div');
+    icon.className = 'tutorial-success-icon';
+    icon.textContent = '🎉';
+
+    const h3 = document.createElement('h3');
+    h3.textContent = 'Congratulations!';
+
+    const p = document.createElement('p');
+    p.textContent = "You've completed your first CodonCanvas program!";
+    const br = document.createElement('br');
+    p.appendChild(br);
+    p.appendChild(document.createTextNode('You now understand the basics of codon-based programming.'));
+
+    const actions = document.createElement('div');
+    actions.className = 'tutorial-success-actions';
+
+    const exploreBtn = document.createElement('button');
+    exploreBtn.className = 'tutorial-button tutorial-button-primary';
+    exploreBtn.setAttribute('data-action', 'explore');
+    exploreBtn.textContent = 'Explore Examples';
+
+    const mutationsBtn = document.createElement('button');
+    mutationsBtn.className = 'tutorial-button tutorial-button-secondary';
+    mutationsBtn.setAttribute('data-action', 'mutations');
+    mutationsBtn.textContent = 'Try Mutations';
+
+    actions.appendChild(exploreBtn);
+    actions.appendChild(mutationsBtn);
+
+    body.appendChild(icon);
+    body.appendChild(h3);
+    body.appendChild(p);
+    body.appendChild(actions);
+
+    modal.appendChild(body);
+    this.overlayElement.appendChild(modal);
 
     document.body.appendChild(this.overlayElement);
 
     // Attach success action listeners
-    const exploreBtn = this.overlayElement.querySelector(
+    const exploreBtnSuccess = this.overlayElement.querySelector(
       "[data-action=\"explore\"]",
     );
-    if (exploreBtn) {
-      exploreBtn.addEventListener("click", () => {
+    if (exploreBtnSuccess) {
+      exploreBtnSuccess.addEventListener("click", () => {
         this.cleanup();
         // Trigger example selector focus
         const selector = document.querySelector(
@@ -258,11 +286,11 @@ export class TutorialUI {
       });
     }
 
-    const mutationsBtn = this.overlayElement.querySelector(
+    const mutationsBtnSuccess = this.overlayElement.querySelector(
       "[data-action=\"mutations\"]",
     );
-    if (mutationsBtn) {
-      mutationsBtn.addEventListener("click", () => {
+    if (mutationsBtnSuccess) {
+      mutationsBtnSuccess.addEventListener("click", () => {
         this.cleanup();
         window.location.href = "mutation-demo.html";
       });

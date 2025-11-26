@@ -20,6 +20,40 @@ export interface TutorialConfig {
   steps: TutorialStep[];
 }
 
+/**
+ * Tutorial Manager - Guides first-time users through creating their first program
+ *
+ * Manages interactive tutorial flow including step progression, validation,
+ * and progress tracking. Persists completion state to localStorage to
+ * prevent repeated tutorials for returning users.
+ *
+ * Features:
+ * - Multi-step guided workflow
+ * - Code validation for step completion
+ * - Optional UI element highlighting
+ * - Progress percentage calculation
+ * - Completion persistence across sessions
+ *
+ * @example
+ * ```typescript
+ * const manager = new TutorialManager();
+ * manager.start({
+ *   id: 'getting-started',
+ *   title: 'Getting Started',
+ *   description: 'Learn CodonCanvas basics',
+ *   steps: [
+ *     {
+ *       id: 'step1',
+ *       title: 'Write ATG',
+ *       content: 'Start with the ATG codon...',
+ *       expectedCode: 'ATG'
+ *     }
+ *   ]
+ * });
+ *
+ * const progress = manager.getProgress(); // { current: 0, total: 5, percent: 0 }
+ * ```
+ */
 export class TutorialManager {
   private currentStep: number = 0;
   private config: TutorialConfig | null = null;

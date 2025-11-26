@@ -1,0 +1,85 @@
+/**
+ * UI State Management Module
+ * Manages all application state and core initialization
+ */
+
+import { AudioRenderer } from "../audio-renderer";
+import { Canvas2DRenderer, type Renderer } from "../renderer";
+import { CodonVM } from "../vm";
+import type { VMState } from "../types";
+import { TimelineScrubber } from "../timeline-scrubber";
+import { ThemeManager } from "../theme-manager";
+import { AchievementEngine } from "../achievement-engine";
+import { AchievementUI } from "../achievement-ui";
+import { AssessmentEngine } from "../assessment-engine";
+import { AssessmentUI } from "../assessment-ui";
+import { ResearchMetrics } from "../research-metrics";
+import { CodonLexer } from "../lexer";
+import { MIDIExporter } from "../midi-exporter";
+import { canvas, timelineContainer } from "./dom-manager";
+
+// Lexer, renderer, and VM initialization
+export const lexer = new CodonLexer();
+export const renderer = new Canvas2DRenderer(canvas);
+export const audioRenderer = new AudioRenderer();
+export const midiExporter = new MIDIExporter();
+
+export type RenderMode = "visual" | "audio" | "both";
+export let renderMode: RenderMode = "visual";
+
+export const vm = new CodonVM(renderer);
+export let lastSnapshots: VMState[] = [];
+
+// Timeline scrubber
+export const timelineScrubber = new TimelineScrubber({
+  containerElement: timelineContainer,
+  canvasElement: canvas,
+  autoPlay: false,
+  playbackSpeed: 500,
+});
+export let timelineVisible = false;
+
+// Theme manager
+export const themeManager = new ThemeManager();
+
+// Achievement system
+export const achievementEngine = new AchievementEngine();
+export const achievementUI = new AchievementUI(
+  achievementEngine,
+  "achievementContainer",
+);
+
+// Assessment system
+export const assessmentEngine = new AssessmentEngine();
+export let assessmentUI: AssessmentUI | null = null;
+
+// Research metrics
+export const researchMetrics = new ResearchMetrics({ enabled: false });
+
+/**
+ * Update render mode
+ */
+export function setRenderMode(mode: RenderMode) {
+  renderMode = mode;
+}
+
+/**
+ * Update timeline visibility state
+ */
+export function setTimelineVisible(visible: boolean) {
+  timelineVisible = visible;
+}
+
+/**
+ * Update assessment UI instance
+ */
+export function setAssessmentUI(ui: AssessmentUI | null) {
+  assessmentUI = ui;
+}
+
+/**
+ * Update last snapshots
+ */
+export function setLastSnapshots(snapshots: VMState[]) {
+  lastSnapshots = snapshots;
+}

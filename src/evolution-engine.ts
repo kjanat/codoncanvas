@@ -125,10 +125,6 @@ export class EvolutionEngine {
         });
       } catch (error) {
         // If mutation fails, try again with different type
-        console.warn(
-          `Mutation ${mutationType} failed, using point mutation fallback:`,
-          error,
-        );
         mutation = applyPointMutation(parent);
         candidates.push({
           genome: mutation.mutated,

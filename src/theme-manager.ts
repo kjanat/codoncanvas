@@ -94,7 +94,7 @@ export class ThemeManager {
     try {
       localStorage.setItem(ThemeManager.STORAGE_KEY, theme);
     } catch (error) {
-      console.warn("Failed to save theme preference:", error);
+      // Save failed - fail silently
     }
   }
 
@@ -108,7 +108,7 @@ export class ThemeManager {
         return saved as Theme;
       }
     } catch (error) {
-      console.warn("Failed to load theme preference:", error);
+      // Load failed - fail silently
     }
     return null;
   }
@@ -158,7 +158,7 @@ export class ThemeManager {
     try {
       localStorage.removeItem(ThemeManager.STORAGE_KEY);
     } catch (error) {
-      console.warn("Failed to reset theme preference:", error);
+      // Reset failed - fail silently
     }
     const systemTheme = this.getSystemTheme();
     this.currentTheme = systemTheme;

@@ -20,54 +20,130 @@ export interface Achievement {
   hidden?: boolean; // Hide until unlocked (for surprise achievements)
 }
 
+/**
+ * Player performance and activity statistics
+ *
+ * Comprehensive tracking of student interactions with CodonCanvas including
+ * genome creation, mutations, assessments, and feature usage. Used to determine
+ * achievement unlocks and track learning progress.
+ *
+ * @example
+ * ```typescript
+ * const stats: PlayerStats = {
+ *   genomesCreated: 5,
+ *   genomesExecuted: 12,
+ *   mutationsApplied: 8,
+ *   shapesDrawn: 45,
+ *   // ... more stats
+ * };
+ * ```
+ */
 export interface PlayerStats {
-  // Core activity
+  /** Number of genomes created */
   genomesCreated: number;
+  /** Number of genome executions */
   genomesExecuted: number;
+  /** Total mutations applied (point, insertion, deletion, etc.) */
   mutationsApplied: number;
 
-  // Drawing activity
+  /** Number of shapes drawn (circle, rect, line, triangle, ellipse) */
   shapesDrawn: number;
+  /** Number of distinct colors used */
   colorsUsed: number;
+  /** Number of transform operations applied (translate, rotate, scale) */
   transformsApplied: number;
 
-  // Assessment performance
+  /** Assessment challenges completed */
   challengesCompleted: number;
+  /** Assessment challenges answered correctly */
   challengesCorrect: number;
+  /** Current streak of consecutive correct answers */
   consecutiveCorrect: number;
-  perfectScores: number; // Times achieved 100% on assessment set
+  /** Number of times achieved 100% on assessment set */
+  perfectScores: number;
 
-  // Mutation types identified
+  /** Silent mutations correctly identified (synonymous codon changes) */
   silentIdentified: number;
+  /** Missense mutations correctly identified (functional changes) */
   missenseIdentified: number;
+  /** Nonsense mutations correctly identified (premature stops) */
   nonsenseIdentified: number;
+  /** Frameshift mutations correctly identified */
   frameshiftIdentified: number;
+  /** Insertion mutations correctly identified */
   insertionIdentified: number;
+  /** Deletion mutations correctly identified */
   deletionIdentified: number;
 
-  // Opcode usage tracking
-  opcodesUsed: Set<string>; // Track which opcodes have been used
+  /** Set of opcode IDs that have been used */
+  opcodesUsed: Set<string>;
 
-  // Advanced features
+  /** Number of generations evolved in evolution engine */
   evolutionGenerations: number;
+  /** Whether audio synthesis feature has been used */
   audioSynthesisUsed: boolean;
+  /** Number of timeline step-through interactions */
   timelineStepThroughs: number;
 
-  // Time tracking
+  /** Total time spent in minutes */
   timeSpentMinutes: number;
+  /** Number of sessions */
   sessionsCount: number;
 
-  // Special events
+  /** Date of first genome creation (optional) */
   firstGenomeDate?: Date;
+  /** Length of longest genome created */
   longestGenomeLength: number;
 }
 
+/**
+ * Achievement unlock record with timestamp
+ *
+ * Represents an achievement that has been unlocked by a student,
+ * including when it was unlocked and optional progress information.
+ *
+ * @example
+ * ```typescript
+ * const unlocked: UnlockedAchievement = {
+ *   achievement: firstGenomeAchievement,
+ *   unlockedAt: new Date(),
+ *   progress: 100
+ * };
+ * ```
+ */
 export interface UnlockedAchievement {
+  /** The achievement definition that was unlocked */
   achievement: Achievement;
+  /** Timestamp when achievement was unlocked */
   unlockedAt: Date;
-  progress?: number; // 0-100 for partial achievements
+  /** Progress toward achievement (0-100), optional for partial achievements */
+  progress?: number;
 }
 
+/**
+ * Achievement Engine - Manages gamification and progress tracking
+ *
+ * Tracks student achievements across multiple categories (basics, mastery,
+ * exploration, perfection) based on gameplay milestones. Persists unlocked
+ * achievements to localStorage for cross-session tracking.
+ *
+ * Categories:
+ * - **Basics**: Onboarding achievements (first genome, first draw, complete tutorial)
+ * - **Mastery**: Advanced technique achievements (all opcodes used, 100 shapes drawn)
+ * - **Exploration**: Feature discovery achievements (audio synthesis, evolution engine)
+ * - **Perfection**: Challenge achievements (all assessments perfect, speedrun challenges)
+ *
+ * @example
+ * ```typescript
+ * const engine = new AchievementEngine();
+ * engine.recordExecution('ATG GAA CCC GGA TAA');
+ * engine.recordMutation('silent');
+ * engine.recordDraw();
+ *
+ * const unlocked = engine.getUnlockedAchievements();
+ * const progress = engine.getProgress(); // 0-100%
+ * ```
+ */
 export class AchievementEngine {
   private achievements: Achievement[];
   private stats: PlayerStats;
@@ -292,7 +368,6 @@ export class AchievementEngine {
       }
       return parsed;
     } catch (e) {
-      console.error("Failed to load achievement stats:", e);
       return this.getDefaultStats();
     }
   }
@@ -322,7 +397,6 @@ export class AchievementEngine {
 
       return map;
     } catch (e) {
-      console.error("Failed to load unlocked achievements:", e);
       return new Map();
     }
   }
@@ -356,7 +430,7 @@ export class AchievementEngine {
         JSON.stringify(unlockedToSave),
       );
     } catch (e) {
-      console.error("Failed to save achievement data:", e);
+      // Save failed - fail silently
     }
   }
 

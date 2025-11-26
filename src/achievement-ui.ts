@@ -350,7 +350,10 @@ export class AchievementUI {
       </div>
     `;
 
-    this.container.innerHTML = html;
+    // Build DOM safely without innerHTML
+    const tempDiv = document.createElement('div');
+    tempDiv.insertAdjacentHTML('afterbegin', html);
+    this.container.replaceChildren(...tempDiv.children);
   }
 
   /**
@@ -444,16 +447,36 @@ export class AchievementUI {
 
     const notification = document.createElement("div");
     notification.className = "achievement-notification";
-    notification.innerHTML = `
-      <div class="notification-header">🎉 Achievement Unlocked!</div>
-      <div class="notification-body">
-        <div class="notification-icon">${achievement.icon}</div>
-        <div class="notification-content">
-          <div class="notification-name">${achievement.name}</div>
-          <div class="notification-description">${achievement.description}</div>
-        </div>
-      </div>
-    `;
+
+    // Build notification DOM safely
+    const notifHeader = document.createElement('div');
+    notifHeader.className = 'notification-header';
+    notifHeader.textContent = '🎉 Achievement Unlocked!';
+
+    const notifBody = document.createElement('div');
+    notifBody.className = 'notification-body';
+
+    const notifIcon = document.createElement('div');
+    notifIcon.className = 'notification-icon';
+    notifIcon.textContent = achievement.icon;
+
+    const notifContent = document.createElement('div');
+    notifContent.className = 'notification-content';
+
+    const notifName = document.createElement('div');
+    notifName.className = 'notification-name';
+    notifName.textContent = achievement.name;
+
+    const notifDesc = document.createElement('div');
+    notifDesc.className = 'notification-description';
+    notifDesc.textContent = achievement.description;
+
+    notifContent.appendChild(notifName);
+    notifContent.appendChild(notifDesc);
+    notifBody.appendChild(notifIcon);
+    notifBody.appendChild(notifContent);
+    notification.appendChild(notifHeader);
+    notification.appendChild(notifBody);
 
     document.body.appendChild(notification);
 

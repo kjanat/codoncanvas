@@ -289,6 +289,34 @@ function generateDescription(
  * // prediction.description: "Minimal visual change - outputs nearly identical"
  * ```
  */
+
+/**
+ * Predict mutation impact by rendering and comparing visual output
+ *
+ * Renders both original and mutated genomes, compares pixel-level differences,
+ * and classifies impact into SILENT, LOCAL, MAJOR, or CATASTROPHIC categories.
+ * Provides preview images and confidence scores for educational scaffolding.
+ *
+ * Impact Classification:
+ * - SILENT: < 2% pixel difference (synonymous mutations)
+ * - LOCAL: 2-25% difference (small visual changes)
+ * - MAJOR: 25-75% difference (significant changes)
+ * - CATASTROPHIC: > 75% difference (fundamental shape/output change)
+ *
+ * @param originalGenome - Original genome string (codons with optional whitespace/comments)
+ * @param mutationResult - Result from applyMutation() with original and mutated sequences
+ * @param canvasWidth - Canvas width for rendering (default: 200px)
+ * @param canvasHeight - Canvas height for rendering (default: 200px)
+ * @returns Prediction with impact level, confidence, pixel diff %, and preview images
+ * @throws Error if both genomes fail to render (invalid syntax)
+ * @example
+ * ```typescript
+ * const mutation = applyPointMutation('ATG GAA TAA', 1, 'C');
+ * const prediction = predictMutationImpact('ATG GAA TAA', mutation);
+ * console.log(prediction.impact); // 'LOCAL' or 'MAJOR'
+ * console.log(prediction.pixelDiffPercent); // 5-30%
+ * ```
+ */
 export function predictMutationImpact(
   originalGenome: string,
   mutationResult: MutationResult,
@@ -317,7 +345,6 @@ export function predictMutationImpact(
     originalRendered = true;
   } catch (error) {
     // Original genome invalid - prediction may be unreliable
-    console.warn("Original genome render failed:", error);
   }
 
   // Render mutated genome
@@ -329,7 +356,6 @@ export function predictMutationImpact(
     mutatedRendered = true;
   } catch (error) {
     // Mutated genome invalid (expected for frameshifts)
-    console.warn("Mutated genome render failed:", error);
   }
 
   // If neither rendered, use full diff as catastrophic
@@ -405,6 +431,30 @@ export function predictMutationImpact(
  * // predictions[0].impact: 'SILENT'
  * // predictions[1].impact: 'LOCAL'
  * // predictions[2].impact: 'MAJOR'
+ * ```
+ */
+
+/**
+ * Predict impact for multiple mutations in batch
+ *
+ * Efficiently predicts impact for multiple mutations on the same genome.
+ * Useful for evolution engine candidate evaluation or comparing mutation types.
+ *
+ * @param genome - Original genome string (codons with optional whitespace/comments)
+ * @param mutations - Array of mutation results to evaluate
+ * @returns Array of predictions in same order as mutations array
+ * @example
+ * ```typescript
+ * const candidates = [
+ *   applyPointMutation(genome, 1, 'A'),
+ *   applyInsertion(genome, 3, 'CCC'),
+ *   applySilentMutation(genome)
+ * ];
+ *
+ * const predictions = predictMutationImpactBatch(genome, candidates);
+ * const bestCandidate = predictions.reduce((best, curr) =>
+ *   curr.pixelDiffPercent > best.pixelDiffPercent ? curr : best
+ * );
  * ```
  */
 export function predictMutationImpactBatch(

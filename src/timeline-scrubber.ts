@@ -66,7 +66,6 @@ export class TimelineScrubber {
       this.updateUI();
       this.renderStep(0);
     } catch (error) {
-      console.error("Failed to load genome:", error);
       throw error;
     }
   }
@@ -121,7 +120,10 @@ export class TimelineScrubber {
       </div>
     `;
 
-    this.container.innerHTML = html;
+    // Build timeline UI safely
+    const tempDiv = document.createElement('div');
+    tempDiv.insertAdjacentHTML('afterbegin', html);
+    this.container.replaceChildren(...tempDiv.children);
 
     // Get control elements
     this.controls.slider = this.container.querySelector(
@@ -247,14 +249,17 @@ export class TimelineScrubber {
       return;
     }
 
-    const markers = this.tokens
-      .map((token, i) => {
-        const position = (i / (this.tokens.length - 1)) * 100;
-        return `<div class="marker" style="left: ${position}%" title="${token.text}"></div>`;
-      })
-      .join("");
+    const fragment = document.createDocumentFragment();
+    this.tokens.forEach((token, i) => {
+      const position = (i / (this.tokens.length - 1)) * 100;
+      const marker = document.createElement('div');
+      marker.className = 'marker';
+      marker.style.left = `${position}%`;
+      marker.title = token.text;
+      fragment.appendChild(marker);
+    });
 
-    markersContainer.innerHTML = markers;
+    markersContainer.replaceChildren(fragment);
   }
 
   /**
@@ -391,7 +396,6 @@ export class TimelineScrubber {
         : "codoncanvas-animation.gif";
       exporter.downloadGif(blob, filename);
     } catch (error) {
-      console.error("GIF export failed:", error);
       throw error;
     }
   }

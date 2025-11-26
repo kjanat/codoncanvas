@@ -22,6 +22,43 @@ export interface ExportProgress {
   totalFrames: number;
 }
 
+/**
+ * GIF Exporter - Converts execution timeline to animated GIF
+ *
+ * Records canvas drawing state at each step and encodes to animated GIF
+ * for sharing and demonstration purposes. Uses gif.js worker-based encoding
+ * to avoid blocking the main thread.
+ *
+ * Features:
+ * - Configurable frame rate (FPS) and quality
+ * - Progress callbacks for long encodings
+ * - Automatic worker script resolution
+ * - Loop control (infinite, once, or N times)
+ *
+ * Quality Guide:
+ * - 1-10: Higher quality, larger file
+ * - 10: Good balance (recommended)
+ * - 20-30: Lower quality, smaller file
+ *
+ * @example
+ * ```typescript
+ * const exporter = new GifExporter({
+ *   width: 400,
+ *   height: 400,
+ *   fps: 4,
+ *   quality: 10
+ * });
+ *
+ * const frames = states.map((state) => {
+ *   // Render state to canvas
+ *   return canvas;
+ * });
+ *
+ * const blob = await exporter.exportFrames(frames, (progress) => {
+ *   console.log(`${progress.percent}% done`);
+ * });
+ * ```
+ */
 export class GifExporter {
   private width: number;
   private height: number;

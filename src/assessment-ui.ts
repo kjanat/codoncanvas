@@ -107,65 +107,123 @@ export class AssessmentUI {
    * @internal
    */
   private createUI(): void {
-    this.container.innerHTML = `
-      <div class="assessment-container">
-        <div class="assessment-header">
-          <h2>🎓 Mutation Assessment Challenge</h2>
-          <div class="assessment-controls">
-            <label for="difficulty-select">Difficulty:</label>
-            <select id="difficulty-select" class="difficulty-select">
-              <option value="easy">Easy</option>
-              <option value="medium">Medium</option>
-              <option value="hard">Hard</option>
-            </select>
-          </div>
-        </div>
+    // Build assessment UI structure safely
+    const assessmentContainer = document.createElement('div');
+    assessmentContainer.className = 'assessment-container';
 
-        <div class="challenge-section">
-          <div class="challenge-question">
-            <h3>What type of mutation occurred?</h3>
-            <p class="challenge-instructions">
-              Compare the two genomes below and identify the mutation type.
-            </p>
-          </div>
+    // Header
+    const header = document.createElement('div');
+    header.className = 'assessment-header';
+    const h2 = document.createElement('h2');
+    h2.textContent = '🎓 Mutation Assessment Challenge';
+    header.appendChild(h2);
 
-          <div class="genome-comparison">
-            <div class="genome-box">
-              <h4>Original Genome:</h4>
-              <div id="original-genome" class="genome-display"></div>
-            </div>
-            <div class="genome-box">
-              <h4>Mutated Genome:</h4>
-              <div id="mutated-genome" class="genome-display"></div>
-            </div>
-          </div>
+    const controls = document.createElement('div');
+    controls.className = 'assessment-controls';
+    const label = document.createElement('label');
+    label.setAttribute('for', 'difficulty-select');
+    label.textContent = 'Difficulty:';
+    const select = document.createElement('select');
+    select.id = 'difficulty-select';
+    select.className = 'difficulty-select';
+    ['easy', 'medium', 'hard'].forEach(level => {
+      const opt = document.createElement('option');
+      opt.value = level;
+      opt.textContent = level.charAt(0).toUpperCase() + level.slice(1);
+      select.appendChild(opt);
+    });
+    controls.appendChild(label);
+    controls.appendChild(select);
+    header.appendChild(controls);
 
-          <div id="hint-display" class="hint-display"></div>
+    // Challenge section
+    const challengeSection = document.createElement('div');
+    challengeSection.className = 'challenge-section';
 
-          <div class="answer-section">
-            <h4>Select your answer:</h4>
-            <div class="answer-buttons">
-              <button class="answer-btn" data-type="silent">Silent</button>
-              <button class="answer-btn" data-type="missense">Missense</button>
-              <button class="answer-btn" data-type="nonsense">Nonsense</button>
-              <button class="answer-btn" data-type="frameshift">Frameshift</button>
-              <button class="answer-btn" data-type="insertion">Insertion</button>
-              <button class="answer-btn" data-type="deletion">Deletion</button>
-            </div>
-          </div>
+    const questionDiv = document.createElement('div');
+    questionDiv.className = 'challenge-question';
+    const h3 = document.createElement('h3');
+    h3.textContent = 'What type of mutation occurred?';
+    const instructions = document.createElement('p');
+    instructions.className = 'challenge-instructions';
+    instructions.textContent = 'Compare the two genomes below and identify the mutation type.';
+    questionDiv.appendChild(h3);
+    questionDiv.appendChild(instructions);
 
-          <div id="feedback-display" class="feedback-display"></div>
+    const genomeComparison = document.createElement('div');
+    genomeComparison.className = 'genome-comparison';
 
-          <div class="challenge-actions">
-            <button id="next-challenge-btn" class="next-challenge-btn">
-              Next Challenge →
-            </button>
-          </div>
-        </div>
+    const origBox = document.createElement('div');
+    origBox.className = 'genome-box';
+    const origH4 = document.createElement('h4');
+    origH4.textContent = 'Original Genome:';
+    const origDisplay = document.createElement('div');
+    origDisplay.id = 'original-genome';
+    origDisplay.className = 'genome-display';
+    origBox.appendChild(origH4);
+    origBox.appendChild(origDisplay);
 
-        <div id="progress-display" class="progress-display"></div>
-      </div>
-    `;
+    const mutBox = document.createElement('div');
+    mutBox.className = 'genome-box';
+    const mutH4 = document.createElement('h4');
+    mutH4.textContent = 'Mutated Genome:';
+    const mutDisplay = document.createElement('div');
+    mutDisplay.id = 'mutated-genome';
+    mutDisplay.className = 'genome-display';
+    mutBox.appendChild(mutH4);
+    mutBox.appendChild(mutDisplay);
+
+    genomeComparison.appendChild(origBox);
+    genomeComparison.appendChild(mutBox);
+
+    const hintDisplay = document.createElement('div');
+    hintDisplay.id = 'hint-display';
+    hintDisplay.className = 'hint-display';
+
+    const answerSection = document.createElement('div');
+    answerSection.className = 'answer-section';
+    const answerH4 = document.createElement('h4');
+    answerH4.textContent = 'Select your answer:';
+    const answerButtons = document.createElement('div');
+    answerButtons.className = 'answer-buttons';
+    ['silent', 'missense', 'nonsense', 'frameshift', 'insertion', 'deletion'].forEach(type => {
+      const btn = document.createElement('button');
+      btn.className = 'answer-btn';
+      btn.setAttribute('data-type', type);
+      btn.textContent = type.charAt(0).toUpperCase() + type.slice(1);
+      answerButtons.appendChild(btn);
+    });
+    answerSection.appendChild(answerH4);
+    answerSection.appendChild(answerButtons);
+
+    const feedbackDisplay = document.createElement('div');
+    feedbackDisplay.id = 'feedback-display';
+    feedbackDisplay.className = 'feedback-display';
+
+    const challengeActions = document.createElement('div');
+    challengeActions.className = 'challenge-actions';
+    const nextBtn = document.createElement('button');
+    nextBtn.id = 'next-challenge-btn';
+    nextBtn.className = 'next-challenge-btn';
+    nextBtn.textContent = 'Next Challenge →';
+    challengeActions.appendChild(nextBtn);
+
+    challengeSection.appendChild(questionDiv);
+    challengeSection.appendChild(genomeComparison);
+    challengeSection.appendChild(hintDisplay);
+    challengeSection.appendChild(answerSection);
+    challengeSection.appendChild(feedbackDisplay);
+    challengeSection.appendChild(challengeActions);
+
+    const progressDisplay = document.createElement('div');
+    progressDisplay.id = 'progress-display';
+    progressDisplay.className = 'progress-display';
+
+    assessmentContainer.appendChild(header);
+    assessmentContainer.appendChild(challengeSection);
+    assessmentContainer.appendChild(progressDisplay);
+
+    this.container.replaceChildren(assessmentContainer);
 
     // Cache element references
     this.challengeSection = this.container.querySelector(".challenge-section")!;
@@ -230,15 +288,20 @@ export class AssessmentUI {
 
     // Display hint if available
     if (this.currentChallenge.hint) {
-      this.hintDisplay.innerHTML =
-        `<p>💡 <strong>Hint:</strong> ${this.currentChallenge.hint}</p>`;
+      const p = document.createElement('p');
+      const strong = document.createElement('strong');
+      strong.textContent = 'Hint:';
+      p.textContent = '💡 ';
+      p.appendChild(strong);
+      p.appendChild(document.createTextNode(' ' + this.currentChallenge.hint));
+      this.hintDisplay.replaceChildren(p);
       this.hintDisplay.style.display = "block";
     } else {
       this.hintDisplay.style.display = "none";
     }
 
     // Reset UI
-    this.feedbackDisplay.innerHTML = "";
+    this.feedbackDisplay.replaceChildren();
     this.feedbackDisplay.style.display = "none";
     this.nextChallengeBtn.style.display = "none";
 
@@ -299,14 +362,21 @@ export class AssessmentUI {
       ? "feedback-correct"
       : "feedback-incorrect";
 
-    this.feedbackDisplay.innerHTML = `
-      <div class="${className}">
-        <p><strong>${icon} ${
-      result.correct ? "Correct!" : "Incorrect"
-    }</strong></p>
-        <p>${result.feedback}</p>
-      </div>
-    `;
+    const container = document.createElement('div');
+    container.className = className;
+
+    const p1 = document.createElement('p');
+    const strong = document.createElement('strong');
+    strong.textContent = `${icon} ${result.correct ? "Correct!" : "Incorrect"}`;
+    p1.appendChild(strong);
+
+    const p2 = document.createElement('p');
+    p2.textContent = result.feedback;
+
+    container.appendChild(p1);
+    container.appendChild(p2);
+
+    this.feedbackDisplay.replaceChildren(container);
     this.feedbackDisplay.style.display = "block";
   }
 
@@ -333,27 +403,37 @@ export class AssessmentUI {
       ? "#ffc107"
       : "#dc3545";
 
-    this.progressDisplay.innerHTML = `
-      <div class="progress-summary">
-        <h3>📊 Your Progress</h3>
-        <div class="progress-stats">
-          <div class="stat-item">
-            <div class="stat-value">${progress.totalAttempts}</div>
-            <div class="stat-label">Challenges</div>
-          </div>
-          <div class="stat-item">
-            <div class="stat-value">${progress.correctAnswers}</div>
-            <div class="stat-label">Correct</div>
-          </div>
-          <div class="stat-item">
-            <div class="stat-value" style="color: ${accuracyColor}">
-              ${progress.accuracy.toFixed(1)}%
-            </div>
-            <div class="stat-label">Accuracy</div>
-          </div>
-        </div>
-      </div>
-    `;
+    const summary = document.createElement('div');
+    summary.className = 'progress-summary';
+
+    const h3 = document.createElement('h3');
+    h3.textContent = '📊 Your Progress';
+    summary.appendChild(h3);
+
+    const stats = document.createElement('div');
+    stats.className = 'progress-stats';
+
+    const createStatItem = (value: string | number, label: string, color?: string) => {
+      const item = document.createElement('div');
+      item.className = 'stat-item';
+      const valueDiv = document.createElement('div');
+      valueDiv.className = 'stat-value';
+      valueDiv.textContent = String(value);
+      if (color) valueDiv.style.color = color;
+      const labelDiv = document.createElement('div');
+      labelDiv.className = 'stat-label';
+      labelDiv.textContent = label;
+      item.appendChild(valueDiv);
+      item.appendChild(labelDiv);
+      return item;
+    };
+
+    stats.appendChild(createStatItem(progress.totalAttempts, 'Challenges'));
+    stats.appendChild(createStatItem(progress.correctAnswers, 'Correct'));
+    stats.appendChild(createStatItem(progress.accuracy.toFixed(1) + '%', 'Accuracy', accuracyColor));
+
+    summary.appendChild(stats);
+    this.progressDisplay.replaceChildren(summary);
     this.progressDisplay.style.display = "block";
   }
 

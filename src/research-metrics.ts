@@ -67,27 +67,54 @@ export interface MutationEvent {
   genomeLengthAfter: number;
 }
 
+/**
+ * Genome execution event for tracking user interactions
+ *
+ * Records each time a user executes a genome including render mode,
+ * performance metrics, and success/failure status for error analysis.
+ */
 export interface ExecutionEvent {
+  /** Unix timestamp of execution */
   timestamp: number;
+  /** Render mode: visual drawing, audio synthesis, or both */
   renderMode: "visual" | "audio" | "both";
+  /** Length of executed genome (codon count) */
   genomeLength: number;
+  /** Number of VM instructions executed */
   instructionCount: number;
+  /** Whether execution succeeded */
   success: boolean;
+  /** Error message if execution failed */
   errorMessage?: string;
 }
 
+/**
+ * Feature usage event for tracking feature adoption
+ *
+ * Records when students open, close, or interact with advanced features
+ * (diff viewer, timeline, evolution engine, assessment system, export tools).
+ */
 export interface FeatureEvent {
+  /** Unix timestamp of feature interaction */
   timestamp: number;
+  /** Which feature was used */
   feature: "diffViewer" | "timeline" | "evolution" | "assessment" | "export";
+  /** Action performed: opening, closing, or interacting */
   action: "open" | "close" | "interact";
 }
 
+/**
+ * Research metrics configuration options
+ *
+ * Controls data collection behavior including whether tracking is enabled,
+ * storage limits, and auto-save frequency.
+ */
 export interface ResearchMetricsOptions {
-  /** Enable automatic session tracking */
+  /** Whether to enable automatic session tracking (default: false) */
   enabled: boolean;
-  /** Maximum number of sessions to store locally */
+  /** Maximum number of sessions to store locally (default: 100) */
   maxSessions: number;
-  /** Auto-save interval in milliseconds */
+  /** Auto-save interval in milliseconds (default: 60000 = 1 minute) */
   autoSaveInterval: number;
 }
 
@@ -281,7 +308,6 @@ export class ResearchMetrics {
       const stored = localStorage.getItem(this.STORAGE_KEY);
       return stored ? JSON.parse(stored) : [];
     } catch (error) {
-      console.error("Failed to load research sessions:", error);
       return [];
     }
   }
@@ -525,7 +551,7 @@ export class ResearchMetrics {
 
       localStorage.setItem(this.STORAGE_KEY, JSON.stringify(sessions));
     } catch (error) {
-      console.error("Failed to save research session:", error);
+      // Save failed - fail silently
     }
   }
 

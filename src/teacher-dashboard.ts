@@ -19,24 +19,59 @@
 
 import type { ResearchSession } from "./research-metrics";
 
+/**
+ * Student progress data exported for teacher dashboard analysis
+ *
+ * Complete record of a student's learning activity including tutorial progress,
+ * execution history, and assessment results. Teachers import these files to
+ * analyze classroom-wide patterns and identify at-risk learners.
+ *
+ * Privacy Design:
+ * - No PII (student identifiers are anonymous IDs or teacher-assigned labels)
+ * - All data client-side (no server storage)
+ * - Teachers maintain full control over data access
+ *
+ * @example
+ * ```typescript
+ * const progress: StudentProgress = {
+ *   studentId: 'student_001',
+ *   exportDate: new Date().toISOString(),
+ *   tutorials: {
+ *     'getting-started': {
+ *       completed: true,
+ *       currentStep: 5,
+ *       totalSteps: 5,
+ *       startedAt: 1700000000,
+ *       completedAt: 1700003600
+ *     }
+ *   },
+ *   sessions: []
+ * };
+ * ```
+ */
 export interface StudentProgress {
-  /** Student identifier (can be anonymous ID, not PII) */
+  /** Student identifier (anonymous ID, not PII) */
   studentId: string;
-  /** Optional student name (teacher-assigned, for their reference) */
+  /** Optional student name (teacher-assigned label, not PII) */
   studentName?: string;
-  /** Export timestamp */
+  /** ISO timestamp when progress was exported */
   exportDate: string;
-  /** Tutorial progress data */
+  /** Tutorial completion progress by tutorial ID */
   tutorials: {
     [tutorialId: string]: {
+      /** Whether tutorial was completed */
       completed: boolean;
+      /** Current step number (0-indexed) */
       currentStep: number;
+      /** Total number of steps in tutorial */
       totalSteps: number;
+      /** Unix timestamp when started (or null if not started) */
       startedAt: number | null;
+      /** Unix timestamp when completed (or null if not completed) */
       completedAt: number | null;
     };
   };
-  /** Research metrics session data */
+  /** Research metrics sessions (execution, feature, and assessment events) */
   sessions: ResearchSession[];
   /** Aggregate engagement metrics */
   aggregateMetrics: {
@@ -136,7 +171,6 @@ export class TeacherDashboard {
             this.importStudentData(content);
             imported++;
           } catch (error) {
-            console.error(`Failed to import ${file.name}:`, error);
             errors++;
           }
 

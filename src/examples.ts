@@ -20,16 +20,60 @@ export type Concept =
   | "logic";
 export type MutationType = "silent" | "missense" | "nonsense" | "frameshift";
 
+/**
+ * Metadata describing a pedagogical example genome
+ *
+ * Contains information about an example genome including its purpose,
+ * learning concepts covered, difficulty level, and suitability for mutation analysis.
+ * Used by the example gallery and tutorial system.
+ *
+ * @example
+ * ```typescript
+ * const example: ExampleMetadata = {
+ *   title: 'Hello Circle',
+ *   description: 'Minimal example - draws a single circle',
+ *   genome: 'ATG GAA AAT GGA TAA',
+ *   difficulty: 'beginner',
+ *   concepts: ['drawing'],
+ *   goodForMutations: ['silent', 'missense', 'nonsense'],
+ *   keywords: ['simple', 'intro', 'first', 'basic', 'circle']
+ * };
+ * ```
+ */
 export interface ExampleMetadata {
+  /** Example title (displayed in gallery) */
   title: string;
+  /** Brief description of what the example demonstrates */
   description: string;
+  /** Complete genome code (codons with optional comments/whitespace) */
   genome: string;
+  /** Educational difficulty level (beginner, intermediate, advanced, expert) */
   difficulty: DifficultyLevel;
+  /** Learning concepts this example teaches */
   concepts: Concept[];
+  /** Mutation types that produce interesting effects on this genome */
   goodForMutations: MutationType[];
+  /** Search keywords for finding this example in gallery */
   keywords: string[];
 }
 
+/**
+ * Complete library of pedagogical example genomes
+ *
+ * Pre-built genomes demonstrating various concepts from simple shapes
+ * to advanced algorithms. Each example includes metadata for discovery,
+ * learning path placement, and mutation analysis.
+ *
+ * Examples range from "hello circle" (5-codon minimal program) to
+ * complex algorithmic demonstrations (150+ codons).
+ *
+ * @example
+ * ```typescript
+ * const example = examples.helloCircle;
+ * console.log(example.title); // 'Hello Circle'
+ * console.log(example.genome); // 'ATG GAA AAT GGA TAA'
+ * ```
+ */
 export const examples: Record<string, ExampleMetadata> = {
   helloCircle: {
     title: "Hello Circle",
@@ -1561,4 +1605,16 @@ TAA`,
   },
 };
 
+/**
+ * Type-safe keys for accessing examples in the library
+ *
+ * Provides autocomplete and type checking when accessing examples.
+ * Each key corresponds to a unique example in the examples object.
+ *
+ * @example
+ * ```typescript
+ * const key: ExampleKey = 'helloCircle';
+ * const example = examples[key];
+ * ```
+ */
 export type ExampleKey = keyof typeof examples;
