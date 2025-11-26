@@ -32,30 +32,38 @@ function highlightGenome(
   genome: string,
   mutatedIndices: number[],
   affectedIndices: number[] = [],
-): string {
+): DocumentFragment {
   const codons = genome.split(/\s+/).filter((c) => c.length > 0);
+  const fragment = document.createDocumentFragment();
 
-  return codons
-    .map((codon, idx) => {
-      let className = "codon";
+  codons.forEach((codon, idx) => {
+    let className = "codon";
 
-      // Special highlighting for START/STOP
-      if (codon === "ATG") {
-        className += " start";
-      } else if (codon === "TAA" || codon === "TAG" || codon === "TGA") {
-        className += " stop";
-      }
+    // Special highlighting for START/STOP
+    if (codon === "ATG") {
+      className += " start";
+    } else if (codon === "TAA" || codon === "TAG" || codon === "TGA") {
+      className += " stop";
+    }
 
-      // Mutation highlighting
-      if (mutatedIndices.includes(idx)) {
-        className += " mutated";
-      } else if (affectedIndices.includes(idx)) {
-        className += " affected";
-      }
+    // Mutation highlighting
+    if (mutatedIndices.includes(idx)) {
+      className += " mutated";
+    } else if (affectedIndices.includes(idx)) {
+      className += " affected";
+    }
 
-      return `<span class="${className}">${codon}</span>`;
-    })
-    .join(" ");
+    const span = document.createElement("span");
+    span.className = className;
+    span.textContent = codon; // SAFE: textContent auto-escapes
+    fragment.appendChild(span);
+
+    if (idx < codons.length - 1) {
+      fragment.appendChild(document.createTextNode(" "));
+    }
+  });
+
+  return fragment;
 }
 
 /**
@@ -110,11 +118,13 @@ function setupSilentDemo(): void {
   const mutatedDisplay = document.getElementById("silent-mutated");
 
   if (originalDisplay) {
-    originalDisplay.innerHTML = highlightGenome(original, []);
+    originalDisplay.textContent = ""; // Clear safely
+    originalDisplay.appendChild(highlightGenome(original, []));
   }
 
   if (mutatedDisplay) {
-    mutatedDisplay.innerHTML = highlightGenome(mutated, [mutatedIndex]);
+    mutatedDisplay.textContent = ""; // Clear safely
+    mutatedDisplay.appendChild(highlightGenome(mutated, [mutatedIndex]));
   }
 
   // Render canvases
@@ -144,11 +154,13 @@ function setupMissenseDemo(): void {
   const mutatedDisplay = document.getElementById("missense-mutated");
 
   if (originalDisplay) {
-    originalDisplay.innerHTML = highlightGenome(original, []);
+    originalDisplay.textContent = ""; // Clear safely
+    originalDisplay.appendChild(highlightGenome(original, []));
   }
 
   if (mutatedDisplay) {
-    mutatedDisplay.innerHTML = highlightGenome(mutated, [mutatedIndex]);
+    mutatedDisplay.textContent = ""; // Clear safely
+    mutatedDisplay.appendChild(highlightGenome(mutated, [mutatedIndex]));
   }
 
   // Render canvases
@@ -184,15 +196,17 @@ function setupNonsenseDemo(): void {
   const mutatedDisplay = document.getElementById("nonsense-mutated");
 
   if (originalDisplay) {
-    originalDisplay.innerHTML = highlightGenome(original, []);
+    originalDisplay.textContent = ""; // Clear safely
+    originalDisplay.appendChild(highlightGenome(original, []));
   }
 
   if (mutatedDisplay) {
-    mutatedDisplay.innerHTML = highlightGenome(
+    mutatedDisplay.textContent = ""; // Clear safely
+    mutatedDisplay.appendChild(highlightGenome(
       mutated,
       [mutatedIndex],
       affectedIndices,
-    );
+    ));
   }
 
   // Render canvases
@@ -244,11 +258,13 @@ function setupFrameshiftDemo(): void {
   const mutatedDisplay = document.getElementById("frameshift-mutated");
 
   if (originalDisplay) {
-    originalDisplay.innerHTML = highlightGenome(original, []);
+    originalDisplay.textContent = ""; // Clear safely
+    originalDisplay.appendChild(highlightGenome(original, []));
   }
 
   if (mutatedDisplay) {
-    mutatedDisplay.innerHTML = highlightGenome(mutated, [], affectedIndices);
+    mutatedDisplay.textContent = ""; // Clear safely
+    mutatedDisplay.appendChild(highlightGenome(mutated, [], affectedIndices));
   }
 
   // Render canvases

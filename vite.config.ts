@@ -5,6 +5,22 @@ export default defineConfig({
   // GitHub Pages base path (will be /codoncanvas/ when deployed)
   base: process.env.NODE_ENV === "production" ? "/codoncanvas/" : "/",
 
+  // SECURITY: Content Security Policy headers
+  server: {
+    headers: {
+      "Content-Security-Policy":
+        "default-src 'self'; " +
+        "script-src 'self' 'unsafe-inline' 'unsafe-eval'; " + // unsafe-inline needed for Vite HMR in dev
+        "style-src 'self' 'unsafe-inline'; " + // unsafe-inline for inline styles
+        "img-src 'self' data: https:; " + // data: for canvas toDataURL, https: for external images
+        "font-src 'self' data:; " + // data: for embedded fonts
+        "connect-src 'self' https://api.qrserver.com; " + // Allow QR code API
+        "frame-ancestors 'none'; " + // Prevent clickjacking
+        "base-uri 'self'; " +
+        "form-action 'self';",
+    },
+  },
+
   build: {
     outDir: "dist",
     rollupOptions: {
@@ -25,5 +41,6 @@ export default defineConfig({
   test: {
     globals: true,
     environment: "jsdom",
+    setupFiles: ["./vitest.setup.ts"],
   },
 });

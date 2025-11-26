@@ -4,6 +4,18 @@
  * Enables viral sharing, teacher workflows, and cross-device collaboration
  */
 
+/**
+ * SECURITY: Escape HTML to prevent XSS attacks
+ */
+function escapeHtml(unsafe: string): string {
+  return unsafe
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
+}
+
 export interface ShareOptions {
   genome: string;
   title?: string;
@@ -174,7 +186,7 @@ export class ShareSystem {
         // Show in modal if clipboard fails
         this.showModal(
           "Permalink",
-          `<input type="text" value="${permalink}" readonly style="width: 100%; padding: 8px; font-family: monospace;">`,
+          `<input type="text" value="${escapeHtml(permalink)}" readonly style="width: 100%; padding: 8px; font-family: monospace;">`,
         );
       });
   }
@@ -230,7 +242,7 @@ export class ShareSystem {
       "QR Code",
       `
       <div style="text-align: center;">
-        <img src="${qrUrl}" alt="QR Code" style="max-width: 100%;">
+        <img src="${escapeHtml(qrUrl)}" alt="QR Code" style="max-width: 100%;">
         <p style="margin-top: 1rem; font-size: 0.875rem; color: #888;">
           Scan with mobile device to open genome
         </p>
@@ -351,19 +363,40 @@ export class ShareSystem {
       return;
     }
 
-    modal.innerHTML = `
-      <div class="modal-overlay" onclick="this.parentElement.classList.add('hidden')">
-        <div class="modal-content" onclick="event.stopPropagation()">
-          <div class="modal-header">
-            <h3>${title}</h3>
-            <button class="modal-close" onclick="this.closest('.share-modal').classList.add('hidden')">&times;</button>
-          </div>
-          <div class="modal-body">
-            ${content}
-          </div>
-        </div>
-      </div>
-    `;
+    // SAFE: Build DOM programmatically to prevent XSS
+    modal.textContent = ""; // Clear safely
+
+    const overlay = document.createElement("div");
+    overlay.className = "modal-overlay";
+    overlay.addEventListener("click", () => modal.classList.add("hidden"));
+
+    const modalContent = document.createElement("div");
+    modalContent.className = "modal-content";
+    modalContent.addEventListener("click", (e) => e.stopPropagation());
+
+    const header = document.createElement("div");
+    header.className = "modal-header";
+
+    const h3 = document.createElement("h3");
+    h3.textContent = title; // SAFE: textContent escapes
+
+    const closeBtn = document.createElement("button");
+    closeBtn.className = "modal-close";
+    closeBtn.textContent = "×";
+    closeBtn.addEventListener("click", () => modal.classList.add("hidden"));
+
+    header.appendChild(h3);
+    header.appendChild(closeBtn);
+
+    const body = document.createElement("div");
+    body.className = "modal-body";
+    // Content is pre-escaped HTML from callers
+    body.innerHTML = content; // Safe: content already escaped by callers
+
+    modalContent.appendChild(header);
+    modalContent.appendChild(body);
+    overlay.appendChild(modalContent);
+    modal.appendChild(overlay);
 
     modal.classList.remove("hidden");
   }
@@ -401,6 +434,7 @@ export class ShareSystem {
 
   /**
    * Load genome from URL parameter if present
+   * SECURITY: Validates decoded genome before returning
    */
   static loadFromURL(): string | null {
     const params = new URLSearchParams(window.location.search);
@@ -410,7 +444,31 @@ export class ShareSystem {
       return null;
     }
 
-    return ShareSystem.decodeGenome(encoded);
+    const decoded = ShareSystem.decodeGenome(encoded);
+
+    // SECURITY: Validate genome format before use
+    if (!ShareSystem.isValidGenome(decoded)) {
+      console.error("Invalid genome format from URL");
+      return null;
+    }
+
+    return decoded;
+  }
+
+  /**
+   * SECURITY: Validate genome contains only safe characters
+   * Genomes should be codon triplets (A/T/G/C) with whitespace
+   */
+  private static isValidGenome(genome: string): boolean {
+    // Allow codons (ATG, etc), whitespace, and common separators
+    const validPattern = /^[ATGC\s\n\r]+$/i;
+
+    // Check length limits (prevent DoS)
+    if (genome.length > 1000000) { // 1MB limit
+      return false;
+    }
+
+    return validPattern.test(genome);
   }
 }
 

@@ -1,27 +1,8 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { type Theme, ThemeManager } from "./theme-manager";
 
-// Mock localStorage for Node.js test environment
-const localStorageMock = (() => {
-  let store: Record<string, string> = {};
-  return {
-    getItem: (key: string) => store[key] || null,
-    setItem: (key: string, value: string) => {
-      store[key] = value;
-    },
-    removeItem: (key: string) => {
-      delete store[key];
-    },
-    clear: () => {
-      store = {};
-    },
-  };
-})();
-
-Object.defineProperty(global, "localStorage", {
-  value: localStorageMock,
-  writable: true,
-});
+// jsdom provides localStorage automatically via vitest.setup.ts
+// No need for manual mocking
 
 describe("ThemeManager", () => {
   let themeManager: ThemeManager;

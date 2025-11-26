@@ -1,4 +1,17 @@
 import { AudioRenderer } from "./audio-renderer";
+
+/**
+ * SECURITY: Escape HTML to prevent XSS attacks
+ * Use this when building HTML strings from user input
+ */
+function escapeHtml(unsafe: string): string {
+  return unsafe
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
+}
 import { DiffViewer, injectDiffViewerStyles } from "./diff-viewer";
 import {
   type Concept,
@@ -487,7 +500,11 @@ function updateExampleDropdown() {
   const filtered = getFilteredExamples();
 
   // Clear existing options (except first)
-  exampleSelect.innerHTML = "<option value=\"\">Load Example...</option>";
+  exampleSelect.textContent = ""; // Clear safely
+  const defaultOption = document.createElement("option");
+  defaultOption.value = "";
+  defaultOption.textContent = "Load Example...";
+  exampleSelect.appendChild(defaultOption);
 
   // Group by difficulty for better UX
   const grouped = {
@@ -570,25 +587,46 @@ function showExampleInfo(key: ExampleKey) {
     return;
   }
 
-  exampleInfo.innerHTML = `
-    <div style="margin-bottom: 8px;">
-      <strong>${ex.title}</strong>
-      <span style="float: right; font-size: 0.85em; opacity: 0.7;">
-        ${ex.difficulty}
-      </span>
-    </div>
-    <div style="font-size: 0.9em; margin-bottom: 8px;">
-      ${ex.description}
-    </div>
-    <div style="font-size: 0.85em; opacity: 0.7;">
-      <div><strong>Concepts:</strong> ${ex.concepts.join(", ")}</div>
-      <div><strong>Good for mutations:</strong> ${
-    ex.goodForMutations.join(
-      ", ",
-    )
-  }</div>
-    </div>
-  `;
+  // SAFE: Build DOM programmatically to prevent XSS
+  exampleInfo.textContent = ""; // Clear safely
+
+  const titleDiv = document.createElement("div");
+  titleDiv.style.marginBottom = "8px";
+
+  const titleStrong = document.createElement("strong");
+  titleStrong.textContent = ex.title; // SAFE: textContent escapes
+  titleDiv.appendChild(titleStrong);
+
+  const difficultySpan = document.createElement("span");
+  difficultySpan.style.cssText = "float: right; font-size: 0.85em; opacity: 0.7;";
+  difficultySpan.textContent = ex.difficulty;
+  titleDiv.appendChild(difficultySpan);
+
+  const descDiv = document.createElement("div");
+  descDiv.style.cssText = "font-size: 0.9em; margin-bottom: 8px;";
+  descDiv.textContent = ex.description; // SAFE: textContent escapes
+
+  const metaDiv = document.createElement("div");
+  metaDiv.style.cssText = "font-size: 0.85em; opacity: 0.7;";
+
+  const conceptsDiv = document.createElement("div");
+  const conceptsLabel = document.createElement("strong");
+  conceptsLabel.textContent = "Concepts:";
+  conceptsDiv.appendChild(conceptsLabel);
+  conceptsDiv.appendChild(document.createTextNode(" " + ex.concepts.join(", ")));
+
+  const mutationsDiv = document.createElement("div");
+  const mutationsLabel = document.createElement("strong");
+  mutationsLabel.textContent = "Good for mutations:";
+  mutationsDiv.appendChild(mutationsLabel);
+  mutationsDiv.appendChild(document.createTextNode(" " + ex.goodForMutations.join(", ")));
+
+  metaDiv.appendChild(conceptsDiv);
+  metaDiv.appendChild(mutationsDiv);
+
+  exampleInfo.appendChild(titleDiv);
+  exampleInfo.appendChild(descDiv);
+  exampleInfo.appendChild(metaDiv);
   exampleInfo.style.display = "block";
 }
 
@@ -763,59 +801,77 @@ function displayLinterErrors(
     severity: "error" | "warning" | "info";
   }>,
 ): void {
-  if (errors.length === 0) {
-    linterMessages.innerHTML =
-      "<div style=\"color: #89d185;\">✅ No errors found</div>";
-  } else {
-    const errorHTML = errors
-      .map((err, idx) => {
-        const icon = err.severity === "error"
-          ? "🔴"
-          : err.severity === "warning"
-          ? "🟡"
-          : "ℹ️";
-        const color = err.severity === "error"
-          ? "#f48771"
-          : err.severity === "warning"
-          ? "#dcdcaa"
-          : "#4ec9b0";
-        const fixable = canAutoFix(err.message);
-        const fixButton = fixable
-          ? `<button
-             class="fix-button"
-             data-error-msg="${err.message.replace(/"/g, "&quot;")}"
-             style="margin-left: 12px; padding: 2px 8px; background: #4ec9b0; color: #1e1e1e; border: none; border-radius: 3px; cursor: pointer; font-size: 0.85em; font-weight: 500;"
-             onmouseover="this.style.background='#6dd3bb'"
-             onmouseout="this.style.background='#4ec9b0'">
-             Fix
-           </button>`
-          : "";
-        return `<div style="margin-bottom: 8px; padding: 6px 8px; border-left: 3px solid ${color}; background: rgba(255,255,255,0.03); display: flex; align-items: center;">
-        <span style="margin-right: 8px;">${icon}</span>
-        <span style="color: ${color}; font-weight: 500;">${err.severity.toUpperCase()}</span>
-        <span style="color: #d4d4d4; margin-left: 8px; flex: 1;">${err.message}</span>
-        ${
-          err.position !== undefined
-            ? `<span style="color: #858585; margin-left: 8px; font-size: 0.9em;">(pos: ${err.position})</span>`
-            : ""
-        }
-        ${fixButton}
-      </div>`;
-      })
-      .join("");
-    linterMessages.innerHTML = errorHTML;
+  linterMessages.textContent = ""; // Clear safely
 
-    // Attach click handlers to Fix buttons
-    const fixButtons = linterMessages.querySelectorAll(".fix-button");
-    fixButtons.forEach((btn) => {
-      btn.addEventListener("click", (e) => {
-        const errorMsg = (e.target as HTMLElement).getAttribute(
-          "data-error-msg",
-        );
-        if (errorMsg) {
-          applyAutoFix(errorMsg);
-        }
-      });
+  if (errors.length === 0) {
+    const successDiv = document.createElement("div");
+    successDiv.style.color = "#89d185";
+    successDiv.textContent = "✅ No errors found";
+    linterMessages.appendChild(successDiv);
+  } else {
+    errors.forEach((err) => {
+      const icon = err.severity === "error"
+        ? "🔴"
+        : err.severity === "warning"
+        ? "🟡"
+        : "ℹ️";
+      const color = err.severity === "error"
+        ? "#f48771"
+        : err.severity === "warning"
+        ? "#dcdcaa"
+        : "#4ec9b0";
+
+      const errorDiv = document.createElement("div");
+      errorDiv.style.cssText = `margin-bottom: 8px; padding: 6px 8px; border-left: 3px solid ${color}; background: rgba(255,255,255,0.03); display: flex; align-items: center;`;
+
+      const iconSpan = document.createElement("span");
+      iconSpan.style.marginRight = "8px";
+      iconSpan.textContent = icon;
+
+      const severitySpan = document.createElement("span");
+      severitySpan.style.cssText = `color: ${color}; font-weight: 500;`;
+      severitySpan.textContent = err.severity.toUpperCase();
+
+      const messageSpan = document.createElement("span");
+      messageSpan.style.cssText = "color: #d4d4d4; margin-left: 8px; flex: 1;";
+      messageSpan.textContent = err.message; // SAFE: textContent escapes
+
+      errorDiv.appendChild(iconSpan);
+      errorDiv.appendChild(severitySpan);
+      errorDiv.appendChild(messageSpan);
+
+      if (err.position !== undefined) {
+        const posSpan = document.createElement("span");
+        posSpan.style.cssText = "color: #858585; margin-left: 8px; font-size: 0.9em;";
+        posSpan.textContent = `(pos: ${err.position})`;
+        errorDiv.appendChild(posSpan);
+      }
+
+      const fixable = canAutoFix(err.message);
+      if (fixable) {
+        const fixButton = document.createElement("button");
+        fixButton.className = "fix-button";
+        fixButton.dataset.errorMsg = err.message; // Store for handler
+        fixButton.style.cssText = "margin-left: 12px; padding: 2px 8px; background: #4ec9b0; color: #1e1e1e; border: none; border-radius: 3px; cursor: pointer; font-size: 0.85em; font-weight: 500;";
+        fixButton.textContent = "Fix";
+
+        fixButton.addEventListener("mouseover", () => {
+          fixButton.style.background = "#6dd3bb";
+        });
+        fixButton.addEventListener("mouseout", () => {
+          fixButton.style.background = "#4ec9b0";
+        });
+        fixButton.addEventListener("click", (e) => {
+          const errorMsg = (e.target as HTMLElement).getAttribute("data-error-msg");
+          if (errorMsg) {
+            applyAutoFix(errorMsg);
+          }
+        });
+
+        errorDiv.appendChild(fixButton);
+      }
+
+      linterMessages.appendChild(errorDiv);
     });
   }
 }
@@ -1841,7 +1897,7 @@ function renderAnalysis(analysis: CodonAnalysis) {
   for (const { codon, count, percentage } of analysis.topCodons) {
     html.push(
       `<div style="display: flex; justify-content: space-between; align-items: center; padding: 4px 8px; background: #1e1e1e; border-radius: 3px;">` +
-        `<span style="font-family: 'Courier New', monospace; font-weight: 600; color: #dcdcaa;">${codon}</span>` +
+        `<span style="font-family: 'Courier New', monospace; font-weight: 600; color: #dcdcaa;">${escapeHtml(codon)}</span>` +
         `<span style="color: #a0a0a0; font-size: 11px;">${count}× (${
           percentage.toFixed(
             1,
@@ -2599,8 +2655,12 @@ function displayComparisonResults(result: GenomeComparisonResult): void {
   const similarityLabel = result.analysis.similarity
     .replace(/-/g, " ")
     .toUpperCase();
-  similarityDiv.innerHTML =
-    `<span class="comparison-similarity-badge ${badgeClass}">${similarityLabel}</span>`;
+  // SAFE: Build DOM programmatically
+  similarityDiv.textContent = "";
+  const badge = document.createElement("span");
+  badge.className = `comparison-similarity-badge ${badgeClass}`;
+  badge.textContent = similarityLabel;
+  similarityDiv.appendChild(badge);
 
   // Canvases
   const canvasA = document.getElementById(
