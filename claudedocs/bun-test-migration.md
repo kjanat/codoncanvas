@@ -1,11 +1,13 @@
 # Bun Test Migration Summary
 
 ## Overview
+
 Successfully migrated all tests from Vitest to Bun's native test runner, improving test performance by ~60% while maintaining 100% test coverage.
 
 ## Changes Made
 
 ### 1. Test Runner Configuration
+
 - **Created**: `bun-test-setup.ts` - Global test setup with happy-dom environment
 - **Updated**: `package.json` scripts:
   ```json
@@ -14,14 +16,18 @@ Successfully migrated all tests from Vitest to Bun's native test runner, improvi
   ```
 
 ### 2. DOM Environment Setup
+
 Configured happy-dom for browser API mocking:
+
 - `document` API
 - `localStorage` API
 - `HTMLCanvasElement` with 2D rendering context
 - `window.matchMedia` for theme testing
 
 ### 3. Test File Conversions
+
 Converted 17 test files from Vitest to Bun:
+
 - Replaced `vitest` imports with `bun:test`
 - Changed `it()` → `test()` for consistency
 - Changed `vi.fn()` → `mock()` for mocking
@@ -29,11 +35,13 @@ Converted 17 test files from Vitest to Bun:
 - Removed global localStorage assignment (now in setup file)
 
 ### 4. Automation Script
+
 Created `scripts/convert-tests-to-bun.sh` for automated test migration
 
 ## Results
 
 ### Test Execution
+
 - **Total Tests**: 469 tests across 17 files
 - **Status**: 469 pass, 0 fail
 - **Expect Calls**: 1,406
@@ -41,6 +49,7 @@ Created `scripts/convert-tests-to-bun.sh` for automated test migration
 - **Performance Gain**: ~60% faster
 
 ### Test Categories Passing
+
 - ✅ Mutation Tools (16 tests)
 - ✅ Genome I/O (10 tests)
 - ✅ GIF Exporter (9 tests)
@@ -72,11 +81,13 @@ Created `scripts/convert-tests-to-bun.sh` for automated test migration
 For future test files:
 
 ### Import Pattern
+
 ```typescript
 import { describe, test, expect, beforeEach, afterEach, mock } from "bun:test";
 ```
 
 ### Test Structure
+
 ```typescript
 describe("Feature", () => {
   test("should do something", () => {
@@ -86,6 +97,7 @@ describe("Feature", () => {
 ```
 
 ### Mocking
+
 ```typescript
 // Function mocking
 const mockFn = mock(() => "return value");
@@ -98,7 +110,9 @@ obj.method = original; // restore
 ```
 
 ## DOM Testing
+
 happy-dom automatically provides:
+
 - `document` API
 - `window` API
 - `localStorage`

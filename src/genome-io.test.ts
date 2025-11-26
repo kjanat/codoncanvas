@@ -58,6 +58,61 @@ describe("Genome I/O", () => {
     });
   });
 
+  // =========================================================================
+  // TODO: Tests for downloadGenomeFile (DOM-based file download)
+  // =========================================================================
+  describe("downloadGenomeFile", () => {
+    // HAPPY PATHS
+    test.todo(
+      "creates blob with correct content and triggers download via anchor element click",
+    );
+    test.todo(
+      "strips .genome extension from title when already present in filename",
+    );
+    test.todo("appends .genome extension when missing from filename");
+    test.todo("includes optional description, author, and metadata in content");
+
+    // EDGE CASES
+    test.todo("handles empty genome string gracefully");
+    test.todo("handles very long genome strings (>100KB)");
+    test.todo("handles special characters in filename");
+    test.todo("handles unicode characters in metadata");
+
+    // DOM INTERACTION
+    test.todo(
+      "creates temporary anchor element, appends to body, clicks, then removes",
+    );
+    test.todo("calls URL.createObjectURL and URL.revokeObjectURL correctly");
+  });
+
+  // =========================================================================
+  // TODO: Tests for readGenomeFile (FileReader async file reading)
+  // =========================================================================
+  describe("readGenomeFile", () => {
+    // HAPPY PATHS
+    test.todo(
+      "reads valid .genome file and returns parsed GenomeFile object via Promise",
+    );
+    test.todo(
+      "correctly parses all fields: version, title, genome, description, author, metadata",
+    );
+
+    // EDGE CASES
+    test.todo("handles File object with empty content");
+    test.todo("handles very large files (>1MB)");
+
+    // ERROR CASES
+    test.todo("rejects with error when file content is not valid JSON");
+    test.todo(
+      "rejects with error when JSON is missing required fields (version, title, genome)",
+    );
+    test.todo("rejects with error when FileReader.onerror fires");
+
+    // ASYNC BEHAVIOR
+    test.todo("returns Promise that resolves after FileReader completes");
+    test.todo("handles multiple concurrent file reads");
+  });
+
   describe("validateGenomeFile", () => {
     test("validates correct genome file", () => {
       const content = exportGenome(sampleGenome, sampleTitle);

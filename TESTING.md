@@ -26,11 +26,13 @@ bun test  # ❌ Don't use this
 ## Why Not `bun test`?
 
 **Problem**: `bun test` uses Bun's native test runner, which:
+
 - Doesn't read `vite.config.ts`
 - Doesn't provide DOM globals (`document`, `window`, etc.)
 - Results in `ReferenceError: document is not defined`
 
 **Solution**: Always use `bun run test` or `bunx vitest` to invoke Vitest, which:
+
 - Reads `vite.config.ts` for DOM environment setup
 - Provides full DOM API support via happy-dom
 - Runs all canvas/DOM-dependent tests successfully
@@ -64,13 +66,13 @@ bun test  # ❌ Don't use this
 
 ### jsdom vs happy-dom
 
-| Feature | jsdom | happy-dom | Choice |
-|---------|-------|-----------|--------|
-| Speed | Slower (7.2s) | Faster (4.3s) | ✅ happy-dom |
-| Accuracy | High | High | Both good |
-| Canvas Support | Partial | Partial | Equal (both need mocks) |
-| Bun Compatibility | Good | Better | ✅ happy-dom |
-| Maintenance | Active | Very Active | ✅ happy-dom |
+| Feature           | jsdom         | happy-dom     | Choice                  |
+| ----------------- | ------------- | ------------- | ----------------------- |
+| Speed             | Slower (7.2s) | Faster (4.3s) | ✅ happy-dom            |
+| Accuracy          | High          | High          | Both good               |
+| Canvas Support    | Partial       | Partial       | Equal (both need mocks) |
+| Bun Compatibility | Good          | Better        | ✅ happy-dom            |
+| Maintenance       | Active        | Very Active   | ✅ happy-dom            |
 
 ## Testing DOM-Dependent Code
 
@@ -125,6 +127,7 @@ HTMLCanvasElement.prototype.getContext = (contextId) => {
 ## Best Practices
 
 ### 1. Always Use Test Scripts
+
 ```bash
 ✅ bun run test       # Uses Vitest
 ✅ bunx vitest run    # Direct Vitest invocation
@@ -132,6 +135,7 @@ HTMLCanvasElement.prototype.getContext = (contextId) => {
 ```
 
 ### 2. File Organization
+
 ```
 src/
   mutation-predictor.ts        # Source file
@@ -141,16 +145,19 @@ vitest.setup.ts                # Global test setup
 ```
 
 ### 3. Test File Naming
+
 - Pattern: `*.test.ts`
 - Vitest auto-discovers all `**/*.test.ts` files
 - Co-locate tests with source files
 
 ### 4. Import from vitest
+
 ```ts
 import { describe, it, expect, beforeAll, afterEach, vi } from "vitest";
 ```
 
 ### 5. Handle Async Canvas Operations
+
 ```ts
 it("should handle canvas toBlob", async () => {
   const canvas = document.createElement("canvas");
@@ -164,11 +171,13 @@ it("should handle canvas toBlob", async () => {
 ## Performance Optimization
 
 ### Current Configuration
+
 - **environment**: `happy-dom` (faster than jsdom)
 - **fileParallelism**: `false` (prevents DOM race conditions)
 - **pool**: `threads` (parallel tests within each file)
 
 ### Performance Metrics
+
 - **Total tests**: 469
 - **Test files**: 17
 - **Execution time**: ~4.3s (with happy-dom)
@@ -176,6 +185,7 @@ it("should handle canvas toBlob", async () => {
 - **Test execution**: ~188ms
 
 ### Optimization Tips
+
 1. Minimize canvas operations in setup/teardown
 2. Reuse test fixtures across tests
 3. Keep DOM manipulation focused in specific tests
@@ -184,37 +194,44 @@ it("should handle canvas toBlob", async () => {
 ## Troubleshooting
 
 ### "document is not defined"
+
 **Problem**: Using `bun test` instead of `bun run test`
 **Solution**: Always use `bun run test` or `bunx vitest`
 
 ### Canvas method not implemented
+
 **Problem**: happy-dom doesn't implement all canvas methods
 **Solution**: Check `vitest.setup.ts` canvas mocks - add missing methods if needed
 
 ### Test files not discovered
+
 **Problem**: File naming or location issue
 **Solution**: Ensure files match `**/*.test.ts` pattern in `src/` directory
 
 ### Race conditions in DOM tests
+
 **Problem**: Parallel file execution causes DOM conflicts
 **Solution**: Already configured - `fileParallelism: false` in vite.config.ts
 
 ### Slow test execution
+
 **Problem**: Using jsdom instead of happy-dom
 **Solution**: Already optimized - using happy-dom for 36% faster tests
 
 ## CI/CD Integration
 
 ### GitHub Actions Example
+
 ```yaml
 - name: Install dependencies
   run: bun install
 
 - name: Run tests
-  run: bun run test  # NOT bun test
+  run: bun run test # NOT bun test
 ```
 
 ### Pre-commit Hook
+
 ```bash
 #!/bin/bash
 bun run test || exit 1
@@ -223,12 +240,14 @@ bun run test || exit 1
 ## Migration Notes
 
 ### From jsdom to happy-dom
+
 1. Update `vite.config.ts`: `environment: "jsdom"` → `environment: "happy-dom"`
 2. Update `vitest.setup.ts` comments
 3. Install: `bun add -d happy-dom`
 4. Optional: Remove jsdom if not used elsewhere: `bun remove -d jsdom`
 
 ### From Bun test to Vitest
+
 1. Keep existing test syntax (compatible)
 2. Change test invocation: `bun test` → `bun run test`
 3. Add DOM environment configuration to `vite.config.ts`
