@@ -59,7 +59,7 @@ describe("Mutation Tools", () => {
       // With position >= codons.length, it should find a random valid position
       // But if we specify position that has no synonyms, it throws
       expect(() => applySilentMutation(genome, 0)).toThrow(
-        "No synonymous codons for ATG",
+        /No synonymous codons for ATG at position 0/,
       );
     });
 

@@ -53,6 +53,9 @@ describe("Examples Library", () => {
     "silent",
     "missense",
     "nonsense",
+    "point",
+    "insertion",
+    "deletion",
     "frameshift",
   ];
 
