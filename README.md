@@ -33,9 +33,12 @@ Try CodonCanvas online (no installation required):
 
 **For Students:**
 
-- **[Learning Paths][learning-paths]** 🎓 **NEW** - Curated learning journeys from DNA basics to mathematical beauty
-- **[Interactive Tutorial][tutorial]** ⭐ - Step-by-step guided learning (start here!)
-- **[Example Gallery][gallery]** 🎨 - Browse 48 examples with filters and live preview
+- **[Learning Paths][learning-paths]**\
+  🎓 **NEW** - Curated learning journeys from DNA basics to mathematical beauty
+- **[Interactive Tutorial][tutorial]**\
+  ⭐ - Step-by-step guided learning (start here!)
+- **[Example Gallery][gallery]**\
+  🎨 - Browse 48 examples with filters and live preview
 - **[Main Playground][playground]** - Interactive editor with live canvas preview
 - **[Mutation Demos][mutation-demos]** - See all mutation types in action
 - **[Mutation Lab][mutation-lab]** - Side-by-side genome comparison
@@ -49,7 +52,7 @@ Try CodonCanvas online (no installation required):
 - **[Teacher Dashboard][teacher-dashboard]**\
   📊 **NEW** - Classroom analytics and student progress tracking
 - **[Research Metrics Dashboard][research-dashboard]**\
-  📈 - Detailed engagement metrics and analysis
+  📈 Detailed engagement metrics and analysis
 
 > [!NOTE]
 > Replace `kjanat` with your GitHub username after deployment.
@@ -211,11 +214,14 @@ bun dev
 Then open in browser:
 
 - Main playground: `http://localhost:5173`
-- **Mutation demos: `http://localhost:5173/demos.html`** ⭐ Start here to see mutation effects!
+- **Mutation demos: `http://localhost:5173/demos.html`**\
+  ⭐ Start here to see mutation effects!
 - Mutation lab: `http://localhost:5173/mutation-demo.html`
 - Timeline demo: `http://localhost:5173/timeline-demo.html`
-- Evolution lab: `http://localhost:5173/evolution-demo.html` - Directed evolution through natural selection
-- **Population genetics: `http://localhost:5173/population-genetics-demo.html`** ⭐ NEW: Watch genetic drift in action!
+- Evolution lab: `http://localhost:5173/evolution-demo.html`\
+  → Directed evolution through natural selection
+- **Population genetics: `http://localhost:5173/population-genetics-demo.html`**\
+  ⭐ NEW: Watch genetic drift in action!
 
 ## Example: Hello Circle
 
@@ -233,12 +239,15 @@ AUG GAA AAU GGA UAA
 
 **Explanation:**
 
-- `ATG`/`AUG` - START (begin execution)
-- `GAA AAT`/`AAU` - PUSH 3 (push value 3 to stack)
-- `GGA` - CIRCLE (draw circle with radius from stack)
-- `TAA`/`UAA` - STOP (end execution)
+- `ATG`/`AUG` - _START_ (begin execution)
+- `GAA AAT`/`AAU` - _PUSH_ 3 (push value 3 to stack)
+- `GGA` - _CIRCLE_ (draw circle with radius from stack)
+- `TAA`/`UAA` - _STOP_ (end execution)
 
-> **Note:** CodonCanvas supports both DNA (T) and RNA (U) notation. U and T are treated as synonyms - you can mix both in the same genome for educational demonstrations of transcription.
+> [!NOTE]
+> CodonCanvas supports both DNA (T) and RNA (U) notation.\
+> U and T are treated as synonyms - you can mix both in the same genome
+> for educational demonstrations of transcription.
 
 ## Built-in Examples
 
@@ -330,7 +339,8 @@ The playground includes **27 pedagogical examples** demonstrating all features:
 - `TC*` - SAVE_STATE
 - `TG*` (TGG, TGT) - SWAP
 
-**Note:** `*` means all 4 bases create synonymous codons
+> [!NOTE]
+> `*` means all 4 bases create synonymous codons
 
 ## Numeric Literals (Base-4 Encoding)
 
@@ -636,32 +646,7 @@ Delete first 'A': All downstream codons shift, output completely different -->
 ## Project Structure
 
 ```tree
-codoncanvas/
-├── src/
-│   ├── types.ts              # Core type definitions & CODON_MAP
-│   ├── lexer.ts              # Tokenizer and validator
-│   ├── vm.ts                 # Stack machine VM
-│   ├── renderer.ts           # Canvas2D renderer
-│   ├── mutations.ts          # Mutation tools (7 types)
-│   ├── diff-viewer.ts        # Genome comparison component
-│   ├── timeline-scrubber.ts  # Step-through execution
-│   ├── genome-io.ts          # Import/export .genome files
-│   ├── examples.ts           # Built-in example genomes
-│   ├── playground.ts         # Main playground UI logic
-│   ├── lexer.test.ts         # Lexer validation tests
-│   ├── vm.test.ts            # VM execution tests
-│   ├── mutations.test.ts     # Mutation engine tests
-│   ├── genome-io.test.ts     # File I/O tests
-│   ├── evolution-engine.test.ts  # Evolution algorithm tests
-│   ├── assessment-engine.test.ts # Assessment system tests
-│   ├── achievement-engine.test.ts # Gamification tests
-│   └── ... (15 test files total, 233 test cases)
-├── index.html                # Main playground interface
-├── mutation-demo.html        # Mutation laboratory
-├── timeline-demo.html        # Timeline scrubber demo
-├── package.json
-├── tsconfig.json
-└── vite.config.ts
+
 ```
 
 ## Development
@@ -819,7 +804,7 @@ See [DEPLOYMENT.md][deployment-doc] for complete instructions including:
 
 ## License
 
-MIT
+[MIT][license]
 
 ## Credits
 
@@ -846,5 +831,8 @@ Inspired by the beauty of genetic code and the desire to make molecular biology 
 [genetic-algorithm]: https://kjanat.github.io/codoncanvas/genetic-algorithm-demo.html
 [teacher-dashboard]: https://kjanat.github.io/codoncanvas/teacher-dashboard.html
 [research-dashboard]: https://kjanat.github.io/codoncanvas/research-dashboard.html
-[deployment-doc]: docs/DEPLOYMENT.md
-[educators-doc]: docs/EDUCATORS.md
+[deployment-doc]: ./docs/DEPLOYMENT.md
+[educators-doc]: ./docs/EDUCATORS.md
+[license]: ./LICENSE
+
+<!-- markdownlint-disable-file MD033 -->
