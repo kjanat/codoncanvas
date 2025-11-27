@@ -2,7 +2,10 @@
 
 > **DNA-Inspired Visual Programming Language**
 
-CodonCanvas is an educational programming language that uses DNA-like triplets (codons) as syntax. Learners write sequences of three-character tokens that execute as visual outputs, making genetic concepts like mutations and reading frames tangible and playful.
+CodonCanvas is an educational programming language that uses DNA-like triplets
+(codons) as syntax. Learners write sequences of three-character tokens that
+execute as visual outputs, making genetic concepts like mutations and reading
+frames tangible and playful.
 
 ## Features
 
@@ -24,45 +27,49 @@ CodonCanvas is an educational programming language that uses DNA-like triplets (
 
 Try CodonCanvas online (no installation required):
 
-**[https://kjanat.github.io/codoncanvas/](https://kjanat.github.io/codoncanvas/)**
+**[https://kjanat.github.io/codoncanvas/][demo]**
 
 ### All Demos
 
 **For Students:**
 
-- **[Learning Paths](https://kjanat.github.io/codoncanvas/learning-paths.html)** 🎓 **NEW** - Curated learning journeys from DNA basics to mathematical beauty
-- **[Interactive Tutorial](https://kjanat.github.io/codoncanvas/tutorial.html)** ⭐ - Step-by-step guided learning (start here!)
-- **[Example Gallery](https://kjanat.github.io/codoncanvas/gallery.html)** 🎨 - Browse 48 examples with filters and live preview
-- **[Main Playground](https://kjanat.github.io/codoncanvas/)** - Interactive editor with live canvas preview
-- **[Mutation Demos](https://kjanat.github.io/codoncanvas/demos.html)** - See all mutation types in action
-- **[Mutation Lab](https://kjanat.github.io/codoncanvas/mutation-demo.html)** - Side-by-side genome comparison
-- **[Timeline Scrubber](https://kjanat.github.io/codoncanvas/timeline-demo.html)** - Step-by-step execution viewer
-- **[Evolution Lab](https://kjanat.github.io/codoncanvas/evolution-demo.html)** - Directed evolution through selection
-- **[Population Genetics](https://kjanat.github.io/codoncanvas/population-genetics-demo.html)** - Observe genetic drift across populations
-- **[Genetic Algorithm](https://kjanat.github.io/codoncanvas/genetic-algorithm-demo.html)** - Automated fitness-driven evolution
+- **[Learning Paths][learning-paths]** 🎓 **NEW** - Curated learning journeys from DNA basics to mathematical beauty
+- **[Interactive Tutorial][tutorial]** ⭐ - Step-by-step guided learning (start here!)
+- **[Example Gallery][gallery]** 🎨 - Browse 48 examples with filters and live preview
+- **[Main Playground][playground]** - Interactive editor with live canvas preview
+- **[Mutation Demos][mutation-demos]** - See all mutation types in action
+- **[Mutation Lab][mutation-lab]** - Side-by-side genome comparison
+- **[Timeline Scrubber][timeline-scrubber]** - Step-by-step execution viewer
+- **[Evolution Lab][evolution-lab]** - Directed evolution through selection
+- **[Population Genetics][population-genetics]** - Observe genetic drift across populations
+- **[Genetic Algorithm][genetic-algorithm]** - Automated fitness-driven evolution
 
 **For Teachers:**
 
-- **[Teacher Dashboard](https://kjanat.github.io/codoncanvas/teacher-dashboard.html)** 📊 **NEW** - Classroom analytics and student progress tracking
-- **[Research Metrics Dashboard](https://kjanat.github.io/codoncanvas/research-dashboard.html)** 📈 - Detailed engagement metrics and analysis
+- **[Teacher Dashboard][teacher-dashboard]**\
+  📊 **NEW** - Classroom analytics and student progress tracking
+- **[Research Metrics Dashboard][research-dashboard]**\
+  📈 - Detailed engagement metrics and analysis
 
-> **Note:** Replace `kjanat` with your GitHub username after deployment. See [DEPLOYMENT.md](DEPLOYMENT.md) for setup instructions.
+> [!NOTE]
+> Replace `kjanat` with your GitHub username after deployment.
+> See [DEPLOYMENT.md][deployment-doc] for setup instructions.
 
 ## Screenshots
 
 ### Main Playground
 
-![CodonCanvas Playground](screenshot_playground.png)
+![CodonCanvas Playground](screenshot_playground.png)\
 _Interactive editor with live canvas preview, 27 built-in examples, and codon reference chart_
 
 ### Mutation Lab
 
-![Mutation Laboratory](screenshot_mutations.png)
+![Mutation Laboratory](screenshot_mutations.png)\
 _Compare original and mutated genomes side-by-side with diff visualization_
 
 ### Timeline Scrubber
 
-![Timeline Scrubber](screenshot_timeline.png)
+![Timeline Scrubber](screenshot_timeline.png)\
 _Step through execution instruction-by-instruction with state visualization_
 
 ## 🎓 Learning Paths
@@ -78,14 +85,17 @@ _Step through execution instruction-by-instruction with state visualization_
 **Available Paths:**
 
 1. **DNA Fundamentals** (20-30 min, Beginner)
+
    - Codon structure, silent mutations, missense/nonsense mutations, frameshifts
    - Perfect for biology students learning genetic concepts
 
 2. **Visual Programming Journey** (30-45 min, Beginner→Intermediate)
+
    - Drawing primitives, transforms, state management, loops
    - Ideal for CS students learning stack-based graphics programming
 
 3. **Nature's Algorithms** (25-35 min, Intermediate)
+
    - Fractal branching, phyllotaxis, cell division, hexagonal packing, DNA helix, neural networks
    - Connects biology to algorithmic patterns
 
@@ -93,7 +103,7 @@ _Step through execution instruction-by-instruction with state visualization_
    - Fibonacci spirals, golden ratio, rose curves, fractals, prime spirals
    - Explores mathematical art and computational aesthetics
 
-**[🎓 Start Learning →](https://kjanat.github.io/codoncanvas/learning-paths.html)**
+**[🎓 Start Learning →][learning-paths]**
 
 ## Visual Showcase
 
@@ -112,61 +122,90 @@ These examples demonstrate CodonCanvas's computational power using LOOP opcodes,
 ### Classic Gallery
 
 <table>
-<tr>
-<td align="center" width="33%">
-<img src="examples/screenshots/fractalFlower.png" width="200" alt="Fractal Flower"><br>
-<b>Fractal Flower</b><br>
-<sub>Nested petals with color gradients</sub>
-</td>
-<td align="center" width="33%">
-<img src="examples/screenshots/cosmicWheel.png" width="200" alt="Cosmic Wheel"><br>
-<b>Cosmic Wheel</b><br>
-<sub>Textured radial composition</sub>
-</td>
-<td align="center" width="33%">
-<img src="examples/screenshots/kaleidoscope.png" width="200" alt="Kaleidoscope"><br>
-<b>Kaleidoscope</b><br>
-<sub>6-fold radial symmetry</sub>
-</td>
-</tr>
-<tr>
-<td align="center" width="33%">
-<img src="examples/screenshots/starfield.png" width="200" alt="Starfield"><br>
-<b>Starfield</b><br>
-<sub>Night sky with noise textures</sub>
-</td>
-<td align="center" width="33%">
-<img src="examples/screenshots/geometricMosaic.png" width="200" alt="Geometric Mosaic"><br>
-<b>Geometric Mosaic</b><br>
-<sub>Grid layout with rainbow gradient</sub>
-</td>
-<td align="center" width="33%">
-<img src="examples/screenshots/recursiveCircles.png" width="200" alt="Recursive Circles"><br>
-<b>Recursive Circles</b><br>
-<sub>Concentric rings with rotation</sub>
-</td>
-</tr>
-<tr>
-<td align="center">
-<img src="examples/screenshots/wavyLines.png" width="200" alt="Wavy Lines"><br>
-<b>Wavy Lines</b><br>
-<sub>Flowing wave pattern</sub>
-</td>
-<td colspan="2" align="center">
-<i>All showcase genomes available in <code>examples/</code> directory</i><br>
-<i>Generate screenshots: <code>npm run generate-screenshots</code></i>
-</td>
-</tr>
+  <tr>
+    <td align="center" width="33%">
+      <img
+        src="examples/screenshots/fractalFlower.png"
+        width="200"
+        alt="Fractal Flower"
+      /><br />
+      <b>Fractal Flower</b><br />
+      <sub>Nested petals with color gradients</sub>
+    </td>
+    <td align="center" width="33%">
+      <img
+        src="examples/screenshots/cosmicWheel.png"
+        width="200"
+        alt="Cosmic Wheel"
+      /><br />
+      <b>Cosmic Wheel</b><br />
+      <sub>Textured radial composition</sub>
+    </td>
+    <td align="center" width="33%">
+      <img
+        src="examples/screenshots/kaleidoscope.png"
+        width="200"
+        alt="Kaleidoscope"
+      /><br />
+      <b>Kaleidoscope</b><br />
+      <sub>6-fold radial symmetry</sub>
+    </td>
+  </tr>
+  <tr>
+    <td align="center" width="33%">
+      <img
+        src="examples/screenshots/starfield.png"
+        width="200"
+        alt="Starfield"
+      /><br />
+      <b>Starfield</b><br />
+      <sub>Night sky with noise textures</sub>
+    </td>
+    <td align="center" width="33%">
+      <img
+        src="examples/screenshots/geometricMosaic.png"
+        width="200"
+        alt="Geometric Mosaic"
+      /><br />
+      <b>Geometric Mosaic</b><br />
+      <sub>Grid layout with rainbow gradient</sub>
+    </td>
+    <td align="center" width="33%">
+      <img
+        src="examples/screenshots/recursiveCircles.png"
+        width="200"
+        alt="Recursive Circles"
+      /><br />
+      <b>Recursive Circles</b><br />
+      <sub>Concentric rings with rotation</sub>
+    </td>
+  </tr>
+  <tr>
+    <td align="center">
+      <img
+        src="examples/screenshots/wavyLines.png"
+        width="200"
+        alt="Wavy Lines"
+      /><br />
+      <b>Wavy Lines</b><br />
+      <sub>Flowing wave pattern</sub>
+    </td>
+    <td colspan="2" align="center">
+      <i>All showcase genomes available in <code>examples/</code> directory</i
+      ><br />
+      <i>Generate screenshots: <code>bun run generate-screenshots</code></i>
+    </td>
+  </tr>
 </table>
 
 ## Quick Start (Local Development)
 
 ```bash
 # Install dependencies
-npm install
+bun install
 
 # Run development server
-npm run dev
+bun dev
 ```
 
 Then open in browser:
@@ -219,35 +258,38 @@ The playground includes **27 pedagogical examples** demonstrating all features:
 
 ### Stack & Composition (4)
 
-10. **Stack Operations** - DUP and SWAP for efficient stack management
-11. **Rosette Pattern** - Complex composition with rotation and color
-12. **Simple Face** - Combines primitives to draw a smiley face
-13. **Stack Cleanup** - POP opcode for stack management
+1. **Stack Operations** - DUP and SWAP for efficient stack management
+2. **Rosette Pattern** - Complex composition with rotation and color
+3. **Simple Face** - Combines primitives to draw a smiley face
+4. **Stack Cleanup** - POP opcode for stack management
 
 ### Advanced Features (4)
 
-14. **Textured Circle** - NOISE opcode for artistic texture effects
-15. **Spiral Pattern** - Geometric spiral using iterative transforms
-16. **Nested Frames** - SAVE_STATE for layered compositions
-17. **Mandala Pattern** - Complex radial symmetry
+1. **Textured Circle** - NOISE opcode for artistic texture effects
+2. **Spiral Pattern** - Geometric spiral using iterative transforms
+3. **Nested Frames** - SAVE_STATE for layered compositions
+4. **Mandala Pattern** - Complex radial symmetry
 
 ### Educational Demonstrations (3)
 
-18. **Silent Mutation Demo** - Pedagogical comparison of synonymous codons (GGA vs GGC)
-19. **Color Gradient** - Systematic color manipulation
-20. **Grid Pattern** - Systematic positioning with TRANSLATE
+1. **Silent Mutation Demo** - Pedagogical comparison of synonymous codons (GGA vs GGC)
+2. **Color Gradient** - Systematic color manipulation
+3. **Grid Pattern** - Systematic positioning with TRANSLATE
 
 ### Advanced Showcase (7)
 
-21. **Fractal Flower** - Intricate nested petals with multi-layer color gradients
-22. **Geometric Mosaic** - Grid-based tiled composition with rainbow gradient
-23. **Starfield** - Night sky with textured stars and nebula effects using NOISE
-24. **Recursive Circles** - Concentric rings with systematic rotational offsets
-25. **Kaleidoscope** - 6-fold radial symmetry with mixed shape primitives
-26. **Wavy Lines** - Flowing wave pattern demonstrating systematic rotation
-27. **Cosmic Wheel** - Elaborate textured composition showcasing maximum system capabilities
+1. **Fractal Flower** - Intricate nested petals with multi-layer color gradients
+2. **Geometric Mosaic** - Grid-based tiled composition with rainbow gradient
+3. **Starfield** - Night sky with textured stars and nebula effects using NOISE
+4. **Recursive Circles** - Concentric rings with systematic rotational offsets
+5. **Kaleidoscope** - 6-fold radial symmetry with mixed shape primitives
+6. **Wavy Lines** - Flowing wave pattern demonstrating systematic rotation
+7. **Cosmic Wheel** - Elaborate textured composition showcasing maximum system capabilities
 
-> **Note:** The Advanced Showcase examples demonstrate the full artistic and technical depth of CodonCanvas. Each genome ranges from 960-1,620 codons (2,880-4,860 bases) and showcases advanced techniques like SAVE_STATE, NOISE textures, multi-layer compositions, and complex transform orchestration.
+> [!NOTE]
+> The Advanced Showcase examples demonstrate the full artistic and technical depth of CodonCanvas.\
+> Each genome ranges from 960-1,620 codons (2,880-4,860 bases) and showcases advanced techniques\
+> like `SAVE_STATE`, `NOISE`, multi-layer compositions, and complex transform orchestration.
 
 ## Codon Map Quick Reference
 
@@ -294,7 +336,7 @@ The playground includes **27 pedagogical examples** demonstrating all features:
 
 After a PUSH opcode, the next codon encodes a number 0-63:
 
-```
+```text
 value = d1 × 16 + d2 × 4 + d3
 where A=0, C=1, G=2, T=3
 ```
@@ -309,11 +351,13 @@ Values are scaled: `pixel_value = (codon_value / 64) × canvas_width`
 
 ## Saving & Loading Genomes
 
-The playground now supports saving and loading genomes in the `.genome` file format:
+The playground now supports saving and loading genomes in the `.genome` file
+format:
 
 ### Saving Your Work
 
-Click the **💾 Save .genome** button in the playground toolbar to download your genome as a JSON file containing:
+Click the **💾 Save .genome** button in the playground toolbar to download your
+genome as a JSON file containing:
 
 - Your genome sequence
 - Title (auto-generated from first line)
@@ -322,11 +366,13 @@ Click the **💾 Save .genome** button in the playground toolbar to download you
 
 ### Loading Genomes
 
-Click the **📂 Load .genome** button to import a previously saved genome file. The file will be validated and loaded into the editor.
+Click the **📂 Load .genome** button to import a previously saved genome file.\
+The file will be validated and loaded into the editor.
 
 ### Exporting Animations as GIF
 
-In the **Timeline Demo**, you can export the entire execution animation as a GIF file:
+In the **Timeline Demo**, you can export the entire execution animation as a GIF
+file:
 
 1. Load a genome and let the timeline execute
 2. Click **📹 Export Animation as GIF**
@@ -334,7 +380,9 @@ In the **Timeline Demo**, you can export the entire execution animation as a GIF
 4. Watch the progress bar as frames are encoded
 5. The GIF will automatically download when ready
 
-GIF exports capture every step of execution, perfect for sharing on social media or embedding in documentation. Adjust FPS for smoother animation (higher file size) or faster encoding (lower FPS).
+GIF exports capture every step of execution, perfect for sharing on social media
+or embedding in documentation. Adjust FPS for smoother animation
+(higher file size) or faster encoding (lower FPS).
 
 ### File Format Example
 
@@ -361,7 +409,8 @@ Share your `.genome` files with others to:
 
 ## Directed Evolution Lab
 
-The **Evolution Lab** (`evolution-demo.html`) implements natural selection for genomes. This is a core pedagogical feature demonstrating how directed evolution works:
+The **Evolution Lab** (`evolution-demo.html`) implements natural selection for genomes.\
+This is a core pedagogical feature demonstrating how directed evolution works:
 
 ### How It Works
 
@@ -373,12 +422,48 @@ The **Evolution Lab** (`evolution-demo.html`) implements natural selection for g
 
 ### Evolution Workflow
 
-```
+<!-- ```diagram
 Generation 1: Parent → 6 mutated candidates
               ↓ User selects fittest
 Generation 2: Selected candidate → 6 new mutated candidates
               ↓ User selects fittest
 Generation 3: ...continues...
+``` -->
+
+```mermaid
+flowchart TD
+    subgraph gen1["Generation 1"]
+        P1[Parent] --> M1a[Mutant 1]
+        P1 --> M1b[Mutant 2]
+        P1 --> M1c[Mutant 3]
+        P1 --> M1d[Mutant 4]
+        P1 --> M1e[Mutant 5]
+        P1 --> M1f[Mutant 6]
+    end
+
+    M1c -.->|"👆 User selects fittest"| P2
+
+    subgraph gen2["Generation 2"]
+        P2[Selected Parent] --> M2a[Mutant 1]
+        P2 --> M2b[Mutant 2]
+        P2 --> M2c[Mutant 3]
+        P2 --> M2d[Mutant 4]
+        P2 --> M2e[Mutant 5]
+        P2 --> M2f[Mutant 6]
+    end
+
+    M2e -.->|"👆 User selects fittest"| P3
+
+    subgraph gen3["Generation 3"]
+        P3[Selected Parent] --> M3a[Mutant 1]
+        P3 --> M3b[Mutant 2]
+        P3 --> M3c[Mutant 3]
+        P3 --> M3d[Mutant 4]
+        P3 --> M3e[Mutant 5]
+        P3 --> M3f[Mutant 6]
+    end
+
+    M3b -.->|"..."| continue["continues..."]
 ```
 
 ### Key Features
@@ -415,7 +500,108 @@ The tutorial uses localStorage to remember completion status. Reset with `window
 
 ## Mutation Demonstration
 
+Here are three Mermaid diagrams showing the different mutation types:
+
 ### Silent Mutation (No Change)
+
+```mermaid
+flowchart LR
+    subgraph before["Before"]
+        direction LR
+        B1[ATG] --> B2[GAA] --> B3[AGG] --> B4[GGA] --> B5[TAA]
+    end
+    
+    subgraph after["After"]
+        direction LR
+        A1[ATG] --> A2[GAA] --> A3[AGG] --> A4[GGC] --> A5[TAA]
+    end
+    
+    before -->|"GGA → GGC"| after
+    
+    subgraph output["Output: Identical"]
+        O1((CIRCLE))
+    end
+    
+    after --> output
+```
+
+### Missense Mutation (Shape Change)
+
+```mermaid
+flowchart LR
+    subgraph before["Before"]
+        direction LR
+        B1[ATG] --> B2[GAA] --> B3[AGG] --> B4[GGA] --> B5[TAA]
+    end
+    
+    subgraph after["After"]
+        direction LR
+        A1[ATG] --> A2[GAA] --> A3[AGG] --> A4[CCA] --> A5[TAA]
+    end
+    
+    before -->|"GGA → CCA"| after
+    
+    subgraph out1["Before Output"]
+        O1((CIRCLE))
+    end
+    
+    subgraph out2["After Output"]
+        O2[RECT]
+    end
+    
+    B4 -.-> O1
+    A4 -.-> O2
+```
+
+### Nonsense Mutation (Early Stop)
+
+```mermaid
+flowchart LR
+    subgraph before["Before: 2 shapes"]
+        direction LR
+        B1[ATG] --> B2[GAA] --> B3[AGG] --> B4[GGA] --> B5[CCA] --> B6[TAA]
+    end
+    
+    subgraph after["After: Early STOP"]
+        direction LR
+        A1[ATG] --> A2[GAA] --> A3[AGG] --> A4[TAA]
+    end
+    
+    before -->|"GGA → TAA"| after
+    
+    subgraph out1["Before Output"]
+        O1((CIRCLE)) --- O2[RECT]
+    end
+    
+    subgraph out2["After Output"]
+        O3[❌ Missing shape]
+    end
+```
+
+### Frameshift (Complete Scramble)
+
+```mermaid
+flowchart TD
+    subgraph before["Before"]
+        direction LR
+        B1["ATG"] --> B2["GAA"] --> B3["AGG"] --> B4["GGA"] --> B5["TAA"]
+    end
+    
+    before -->|"Delete first 'A' from GAA"| shift
+    
+    subgraph shift["Reading Frame Shifts"]
+        direction LR
+        S1["ATG"] --> S2["GA_"] --> S3["AAG"] --> S4["GGG"] --> S5["ATA"] --> S6["A??"]
+    end
+    
+    subgraph result["Result"]
+        R1["All downstream codons<br>now encode different shapes!"]
+    end
+    
+    shift --> result
+```
+
+<!-- ### Silent Mutation (No Change)
 
 ```dna
 ATG GAA AGG GGA TAA  → ATG GAA AGG GGC TAA
@@ -445,11 +631,11 @@ GGA → TAA: Early STOP, second shape missing
 ATG GAA AGG GGA TAA  → ATG GA AAG GGG ATA A
 ```
 
-Delete first 'A': All downstream codons shift, output completely different
+Delete first 'A': All downstream codons shift, output completely different -->
 
 ## Project Structure
 
-```
+```tree
 codoncanvas/
 ├── src/
 │   ├── types.ts              # Core type definitions & CODON_MAP
@@ -482,28 +668,28 @@ codoncanvas/
 
 ```bash
 # Install dependencies
-npm install
+bun install
 
 # Run dev server
-npm run dev
+bun dev
 
 # Run tests
-npm test
+bun test
 
 # Run tests with UI
-npm run test:ui
+bun test:ui
 
 # Type check
-npm run typecheck
+bun typecheck
 
 # Build for production
-npm run build
+bun run build
 ```
 
 ## Testing
 
 ```bash
-npm test
+bun test
 ```
 
 Test suite includes:
@@ -528,7 +714,7 @@ CodonCanvas teaches:
 
 CodonCanvas provides comprehensive classroom support tools:
 
-**📊 Teacher Dashboard** ([teacher-dashboard.html](https://kjanat.github.io/codoncanvas/teacher-dashboard.html))
+**📊 Teacher Dashboard** ([teacher-dashboard.html][teacher-dashboard])
 
 - **Classroom Analytics**: View aggregate metrics across all students (engagement distribution, average sessions/duration/genomes)
 - **Student Progress Tracking**: Monitor individual tutorial completion and research metrics
@@ -544,14 +730,14 @@ CodonCanvas provides comprehensive classroom support tools:
 4. Dashboard displays comprehensive analytics: stats grid, at-risk alerts, completion matrix, engagement metrics
 5. Teacher exports grading summary (CSV) or detailed classroom data (JSON) as needed
 
-**📈 Research Metrics** ([research-dashboard.html](https://kjanat.github.io/codoncanvas/research-dashboard.html))
+**📈 Research Metrics** ([research-dashboard.html][research-dashboard])
 
 - **Session Analytics**: Deep-dive into individual learning sessions with timestamps and actions
 - **Engagement Patterns**: Track genomes created, mutations applied, tutorial progress, time-to-first-artifact
 - **Educational Research**: Support pedagogical studies with detailed interaction data
 - **Visual Analysis**: Interactive visualizations of engagement trends and learning trajectories
 
-See [EDUCATORS.md](EDUCATORS.md) for complete lesson plans, assessment rubrics, and classroom activities.
+See [EDUCATORS.md][educators-doc] for complete lesson plans, assessment rubrics, and classroom activities.
 
 ## Implementation Status
 
@@ -624,7 +810,7 @@ git push -u origin master
 # Live at: https://YOUR_USERNAME.github.io/codoncanvas/
 ```
 
-See [DEPLOYMENT.md](DEPLOYMENT.md) for complete instructions including:
+See [DEPLOYMENT.md][deployment-doc] for complete instructions including:
 
 - Social sharing optimization (Open Graph tags)
 - Custom domain setup
@@ -644,3 +830,21 @@ Inspired by the beauty of genetic code and the desire to make molecular biology 
 ---
 
 **Let's evolve some code!** 🧬🎨
+
+<!-- Link definitions -->
+
+[demo]: https://kjanat.github.io/codoncanvas/
+[learning-paths]: https://kjanat.github.io/codoncanvas/learning-paths.html
+[tutorial]: https://kjanat.github.io/codoncanvas/tutorial.html
+[gallery]: https://kjanat.github.io/codoncanvas/gallery.html
+[playground]: https://kjanat.github.io/codoncanvas/
+[mutation-demos]: https://kjanat.github.io/codoncanvas/demos.html
+[mutation-lab]: https://kjanat.github.io/codoncanvas/mutation-demo.html
+[timeline-scrubber]: https://kjanat.github.io/codoncanvas/timeline-demo.html
+[evolution-lab]: https://kjanat.github.io/codoncanvas/evolution-demo.html
+[population-genetics]: https://kjanat.github.io/codoncanvas/population-genetics-demo.html
+[genetic-algorithm]: https://kjanat.github.io/codoncanvas/genetic-algorithm-demo.html
+[teacher-dashboard]: https://kjanat.github.io/codoncanvas/teacher-dashboard.html
+[research-dashboard]: https://kjanat.github.io/codoncanvas/research-dashboard.html
+[deployment-doc]: docs/DEPLOYMENT.md
+[educators-doc]: docs/EDUCATORS.md
