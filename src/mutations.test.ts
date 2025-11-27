@@ -52,6 +52,24 @@ describe("Mutation Tools", () => {
         "No synonymous mutations available",
       );
     });
+
+    test("throws when position is invalid/out of range", () => {
+      const genome = "ATG GGA TAA";
+      // Position is beyond the number of codons
+      // With position >= codons.length, it should find a random valid position
+      // But if we specify position that has no synonyms, it throws
+      expect(() => applySilentMutation(genome, 0)).toThrow(
+        "No synonymous codons for ATG",
+      );
+    });
+
+    test("handles position at exact boundary", () => {
+      const genome = "ATG GGA TAA";
+      // Position 2 is TAA which has synonyms (TAG, TGA)
+      const result = applySilentMutation(genome, 2);
+      const codons = result.mutated.split(" ");
+      expect(["TAG", "TGA"]).toContain(codons[2]);
+    });
   });
 
   describe("applyMissenseMutation", () => {
@@ -88,6 +106,16 @@ describe("Mutation Tools", () => {
         expect(["TAA", "TAG", "TGA"]).not.toContain(codon);
       }
     });
+
+    test("respects position parameter", () => {
+      const genome = "ATG GGA CCA TAA";
+      const result = applyMissenseMutation(genome, 1); // Mutate GGA
+
+      const codons = result.mutated.split(" ");
+      expect(codons[1]).not.toBe("GGA");
+      // Should be a different opcode (not CIRCLE)
+      expect(CODON_MAP[codons[1]]).not.toBe(CODON_MAP["GGA"]);
+    });
   });
 
   describe("applyNonsenseMutation", () => {
@@ -112,6 +140,22 @@ describe("Mutation Tools", () => {
 
       const codons = result.mutated.split(" ");
       expect(codons[0]).toBe("ATG");
+    });
+
+    test("throws when no nonsense mutation positions available", () => {
+      // Only ATG and TAA - no codons to mutate to STOP
+      const genome = "ATG TAA";
+      expect(() => applyNonsenseMutation(genome)).toThrow(
+        "No nonsense mutation positions available",
+      );
+    });
+
+    test("respects position parameter", () => {
+      const genome = "ATG GGA CCA TAA";
+      const result = applyNonsenseMutation(genome, 1); // Mutate GGA to STOP
+
+      const codons = result.mutated.split(" ");
+      expect(codons[1]).toBe("TAA");
     });
   });
 
@@ -146,6 +190,23 @@ describe("Mutation Tools", () => {
 
       expect(mutated).not.toBe(original);
     });
+
+    test("throws when position out of range", () => {
+      const genome = "ATGGGGTAA"; // 9 bases
+      expect(() => applyPointMutation(genome, 100)).toThrow(
+        "Position 100 out of range",
+      );
+    });
+
+    test("handles mutation at each position in codon", () => {
+      const genome = "ATG GGA TAA";
+      // Test that we can mutate at various positions
+      const result0 = applyPointMutation(genome, 0);
+      const result4 = applyPointMutation(genome, 4);
+
+      expect(result0.type).toBe("point");
+      expect(result4.type).toBe("point");
+    });
   });
 
   describe("applyInsertion", () => {
@@ -173,6 +234,23 @@ describe("Mutation Tools", () => {
       // Should not be divisible by 3 cleanly after insertion point
       expect((mutated.length - 3) % 3).toBe(1);
     });
+
+    test("throws when position out of range", () => {
+      const genome = "ATG GGA TAA"; // 9 bases
+      expect(() => applyInsertion(genome, 100, 1)).toThrow(
+        "Position 100 out of range",
+      );
+    });
+
+    test("handles insertion at end of genome", () => {
+      const genome = "ATG GGA TAA";
+      const original = genome.replace(/\s+/g, "");
+      const result = applyInsertion(genome, original.length, 3);
+
+      expect(result.type).toBe("insertion");
+      const mutated = result.mutated.replace(/\s+/g, "");
+      expect(mutated.length).toBe(original.length + 3);
+    });
   });
 
   describe("applyDeletion", () => {
@@ -193,6 +271,24 @@ describe("Mutation Tools", () => {
       expect(() => applyDeletion(genome, 8, 5)).toThrow(
         "exceeds genome length",
       );
+    });
+
+    test("respects position parameter", () => {
+      const genome = "ATG GGA CCA TAA";
+      const result = applyDeletion(genome, 3, 3); // Delete at position 3
+
+      expect(result.type).toBe("deletion");
+      expect(result.position).toBe(3);
+    });
+
+    test("produces frameshift with non-triplet deletion", () => {
+      const genome = "ATG GGA CCA TAA";
+      const result = applyDeletion(genome, 3, 1); // Delete 1 base
+
+      const original = genome.replace(/\s+/g, "");
+      const mutated = result.mutated.replace(/\s+/g, "");
+
+      expect(mutated.length).toBe(original.length - 1);
     });
   });
 

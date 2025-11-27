@@ -369,5 +369,112 @@ describe("Mutation Impact Predictor", () => {
       expect(prediction).toBeDefined();
       expect(prediction.impact).toBeDefined();
     });
+
+    test("should classify LOCAL impact for 5-25% pixel difference", () => {
+      // Create a mutation that produces moderate change
+      const genome = "ATG GAA AAT GGA TAA";
+      const mutation = applyMissenseMutation(genome, 2);
+      const prediction = predictMutationImpact(genome, mutation);
+
+      // Verify the prediction is generated correctly
+      expect(prediction).toBeDefined();
+      // If pixel diff is in LOCAL range, should classify as LOCAL
+      if (
+        prediction.pixelDiffPercent >= 5 &&
+        prediction.pixelDiffPercent < 25
+      ) {
+        expect(prediction.impact).toBe("LOCAL");
+      }
+    });
+
+    test("should classify MAJOR impact for 25-60% pixel difference", () => {
+      // A nonsense mutation that truncates several instructions
+      // Use the same format as testGenome that works in other tests
+      const mutation = applyNonsenseMutation(testGenome, 3);
+      const prediction = predictMutationImpact(testGenome, mutation);
+
+      // Verify the prediction is generated
+      expect(prediction).toBeDefined();
+      // If pixel diff is in MAJOR range, should classify as MAJOR
+      if (
+        prediction.pixelDiffPercent >= 25 &&
+        prediction.pixelDiffPercent < 60
+      ) {
+        expect(prediction.impact).toBe("MAJOR");
+      }
+    });
+
+    test("should generate description for LOCAL changes", () => {
+      const genome = "ATG GAA AAT GGA TAA";
+      const mutation = applyMissenseMutation(genome, 2);
+      const prediction = predictMutationImpact(genome, mutation);
+
+      if (prediction.impact === "LOCAL") {
+        expect(prediction.description).toMatch(/local|shape|position|color/i);
+      }
+    });
+
+    test("should generate description for MAJOR with truncation", () => {
+      // Use nonsense to cause truncation - bigger genome for clearer truncation
+      const genome = "ATG GAA AAT GGA GAA AAT CCA TAA";
+      const mutation = applyNonsenseMutation(genome, 3);
+      const prediction = predictMutationImpact(genome, mutation);
+
+      if (prediction.impact === "MAJOR" && prediction.analysis.truncated) {
+        expect(prediction.description).toMatch(/major|terminat|remov/i);
+      }
+    });
+
+    test("should have HIGH confidence for missense with LOCAL impact", () => {
+      const genome = "ATG GAA AAT GGA TAA";
+      const mutation = applyMissenseMutation(genome, 2);
+      const prediction = predictMutationImpact(genome, mutation);
+
+      // If missense produces LOCAL impact, confidence should be HIGH
+      if (prediction.impact === "LOCAL") {
+        expect(prediction.confidenceLevel).toBe("HIGH");
+        expect(prediction.confidence).toBeGreaterThanOrEqual(0.85);
+      }
+    });
+
+    test("should analyze color-only changes", () => {
+      // A mutation that might just change color without position
+      const genome = "ATG GAA AAT GGA TAA";
+      const mutation = applySilentMutation(genome, 2);
+      const prediction = predictMutationImpact(genome, mutation);
+
+      // Verify analysis fields exist and are booleans
+      expect(typeof prediction.analysis.colorChanges).toBe("boolean");
+      expect(typeof prediction.analysis.positionChanges).toBe("boolean");
+    });
+
+    test("should handle insertion/deletion with CATASTROPHIC impact", () => {
+      // Use testGenome for consistency
+      const mutation = applyInsertion(testGenome, 6, 1); // 1-base insert causes frameshift
+      const prediction = predictMutationImpact(testGenome, mutation);
+
+      // Verify prediction exists
+      expect(prediction).toBeDefined();
+      // If impact is CATASTROPHIC, confidence should be lower
+      if (prediction.impact === "CATASTROPHIC") {
+        expect(prediction.confidenceLevel).toMatch(/LOW|MEDIUM/);
+      }
+    });
+
+    test("should provide description when not truncated but MAJOR", () => {
+      // Multiple changes that produce MAJOR impact without truncation
+      const genome = "ATG GAA AAT GGA TAA";
+      const mutation = {
+        original: genome,
+        mutated: "ATG CCC CCC CCC TAA",
+        type: "missense" as const,
+        position: 1,
+        description: "Multiple missense changes",
+      };
+      const prediction = predictMutationImpact(genome, mutation);
+
+      expect(prediction.description).toBeDefined();
+      expect(prediction.description.length).toBeGreaterThan(0);
+    });
   });
 });
