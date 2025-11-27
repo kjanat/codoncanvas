@@ -38,9 +38,15 @@ jobs:
         uses: biomejs/setup-biome@v2
 
       - name: Lint
-        run: biome ci .
+        run: |
+          # Biome CI with GitHub Actions reporter
+          biome ci --reporter=github --formatter-enabled=false 2>&1;
+
+          # Biome CI for verbose output
+          biome ci --formatter-enabled=false
 
       - name: Formatting
+        if: always()
         uses: dprint/check@v2.3
 
   test:
