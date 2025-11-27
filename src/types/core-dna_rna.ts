@@ -1,44 +1,5 @@
-/**
- * @fileoverview Type definitions for CodonCanvas genetic programming language.
- * Defines core types, opcodes, VM state, and codon-to-opcode mapping.
- */
-
-// Geometric Types
-
-/**
- * 2D coordinate point for canvas positions.
- * Used throughout VM state and rendering operations.
- */
-export interface Point2D {
-  x: number;
-  y: number;
-}
-
-/**
- * HSL color representation.
- * - h: Hue (0-360 degrees)
- * - s: Saturation (0-100 percent)
- * - l: Lightness (0-100 percent)
- */
-export interface HSLColor {
-  h: number;
-  s: number;
-  l: number;
-}
-
-// Common Severity/Status Types
-
-/**
- * General severity level for errors, warnings, and diagnostics.
- */
-export type Severity = "error" | "warning" | "info";
-
-/**
- * Risk or priority level indicator.
- */
-export type RiskLevel = "high" | "medium" | "low";
-
-// DNA/RNA Core Types
+import type { Severity } from "./common";
+import { Opcode } from "./vm";
 
 /**
  * Valid DNA/RNA base character.
@@ -80,7 +41,8 @@ export type RenderMode = "visual" | "audio" | "both";
  * Three-character DNA/RNA triplet (codon).
  * Each codon maps to an executable opcode instruction.
  * Supports both DNA (T) and RNA (U) notation.
- * @example 'ATG', 'GGA', 'TAA' (DNA) or 'AUG', 'GGA', 'UAA' (RNA)
+ * @example 'ATG', 'GGA', 'TAA' // DNA
+ * @example 'AUG', 'GGA', 'UAA' // RNA
  */
 export type Codon = `${Base}${Base}${Base}`;
 
@@ -109,79 +71,6 @@ export interface ParseError {
   severity: Severity;
   /** Optional suggested fix for linter UI */
   fix?: string;
-}
-
-/**
- * VM instruction opcodes.
- * Each opcode represents a drawing, transform, or stack operation.
- *
- * Families (synonymous codons map to same opcode):
- * - Control: START, STOP (program flow)
- * - Drawing: CIRCLE, RECT, LINE, TRIANGLE, ELLIPSE (primitives)
- * - Transform: TRANSLATE, ROTATE, SCALE, COLOR (state changes)
- * - Stack: PUSH, DUP, POP, SWAP (data manipulation)
- * - Arithmetic: ADD, SUB, MUL, DIV (computational operations)
- * - Control: LOOP (iteration)
- * - Utility: NOP, NOISE, SAVE_STATE, RESTORE_STATE (special operations)
- */
-export enum Opcode {
-  START,
-  STOP,
-  CIRCLE,
-  RECT,
-  LINE,
-  TRIANGLE,
-  ELLIPSE,
-  TRANSLATE,
-  ROTATE,
-  SCALE,
-  COLOR,
-  PUSH,
-  DUP,
-  POP,
-  SWAP,
-  NOP,
-  SAVE_STATE,
-  RESTORE_STATE,
-  ADD,
-  SUB,
-  MUL,
-  DIV,
-  LOOP,
-  EQ, // Comparison: equal
-  LT, // Comparison: less than
-}
-
-/**
- * Virtual Machine execution state.
- * Captures complete VM state for snapshot/restore and timeline scrubbing.
- */
-export interface VMState {
-  // Drawing state
-  /** Current drawing position (canvas coordinates) */
-  position: Point2D;
-  /** Current rotation in degrees (0 = right/east) */
-  rotation: number;
-  /** Current scale factor (1.0 = normal) */
-  scale: number;
-  /** Current color in HSL (hue: 0-360, saturation: 0-100, lightness: 0-100) */
-  color: HSLColor;
-
-  // Execution state
-  /** Value stack for operations (numeric literals and intermediate values) */
-  stack: number[];
-  /** Current instruction index in token array */
-  instructionPointer: number;
-  /** Saved state stack for SAVE_STATE opcode (enables nested transformations) */
-  stateStack: VMState[];
-
-  // Metadata
-  /** Total instructions executed (for sandboxing/timeout) */
-  instructionCount: number;
-  /** Random seed for NOISE opcode (deterministic rendering) */
-  seed: number;
-  /** Last executed opcode (for MIDI export and debugging) */
-  lastOpcode?: Opcode;
 }
 
 /**
