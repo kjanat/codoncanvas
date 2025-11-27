@@ -654,7 +654,7 @@ describe("GeneticAlgorithm", () => {
         crossoverRate: 0,
       });
 
-      const initialGenomes = ga.getPopulation().map((ind) => ind.genome);
+      const _initialGenomes = ga.getPopulation().map((ind) => ind.genome);
       ga.evolveGeneration();
 
       // With no mutation or crossover, elite individuals should be preserved

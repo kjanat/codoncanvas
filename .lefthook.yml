@@ -10,5 +10,5 @@ pre-commit:
       run: bunx @biomejs/biome check --write --no-errors-on-unmatched --files-ignore-unknown=true --colors=off {staged_files}
       stage_fixed: true
     format:
-      run: dprint fmt --staged
+      run: bunx dprint fmt --staged
       stage_fixed: true

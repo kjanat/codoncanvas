@@ -22,10 +22,6 @@ class MockMediaRecorder {
   onstop: (() => void) | null = null;
   state: "inactive" | "recording" = "inactive";
 
-  constructor(_stream: MockMediaStream) {
-    // Constructor accepts stream but we don't need it
-  }
-
   start() {
     this.state = "recording";
     // Simulate data being available
@@ -141,7 +137,8 @@ describe("AudioRenderer", () => {
   afterEach(() => {
     // Restore original
     (globalThis as Record<string, unknown>).AudioContext = originalAudioContext;
-    (globalThis as Record<string, unknown>).MediaRecorder = originalMediaRecorder;
+    (globalThis as Record<string, unknown>).MediaRecorder =
+      originalMediaRecorder;
     (globalThis as Record<string, unknown>).MediaStream = originalMediaStream;
   });
 

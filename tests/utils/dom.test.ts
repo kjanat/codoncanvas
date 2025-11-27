@@ -304,9 +304,9 @@ describe("DOMUtils", () => {
     });
 
     test("preserves DOM order in returned array", () => {
-      const el1 = createElement("div", "first", "ordered");
-      const el2 = createElement("div", "second", "ordered");
-      const el3 = createElement("div", "third", "ordered");
+      const _el1 = createElement("div", "first", "ordered");
+      const _el2 = createElement("div", "second", "ordered");
+      const _el3 = createElement("div", "third", "ordered");
       const result = querySelectorAll(".ordered", HTMLDivElement);
       expect(result[0].id).toBe("first");
       expect(result[1].id).toBe("second");

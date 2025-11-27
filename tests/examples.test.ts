@@ -75,7 +75,7 @@ describe("Examples Library", () => {
     });
 
     test("each example has required title property", () => {
-      for (const [key, example] of Object.entries(examples)) {
+      for (const [_key, example] of Object.entries(examples)) {
         expect(example.title).toBeDefined();
         expect(typeof example.title).toBe("string");
         expect(example.title.length).toBeGreaterThan(0);
@@ -83,7 +83,7 @@ describe("Examples Library", () => {
     });
 
     test("each example has required description property", () => {
-      for (const [key, example] of Object.entries(examples)) {
+      for (const [_key, example] of Object.entries(examples)) {
         expect(example.description).toBeDefined();
         expect(typeof example.description).toBe("string");
         expect(example.description.length).toBeGreaterThan(0);
@@ -91,7 +91,7 @@ describe("Examples Library", () => {
     });
 
     test("each example has required genome property", () => {
-      for (const [key, example] of Object.entries(examples)) {
+      for (const [_key, example] of Object.entries(examples)) {
         expect(example.genome).toBeDefined();
         expect(typeof example.genome).toBe("string");
         expect(example.genome.length).toBeGreaterThan(0);
@@ -99,14 +99,14 @@ describe("Examples Library", () => {
     });
 
     test("each example has required difficulty property", () => {
-      for (const [key, example] of Object.entries(examples)) {
+      for (const [_key, example] of Object.entries(examples)) {
         expect(example.difficulty).toBeDefined();
         expect(typeof example.difficulty).toBe("string");
       }
     });
 
     test("each example has required concepts array", () => {
-      for (const [key, example] of Object.entries(examples)) {
+      for (const [_key, example] of Object.entries(examples)) {
         expect(example.concepts).toBeDefined();
         expect(Array.isArray(example.concepts)).toBe(true);
         expect(example.concepts.length).toBeGreaterThan(0);
@@ -114,7 +114,7 @@ describe("Examples Library", () => {
     });
 
     test("each example has required goodForMutations array", () => {
-      for (const [key, example] of Object.entries(examples)) {
+      for (const [_key, example] of Object.entries(examples)) {
         expect(example.goodForMutations).toBeDefined();
         expect(Array.isArray(example.goodForMutations)).toBe(true);
         expect(example.goodForMutations.length).toBeGreaterThan(0);
@@ -122,7 +122,7 @@ describe("Examples Library", () => {
     });
 
     test("each example has required keywords array", () => {
-      for (const [key, example] of Object.entries(examples)) {
+      for (const [_key, example] of Object.entries(examples)) {
         expect(example.keywords).toBeDefined();
         expect(Array.isArray(example.keywords)).toBe(true);
         expect(example.keywords.length).toBeGreaterThan(0);
@@ -290,7 +290,7 @@ describe("Examples Library", () => {
   // Genome Validity
   describe("genome validity", () => {
     test("all genomes start with START codon (ATG/AUG)", () => {
-      for (const [key, example] of Object.entries(examples)) {
+      for (const [_key, example] of Object.entries(examples)) {
         // Remove comments and whitespace to find first codon
         const cleanGenome = example.genome
           .replace(/;[^\n]*/g, "") // Remove comments
@@ -306,7 +306,7 @@ describe("Examples Library", () => {
     test("all genomes end with STOP codon (TAA/TGA/TAG or UAA/UGA/UAG)", () => {
       const stopCodons = ["TAA", "TGA", "TAG", "UAA", "UGA", "UAG"];
 
-      for (const [key, example] of Object.entries(examples)) {
+      for (const [_key, example] of Object.entries(examples)) {
         const cleanGenome = example.genome
           .replace(/;[^\n]*/g, "")
           .replace(/\s+/g, "")
@@ -319,7 +319,7 @@ describe("Examples Library", () => {
     });
 
     test("all genomes tokenize without error", () => {
-      for (const [key, example] of Object.entries(examples)) {
+      for (const [_key, example] of Object.entries(examples)) {
         expect(() => lexer.tokenize(example.genome)).not.toThrow();
 
         const tokens = lexer.tokenize(example.genome);
@@ -364,7 +364,7 @@ describe("Examples Library", () => {
     });
 
     test("all genomes have valid codon structure", () => {
-      for (const [key, example] of Object.entries(examples)) {
+      for (const [_key, example] of Object.entries(examples)) {
         const cleanGenome = example.genome
           .replace(/;[^\n]*/g, "")
           .replace(/\s+/g, "")
@@ -472,7 +472,7 @@ describe("Examples Library", () => {
     });
 
     test("no duplicate keywords within an example", () => {
-      for (const [key, example] of Object.entries(examples)) {
+      for (const [_key, example] of Object.entries(examples)) {
         const uniqueKeywords = new Set(example.keywords);
         expect(uniqueKeywords.size).toBe(example.keywords.length);
       }

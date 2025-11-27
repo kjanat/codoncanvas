@@ -21,7 +21,7 @@ const originalOpen = window.open;
 let mockWindowOpen: ReturnType<typeof mock>;
 
 // Mock location
-const originalLocation = window.location;
+const _originalLocation = window.location;
 
 describe("ShareSystem", () => {
   let container: HTMLElement;
@@ -486,8 +486,11 @@ describe("ShareSystem", () => {
   // downloadGenome
   describe("downloadGenome", () => {
     test("creates Blob with text/plain type", () => {
-      const blobSpy = mock((...args: ConstructorParameters<typeof Blob>) => new Blob(...args));
       const originalBlob = global.Blob;
+      const blobSpy = mock(
+        (...args: ConstructorParameters<typeof Blob>) =>
+          new originalBlob(...args),
+      );
       global.Blob = blobSpy as unknown as typeof Blob;
 
       new ShareSystem({ containerElement: container, getGenome });
