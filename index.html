@@ -1283,24 +1283,6 @@ ATG GAA AAT GGA TAA
     </div>
 
     <script type="module" src="/src/playground.ts"></script>
-
-    <!-- Tutorial Banner Dismiss Logic -->
-    <script>
-    // Check if user has dismissed the tutorial banner
-const tutorialBanner = document.getElementById("tutorialBanner");
-const dismissBtn = document.getElementById("dismissTutorialBanner");
-const BANNER_DISMISSED_KEY = "codoncanvas-tutorial-banner-dismissed";
-
-// Hide banner if previously dismissed
-if (localStorage.getItem(BANNER_DISMISSED_KEY) === "true") {
-  tutorialBanner?.classList.add("hidden");
-}
-
-// Handle dismiss button click
-dismissBtn?.addEventListener("click", () => {
-  localStorage.setItem(BANNER_DISMISSED_KEY, "true");
-  tutorialBanner?.classList.add("hidden");
-});
-    </script>
+    <script type="module" src="/src/pages/tutorial-banner.ts"></script>
   </body>
 </html>
