@@ -1,2 +1,8 @@
 [test]
 preload = ["./bun-test-setup.ts"]
+
+coverage = true
+coveragePathIgnorePatterns = [
+  "bun-test-setup.ts",
+  "e2e/**"
+]
