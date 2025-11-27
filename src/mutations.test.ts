@@ -53,11 +53,9 @@ describe("Mutation Tools", () => {
       );
     });
 
-    test("throws when position is invalid/out of range", () => {
+    test("throws when specified position has no synonymous codons", () => {
       const genome = "ATG GGA TAA";
-      // Position is beyond the number of codons
-      // With position >= codons.length, it should find a random valid position
-      // But if we specify position that has no synonyms, it throws
+      // ATG (START) at position 0 has no synonymous codons
       expect(() => applySilentMutation(genome, 0)).toThrow(
         /No synonymous codons for ATG at position 0/,
       );

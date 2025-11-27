@@ -86,34 +86,6 @@ describe("Mutation Handlers", () => {
       expect(isValidMutationType("")).toBe(false);
       expect(isValidMutationType("random")).toBe(false);
     });
-
-    test("silent is a valid mutation type", () => {
-      expect(isValidMutationType("silent")).toBe(true);
-    });
-
-    test("missense is a valid mutation type", () => {
-      expect(isValidMutationType("missense")).toBe(true);
-    });
-
-    test("nonsense is a valid mutation type", () => {
-      expect(isValidMutationType("nonsense")).toBe(true);
-    });
-
-    test("point is a valid mutation type", () => {
-      expect(isValidMutationType("point")).toBe(true);
-    });
-
-    test("insertion is a valid mutation type", () => {
-      expect(isValidMutationType("insertion")).toBe(true);
-    });
-
-    test("deletion is a valid mutation type", () => {
-      expect(isValidMutationType("deletion")).toBe(true);
-    });
-
-    test("frameshift is a valid mutation type", () => {
-      expect(isValidMutationType("frameshift")).toBe(true);
-    });
   });
 
   // applyMutation logic

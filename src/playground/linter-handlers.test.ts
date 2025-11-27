@@ -42,13 +42,11 @@ function autoFixError(errorMessage: string, source: string): string | null {
     return triplets.join(" ");
   }
 
-  // Non-triplet length - pad with 'A' or truncate
-  if (/Source length (\d+) is not divisible by 3/.test(errorMessage)) {
-    const match = errorMessage.match(/Missing (\d+) bases/);
-    if (match) {
-      const missing = parseInt(match[1], 10);
-      return source.trim() + "A".repeat(missing);
-    }
+  // Non-triplet length - pad with 'A'
+  const missingMatch = errorMessage.match(/Missing (\d+) bases?/);
+  if (missingMatch) {
+    const missing = parseInt(missingMatch[1], 10);
+    return source.trim() + "A".repeat(missing);
   }
 
   return null;

@@ -31,38 +31,29 @@ describe("GifExporter", () => {
 
   describe("setFps", () => {
     test("should set FPS within valid range", () => {
-      exporter.setFps(10);
-      // No error should be thrown
-      expect(true).toBe(true);
+      expect(() => exporter.setFps(10)).not.toThrow();
     });
 
     test("should clamp FPS to minimum 1", () => {
-      exporter.setFps(0);
-      // Should clamp to 1, no error
-      expect(true).toBe(true);
+      expect(() => exporter.setFps(0)).not.toThrow();
     });
 
     test("should clamp FPS to maximum 30", () => {
-      exporter.setFps(50);
-      // Should clamp to 30, no error
-      expect(true).toBe(true);
+      expect(() => exporter.setFps(50)).not.toThrow();
     });
   });
 
   describe("setQuality", () => {
     test("should set quality within valid range", () => {
-      exporter.setQuality(15);
-      expect(true).toBe(true);
+      expect(() => exporter.setQuality(15)).not.toThrow();
     });
 
     test("should clamp quality to minimum 1", () => {
-      exporter.setQuality(0);
-      expect(true).toBe(true);
+      expect(() => exporter.setQuality(0)).not.toThrow();
     });
 
     test("should clamp quality to maximum 30", () => {
-      exporter.setQuality(50);
-      expect(true).toBe(true);
+      expect(() => exporter.setQuality(50)).not.toThrow();
     });
   });
 
