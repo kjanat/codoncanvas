@@ -629,7 +629,10 @@ describe("AssessmentUI", () => {
           correctAnswers: 5,
           accuracy: 100,
           byType: {} as Record<string, { correct: number; total: number }>,
-          byDifficulty: {} as Record<string, { correct: number; total: number }>,
+          byDifficulty: {} as Record<
+            string,
+            { correct: number; total: number }
+          >,
         })),
       });
       const ui = new AssessmentUI(

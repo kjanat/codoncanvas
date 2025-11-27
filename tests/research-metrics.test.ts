@@ -5,12 +5,16 @@
  * Tracks user interactions for effectiveness studies.
  */
 import { afterEach, beforeEach, describe, expect, test } from "bun:test";
-import type { ExecutionEvent, FeatureEvent, MutationEvent } from "@/research-metrics";
+import type {
+  ExecutionEvent,
+  FeatureEvent,
+  MutationEvent,
+} from "@/research-metrics";
 import { ResearchMetrics } from "@/research-metrics";
 
 // Helper to create a complete ExecutionEvent
 function createExecutionEvent(
-  overrides: Partial<ExecutionEvent> = {}
+  overrides: Partial<ExecutionEvent> = {},
 ): ExecutionEvent {
   return {
     timestamp: Date.now(),
@@ -24,7 +28,7 @@ function createExecutionEvent(
 
 // Helper to create a complete MutationEvent
 function createMutationEvent(
-  overrides: Partial<MutationEvent> = {}
+  overrides: Partial<MutationEvent> = {},
 ): MutationEvent {
   return {
     timestamp: Date.now(),
@@ -37,7 +41,7 @@ function createMutationEvent(
 
 // Helper to create a complete FeatureEvent
 function createFeatureEvent(
-  overrides: Partial<FeatureEvent> = {}
+  overrides: Partial<FeatureEvent> = {},
 ): FeatureEvent {
   return {
     timestamp: Date.now(),
@@ -351,21 +355,29 @@ describe("ResearchMetrics", () => {
   describe("trackGenomeExecuted", () => {
     test("increments genomesExecuted counter", () => {
       const metrics = new ResearchMetrics({ enabled: true });
-      metrics.trackGenomeExecuted(createExecutionEvent({
-        renderMode: "visual",
-        success: true,
-      }));
+      metrics.trackGenomeExecuted(
+        createExecutionEvent({
+          renderMode: "visual",
+          success: true,
+        }),
+      );
       expect(metrics.getCurrentSession()?.genomesExecuted).toBe(1);
       metrics.disable();
     });
 
     test("increments correct renderModeUsage counter based on event.renderMode", () => {
       const metrics = new ResearchMetrics({ enabled: true });
-      metrics.trackGenomeExecuted(createExecutionEvent({ renderMode: "visual", success: true }));
+      metrics.trackGenomeExecuted(
+        createExecutionEvent({ renderMode: "visual", success: true }),
+      );
       expect(metrics.getCurrentSession()?.renderModeUsage.visual).toBe(1);
-      metrics.trackGenomeExecuted(createExecutionEvent({ renderMode: "audio", success: true }));
+      metrics.trackGenomeExecuted(
+        createExecutionEvent({ renderMode: "audio", success: true }),
+      );
       expect(metrics.getCurrentSession()?.renderModeUsage.audio).toBe(1);
-      metrics.trackGenomeExecuted(createExecutionEvent({ renderMode: "both", success: true }));
+      metrics.trackGenomeExecuted(
+        createExecutionEvent({ renderMode: "both", success: true }),
+      );
       expect(metrics.getCurrentSession()?.renderModeUsage.both).toBe(1);
       metrics.disable();
     });
@@ -373,7 +385,9 @@ describe("ResearchMetrics", () => {
     test("sets timeToFirstArtifact on first successful execution (event.success=true)", () => {
       const metrics = new ResearchMetrics({ enabled: true });
       const startTime = metrics.getCurrentSession()?.startTime || 0;
-      metrics.trackGenomeExecuted(createExecutionEvent({ renderMode: "visual", success: true }));
+      metrics.trackGenomeExecuted(
+        createExecutionEvent({ renderMode: "visual", success: true }),
+      );
       const ttfa = metrics.getCurrentSession()?.timeToFirstArtifact;
       expect(ttfa).not.toBeNull();
       expect(ttfa).toBeGreaterThanOrEqual(0);
@@ -382,9 +396,13 @@ describe("ResearchMetrics", () => {
 
     test("does not update timeToFirstArtifact on subsequent successes", () => {
       const metrics = new ResearchMetrics({ enabled: true });
-      metrics.trackGenomeExecuted(createExecutionEvent({ renderMode: "visual", success: true }));
+      metrics.trackGenomeExecuted(
+        createExecutionEvent({ renderMode: "visual", success: true }),
+      );
       const ttfa1 = metrics.getCurrentSession()?.timeToFirstArtifact;
-      metrics.trackGenomeExecuted(createExecutionEvent({ renderMode: "visual", success: true }));
+      metrics.trackGenomeExecuted(
+        createExecutionEvent({ renderMode: "visual", success: true }),
+      );
       const ttfa2 = metrics.getCurrentSession()?.timeToFirstArtifact;
       expect(ttfa1).toBe(ttfa2);
       metrics.disable();
@@ -392,11 +410,13 @@ describe("ResearchMetrics", () => {
 
     test("adds error to errors array when event.success=false and errorMessage exists", () => {
       const metrics = new ResearchMetrics({ enabled: true });
-      metrics.trackGenomeExecuted(createExecutionEvent({
-        renderMode: "visual",
-        success: false,
-        errorMessage: "Test error",
-      }));
+      metrics.trackGenomeExecuted(
+        createExecutionEvent({
+          renderMode: "visual",
+          success: false,
+          errorMessage: "Test error",
+        }),
+      );
       const errors = metrics.getCurrentSession()?.errors || [];
       expect(errors.length).toBe(1);
       expect(errors[0].message).toBe("Test error");
@@ -406,7 +426,9 @@ describe("ResearchMetrics", () => {
     test("does nothing when no current session", () => {
       const metrics = new ResearchMetrics();
       expect(() =>
-        metrics.trackGenomeExecuted(createExecutionEvent({ renderMode: "visual", success: true })),
+        metrics.trackGenomeExecuted(
+          createExecutionEvent({ renderMode: "visual", success: true }),
+        ),
       ).not.toThrow();
     });
   });
@@ -440,39 +462,57 @@ describe("ResearchMetrics", () => {
 
     test("does nothing when no current session", () => {
       const metrics = new ResearchMetrics();
-      expect(() => metrics.trackMutation(createMutationEvent({ type: "silent" }))).not.toThrow();
+      expect(() =>
+        metrics.trackMutation(createMutationEvent({ type: "silent" })),
+      ).not.toThrow();
     });
   });
 
   describe("trackFeatureUsage", () => {
     test("increments feature counter when action is 'open'", () => {
       const metrics = new ResearchMetrics({ enabled: true });
-      metrics.trackFeatureUsage(createFeatureEvent({ feature: "diffViewer", action: "open" }));
+      metrics.trackFeatureUsage(
+        createFeatureEvent({ feature: "diffViewer", action: "open" }),
+      );
       expect(metrics.getCurrentSession()?.features.diffViewer).toBe(1);
       metrics.disable();
     });
 
     test("increments feature counter when action is 'interact'", () => {
       const metrics = new ResearchMetrics({ enabled: true });
-      metrics.trackFeatureUsage(createFeatureEvent({ feature: "timeline", action: "interact" }));
+      metrics.trackFeatureUsage(
+        createFeatureEvent({ feature: "timeline", action: "interact" }),
+      );
       expect(metrics.getCurrentSession()?.features.timeline).toBe(1);
       metrics.disable();
     });
 
     test("does NOT increment counter when action is 'close'", () => {
       const metrics = new ResearchMetrics({ enabled: true });
-      metrics.trackFeatureUsage(createFeatureEvent({ feature: "diffViewer", action: "close" }));
+      metrics.trackFeatureUsage(
+        createFeatureEvent({ feature: "diffViewer", action: "close" }),
+      );
       expect(metrics.getCurrentSession()?.features.diffViewer).toBe(0);
       metrics.disable();
     });
 
     test("handles all features: diffViewer, timeline, evolution, assessment, export", () => {
       const metrics = new ResearchMetrics({ enabled: true });
-      metrics.trackFeatureUsage(createFeatureEvent({ feature: "diffViewer", action: "open" }));
-      metrics.trackFeatureUsage(createFeatureEvent({ feature: "timeline", action: "open" }));
-      metrics.trackFeatureUsage(createFeatureEvent({ feature: "evolution", action: "open" }));
-      metrics.trackFeatureUsage(createFeatureEvent({ feature: "assessment", action: "open" }));
-      metrics.trackFeatureUsage(createFeatureEvent({ feature: "export", action: "open" }));
+      metrics.trackFeatureUsage(
+        createFeatureEvent({ feature: "diffViewer", action: "open" }),
+      );
+      metrics.trackFeatureUsage(
+        createFeatureEvent({ feature: "timeline", action: "open" }),
+      );
+      metrics.trackFeatureUsage(
+        createFeatureEvent({ feature: "evolution", action: "open" }),
+      );
+      metrics.trackFeatureUsage(
+        createFeatureEvent({ feature: "assessment", action: "open" }),
+      );
+      metrics.trackFeatureUsage(
+        createFeatureEvent({ feature: "export", action: "open" }),
+      );
       const session = metrics.getCurrentSession();
       expect(session?.features.diffViewer).toBe(1);
       expect(session?.features.timeline).toBe(1);
@@ -485,7 +525,9 @@ describe("ResearchMetrics", () => {
     test("does nothing when no current session", () => {
       const metrics = new ResearchMetrics();
       expect(() =>
-        metrics.trackFeatureUsage(createFeatureEvent({ feature: "diffViewer", action: "open" })),
+        metrics.trackFeatureUsage(
+          createFeatureEvent({ feature: "diffViewer", action: "open" }),
+        ),
       ).not.toThrow();
     });
   });
@@ -698,7 +740,9 @@ describe("ResearchMetrics", () => {
 
     test("returns totalGenomesExecuted sum", () => {
       const metrics = new ResearchMetrics({ enabled: true });
-      metrics.trackGenomeExecuted(createExecutionEvent({ renderMode: "visual", success: true }));
+      metrics.trackGenomeExecuted(
+        createExecutionEvent({ renderMode: "visual", success: true }),
+      );
       metrics.disable();
       const stats = metrics.getAggregateStats();
       expect(stats.totalGenomesExecuted).toBeGreaterThanOrEqual(0);
@@ -714,7 +758,9 @@ describe("ResearchMetrics", () => {
 
     test("returns avgTimeToFirstArtifact (filters null values)", () => {
       const metrics = new ResearchMetrics({ enabled: true });
-      metrics.trackGenomeExecuted(createExecutionEvent({ renderMode: "visual", success: true }));
+      metrics.trackGenomeExecuted(
+        createExecutionEvent({ renderMode: "visual", success: true }),
+      );
       metrics.disable();
       const stats = metrics.getAggregateStats();
       expect(stats.avgTimeToFirstArtifact).toBeGreaterThanOrEqual(0);
@@ -736,7 +782,9 @@ describe("ResearchMetrics", () => {
 
     test("returns renderModePreferences with sums for visual, audio, both", () => {
       const metrics = new ResearchMetrics({ enabled: true });
-      metrics.trackGenomeExecuted(createExecutionEvent({ renderMode: "visual", success: true }));
+      metrics.trackGenomeExecuted(
+        createExecutionEvent({ renderMode: "visual", success: true }),
+      );
       metrics.disable();
       const stats = metrics.getAggregateStats();
       expect(stats.renderModePreferences).toBeDefined();
@@ -744,7 +792,9 @@ describe("ResearchMetrics", () => {
 
     test("returns featureUsage with sums for each feature", () => {
       const metrics = new ResearchMetrics({ enabled: true });
-      metrics.trackFeatureUsage(createFeatureEvent({ feature: "diffViewer", action: "open" }));
+      metrics.trackFeatureUsage(
+        createFeatureEvent({ feature: "diffViewer", action: "open" }),
+      );
       metrics.disable();
       const stats = metrics.getAggregateStats();
       expect(stats.featureUsage).toBeDefined();
@@ -959,7 +1009,9 @@ describe("ResearchMetrics", () => {
       const metrics = new ResearchMetrics({ enabled: true });
       for (let i = 0; i < 100; i++) {
         metrics.trackGenomeCreated(i);
-        metrics.trackGenomeExecuted(createExecutionEvent({ renderMode: "visual", success: true }));
+        metrics.trackGenomeExecuted(
+          createExecutionEvent({ renderMode: "visual", success: true }),
+        );
         metrics.trackMutation(createMutationEvent({ type: "silent" }));
       }
       expect(metrics.getCurrentSession()?.genomesCreated).toBe(100);
