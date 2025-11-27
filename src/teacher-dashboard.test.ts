@@ -7,6 +7,23 @@
 import { afterEach, beforeEach, describe, expect, test, mock } from "bun:test";
 import { TeacherDashboard, generateStudentExport } from "./teacher-dashboard";
 
+// Helper to create a FileReader mock with custom content function
+const createFileReaderMock = (contentFn: (index: number) => string) => {
+  let fileIndex = 0;
+  return class {
+    onload: ((e: { target: { result: string } }) => void) | null = null;
+    onerror: (() => void) | null = null;
+    readAsText(_file: File) {
+      const idx = fileIndex++;
+      setTimeout(() => {
+        if (this.onload) {
+          this.onload({ target: { result: contentFn(idx) } });
+        }
+      }, 0);
+    }
+  };
+};
+
 // Helper to create valid student export data matching TeacherStudentProgress interface
 const createStudentExport = (
   studentId: string,
@@ -159,171 +176,118 @@ describe("TeacherDashboard", () => {
     // These tests mock FileReader to verify the import logic
 
     test("returns Promise that resolves with count of imported files", async () => {
-      // Mock FileReader
       const originalFileReader = globalThis.FileReader;
-      const mockFileReader = class {
-        onload: ((e: { target: { result: string } }) => void) | null = null;
-        onerror: (() => void) | null = null;
-        readAsText(_file: File) {
-          setTimeout(() => {
-            if (this.onload) {
-              this.onload({ target: { result: createStudentExport("test-1") } });
-            }
-          }, 0);
-        }
-      };
-      globalThis.FileReader = mockFileReader as unknown as typeof FileReader;
+      globalThis.FileReader = createFileReaderMock(() =>
+        createStudentExport("test-1")
+      ) as unknown as typeof FileReader;
 
-      const file = new File(["test"], "test.json", { type: "application/json" });
-      const result = await dashboard.importMultipleFiles([file]);
-
-      expect(result).toBe(1);
-      globalThis.FileReader = originalFileReader;
+      try {
+        const file = new File(["test"], "test.json", { type: "application/json" });
+        const result = await dashboard.importMultipleFiles([file]);
+        expect(result).toBe(1);
+      } finally {
+        globalThis.FileReader = originalFileReader;
+      }
     });
 
     test("calls importStudentData for each file content", async () => {
       const originalFileReader = globalThis.FileReader;
-      let readCount = 0;
-      const mockFileReader = class {
-        onload: ((e: { target: { result: string } }) => void) | null = null;
-        onerror: (() => void) | null = null;
-        readAsText(_file: File) {
-          readCount++;
-          const currentCount = readCount;
-          setTimeout(() => {
-            if (this.onload) {
-              this.onload({ target: { result: createStudentExport(`student-${currentCount}`) } });
-            }
-          }, 0);
-        }
-      };
-      globalThis.FileReader = mockFileReader as unknown as typeof FileReader;
+      globalThis.FileReader = createFileReaderMock((idx) =>
+        createStudentExport(`student-${idx + 1}`)
+      ) as unknown as typeof FileReader;
 
-      const files = [
-        new File(["test1"], "test1.json"),
-        new File(["test2"], "test2.json"),
-      ];
-      await dashboard.importMultipleFiles(files);
-
-      expect(dashboard.getStudents().length).toBe(2);
-      globalThis.FileReader = originalFileReader;
+      try {
+        const files = [
+          new File(["test1"], "test1.json"),
+          new File(["test2"], "test2.json"),
+        ];
+        await dashboard.importMultipleFiles(files);
+        expect(dashboard.getStudents().length).toBe(2);
+      } finally {
+        globalThis.FileReader = originalFileReader;
+      }
     });
 
     test("counts successful imports", async () => {
       const originalFileReader = globalThis.FileReader;
-      let fileIndex = 0;
-      const mockFileReader = class {
-        onload: ((e: { target: { result: string } }) => void) | null = null;
-        onerror: (() => void) | null = null;
-        readAsText(_file: File) {
-          const idx = fileIndex++;
-          setTimeout(() => {
-            if (this.onload) {
-              this.onload({ target: { result: createStudentExport(`student-${idx}`) } });
-            }
-          }, 0);
-        }
-      };
-      globalThis.FileReader = mockFileReader as unknown as typeof FileReader;
+      globalThis.FileReader = createFileReaderMock((idx) =>
+        createStudentExport(`student-${idx}`)
+      ) as unknown as typeof FileReader;
 
-      const files = [
-        new File(["test1"], "test1.json"),
-        new File(["test2"], "test2.json"),
-        new File(["test3"], "test3.json"),
-      ];
-      const count = await dashboard.importMultipleFiles(files);
-
-      expect(count).toBe(3);
-      globalThis.FileReader = originalFileReader;
+      try {
+        const files = [
+          new File(["test1"], "test1.json"),
+          new File(["test2"], "test2.json"),
+          new File(["test3"], "test3.json"),
+        ];
+        const count = await dashboard.importMultipleFiles(files);
+        expect(count).toBe(3);
+      } finally {
+        globalThis.FileReader = originalFileReader;
+      }
     });
 
     test("continues on individual file errors", async () => {
       const originalFileReader = globalThis.FileReader;
-      let fileIndex = 0;
-      const mockFileReader = class {
-        onload: ((e: { target: { result: string } }) => void) | null = null;
-        onerror: (() => void) | null = null;
-        readAsText(_file: File) {
-          const idx = fileIndex++;
-          setTimeout(() => {
-            if (this.onload) {
-              // Second file has invalid JSON
-              const content = idx === 1 ? "invalid json" : createStudentExport(`student-${idx}`);
-              this.onload({ target: { result: content } });
-            }
-          }, 0);
-        }
-      };
-      globalThis.FileReader = mockFileReader as unknown as typeof FileReader;
+      globalThis.FileReader = createFileReaderMock((idx) =>
+        // Second file has invalid JSON
+        idx === 1 ? "invalid json" : createStudentExport(`student-${idx}`)
+      ) as unknown as typeof FileReader;
 
-      const files = [
-        new File(["test1"], "test1.json"),
-        new File(["bad"], "bad.json"),
-        new File(["test3"], "test3.json"),
-      ];
-      const count = await dashboard.importMultipleFiles(files);
-
-      // Should import 2 out of 3 (continues despite error)
-      expect(count).toBe(2);
-      globalThis.FileReader = originalFileReader;
+      try {
+        const files = [
+          new File(["test1"], "test1.json"),
+          new File(["bad"], "bad.json"),
+          new File(["test3"], "test3.json"),
+        ];
+        const count = await dashboard.importMultipleFiles(files);
+        // Should import 2 out of 3 (continues despite error)
+        expect(count).toBe(2);
+      } finally {
+        globalThis.FileReader = originalFileReader;
+      }
     });
 
     test("rejects when all files fail to import", async () => {
       const originalFileReader = globalThis.FileReader;
-      const mockFileReader = class {
-        onload: ((e: { target: { result: string } }) => void) | null = null;
-        onerror: (() => void) | null = null;
-        readAsText(_file: File) {
-          setTimeout(() => {
-            if (this.onload) {
-              this.onload({ target: { result: "invalid json" } });
-            }
-          }, 0);
-        }
-      };
-      globalThis.FileReader = mockFileReader as unknown as typeof FileReader;
+      globalThis.FileReader = createFileReaderMock(() =>
+        "invalid json"
+      ) as unknown as typeof FileReader;
 
-      const files = [
-        new File(["bad1"], "bad1.json"),
-        new File(["bad2"], "bad2.json"),
-      ];
-
-      await expect(dashboard.importMultipleFiles(files)).rejects.toThrow("Failed to import any files");
-      globalThis.FileReader = originalFileReader;
+      try {
+        const files = [
+          new File(["bad1"], "bad1.json"),
+          new File(["bad2"], "bad2.json"),
+        ];
+        await expect(dashboard.importMultipleFiles(files)).rejects.toThrow("Failed to import any files");
+      } finally {
+        globalThis.FileReader = originalFileReader;
+      }
     });
 
     test("resolves with partial count when some files succeed", async () => {
       const originalFileReader = globalThis.FileReader;
-      let fileIndex = 0;
-      const mockFileReader = class {
-        onload: ((e: { target: { result: string } }) => void) | null = null;
-        onerror: (() => void) | null = null;
-        readAsText(_file: File) {
-          const idx = fileIndex++;
-          setTimeout(() => {
-            if (this.onload) {
-              // Only first file succeeds
-              const content = idx === 0 ? createStudentExport("student-0") : "invalid json";
-              this.onload({ target: { result: content } });
-            }
-          }, 0);
-        }
-      };
-      globalThis.FileReader = mockFileReader as unknown as typeof FileReader;
+      globalThis.FileReader = createFileReaderMock((idx) =>
+        // Only first file succeeds
+        idx === 0 ? createStudentExport("student-0") : "invalid json"
+      ) as unknown as typeof FileReader;
 
-      const files = [
-        new File(["good"], "good.json"),
-        new File(["bad1"], "bad1.json"),
-        new File(["bad2"], "bad2.json"),
-      ];
-      const count = await dashboard.importMultipleFiles(files);
-
-      expect(count).toBe(1);
-      globalThis.FileReader = originalFileReader;
+      try {
+        const files = [
+          new File(["good"], "good.json"),
+          new File(["bad1"], "bad1.json"),
+          new File(["bad2"], "bad2.json"),
+        ];
+        const count = await dashboard.importMultipleFiles(files);
+        expect(count).toBe(1);
+      } finally {
+        globalThis.FileReader = originalFileReader;
+      }
     });
 
     test("handles FileReader errors", async () => {
       const originalFileReader = globalThis.FileReader;
+      // Special mock for error handling - calls onerror instead of onload
       const mockFileReader = class {
         onload: ((e: { target: { result: string } }) => void) | null = null;
         onerror: (() => void) | null = null;
@@ -337,10 +301,12 @@ describe("TeacherDashboard", () => {
       };
       globalThis.FileReader = mockFileReader as unknown as typeof FileReader;
 
-      const files = [new File(["test"], "test.json")];
-
-      await expect(dashboard.importMultipleFiles(files)).rejects.toThrow("File reading failed");
-      globalThis.FileReader = originalFileReader;
+      try {
+        const files = [new File(["test"], "test.json")];
+        await expect(dashboard.importMultipleFiles(files)).rejects.toThrow("File reading failed");
+      } finally {
+        globalThis.FileReader = originalFileReader;
+      }
     });
   });
 
@@ -525,7 +491,8 @@ describe("TeacherDashboard", () => {
         createStudentExport("student-2", { avgTimeToFirstArtifact: 5000 })
       );
       const stats = dashboard.getClassroomStats();
-      expect(stats.distribution.atRisk).toBeGreaterThanOrEqual(0);
+      // student-1 has no first artifact, so at least 1 should be at-risk
+      expect(stats.distribution.atRisk).toBeGreaterThanOrEqual(1);
     });
 
     test("calculates tutorialCompletion started count per tutorial", () => {
@@ -571,7 +538,8 @@ describe("TeacherDashboard", () => {
         })
       );
       const atRisk = dashboard.getAtRiskStudents();
-      expect(atRisk.length).toBeGreaterThanOrEqual(0);
+      expect(atRisk.length).toBeGreaterThanOrEqual(1);
+      expect(atRisk.some((s) => s.studentId === "student-1")).toBe(true);
     });
 
     test("identifies students with no sessions (high severity)", () => {
@@ -598,7 +566,8 @@ describe("TeacherDashboard", () => {
         })
       );
       const atRisk = dashboard.getAtRiskStudents();
-      expect(atRisk.length).toBeGreaterThanOrEqual(0);
+      expect(atRisk.length).toBeGreaterThanOrEqual(1);
+      expect(atRisk.some((s) => s.studentId === "student-1")).toBe(true);
     });
 
     test("identifies students with no genomes created (high severity)", () => {
@@ -609,7 +578,8 @@ describe("TeacherDashboard", () => {
         })
       );
       const atRisk = dashboard.getAtRiskStudents();
-      expect(atRisk.length).toBeGreaterThanOrEqual(0);
+      expect(atRisk.length).toBeGreaterThanOrEqual(1);
+      expect(atRisk.some((s) => s.studentId === "student-1")).toBe(true);
     });
 
     test("identifies students with low tutorial completion rate <25% (medium)", () => {
@@ -620,7 +590,8 @@ describe("TeacherDashboard", () => {
         })
       );
       const atRisk = dashboard.getAtRiskStudents();
-      expect(atRisk.length).toBeGreaterThanOrEqual(0);
+      expect(atRisk.length).toBeGreaterThanOrEqual(1);
+      expect(atRisk.some((s) => s.studentId === "student-1")).toBe(true);
     });
 
     test("includes multiple reasons when applicable", () => {
@@ -941,11 +912,11 @@ describe("TeacherDashboard", () => {
       // The implementation doesn't have an explicit timeout, but FileReader
       // errors (including network timeouts) trigger onerror
       const originalFileReader = globalThis.FileReader;
+      // Special mock for error handling - calls onerror to simulate timeout
       const mockFileReader = class {
         onload: ((e: { target: { result: string } }) => void) | null = null;
         onerror: (() => void) | null = null;
         readAsText(_file: File) {
-          // Simulate a timeout by calling onerror
           setTimeout(() => {
             if (this.onerror) {
               this.onerror();
@@ -955,15 +926,20 @@ describe("TeacherDashboard", () => {
       };
       globalThis.FileReader = mockFileReader as unknown as typeof FileReader;
 
-      const files = [new File(["test"], "test.json")];
-
-      await expect(dashboard.importMultipleFiles(files)).rejects.toThrow("File reading failed");
-      globalThis.FileReader = originalFileReader;
+      try {
+        const files = [new File(["test"], "test.json")];
+        await expect(dashboard.importMultipleFiles(files)).rejects.toThrow("File reading failed");
+      } finally {
+        globalThis.FileReader = originalFileReader;
+      }
     });
   });
 });
 
 describe("generateStudentExport", () => {
+  // Counter for deterministic session IDs
+  let sessionCounter = 0;
+
   // Helper to create valid tutorial structure
   const createTutorial = (
     completed: boolean,
@@ -977,9 +953,9 @@ describe("generateStudentExport", () => {
     completedAt: completed ? Date.now() : null,
   });
 
-  // Helper to create valid session
+  // Helper to create valid session with deterministic ID
   const createSession = (overrides: Record<string, unknown> = {}) => ({
-    sessionId: `session_${Math.random().toString(36).slice(2)}`,
+    sessionId: `session_${++sessionCounter}`,
     startTime: Date.now(),
     duration: 1000,
     genomesCreated: 1,
