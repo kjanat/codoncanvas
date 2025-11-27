@@ -64,7 +64,6 @@ describe("DOM Manager", () => {
       "analyzerToggle",
       "audioToggleBtn",
       "timelineToggleBtn",
-      "timelinePanel",
       "themeToggleBtn",
     ];
     const divElements = [
@@ -76,6 +75,7 @@ describe("DOM Manager", () => {
       "diffViewerContainer",
       "analyzerPanel",
       "analyzerContent",
+      "timelinePanel",
       "timelineContainer",
       "playgroundContainer",
       "assessmentContainer",
