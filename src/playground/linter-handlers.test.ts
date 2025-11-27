@@ -22,14 +22,16 @@ function canAutoFix(errorMessage: string): boolean {
 
 // Reimplement autoFixError logic for testing
 function autoFixError(errorMessage: string, source: string): string | null {
+  const trimmed = source.trim();
+
   // Missing START codon
   if (/Program should begin with START codon/.test(errorMessage)) {
-    return `ATG ${source.trim()}`;
+    return trimmed ? `ATG ${trimmed}` : "ATG";
   }
 
   // Missing STOP codon
   if (/Program should end with STOP codon/.test(errorMessage)) {
-    return `${source.trim()} TAA`;
+    return trimmed ? `${trimmed} TAA` : "TAA";
   }
 
   // Mid-triplet break - remove all whitespace and re-space by triplets
@@ -159,7 +161,8 @@ describe("Linter Handlers", () => {
         "Program should begin with START codon (ATG)",
         "",
       );
-      expect(result).toBe("ATG ");
+      // Empty source should produce just "ATG" without trailing space
+      expect(result).toBe("ATG");
     });
 
     test("handles whitespace-only source for STOP fix", () => {
@@ -167,7 +170,8 @@ describe("Linter Handlers", () => {
         "Program should end with STOP codon (TAA, TAG, or TGA)",
         "   ",
       );
-      expect(result).toBe(" TAA");
+      // Whitespace-only source should produce just "TAA" without leading space
+      expect(result).toBe("TAA");
     });
 
     test("handles already-valid genome patterns", () => {
