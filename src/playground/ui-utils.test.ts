@@ -5,18 +5,7 @@
  * status management, and security utilities.
  */
 import { describe, expect, test } from "bun:test";
-
-// Since ui-utils imports from dom-manager which requires DOM globals at import time,
-// we test the escapeHtml function directly by reimplementing its logic here.
-// This tests the algorithm without requiring the full module import.
-function escapeHtml(unsafe: string): string {
-  return unsafe
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;")
-    .replace(/"/g, "&quot;")
-    .replace(/'/g, "&#039;");
-}
+import { escapeHtml } from "./escape-html";
 
 describe("UI Utilities", () => {
   // escapeHtml (pure function - no DOM needed)

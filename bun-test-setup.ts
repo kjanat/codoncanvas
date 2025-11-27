@@ -65,7 +65,7 @@ function createStorageMock(): Storage {
 const localStorageMock = createStorageMock();
 const sessionStorageMock = createStorageMock();
 
-// Override global storage
+// Override global storage on both globalThis and window for consistency
 Object.defineProperty(globalThis, "localStorage", {
   value: localStorageMock,
   writable: true,
@@ -73,6 +73,18 @@ Object.defineProperty(globalThis, "localStorage", {
 });
 
 Object.defineProperty(globalThis, "sessionStorage", {
+  value: sessionStorageMock,
+  writable: true,
+  configurable: true,
+});
+
+// Also sync window.localStorage/sessionStorage for code that accesses via window
+Object.defineProperty(window, "localStorage", {
+  value: localStorageMock,
+  writable: true,
+  configurable: true,
+});
+Object.defineProperty(window, "sessionStorage", {
   value: sessionStorageMock,
   writable: true,
   configurable: true,
