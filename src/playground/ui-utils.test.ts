@@ -4,7 +4,7 @@
  * Tests for common helper functions used for UI updates,
  * status management, and security utilities.
  */
-import { describe, expect, test } from "bun:test";
+import { afterAll, beforeAll, describe, expect, test } from "bun:test";
 
 // Since ui-utils imports from dom-manager which requires DOM globals at import time,
 // we test the escapeHtml function directly by reimplementing its logic here.
@@ -20,7 +20,7 @@ function escapeHtml(unsafe: string): string {
 
 describe("UI Utilities", () => {
   // =========================================================================
-  // escapeHtml
+  // escapeHtml (pure function - no DOM needed)
   // =========================================================================
   describe("escapeHtml", () => {
     test("escapes ampersand (&) to &amp;", () => {
@@ -50,7 +50,7 @@ describe("UI Utilities", () => {
 
     test("escapes multiple special characters in one string", () => {
       expect(escapeHtml("<script>alert('xss')</script>")).toBe(
-        "&lt;script&gt;alert(&#039;xss&#039;)&lt;/script&gt;"
+        "&lt;script&gt;alert(&#039;xss&#039;)&lt;/script&gt;",
       );
       expect(escapeHtml("a & b < c > d")).toBe("a &amp; b &lt; c &gt; d");
     });
@@ -72,75 +72,343 @@ describe("UI Utilities", () => {
     test("prevents XSS attack vectors", () => {
       // Script injection
       expect(escapeHtml("<script>alert(1)</script>")).toBe(
-        "&lt;script&gt;alert(1)&lt;/script&gt;"
+        "&lt;script&gt;alert(1)&lt;/script&gt;",
       );
       // Event handler injection
       expect(escapeHtml('<img onerror="alert(1)">')).toBe(
-        "&lt;img onerror=&quot;alert(1)&quot;&gt;"
+        "&lt;img onerror=&quot;alert(1)&quot;&gt;",
       );
       // URL injection
       expect(escapeHtml('javascript:alert("xss")')).toBe(
-        "javascript:alert(&quot;xss&quot;)"
+        "javascript:alert(&quot;xss&quot;)",
       );
     });
+
+    test("handles numeric strings", () => {
+      expect(escapeHtml("12345")).toBe("12345");
+      expect(escapeHtml("1 < 2")).toBe("1 &lt; 2");
+    });
+
+    test("handles unicode characters", () => {
+      expect(escapeHtml("こんにちは")).toBe("こんにちは");
+      expect(escapeHtml("emoji 😀")).toBe("emoji 😀");
+      expect(escapeHtml("math: α < β")).toBe("math: α &lt; β");
+    });
+  });
+});
+
+// =========================================================================
+// Tests requiring DOM (use dynamic imports)
+// =========================================================================
+describe("UI Utilities with DOM", () => {
+  // Store original document methods
+  let originalGetElementById: typeof document.getElementById;
+  let originalQuerySelector: typeof document.querySelector;
+  let originalQuerySelectorAll: typeof document.querySelectorAll;
+
+  // Mock DOM elements
+  let mockStatusMessage: HTMLSpanElement;
+  let mockStatusBar: HTMLDivElement;
+  let mockCodonCount: HTMLSpanElement;
+  let mockInstructionCount: HTMLSpanElement;
+  let mockThemeToggleBtn: HTMLButtonElement;
+  let mockCanvas: HTMLCanvasElement;
+  let mockTimelineContainer: HTMLDivElement;
+  let elements: Record<string, HTMLElement>;
+
+  // Dynamically imported module
+  let uiUtils: typeof import("./ui-utils");
+
+  beforeAll(async () => {
+    // Create mock DOM elements
+    mockStatusMessage = document.createElement("span");
+    mockStatusMessage.id = "statusMessage";
+    mockStatusBar = document.createElement("div");
+    mockStatusBar.className = "status-bar";
+    mockCodonCount = document.createElement("span");
+    mockCodonCount.id = "codonCount";
+    mockInstructionCount = document.createElement("span");
+    mockInstructionCount.id = "instructionCount";
+    mockThemeToggleBtn = document.createElement("button");
+    mockThemeToggleBtn.id = "themeToggleBtn";
+    mockCanvas = document.createElement("canvas");
+    mockCanvas.id = "canvas";
+    mockCanvas.width = 400;
+    mockCanvas.height = 400;
+    // Mock getContext to return a minimal 2D context
+    mockCanvas.getContext = (() => ({
+      fillRect: () => {},
+      clearRect: () => {},
+      strokeRect: () => {},
+      fillText: () => {},
+      strokeText: () => {},
+      measureText: () => ({ width: 0 }),
+      beginPath: () => {},
+      closePath: () => {},
+      moveTo: () => {},
+      lineTo: () => {},
+      arc: () => {},
+      arcTo: () => {},
+      ellipse: () => {},
+      rect: () => {},
+      fill: () => {},
+      stroke: () => {},
+      clip: () => {},
+      save: () => {},
+      restore: () => {},
+      scale: () => {},
+      rotate: () => {},
+      translate: () => {},
+      transform: () => {},
+      setTransform: () => {},
+      resetTransform: () => {},
+      drawImage: () => {},
+      createImageData: () => ({ data: new Uint8ClampedArray(0), width: 0, height: 0, colorSpace: "srgb" }),
+      getImageData: () => ({ data: new Uint8ClampedArray(0), width: 0, height: 0, colorSpace: "srgb" }),
+      putImageData: () => {},
+      createLinearGradient: () => ({ addColorStop: () => {} }),
+      createRadialGradient: () => ({ addColorStop: () => {} }),
+      createPattern: () => null,
+      canvas: mockCanvas,
+      fillStyle: "#000",
+      strokeStyle: "#000",
+      lineWidth: 1,
+      lineCap: "butt",
+      lineJoin: "miter",
+      miterLimit: 10,
+      font: "10px sans-serif",
+      textAlign: "start",
+      textBaseline: "alphabetic",
+      globalAlpha: 1,
+      globalCompositeOperation: "source-over",
+      shadowBlur: 0,
+      shadowColor: "rgba(0, 0, 0, 0)",
+      shadowOffsetX: 0,
+      shadowOffsetY: 0,
+      imageSmoothingEnabled: true,
+      isPointInPath: () => false,
+      isPointInStroke: () => false,
+      getLineDash: () => [],
+      setLineDash: () => {},
+      lineDashOffset: 0,
+    })) as unknown as typeof mockCanvas.getContext;
+    mockTimelineContainer = document.createElement("div");
+    mockTimelineContainer.id = "timelineContainer";
+
+    // Create all other required elements
+    const requiredIds = [
+      "editor",
+      "runBtn",
+      "clearBtn",
+      "exampleSelect",
+      "exportBtn",
+      "exportAudioBtn",
+      "exportMidiBtn",
+      "saveGenomeBtn",
+      "loadGenomeBtn",
+      "exportStudentProgressBtn",
+      "genomeFileInput",
+      "shareContainer",
+      "difficultyFilter",
+      "conceptFilter",
+      "searchInput",
+      "exampleInfo",
+      "linterPanel",
+      "linterToggle",
+      "linterMessages",
+      "fixAllBtn",
+      "diffViewerPanel",
+      "diffViewerToggle",
+      "diffViewerClearBtn",
+      "diffViewerContainer",
+      "analyzeBtn",
+      "analyzerPanel",
+      "analyzerToggle",
+      "analyzerContent",
+      "audioToggleBtn",
+      "timelineToggleBtn",
+      "timelinePanel",
+      "playgroundContainer",
+      "assessmentContainer",
+      "achievementContainer",
+      "silentMutationBtn",
+      "missenseMutationBtn",
+      "nonsenseMutationBtn",
+      "frameshiftMutationBtn",
+      "pointMutationBtn",
+      "insertionMutationBtn",
+      "deletionMutationBtn",
+    ];
+
+    elements = {
+      statusMessage: mockStatusMessage,
+      statusBar: mockStatusBar,
+      codonCount: mockCodonCount,
+      instructionCount: mockInstructionCount,
+      themeToggleBtn: mockThemeToggleBtn,
+      canvas: mockCanvas,
+      timelineContainer: mockTimelineContainer,
+    };
+
+    // Create remaining elements with appropriate types
+    for (const id of requiredIds) {
+      if (!elements[id]) {
+        let el: HTMLElement;
+        if (id === "editor") {
+          el = document.createElement("textarea");
+        } else if (id.includes("Select") || id.includes("Filter")) {
+          el = document.createElement("select");
+        } else if (id.includes("Input")) {
+          el = document.createElement("input");
+        } else if (id.includes("Btn") || id.includes("Toggle")) {
+          el = document.createElement("button");
+        } else {
+          el = document.createElement("div");
+        }
+        el.id = id;
+        elements[id] = el;
+      }
+    }
+
+    // Store original methods
+    originalGetElementById = document.getElementById.bind(document);
+    originalQuerySelector = document.querySelector.bind(document);
+    originalQuerySelectorAll = document.querySelectorAll.bind(document);
+
+    // Mock document methods
+    document.getElementById = (id: string) => {
+      return elements[id] || originalGetElementById(id);
+    };
+    document.querySelector = ((selector: string) => {
+      if (selector === ".status-bar") return mockStatusBar;
+      if (selector.startsWith("#")) {
+        const id = selector.slice(1);
+        return elements[id] || null;
+      }
+      return originalQuerySelector(selector);
+    }) as typeof document.querySelector;
+    document.querySelectorAll = ((selector: string) => {
+      if (selector === 'input[name="mode"]') {
+        return [] as unknown as NodeListOf<Element>;
+      }
+      return originalQuerySelectorAll(selector);
+    }) as typeof document.querySelectorAll;
+
+    // Dynamically import the module after DOM setup
+    uiUtils = await import("./ui-utils");
+  });
+
+  afterAll(() => {
+    // Restore original document methods
+    if (originalGetElementById) {
+      document.getElementById = originalGetElementById;
+    }
+    if (originalQuerySelector) {
+      document.querySelector = originalQuerySelector;
+    }
+    if (originalQuerySelectorAll) {
+      document.querySelectorAll = originalQuerySelectorAll;
+    }
   });
 
   // =========================================================================
   // setStatus
   // =========================================================================
   describe("setStatus", () => {
-    // These tests require DOM mocking - setStatus depends on imported DOM elements
-    test.todo("sets statusMessage textContent to message");
-    test.todo("sets statusBar className to 'status-bar info' for info type");
-    test.todo("sets statusBar className to 'status-bar error' for error type");
-    test.todo(
-      "sets statusBar className to 'status-bar success' for success type",
-    );
-    test.todo("handles empty message string");
-    test.todo("handles long message strings");
+    test("sets statusMessage textContent to message", () => {
+      uiUtils.setStatus("Test message", "info");
+      expect(mockStatusMessage.textContent).toBe("Test message");
+    });
+
+    test("sets statusBar className to 'status-bar info' for info type", () => {
+      uiUtils.setStatus("Info message", "info");
+      expect(mockStatusBar.className).toBe("status-bar info");
+    });
+
+    test("sets statusBar className to 'status-bar error' for error type", () => {
+      uiUtils.setStatus("Error message", "error");
+      expect(mockStatusBar.className).toBe("status-bar error");
+    });
+
+    test("sets statusBar className to 'status-bar success' for success type", () => {
+      uiUtils.setStatus("Success message", "success");
+      expect(mockStatusBar.className).toBe("status-bar success");
+    });
+
+    test("handles empty message string", () => {
+      uiUtils.setStatus("", "info");
+      expect(mockStatusMessage.textContent).toBe("");
+      expect(mockStatusBar.className).toBe("status-bar info");
+    });
+
+    test("handles long message strings", () => {
+      const longMessage = "A".repeat(1000);
+      uiUtils.setStatus(longMessage, "info");
+      expect(mockStatusMessage.textContent).toBe(longMessage);
+    });
   });
 
   // =========================================================================
   // updateStats
   // =========================================================================
   describe("updateStats", () => {
-    // These tests require DOM mocking - updateStats depends on imported DOM elements
-    test.todo("sets codonCount textContent with codon count");
-    test.todo("sets instructionCount textContent with instruction count");
-    test.todo("handles zero values");
-    test.todo("handles large numbers");
-    test.todo("formats numbers without localization");
+    test("sets codonCount textContent with codon count", () => {
+      uiUtils.updateStats(10, 5);
+      expect(mockCodonCount.textContent).toBe("Codons: 10");
+    });
+
+    test("sets instructionCount textContent with instruction count", () => {
+      uiUtils.updateStats(10, 5);
+      expect(mockInstructionCount.textContent).toBe("Instructions: 5");
+    });
+
+    test("handles zero values", () => {
+      uiUtils.updateStats(0, 0);
+      expect(mockCodonCount.textContent).toBe("Codons: 0");
+      expect(mockInstructionCount.textContent).toBe("Instructions: 0");
+    });
+
+    test("handles large numbers", () => {
+      uiUtils.updateStats(999999, 888888);
+      expect(mockCodonCount.textContent).toBe("Codons: 999999");
+      expect(mockInstructionCount.textContent).toBe("Instructions: 888888");
+    });
+
+    test("formats numbers without localization", () => {
+      // Numbers should be displayed as-is, not with thousand separators
+      uiUtils.updateStats(1000, 2000);
+      expect(mockCodonCount.textContent).toBe("Codons: 1000");
+      expect(mockInstructionCount.textContent).toBe("Instructions: 2000");
+    });
   });
 
   // =========================================================================
   // updateThemeButton
   // =========================================================================
   describe("updateThemeButton", () => {
-    // These tests require DOM mocking - updateThemeButton depends on imported DOM elements
-    test.todo("gets theme icon from themeManager");
-    test.todo("gets theme display name from themeManager");
-    test.todo("sets button textContent with icon and name");
-    test.todo("sets aria-label with current theme name");
-    test.todo("includes 'Click to cycle' instruction in aria-label");
-  });
-
-  // =========================================================================
-  // Edge Cases
-  // =========================================================================
-  describe("edge cases", () => {
-    test("handles numeric strings in escapeHtml", () => {
-      expect(escapeHtml("12345")).toBe("12345");
-      expect(escapeHtml("1 < 2")).toBe("1 &lt; 2");
+    test("sets button textContent with icon and name", () => {
+      uiUtils.updateThemeButton();
+      // Theme could be Dark, Light, or High Contrast - just verify it has content
+      const content = mockThemeToggleBtn.textContent || "";
+      expect(content.length).toBeGreaterThan(0);
+      // Should contain a theme name
+      expect(
+        content.includes("Dark") ||
+          content.includes("Light") ||
+          content.includes("High Contrast"),
+      ).toBe(true);
     });
 
-    test("handles unicode characters in escapeHtml", () => {
-      expect(escapeHtml("こんにちは")).toBe("こんにちは");
-      expect(escapeHtml("emoji 😀")).toBe("emoji 😀");
-      expect(escapeHtml("math: α < β")).toBe("math: α &lt; β");
+    test("sets aria-label with current theme name", () => {
+      uiUtils.updateThemeButton();
+      const ariaLabel = mockThemeToggleBtn.getAttribute("aria-label") || "";
+      expect(ariaLabel).toContain("Current theme:");
     });
 
-    // These require DOM mocking
-    test.todo("handles null/undefined input to escapeHtml gracefully");
-    test.todo("handles missing DOM elements gracefully");
+    test("includes 'Click to cycle' instruction in aria-label", () => {
+      uiUtils.updateThemeButton();
+      const ariaLabel = mockThemeToggleBtn.getAttribute("aria-label") || "";
+      expect(ariaLabel).toContain("Click to cycle");
+    });
   });
 });

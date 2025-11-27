@@ -19,6 +19,17 @@ globalThis.document = document;
 globalThis.HTMLElement = window.HTMLElement;
 globalThis.HTMLCanvasElement = window.HTMLCanvasElement;
 globalThis.HTMLAnchorElement = window.HTMLAnchorElement;
+globalThis.HTMLTextAreaElement = window.HTMLTextAreaElement;
+globalThis.HTMLButtonElement = window.HTMLButtonElement;
+globalThis.HTMLSpanElement = window.HTMLSpanElement;
+globalThis.HTMLDivElement = window.HTMLDivElement;
+globalThis.HTMLSelectElement = window.HTMLSelectElement;
+globalThis.HTMLInputElement = window.HTMLInputElement;
+globalThis.HTMLImageElement = window.HTMLImageElement;
+globalThis.Event = window.Event;
+globalThis.CustomEvent = window.CustomEvent;
+globalThis.KeyboardEvent = window.KeyboardEvent;
+globalThis.MouseEvent = window.MouseEvent;
 
 // File APIs needed for genome-io tests
 // Note: Don't override Blob - native Blob is needed for URL.createObjectURL
