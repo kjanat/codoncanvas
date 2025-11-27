@@ -19,7 +19,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
 
       - name: Setup Bun
         uses: ./.github/actions/setup-bun
@@ -27,28 +27,28 @@ jobs:
       - name: Run typecheck
         run: bun typecheck
 
-  lint:
-    name: Lint
+  quality:
+    name: Quality
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
 
-      - name: Setup Bun
-        uses: ./.github/actions/setup-bun
+      - name: Setup Biome
+        uses: biomejs/setup-biome@v2
 
-      - name: Run Biome lint
-        run: bun lint
+      - name: Lint
+        run: biome ci .
 
-      - name: Check formatting (dprint)
-        run: bunx dprint check
+      - name: Formatting
+        uses: dprint/check@v2.3
 
   test:
     name: Test
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
 
       - name: Setup Bun
         uses: ./.github/actions/setup-bun
