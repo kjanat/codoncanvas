@@ -5,90 +5,24 @@
  * Educational visualizations of silent, missense, nonsense, and frameshift mutations.
  */
 import { afterEach, beforeEach, describe, expect, test } from "bun:test";
+import {
+  DEMO_GENOMES,
+  highlightGenome,
+  renderGenomeToCanvas,
+} from "./demos-core";
 import { CodonLexer } from "./lexer";
-import { Canvas2DRenderer } from "./renderer";
-import { CodonVM } from "./vm";
 import {
   applySilentMutation,
   applyMissenseMutation,
   applyNonsenseMutation,
   applyFrameshiftMutation,
 } from "./mutations";
+import { Canvas2DRenderer } from "./renderer";
 import {
   mockCanvasContext,
   restoreCanvasContext,
 } from "./test-utils/canvas-mock";
-
-// Demo genome constants (same as in demos.ts)
-const DEMO_GENOMES = {
-  silent: "ATG GAA AGG GGA GAA CCC GAA AAA ACA GAA AGG GGA TAA",
-  missense: "ATG GAA AGG GGA GAA CCC GAA AAA ACA GAA AGG CCA TAA",
-  nonsense: "ATG GAA AGG GGA GAA CCC GAA AAA ACA GAA AGG GGA GAA AGG CCA TAA",
-  frameshift: "ATG GAA AGG GGA GAA CCC ACA GAA AGG CCA TAA",
-};
-
-/**
- * Highlight specific codons in the genome display
- * (replicating the function from demos.ts for testing)
- */
-function highlightGenome(
-  genome: string,
-  mutatedIndices: number[],
-  affectedIndices: number[] = []
-): DocumentFragment {
-  const codons = genome.split(/\s+/).filter((c) => c.length > 0);
-  const fragment = document.createDocumentFragment();
-
-  codons.forEach((codon, idx) => {
-    let className = "codon";
-
-    if (codon === "ATG") {
-      className += " start";
-    } else if (codon === "TAA" || codon === "TAG" || codon === "TGA") {
-      className += " stop";
-    }
-
-    if (mutatedIndices.includes(idx)) {
-      className += " mutated";
-    } else if (affectedIndices.includes(idx)) {
-      className += " affected";
-    }
-
-    const span = document.createElement("span");
-    span.className = className;
-    span.textContent = codon;
-    fragment.appendChild(span);
-
-    if (idx < codons.length - 1) {
-      fragment.appendChild(document.createTextNode(" "));
-    }
-  });
-
-  return fragment;
-}
-
-/**
- * Render a genome to a canvas
- * (replicating the function from demos.ts for testing)
- */
-function renderGenome(genome: string, canvas: HTMLCanvasElement): void {
-  const lexer = new CodonLexer();
-  const renderer = new Canvas2DRenderer(canvas);
-  const vm = new CodonVM(renderer);
-
-  try {
-    const tokens = lexer.tokenize(genome);
-    vm.reset();
-    vm.run(tokens);
-  } catch (_error) {
-    const ctx = canvas.getContext("2d");
-    if (ctx) {
-      ctx.fillStyle = "#f48771";
-      ctx.font = "12px monospace";
-      ctx.fillText("Render Error", 10, 100);
-    }
-  }
-}
+import { CodonVM } from "./vm";
 
 describe("MutationDemos", () => {
   beforeEach(() => {
@@ -250,7 +184,7 @@ describe("MutationDemos", () => {
       const canvas = document.createElement("canvas");
       canvas.width = 400;
       canvas.height = 400;
-      expect(() => renderGenome("ATG GGA TAA", canvas)).not.toThrow();
+      expect(() => renderGenomeToCanvas("ATG GGA TAA", canvas)).not.toThrow();
     });
 
     test("uses CodonLexer to tokenize genome", () => {
@@ -296,13 +230,13 @@ describe("MutationDemos", () => {
       canvas.width = 400;
       canvas.height = 400;
       // This won't throw but may produce an error internally
-      expect(() => renderGenome("INVALID_GENOME", canvas)).not.toThrow();
+      expect(() => renderGenomeToCanvas("INVALID_GENOME", canvas)).not.toThrow();
     });
 
     test("handles canvas without 2D context", () => {
       const canvas = document.createElement("canvas");
       // Mock to return null context - but happy-dom always returns a context
-      expect(() => renderGenome("ATG TAA", canvas)).not.toThrow();
+      expect(() => renderGenomeToCanvas("ATG TAA", canvas)).not.toThrow();
     });
   });
 
@@ -354,8 +288,8 @@ describe("MutationDemos", () => {
       canvas2.height = 400;
 
       const result = applySilentMutation(DEMO_GENOMES.silent);
-      expect(() => renderGenome(result.original, canvas1)).not.toThrow();
-      expect(() => renderGenome(result.mutated, canvas2)).not.toThrow();
+      expect(() => renderGenomeToCanvas(result.original, canvas1)).not.toThrow();
+      expect(() => renderGenomeToCanvas(result.mutated, canvas2)).not.toThrow();
     });
   });
 
@@ -401,8 +335,8 @@ describe("MutationDemos", () => {
       const canvas2 = document.createElement("canvas");
 
       const result = applyMissenseMutation(DEMO_GENOMES.missense);
-      expect(() => renderGenome(result.original, canvas1)).not.toThrow();
-      expect(() => renderGenome(result.mutated, canvas2)).not.toThrow();
+      expect(() => renderGenomeToCanvas(result.original, canvas1)).not.toThrow();
+      expect(() => renderGenomeToCanvas(result.mutated, canvas2)).not.toThrow();
     });
   });
 

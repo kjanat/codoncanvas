@@ -147,11 +147,11 @@ describe("AudioRenderer", () => {
       expect(renderer.width).toBe(1000);
     });
 
-    test("sets default currentFrequency to 440 Hz (A4 note)", () => {
+    test("initializes with valid transform state", () => {
       const renderer = new AudioRenderer();
       const transform = renderer.getCurrentTransform();
-      // Frequency is internal, but affects transform calculations
       expect(transform).toBeDefined();
+      expect(transform.scale).toBeCloseTo(1, 1);
     });
 
     test("sets width and height to 1000 for interface compatibility", () => {
@@ -197,15 +197,6 @@ describe("AudioRenderer", () => {
       const renderer = new AudioRenderer();
       await renderer.initialize();
       expect(() => renderer.startRecording()).not.toThrow();
-    });
-
-    test("sets up ondataavailable handler", async () => {
-      const renderer = new AudioRenderer();
-      await renderer.initialize();
-      renderer.startRecording();
-      // Give time for async callback
-      await new Promise((resolve) => setTimeout(resolve, 10));
-      expect(renderer.width).toBe(1000);
     });
   });
 

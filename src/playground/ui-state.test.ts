@@ -4,16 +4,17 @@
  * Tests for the centralized state management module that handles
  * all application state and core component initialization.
  *
- * Note: Due to module caching in dynamic imports, we test the pure
- * state management functions rather than DOM-dependent initialization.
+ * Note: ui-state.ts has DOM-dependent side effects at import time
+ * (requires #editor, #canvas elements). We test the state management
+ * pattern here to verify the logic without requiring the full DOM setup.
  */
 import { describe, expect, test } from "bun:test";
 import type { RenderMode, VMState } from "../types";
 
 describe("UI State Management", () => {
-  // State Management Functions (Pure logic, no DOM dependencies)
+  // State Management Functions - testing the pattern used in ui-state.ts
+  // Cannot import directly due to DOM side effects at module load time
   describe("state management logic", () => {
-    // Test the state management pattern used in ui-state
     let renderMode: RenderMode = "visual";
     let timelineVisible = false;
     let lastSnapshots: VMState[] = [];
@@ -73,22 +74,42 @@ describe("UI State Management", () => {
     });
 
     test("setLastSnapshots updates with VMState array", () => {
-      const snapshots = [
-        { x: 0, y: 0, angle: 0, color: "#000", penDown: true },
-      ] as VMState[];
+      const snapshots: VMState[] = [
+        {
+          position: { x: 0, y: 0 },
+          rotation: 0,
+          scale: 1,
+          color: { h: 0, s: 0, l: 0 },
+          stack: [],
+          instructionPointer: 0,
+          stateStack: [],
+          instructionCount: 0,
+          seed: 12345,
+        },
+      ];
       setLastSnapshots(snapshots);
       expect(lastSnapshots).toBe(snapshots);
     });
 
     test("setLastSnapshots preserves reference (no deep copy)", () => {
-      const snapshots = [
-        { x: 100, y: 100, angle: 90, color: "#FFF", penDown: false },
-      ] as VMState[];
+      const snapshots: VMState[] = [
+        {
+          position: { x: 100, y: 100 },
+          rotation: 90,
+          scale: 1,
+          color: { h: 120, s: 50, l: 50 },
+          stack: [],
+          instructionPointer: 0,
+          stateStack: [],
+          instructionCount: 0,
+          seed: 12345,
+        },
+      ];
       setLastSnapshots(snapshots);
       expect(lastSnapshots).toBe(snapshots);
       // Verify mutation affects the stored reference
-      (snapshots[0] as { x: number }).x = 999;
-      expect((lastSnapshots[0] as { x: number }).x).toBe(999);
+      snapshots[0].position.x = 999;
+      expect(lastSnapshots[0].position.x).toBe(999);
     });
 
     test("assessmentUI defaults to null", () => {

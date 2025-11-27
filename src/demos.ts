@@ -5,93 +5,28 @@
  * Shows before/after visualizations of silent, missense, nonsense, and frameshift mutations.
  */
 
-import { CodonLexer } from "./lexer";
+import {
+  DEMO_GENOMES,
+  highlightGenome,
+  renderGenomeToCanvas,
+} from "./demos-core";
 import {
   applyFrameshiftMutation,
   applyMissenseMutation,
   applyNonsenseMutation,
   applySilentMutation,
 } from "./mutations";
-import { Canvas2DRenderer } from "./renderer";
 import { injectShareStyles, ShareSystem } from "./share-system";
-import { CodonVM } from "./vm";
-
-// Demo genome examples
-const DEMO_GENOMES = {
-  // Simple enough to see clear effects, complex enough to be interesting
-  silent: "ATG GAA AGG GGA GAA CCC GAA AAA ACA GAA AGG GGA TAA",
-  missense: "ATG GAA AGG GGA GAA CCC GAA AAA ACA GAA AGG CCA TAA",
-  nonsense: "ATG GAA AGG GGA GAA CCC GAA AAA ACA GAA AGG GGA GAA AGG CCA TAA",
-  frameshift: "ATG GAA AGG GGA GAA CCC ACA GAA AGG CCA TAA",
-};
 
 /**
- * Highlight specific codons in the genome display
- */
-function highlightGenome(
-  genome: string,
-  mutatedIndices: number[],
-  affectedIndices: number[] = [],
-): DocumentFragment {
-  const codons = genome.split(/\s+/).filter((c) => c.length > 0);
-  const fragment = document.createDocumentFragment();
-
-  codons.forEach((codon, idx) => {
-    let className = "codon";
-
-    // Special highlighting for START/STOP
-    if (codon === "ATG") {
-      className += " start";
-    } else if (codon === "TAA" || codon === "TAG" || codon === "TGA") {
-      className += " stop";
-    }
-
-    // Mutation highlighting
-    if (mutatedIndices.includes(idx)) {
-      className += " mutated";
-    } else if (affectedIndices.includes(idx)) {
-      className += " affected";
-    }
-
-    const span = document.createElement("span");
-    span.className = className;
-    span.textContent = codon; // SAFE: textContent auto-escapes
-    fragment.appendChild(span);
-
-    if (idx < codons.length - 1) {
-      fragment.appendChild(document.createTextNode(" "));
-    }
-  });
-
-  return fragment;
-}
-
-/**
- * Render a genome to a canvas
+ * Render a genome to a canvas by ID
  */
 function renderGenome(genome: string, canvasId: string): void {
   const canvas = document.getElementById(canvasId) as HTMLCanvasElement;
   if (!canvas) {
     return;
   }
-
-  const lexer = new CodonLexer();
-  const renderer = new Canvas2DRenderer(canvas);
-  const vm = new CodonVM(renderer);
-
-  try {
-    const tokens = lexer.tokenize(genome);
-    vm.reset();
-    vm.run(tokens);
-  } catch (_error) {
-    // Draw error indicator on canvas
-    const ctx = canvas.getContext("2d");
-    if (ctx) {
-      ctx.fillStyle = "#f48771";
-      ctx.font = "12px monospace";
-      ctx.fillText("Render Error", 10, 100);
-    }
-  }
+  renderGenomeToCanvas(genome, canvas);
 }
 
 /**
