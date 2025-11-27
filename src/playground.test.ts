@@ -208,19 +208,20 @@ describe("Playground Main Module", () => {
       expect(() => vm.run(tokens)).not.toThrow();
     });
 
-    test("handles Error exceptions with error status", () => {
-      const error = new Error("Test error");
-      expect(error.message).toBe("Test error");
+    test("handles Error exceptions with error status", async () => {
+      const { CodonLexer } = await import("./lexer");
+      const lexer = new CodonLexer();
+      // Invalid genome should throw an error during tokenization
+      expect(() => lexer.tokenize("XYZ INVALID")).toThrow();
     });
 
-    test("handles array errors (parse errors) with error status", () => {
-      const errors = [{ message: "Parse error at position 0" }];
-      expect(errors[0].message).toContain("Parse error");
-    });
-
-    test("handles unknown errors with generic message", () => {
-      const error = "Unknown error occurred";
-      expect(typeof error).toBe("string");
+    test("handles parse errors from lexer validation", async () => {
+      const { CodonLexer } = await import("./lexer");
+      const lexer = new CodonLexer();
+      // Missing START codon should be flagged
+      const tokens = lexer.tokenize("GGA TAA");
+      const errors = lexer.validateStructure(tokens);
+      expect(errors.some((e) => e.message.includes("START"))).toBe(true);
     });
   });
 
@@ -257,15 +258,14 @@ describe("Playground Main Module", () => {
       expect(() => renderer.clear()).not.toThrow();
     });
 
-    test("sets status to 'Canvas cleared'", () => {
-      const status = "Canvas cleared";
-      expect(status).toBe("Canvas cleared");
-    });
-
-    test("resets stats to 0, 0", () => {
-      const stats = { tokens: 0, instructions: 0 };
-      expect(stats.tokens).toBe(0);
-      expect(stats.instructions).toBe(0);
+    test("VM can be reset to initial state", async () => {
+      const { Canvas2DRenderer } = await import("./renderer");
+      const { CodonVM } = await import("./vm");
+      const canvas = document.createElement("canvas");
+      const renderer = new Canvas2DRenderer(canvas);
+      const vm = new CodonVM(renderer);
+      vm.reset();
+      expect(vm.state.instructionCount).toBe(0);
     });
   });
 

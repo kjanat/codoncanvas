@@ -555,7 +555,7 @@ describe("AchievementUI", () => {
 
   // Integration
   describe("integration", () => {
-    test("works with real AchievementEngine instance", () => {
+    test("works with mock AchievementEngine instance", () => {
       const ui = new AchievementUI(mockEngine, "achievement-container");
       expect(container.querySelector(".achievement-container")).not.toBeNull();
     });

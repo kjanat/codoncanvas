@@ -224,18 +224,15 @@ describe("GeneticAlgorithm", () => {
     });
 
     test("returns 0 fitness when canvas context unavailable", () => {
-      // Restore canvas context to get null returns
       restoreCanvasContext();
-
-      const ga = new GeneticAlgorithm(["ATGATG"], simpleFitness, {
-        populationSize: 1,
-      });
-
-      // With null context, fitness should be 0
-      expect(ga.getPopulation()[0].fitness).toBe(0);
-
-      // Re-mock for subsequent tests
-      mockCanvasContext();
+      try {
+        const ga = new GeneticAlgorithm(["ATGATG"], simpleFitness, {
+          populationSize: 1,
+        });
+        expect(ga.getPopulation()[0].fitness).toBe(0);
+      } finally {
+        mockCanvasContext();
+      }
     });
 
     test("clears canvas to white background before each render", () => {
@@ -305,11 +302,6 @@ describe("GeneticAlgorithm", () => {
       expect(() => ga.evolveGeneration()).not.toThrow();
     });
 
-    test("throws error when population is empty", () => {
-      // Can't easily create empty population through public API
-      // This is more of a documentation test
-      expect(true).toBe(true);
-    });
   });
 
   describe("rouletteWheelSelection", () => {
