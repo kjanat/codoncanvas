@@ -19,6 +19,9 @@ function countTokens(genome: string): number {
 
 // Status info formatting from handleFileLoad
 function formatLoadInfo(title: string, author?: string): string {
+  if (!title && author) {
+    return `by ${author}`;
+  }
   return title + (author ? ` by ${author}` : "");
 }
 
@@ -204,7 +207,8 @@ describe("Genome Handlers", () => {
 
     test("handles empty title", () => {
       expect(formatLoadInfo("")).toBe("");
-      expect(formatLoadInfo("", "Author")).toBe(" by Author");
+      // Empty title with author omits leading space
+      expect(formatLoadInfo("", "Author")).toBe("by Author");
     });
   });
 

@@ -58,16 +58,12 @@ function extractErrorMessage(error: unknown): string {
 
 describe("Export Handlers", () => {
   // exportImage
+  // Note: Actual implementation tests require DOM mocking.
+  // These document expected filename patterns.
   describe("exportImage", () => {
-    test("uses correct filename 'codoncanvas-output.png'", () => {
-      const filename = "codoncanvas-output.png";
-      expect(filename).toBe("codoncanvas-output.png");
-      expect(filename.endsWith(".png")).toBe(true);
-    });
-
-    test("filename has codoncanvas prefix", () => {
-      const filename = "codoncanvas-output.png";
-      expect(filename.startsWith("codoncanvas-")).toBe(true);
+    test("expected filename matches codoncanvas pattern", () => {
+      const EXPECTED_FILENAME = "codoncanvas-output.png";
+      expect(EXPECTED_FILENAME).toMatch(/^codoncanvas-.*\.png$/);
     });
   });
 
@@ -141,9 +137,10 @@ describe("Export Handlers", () => {
 
   // exportMidi
   describe("exportMidi", () => {
-    test("checks for empty snapshots", () => {
-      const snapshots: unknown[] = [];
-      expect(snapshots.length === 0).toBe(true);
+    test("detects empty vs non-empty snapshots", () => {
+      const hasNoSnapshots = (snapshots: unknown[]) => snapshots.length === 0;
+      expect(hasNoSnapshots([])).toBe(true);
+      expect(hasNoSnapshots([{}])).toBe(false);
     });
 
     test("generates filename with timestamp", () => {
@@ -200,11 +197,6 @@ describe("Export Handlers", () => {
     test("uses '.json' extension in filename", () => {
       const filename = generateProgressFilename();
       expect(filename.endsWith(".json")).toBe(true);
-    });
-
-    test("JSON blob would use application/json MIME type", () => {
-      const mimeType = "application/json";
-      expect(mimeType).toBe("application/json");
     });
 
     test("JSON is formatted with 2-space indentation", () => {
