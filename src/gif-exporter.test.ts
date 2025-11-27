@@ -124,6 +124,16 @@ describe("GifExporter", () => {
 
   // Tests for downloadGif (DOM-based blob download)
   describe("downloadGif", () => {
+    let originalAppendChild: typeof document.body.appendChild;
+
+    beforeEach(() => {
+      originalAppendChild = document.body.appendChild.bind(document.body);
+    });
+
+    afterEach(() => {
+      document.body.appendChild = originalAppendChild;
+    });
+
     test("creates object URL from blob and triggers download via anchor click", () => {
       const createObjectURLCalls: Blob[] = [];
       const clickedElements: HTMLElement[] = [];
