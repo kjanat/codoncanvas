@@ -20,7 +20,7 @@ import {
 import {
   mockCanvasContext,
   restoreCanvasContext,
-} from "@/test-utils/canvas-mock";
+} from "./test-utils/canvas-mock";
 
 describe("Mutation Impact Predictor", () => {
   // Canvas mock needed for rendering comparisons

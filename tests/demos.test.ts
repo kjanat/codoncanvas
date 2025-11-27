@@ -21,7 +21,7 @@ import { Canvas2DRenderer } from "@/renderer";
 import {
   mockCanvasContext,
   restoreCanvasContext,
-} from "@/test-utils/canvas-mock";
+} from "./test-utils/canvas-mock";
 import { CodonVM } from "@/vm";
 
 describe("MutationDemos", () => {

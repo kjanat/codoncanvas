@@ -9,7 +9,7 @@ import { type FitnessFunction, GeneticAlgorithm } from "@/genetic-algorithm";
 import {
   mockCanvasContext,
   restoreCanvasContext,
-} from "@/test-utils/canvas-mock";
+} from "./test-utils/canvas-mock";
 
 describe("GeneticAlgorithm", () => {
   // Mock canvas context for all tests

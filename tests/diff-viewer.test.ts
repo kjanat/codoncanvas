@@ -10,7 +10,7 @@ import type { MutationResult } from "@/mutations";
 import {
   mockCanvasContext,
   restoreCanvasContext,
-} from "@/test-utils/canvas-mock";
+} from "./test-utils/canvas-mock";
 
 describe("DiffViewer", () => {
   let container: HTMLElement;

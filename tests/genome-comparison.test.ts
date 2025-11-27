@@ -9,7 +9,7 @@ import { compareGenomesDetailed } from "@/genome-comparison";
 import {
   mockCanvasContext,
   restoreCanvasContext,
-} from "@/test-utils/canvas-mock";
+} from "./test-utils/canvas-mock";
 
 describe("GenomeComparison", () => {
   beforeEach(() => {
