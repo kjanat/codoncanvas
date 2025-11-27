@@ -587,7 +587,8 @@ describe("TeacherDashboard", () => {
         createStudentExport("student-1", { totalSessions: 1 })
       );
       const atRisk = dashboard.getAtRiskStudents();
-      expect(atRisk.length).toBeGreaterThanOrEqual(0);
+      expect(atRisk.length).toBe(1);
+      expect(atRisk[0].studentId).toBe("student-1");
     });
 
     test("identifies students with no tutorials started (high severity)", () => {
