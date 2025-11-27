@@ -68,15 +68,18 @@ describe("Genome I/O", () => {
   describe("downloadGenomeFile", () => {
     let originalCreateObjectURL: typeof URL.createObjectURL;
     let originalRevokeObjectURL: typeof URL.revokeObjectURL;
+    let originalAppendChild: typeof document.body.appendChild;
 
     beforeEach(() => {
       originalCreateObjectURL = URL.createObjectURL;
       originalRevokeObjectURL = URL.revokeObjectURL;
+      originalAppendChild = document.body.appendChild.bind(document.body);
     });
 
     afterEach(() => {
       URL.createObjectURL = originalCreateObjectURL;
       URL.revokeObjectURL = originalRevokeObjectURL;
+      document.body.appendChild = originalAppendChild;
     });
 
     test("creates blob with correct content and triggers download via anchor element click", () => {
