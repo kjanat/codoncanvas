@@ -70,3 +70,15 @@ jobs:
 
       - name: Run tests
         run: bun test
+
+  code-duplication:
+    name: Check duplicated code
+    runs-on: ubuntu-latest
+    if: ${{ github.event_name == 'pull_request' }}
+    continue-on-error: true
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Check duplication
+        run: npx --yes jscpd@latest
