@@ -658,7 +658,7 @@ function parseCSV(filepath: string): StudentData[] {
         row[header] = value;
       }
     });
-    return row as StudentData;
+    return row as unknown as StudentData;
   });
 }
 

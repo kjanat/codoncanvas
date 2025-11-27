@@ -288,11 +288,11 @@ describe("Playground Main Module", () => {
 
     test("filters by concept when conceptFilter has value", async () => {
       const { examples } = await import("@/examples");
-      const loopExamples = Object.entries(examples).filter(([_, ex]) =>
-        ex.concepts.includes("loops"),
+      const drawingExamples = Object.entries(examples).filter(([_, ex]) =>
+        ex.concepts.includes("drawing"),
       );
-      // May or may not have loop examples
-      expect(Array.isArray(loopExamples)).toBe(true);
+      // Should have drawing examples
+      expect(Array.isArray(drawingExamples)).toBe(true);
     });
 
     test("filters by search term (case-insensitive)", async () => {

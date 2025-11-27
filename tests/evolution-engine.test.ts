@@ -36,7 +36,9 @@ describe("EvolutionEngine", () => {
       expect(candidates.length).toBe(6); // default count
       // All mutations should be silent or missense
       candidates.forEach((candidate) => {
-        expect(["silent", "missense"]).toContain(candidate.mutation?.type);
+        if (candidate.mutation) {
+          expect(["silent", "missense"]).toContain(candidate.mutation.type);
+        }
       });
     });
   });

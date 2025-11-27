@@ -110,8 +110,9 @@ function analyzeGenome(filename: string, content: string): GenomeComplexity {
     // Detect advanced features
     const hasPush = uniqueOpcodes.has(Opcode.PUSH);
     const hasLoop = uniqueOpcodes.has(Opcode.LOOP);
+    // Conditional opcodes (IF, IFELSE) are not implemented yet
     const hasConditional =
-      uniqueOpcodes.has(Opcode.IF) || uniqueOpcodes.has(Opcode.IFELSE);
+      uniqueOpcodes.has(Opcode.EQ) || uniqueOpcodes.has(Opcode.LT);
     const hasArithmetic =
       uniqueOpcodes.has(Opcode.ADD) ||
       uniqueOpcodes.has(Opcode.SUB) ||

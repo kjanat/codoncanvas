@@ -963,13 +963,30 @@ describe("generateStudentExport", () => {
   const createSession = (overrides: Record<string, unknown> = {}) => ({
     sessionId: `session_${++sessionCounter}`,
     startTime: Date.now(),
+    endTime: Date.now() + 1000,
     duration: 1000,
     genomesCreated: 1,
     genomesExecuted: 1,
     mutationsApplied: 1,
+    renderModeUsage: { visual: 1, audio: 0, both: 0 },
+    features: {
+      diffViewer: 0,
+      timeline: 0,
+      evolution: 0,
+      assessment: 0,
+      export: 0,
+    },
     timeToFirstArtifact: 500,
-    featureUsage: {},
     errors: [],
+    mutationTypes: {
+      silent: 0,
+      missense: 0,
+      nonsense: 0,
+      frameshift: 0,
+      point: 0,
+      insertion: 0,
+      deletion: 0,
+    },
     ...overrides,
   });
 

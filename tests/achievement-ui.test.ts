@@ -22,6 +22,7 @@ const createMockAchievement = (
   description: "Test description",
   icon: "🏆",
   category: "basics",
+  condition: () => true,
   ...overrides,
 });
 
@@ -493,11 +494,29 @@ describe("AchievementUI", () => {
       const ui = new AchievementUI(mockEngine, "achievement-container");
 
       // Update mock to return different stats
-      mockEngine.getStats = mock(() => ({
+      (mockEngine as unknown as Record<string, unknown>).getStats = mock(() => ({
+        genomesCreated: 0,
         genomesExecuted: 50,
         mutationsApplied: 100,
+        shapesDrawn: 0,
+        colorsUsed: 0,
+        transformsApplied: 0,
         challengesCompleted: 20,
         challengesCorrect: 18,
+        consecutiveCorrect: 0,
+        perfectScores: 0,
+        silentIdentified: 0,
+        missenseIdentified: 0,
+        nonsenseIdentified: 0,
+        frameshiftIdentified: 0,
+        insertionIdentified: 0,
+        deletionIdentified: 0,
+        opcodesUsed: new Set<string>(),
+        evolutionGenerations: 0,
+        audioSynthesisUsed: false,
+        timelineStepThroughs: 0,
+        timeSpentMinutes: 0,
+        sessionsCount: 0,
       }));
 
       ui.update();

@@ -17,27 +17,27 @@ import type { MutationType } from "@/types";
 
 // Mock AssessmentEngine
 const createMockEngine = (overrides: Partial<AssessmentEngine> = {}) => {
+  const defaultChallenge: Challenge = {
+    id: "test-challenge",
+    original: "ATGGGG",
+    mutated: "ATGAGG",
+    correctAnswer: "missense" as MutationType,
+    difficulty: "easy" as const,
+    hint: "Look at the second codon",
+    mutationPosition: 3,
+  };
   return {
-    generateChallenge: mock(
-      () =>
-        ({
-          original: "ATGGGG",
-          mutated: "ATGAGG",
-          correctAnswer: "missense" as MutationType,
-          hint: "Look at the second codon",
-        }) as Challenge,
-    ),
-    scoreResponse: mock(
-      (challenge: Challenge, answer: MutationType) =>
-        ({
-          correct: answer === challenge.correctAnswer,
-          feedback:
-            answer === challenge.correctAnswer
-              ? "Great job!"
-              : `Try again. The correct answer was ${challenge.correctAnswer}`,
-          timeSpent: 5000,
-        }) as AssessmentResult,
-    ),
+    generateChallenge: mock(() => defaultChallenge),
+    scoreResponse: mock((challenge: Challenge, answer: MutationType) => ({
+      challenge,
+      studentAnswer: answer,
+      correct: answer === challenge.correctAnswer,
+      feedback:
+        answer === challenge.correctAnswer
+          ? "Great job!"
+          : `Try again. The correct answer was ${challenge.correctAnswer}`,
+      timestamp: new Date(),
+    })),
     calculateProgress: mock((results: AssessmentResult[]) => ({
       totalAttempts: results.length,
       correctAnswers: results.filter((r) => r.correct).length,
@@ -45,6 +45,8 @@ const createMockEngine = (overrides: Partial<AssessmentEngine> = {}) => {
         results.length > 0
           ? (results.filter((r) => r.correct).length / results.length) * 100
           : 0,
+      byType: {} as Record<string, { correct: number; total: number }>,
+      byDifficulty: {} as Record<string, { correct: number; total: number }>,
     })),
     ...overrides,
   } as unknown as AssessmentEngine;
@@ -367,10 +369,13 @@ describe("AssessmentUI", () => {
     test("hides hint when challenge has no hint", () => {
       const engineNoHint = createMockEngine({
         generateChallenge: mock(() => ({
+          id: "test-challenge",
           original: "ATGGGG",
           mutated: "ATGAGG",
           correctAnswer: "missense" as MutationType,
+          difficulty: "easy" as const,
           hint: undefined,
+          mutationPosition: 3,
         })),
       });
       const ui = new AssessmentUI(engineNoHint, container);
@@ -623,6 +628,8 @@ describe("AssessmentUI", () => {
           totalAttempts: 5,
           correctAnswers: 5,
           accuracy: 100,
+          byType: {} as Record<string, { correct: number; total: number }>,
+          byDifficulty: {} as Record<string, { correct: number; total: number }>,
         })),
       });
       const ui = new AssessmentUI(
@@ -885,9 +892,12 @@ describe("AssessmentUI", () => {
     test("handles very long genome strings", () => {
       const longEngine = createMockEngine({
         generateChallenge: mock(() => ({
+          id: "long-genome-challenge",
           original: "ATG".repeat(100),
           mutated: `${"ATG".repeat(99)}GGG`,
           correctAnswer: "missense" as MutationType,
+          difficulty: "easy" as const,
+          mutationPosition: 297,
         })),
       });
       const ui = new AssessmentUI(longEngine, container);

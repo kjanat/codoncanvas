@@ -384,8 +384,8 @@ describe("ShareSystem", () => {
       permalinkBtn.click();
 
       // Check that writeText was called with encoded URL
-      const call = mockClipboard.writeText.mock.calls[0];
-      expect(call[0]).toContain("?genome=");
+      const calls = mockClipboard.writeText.mock.calls as unknown[][];
+      expect(calls[0]?.[0]).toContain("?genome=");
     });
 
     test("appends ?genome=encoded to current URL", () => {
@@ -395,8 +395,8 @@ describe("ShareSystem", () => {
       ) as HTMLButtonElement;
       permalinkBtn.click();
 
-      const call = mockClipboard.writeText.mock.calls[0];
-      expect(call[0]).toMatch(/\?genome=/);
+      const calls = mockClipboard.writeText.mock.calls as unknown[][];
+      expect(calls[0]?.[0]).toMatch(/\?genome=/);
     });
 
     test("strips existing hash and query params from base URL", () => {
@@ -407,9 +407,9 @@ describe("ShareSystem", () => {
       ) as HTMLButtonElement;
       permalinkBtn.click();
 
-      const call = mockClipboard.writeText.mock.calls[0];
+      const calls = mockClipboard.writeText.mock.calls as unknown[][];
       // Should not have double ?
-      expect(call[0].match(/\?/g)?.length).toBe(1);
+      expect((calls[0]?.[0] as string)?.match(/\?/g)?.length).toBe(1);
     });
 
     test("copies permalink to clipboard", () => {
@@ -486,7 +486,7 @@ describe("ShareSystem", () => {
   // downloadGenome
   describe("downloadGenome", () => {
     test("creates Blob with text/plain type", () => {
-      const blobSpy = mock(Blob);
+      const blobSpy = mock((...args: ConstructorParameters<typeof Blob>) => new Blob(...args));
       const originalBlob = global.Blob;
       global.Blob = blobSpy as unknown as typeof Blob;
 
@@ -1128,8 +1128,8 @@ describe("ShareSystem", () => {
       ) as HTMLButtonElement;
       permalinkBtn.click();
 
-      const call = mockClipboard.writeText.mock.calls[0];
-      const url = call[0] as string;
+      const calls = mockClipboard.writeText.mock.calls as unknown[][];
+      const url = calls[0]?.[0] as string;
       const encoded = url.split("?genome=")[1];
       // Should be URL-safe base64
       expect(encoded).toMatch(/^[A-Za-z0-9_-]+$/);
@@ -1142,8 +1142,8 @@ describe("ShareSystem", () => {
       ) as HTMLButtonElement;
       permalinkBtn.click();
 
-      const call = mockClipboard.writeText.mock.calls[0];
-      const url = call[0] as string;
+      const calls = mockClipboard.writeText.mock.calls as unknown[][];
+      const url = calls[0]?.[0] as string;
       expect(url).not.toContain("+");
     });
 
@@ -1154,8 +1154,8 @@ describe("ShareSystem", () => {
       ) as HTMLButtonElement;
       permalinkBtn.click();
 
-      const call = mockClipboard.writeText.mock.calls[0];
-      const url = call[0] as string;
+      const calls = mockClipboard.writeText.mock.calls as unknown[][];
+      const url = calls[0]?.[0] as string;
       // URL should not contain / in the genome parameter
       const genomeParam = url.split("?genome=")[1];
       expect(genomeParam).not.toContain("/");
@@ -1168,8 +1168,8 @@ describe("ShareSystem", () => {
       ) as HTMLButtonElement;
       permalinkBtn.click();
 
-      const call = mockClipboard.writeText.mock.calls[0];
-      const url = call[0] as string;
+      const calls = mockClipboard.writeText.mock.calls as unknown[][];
+      const url = calls[0]?.[0] as string;
       const genomeParam = url.split("?genome=")[1];
       expect(genomeParam).not.toContain("=");
     });
@@ -1864,8 +1864,8 @@ describe("Edge Cases", () => {
     permalinkBtn.click();
 
     // Should create clean URL with just genome param
-    const call = mockClipboard.writeText.mock.calls[0];
-    const url = call[0] as string;
+    const calls = mockClipboard.writeText.mock.calls as unknown[][];
+    const url = calls[0]?.[0] as string;
     expect(url.match(/\?/g)?.length).toBe(1); // Only one ?
 
     container.remove();

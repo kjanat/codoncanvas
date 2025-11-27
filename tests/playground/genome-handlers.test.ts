@@ -172,7 +172,7 @@ describe("Genome Handlers", () => {
     });
 
     test("formats generic error status message", () => {
-      const error = "not an Error";
+      const error: unknown = "not an Error";
       const message =
         error instanceof Error
           ? `Failed to load genome: ${error.message}`

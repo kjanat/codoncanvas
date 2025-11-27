@@ -218,10 +218,10 @@ function generateSession(
     if (renderModeRoll < char.renderModePreference.visual) {
       visualMode = Math.max(
         1,
-        Math.round(total * Random.boundedNormal(0.7, 0.2, 0.3, 1.0)),
+        Math.round(total * randomBoundedNormal(0.7, 0.2, 0.3, 1.0)),
       );
       audioMode = Math.round(
-        (total - visualMode) * Random.boundedNormal(0.3, 0.2, 0, 0.5),
+        (total - visualMode) * randomBoundedNormal(0.3, 0.2, 0, 0.5),
       );
       bothMode = total - visualMode - audioMode;
     } else if (
@@ -230,19 +230,19 @@ function generateSession(
     ) {
       audioMode = Math.max(
         1,
-        Math.round(total * Random.boundedNormal(0.6, 0.2, 0.3, 1.0)),
+        Math.round(total * randomBoundedNormal(0.6, 0.2, 0.3, 1.0)),
       );
       visualMode = Math.round(
-        (total - audioMode) * Random.boundedNormal(0.3, 0.2, 0, 0.5),
+        (total - audioMode) * randomBoundedNormal(0.3, 0.2, 0, 0.5),
       );
       bothMode = total - visualMode - audioMode;
     } else {
       bothMode = Math.max(
         1,
-        Math.round(total * Random.boundedNormal(0.6, 0.2, 0.3, 1.0)),
+        Math.round(total * randomBoundedNormal(0.6, 0.2, 0.3, 1.0)),
       );
       visualMode = Math.round(
-        (total - bothMode) * Random.boundedNormal(0.5, 0.2, 0, 0.7),
+        (total - bothMode) * randomBoundedNormal(0.5, 0.2, 0, 0.7),
       );
       audioMode = total - visualMode - bothMode;
     }

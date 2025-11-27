@@ -87,29 +87,29 @@ describe("CodonCanvas Library Exports", () => {
     test("exports Renderer type interface", () => {
       // Create a mock that satisfies the Renderer interface
       const mockRenderer: Renderer = {
+        width: 500,
+        height: 500,
         clear: () => {},
         circle: () => {},
         rect: () => {},
         line: () => {},
         triangle: () => {},
         ellipse: () => {},
-        setColor: () => {},
+        noise: () => {},
         translate: () => {},
+        setPosition: () => {},
         rotate: () => {},
+        setRotation: () => {},
         scale: () => {},
-        push: () => {},
-        pop: () => {},
-        save: () => {},
-        restore: () => {},
-        getTransformState: () => ({
+        setScale: () => {},
+        setColor: () => {},
+        getCurrentTransform: () => ({
           x: 0,
           y: 0,
           rotation: 0,
-          scaleX: 1,
-          scaleY: 1,
+          scale: 1,
         }),
-        setTransformState: () => {},
-        getColor: () => ({ h: 0, s: 0, l: 0 }),
+        toDataURL: () => "",
       };
       expect(mockRenderer).toBeDefined();
     });
@@ -119,8 +119,7 @@ describe("CodonCanvas Library Exports", () => {
         x: 0,
         y: 0,
         rotation: 0,
-        scaleX: 1,
-        scaleY: 1,
+        scale: 1,
       };
       expect(state).toBeDefined();
     });
@@ -187,7 +186,9 @@ describe("CodonCanvas Library Exports", () => {
 
     test("exports ResearchMetricsOptions type", () => {
       const options: ResearchMetricsOptions = {
-        sessionId: "test-session",
+        enabled: true,
+        maxSessions: 100,
+        autoSaveInterval: 60000,
       };
       expect(options).toBeDefined();
     });
@@ -203,32 +204,32 @@ describe("CodonCanvas Library Exports", () => {
 
     test("exports ExecutionEvent type", () => {
       const event: ExecutionEvent = {
-        type: "execution",
         timestamp: Date.now(),
-        genomeLength: 30,
-        tokenCount: 10,
-        errorCount: 0,
         renderMode: "visual",
+        genomeLength: 30,
+        instructionCount: 10,
+        success: true,
       };
-      expect(event.type).toBe("execution");
+      expect(event.renderMode).toBe("visual");
     });
 
     test("exports FeatureEvent type", () => {
       const event: FeatureEvent = {
-        type: "feature",
         timestamp: Date.now(),
         feature: "diffViewer",
+        action: "open",
       };
-      expect(event.type).toBe("feature");
+      expect(event.feature).toBe("diffViewer");
     });
 
     test("exports MutationEvent type", () => {
       const event: MutationEvent = {
-        type: "mutation",
         timestamp: Date.now(),
-        mutationType: "point",
+        type: "point",
+        genomeLengthBefore: 30,
+        genomeLengthAfter: 33,
       };
-      expect(event.type).toBe("mutation");
+      expect(event.type).toBe("point");
     });
   });
 

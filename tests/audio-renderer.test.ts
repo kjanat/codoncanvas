@@ -131,29 +131,18 @@ const originalAudioContext = globalThis.AudioContext;
 describe("AudioRenderer", () => {
   beforeEach(() => {
     // Mock AudioContext
-    (
-      globalThis as unknown as { AudioContext: typeof MockAudioContext }
-    ).AudioContext = MockAudioContext as unknown as typeof AudioContext;
+    (globalThis as Record<string, unknown>).AudioContext = MockAudioContext;
     // Mock MediaRecorder
-    (
-      globalThis as unknown as { MediaRecorder: typeof MockMediaRecorder }
-    ).MediaRecorder = MockMediaRecorder as unknown as typeof MediaRecorder;
+    (globalThis as Record<string, unknown>).MediaRecorder = MockMediaRecorder;
     // Mock MediaStream
-    (
-      globalThis as unknown as { MediaStream: typeof MockMediaStream }
-    ).MediaStream = MockMediaStream as unknown as typeof MediaStream;
+    (globalThis as Record<string, unknown>).MediaStream = MockMediaStream;
   });
 
   afterEach(() => {
     // Restore original
-    (
-      globalThis as unknown as { AudioContext: typeof AudioContext }
-    ).AudioContext = originalAudioContext;
-    (
-      globalThis as unknown as { MediaRecorder: typeof MediaRecorder }
-    ).MediaRecorder = originalMediaRecorder;
-    (globalThis as unknown as { MediaStream: typeof MediaStream }).MediaStream =
-      originalMediaStream;
+    (globalThis as Record<string, unknown>).AudioContext = originalAudioContext;
+    (globalThis as Record<string, unknown>).MediaRecorder = originalMediaRecorder;
+    (globalThis as Record<string, unknown>).MediaStream = originalMediaStream;
   });
 
   // Constructor & Properties

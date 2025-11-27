@@ -167,7 +167,7 @@ function generatePrePostData(params: GenerationParams): ParticipantData[] {
       pretest_total,
       posttest_total,
       delayed_total,
-      ...(subscales as SubscaleScores),
+      ...(subscales as unknown as SubscaleScores),
       mtt_score: mtt_score.toFixed(1),
       imi_interest: imi_interest.toFixed(1),
       imi_competence: imi_competence.toFixed(1),

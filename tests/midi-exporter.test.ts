@@ -15,12 +15,18 @@ import {
 import { Opcode, type VMState } from "@/types";
 import { CodonVM } from "@/vm";
 
-// Helper function to create a minimal VMState snapshot
-function createSnapshot(overrides: Partial<VMState> = {}): Partial<VMState> {
+// Helper function to create a complete VMState snapshot
+function createSnapshot(overrides: Partial<VMState> = {}): VMState {
   return {
-    pc: 0,
+    position: { x: 250, y: 250 },
+    rotation: 0,
+    scale: 1,
+    color: { h: 0, s: 100, l: 50 },
     stack: [],
-    running: true,
+    instructionPointer: 0,
+    stateStack: [],
+    instructionCount: 0,
+    seed: 12345,
     ...overrides,
   };
 }

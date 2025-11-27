@@ -195,7 +195,7 @@ describe("Mutation Handlers", () => {
     });
 
     test("handles unknown exceptions with generic error pattern", () => {
-      const error = "not an Error";
+      const error: unknown = "not an Error";
       const message =
         error instanceof Error
           ? `Mutation failed: ${error.message}`

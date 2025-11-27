@@ -74,7 +74,7 @@ function parseCSV(filepath: string): MetricsSession[] {
       }
     });
 
-    sessions.push(session as MetricsSession);
+    sessions.push(session as unknown as MetricsSession);
   }
 
   return sessions;
