@@ -11,7 +11,7 @@
     // Consider enabling incrementally for new code
     "noImplicitReturns": true,
     "noFallthroughCasesInSwitch": true,
-    "noPropertyAccessFromIndexSignature": true,
+    "noPropertyAccessFromIndexSignature": false,
 
     // Module interop
     "esModuleInterop": true,

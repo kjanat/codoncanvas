@@ -5,15 +5,15 @@
  * Maps visual opcodes to musical notes and control changes.
  */
 import { afterEach, beforeEach, describe, expect, test } from "bun:test";
+import { CodonLexer } from "@/lexer";
 import { MIDIExporter } from "@/midi-exporter";
 import { Canvas2DRenderer } from "@/renderer";
-import { Opcode, type VMState } from "@/types";
-import { CodonLexer } from "@/lexer";
-import { CodonVM } from "@/vm";
 import {
   mockCanvasContext,
   restoreCanvasContext,
 } from "@/test-utils/canvas-mock";
+import { Opcode, type VMState } from "@/types";
+import { CodonVM } from "@/vm";
 
 // Helper function to create a minimal VMState snapshot
 function createSnapshot(overrides: Partial<VMState> = {}): Partial<VMState> {
@@ -47,7 +47,9 @@ describe("MIDIExporter", () => {
   describe("constructor", () => {
     test("initializes with TICKS_PER_QUARTER = 480", async () => {
       // Generate a minimal MIDI file and check header for ticks per quarter
-      const snapshots: VMState[] = [createSnapshot({ lastOpcode: Opcode.START })];
+      const snapshots: VMState[] = [
+        createSnapshot({ lastOpcode: Opcode.START }),
+      ];
       const blob = exporter.generateMIDI(snapshots);
       const bytes = await readMIDIBytes(blob);
 
@@ -58,7 +60,9 @@ describe("MIDIExporter", () => {
 
     test("initializes with DEFAULT_TEMPO = 120 BPM", async () => {
       // Generate MIDI with default tempo and check tempo meta event
-      const snapshots: VMState[] = [createSnapshot({ lastOpcode: Opcode.CIRCLE })];
+      const snapshots: VMState[] = [
+        createSnapshot({ lastOpcode: Opcode.CIRCLE }),
+      ];
       const blob = exporter.generateMIDI(snapshots);
       const bytes = await readMIDIBytes(blob);
 
@@ -67,7 +71,11 @@ describe("MIDIExporter", () => {
       // 500000 = 0x07A120
       let foundTempo = false;
       for (let i = 0; i < bytes.length - 5; i++) {
-        if (bytes[i] === 0xff && bytes[i + 1] === 0x51 && bytes[i + 2] === 0x03) {
+        if (
+          bytes[i] === 0xff &&
+          bytes[i + 1] === 0x51 &&
+          bytes[i + 2] === 0x03
+        ) {
           const tempo =
             (bytes[i + 3] << 16) | (bytes[i + 4] << 8) | bytes[i + 5];
           expect(tempo).toBe(500000);
@@ -80,7 +88,9 @@ describe("MIDIExporter", () => {
 
     test("initializes with DEFAULT_VELOCITY = 80", async () => {
       // Generate MIDI with a note and check velocity
-      const snapshots: VMState[] = [createSnapshot({ lastOpcode: Opcode.CIRCLE })];
+      const snapshots: VMState[] = [
+        createSnapshot({ lastOpcode: Opcode.CIRCLE }),
+      ];
       const blob = exporter.generateMIDI(snapshots);
       const bytes = await readMIDIBytes(blob);
 
@@ -101,7 +111,9 @@ describe("MIDIExporter", () => {
     test("initializes with NOTE_DURATION_TICKS = 480 (1 quarter note)", async () => {
       // The duration is used for note off timing
       // We verify by checking that note on/off pairs have 480 tick delta
-      const snapshots: VMState[] = [createSnapshot({ lastOpcode: Opcode.CIRCLE })];
+      const snapshots: VMState[] = [
+        createSnapshot({ lastOpcode: Opcode.CIRCLE }),
+      ];
       const blob = exporter.generateMIDI(snapshots);
 
       // The file should be created successfully
@@ -112,7 +124,9 @@ describe("MIDIExporter", () => {
   // generateMIDI - Main Export Function
   describe("generateMIDI", () => {
     test("returns Blob with type 'audio/midi'", () => {
-      const snapshots: VMState[] = [createSnapshot({ lastOpcode: Opcode.CIRCLE })];
+      const snapshots: VMState[] = [
+        createSnapshot({ lastOpcode: Opcode.CIRCLE }),
+      ];
       const blob = exporter.generateMIDI(snapshots);
 
       expect(blob).toBeInstanceOf(Blob);
@@ -120,14 +134,20 @@ describe("MIDIExporter", () => {
     });
 
     test("uses provided tempo parameter (default 120 BPM)", async () => {
-      const snapshots: VMState[] = [createSnapshot({ lastOpcode: Opcode.CIRCLE })];
+      const snapshots: VMState[] = [
+        createSnapshot({ lastOpcode: Opcode.CIRCLE }),
+      ];
       const blob = exporter.generateMIDI(snapshots, 60); // 60 BPM
       const bytes = await readMIDIBytes(blob);
 
       // At 60 BPM, microseconds per quarter = 60000000 / 60 = 1000000
       let foundTempo = false;
       for (let i = 0; i < bytes.length - 5; i++) {
-        if (bytes[i] === 0xff && bytes[i + 1] === 0x51 && bytes[i + 2] === 0x03) {
+        if (
+          bytes[i] === 0xff &&
+          bytes[i + 1] === 0x51 &&
+          bytes[i + 2] === 0x03
+        ) {
           const tempo =
             (bytes[i + 3] << 16) | (bytes[i + 4] << 8) | bytes[i + 5];
           expect(tempo).toBe(1000000);
@@ -139,7 +159,9 @@ describe("MIDIExporter", () => {
     });
 
     test("adds tempo meta event at start of file", async () => {
-      const snapshots: VMState[] = [createSnapshot({ lastOpcode: Opcode.CIRCLE })];
+      const snapshots: VMState[] = [
+        createSnapshot({ lastOpcode: Opcode.CIRCLE }),
+      ];
       const blob = exporter.generateMIDI(snapshots);
       const bytes = await readMIDIBytes(blob);
 
@@ -151,7 +173,11 @@ describe("MIDIExporter", () => {
 
       // Should find FF 51 03 within first few bytes of track data
       let foundTempo = false;
-      for (let i = trackStart; i < Math.min(trackStart + 20, bytes.length - 5); i++) {
+      for (
+        let i = trackStart;
+        i < Math.min(trackStart + 20, bytes.length - 5);
+        i++
+      ) {
         if (bytes[i] === 0xff && bytes[i + 1] === 0x51) {
           foundTempo = true;
           break;
@@ -161,7 +187,9 @@ describe("MIDIExporter", () => {
     });
 
     test("adds End of Track meta event at end", async () => {
-      const snapshots: VMState[] = [createSnapshot({ lastOpcode: Opcode.CIRCLE })];
+      const snapshots: VMState[] = [
+        createSnapshot({ lastOpcode: Opcode.CIRCLE }),
+      ];
       const blob = exporter.generateMIDI(snapshots);
       const bytes = await readMIDIBytes(blob);
 
@@ -183,7 +211,7 @@ describe("MIDIExporter", () => {
 
       // Should contain note events for all three opcodes
       // CIRCLE -> 60, RECT -> 64, LINE -> 67
-      let notes: number[] = [];
+      const notes: number[] = [];
       for (let i = 0; i < bytes.length - 2; i++) {
         if (bytes[i] === 0x90) {
           notes.push(bytes[i + 1]);
@@ -195,7 +223,9 @@ describe("MIDIExporter", () => {
     });
 
     test("generates MIDI events from snapshot.lastOpcode", async () => {
-      const snapshots: VMState[] = [createSnapshot({ lastOpcode: Opcode.CIRCLE })];
+      const snapshots: VMState[] = [
+        createSnapshot({ lastOpcode: Opcode.CIRCLE }),
+      ];
       const blob = exporter.generateMIDI(snapshots);
       const bytes = await readMIDIBytes(blob);
 
@@ -242,7 +272,9 @@ describe("MIDIExporter", () => {
     });
 
     test("tracks lastVelocity starting at DEFAULT_VELOCITY", async () => {
-      const snapshots: VMState[] = [createSnapshot({ lastOpcode: Opcode.CIRCLE })];
+      const snapshots: VMState[] = [
+        createSnapshot({ lastOpcode: Opcode.CIRCLE }),
+      ];
       const blob = exporter.generateMIDI(snapshots);
       const bytes = await readMIDIBytes(blob);
 
@@ -285,7 +317,9 @@ describe("MIDIExporter", () => {
     });
 
     test("handles single snapshot", async () => {
-      const snapshots: VMState[] = [createSnapshot({ lastOpcode: Opcode.CIRCLE })];
+      const snapshots: VMState[] = [
+        createSnapshot({ lastOpcode: Opcode.CIRCLE }),
+      ];
       const blob = exporter.generateMIDI(snapshots);
 
       expect(blob.size).toBeGreaterThan(14); // Header is 14 bytes
@@ -306,7 +340,9 @@ describe("MIDIExporter", () => {
     // DRAWING OPCODES -> NOTES
     describe("drawing opcodes produce notes", () => {
       test("CIRCLE -> Note C4 (60) sine wave representation", async () => {
-        const snapshots: VMState[] = [createSnapshot({ lastOpcode: Opcode.CIRCLE })];
+        const snapshots: VMState[] = [
+          createSnapshot({ lastOpcode: Opcode.CIRCLE }),
+        ];
         const blob = exporter.generateMIDI(snapshots);
         const bytes = await readMIDIBytes(blob);
 
@@ -321,7 +357,9 @@ describe("MIDIExporter", () => {
       });
 
       test("RECT -> Note E4 (64) square wave representation", async () => {
-        const snapshots: VMState[] = [createSnapshot({ lastOpcode: Opcode.RECT })];
+        const snapshots: VMState[] = [
+          createSnapshot({ lastOpcode: Opcode.RECT }),
+        ];
         const blob = exporter.generateMIDI(snapshots);
         const bytes = await readMIDIBytes(blob);
 
@@ -336,7 +374,9 @@ describe("MIDIExporter", () => {
       });
 
       test("LINE -> Note G4 (67) sawtooth wave representation", async () => {
-        const snapshots: VMState[] = [createSnapshot({ lastOpcode: Opcode.LINE })];
+        const snapshots: VMState[] = [
+          createSnapshot({ lastOpcode: Opcode.LINE }),
+        ];
         const blob = exporter.generateMIDI(snapshots);
         const bytes = await readMIDIBytes(blob);
 
@@ -351,7 +391,9 @@ describe("MIDIExporter", () => {
       });
 
       test("TRIANGLE -> Note A4 (69) triangle wave representation", async () => {
-        const snapshots: VMState[] = [createSnapshot({ lastOpcode: Opcode.TRIANGLE })];
+        const snapshots: VMState[] = [
+          createSnapshot({ lastOpcode: Opcode.TRIANGLE }),
+        ];
         const blob = exporter.generateMIDI(snapshots);
         const bytes = await readMIDIBytes(blob);
 
@@ -366,7 +408,9 @@ describe("MIDIExporter", () => {
       });
 
       test("ELLIPSE -> Note C5 (72) FM synthesis representation", async () => {
-        const snapshots: VMState[] = [createSnapshot({ lastOpcode: Opcode.ELLIPSE })];
+        const snapshots: VMState[] = [
+          createSnapshot({ lastOpcode: Opcode.ELLIPSE }),
+        ];
         const blob = exporter.generateMIDI(snapshots);
         const bytes = await readMIDIBytes(blob);
 
@@ -498,7 +542,9 @@ describe("MIDIExporter", () => {
       });
 
       test("DUP does not produce MIDI event", async () => {
-        const snapshots: VMState[] = [createSnapshot({ lastOpcode: Opcode.DUP })];
+        const snapshots: VMState[] = [
+          createSnapshot({ lastOpcode: Opcode.DUP }),
+        ];
         const blob = exporter.generateMIDI(snapshots);
         const bytes = await readMIDIBytes(blob);
 
@@ -513,7 +559,9 @@ describe("MIDIExporter", () => {
       });
 
       test("POP does not produce MIDI event", async () => {
-        const snapshots: VMState[] = [createSnapshot({ lastOpcode: Opcode.POP })];
+        const snapshots: VMState[] = [
+          createSnapshot({ lastOpcode: Opcode.POP }),
+        ];
         const blob = exporter.generateMIDI(snapshots);
         const bytes = await readMIDIBytes(blob);
 
@@ -528,7 +576,9 @@ describe("MIDIExporter", () => {
       });
 
       test("SWAP does not produce MIDI event", async () => {
-        const snapshots: VMState[] = [createSnapshot({ lastOpcode: Opcode.SWAP })];
+        const snapshots: VMState[] = [
+          createSnapshot({ lastOpcode: Opcode.SWAP }),
+        ];
         const blob = exporter.generateMIDI(snapshots);
         const bytes = await readMIDIBytes(blob);
 
@@ -543,7 +593,9 @@ describe("MIDIExporter", () => {
       });
 
       test("NOP does not produce MIDI event", async () => {
-        const snapshots: VMState[] = [createSnapshot({ lastOpcode: Opcode.NOP })];
+        const snapshots: VMState[] = [
+          createSnapshot({ lastOpcode: Opcode.NOP }),
+        ];
         const blob = exporter.generateMIDI(snapshots);
         const bytes = await readMIDIBytes(blob);
 
@@ -558,7 +610,9 @@ describe("MIDIExporter", () => {
       });
 
       test("START does not produce MIDI event", async () => {
-        const snapshots: VMState[] = [createSnapshot({ lastOpcode: Opcode.START })];
+        const snapshots: VMState[] = [
+          createSnapshot({ lastOpcode: Opcode.START }),
+        ];
         const blob = exporter.generateMIDI(snapshots);
         const bytes = await readMIDIBytes(blob);
 
@@ -573,7 +627,9 @@ describe("MIDIExporter", () => {
       });
 
       test("STOP does not produce MIDI event", async () => {
-        const snapshots: VMState[] = [createSnapshot({ lastOpcode: Opcode.STOP })];
+        const snapshots: VMState[] = [
+          createSnapshot({ lastOpcode: Opcode.STOP }),
+        ];
         const blob = exporter.generateMIDI(snapshots);
         const bytes = await readMIDIBytes(blob);
 
@@ -591,7 +647,9 @@ describe("MIDIExporter", () => {
     // COMPARISON OPCODES -> SHORT NOTES
     describe("comparison opcodes produce short high notes", () => {
       test("EQ -> Note 84 with 1/4 duration (data operation indicator)", async () => {
-        const snapshots: VMState[] = [createSnapshot({ lastOpcode: Opcode.EQ })];
+        const snapshots: VMState[] = [
+          createSnapshot({ lastOpcode: Opcode.EQ }),
+        ];
         const blob = exporter.generateMIDI(snapshots);
         const bytes = await readMIDIBytes(blob);
 
@@ -606,7 +664,9 @@ describe("MIDIExporter", () => {
       });
 
       test("LT -> Note 84 with 1/4 duration (data operation indicator)", async () => {
-        const snapshots: VMState[] = [createSnapshot({ lastOpcode: Opcode.LT })];
+        const snapshots: VMState[] = [
+          createSnapshot({ lastOpcode: Opcode.LT }),
+        ];
         const blob = exporter.generateMIDI(snapshots);
         const bytes = await readMIDIBytes(blob);
 
@@ -625,7 +685,9 @@ describe("MIDIExporter", () => {
   // MIDI Event Creation Helpers
   describe("createNoteEvents (private)", () => {
     test("creates Note On event with status 0x90 | channel", async () => {
-      const snapshots: VMState[] = [createSnapshot({ lastOpcode: Opcode.CIRCLE })];
+      const snapshots: VMState[] = [
+        createSnapshot({ lastOpcode: Opcode.CIRCLE }),
+      ];
       const blob = exporter.generateMIDI(snapshots);
       const bytes = await readMIDIBytes(blob);
 
@@ -641,7 +703,9 @@ describe("MIDIExporter", () => {
     });
 
     test("creates Note Off event with status 0x80 | channel", async () => {
-      const snapshots: VMState[] = [createSnapshot({ lastOpcode: Opcode.CIRCLE })];
+      const snapshots: VMState[] = [
+        createSnapshot({ lastOpcode: Opcode.CIRCLE }),
+      ];
       const blob = exporter.generateMIDI(snapshots);
       const bytes = await readMIDIBytes(blob);
 
@@ -673,7 +737,9 @@ describe("MIDIExporter", () => {
     });
 
     test("Note Off uses velocity 64 (standard release)", async () => {
-      const snapshots: VMState[] = [createSnapshot({ lastOpcode: Opcode.CIRCLE })];
+      const snapshots: VMState[] = [
+        createSnapshot({ lastOpcode: Opcode.CIRCLE }),
+      ];
       const blob = exporter.generateMIDI(snapshots);
       const bytes = await readMIDIBytes(blob);
 
@@ -687,7 +753,9 @@ describe("MIDIExporter", () => {
 
     test("delta time between On and Off equals duration", () => {
       // This is implicitly tested - the MIDI file should parse correctly
-      const snapshots: VMState[] = [createSnapshot({ lastOpcode: Opcode.CIRCLE })];
+      const snapshots: VMState[] = [
+        createSnapshot({ lastOpcode: Opcode.CIRCLE }),
+      ];
       const blob = exporter.generateMIDI(snapshots);
       expect(blob.size).toBeGreaterThan(0);
     });
@@ -798,7 +866,7 @@ describe("MIDIExporter", () => {
     test("converts BPM to microseconds per quarter note", async () => {
       const blob = exporter.generateMIDI(
         [createSnapshot({ lastOpcode: Opcode.CIRCLE })],
-        120
+        120,
       );
       const bytes = await readMIDIBytes(blob);
 
@@ -816,12 +884,16 @@ describe("MIDIExporter", () => {
     test("120 BPM -> 500000 microseconds (60000000/120)", async () => {
       const blob = exporter.generateMIDI(
         [createSnapshot({ lastOpcode: Opcode.CIRCLE })],
-        120
+        120,
       );
       const bytes = await readMIDIBytes(blob);
 
       for (let i = 0; i < bytes.length - 5; i++) {
-        if (bytes[i] === 0xff && bytes[i + 1] === 0x51 && bytes[i + 2] === 0x03) {
+        if (
+          bytes[i] === 0xff &&
+          bytes[i + 1] === 0x51 &&
+          bytes[i + 2] === 0x03
+        ) {
           const tempo =
             (bytes[i + 3] << 16) | (bytes[i + 4] << 8) | bytes[i + 5];
           expect(tempo).toBe(500000);
@@ -834,7 +906,7 @@ describe("MIDIExporter", () => {
       // Tempo is always 3 bytes in MIDI
       const blob = exporter.generateMIDI(
         [createSnapshot({ lastOpcode: Opcode.CIRCLE })],
-        120
+        120,
       );
       const bytes = await readMIDIBytes(blob);
 
@@ -851,12 +923,16 @@ describe("MIDIExporter", () => {
       // 500000 = 0x07A120
       const blob = exporter.generateMIDI(
         [createSnapshot({ lastOpcode: Opcode.CIRCLE })],
-        120
+        120,
       );
       const bytes = await readMIDIBytes(blob);
 
       for (let i = 0; i < bytes.length - 5; i++) {
-        if (bytes[i] === 0xff && bytes[i + 1] === 0x51 && bytes[i + 2] === 0x03) {
+        if (
+          bytes[i] === 0xff &&
+          bytes[i + 1] === 0x51 &&
+          bytes[i + 2] === 0x03
+        ) {
           expect(bytes[i + 3]).toBe(0x07); // High byte
           expect(bytes[i + 4]).toBe(0xa1); // Middle byte
           expect(bytes[i + 5]).toBe(0x20); // Low byte
@@ -869,17 +945,19 @@ describe("MIDIExporter", () => {
   // MIDI File Building
   describe("buildMIDIFile (private)", () => {
     test("concatenates header and track chunks", async () => {
-      const blob = exporter.generateMIDI([createSnapshot({ lastOpcode: Opcode.CIRCLE })]);
+      const blob = exporter.generateMIDI([
+        createSnapshot({ lastOpcode: Opcode.CIRCLE }),
+      ]);
       const bytes = await readMIDIBytes(blob);
 
       // Should start with MThd
       expect(String.fromCharCode(bytes[0], bytes[1], bytes[2], bytes[3])).toBe(
-        "MThd"
+        "MThd",
       );
 
       // Should have MTrk after header (14 bytes)
       expect(
-        String.fromCharCode(bytes[14], bytes[15], bytes[16], bytes[17])
+        String.fromCharCode(bytes[14], bytes[15], bytes[16], bytes[17]),
       ).toBe("MTrk");
     });
 
@@ -906,7 +984,9 @@ describe("MIDIExporter", () => {
     });
 
     test("first event has delta time 0", async () => {
-      const blob = exporter.generateMIDI([createSnapshot({ lastOpcode: Opcode.CIRCLE })]);
+      const blob = exporter.generateMIDI([
+        createSnapshot({ lastOpcode: Opcode.CIRCLE }),
+      ]);
       const bytes = await readMIDIBytes(blob);
 
       // First event in track should have delta 0
@@ -927,7 +1007,9 @@ describe("MIDIExporter", () => {
 
   describe("encodeHeader (private)", () => {
     test("starts with 'MThd' magic bytes (0x4D546864)", async () => {
-      const blob = exporter.generateMIDI([createSnapshot({ lastOpcode: Opcode.CIRCLE })]);
+      const blob = exporter.generateMIDI([
+        createSnapshot({ lastOpcode: Opcode.CIRCLE }),
+      ]);
       const bytes = await readMIDIBytes(blob);
 
       expect(bytes[0]).toBe(0x4d); // 'M'
@@ -937,16 +1019,21 @@ describe("MIDIExporter", () => {
     });
 
     test("header length is 6 bytes", async () => {
-      const blob = exporter.generateMIDI([createSnapshot({ lastOpcode: Opcode.CIRCLE })]);
+      const blob = exporter.generateMIDI([
+        createSnapshot({ lastOpcode: Opcode.CIRCLE }),
+      ]);
       const bytes = await readMIDIBytes(blob);
 
       // Header length at bytes 4-7 (big-endian 32-bit)
-      const length = (bytes[4] << 24) | (bytes[5] << 16) | (bytes[6] << 8) | bytes[7];
+      const length =
+        (bytes[4] << 24) | (bytes[5] << 16) | (bytes[6] << 8) | bytes[7];
       expect(length).toBe(6);
     });
 
     test("format is 0 (single track)", async () => {
-      const blob = exporter.generateMIDI([createSnapshot({ lastOpcode: Opcode.CIRCLE })]);
+      const blob = exporter.generateMIDI([
+        createSnapshot({ lastOpcode: Opcode.CIRCLE }),
+      ]);
       const bytes = await readMIDIBytes(blob);
 
       // Format at bytes 8-9
@@ -955,7 +1042,9 @@ describe("MIDIExporter", () => {
     });
 
     test("includes number of tracks", async () => {
-      const blob = exporter.generateMIDI([createSnapshot({ lastOpcode: Opcode.CIRCLE })]);
+      const blob = exporter.generateMIDI([
+        createSnapshot({ lastOpcode: Opcode.CIRCLE }),
+      ]);
       const bytes = await readMIDIBytes(blob);
 
       // Number of tracks at bytes 10-11
@@ -964,7 +1053,9 @@ describe("MIDIExporter", () => {
     });
 
     test("includes ticks per quarter note", async () => {
-      const blob = exporter.generateMIDI([createSnapshot({ lastOpcode: Opcode.CIRCLE })]);
+      const blob = exporter.generateMIDI([
+        createSnapshot({ lastOpcode: Opcode.CIRCLE }),
+      ]);
       const bytes = await readMIDIBytes(blob);
 
       // Ticks at bytes 12-13
@@ -973,7 +1064,9 @@ describe("MIDIExporter", () => {
     });
 
     test("total header size is 14 bytes", async () => {
-      const blob = exporter.generateMIDI([createSnapshot({ lastOpcode: Opcode.CIRCLE })]);
+      const blob = exporter.generateMIDI([
+        createSnapshot({ lastOpcode: Opcode.CIRCLE }),
+      ]);
       const bytes = await readMIDIBytes(blob);
 
       // Track chunk should start at byte 14
@@ -983,7 +1076,9 @@ describe("MIDIExporter", () => {
 
   describe("encodeTrack (private)", () => {
     test("starts with 'MTrk' magic bytes (0x4D54726B)", async () => {
-      const blob = exporter.generateMIDI([createSnapshot({ lastOpcode: Opcode.CIRCLE })]);
+      const blob = exporter.generateMIDI([
+        createSnapshot({ lastOpcode: Opcode.CIRCLE }),
+      ]);
       const bytes = await readMIDIBytes(blob);
 
       expect(bytes[14]).toBe(0x4d); // 'M'
@@ -993,7 +1088,9 @@ describe("MIDIExporter", () => {
     });
 
     test("includes 4-byte track length", async () => {
-      const blob = exporter.generateMIDI([createSnapshot({ lastOpcode: Opcode.CIRCLE })]);
+      const blob = exporter.generateMIDI([
+        createSnapshot({ lastOpcode: Opcode.CIRCLE }),
+      ]);
       const bytes = await readMIDIBytes(blob);
 
       // Track length at bytes 18-21
@@ -1017,13 +1114,19 @@ describe("MIDIExporter", () => {
     });
 
     test("encodes meta events as FF <type> <length> <data>", async () => {
-      const blob = exporter.generateMIDI([createSnapshot({ lastOpcode: Opcode.CIRCLE })]);
+      const blob = exporter.generateMIDI([
+        createSnapshot({ lastOpcode: Opcode.CIRCLE }),
+      ]);
       const bytes = await readMIDIBytes(blob);
 
       // Find tempo meta event (FF 51 03 ...)
       let foundMeta = false;
       for (let i = 0; i < bytes.length - 3; i++) {
-        if (bytes[i] === 0xff && bytes[i + 1] === 0x51 && bytes[i + 2] === 0x03) {
+        if (
+          bytes[i] === 0xff &&
+          bytes[i + 1] === 0x51 &&
+          bytes[i + 2] === 0x03
+        ) {
           foundMeta = true;
           break;
         }
@@ -1032,7 +1135,9 @@ describe("MIDIExporter", () => {
     });
 
     test("encodes channel events as <status> <data>", async () => {
-      const blob = exporter.generateMIDI([createSnapshot({ lastOpcode: Opcode.CIRCLE })]);
+      const blob = exporter.generateMIDI([
+        createSnapshot({ lastOpcode: Opcode.CIRCLE }),
+      ]);
       const bytes = await readMIDIBytes(blob);
 
       // Find Note On event (0x90 <note> <velocity>)
@@ -1050,7 +1155,9 @@ describe("MIDIExporter", () => {
   describe("encodeVariableLength (private)", () => {
     test("encodes 0 as single byte 0x00", async () => {
       // First delta in track should be 0
-      const blob = exporter.generateMIDI([createSnapshot({ lastOpcode: Opcode.CIRCLE })]);
+      const blob = exporter.generateMIDI([
+        createSnapshot({ lastOpcode: Opcode.CIRCLE }),
+      ]);
       const bytes = await readMIDIBytes(blob);
 
       expect(bytes[22]).toBe(0x00);
@@ -1059,27 +1166,35 @@ describe("MIDIExporter", () => {
     test("encodes 127 as single byte 0x7F", () => {
       // Values <= 127 encode as single byte
       // Tested implicitly via file generation
-      const blob = exporter.generateMIDI([createSnapshot({ lastOpcode: Opcode.CIRCLE })]);
+      const blob = exporter.generateMIDI([
+        createSnapshot({ lastOpcode: Opcode.CIRCLE }),
+      ]);
       expect(blob.size).toBeGreaterThan(0);
     });
 
     test("encodes 128 as two bytes 0x81 0x00", () => {
       // Values > 127 require multi-byte encoding
       // 128 = 0x81 0x00 in variable length
-      const blob = exporter.generateMIDI([createSnapshot({ lastOpcode: Opcode.CIRCLE })]);
+      const blob = exporter.generateMIDI([
+        createSnapshot({ lastOpcode: Opcode.CIRCLE }),
+      ]);
       expect(blob.size).toBeGreaterThan(0);
     });
 
     test("encodes 16383 as two bytes 0xFF 0x7F", () => {
       // Maximum 2-byte value
       // Tested implicitly
-      const blob = exporter.generateMIDI([createSnapshot({ lastOpcode: Opcode.CIRCLE })]);
+      const blob = exporter.generateMIDI([
+        createSnapshot({ lastOpcode: Opcode.CIRCLE }),
+      ]);
       expect(blob.size).toBeGreaterThan(0);
     });
 
     test("sets high bit on all bytes except last", () => {
       // This is the variable-length encoding rule
-      const blob = exporter.generateMIDI([createSnapshot({ lastOpcode: Opcode.CIRCLE })]);
+      const blob = exporter.generateMIDI([
+        createSnapshot({ lastOpcode: Opcode.CIRCLE }),
+      ]);
       expect(blob.size).toBeGreaterThan(0);
     });
 
@@ -1131,7 +1246,7 @@ describe("MIDIExporter", () => {
 
       // Valid MThd header
       expect(String.fromCharCode(bytes[0], bytes[1], bytes[2], bytes[3])).toBe(
-        "MThd"
+        "MThd",
       );
 
       // Format 0
@@ -1141,9 +1256,9 @@ describe("MIDIExporter", () => {
       expect((bytes[10] << 8) | bytes[11]).toBe(1);
 
       // Valid MTrk
-      expect(String.fromCharCode(bytes[14], bytes[15], bytes[16], bytes[17])).toBe(
-        "MTrk"
-      );
+      expect(
+        String.fromCharCode(bytes[14], bytes[15], bytes[16], bytes[17]),
+      ).toBe("MTrk");
 
       // End of track marker
       const lastBytes = bytes.slice(-3);
@@ -1153,7 +1268,9 @@ describe("MIDIExporter", () => {
     });
 
     test("tempo changes affect note timing correctly", async () => {
-      const snapshots: VMState[] = [createSnapshot({ lastOpcode: Opcode.CIRCLE })];
+      const snapshots: VMState[] = [
+        createSnapshot({ lastOpcode: Opcode.CIRCLE }),
+      ];
 
       const blob60 = exporter.generateMIDI(snapshots, 60);
       const blob120 = exporter.generateMIDI(snapshots, 120);
@@ -1167,14 +1284,16 @@ describe("MIDIExporter", () => {
 
       for (let i = 0; i < bytes60.length - 5; i++) {
         if (bytes60[i] === 0xff && bytes60[i + 1] === 0x51) {
-          tempo60 = (bytes60[i + 3] << 16) | (bytes60[i + 4] << 8) | bytes60[i + 5];
+          tempo60 =
+            (bytes60[i + 3] << 16) | (bytes60[i + 4] << 8) | bytes60[i + 5];
           break;
         }
       }
 
       for (let i = 0; i < bytes120.length - 5; i++) {
         if (bytes120[i] === 0xff && bytes120[i + 1] === 0x51) {
-          tempo120 = (bytes120[i + 3] << 16) | (bytes120[i + 4] << 8) | bytes120[i + 5];
+          tempo120 =
+            (bytes120[i + 3] << 16) | (bytes120[i + 4] << 8) | bytes120[i + 5];
           break;
         }
       }
@@ -1283,14 +1402,17 @@ describe("MIDIExporter", () => {
     });
 
     test("handles very fast tempo (300+ BPM)", async () => {
-      const snapshots: VMState[] = [createSnapshot({ lastOpcode: Opcode.CIRCLE })];
+      const snapshots: VMState[] = [
+        createSnapshot({ lastOpcode: Opcode.CIRCLE }),
+      ];
       const blob = exporter.generateMIDI(snapshots, 300);
       const bytes = await readMIDIBytes(blob);
 
       // At 300 BPM, tempo = 60000000 / 300 = 200000
       for (let i = 0; i < bytes.length - 5; i++) {
         if (bytes[i] === 0xff && bytes[i + 1] === 0x51) {
-          const tempo = (bytes[i + 3] << 16) | (bytes[i + 4] << 8) | bytes[i + 5];
+          const tempo =
+            (bytes[i + 3] << 16) | (bytes[i + 4] << 8) | bytes[i + 5];
           expect(tempo).toBe(200000);
           break;
         }
@@ -1298,14 +1420,17 @@ describe("MIDIExporter", () => {
     });
 
     test("handles very slow tempo (<30 BPM)", async () => {
-      const snapshots: VMState[] = [createSnapshot({ lastOpcode: Opcode.CIRCLE })];
+      const snapshots: VMState[] = [
+        createSnapshot({ lastOpcode: Opcode.CIRCLE }),
+      ];
       const blob = exporter.generateMIDI(snapshots, 20);
       const bytes = await readMIDIBytes(blob);
 
       // At 20 BPM, tempo = 60000000 / 20 = 3000000
       for (let i = 0; i < bytes.length - 5; i++) {
         if (bytes[i] === 0xff && bytes[i + 1] === 0x51) {
-          const tempo = (bytes[i + 3] << 16) | (bytes[i + 4] << 8) | bytes[i + 5];
+          const tempo =
+            (bytes[i + 3] << 16) | (bytes[i + 4] << 8) | bytes[i + 5];
           expect(tempo).toBe(3000000);
           break;
         }

@@ -6,18 +6,18 @@
  */
 import { afterEach, beforeEach, describe, expect, test } from "bun:test";
 import {
-  examples,
   type Concept,
   type ExampleDifficulty,
   type ExampleKey,
   type ExampleMetadata,
+  examples,
 } from "@/examples";
 import { CodonLexer } from "@/lexer";
-import type { MutationType } from "@/types";
 import {
   mockCanvasContext,
   restoreCanvasContext,
 } from "@/test-utils/canvas-mock";
+import type { MutationType } from "@/types";
 
 describe("Examples Library", () => {
   // Mock canvas for VM execution tests
@@ -358,7 +358,9 @@ describe("Examples Library", () => {
 
       // Most examples (at least 50%) should work
       const totalExamples = Object.keys(examples).length;
-      expect(successfulExamples.length).toBeGreaterThanOrEqual(totalExamples * 0.5);
+      expect(successfulExamples.length).toBeGreaterThanOrEqual(
+        totalExamples * 0.5,
+      );
     });
 
     test("all genomes have valid codon structure", () => {
@@ -523,7 +525,8 @@ describe("Examples Library", () => {
         (e) => e.difficulty === "beginner",
       );
       const advancedExamples = Object.values(examples).filter(
-        (e) => e.difficulty === "advanced" || e.difficulty === "advanced-showcase",
+        (e) =>
+          e.difficulty === "advanced" || e.difficulty === "advanced-showcase",
       );
 
       const avgBeginnerConcepts =
@@ -553,7 +556,8 @@ describe("Examples Library", () => {
 
     test("advanced examples combine multiple concepts", () => {
       const advancedExamples = Object.values(examples).filter(
-        (e) => e.difficulty === "advanced" || e.difficulty === "advanced-showcase",
+        (e) =>
+          e.difficulty === "advanced" || e.difficulty === "advanced-showcase",
       );
 
       for (const example of advancedExamples) {

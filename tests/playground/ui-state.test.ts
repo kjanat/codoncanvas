@@ -180,9 +180,24 @@ describe("UI State Management", () => {
         seed: 12345,
       };
       const states: VMState[] = [
-        { ...baseState, position: { x: 0, y: 0 }, rotation: 0, color: { h: 0, s: 0, l: 0 } },
-        { ...baseState, position: { x: 100, y: 100 }, rotation: 90, color: { h: 120, s: 50, l: 50 } },
-        { ...baseState, position: { x: 200, y: 200 }, rotation: 180, color: { h: 240, s: 100, l: 50 } },
+        {
+          ...baseState,
+          position: { x: 0, y: 0 },
+          rotation: 0,
+          color: { h: 0, s: 0, l: 0 },
+        },
+        {
+          ...baseState,
+          position: { x: 100, y: 100 },
+          rotation: 90,
+          color: { h: 120, s: 50, l: 50 },
+        },
+        {
+          ...baseState,
+          position: { x: 200, y: 200 },
+          rotation: 180,
+          color: { h: 240, s: 100, l: 50 },
+        },
       ];
       expect(states.length).toBe(3);
       expect(states[1].position.x).toBe(100);

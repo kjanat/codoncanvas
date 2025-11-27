@@ -7,7 +7,7 @@ import type {
   Achievement,
   AchievementCategory,
   AchievementEngine,
-} from "./achievement-engine.js";
+} from "@/achievement-engine";
 
 export class AchievementUI {
   private engine: AchievementEngine;

@@ -79,7 +79,7 @@ describe("Genome Handlers", () => {
     });
 
     test("counts long genome correctly", () => {
-      const genome = "ATG " + "GGA ".repeat(100) + "TAA";
+      const genome = `ATG ${"GGA ".repeat(100)}TAA`;
       expect(countTokens(genome)).toBe(102);
     });
   });

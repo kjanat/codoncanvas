@@ -5,14 +5,14 @@
  * answer submission, and progress tracking for mutation identification.
  */
 import { afterEach, beforeEach, describe, expect, mock, test } from "bun:test";
-import { AssessmentUI } from "@/assessment-ui";
+import type { AchievementEngine } from "@/achievement-engine";
+import type { AchievementUI } from "@/achievement-ui";
 import type {
   AssessmentEngine,
-  Challenge,
   AssessmentResult,
+  Challenge,
 } from "@/assessment-engine";
-import type { AchievementEngine, Achievement } from "@/achievement-engine";
-import type { AchievementUI } from "@/achievement-ui";
+import { AssessmentUI } from "@/assessment-ui";
 import type { MutationType } from "@/types";
 
 // Mock AssessmentEngine
@@ -25,7 +25,7 @@ const createMockEngine = (overrides: Partial<AssessmentEngine> = {}) => {
           mutated: "ATGAGG",
           correctAnswer: "missense" as MutationType,
           hint: "Look at the second codon",
-        }) as Challenge
+        }) as Challenge,
     ),
     scoreResponse: mock(
       (challenge: Challenge, answer: MutationType) =>
@@ -34,9 +34,9 @@ const createMockEngine = (overrides: Partial<AssessmentEngine> = {}) => {
           feedback:
             answer === challenge.correctAnswer
               ? "Great job!"
-              : "Try again. The correct answer was " + challenge.correctAnswer,
+              : `Try again. The correct answer was ${challenge.correctAnswer}`,
           timeSpent: 5000,
-        }) as AssessmentResult
+        }) as AssessmentResult,
     ),
     calculateProgress: mock((results: AssessmentResult[]) => ({
       totalAttempts: results.length,
@@ -95,11 +95,7 @@ describe("AssessmentUI", () => {
     });
 
     test("accepts optional AchievementEngine for integration", () => {
-      const ui = new AssessmentUI(
-        mockEngine,
-        container,
-        mockAchievementEngine
-      );
+      const ui = new AssessmentUI(mockEngine, container, mockAchievementEngine);
       expect(ui).toBeDefined();
     });
 
@@ -108,7 +104,7 @@ describe("AssessmentUI", () => {
         mockEngine,
         container,
         mockAchievementEngine,
-        mockAchievementUI
+        mockAchievementUI,
       );
       expect(ui).toBeDefined();
     });
@@ -129,7 +125,7 @@ describe("AssessmentUI", () => {
     test("initializes difficulty to 'easy' by default", () => {
       new AssessmentUI(mockEngine, container);
       const select = container.querySelector(
-        "#difficulty-select"
+        "#difficulty-select",
       ) as HTMLSelectElement;
       expect(select?.value).toBe("easy");
     });
@@ -230,7 +226,7 @@ describe("AssessmentUI", () => {
     test("creates difficulty select with easy/medium/hard options", () => {
       new AssessmentUI(mockEngine, container);
       const select = container.querySelector(
-        "#difficulty-select"
+        "#difficulty-select",
       ) as HTMLSelectElement;
       expect(select).not.toBeNull();
       expect(select?.options.length).toBe(3);
@@ -261,7 +257,7 @@ describe("AssessmentUI", () => {
       const buttons = container.querySelectorAll(".answer-btn");
       expect(buttons.length).toBe(6);
       const types = Array.from(buttons).map(
-        (btn) => (btn as HTMLElement).dataset["type"]
+        (btn) => (btn as HTMLElement).dataset["type"],
       );
       expect(types).toContain("silent");
       expect(types).toContain("missense");
@@ -290,7 +286,7 @@ describe("AssessmentUI", () => {
       const ui = new AssessmentUI(mockEngine, container);
       ui.show();
       const select = container.querySelector(
-        "#difficulty-select"
+        "#difficulty-select",
       ) as HTMLSelectElement;
       select.value = "hard";
       select.dispatchEvent(new Event("change"));
@@ -301,7 +297,7 @@ describe("AssessmentUI", () => {
       const ui = new AssessmentUI(mockEngine, container);
       ui.show();
       const missenseBtn = container.querySelector(
-        '[data-type="missense"]'
+        '[data-type="missense"]',
       ) as HTMLButtonElement;
       missenseBtn?.click();
       expect(mockEngine.scoreResponse).toHaveBeenCalled();
@@ -312,11 +308,11 @@ describe("AssessmentUI", () => {
       ui.show();
       // Click answer first to show next button
       const missenseBtn = container.querySelector(
-        '[data-type="missense"]'
+        '[data-type="missense"]',
       ) as HTMLButtonElement;
       missenseBtn?.click();
       const nextBtn = container.querySelector(
-        "#next-challenge-btn"
+        "#next-challenge-btn",
       ) as HTMLButtonElement;
       nextBtn?.click();
       // Should have been called twice (show + next)
@@ -387,7 +383,7 @@ describe("AssessmentUI", () => {
       const ui = new AssessmentUI(mockEngine, container);
       ui.show();
       const feedback = container.querySelector(
-        "#feedback-display"
+        "#feedback-display",
       ) as HTMLElement;
       expect(feedback?.style.display).toBe("none");
     });
@@ -396,7 +392,7 @@ describe("AssessmentUI", () => {
       const ui = new AssessmentUI(mockEngine, container);
       ui.show();
       const nextBtn = container.querySelector(
-        "#next-challenge-btn"
+        "#next-challenge-btn",
       ) as HTMLElement;
       expect(nextBtn?.style.display).toBe("none");
     });
@@ -427,7 +423,7 @@ describe("AssessmentUI", () => {
       const ui = new AssessmentUI(mockEngine, container);
       ui.show();
       const btn = container.querySelector(
-        '[data-type="missense"]'
+        '[data-type="missense"]',
       ) as HTMLButtonElement;
       btn?.click();
       expect(mockEngine.scoreResponse).toHaveBeenCalled();
@@ -437,7 +433,7 @@ describe("AssessmentUI", () => {
       const ui = new AssessmentUI(mockEngine, container);
       ui.show();
       const btn = container.querySelector(
-        '[data-type="missense"]'
+        '[data-type="missense"]',
       ) as HTMLButtonElement;
       btn?.click();
       const progress = ui.getProgress();
@@ -449,11 +445,11 @@ describe("AssessmentUI", () => {
         mockEngine,
         container,
         mockAchievementEngine,
-        mockAchievementUI
+        mockAchievementUI,
       );
       ui.show();
       const btn = container.querySelector(
-        '[data-type="missense"]'
+        '[data-type="missense"]',
       ) as HTMLButtonElement;
       btn?.click();
       expect(mockAchievementEngine.trackChallengeCompleted).toHaveBeenCalled();
@@ -464,11 +460,11 @@ describe("AssessmentUI", () => {
         mockEngine,
         container,
         mockAchievementEngine,
-        mockAchievementUI
+        mockAchievementUI,
       );
       ui.show();
       const btn = container.querySelector(
-        '[data-type="missense"]'
+        '[data-type="missense"]',
       ) as HTMLButtonElement;
       btn?.click();
       expect(mockAchievementUI.handleUnlocks).toHaveBeenCalled();
@@ -478,11 +474,11 @@ describe("AssessmentUI", () => {
       const ui = new AssessmentUI(mockEngine, container);
       ui.show();
       const btn = container.querySelector(
-        '[data-type="missense"]'
+        '[data-type="missense"]',
       ) as HTMLButtonElement;
       btn?.click();
       const feedback = container.querySelector(
-        "#feedback-display"
+        "#feedback-display",
       ) as HTMLElement;
       expect(feedback?.style.display).toBe("block");
     });
@@ -491,7 +487,7 @@ describe("AssessmentUI", () => {
       const ui = new AssessmentUI(mockEngine, container);
       ui.show();
       const btn = container.querySelector(
-        '[data-type="missense"]'
+        '[data-type="missense"]',
       ) as HTMLButtonElement;
       btn?.click();
       const buttons = container.querySelectorAll(".answer-btn");
@@ -504,7 +500,7 @@ describe("AssessmentUI", () => {
       const ui = new AssessmentUI(mockEngine, container);
       ui.show();
       const btn = container.querySelector(
-        '[data-type="missense"]'
+        '[data-type="missense"]',
       ) as HTMLButtonElement;
       btn?.click();
       expect(btn?.classList.contains("correct")).toBe(true);
@@ -514,7 +510,7 @@ describe("AssessmentUI", () => {
       const ui = new AssessmentUI(mockEngine, container);
       ui.show();
       const btn = container.querySelector(
-        '[data-type="silent"]'
+        '[data-type="silent"]',
       ) as HTMLButtonElement;
       btn?.click();
       expect(btn?.classList.contains("incorrect")).toBe(true);
@@ -524,11 +520,11 @@ describe("AssessmentUI", () => {
       const ui = new AssessmentUI(mockEngine, container);
       ui.show();
       const btn = container.querySelector(
-        '[data-type="missense"]'
+        '[data-type="missense"]',
       ) as HTMLButtonElement;
       btn?.click();
       const nextBtn = container.querySelector(
-        "#next-challenge-btn"
+        "#next-challenge-btn",
       ) as HTMLElement;
       expect(nextBtn?.style.display).toBe("inline-block");
     });
@@ -537,11 +533,11 @@ describe("AssessmentUI", () => {
       const ui = new AssessmentUI(mockEngine, container);
       ui.show();
       const btn = container.querySelector(
-        '[data-type="missense"]'
+        '[data-type="missense"]',
       ) as HTMLButtonElement;
       btn?.click();
       const progress = container.querySelector(
-        "#progress-display"
+        "#progress-display",
       ) as HTMLElement;
       expect(progress?.style.display).toBe("block");
     });
@@ -553,7 +549,7 @@ describe("AssessmentUI", () => {
       const ui = new AssessmentUI(mockEngine, container);
       ui.show();
       const btn = container.querySelector(
-        '[data-type="missense"]'
+        '[data-type="missense"]',
       ) as HTMLButtonElement;
       btn?.click();
       const feedback = container.querySelector("#feedback-display");
@@ -565,7 +561,7 @@ describe("AssessmentUI", () => {
       const ui = new AssessmentUI(mockEngine, container);
       ui.show();
       const btn = container.querySelector(
-        '[data-type="silent"]'
+        '[data-type="silent"]',
       ) as HTMLButtonElement;
       btn?.click();
       const feedback = container.querySelector("#feedback-display");
@@ -577,7 +573,7 @@ describe("AssessmentUI", () => {
       const ui = new AssessmentUI(mockEngine, container);
       ui.show();
       const btn = container.querySelector(
-        '[data-type="missense"]'
+        '[data-type="missense"]',
       ) as HTMLButtonElement;
       btn?.click();
       const feedback = container.querySelector("#feedback-display");
@@ -588,7 +584,7 @@ describe("AssessmentUI", () => {
       const ui = new AssessmentUI(mockEngine, container);
       ui.show();
       const btn = container.querySelector(
-        '[data-type="missense"]'
+        '[data-type="missense"]',
       ) as HTMLButtonElement;
       btn?.click();
       const feedbackDiv = container.querySelector(".feedback-correct");
@@ -599,11 +595,11 @@ describe("AssessmentUI", () => {
       const ui = new AssessmentUI(mockEngine, container);
       ui.show();
       const btn = container.querySelector(
-        '[data-type="missense"]'
+        '[data-type="missense"]',
       ) as HTMLButtonElement;
       btn?.click();
       const feedback = container.querySelector(
-        "#feedback-display"
+        "#feedback-display",
       ) as HTMLElement;
       expect(feedback?.style.display).toBe("block");
     });
@@ -615,7 +611,7 @@ describe("AssessmentUI", () => {
       const ui = new AssessmentUI(mockEngine, container);
       ui.show();
       const btn = container.querySelector(
-        '[data-type="missense"]'
+        '[data-type="missense"]',
       ) as HTMLButtonElement;
       btn?.click();
       expect(mockEngine.calculateProgress).toHaveBeenCalled();
@@ -633,11 +629,11 @@ describe("AssessmentUI", () => {
         perfectEngine,
         container,
         mockAchievementEngine,
-        mockAchievementUI
+        mockAchievementUI,
       );
       ui.show();
       const btn = container.querySelector(
-        '[data-type="missense"]'
+        '[data-type="missense"]',
       ) as HTMLButtonElement;
       btn?.click();
       expect(mockAchievementEngine.trackPerfectScore).toHaveBeenCalled();
@@ -647,7 +643,7 @@ describe("AssessmentUI", () => {
       const ui = new AssessmentUI(mockEngine, container);
       ui.show();
       const btn = container.querySelector(
-        '[data-type="missense"]'
+        '[data-type="missense"]',
       ) as HTMLButtonElement;
       btn?.click();
       const progress = container.querySelector("#progress-display");
@@ -658,7 +654,7 @@ describe("AssessmentUI", () => {
       const ui = new AssessmentUI(mockEngine, container);
       ui.show();
       const btn = container.querySelector(
-        '[data-type="missense"]'
+        '[data-type="missense"]',
       ) as HTMLButtonElement;
       btn?.click();
       const progress = container.querySelector("#progress-display");
@@ -669,7 +665,7 @@ describe("AssessmentUI", () => {
       const ui = new AssessmentUI(mockEngine, container);
       ui.show();
       const btn = container.querySelector(
-        '[data-type="missense"]'
+        '[data-type="missense"]',
       ) as HTMLButtonElement;
       btn?.click();
       const progress = container.querySelector("#progress-display");
@@ -680,7 +676,7 @@ describe("AssessmentUI", () => {
       const ui = new AssessmentUI(mockEngine, container);
       ui.show();
       const btn = container.querySelector(
-        '[data-type="missense"]'
+        '[data-type="missense"]',
       ) as HTMLButtonElement;
       btn?.click();
       const progress = container.querySelector("#progress-display");
@@ -691,11 +687,11 @@ describe("AssessmentUI", () => {
       const ui = new AssessmentUI(mockEngine, container);
       ui.show();
       const btn = container.querySelector(
-        '[data-type="missense"]'
+        '[data-type="missense"]',
       ) as HTMLButtonElement;
       btn?.click();
       const progress = container.querySelector(
-        "#progress-display"
+        "#progress-display",
       ) as HTMLElement;
       expect(progress?.style.display).toBe("block");
     });
@@ -762,11 +758,11 @@ describe("AssessmentUI", () => {
         mockEngine,
         container,
         mockAchievementEngine,
-        mockAchievementUI
+        mockAchievementUI,
       );
       ui.show();
       const btn = container.querySelector(
-        '[data-type="missense"]'
+        '[data-type="missense"]',
       ) as HTMLButtonElement;
       btn?.click();
       expect(mockAchievementEngine.trackChallengeCompleted).toHaveBeenCalled();
@@ -777,11 +773,11 @@ describe("AssessmentUI", () => {
         mockEngine,
         container,
         mockAchievementEngine,
-        mockAchievementUI
+        mockAchievementUI,
       );
       ui.show();
       const btn = container.querySelector(
-        '[data-type="missense"]'
+        '[data-type="missense"]',
       ) as HTMLButtonElement;
       btn?.click();
       expect(mockAchievementUI.handleUnlocks).toHaveBeenCalled();
@@ -793,19 +789,19 @@ describe("AssessmentUI", () => {
 
       // Answer first challenge
       let btn = container.querySelector(
-        '[data-type="missense"]'
+        '[data-type="missense"]',
       ) as HTMLButtonElement;
       btn?.click();
 
       // Go to next challenge
       const nextBtn = container.querySelector(
-        "#next-challenge-btn"
+        "#next-challenge-btn",
       ) as HTMLButtonElement;
       nextBtn?.click();
 
       // Answer second challenge
       btn = container.querySelector(
-        '[data-type="missense"]'
+        '[data-type="missense"]',
       ) as HTMLButtonElement;
       btn?.click();
 
@@ -820,11 +816,11 @@ describe("AssessmentUI", () => {
       // Answer multiple challenges
       for (let i = 0; i < 3; i++) {
         const btn = container.querySelector(
-          '[data-type="missense"]'
+          '[data-type="missense"]',
         ) as HTMLButtonElement;
         btn?.click();
         const nextBtn = container.querySelector(
-          "#next-challenge-btn"
+          "#next-challenge-btn",
         ) as HTMLButtonElement;
         nextBtn?.click();
       }
@@ -837,7 +833,7 @@ describe("AssessmentUI", () => {
       const ui = new AssessmentUI(mockEngine, container);
       ui.show();
       const select = container.querySelector(
-        "#difficulty-select"
+        "#difficulty-select",
       ) as HTMLSelectElement;
       select.value = "hard";
       select.dispatchEvent(new Event("change"));
@@ -851,7 +847,7 @@ describe("AssessmentUI", () => {
       const ui = new AssessmentUI(mockEngine, container);
       ui.show();
       const btn = container.querySelector(
-        '[data-type="missense"]'
+        '[data-type="missense"]',
       ) as HTMLButtonElement;
       // Should not throw
       expect(() => btn?.click()).not.toThrow();
@@ -861,7 +857,7 @@ describe("AssessmentUI", () => {
       const ui = new AssessmentUI(mockEngine, container, mockAchievementEngine);
       ui.show();
       const btn = container.querySelector(
-        '[data-type="missense"]'
+        '[data-type="missense"]',
       ) as HTMLButtonElement;
       // Should not throw
       expect(() => btn?.click()).not.toThrow();
@@ -880,7 +876,7 @@ describe("AssessmentUI", () => {
       ];
       for (const type of types) {
         const btn = container.querySelector(
-          `[data-type="${type}"]`
+          `[data-type="${type}"]`,
         ) as HTMLButtonElement;
         expect(btn).not.toBeNull();
       }
@@ -890,7 +886,7 @@ describe("AssessmentUI", () => {
       const longEngine = createMockEngine({
         generateChallenge: mock(() => ({
           original: "ATG".repeat(100),
-          mutated: "ATG".repeat(99) + "GGG",
+          mutated: `${"ATG".repeat(99)}GGG`,
           correctAnswer: "missense" as MutationType,
         })),
       });

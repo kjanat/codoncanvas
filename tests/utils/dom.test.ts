@@ -4,7 +4,7 @@
  * Tests for type-safe DOM element access utilities.
  * Provides compile-time AND runtime type safety for DOM operations.
  */
-import { afterEach, beforeEach, describe, expect, test } from "bun:test";
+import { afterEach, describe, expect, test } from "bun:test";
 import {
   getElement,
   getElementOrNull,
@@ -215,9 +215,9 @@ describe("DOMUtils", () => {
 
     test("throws Error with type mismatch message when element type is wrong", () => {
       createElement("div", undefined, "wrongSelector");
-      expect(() =>
-        querySelector(".wrongSelector", HTMLButtonElement),
-      ).toThrow(/is HTMLDivElement, expected HTMLButtonElement/);
+      expect(() => querySelector(".wrongSelector", HTMLButtonElement)).toThrow(
+        /is HTMLDivElement, expected HTMLButtonElement/,
+      );
     });
 
     test("error message includes actual and expected types", () => {

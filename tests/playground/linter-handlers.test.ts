@@ -190,7 +190,7 @@ describe("Linter Handlers", () => {
     });
 
     test("handles very long genome for re-spacing", () => {
-      const longGenome = "ATG" + "GGA".repeat(100) + "TAA";
+      const longGenome = `ATG${"GGA".repeat(100)}TAA`;
       const result = autoFixError(
         "Mid-triplet break detected at position 5",
         longGenome,
@@ -210,10 +210,8 @@ describe("Linter Handlers", () => {
 
       // Fix missing START
       source =
-        autoFixError(
-          "Program should begin with START codon (ATG)",
-          source,
-        ) || source;
+        autoFixError("Program should begin with START codon (ATG)", source) ||
+        source;
       expect(source).toBe("ATG GGA");
 
       // Fix missing STOP

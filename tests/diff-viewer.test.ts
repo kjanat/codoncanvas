@@ -178,7 +178,7 @@ describe("DiffViewer", () => {
     test("accepts original and mutated genome strings", () => {
       const viewer = new DiffViewer({ containerElement: container });
       expect(() =>
-        viewer.renderComparison("ATG GGA TAA", "ATG CCA TAA")
+        viewer.renderComparison("ATG GGA TAA", "ATG CCA TAA"),
       ).not.toThrow();
     });
 
@@ -262,7 +262,7 @@ describe("DiffViewer", () => {
       viewer.renderComparison("ATG TAA", "ATG GGA TAA");
       const headers = container.querySelectorAll(".diff-panel-header");
       const originalHeader = Array.from(headers).find(
-        (h) => h.textContent === "Original"
+        (h) => h.textContent === "Original",
       );
       expect(originalHeader).toBeDefined();
     });
@@ -272,7 +272,7 @@ describe("DiffViewer", () => {
       viewer.renderComparison("ATG TAA", "ATG GGA TAA");
       const headers = container.querySelectorAll(".diff-panel-header");
       const mutatedHeader = Array.from(headers).find(
-        (h) => h.textContent === "Mutated"
+        (h) => h.textContent === "Mutated",
       );
       expect(mutatedHeader).toBeDefined();
     });
@@ -366,7 +366,7 @@ describe("DiffViewer", () => {
       viewer.renderComparison("ATG TAA", "ATG GGA TAA");
       const labels = container.querySelectorAll(".canvas-label");
       const originalLabel = Array.from(labels).find((l) =>
-        l.textContent?.includes("Original")
+        l.textContent?.includes("Original"),
       );
       expect(originalLabel).toBeDefined();
     });
@@ -376,7 +376,7 @@ describe("DiffViewer", () => {
       viewer.renderComparison("ATG TAA", "ATG GGA TAA");
       const labels = container.querySelectorAll(".canvas-label");
       const mutatedLabel = Array.from(labels).find((l) =>
-        l.textContent?.includes("Mutated")
+        l.textContent?.includes("Mutated"),
       );
       expect(mutatedLabel).toBeDefined();
     });
@@ -396,7 +396,7 @@ describe("DiffViewer", () => {
       });
       viewer.renderComparison("ATG TAA", "ATG GGA TAA");
       const canvas = container.querySelector(
-        "#diff-canvas-original"
+        "#diff-canvas-original",
       ) as HTMLCanvasElement;
       expect(canvas?.width).toBe(500);
       expect(canvas?.height).toBe(400);
@@ -418,7 +418,7 @@ describe("DiffViewer", () => {
       const viewer = new DiffViewer({ containerElement: container });
       // Invalid genome that would cause render error
       expect(() =>
-        viewer.renderComparison("INVALID", "ALSOINVALID")
+        viewer.renderComparison("INVALID", "ALSOINVALID"),
       ).not.toThrow();
     });
   });
@@ -456,7 +456,9 @@ describe("DiffViewer", () => {
     test("displays original codon with removed class", () => {
       const viewer = new DiffViewer({ containerElement: container });
       viewer.renderComparison("ATG GGA TAA", "ATG CCA TAA");
-      const removed = container.querySelector(".differences-list .codon-removed");
+      const removed = container.querySelector(
+        ".differences-list .codon-removed",
+      );
       expect(removed).toBeDefined();
     });
 
@@ -592,14 +594,16 @@ describe("DiffViewer", () => {
 
     test("handles very long genomes", () => {
       const viewer = new DiffViewer({ containerElement: container });
-      const longGenome = "ATG " + Array(50).fill("GGA").join(" ") + " TAA";
-      expect(() => viewer.renderComparison(longGenome, longGenome)).not.toThrow();
+      const longGenome = `ATG ${Array(50).fill("GGA").join(" ")} TAA`;
+      expect(() =>
+        viewer.renderComparison(longGenome, longGenome),
+      ).not.toThrow();
     });
 
     test("handles invalid genome that fails to tokenize", () => {
       const viewer = new DiffViewer({ containerElement: container });
       expect(() =>
-        viewer.renderComparison("NOT_VALID_GENOME", "ALSO_NOT_VALID")
+        viewer.renderComparison("NOT_VALID_GENOME", "ALSO_NOT_VALID"),
       ).not.toThrow();
     });
   });

@@ -31,7 +31,9 @@ class MockMediaRecorder {
     // Simulate data being available
     setTimeout(() => {
       if (this.ondataavailable) {
-        this.ondataavailable({ data: new Blob(["test"], { type: "audio/webm" }) });
+        this.ondataavailable({
+          data: new Blob(["test"], { type: "audio/webm" }),
+        });
       }
     }, 0);
   }
@@ -81,7 +83,11 @@ class MockAudioContext {
   createBiquadFilter() {
     return {
       type: "lowpass",
-      frequency: { value: 2000, setValueAtTime: () => {}, linearRampToValueAtTime: () => {} },
+      frequency: {
+        value: 2000,
+        setValueAtTime: () => {},
+        linearRampToValueAtTime: () => {},
+      },
       Q: { value: 1 },
       connect: () => {},
     };
@@ -100,7 +106,7 @@ class MockAudioContext {
     };
   }
 
-  createBuffer(channels: number, length: number, _sampleRate: number) {
+  createBuffer(_channels: number, length: number, _sampleRate: number) {
     return {
       getChannelData: () => new Float32Array(length),
     };
@@ -125,18 +131,29 @@ const originalAudioContext = globalThis.AudioContext;
 describe("AudioRenderer", () => {
   beforeEach(() => {
     // Mock AudioContext
-    (globalThis as unknown as { AudioContext: typeof MockAudioContext }).AudioContext = MockAudioContext as unknown as typeof AudioContext;
+    (
+      globalThis as unknown as { AudioContext: typeof MockAudioContext }
+    ).AudioContext = MockAudioContext as unknown as typeof AudioContext;
     // Mock MediaRecorder
-    (globalThis as unknown as { MediaRecorder: typeof MockMediaRecorder }).MediaRecorder = MockMediaRecorder as unknown as typeof MediaRecorder;
+    (
+      globalThis as unknown as { MediaRecorder: typeof MockMediaRecorder }
+    ).MediaRecorder = MockMediaRecorder as unknown as typeof MediaRecorder;
     // Mock MediaStream
-    (globalThis as unknown as { MediaStream: typeof MockMediaStream }).MediaStream = MockMediaStream as unknown as typeof MediaStream;
+    (
+      globalThis as unknown as { MediaStream: typeof MockMediaStream }
+    ).MediaStream = MockMediaStream as unknown as typeof MediaStream;
   });
 
   afterEach(() => {
     // Restore original
-    (globalThis as unknown as { AudioContext: typeof AudioContext }).AudioContext = originalAudioContext;
-    (globalThis as unknown as { MediaRecorder: typeof MediaRecorder }).MediaRecorder = originalMediaRecorder;
-    (globalThis as unknown as { MediaStream: typeof MediaStream }).MediaStream = originalMediaStream;
+    (
+      globalThis as unknown as { AudioContext: typeof AudioContext }
+    ).AudioContext = originalAudioContext;
+    (
+      globalThis as unknown as { MediaRecorder: typeof MediaRecorder }
+    ).MediaRecorder = originalMediaRecorder;
+    (globalThis as unknown as { MediaStream: typeof MediaStream }).MediaStream =
+      originalMediaStream;
   });
 
   // Constructor & Properties
@@ -189,7 +206,7 @@ describe("AudioRenderer", () => {
     test("throws error when not initialized", () => {
       const renderer = new AudioRenderer();
       expect(() => renderer.startRecording()).toThrow(
-        "AudioRenderer not initialized"
+        "AudioRenderer not initialized",
       );
     });
 
@@ -205,7 +222,7 @@ describe("AudioRenderer", () => {
       const renderer = new AudioRenderer();
       await renderer.initialize();
       await expect(renderer.stopRecording()).rejects.toThrow(
-        "Not currently recording"
+        "Not currently recording",
       );
     });
 

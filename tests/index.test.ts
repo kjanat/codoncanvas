@@ -5,15 +5,6 @@
  * is accessible and the core execution flow works correctly.
  */
 import { afterEach, beforeEach, describe, expect, test } from "bun:test";
-import {
-  Canvas2DRenderer,
-  CODON_MAP,
-  CodonLexer,
-  CodonVM,
-  GeneticAlgorithm,
-  Opcode,
-  ResearchMetrics,
-} from "@/index";
 import type {
   Base,
   Codon,
@@ -32,6 +23,7 @@ import type {
   ParseError,
   Point2D,
   Renderer,
+  RenderMode,
   ResearchMetricsOptions,
   ResearchSession,
   RiskLevel,
@@ -40,7 +32,15 @@ import type {
   TransformState,
   VM,
   VMState,
-  RenderMode,
+} from "@/index";
+import {
+  Canvas2DRenderer,
+  CODON_MAP,
+  CodonLexer,
+  CodonVM,
+  GeneticAlgorithm,
+  Opcode,
+  ResearchMetrics,
 } from "@/index";
 import {
   mockCanvasContext,
@@ -101,7 +101,13 @@ describe("CodonCanvas Library Exports", () => {
         pop: () => {},
         save: () => {},
         restore: () => {},
-        getTransformState: () => ({ x: 0, y: 0, rotation: 0, scaleX: 1, scaleY: 1 }),
+        getTransformState: () => ({
+          x: 0,
+          y: 0,
+          rotation: 0,
+          scaleX: 1,
+          scaleY: 1,
+        }),
         setTransformState: () => {},
         getColor: () => ({ h: 0, s: 0, l: 0 }),
       };
@@ -161,7 +167,10 @@ describe("CodonCanvas Library Exports", () => {
 
     test("exports FitnessFunction type", () => {
       // FitnessFunction takes (genome: string, canvas: HTMLCanvasElement) => number
-      const fitness: FitnessFunction = (genome: string, _canvas: HTMLCanvasElement) => genome.length / 100;
+      const fitness: FitnessFunction = (
+        genome: string,
+        _canvas: HTMLCanvasElement,
+      ) => genome.length / 100;
       const canvas = document.createElement("canvas");
       expect(fitness("ATG", canvas)).toBeCloseTo(0.03);
     });
@@ -455,7 +464,10 @@ describe("CodonCanvas Library Exports", () => {
     });
 
     test("fitness functions can use CodonLexer and CodonVM", () => {
-      const fitness: FitnessFunction = (genome: string, canvas: HTMLCanvasElement) => {
+      const fitness: FitnessFunction = (
+        genome: string,
+        canvas: HTMLCanvasElement,
+      ) => {
         try {
           const lexer = new CodonLexer();
           const tokens = lexer.tokenize(genome);
@@ -577,10 +589,12 @@ describe("CodonCanvas Library Exports", () => {
       // Import should not hang or throw due to circular deps
       const importPromise = import("@/index");
       const timeout = new Promise((_, reject) =>
-        setTimeout(() => reject(new Error("Timeout")), 1000)
+        setTimeout(() => reject(new Error("Timeout")), 1000),
       );
 
-      await expect(Promise.race([importPromise, timeout])).resolves.toBeDefined();
+      await expect(
+        Promise.race([importPromise, timeout]),
+      ).resolves.toBeDefined();
     });
 
     test("TypeScript strict mode compilation succeeds", () => {

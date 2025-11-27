@@ -5,10 +5,6 @@
 
 import { afterEach, beforeEach, describe, expect, test } from "bun:test";
 import {
-  mockCanvasContext,
-  restoreCanvasContext,
-} from "@/test-utils/canvas-mock";
-import {
   predictMutationImpact,
   predictMutationImpactBatch,
 } from "@/mutation-predictor";
@@ -21,6 +17,10 @@ import {
   applyPointMutation,
   applySilentMutation,
 } from "@/mutations";
+import {
+  mockCanvasContext,
+  restoreCanvasContext,
+} from "@/test-utils/canvas-mock";
 
 describe("Mutation Impact Predictor", () => {
   // Canvas mock needed for rendering comparisons

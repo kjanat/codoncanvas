@@ -10,13 +10,15 @@ import {
   formatNumber,
   formatPercentage,
   MetricsAnalyzer,
+  type MetricsSession,
   parseCSVContent,
   Stats,
-  type MetricsSession,
 } from "@/metrics-analyzer-core";
 
 // Helper function to create mock sessions
-function createMockSession(overrides: Partial<MetricsSession> = {}): MetricsSession {
+function createMockSession(
+  overrides: Partial<MetricsSession> = {},
+): MetricsSession {
   return {
     sessionId: "test-session",
     startTime: Date.now() - 60000,
@@ -437,7 +439,11 @@ describe("MetricsAnalyzer", () => {
   // engagementMetrics
   describe("engagementMetrics", () => {
     test("returns totalSessions count", () => {
-      const sessions = [createMockSession(), createMockSession(), createMockSession()];
+      const sessions = [
+        createMockSession(),
+        createMockSession(),
+        createMockSession(),
+      ];
       const analyzer = new MetricsAnalyzer(sessions);
       const metrics = analyzer.engagementMetrics();
 
@@ -497,7 +503,9 @@ describe("MetricsAnalyzer", () => {
     });
 
     test("returns 0% rate when totalGenomesCreated is 0", () => {
-      const sessions = [createMockSession({ genomesCreated: 0, genomesExecuted: 0 })];
+      const sessions = [
+        createMockSession({ genomesCreated: 0, genomesExecuted: 0 }),
+      ];
       const analyzer = new MetricsAnalyzer(sessions);
       const metrics = analyzer.engagementMetrics();
 
@@ -508,7 +516,10 @@ describe("MetricsAnalyzer", () => {
       const singleSession = new MetricsAnalyzer([createMockSession()]);
       expect(singleSession.engagementMetrics().retentionRate).toBe(0);
 
-      const multipleSessions = new MetricsAnalyzer([createMockSession(), createMockSession()]);
+      const multipleSessions = new MetricsAnalyzer([
+        createMockSession(),
+        createMockSession(),
+      ]);
       expect(multipleSessions.engagementMetrics().retentionRate).toBe(100);
     });
   });
@@ -655,7 +666,11 @@ describe("MetricsAnalyzer", () => {
   describe("renderModePreferences", () => {
     test("returns visualOnly sessions count and percentage", () => {
       const sessions = [
-        createMockSession({ renderMode_visual: 10, renderMode_audio: 0, renderMode_both: 0 }),
+        createMockSession({
+          renderMode_visual: 10,
+          renderMode_audio: 0,
+          renderMode_both: 0,
+        }),
       ];
       const analyzer = new MetricsAnalyzer(sessions);
       const prefs = analyzer.renderModePreferences();
@@ -666,7 +681,11 @@ describe("MetricsAnalyzer", () => {
 
     test("returns audioOnly sessions count and percentage", () => {
       const sessions = [
-        createMockSession({ renderMode_visual: 0, renderMode_audio: 5, renderMode_both: 5 }),
+        createMockSession({
+          renderMode_visual: 0,
+          renderMode_audio: 5,
+          renderMode_both: 5,
+        }),
       ];
       const analyzer = new MetricsAnalyzer(sessions);
       const prefs = analyzer.renderModePreferences();
@@ -677,7 +696,11 @@ describe("MetricsAnalyzer", () => {
 
     test("returns multiSensory (both) sessions count and percentage", () => {
       const sessions = [
-        createMockSession({ renderMode_visual: 2, renderMode_audio: 2, renderMode_both: 6 }),
+        createMockSession({
+          renderMode_visual: 2,
+          renderMode_audio: 2,
+          renderMode_both: 6,
+        }),
       ];
       const analyzer = new MetricsAnalyzer(sessions);
       const prefs = analyzer.renderModePreferences();
@@ -688,7 +711,11 @@ describe("MetricsAnalyzer", () => {
 
     test("percentages sum to 100% (or close due to rounding)", () => {
       const sessions = [
-        createMockSession({ renderMode_visual: 3, renderMode_audio: 3, renderMode_both: 4 }),
+        createMockSession({
+          renderMode_visual: 3,
+          renderMode_audio: 3,
+          renderMode_both: 4,
+        }),
       ];
       const analyzer = new MetricsAnalyzer(sessions);
       const prefs = analyzer.renderModePreferences();
@@ -702,7 +729,11 @@ describe("MetricsAnalyzer", () => {
 
     test("returns 0% for all modes when no executions", () => {
       const sessions = [
-        createMockSession({ renderMode_visual: 0, renderMode_audio: 0, renderMode_both: 0 }),
+        createMockSession({
+          renderMode_visual: 0,
+          renderMode_audio: 0,
+          renderMode_both: 0,
+        }),
       ];
       const analyzer = new MetricsAnalyzer(sessions);
       const prefs = analyzer.renderModePreferences();
@@ -852,7 +883,12 @@ describe("MetricsAnalyzer", () => {
       const group2 = [createMockSession({ duration: 120000 })];
       const analyzer = new MetricsAnalyzer([...group1, ...group2]);
 
-      const results = analyzer.compareGroups(group1, group2, "Control", "Treatment");
+      const results = analyzer.compareGroups(
+        group1,
+        group2,
+        "Control",
+        "Treatment",
+      );
       const durationResult = results.find((r) => r.metric.includes("Duration"));
 
       expect(durationResult).toBeDefined();
@@ -864,7 +900,9 @@ describe("MetricsAnalyzer", () => {
       const analyzer = new MetricsAnalyzer([...group1, ...group2]);
 
       const results = analyzer.compareGroups(group1, group2, "A", "B");
-      const genomesResult = results.find((r) => r.metric.includes("Genomes Created"));
+      const genomesResult = results.find((r) =>
+        r.metric.includes("Genomes Created"),
+      );
 
       expect(genomesResult).toBeDefined();
     });
@@ -875,7 +913,9 @@ describe("MetricsAnalyzer", () => {
       const analyzer = new MetricsAnalyzer([...group1, ...group2]);
 
       const results = analyzer.compareGroups(group1, group2, "A", "B");
-      const ttfaResult = results.find((r) => r.metric.includes("Time to First Artifact"));
+      const ttfaResult = results.find((r) =>
+        r.metric.includes("Time to First Artifact"),
+      );
 
       expect(ttfaResult).toBeDefined();
     });
@@ -886,7 +926,9 @@ describe("MetricsAnalyzer", () => {
       const analyzer = new MetricsAnalyzer([...group1, ...group2]);
 
       const results = analyzer.compareGroups(group1, group2, "A", "B");
-      const mutationsResult = results.find((r) => r.metric.includes("Mutations Applied"));
+      const mutationsResult = results.find((r) =>
+        r.metric.includes("Mutations Applied"),
+      );
 
       expect(mutationsResult).toBeDefined();
     });
@@ -907,7 +949,12 @@ describe("MetricsAnalyzer", () => {
       const group2 = [createMockSession({ genomesCreated: 10 })];
       const analyzer = new MetricsAnalyzer([...group1, ...group2]);
 
-      const results = analyzer.compareGroups(group1, group2, "Control", "Treatment");
+      const results = analyzer.compareGroups(
+        group1,
+        group2,
+        "Control",
+        "Treatment",
+      );
       const result = results[0];
 
       expect(result.group1).toBe("Control");
@@ -959,7 +1006,9 @@ describe("MetricsAnalyzer", () => {
       const analyzer = new MetricsAnalyzer([...group1, ...group2]);
 
       const results = analyzer.compareGroups(group1, group2, "A", "B");
-      const ttfaResult = results.find((r) => r.metric.includes("Time to First Artifact"));
+      const ttfaResult = results.find((r) =>
+        r.metric.includes("Time to First Artifact"),
+      );
 
       // Should be skipped because group1 has no valid TTFA
       expect(ttfaResult).toBeUndefined();
@@ -1068,7 +1117,7 @@ session-3,180000,15,12,60000,15,3000,4000,4,3,2,3,3,2,2,3,2,2,4,3,2,1,2,2,[]`;
 
   test("throws Error for header-only CSV (no data rows)", () => {
     expect(() =>
-      parseCSVContent("sessionId,duration,genomesCreated")
+      parseCSVContent("sessionId,duration,genomesCreated"),
     ).toThrow();
   });
 
@@ -1211,7 +1260,7 @@ describe("Integration", () => {
       controlGroup,
       treatmentGroup,
       "Control",
-      "Treatment"
+      "Treatment",
     );
 
     expect(results.length).toBeGreaterThan(0);
@@ -1228,10 +1277,10 @@ describe("Integration", () => {
     const deserialized = JSON.parse(serialized);
 
     expect(deserialized.engagement.totalSessions).toBe(
-      report.engagement.totalSessions
+      report.engagement.totalSessions,
     );
     expect(deserialized.tools.diffViewer.avgUsage).toBe(
-      report.tools.diffViewer.avgUsage
+      report.tools.diffViewer.avgUsage,
     );
   });
 });

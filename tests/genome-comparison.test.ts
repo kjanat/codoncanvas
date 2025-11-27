@@ -61,7 +61,7 @@ describe("GenomeComparison", () => {
     test("correctly identifies differences array with position, original, and mutated codons", () => {
       const result = compareGenomesDetailed("ATG GGG AAA", "ATG GAG AAA");
       const diff = result.codons.differences.find(
-        (d) => d.original === "GGG" && d.mutated === "GAG"
+        (d) => d.original === "GGG" && d.mutated === "GAG",
       );
       expect(diff).toBeDefined();
       expect(diff?.position).toBe(1);
@@ -128,13 +128,13 @@ describe("GenomeComparison", () => {
     test("handles genomes with comments (semicolon lines)", () => {
       const result = compareGenomesDetailed(
         "; Comment\nATG GGG",
-        "; Another comment\nATG GGG"
+        "; Another comment\nATG GGG",
       );
       expect(result.metrics.codonDifferencePercent).toBe(0);
     });
 
     test("handles very long genomes (>1000 codons) without performance issues", () => {
-      const longGenome = ("ATG " + "GGG ".repeat(999)).trim();
+      const longGenome = `ATG ${"GGG ".repeat(999)}`.trim();
       const start = Date.now();
       const result = compareGenomesDetailed(longGenome, longGenome);
       const elapsed = Date.now() - start;
@@ -196,8 +196,8 @@ describe("GenomeComparison", () => {
 
     test("returns 'very-similar' for <10% codon difference", () => {
       // 1 out of 20 = 5%
-      const genome1 = "ATG " + "GGG ".repeat(19);
-      const genome2 = "ATG " + "GGG ".repeat(18) + "GAG";
+      const genome1 = `ATG ${"GGG ".repeat(19)}`;
+      const genome2 = `ATG ${"GGG ".repeat(18)}GAG`;
       const result = compareGenomesDetailed(genome1, genome2);
       expect(result.analysis.similarity).toBe("very-similar");
     });
@@ -230,7 +230,7 @@ describe("GenomeComparison", () => {
     test("returns 'identical - no differences' for identical genomes", () => {
       const result = compareGenomesDetailed("ATG GGG", "ATG GGG");
       expect(result.analysis.description).toContain(
-        "identical - no differences"
+        "identical - no differences",
       );
     });
 
@@ -256,7 +256,7 @@ describe("GenomeComparison", () => {
       // Length difference indicates insertion/deletion
       const result = compareGenomesDetailed("ATG GGG", "ATG GGG AAA");
       const hasFrameshiftInsight = result.analysis.insights.some((i) =>
-        i.includes("Frameshift")
+        i.includes("Frameshift"),
       );
       expect(hasFrameshiftInsight).toBe(true);
     });
@@ -264,7 +264,7 @@ describe("GenomeComparison", () => {
     test("flags catastrophic differences when visual diff >70%", () => {
       const result = compareGenomesDetailed("ATG GGG", "XXX YYY");
       const hasCatastrophicInsight = result.analysis.insights.some((i) =>
-        i.includes("Catastrophic")
+        i.includes("Catastrophic"),
       );
       expect(hasCatastrophicInsight).toBe(true);
     });
@@ -337,7 +337,7 @@ describe("GenomeComparison", () => {
     test("correctly analyzes frameshift mutation (reading frame shift, scrambled output)", () => {
       const result = compareGenomesDetailed("ATG GGG", "ATG GGG AAA");
       const hasFrameshift = result.analysis.insights.some((i) =>
-        i.includes("Frameshift")
+        i.includes("Frameshift"),
       );
       expect(hasFrameshift).toBe(true);
     });
@@ -383,8 +383,8 @@ describe("GenomeComparison", () => {
 
     test("generates description with minimal visual differences", () => {
       // Small differences should mention minimal visual change
-      const genome1 = "ATG " + "GGG ".repeat(19);
-      const genome2 = "ATG " + "GGG ".repeat(18) + "GGC"; // Synonymous change
+      const genome1 = `ATG ${"GGG ".repeat(19)}`;
+      const genome2 = `ATG ${"GGG ".repeat(18)}GGC`; // Synonymous change
       const result = compareGenomesDetailed(genome1, genome2);
       expect(result.analysis.description).toBeDefined();
       expect(result.analysis.description.length).toBeGreaterThan(10);
@@ -405,16 +405,16 @@ describe("GenomeComparison", () => {
 
     test("detects localized changes with few differences", () => {
       // Few codon differences should trigger localized insight
-      const genome1 = "ATG " + "GGG ".repeat(19);
-      const genome2 = "ATG GAG " + "GGG ".repeat(18);
+      const genome1 = `ATG ${"GGG ".repeat(19)}`;
+      const genome2 = `ATG GAG ${"GGG ".repeat(18)}`;
       const result = compareGenomesDetailed(genome1, genome2);
       expect(result.analysis.insights.length).toBeGreaterThan(0);
     });
 
     test("detects high similarity genomes", () => {
       // Nearly identical genomes
-      const genome1 = "ATG " + "GGG ".repeat(49);
-      const genome2 = "ATG " + "GGG ".repeat(48) + "GGC"; // Synonymous
+      const genome1 = `ATG ${"GGG ".repeat(49)}`;
+      const genome2 = `ATG ${"GGG ".repeat(48)}GGC`; // Synonymous
       const result = compareGenomesDetailed(genome1, genome2);
       expect(result.analysis.insights).toBeDefined();
     });
@@ -433,8 +433,8 @@ describe("GenomeComparison", () => {
 
     test("calculates correct percentage for single difference in long genome", () => {
       // 1 out of 50 codons = 2%
-      const genome1 = "ATG " + "GGG ".repeat(49);
-      const genome2 = "ATG GAG " + "GGG ".repeat(48);
+      const genome1 = `ATG ${"GGG ".repeat(49)}`;
+      const genome2 = `ATG GAG ${"GGG ".repeat(48)}`;
       const result = compareGenomesDetailed(genome1, genome2);
       expect(result.metrics.codonDifferencePercent).toBe(2);
       expect(result.analysis.similarity).toBe("very-similar");

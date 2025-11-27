@@ -5,17 +5,17 @@
  * and progress tracking for the achievement system.
  */
 import { afterEach, beforeEach, describe, expect, mock, test } from "bun:test";
-import { AchievementUI } from "@/achievement-ui";
 import type {
-  AchievementEngine,
   Achievement,
   AchievementCategory,
+  AchievementEngine,
   UnlockedAchievement,
 } from "@/achievement-engine";
+import { AchievementUI } from "@/achievement-ui";
 
 // Mock Achievement
 const createMockAchievement = (
-  overrides: Partial<Achievement> = {}
+  overrides: Partial<Achievement> = {},
 ): Achievement => ({
   id: "test-achievement",
   name: "Test Achievement",
@@ -28,7 +28,11 @@ const createMockAchievement = (
 // Mock AchievementEngine
 const createMockEngine = (overrides: Partial<AchievementEngine> = {}) => {
   const achievements = [
-    createMockAchievement({ id: "a1", name: "First Steps", category: "basics" }),
+    createMockAchievement({
+      id: "a1",
+      name: "First Steps",
+      category: "basics",
+    }),
     createMockAchievement({
       id: "a2",
       name: "Getting Started",
@@ -62,7 +66,7 @@ const createMockEngine = (overrides: Partial<AchievementEngine> = {}) => {
     getAchievements: mock(() => achievements),
     getUnlockedAchievements: mock(() => unlockedAchievements),
     getAchievementsByCategory: mock((category: AchievementCategory) =>
-      achievements.filter((a) => a.category === category)
+      achievements.filter((a) => a.category === category),
     ),
     getProgressPercentage: mock(() => 20),
     getStats: mock(() => ({
@@ -103,7 +107,7 @@ describe("AchievementUI", () => {
 
     test("throws Error when container element not found", () => {
       expect(
-        () => new AchievementUI(mockEngine, "nonexistent-container")
+        () => new AchievementUI(mockEngine, "nonexistent-container"),
       ).toThrow("Container element #nonexistent-container not found");
     });
 
@@ -123,9 +127,9 @@ describe("AchievementUI", () => {
       ui.showUnlockNotification(createMockAchievement({ id: "n1" }));
       ui.showUnlockNotification(createMockAchievement({ id: "n2" }));
       // Both should be queued (first showing, second waiting)
-      expect(document.querySelectorAll(".achievement-notification").length).toBe(
-        1
-      );
+      expect(
+        document.querySelectorAll(".achievement-notification").length,
+      ).toBe(1);
     });
 
     test("initializes isShowingNotification to false", () => {
@@ -133,7 +137,7 @@ describe("AchievementUI", () => {
       // Can show notification immediately
       ui.showUnlockNotification(createMockAchievement());
       expect(
-        document.querySelector(".achievement-notification")
+        document.querySelector(".achievement-notification"),
       ).not.toBeNull();
     });
   });
@@ -209,7 +213,7 @@ describe("AchievementUI", () => {
     test("renders progress bar with correct fill width", () => {
       new AchievementUI(mockEngine, "achievement-container");
       const progressFill = container.querySelector(
-        ".achievement-progress-fill"
+        ".achievement-progress-fill",
       ) as HTMLElement;
       expect(progressFill?.style.width).toBe("20%");
     });
@@ -272,7 +276,7 @@ describe("AchievementUI", () => {
     test("calls renderBadge for each achievement in category", () => {
       new AchievementUI(mockEngine, "achievement-container");
       expect(mockEngine.getAchievementsByCategory).toHaveBeenCalledWith(
-        "basics"
+        "basics",
       );
     });
 
@@ -301,7 +305,7 @@ describe("AchievementUI", () => {
       // a2 is not unlocked
       const badges = container.querySelectorAll(".achievement-badge");
       const lockedBadge = Array.from(badges).find(
-        (b) => (b as HTMLElement).dataset["achievementId"] === "a2"
+        (b) => (b as HTMLElement).dataset["achievementId"] === "a2",
       );
       expect(lockedBadge?.classList.contains("locked")).toBe(true);
     });
@@ -316,7 +320,7 @@ describe("AchievementUI", () => {
       new AchievementUI(mockEngine, "achievement-container");
       // a1 is unlocked
       const unlockedBadge = container.querySelector(
-        '[data-achievement-id="a1"]'
+        '[data-achievement-id="a1"]',
       );
       expect(unlockedBadge?.textContent).toContain("Unlocked:");
     });
@@ -345,7 +349,7 @@ describe("AchievementUI", () => {
     test("formats Date as 'Month Day, Year' (e.g., 'Jan 15, 2025')", () => {
       new AchievementUI(mockEngine, "achievement-container");
       const unlockedBadge = container.querySelector(
-        '[data-achievement-id="a1"]'
+        '[data-achievement-id="a1"]',
       );
       expect(unlockedBadge?.textContent).toContain("Jan 15, 2025");
     });
@@ -354,7 +358,7 @@ describe("AchievementUI", () => {
       new AchievementUI(mockEngine, "achievement-container");
       // Verify by checking format
       const unlockedBadge = container.querySelector(
-        '[data-achievement-id="a1"]'
+        '[data-achievement-id="a1"]',
       );
       // Month Day, Year format
       expect(unlockedBadge?.textContent).toMatch(/Jan \d+, \d{4}/);
@@ -382,7 +386,7 @@ describe("AchievementUI", () => {
       ui.showUnlockNotification(createMockAchievement({ id: "n1" }));
       // First one shows immediately
       expect(
-        document.querySelector(".achievement-notification")
+        document.querySelector(".achievement-notification"),
       ).not.toBeNull();
     });
 
@@ -390,7 +394,7 @@ describe("AchievementUI", () => {
       const ui = new AchievementUI(mockEngine, "achievement-container");
       ui.showUnlockNotification(createMockAchievement());
       expect(
-        document.querySelector(".achievement-notification")
+        document.querySelector(".achievement-notification"),
       ).not.toBeNull();
     });
 
@@ -400,7 +404,7 @@ describe("AchievementUI", () => {
       ui.showUnlockNotification(createMockAchievement({ id: "n2" }));
       // Only one notification at a time
       expect(
-        document.querySelectorAll(".achievement-notification").length
+        document.querySelectorAll(".achievement-notification").length,
       ).toBe(1);
     });
 
@@ -411,7 +415,7 @@ describe("AchievementUI", () => {
       ui.showUnlockNotification(createMockAchievement({ id: "n3" }));
       // First shows, rest queued
       expect(
-        document.querySelectorAll(".achievement-notification").length
+        document.querySelectorAll(".achievement-notification").length,
       ).toBe(1);
     });
   });
@@ -423,7 +427,9 @@ describe("AchievementUI", () => {
       ui.showUnlockNotification(createMockAchievement());
       const notification = document.querySelector(".achievement-notification");
       expect(notification).not.toBeNull();
-      expect(notification?.querySelector(".notification-header")).not.toBeNull();
+      expect(
+        notification?.querySelector(".notification-header"),
+      ).not.toBeNull();
       expect(notification?.querySelector(".notification-body")).not.toBeNull();
     });
 
@@ -441,17 +447,17 @@ describe("AchievementUI", () => {
           name: "Test Name",
           description: "Test Desc",
           icon: "🎯",
-        })
+        }),
       );
       const notification = document.querySelector(".achievement-notification");
-      expect(notification?.querySelector(".notification-icon")?.textContent).toBe(
-        "🎯"
-      );
-      expect(notification?.querySelector(".notification-name")?.textContent).toBe(
-        "Test Name"
-      );
       expect(
-        notification?.querySelector(".notification-description")?.textContent
+        notification?.querySelector(".notification-icon")?.textContent,
+      ).toBe("🎯");
+      expect(
+        notification?.querySelector(".notification-name")?.textContent,
+      ).toBe("Test Name");
+      expect(
+        notification?.querySelector(".notification-description")?.textContent,
       ).toBe("Test Desc");
     });
 
@@ -467,7 +473,9 @@ describe("AchievementUI", () => {
       ui.showUnlockNotification(createMockAchievement());
       // Verify by checking structure exists
       const notification = document.querySelector(".achievement-notification");
-      expect(notification?.querySelector(".notification-content")).not.toBeNull();
+      expect(
+        notification?.querySelector(".notification-content"),
+      ).not.toBeNull();
     });
   });
 
@@ -504,7 +512,9 @@ describe("AchievementUI", () => {
       mockEngine.isUnlocked = mock(() => true);
 
       ui.update();
-      const lockedBadges = container.querySelectorAll(".achievement-badge.locked");
+      const lockedBadges = container.querySelectorAll(
+        ".achievement-badge.locked",
+      );
       expect(lockedBadges.length).toBe(0);
     });
   });
@@ -519,7 +529,7 @@ describe("AchievementUI", () => {
       ]);
       // First shows, second queued
       expect(
-        document.querySelector(".achievement-notification")
+        document.querySelector(".achievement-notification"),
       ).not.toBeNull();
     });
 
@@ -537,7 +547,7 @@ describe("AchievementUI", () => {
         createMockAchievement({ id: "h3" }),
       ]);
       expect(
-        document.querySelector(".achievement-notification")
+        document.querySelector(".achievement-notification"),
       ).not.toBeNull();
     });
 
@@ -556,7 +566,7 @@ describe("AchievementUI", () => {
   // Integration
   describe("integration", () => {
     test("works with mock AchievementEngine instance", () => {
-      const ui = new AchievementUI(mockEngine, "achievement-container");
+      const _ui = new AchievementUI(mockEngine, "achievement-container");
       expect(container.querySelector(".achievement-container")).not.toBeNull();
     });
 
@@ -590,7 +600,7 @@ describe("AchievementUI", () => {
       ]);
       // Only one notification visible at a time
       expect(
-        document.querySelectorAll(".achievement-notification").length
+        document.querySelectorAll(".achievement-notification").length,
       ).toBe(1);
     });
 
@@ -633,7 +643,7 @@ describe("AchievementUI", () => {
       }
       // Only one showing at a time
       expect(
-        document.querySelectorAll(".achievement-notification").length
+        document.querySelectorAll(".achievement-notification").length,
       ).toBe(1);
     });
 

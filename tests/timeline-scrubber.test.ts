@@ -5,11 +5,11 @@
  * to see genome execution frame-by-frame like a ribosome.
  */
 import { afterEach, beforeEach, describe, expect, test } from "bun:test";
-import { TimelineScrubber, injectTimelineStyles } from "@/timeline-scrubber";
 import {
   mockCanvasContext,
   restoreCanvasContext,
 } from "@/test-utils/canvas-mock";
+import { injectTimelineStyles, TimelineScrubber } from "@/timeline-scrubber";
 
 describe("TimelineScrubber", () => {
   let container: HTMLElement;
@@ -84,7 +84,7 @@ describe("TimelineScrubber", () => {
       });
       // Default is reflected in speed select
       const speedSelect = container.querySelector(
-        "#timeline-speed"
+        "#timeline-speed",
       ) as HTMLSelectElement;
       // Default is 250ms (0.25x speed)
       expect(speedSelect?.value).toBe("250");
@@ -114,7 +114,7 @@ describe("TimelineScrubber", () => {
         canvasElement: canvas,
       });
       const slider = container.querySelector(
-        "#timeline-slider"
+        "#timeline-slider",
       ) as HTMLInputElement;
       expect(slider?.value).toBe("0");
     });
@@ -168,7 +168,7 @@ describe("TimelineScrubber", () => {
       });
       scrubber.loadGenome("ATG TAA");
       const slider = container.querySelector(
-        "#timeline-slider"
+        "#timeline-slider",
       ) as HTMLInputElement;
       expect(slider?.value).toBe("0");
     });
@@ -200,7 +200,7 @@ describe("TimelineScrubber", () => {
       });
       scrubber.loadGenome("ATG TAA");
       expect(
-        container.querySelector("#timeline-instruction-display")
+        container.querySelector("#timeline-instruction-display"),
       ).not.toBeNull();
     });
   });
@@ -222,7 +222,7 @@ describe("TimelineScrubber", () => {
       });
       expect(container.querySelector("#timeline-step-display")).not.toBeNull();
       expect(
-        container.querySelector("#timeline-instruction-display")
+        container.querySelector("#timeline-instruction-display"),
       ).not.toBeNull();
       expect(container.querySelector("#timeline-stack-display")).not.toBeNull();
     });
@@ -244,7 +244,7 @@ describe("TimelineScrubber", () => {
         canvasElement: canvas,
       });
       const speedSelect = container.querySelector(
-        "#timeline-speed"
+        "#timeline-speed",
       ) as HTMLSelectElement;
       expect(speedSelect).not.toBeNull();
       expect(speedSelect.options.length).toBeGreaterThanOrEqual(5);
@@ -256,7 +256,7 @@ describe("TimelineScrubber", () => {
         canvasElement: canvas,
       });
       const slider = container.querySelector(
-        "#timeline-slider"
+        "#timeline-slider",
       ) as HTMLInputElement;
       expect(slider).not.toBeNull();
       expect(slider.type).toBe("range");
@@ -294,7 +294,7 @@ describe("TimelineScrubber", () => {
       });
       scrubber.loadGenome("ATG TAA");
       const slider = container.querySelector(
-        "#timeline-slider"
+        "#timeline-slider",
       ) as HTMLInputElement;
       slider.value = "0";
       slider.dispatchEvent(new Event("input"));
@@ -308,7 +308,7 @@ describe("TimelineScrubber", () => {
       });
       scrubber.loadGenome("ATG TAA");
       const playButton = container.querySelector(
-        "#timeline-play"
+        "#timeline-play",
       ) as HTMLButtonElement;
       playButton.click();
       expect(playButton.textContent).toBe("⏸");
@@ -322,7 +322,7 @@ describe("TimelineScrubber", () => {
       });
       scrubber.loadGenome("ATG TAA");
       const stepBackButton = container.querySelector(
-        "#timeline-step-back"
+        "#timeline-step-back",
       ) as HTMLButtonElement;
       expect(() => stepBackButton.click()).not.toThrow();
     });
@@ -334,7 +334,7 @@ describe("TimelineScrubber", () => {
       });
       scrubber.loadGenome("ATG TAA");
       const stepForwardButton = container.querySelector(
-        "#timeline-step-forward"
+        "#timeline-step-forward",
       ) as HTMLButtonElement;
       expect(() => stepForwardButton.click()).not.toThrow();
     });
@@ -346,7 +346,7 @@ describe("TimelineScrubber", () => {
       });
       scrubber.loadGenome("ATG TAA");
       const resetButton = container.querySelector(
-        "#timeline-reset"
+        "#timeline-reset",
       ) as HTMLButtonElement;
       expect(() => resetButton.click()).not.toThrow();
     });
@@ -357,7 +357,7 @@ describe("TimelineScrubber", () => {
         canvasElement: canvas,
       });
       const speedSelect = container.querySelector(
-        "#timeline-speed"
+        "#timeline-speed",
       ) as HTMLSelectElement;
       speedSelect.value = "1000";
       speedSelect.dispatchEvent(new Event("change"));
@@ -374,7 +374,7 @@ describe("TimelineScrubber", () => {
       });
       scrubber.loadGenome("ATG TAA");
       const stepBackButton = container.querySelector(
-        "#timeline-step-back"
+        "#timeline-step-back",
       ) as HTMLButtonElement;
       expect(() => stepBackButton.click()).not.toThrow();
     });
@@ -386,7 +386,7 @@ describe("TimelineScrubber", () => {
       });
       scrubber.loadGenome("ATG TAA");
       const stepForwardButton = container.querySelector(
-        "#timeline-step-forward"
+        "#timeline-step-forward",
       ) as HTMLButtonElement;
       for (let i = 0; i < 10; i++) {
         expect(() => stepForwardButton.click()).not.toThrow();
@@ -400,11 +400,11 @@ describe("TimelineScrubber", () => {
       });
       scrubber.loadGenome("ATG TAA");
       const stepForwardButton = container.querySelector(
-        "#timeline-step-forward"
+        "#timeline-step-forward",
       ) as HTMLButtonElement;
       stepForwardButton.click();
       expect(
-        container.querySelector("#timeline-instruction-display")
+        container.querySelector("#timeline-instruction-display"),
       ).not.toBeNull();
     });
 
@@ -415,7 +415,7 @@ describe("TimelineScrubber", () => {
       });
       scrubber.loadGenome("ATG TAA");
       const slider = container.querySelector(
-        "#timeline-slider"
+        "#timeline-slider",
       ) as HTMLInputElement;
       slider.value = "0";
       slider.dispatchEvent(new Event("input"));
@@ -429,7 +429,7 @@ describe("TimelineScrubber", () => {
       });
       scrubber.loadGenome("ATG TAA");
       const stepForwardButton = container.querySelector(
-        "#timeline-step-forward"
+        "#timeline-step-forward",
       ) as HTMLButtonElement;
       stepForwardButton.click();
       const stepDisplay = container.querySelector("#timeline-step-display");
@@ -455,7 +455,7 @@ describe("TimelineScrubber", () => {
       });
       scrubber.loadGenome("ATG TAA");
       const slider = container.querySelector(
-        "#timeline-slider"
+        "#timeline-slider",
       ) as HTMLInputElement;
       expect(parseInt(slider.max)).toBeGreaterThanOrEqual(0);
     });
@@ -467,7 +467,7 @@ describe("TimelineScrubber", () => {
       });
       scrubber.loadGenome("ATG TAA");
       const slider = container.querySelector(
-        "#timeline-slider"
+        "#timeline-slider",
       ) as HTMLInputElement;
       expect(slider.value).toBe("0");
     });
@@ -489,7 +489,7 @@ describe("TimelineScrubber", () => {
       });
       scrubber.loadGenome("ATG TAA");
       const instructionDisplay = container.querySelector(
-        "#timeline-instruction-display"
+        "#timeline-instruction-display",
       );
       expect(instructionDisplay?.textContent).not.toBe("");
     });
@@ -511,7 +511,7 @@ describe("TimelineScrubber", () => {
       });
       scrubber.loadGenome("ATG TAA");
       const playButton = container.querySelector(
-        "#timeline-play"
+        "#timeline-play",
       ) as HTMLButtonElement;
       playButton.click();
       expect(playButton.textContent).toBe("⏸");
@@ -525,7 +525,7 @@ describe("TimelineScrubber", () => {
       });
       scrubber.loadGenome("ATG TAA");
       const playButton = container.querySelector(
-        "#timeline-play"
+        "#timeline-play",
       ) as HTMLButtonElement;
       playButton.click();
       playButton.click();
@@ -611,7 +611,7 @@ describe("TimelineScrubber", () => {
       });
       scrubber.loadGenome("ATG TAA");
       const slider = container.querySelector(
-        "#timeline-slider"
+        "#timeline-slider",
       ) as HTMLInputElement;
       slider.value = "0";
       slider.dispatchEvent(new Event("input"));
@@ -625,7 +625,7 @@ describe("TimelineScrubber", () => {
       });
       scrubber.loadGenome("ATG TAA");
       const slider = container.querySelector(
-        "#timeline-slider"
+        "#timeline-slider",
       ) as HTMLInputElement;
       slider.value = "1";
       slider.dispatchEvent(new Event("input"));
@@ -640,7 +640,7 @@ describe("TimelineScrubber", () => {
       });
       scrubber.loadGenome("ATG TAA");
       const slider = container.querySelector(
-        "#timeline-slider"
+        "#timeline-slider",
       ) as HTMLInputElement;
       slider.value = "0";
       expect(() => slider.dispatchEvent(new Event("input"))).not.toThrow();
@@ -653,13 +653,11 @@ describe("TimelineScrubber", () => {
       });
       scrubber.loadGenome("ATG TAA");
       const slider = container.querySelector(
-        "#timeline-slider"
+        "#timeline-slider",
       ) as HTMLInputElement;
       slider.value = "0";
       slider.dispatchEvent(new Event("input"));
-      expect(
-        container.querySelector("#timeline-step-display")
-      ).not.toBeNull();
+      expect(container.querySelector("#timeline-step-display")).not.toBeNull();
     });
   });
 
@@ -670,7 +668,7 @@ describe("TimelineScrubber", () => {
         canvasElement: canvas,
       });
       const speedSelect = container.querySelector(
-        "#timeline-speed"
+        "#timeline-speed",
       ) as HTMLSelectElement;
       speedSelect.value = "1000";
       speedSelect.dispatchEvent(new Event("change"));
@@ -683,7 +681,7 @@ describe("TimelineScrubber", () => {
         canvasElement: canvas,
       });
       const speedSelect = container.querySelector(
-        "#timeline-speed"
+        "#timeline-speed",
       ) as HTMLSelectElement;
       speedSelect.value = "2000";
       speedSelect.dispatchEvent(new Event("change"));
@@ -699,7 +697,7 @@ describe("TimelineScrubber", () => {
       });
       scrubber.loadGenome("ATG TAA");
       const playButton = container.querySelector(
-        "#timeline-play"
+        "#timeline-play",
       ) as HTMLButtonElement;
       playButton.click();
       expect(playButton.textContent).toBe("⏸");
@@ -714,7 +712,7 @@ describe("TimelineScrubber", () => {
       });
       scrubber.loadGenome("ATG TAA");
       const playButton = container.querySelector(
-        "#timeline-play"
+        "#timeline-play",
       ) as HTMLButtonElement;
       playButton.click();
       expect(playButton.textContent).toBe("⏸");
@@ -728,7 +726,7 @@ describe("TimelineScrubber", () => {
       });
       scrubber.loadGenome("ATG TAA");
       const playButton = container.querySelector(
-        "#timeline-play"
+        "#timeline-play",
       ) as HTMLButtonElement;
       playButton.click();
       playButton.click();
@@ -742,7 +740,7 @@ describe("TimelineScrubber", () => {
       });
       scrubber.loadGenome("ATG TAA");
       const playButton = container.querySelector(
-        "#timeline-play"
+        "#timeline-play",
       ) as HTMLButtonElement;
       playButton.click();
       expect(playButton.textContent).toBe("⏸");
@@ -758,7 +756,7 @@ describe("TimelineScrubber", () => {
       });
       scrubber.loadGenome("ATG TAA");
       const playButton = container.querySelector(
-        "#timeline-play"
+        "#timeline-play",
       ) as HTMLButtonElement;
       playButton.click();
       playButton.click();
@@ -775,7 +773,7 @@ describe("TimelineScrubber", () => {
       });
       scrubber.loadGenome("ATG TAA");
       const playButton = container.querySelector(
-        "#timeline-play"
+        "#timeline-play",
       ) as HTMLButtonElement;
       playButton.click();
       expect(playButton.textContent).toBe("⏸");
@@ -790,7 +788,7 @@ describe("TimelineScrubber", () => {
       });
       scrubber.loadGenome("ATG TAA");
       const playButton = container.querySelector(
-        "#timeline-play"
+        "#timeline-play",
       ) as HTMLButtonElement;
       playButton.click();
       await new Promise((r) => setTimeout(r, 100));
@@ -805,7 +803,7 @@ describe("TimelineScrubber", () => {
       });
       scrubber.loadGenome("ATG TAA");
       const playButton = container.querySelector(
-        "#timeline-play"
+        "#timeline-play",
       ) as HTMLButtonElement;
       playButton.click();
       await new Promise((r) => setTimeout(r, 100));
@@ -820,7 +818,7 @@ describe("TimelineScrubber", () => {
       });
       scrubber.loadGenome("ATG TAA");
       const playButton = container.querySelector(
-        "#timeline-play"
+        "#timeline-play",
       ) as HTMLButtonElement;
       playButton.click();
       await new Promise((r) => setTimeout(r, 200));
@@ -835,7 +833,7 @@ describe("TimelineScrubber", () => {
       });
       scrubber.loadGenome("ATG TAA");
       const playButton = container.querySelector(
-        "#timeline-play"
+        "#timeline-play",
       ) as HTMLButtonElement;
       playButton.click();
       await new Promise((r) => setTimeout(r, 200));
@@ -851,7 +849,7 @@ describe("TimelineScrubber", () => {
       });
       scrubber.loadGenome("ATG TAA");
       const playButton = container.querySelector(
-        "#timeline-play"
+        "#timeline-play",
       ) as HTMLButtonElement;
       playButton.click();
       playButton.click();
@@ -865,7 +863,7 @@ describe("TimelineScrubber", () => {
       });
       scrubber.loadGenome("ATG TAA");
       const playButton = container.querySelector(
-        "#timeline-play"
+        "#timeline-play",
       ) as HTMLButtonElement;
       playButton.click();
       playButton.click();
@@ -881,7 +879,7 @@ describe("TimelineScrubber", () => {
       });
       scrubber.loadGenome("ATG TAA");
       const stepForwardButton = container.querySelector(
-        "#timeline-step-forward"
+        "#timeline-step-forward",
       ) as HTMLButtonElement;
       stepForwardButton.click();
       const stepDisplay = container.querySelector("#timeline-step-display");
@@ -895,7 +893,7 @@ describe("TimelineScrubber", () => {
       });
       scrubber.loadGenome("ATG TAA");
       const stepForwardButton = container.querySelector(
-        "#timeline-step-forward"
+        "#timeline-step-forward",
       ) as HTMLButtonElement;
       for (let i = 0; i < 10; i++) {
         stepForwardButton.click();
@@ -910,12 +908,10 @@ describe("TimelineScrubber", () => {
       });
       scrubber.loadGenome("ATG TAA");
       const stepForwardButton = container.querySelector(
-        "#timeline-step-forward"
+        "#timeline-step-forward",
       ) as HTMLButtonElement;
       stepForwardButton.click();
-      expect(
-        container.querySelector("#timeline-step-display")
-      ).not.toBeNull();
+      expect(container.querySelector("#timeline-step-display")).not.toBeNull();
     });
   });
 
@@ -927,10 +923,10 @@ describe("TimelineScrubber", () => {
       });
       scrubber.loadGenome("ATG TAA");
       const stepForwardButton = container.querySelector(
-        "#timeline-step-forward"
+        "#timeline-step-forward",
       ) as HTMLButtonElement;
       const stepBackButton = container.querySelector(
-        "#timeline-step-back"
+        "#timeline-step-back",
       ) as HTMLButtonElement;
       stepForwardButton.click();
       stepBackButton.click();
@@ -945,7 +941,7 @@ describe("TimelineScrubber", () => {
       });
       scrubber.loadGenome("ATG TAA");
       const stepBackButton = container.querySelector(
-        "#timeline-step-back"
+        "#timeline-step-back",
       ) as HTMLButtonElement;
       stepBackButton.click();
       const stepDisplay = container.querySelector("#timeline-step-display");
@@ -959,10 +955,10 @@ describe("TimelineScrubber", () => {
       });
       scrubber.loadGenome("ATG TAA");
       const stepForwardButton = container.querySelector(
-        "#timeline-step-forward"
+        "#timeline-step-forward",
       ) as HTMLButtonElement;
       const stepBackButton = container.querySelector(
-        "#timeline-step-back"
+        "#timeline-step-back",
       ) as HTMLButtonElement;
       stepForwardButton.click();
       stepBackButton.click();
@@ -978,10 +974,10 @@ describe("TimelineScrubber", () => {
       });
       scrubber.loadGenome("ATG TAA");
       const playButton = container.querySelector(
-        "#timeline-play"
+        "#timeline-play",
       ) as HTMLButtonElement;
       const resetButton = container.querySelector(
-        "#timeline-reset"
+        "#timeline-reset",
       ) as HTMLButtonElement;
       playButton.click();
       resetButton.click();
@@ -995,10 +991,10 @@ describe("TimelineScrubber", () => {
       });
       scrubber.loadGenome("ATG TAA");
       const playButton = container.querySelector(
-        "#timeline-play"
+        "#timeline-play",
       ) as HTMLButtonElement;
       const resetButton = container.querySelector(
-        "#timeline-reset"
+        "#timeline-reset",
       ) as HTMLButtonElement;
       playButton.click();
       resetButton.click();
@@ -1012,10 +1008,10 @@ describe("TimelineScrubber", () => {
       });
       scrubber.loadGenome("ATG TAA");
       const stepForwardButton = container.querySelector(
-        "#timeline-step-forward"
+        "#timeline-step-forward",
       ) as HTMLButtonElement;
       const resetButton = container.querySelector(
-        "#timeline-reset"
+        "#timeline-reset",
       ) as HTMLButtonElement;
       stepForwardButton.click();
       resetButton.click();
@@ -1030,7 +1026,7 @@ describe("TimelineScrubber", () => {
       });
       scrubber.loadGenome("ATG TAA");
       const resetButton = container.querySelector(
-        "#timeline-reset"
+        "#timeline-reset",
       ) as HTMLButtonElement;
       expect(() => resetButton.click()).not.toThrow();
     });
@@ -1042,11 +1038,11 @@ describe("TimelineScrubber", () => {
       });
       scrubber.loadGenome("ATG TAA");
       const resetButton = container.querySelector(
-        "#timeline-reset"
+        "#timeline-reset",
       ) as HTMLButtonElement;
       resetButton.click();
       const slider = container.querySelector(
-        "#timeline-slider"
+        "#timeline-slider",
       ) as HTMLInputElement;
       expect(slider.value).toBe("0");
     });
@@ -1092,7 +1088,7 @@ describe("TimelineScrubber", () => {
       });
       scrubber.loadGenome("ATG TAA");
       const playButton = container.querySelector(
-        "#timeline-play"
+        "#timeline-play",
       ) as HTMLButtonElement;
       playButton.click();
       expect(() => scrubber.destroy()).not.toThrow();
@@ -1105,7 +1101,7 @@ describe("TimelineScrubber", () => {
       });
       scrubber.loadGenome("ATG TAA");
       const playButton = container.querySelector(
-        "#timeline-play"
+        "#timeline-play",
       ) as HTMLButtonElement;
       playButton.click();
       expect(() => scrubber.destroy()).not.toThrow();
@@ -1121,7 +1117,7 @@ describe("TimelineScrubber", () => {
       });
       scrubber.loadGenome("ATG TAA");
       const stepForwardButton = container.querySelector(
-        "#timeline-step-forward"
+        "#timeline-step-forward",
       ) as HTMLButtonElement;
       stepForwardButton.click();
       expect(container.querySelector("#timeline-step-display")).not.toBeNull();
@@ -1143,11 +1139,11 @@ describe("TimelineScrubber", () => {
       });
       scrubber.loadGenome("ATG TAA");
       const stepForwardButton = container.querySelector(
-        "#timeline-step-forward"
+        "#timeline-step-forward",
       ) as HTMLButtonElement;
       stepForwardButton.click();
       const slider = container.querySelector(
-        "#timeline-slider"
+        "#timeline-slider",
       ) as HTMLInputElement;
       expect(slider.value).toBe("1");
     });
@@ -1159,7 +1155,7 @@ describe("TimelineScrubber", () => {
       });
       scrubber.loadGenome("ATG TAA");
       const speedSelect = container.querySelector(
-        "#timeline-speed"
+        "#timeline-speed",
       ) as HTMLSelectElement;
       speedSelect.value = "100";
       speedSelect.dispatchEvent(new Event("change"));
@@ -1218,14 +1214,16 @@ describe("TimelineScrubber", () => {
       });
       scrubber.loadGenome("ATG TAA");
       const playButton = container.querySelector(
-        "#timeline-play"
+        "#timeline-play",
       ) as HTMLButtonElement;
       // Rapid toggling
       for (let i = 0; i < 10; i++) {
         playButton.click();
       }
       // Should not throw and should be in consistent state
-      expect(playButton.textContent === "▶" || playButton.textContent === "⏸").toBe(true);
+      expect(
+        playButton.textContent === "▶" || playButton.textContent === "⏸",
+      ).toBe(true);
       scrubber.destroy();
     });
 
@@ -1236,10 +1234,10 @@ describe("TimelineScrubber", () => {
       });
       scrubber.loadGenome("ATG TAA");
       const playButton = container.querySelector(
-        "#timeline-play"
+        "#timeline-play",
       ) as HTMLButtonElement;
       const slider = container.querySelector(
-        "#timeline-slider"
+        "#timeline-slider",
       ) as HTMLInputElement;
       playButton.click(); // Start playback
       slider.value = "0";

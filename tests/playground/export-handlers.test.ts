@@ -235,7 +235,7 @@ describe("Export Handlers", () => {
     });
 
     test("handles very long genome for title extraction", () => {
-      const longGenome = "ATG " + "GGA ".repeat(1000) + "TAA";
+      const longGenome = `ATG ${"GGA ".repeat(1000)}TAA`;
       const title = extractTitle(longGenome);
       expect(title.length).toBeLessThanOrEqual(30);
     });

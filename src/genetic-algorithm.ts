@@ -3,15 +3,15 @@
  * Implements automated fitness-driven evolution with selection, crossover, mutation
  */
 
-import { CodonLexer } from "./lexer.js";
+import { CodonLexer } from "@/lexer";
 import {
   applyDeletion,
   applyInsertion,
   applyPointMutation,
   type MutationResult,
-} from "./mutations.js";
-import { Canvas2DRenderer } from "./renderer.js";
-import { CodonVM } from "./vm.js";
+} from "@/mutations";
+import { Canvas2DRenderer } from "@/renderer";
+import { CodonVM } from "@/vm";
 
 export interface GAIndividual {
   /** Genome string */

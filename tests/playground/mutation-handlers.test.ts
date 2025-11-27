@@ -174,7 +174,9 @@ describe("Mutation Handlers", () => {
   describe("error handling", () => {
     test("extracts message from Error instance", () => {
       const error = new Error("Mutation failed: No valid target");
-      expect(extractErrorMessage(error)).toBe("Mutation failed: No valid target");
+      expect(extractErrorMessage(error)).toBe(
+        "Mutation failed: No valid target",
+      );
     });
 
     test("returns generic message for non-Error", () => {

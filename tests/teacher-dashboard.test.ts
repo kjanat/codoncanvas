@@ -4,8 +4,8 @@
  * Tests for classroom-level analytics system that enables teachers to
  * monitor student progress, identify at-risk learners, and export grades.
  */
-import { afterEach, beforeEach, describe, expect, test, mock } from "bun:test";
-import { TeacherDashboard, generateStudentExport } from "@/teacher-dashboard";
+import { beforeEach, describe, expect, test } from "bun:test";
+import { generateStudentExport, TeacherDashboard } from "@/teacher-dashboard";
 
 // Helper to create a FileReader mock with custom content function
 const createFileReaderMock = (contentFn: (index: number) => string) => {
@@ -27,7 +27,7 @@ const createFileReaderMock = (contentFn: (index: number) => string) => {
 // Helper to create valid student export data matching TeacherStudentProgress interface
 const createStudentExport = (
   studentId: string,
-  overrides: Record<string, unknown> = {}
+  overrides: Record<string, unknown> = {},
 ): string => {
   // Extract aggregateMetrics overrides
   const aggregateOverrides: Record<string, unknown> = {};
@@ -178,11 +178,13 @@ describe("TeacherDashboard", () => {
     test("returns Promise that resolves with count of imported files", async () => {
       const originalFileReader = globalThis.FileReader;
       globalThis.FileReader = createFileReaderMock(() =>
-        createStudentExport("test-1")
+        createStudentExport("test-1"),
       ) as unknown as typeof FileReader;
 
       try {
-        const file = new File(["test"], "test.json", { type: "application/json" });
+        const file = new File(["test"], "test.json", {
+          type: "application/json",
+        });
         const result = await dashboard.importMultipleFiles([file]);
         expect(result).toBe(1);
       } finally {
@@ -193,7 +195,7 @@ describe("TeacherDashboard", () => {
     test("calls importStudentData for each file content", async () => {
       const originalFileReader = globalThis.FileReader;
       globalThis.FileReader = createFileReaderMock((idx) =>
-        createStudentExport(`student-${idx + 1}`)
+        createStudentExport(`student-${idx + 1}`),
       ) as unknown as typeof FileReader;
 
       try {
@@ -211,7 +213,7 @@ describe("TeacherDashboard", () => {
     test("counts successful imports", async () => {
       const originalFileReader = globalThis.FileReader;
       globalThis.FileReader = createFileReaderMock((idx) =>
-        createStudentExport(`student-${idx}`)
+        createStudentExport(`student-${idx}`),
       ) as unknown as typeof FileReader;
 
       try {
@@ -231,7 +233,7 @@ describe("TeacherDashboard", () => {
       const originalFileReader = globalThis.FileReader;
       globalThis.FileReader = createFileReaderMock((idx) =>
         // Second file has invalid JSON
-        idx === 1 ? "invalid json" : createStudentExport(`student-${idx}`)
+        idx === 1 ? "invalid json" : createStudentExport(`student-${idx}`),
       ) as unknown as typeof FileReader;
 
       try {
@@ -250,8 +252,8 @@ describe("TeacherDashboard", () => {
 
     test("rejects when all files fail to import", async () => {
       const originalFileReader = globalThis.FileReader;
-      globalThis.FileReader = createFileReaderMock(() =>
-        "invalid json"
+      globalThis.FileReader = createFileReaderMock(
+        () => "invalid json",
       ) as unknown as typeof FileReader;
 
       try {
@@ -259,7 +261,9 @@ describe("TeacherDashboard", () => {
           new File(["bad1"], "bad1.json"),
           new File(["bad2"], "bad2.json"),
         ];
-        await expect(dashboard.importMultipleFiles(files)).rejects.toThrow("Failed to import any files");
+        await expect(dashboard.importMultipleFiles(files)).rejects.toThrow(
+          "Failed to import any files",
+        );
       } finally {
         globalThis.FileReader = originalFileReader;
       }
@@ -269,7 +273,7 @@ describe("TeacherDashboard", () => {
       const originalFileReader = globalThis.FileReader;
       globalThis.FileReader = createFileReaderMock((idx) =>
         // Only first file succeeds
-        idx === 0 ? createStudentExport("student-0") : "invalid json"
+        idx === 0 ? createStudentExport("student-0") : "invalid json",
       ) as unknown as typeof FileReader;
 
       try {
@@ -303,7 +307,9 @@ describe("TeacherDashboard", () => {
 
       try {
         const files = [new File(["test"], "test.json")];
-        await expect(dashboard.importMultipleFiles(files)).rejects.toThrow("File reading failed");
+        await expect(dashboard.importMultipleFiles(files)).rejects.toThrow(
+          "File reading failed",
+        );
       } finally {
         globalThis.FileReader = originalFileReader;
       }
@@ -386,10 +392,10 @@ describe("TeacherDashboard", () => {
 
     test("calculates avgEngagement.sessionsPerStudent", () => {
       dashboard.importStudentData(
-        createStudentExport("student-1", { totalSessions: 5 })
+        createStudentExport("student-1", { totalSessions: 5 }),
       );
       dashboard.importStudentData(
-        createStudentExport("student-2", { totalSessions: 3 })
+        createStudentExport("student-2", { totalSessions: 3 }),
       );
       const stats = dashboard.getClassroomStats();
       expect(stats.avgEngagement.sessionsPerStudent).toBe(4);
@@ -397,10 +403,10 @@ describe("TeacherDashboard", () => {
 
     test("calculates avgEngagement.durationPerStudent", () => {
       dashboard.importStudentData(
-        createStudentExport("student-1", { totalDuration: 3600000 })
+        createStudentExport("student-1", { totalDuration: 3600000 }),
       );
       dashboard.importStudentData(
-        createStudentExport("student-2", { totalDuration: 1800000 })
+        createStudentExport("student-2", { totalDuration: 1800000 }),
       );
       const stats = dashboard.getClassroomStats();
       expect(stats.avgEngagement.durationPerStudent).toBe(2700000);
@@ -408,10 +414,10 @@ describe("TeacherDashboard", () => {
 
     test("calculates avgEngagement.genomesPerStudent", () => {
       dashboard.importStudentData(
-        createStudentExport("student-1", { totalGenomesCreated: 10 })
+        createStudentExport("student-1", { totalGenomesCreated: 10 }),
       );
       dashboard.importStudentData(
-        createStudentExport("student-2", { totalGenomesCreated: 20 })
+        createStudentExport("student-2", { totalGenomesCreated: 20 }),
       );
       const stats = dashboard.getClassroomStats();
       expect(stats.avgEngagement.genomesPerStudent).toBe(15);
@@ -419,10 +425,10 @@ describe("TeacherDashboard", () => {
 
     test("calculates avgEngagement.mutationsPerStudent", () => {
       dashboard.importStudentData(
-        createStudentExport("student-1", { totalMutationsApplied: 5 })
+        createStudentExport("student-1", { totalMutationsApplied: 5 }),
       );
       dashboard.importStudentData(
-        createStudentExport("student-2", { totalMutationsApplied: 15 })
+        createStudentExport("student-2", { totalMutationsApplied: 15 }),
       );
       const stats = dashboard.getClassroomStats();
       expect(stats.avgEngagement.mutationsPerStudent).toBe(10);
@@ -430,10 +436,10 @@ describe("TeacherDashboard", () => {
 
     test("calculates avgEngagement.timeToFirstArtifact (excludes 0 values)", () => {
       dashboard.importStudentData(
-        createStudentExport("student-1", { avgTimeToFirstArtifact: 5000 })
+        createStudentExport("student-1", { avgTimeToFirstArtifact: 5000 }),
       );
       dashboard.importStudentData(
-        createStudentExport("student-2", { avgTimeToFirstArtifact: 10000 })
+        createStudentExport("student-2", { avgTimeToFirstArtifact: 10000 }),
       );
       const stats = dashboard.getClassroomStats();
       expect(stats.avgEngagement.timeToFirstArtifact).toBe(7500);
@@ -441,10 +447,10 @@ describe("TeacherDashboard", () => {
 
     test("calculates avgEngagement.tutorialCompletionRate", () => {
       dashboard.importStudentData(
-        createStudentExport("student-1", { completionRate: 1.0 })
+        createStudentExport("student-1", { completionRate: 1.0 }),
       );
       dashboard.importStudentData(
-        createStudentExport("student-2", { completionRate: 0.5 })
+        createStudentExport("student-2", { completionRate: 0.5 }),
       );
       const stats = dashboard.getClassroomStats();
       expect(stats.avgEngagement.tutorialCompletionRate).toBe(0.75);
@@ -452,10 +458,10 @@ describe("TeacherDashboard", () => {
 
     test("calculates distribution.highEngagement (>=3 sessions)", () => {
       dashboard.importStudentData(
-        createStudentExport("student-1", { totalSessions: 5 })
+        createStudentExport("student-1", { totalSessions: 5 }),
       );
       dashboard.importStudentData(
-        createStudentExport("student-2", { totalSessions: 1 })
+        createStudentExport("student-2", { totalSessions: 1 }),
       );
       const stats = dashboard.getClassroomStats();
       expect(stats.distribution.highEngagement).toBe(1);
@@ -463,10 +469,10 @@ describe("TeacherDashboard", () => {
 
     test("calculates distribution.mediumEngagement (1-2 sessions)", () => {
       dashboard.importStudentData(
-        createStudentExport("student-1", { totalSessions: 2 })
+        createStudentExport("student-1", { totalSessions: 2 }),
       );
       dashboard.importStudentData(
-        createStudentExport("student-2", { totalSessions: 5 })
+        createStudentExport("student-2", { totalSessions: 5 }),
       );
       const stats = dashboard.getClassroomStats();
       expect(stats.distribution.mediumEngagement).toBe(1);
@@ -474,10 +480,10 @@ describe("TeacherDashboard", () => {
 
     test("calculates distribution.lowEngagement (0 sessions)", () => {
       dashboard.importStudentData(
-        createStudentExport("student-1", { totalSessions: 0 })
+        createStudentExport("student-1", { totalSessions: 0 }),
       );
       dashboard.importStudentData(
-        createStudentExport("student-2", { totalSessions: 5 })
+        createStudentExport("student-2", { totalSessions: 5 }),
       );
       const stats = dashboard.getClassroomStats();
       expect(stats.distribution.lowEngagement).toBe(1);
@@ -485,10 +491,10 @@ describe("TeacherDashboard", () => {
 
     test("calculates distribution.atRisk (no first artifact)", () => {
       dashboard.importStudentData(
-        createStudentExport("student-1", { avgTimeToFirstArtifact: 0 })
+        createStudentExport("student-1", { avgTimeToFirstArtifact: 0 }),
       );
       dashboard.importStudentData(
-        createStudentExport("student-2", { avgTimeToFirstArtifact: 5000 })
+        createStudentExport("student-2", { avgTimeToFirstArtifact: 5000 }),
       );
       const stats = dashboard.getClassroomStats();
       // student-1 has no first artifact, so at least 1 should be at-risk
@@ -523,7 +529,7 @@ describe("TeacherDashboard", () => {
           avgTimeToFirstArtifact: 5000,
           totalGenomesCreated: 10,
           completionRate: 0.8,
-        })
+        }),
       );
       const atRisk = dashboard.getAtRiskStudents();
       // May or may not have at-risk depending on implementation
@@ -535,7 +541,7 @@ describe("TeacherDashboard", () => {
         createStudentExport("student-1", {
           avgTimeToFirstArtifact: 0,
           totalSessions: 5,
-        })
+        }),
       );
       const atRisk = dashboard.getAtRiskStudents();
       expect(atRisk.length).toBeGreaterThanOrEqual(1);
@@ -544,7 +550,7 @@ describe("TeacherDashboard", () => {
 
     test("identifies students with no sessions (high severity)", () => {
       dashboard.importStudentData(
-        createStudentExport("student-1", { totalSessions: 0 })
+        createStudentExport("student-1", { totalSessions: 0 }),
       );
       const atRisk = dashboard.getAtRiskStudents();
       expect(atRisk.length).toBeGreaterThanOrEqual(1);
@@ -552,7 +558,7 @@ describe("TeacherDashboard", () => {
 
     test("identifies students with only 1 session (medium severity)", () => {
       dashboard.importStudentData(
-        createStudentExport("student-1", { totalSessions: 1 })
+        createStudentExport("student-1", { totalSessions: 1 }),
       );
       const atRisk = dashboard.getAtRiskStudents();
       expect(atRisk.length).toBe(1);
@@ -563,7 +569,7 @@ describe("TeacherDashboard", () => {
       dashboard.importStudentData(
         createStudentExport("student-1", {
           tutorials: {},
-        })
+        }),
       );
       const atRisk = dashboard.getAtRiskStudents();
       expect(atRisk.length).toBeGreaterThanOrEqual(1);
@@ -575,7 +581,7 @@ describe("TeacherDashboard", () => {
         createStudentExport("student-1", {
           totalGenomesCreated: 0,
           totalSessions: 5,
-        })
+        }),
       );
       const atRisk = dashboard.getAtRiskStudents();
       expect(atRisk.length).toBeGreaterThanOrEqual(1);
@@ -587,7 +593,7 @@ describe("TeacherDashboard", () => {
         createStudentExport("student-1", {
           completionRate: 0.1,
           totalSessions: 5,
-        })
+        }),
       );
       const atRisk = dashboard.getAtRiskStudents();
       expect(atRisk.length).toBeGreaterThanOrEqual(1);
@@ -600,7 +606,7 @@ describe("TeacherDashboard", () => {
           totalSessions: 0,
           totalGenomesCreated: 0,
           avgTimeToFirstArtifact: 0,
-        })
+        }),
       );
       const atRisk = dashboard.getAtRiskStudents();
       if (atRisk.length > 0) {
@@ -610,7 +616,7 @@ describe("TeacherDashboard", () => {
 
     test("returns AtRiskStudent with studentId, studentName, reasons", () => {
       dashboard.importStudentData(
-        createStudentExport("student-1", { totalSessions: 0 })
+        createStudentExport("student-1", { totalSessions: 0 }),
       );
       const atRisk = dashboard.getAtRiskStudents();
       if (atRisk.length > 0) {
@@ -621,7 +627,7 @@ describe("TeacherDashboard", () => {
 
     test("returns AtRiskStudent with severity level", () => {
       dashboard.importStudentData(
-        createStudentExport("student-1", { totalSessions: 0 })
+        createStudentExport("student-1", { totalSessions: 0 }),
       );
       const atRisk = dashboard.getAtRiskStudents();
       if (atRisk.length > 0) {
@@ -631,7 +637,7 @@ describe("TeacherDashboard", () => {
 
     test("returns AtRiskStudent with metrics snapshot", () => {
       dashboard.importStudentData(
-        createStudentExport("student-1", { totalSessions: 0 })
+        createStudentExport("student-1", { totalSessions: 0 }),
       );
       const atRisk = dashboard.getAtRiskStudents();
       if (atRisk.length > 0) {
@@ -641,10 +647,10 @@ describe("TeacherDashboard", () => {
 
     test("sorts by severity (high first)", () => {
       dashboard.importStudentData(
-        createStudentExport("student-1", { totalSessions: 1 })
+        createStudentExport("student-1", { totalSessions: 1 }),
       );
       dashboard.importStudentData(
-        createStudentExport("student-2", { totalSessions: 0 })
+        createStudentExport("student-2", { totalSessions: 0 }),
       );
       const atRisk = dashboard.getAtRiskStudents();
       if (atRisk.length >= 2) {
@@ -657,15 +663,15 @@ describe("TeacherDashboard", () => {
         createStudentExport("student-1", {
           totalSessions: 0,
           totalGenomesCreated: 0,
-        })
+        }),
       );
       dashboard.importStudentData(
-        createStudentExport("student-2", { totalSessions: 0 })
+        createStudentExport("student-2", { totalSessions: 0 }),
       );
       const atRisk = dashboard.getAtRiskStudents();
       if (atRisk.length >= 2) {
         expect(atRisk[0].reasons.length).toBeGreaterThanOrEqual(
-          atRisk[1].reasons.length
+          atRisk[1].reasons.length,
         );
       }
     });
@@ -702,7 +708,7 @@ describe("TeacherDashboard", () => {
 
     test("formats duration as minutes", () => {
       dashboard.importStudentData(
-        createStudentExport("student-1", { totalDuration: 3600000 })
+        createStudentExport("student-1", { totalDuration: 3600000 }),
       );
       const csv = dashboard.exportGradingSummary();
       // 3600000ms = 60 minutes
@@ -711,7 +717,7 @@ describe("TeacherDashboard", () => {
 
     test("shows 'N/A' for missing timeToFirstArtifact", () => {
       dashboard.importStudentData(
-        createStudentExport("student-1", { avgTimeToFirstArtifact: undefined })
+        createStudentExport("student-1", { avgTimeToFirstArtifact: undefined }),
       );
       const csv = dashboard.exportGradingSummary();
       expect(csv).toContain("N/A");
@@ -719,7 +725,7 @@ describe("TeacherDashboard", () => {
 
     test("shows 'N/A' when timeToFirstArtifact is 0 (falsy)", () => {
       dashboard.importStudentData(
-        createStudentExport("student-1", { avgTimeToFirstArtifact: 0 })
+        createStudentExport("student-1", { avgTimeToFirstArtifact: 0 }),
       );
       const csv = dashboard.exportGradingSummary();
       // Zero is treated as falsy/missing and shows N/A
@@ -728,7 +734,7 @@ describe("TeacherDashboard", () => {
 
     test("shows 'N/A' for missing studentName", () => {
       dashboard.importStudentData(
-        createStudentExport("student-1", { studentName: undefined })
+        createStudentExport("student-1", { studentName: undefined }),
       );
       const csv = dashboard.exportGradingSummary();
       // Should handle undefined name
@@ -746,7 +752,7 @@ describe("TeacherDashboard", () => {
       dashboard.importStudentData(
         createStudentExport("student-1", {
           studentName: 'Test, "Student"',
-        })
+        }),
       );
       const csv = dashboard.exportGradingSummary();
       // CSV should handle special characters
@@ -833,13 +839,13 @@ describe("TeacherDashboard", () => {
 
     test("handles students with varying activity levels", () => {
       dashboard.importStudentData(
-        createStudentExport("active", { totalSessions: 10 })
+        createStudentExport("active", { totalSessions: 10 }),
       );
       dashboard.importStudentData(
-        createStudentExport("moderate", { totalSessions: 3 })
+        createStudentExport("moderate", { totalSessions: 3 }),
       );
       dashboard.importStudentData(
-        createStudentExport("inactive", { totalSessions: 0 })
+        createStudentExport("inactive", { totalSessions: 0 }),
       );
       const stats = dashboard.getClassroomStats();
       expect(stats.distribution.highEngagement).toBeGreaterThanOrEqual(1);
@@ -875,7 +881,7 @@ describe("TeacherDashboard", () => {
           totalMutationsApplied: 0,
           avgTimeToFirstArtifact: 0,
           completionRate: 0,
-        })
+        }),
       );
       expect(() => dashboard.getClassroomStats()).not.toThrow();
     });
@@ -886,7 +892,7 @@ describe("TeacherDashboard", () => {
           totalSessions: 1000000,
           totalDuration: Number.MAX_SAFE_INTEGER,
           totalGenomesCreated: 1000000,
-        })
+        }),
       );
       expect(() => dashboard.getClassroomStats()).not.toThrow();
     });
@@ -895,7 +901,7 @@ describe("TeacherDashboard", () => {
       dashboard.importStudentData(
         createStudentExport("student-1", {
           studentName: "O'Brien, Test",
-        })
+        }),
       );
       const csv = dashboard.exportGradingSummary();
       // CSV includes the name - HTML sanitization is rendering layer's job
@@ -903,9 +909,7 @@ describe("TeacherDashboard", () => {
     });
 
     test("handles corrupted JSON in import", () => {
-      expect(() =>
-        dashboard.importStudentData("{ corrupted: json")
-      ).toThrow();
+      expect(() => dashboard.importStudentData("{ corrupted: json")).toThrow();
     });
 
     test("handles file read timeout (via onerror)", async () => {
@@ -928,7 +932,9 @@ describe("TeacherDashboard", () => {
 
       try {
         const files = [new File(["test"], "test.json")];
-        await expect(dashboard.importMultipleFiles(files)).rejects.toThrow("File reading failed");
+        await expect(dashboard.importMultipleFiles(files)).rejects.toThrow(
+          "File reading failed",
+        );
       } finally {
         globalThis.FileReader = originalFileReader;
       }
@@ -944,7 +950,7 @@ describe("generateStudentExport", () => {
   const createTutorial = (
     completed: boolean,
     currentStep: number,
-    totalSteps: number
+    totalSteps: number,
   ) => ({
     completed,
     currentStep,
@@ -974,7 +980,7 @@ describe("generateStudentExport", () => {
       {
         intro: createTutorial(true, 5, 5),
       },
-      [createSession()]
+      [createSession()],
     );
     const parsed = JSON.parse(result);
     expect(parsed.studentId).toBe("student-1");
@@ -1051,7 +1057,7 @@ describe("generateStudentExport", () => {
         intro: createTutorial(true, 5, 5),
         mutations: createTutorial(false, 2, 4),
       },
-      []
+      [],
     );
     const parsed = JSON.parse(result);
     expect(parsed.aggregateMetrics.completionRate).toBe(0.5);

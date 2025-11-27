@@ -261,7 +261,7 @@ export class AssessmentUI {
     // Setup answer buttons
     const buttons = this.container.querySelectorAll(".answer-btn");
     buttons.forEach((btn) => {
-      const type = (btn as HTMLButtonElement).dataset["type"] as MutationType;
+      const type = (btn as HTMLButtonElement).dataset.type as MutationType;
       this.answerButtons.set(type, btn as HTMLButtonElement);
 
       btn.addEventListener("click", () => this.submitAnswer(type));

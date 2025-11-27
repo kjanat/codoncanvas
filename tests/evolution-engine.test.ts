@@ -3,7 +3,7 @@
  */
 
 import { beforeEach, describe, expect, test } from "bun:test";
-import { EvolutionEngine } from "@/evolution-engine.js";
+import { EvolutionEngine } from "@/evolution-engine";
 
 describe("EvolutionEngine", () => {
   const testGenome = "ATG GAA AAT GGA TAA";

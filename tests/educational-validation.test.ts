@@ -1,17 +1,17 @@
+import { afterEach, beforeEach, describe, expect, test } from "bun:test";
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
-import { afterEach, beforeEach, describe, expect, test } from "bun:test";
 import { CodonLexer } from "@/lexer";
-import {
-  mockCanvasContext,
-  restoreCanvasContext,
-} from "@/test-utils/canvas-mock";
 import {
   applyMissenseMutation,
   applyNonsenseMutation,
   applySilentMutation,
 } from "@/mutations";
 import { Canvas2DRenderer } from "@/renderer";
+import {
+  mockCanvasContext,
+  restoreCanvasContext,
+} from "@/test-utils/canvas-mock";
 import { CODON_MAP, Opcode, type VMState } from "@/types";
 import { CodonVM } from "@/vm";
 

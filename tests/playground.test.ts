@@ -5,23 +5,24 @@
  * playground modules and handles user interactions.
  */
 import { afterEach, beforeEach, describe, expect, test } from "bun:test";
-import { CODON_MAP, Opcode } from "@/types";
 import {
   mockCanvasContext,
   restoreCanvasContext,
 } from "@/test-utils/canvas-mock";
+import { CODON_MAP, Opcode } from "@/types";
 
 // Mock DOM elements helper
-function createMockElement(
-  tagName: string,
-  id?: string,
-): HTMLElement {
+function createMockElement(tagName: string, id?: string): HTMLElement {
   const el = document.createElement(tagName);
   if (id) el.id = id;
   return el;
 }
 
-function createMockCanvas(id: string, width = 400, height = 400): HTMLCanvasElement {
+function createMockCanvas(
+  id: string,
+  width = 400,
+  height = 400,
+): HTMLCanvasElement {
   const canvas = document.createElement("canvas");
   canvas.id = id;
   canvas.width = width;
@@ -139,7 +140,7 @@ describe("Playground Main Module", () => {
         { text: "AAA" }, // LINE
       ];
       const shapesFound = tokens.filter((t) =>
-        ["GGA", "CCA", "AAA"].includes(t.text)
+        ["GGA", "CCA", "AAA"].includes(t.text),
       );
       expect(shapesFound.length).toBe(3);
     });
@@ -280,7 +281,7 @@ describe("Playground Main Module", () => {
     test("filters by difficulty when difficultyFilter has value", async () => {
       const { examples } = await import("@/examples");
       const beginnerExamples = Object.entries(examples).filter(
-        ([_, ex]) => ex.difficulty === "beginner"
+        ([_, ex]) => ex.difficulty === "beginner",
       );
       expect(beginnerExamples.length).toBeGreaterThan(0);
     });
@@ -288,7 +289,7 @@ describe("Playground Main Module", () => {
     test("filters by concept when conceptFilter has value", async () => {
       const { examples } = await import("@/examples");
       const loopExamples = Object.entries(examples).filter(([_, ex]) =>
-        ex.concepts.includes("loops")
+        ex.concepts.includes("loops"),
       );
       // May or may not have loop examples
       expect(Array.isArray(loopExamples)).toBe(true);
@@ -301,7 +302,7 @@ describe("Playground Main Module", () => {
         [ex.title, ex.description, ...ex.keywords, ...ex.concepts]
           .join(" ")
           .toLowerCase()
-          .includes(searchTerm.toLowerCase())
+          .includes(searchTerm.toLowerCase()),
       );
       expect(Array.isArray(filtered)).toBe(true);
     });
@@ -331,7 +332,7 @@ describe("Playground Main Module", () => {
     test("returns empty array when no matches", async () => {
       const { examples } = await import("@/examples");
       const filtered = Object.entries(examples).filter(
-        ([_, ex]) => ex.title === "nonexistent_title_xyz"
+        ([_, ex]) => ex.title === "nonexistent_title_xyz",
       );
       expect(filtered.length).toBe(0);
     });
@@ -391,7 +392,7 @@ describe("Playground Main Module", () => {
     test("creates beginner optgroup when beginner examples exist", async () => {
       const { examples } = await import("@/examples");
       const beginnerExamples = Object.entries(examples).filter(
-        ([_, ex]) => ex.difficulty === "beginner"
+        ([_, ex]) => ex.difficulty === "beginner",
       );
 
       if (beginnerExamples.length > 0) {
@@ -404,7 +405,7 @@ describe("Playground Main Module", () => {
     test("creates intermediate optgroup when intermediate examples exist", async () => {
       const { examples } = await import("@/examples");
       const intermediateExamples = Object.entries(examples).filter(
-        ([_, ex]) => ex.difficulty === "intermediate"
+        ([_, ex]) => ex.difficulty === "intermediate",
       );
 
       if (intermediateExamples.length > 0) {
@@ -417,7 +418,7 @@ describe("Playground Main Module", () => {
     test("creates advanced optgroup when advanced examples exist", async () => {
       const { examples } = await import("@/examples");
       const advancedExamples = Object.entries(examples).filter(
-        ([_, ex]) => ex.difficulty === "advanced"
+        ([_, ex]) => ex.difficulty === "advanced",
       );
 
       if (advancedExamples.length > 0) {
@@ -430,7 +431,7 @@ describe("Playground Main Module", () => {
     test("creates advanced-showcase optgroup when showcase examples exist", async () => {
       const { examples } = await import("@/examples");
       const showcaseExamples = Object.entries(examples).filter(
-        ([_, ex]) => ex.difficulty === "advanced-showcase"
+        ([_, ex]) => ex.difficulty === "advanced-showcase",
       );
 
       if (showcaseExamples.length > 0) {
@@ -500,9 +501,12 @@ describe("Playground Main Module", () => {
         const [_, ex] = entries[0];
         const badge = document.createElement("span");
         badge.textContent = ex.difficulty;
-        expect(["beginner", "intermediate", "advanced", "advanced-showcase"]).toContain(
-          badge.textContent
-        );
+        expect([
+          "beginner",
+          "intermediate",
+          "advanced",
+          "advanced-showcase",
+        ]).toContain(badge.textContent);
       }
     });
 
@@ -837,21 +841,33 @@ describe("Playground Main Module", () => {
 
     test("keyboard shortcut handler pattern checks for Ctrl/Cmd + Enter", () => {
       // Test the pattern used in playground for keyboard shortcuts
-      const checkShortcut = (e: { ctrlKey: boolean; metaKey: boolean; key: string }) => {
+      const checkShortcut = (e: {
+        ctrlKey: boolean;
+        metaKey: boolean;
+        key: string;
+      }) => {
         return (e.ctrlKey || e.metaKey) && e.key === "Enter";
       };
 
       // Ctrl+Enter should match
-      expect(checkShortcut({ ctrlKey: true, metaKey: false, key: "Enter" })).toBe(true);
+      expect(
+        checkShortcut({ ctrlKey: true, metaKey: false, key: "Enter" }),
+      ).toBe(true);
 
       // Cmd+Enter (Mac) should match
-      expect(checkShortcut({ ctrlKey: false, metaKey: true, key: "Enter" })).toBe(true);
+      expect(
+        checkShortcut({ ctrlKey: false, metaKey: true, key: "Enter" }),
+      ).toBe(true);
 
       // Just Enter should not match
-      expect(checkShortcut({ ctrlKey: false, metaKey: false, key: "Enter" })).toBe(false);
+      expect(
+        checkShortcut({ ctrlKey: false, metaKey: false, key: "Enter" }),
+      ).toBe(false);
 
       // Ctrl+Other key should not match
-      expect(checkShortcut({ ctrlKey: true, metaKey: false, key: "a" })).toBe(false);
+      expect(checkShortcut({ ctrlKey: true, metaKey: false, key: "a" })).toBe(
+        false,
+      );
     });
   });
 
@@ -912,7 +928,7 @@ describe("Playground Main Module", () => {
 
       // Filter by difficulty
       const beginnerExamples = Object.entries(examples).filter(
-        ([_, ex]) => ex.difficulty === "beginner"
+        ([_, ex]) => ex.difficulty === "beginner",
       );
 
       if (beginnerExamples.length > 0) {

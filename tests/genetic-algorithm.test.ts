@@ -5,10 +5,7 @@
  * Core module for automated genome evolution experiments.
  */
 import { afterEach, beforeEach, describe, expect, test } from "bun:test";
-import {
-  GeneticAlgorithm,
-  type FitnessFunction,
-} from "@/genetic-algorithm";
+import { type FitnessFunction, GeneticAlgorithm } from "@/genetic-algorithm";
 import {
   mockCanvasContext,
   restoreCanvasContext,
@@ -218,7 +215,9 @@ describe("GeneticAlgorithm", () => {
     });
 
     test("returns 0 fitness when genome causes VM execution error", () => {
-      const ga = new GeneticAlgorithm([""], simpleFitness, { populationSize: 1 });
+      const ga = new GeneticAlgorithm([""], simpleFitness, {
+        populationSize: 1,
+      });
       // Empty genome should be handled gracefully
       expect(ga.getPopulation()[0]).toBeDefined();
     });
@@ -301,7 +300,6 @@ describe("GeneticAlgorithm", () => {
 
       expect(() => ga.evolveGeneration()).not.toThrow();
     });
-
   });
 
   describe("rouletteWheelSelection", () => {
@@ -318,16 +316,12 @@ describe("GeneticAlgorithm", () => {
 
     test("higher fitness individuals have greater selection probability", () => {
       // Statistical test - run multiple generations
-      const ga = new GeneticAlgorithm(
-        ["ATGATGATGATG", "ATG"],
-        lengthFitness,
-        {
-          populationSize: 10,
-          selectionStrategy: "roulette",
-          mutationRate: 0,
-          crossoverRate: 0,
-        },
-      );
+      const ga = new GeneticAlgorithm(["ATGATGATGATG", "ATG"], lengthFitness, {
+        populationSize: 10,
+        selectionStrategy: "roulette",
+        mutationRate: 0,
+        crossoverRate: 0,
+      });
 
       ga.evolveGeneration();
       const stats = ga.getStats();
@@ -664,7 +658,9 @@ describe("GeneticAlgorithm", () => {
       ga.evolveGeneration();
 
       // With no mutation or crossover, elite individuals should be preserved
-      expect(ga.getPopulation().some((ind) => ind.genome === "ATGATG")).toBe(true);
+      expect(ga.getPopulation().some((ind) => ind.genome === "ATGATG")).toBe(
+        true,
+      );
     });
 
     test("applies point mutation (applyPointMutation) with 1/3 probability", () => {
@@ -734,8 +730,12 @@ describe("GeneticAlgorithm", () => {
 
       // Use epsilon for floating point comparison
       const epsilon = 0.0001;
-      expect(stats[0].bestFitness + epsilon).toBeGreaterThanOrEqual(stats[0].avgFitness);
-      expect(stats[0].avgFitness + epsilon).toBeGreaterThanOrEqual(stats[0].worstFitness);
+      expect(stats[0].bestFitness + epsilon).toBeGreaterThanOrEqual(
+        stats[0].avgFitness,
+      );
+      expect(stats[0].avgFitness + epsilon).toBeGreaterThanOrEqual(
+        stats[0].worstFitness,
+      );
     });
 
     test("preserves elite individuals (eliteCount best) unchanged in next generation", () => {
@@ -931,9 +931,13 @@ describe("GeneticAlgorithm", () => {
     test("returns individual with highest fitness in current population", () => {
       const customFitness: FitnessFunction = (genome) =>
         genome === "ATGATG" ? 1.0 : 0.5;
-      const ga = new GeneticAlgorithm(["ATGATG", "TAAATG", "GAAATG"], customFitness, {
-        populationSize: 3,
-      });
+      const ga = new GeneticAlgorithm(
+        ["ATGATG", "TAAATG", "GAAATG"],
+        customFitness,
+        {
+          populationSize: 3,
+        },
+      );
 
       const best = ga.getBest();
       expect(best.genome).toBe("ATGATG");

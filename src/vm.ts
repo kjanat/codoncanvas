@@ -1,11 +1,11 @@
-import type { Renderer } from "./renderer";
+import type { Renderer } from "@/renderer";
 import {
   CODON_MAP,
   type Codon,
   type CodonToken,
   Opcode,
   type VMState,
-} from "./types";
+} from "@/types";
 
 /**
  * Stack values are 6-bit (0-63 range).

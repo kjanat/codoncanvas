@@ -366,7 +366,7 @@ describe("ResearchMetrics", () => {
     test("does nothing when no current session", () => {
       const metrics = new ResearchMetrics();
       expect(() =>
-        metrics.trackGenomeExecuted({ renderMode: "visual", success: true })
+        metrics.trackGenomeExecuted({ renderMode: "visual", success: true }),
       ).not.toThrow();
     });
   });
@@ -445,7 +445,7 @@ describe("ResearchMetrics", () => {
     test("does nothing when no current session", () => {
       const metrics = new ResearchMetrics();
       expect(() =>
-        metrics.trackFeatureUsage({ feature: "diffViewer", action: "open" })
+        metrics.trackFeatureUsage({ feature: "diffViewer", action: "open" }),
       ).not.toThrow();
     });
   });
@@ -781,7 +781,9 @@ describe("ResearchMetrics", () => {
         expect(genomesCreated).toContain(1); // Each session tracks one genome
         // Sessions should be from the last two iterations
         const sessionStartTimes = sessions.map((s) => s.startTime);
-        expect(sessionStartTimes[0]).toBeLessThanOrEqual(sessionStartTimes[1] || sessionStartTimes[0]);
+        expect(sessionStartTimes[0]).toBeLessThanOrEqual(
+          sessionStartTimes[1] || sessionStartTimes[0],
+        );
       }
     });
 

@@ -201,7 +201,9 @@ describe("Genome I/O", () => {
       };
       URL.revokeObjectURL = () => {};
 
-      expect(() => downloadGenomeFile(longGenome, "large-genome")).not.toThrow();
+      expect(() =>
+        downloadGenomeFile(longGenome, "large-genome"),
+      ).not.toThrow();
       expect(createdBlobs).toHaveLength(1);
       expect(createdBlobs[0].size).toBeGreaterThan(100000);
     });
@@ -353,7 +355,10 @@ describe("Genome I/O", () => {
       expect(result.genome).toBe("ATG TAA");
       expect(result.description).toBe("A full test genome");
       expect(result.author).toBe("Test Author");
-      expect(result.metadata).toEqual({ tags: ["test", "complete"], version: 2 });
+      expect(result.metadata).toEqual({
+        tags: ["test", "complete"],
+        version: 2,
+      });
       expect(result.created).toBeDefined();
     });
 
@@ -381,10 +386,15 @@ describe("Genome I/O", () => {
     });
 
     test("rejects with error when JSON is missing required fields (version, title, genome)", async () => {
-      const invalidContent = JSON.stringify({ version: "1.0.0", title: "Only Title" });
+      const invalidContent = JSON.stringify({
+        version: "1.0.0",
+        title: "Only Title",
+      });
       const file = createGenomeFile(invalidContent);
 
-      await expect(readGenomeFile(file)).rejects.toThrow("missing required fields");
+      await expect(readGenomeFile(file)).rejects.toThrow(
+        "missing required fields",
+      );
     });
 
     test("rejects with error when FileReader.onerror fires", async () => {
@@ -406,11 +416,14 @@ describe("Genome I/O", () => {
         }
       }
 
-      globalThis.FileReader = MockErrorFileReader as unknown as typeof FileReader;
+      globalThis.FileReader =
+        MockErrorFileReader as unknown as typeof FileReader;
 
       try {
         const file = createGenomeFile("valid content");
-        await expect(readGenomeFile(file)).rejects.toThrow("Failed to read file");
+        await expect(readGenomeFile(file)).rejects.toThrow(
+          "Failed to read file",
+        );
       } finally {
         globalThis.FileReader = originalFileReader;
       }

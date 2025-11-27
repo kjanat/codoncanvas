@@ -10,7 +10,7 @@ import {
   applyPointMutation,
   applySilentMutation,
   type MutationResult,
-} from "./mutations.js";
+} from "@/mutations";
 
 export interface EvolutionCandidate {
   /** Genome string */

@@ -4,8 +4,8 @@
  * Tests for universal sharing and export system for CodonCanvas genomes.
  * Enables viral sharing, teacher workflows, and cross-device collaboration.
  */
-import { afterEach, beforeEach, describe, expect, test, mock } from "bun:test";
-import { ShareSystem, injectShareStyles } from "@/share-system";
+import { afterEach, beforeEach, describe, expect, mock, test } from "bun:test";
+import { injectShareStyles, ShareSystem } from "@/share-system";
 
 // Mock clipboard API
 const mockClipboard = {
@@ -212,7 +212,9 @@ describe("ShareSystem", () => {
 
     test("calls attachEventListeners after rendering", () => {
       new ShareSystem({ containerElement: container, getGenome });
-      const copyBtn = container.querySelector("#share-copy") as HTMLButtonElement;
+      const copyBtn = container.querySelector(
+        "#share-copy",
+      ) as HTMLButtonElement;
       expect(copyBtn).not.toBeNull();
       // Event listener should be attached - clicking should trigger action
       copyBtn.click();
@@ -224,7 +226,9 @@ describe("ShareSystem", () => {
   describe("copyToClipboard", () => {
     test("copies genome to clipboard using navigator.clipboard.writeText", async () => {
       new ShareSystem({ containerElement: container, getGenome });
-      const copyBtn = container.querySelector("#share-copy") as HTMLButtonElement;
+      const copyBtn = container.querySelector(
+        "#share-copy",
+      ) as HTMLButtonElement;
       copyBtn.click();
       await new Promise((r) => setTimeout(r, 10));
       expect(mockClipboard.writeText).toHaveBeenCalledWith("ATG GGA TAA");
@@ -232,7 +236,9 @@ describe("ShareSystem", () => {
 
     test("shows success feedback 'Copied to clipboard!'", async () => {
       new ShareSystem({ containerElement: container, getGenome });
-      const copyBtn = container.querySelector("#share-copy") as HTMLButtonElement;
+      const copyBtn = container.querySelector(
+        "#share-copy",
+      ) as HTMLButtonElement;
       copyBtn.click();
       await new Promise((r) => setTimeout(r, 50));
       const feedback = container.querySelector("#share-feedback");
@@ -244,7 +250,9 @@ describe("ShareSystem", () => {
         containerElement: container,
         getGenome: () => "",
       });
-      const copyBtn = container.querySelector("#share-copy") as HTMLButtonElement;
+      const copyBtn = container.querySelector(
+        "#share-copy",
+      ) as HTMLButtonElement;
       copyBtn.click();
       await new Promise((r) => setTimeout(r, 50));
       const feedback = container.querySelector("#share-feedback");
@@ -256,7 +264,9 @@ describe("ShareSystem", () => {
         containerElement: container,
         getGenome: () => "   ",
       });
-      const copyBtn = container.querySelector("#share-copy") as HTMLButtonElement;
+      const copyBtn = container.querySelector(
+        "#share-copy",
+      ) as HTMLButtonElement;
       copyBtn.click();
       await new Promise((r) => setTimeout(r, 50));
       const feedback = container.querySelector("#share-feedback");
@@ -265,7 +275,7 @@ describe("ShareSystem", () => {
 
     test("falls back to textarea/execCommand when navigator.clipboard fails", async () => {
       mockClipboard.writeText.mockImplementation(() =>
-        Promise.reject(new Error("Not supported"))
+        Promise.reject(new Error("Not supported")),
       );
 
       // Mock execCommand
@@ -274,7 +284,9 @@ describe("ShareSystem", () => {
 
       try {
         new ShareSystem({ containerElement: container, getGenome });
-        const copyBtn = container.querySelector("#share-copy") as HTMLButtonElement;
+        const copyBtn = container.querySelector(
+          "#share-copy",
+        ) as HTMLButtonElement;
         copyBtn.click();
         await new Promise((r) => setTimeout(r, 50));
 
@@ -286,7 +298,7 @@ describe("ShareSystem", () => {
 
     test("fallback creates hidden textarea with genome content", async () => {
       mockClipboard.writeText.mockImplementation(() =>
-        Promise.reject(new Error("Not supported"))
+        Promise.reject(new Error("Not supported")),
       );
 
       let textareaValue = "";
@@ -299,7 +311,9 @@ describe("ShareSystem", () => {
 
       try {
         new ShareSystem({ containerElement: container, getGenome });
-        const copyBtn = container.querySelector("#share-copy") as HTMLButtonElement;
+        const copyBtn = container.querySelector(
+          "#share-copy",
+        ) as HTMLButtonElement;
         copyBtn.click();
         await new Promise((r) => setTimeout(r, 50));
 
@@ -311,7 +325,7 @@ describe("ShareSystem", () => {
 
     test("fallback removes textarea after copy", async () => {
       mockClipboard.writeText.mockImplementation(() =>
-        Promise.reject(new Error("Not supported"))
+        Promise.reject(new Error("Not supported")),
       );
 
       const originalExecCommand = document.execCommand;
@@ -319,12 +333,16 @@ describe("ShareSystem", () => {
 
       try {
         new ShareSystem({ containerElement: container, getGenome });
-        const copyBtn = container.querySelector("#share-copy") as HTMLButtonElement;
+        const copyBtn = container.querySelector(
+          "#share-copy",
+        ) as HTMLButtonElement;
         copyBtn.click();
         await new Promise((r) => setTimeout(r, 50));
 
         // Textarea should be removed after copy
-        expect(document.body.querySelector("textarea[style*='opacity: 0']")).toBeNull();
+        expect(
+          document.body.querySelector("textarea[style*='opacity: 0']"),
+        ).toBeNull();
       } finally {
         document.execCommand = originalExecCommand;
       }
@@ -332,7 +350,7 @@ describe("ShareSystem", () => {
 
     test("shows error when both clipboard methods fail", async () => {
       mockClipboard.writeText.mockImplementation(() =>
-        Promise.reject(new Error("Not supported"))
+        Promise.reject(new Error("Not supported")),
       );
 
       const originalExecCommand = document.execCommand;
@@ -342,7 +360,9 @@ describe("ShareSystem", () => {
 
       try {
         new ShareSystem({ containerElement: container, getGenome });
-        const copyBtn = container.querySelector("#share-copy") as HTMLButtonElement;
+        const copyBtn = container.querySelector(
+          "#share-copy",
+        ) as HTMLButtonElement;
         copyBtn.click();
         await new Promise((r) => setTimeout(r, 50));
 
@@ -359,7 +379,7 @@ describe("ShareSystem", () => {
     test("encodes genome using base64 URL-safe encoding", () => {
       new ShareSystem({ containerElement: container, getGenome });
       const permalinkBtn = container.querySelector(
-        "#share-permalink"
+        "#share-permalink",
       ) as HTMLButtonElement;
       permalinkBtn.click();
 
@@ -371,7 +391,7 @@ describe("ShareSystem", () => {
     test("appends ?genome=encoded to current URL", () => {
       new ShareSystem({ containerElement: container, getGenome });
       const permalinkBtn = container.querySelector(
-        "#share-permalink"
+        "#share-permalink",
       ) as HTMLButtonElement;
       permalinkBtn.click();
 
@@ -383,7 +403,7 @@ describe("ShareSystem", () => {
       // The implementation uses window.location.href.split("#")[0].split("?")[0]
       new ShareSystem({ containerElement: container, getGenome });
       const permalinkBtn = container.querySelector(
-        "#share-permalink"
+        "#share-permalink",
       ) as HTMLButtonElement;
       permalinkBtn.click();
 
@@ -395,7 +415,7 @@ describe("ShareSystem", () => {
     test("copies permalink to clipboard", () => {
       new ShareSystem({ containerElement: container, getGenome });
       const permalinkBtn = container.querySelector(
-        "#share-permalink"
+        "#share-permalink",
       ) as HTMLButtonElement;
       permalinkBtn.click();
 
@@ -405,7 +425,7 @@ describe("ShareSystem", () => {
     test("shows success feedback 'Permalink copied!'", async () => {
       new ShareSystem({ containerElement: container, getGenome });
       const permalinkBtn = container.querySelector(
-        "#share-permalink"
+        "#share-permalink",
       ) as HTMLButtonElement;
       permalinkBtn.click();
       await new Promise((r) => setTimeout(r, 100));
@@ -420,7 +440,7 @@ describe("ShareSystem", () => {
         getGenome: () => "",
       });
       const permalinkBtn = container.querySelector(
-        "#share-permalink"
+        "#share-permalink",
       ) as HTMLButtonElement;
       permalinkBtn.click();
       await new Promise((r) => setTimeout(r, 50));
@@ -431,12 +451,12 @@ describe("ShareSystem", () => {
 
     test("shows modal with permalink input when clipboard fails", async () => {
       mockClipboard.writeText.mockImplementation(() =>
-        Promise.reject(new Error("Not supported"))
+        Promise.reject(new Error("Not supported")),
       );
 
       new ShareSystem({ containerElement: container, getGenome });
       const permalinkBtn = container.querySelector(
-        "#share-permalink"
+        "#share-permalink",
       ) as HTMLButtonElement;
       permalinkBtn.click();
       await new Promise((r) => setTimeout(r, 50));
@@ -447,12 +467,12 @@ describe("ShareSystem", () => {
 
     test("escapes HTML in modal to prevent XSS", async () => {
       mockClipboard.writeText.mockImplementation(() =>
-        Promise.reject(new Error("Not supported"))
+        Promise.reject(new Error("Not supported")),
       );
 
       new ShareSystem({ containerElement: container, getGenome });
       const permalinkBtn = container.querySelector(
-        "#share-permalink"
+        "#share-permalink",
       ) as HTMLButtonElement;
       permalinkBtn.click();
       await new Promise((r) => setTimeout(r, 50));
@@ -472,7 +492,7 @@ describe("ShareSystem", () => {
 
       new ShareSystem({ containerElement: container, getGenome });
       const downloadBtn = container.querySelector(
-        "#share-download"
+        "#share-download",
       ) as HTMLButtonElement;
       downloadBtn.click();
 
@@ -488,7 +508,7 @@ describe("ShareSystem", () => {
 
       new ShareSystem({ containerElement: container, getGenome });
       const downloadBtn = container.querySelector(
-        "#share-download"
+        "#share-download",
       ) as HTMLButtonElement;
       downloadBtn.click();
 
@@ -514,7 +534,7 @@ describe("ShareSystem", () => {
       try {
         new ShareSystem({ containerElement: container, getGenome });
         const downloadBtn = container.querySelector(
-          "#share-download"
+          "#share-download",
         ) as HTMLButtonElement;
         downloadBtn.click();
 
@@ -543,7 +563,7 @@ describe("ShareSystem", () => {
 
       new ShareSystem({ containerElement: container, getGenome });
       const downloadBtn = container.querySelector(
-        "#share-download"
+        "#share-download",
       ) as HTMLButtonElement;
       downloadBtn.click();
 
@@ -566,7 +586,7 @@ describe("ShareSystem", () => {
 
       new ShareSystem({ containerElement: container, getGenome });
       const downloadBtn = container.querySelector(
-        "#share-download"
+        "#share-download",
       ) as HTMLButtonElement;
       downloadBtn.click();
 
@@ -577,7 +597,7 @@ describe("ShareSystem", () => {
     test("removes anchor from DOM after click", () => {
       new ShareSystem({ containerElement: container, getGenome });
       const downloadBtn = container.querySelector(
-        "#share-download"
+        "#share-download",
       ) as HTMLButtonElement;
       downloadBtn.click();
 
@@ -593,7 +613,7 @@ describe("ShareSystem", () => {
 
       new ShareSystem({ containerElement: container, getGenome });
       const downloadBtn = container.querySelector(
-        "#share-download"
+        "#share-download",
       ) as HTMLButtonElement;
       downloadBtn.click();
 
@@ -604,7 +624,7 @@ describe("ShareSystem", () => {
     test("shows success feedback 'Downloaded!'", async () => {
       new ShareSystem({ containerElement: container, getGenome });
       const downloadBtn = container.querySelector(
-        "#share-download"
+        "#share-download",
       ) as HTMLButtonElement;
       downloadBtn.click();
       await new Promise((r) => setTimeout(r, 50));
@@ -619,7 +639,7 @@ describe("ShareSystem", () => {
         getGenome: () => "",
       });
       const downloadBtn = container.querySelector(
-        "#share-download"
+        "#share-download",
       ) as HTMLButtonElement;
       downloadBtn.click();
       await new Promise((r) => setTimeout(r, 50));
@@ -707,7 +727,7 @@ describe("ShareSystem", () => {
     test("opens twitter.com/intent/tweet in new window", () => {
       new ShareSystem({ containerElement: container, getGenome });
       const twitterBtn = container.querySelector(
-        "#share-twitter"
+        "#share-twitter",
       ) as HTMLButtonElement;
       twitterBtn.click();
 
@@ -723,7 +743,7 @@ describe("ShareSystem", () => {
         appTitle: "TestApp",
       });
       const twitterBtn = container.querySelector(
-        "#share-twitter"
+        "#share-twitter",
       ) as HTMLButtonElement;
       twitterBtn.click();
 
@@ -734,7 +754,7 @@ describe("ShareSystem", () => {
     test("includes genome permalink URL", () => {
       new ShareSystem({ containerElement: container, getGenome });
       const twitterBtn = container.querySelector(
-        "#share-twitter"
+        "#share-twitter",
       ) as HTMLButtonElement;
       twitterBtn.click();
 
@@ -745,7 +765,7 @@ describe("ShareSystem", () => {
     test("includes hashtags CodonCanvas,BioInformatics,VisualProgramming", () => {
       new ShareSystem({ containerElement: container, getGenome });
       const twitterBtn = container.querySelector(
-        "#share-twitter"
+        "#share-twitter",
       ) as HTMLButtonElement;
       twitterBtn.click();
 
@@ -757,7 +777,7 @@ describe("ShareSystem", () => {
     test("opens window with size 550x420", () => {
       new ShareSystem({ containerElement: container, getGenome });
       const twitterBtn = container.querySelector(
-        "#share-twitter"
+        "#share-twitter",
       ) as HTMLButtonElement;
       twitterBtn.click();
 
@@ -772,7 +792,7 @@ describe("ShareSystem", () => {
         getGenome: () => "",
       });
       const twitterBtn = container.querySelector(
-        "#share-twitter"
+        "#share-twitter",
       ) as HTMLButtonElement;
       twitterBtn.click();
       await new Promise((r) => setTimeout(r, 50));
@@ -787,7 +807,7 @@ describe("ShareSystem", () => {
     test("opens reddit.com/submit in new tab", () => {
       new ShareSystem({ containerElement: container, getGenome });
       const redditBtn = container.querySelector(
-        "#share-reddit"
+        "#share-reddit",
       ) as HTMLButtonElement;
       redditBtn.click();
 
@@ -799,7 +819,7 @@ describe("ShareSystem", () => {
     test("includes permalink URL as url parameter", () => {
       new ShareSystem({ containerElement: container, getGenome });
       const redditBtn = container.querySelector(
-        "#share-reddit"
+        "#share-reddit",
       ) as HTMLButtonElement;
       redditBtn.click();
 
@@ -814,7 +834,7 @@ describe("ShareSystem", () => {
         appTitle: "TestApp",
       });
       const redditBtn = container.querySelector(
-        "#share-reddit"
+        "#share-reddit",
       ) as HTMLButtonElement;
       redditBtn.click();
 
@@ -829,7 +849,7 @@ describe("ShareSystem", () => {
         getGenome: () => "",
       });
       const redditBtn = container.querySelector(
-        "#share-reddit"
+        "#share-reddit",
       ) as HTMLButtonElement;
       redditBtn.click();
       await new Promise((r) => setTimeout(r, 50));
@@ -845,7 +865,7 @@ describe("ShareSystem", () => {
       // Store original href setter
       const hrefDescriptor = Object.getOwnPropertyDescriptor(
         window.location,
-        "href"
+        "href",
       );
       let capturedHref = "";
       Object.defineProperty(window.location, "href", {
@@ -858,7 +878,7 @@ describe("ShareSystem", () => {
 
       new ShareSystem({ containerElement: container, getGenome });
       const emailBtn = container.querySelector(
-        "#share-email"
+        "#share-email",
       ) as HTMLButtonElement;
       emailBtn.click();
 
@@ -886,7 +906,7 @@ describe("ShareSystem", () => {
         appTitle: "TestApp",
       });
       const emailBtn = container.querySelector(
-        "#share-email"
+        "#share-email",
       ) as HTMLButtonElement;
       emailBtn.click();
 
@@ -906,7 +926,7 @@ describe("ShareSystem", () => {
 
       new ShareSystem({ containerElement: container, getGenome });
       const emailBtn = container.querySelector(
-        "#share-email"
+        "#share-email",
       ) as HTMLButtonElement;
       emailBtn.click();
 
@@ -925,7 +945,7 @@ describe("ShareSystem", () => {
 
       new ShareSystem({ containerElement: container, getGenome });
       const emailBtn = container.querySelector(
-        "#share-email"
+        "#share-email",
       ) as HTMLButtonElement;
       emailBtn.click();
 
@@ -939,7 +959,7 @@ describe("ShareSystem", () => {
         getGenome: () => "",
       });
       const emailBtn = container.querySelector(
-        "#share-email"
+        "#share-email",
       ) as HTMLButtonElement;
       emailBtn.click();
       await new Promise((r) => setTimeout(r, 50));
@@ -959,7 +979,9 @@ describe("ShareSystem", () => {
 
     test("sets message as textContent", async () => {
       new ShareSystem({ containerElement: container, getGenome });
-      const copyBtn = container.querySelector("#share-copy") as HTMLButtonElement;
+      const copyBtn = container.querySelector(
+        "#share-copy",
+      ) as HTMLButtonElement;
       copyBtn.click();
       await new Promise((r) => setTimeout(r, 50));
 
@@ -969,7 +991,9 @@ describe("ShareSystem", () => {
 
     test("adds success class for success type", async () => {
       new ShareSystem({ containerElement: container, getGenome });
-      const copyBtn = container.querySelector("#share-copy") as HTMLButtonElement;
+      const copyBtn = container.querySelector(
+        "#share-copy",
+      ) as HTMLButtonElement;
       copyBtn.click();
       await new Promise((r) => setTimeout(r, 100));
 
@@ -982,7 +1006,9 @@ describe("ShareSystem", () => {
         containerElement: container,
         getGenome: () => "",
       });
-      const copyBtn = container.querySelector("#share-copy") as HTMLButtonElement;
+      const copyBtn = container.querySelector(
+        "#share-copy",
+      ) as HTMLButtonElement;
       copyBtn.click();
       await new Promise((r) => setTimeout(r, 50));
 
@@ -995,7 +1021,9 @@ describe("ShareSystem", () => {
     // The behavior is implicitly tested by other feedback tests that verify message display.
     test.skip("clears feedback after 3 seconds", async () => {
       new ShareSystem({ containerElement: container, getGenome });
-      const copyBtn = container.querySelector("#share-copy") as HTMLButtonElement;
+      const copyBtn = container.querySelector(
+        "#share-copy",
+      ) as HTMLButtonElement;
       copyBtn.click();
       await new Promise((r) => setTimeout(r, 50));
 
@@ -1012,7 +1040,9 @@ describe("ShareSystem", () => {
       feedback?.remove();
 
       // Should not throw
-      const copyBtn = container.querySelector("#share-copy") as HTMLButtonElement;
+      const copyBtn = container.querySelector(
+        "#share-copy",
+      ) as HTMLButtonElement;
       expect(() => copyBtn.click()).not.toThrow();
     });
   });
@@ -1094,7 +1124,7 @@ describe("ShareSystem", () => {
     test("encodes genome as base64", () => {
       new ShareSystem({ containerElement: container, getGenome });
       const permalinkBtn = container.querySelector(
-        "#share-permalink"
+        "#share-permalink",
       ) as HTMLButtonElement;
       permalinkBtn.click();
 
@@ -1108,7 +1138,7 @@ describe("ShareSystem", () => {
     test("replaces + with - for URL safety", () => {
       new ShareSystem({ containerElement: container, getGenome });
       const permalinkBtn = container.querySelector(
-        "#share-permalink"
+        "#share-permalink",
       ) as HTMLButtonElement;
       permalinkBtn.click();
 
@@ -1120,7 +1150,7 @@ describe("ShareSystem", () => {
     test("replaces / with _ for URL safety", () => {
       new ShareSystem({ containerElement: container, getGenome });
       const permalinkBtn = container.querySelector(
-        "#share-permalink"
+        "#share-permalink",
       ) as HTMLButtonElement;
       permalinkBtn.click();
 
@@ -1134,7 +1164,7 @@ describe("ShareSystem", () => {
     test("removes = padding characters", () => {
       new ShareSystem({ containerElement: container, getGenome });
       const permalinkBtn = container.querySelector(
-        "#share-permalink"
+        "#share-permalink",
       ) as HTMLButtonElement;
       permalinkBtn.click();
 
@@ -1151,7 +1181,7 @@ describe("ShareSystem", () => {
         getGenome: () => "ATG 日本語 TAA", // Contains non-latin chars
       });
       const permalinkBtn = container.querySelector(
-        "#share-permalink"
+        "#share-permalink",
       ) as HTMLButtonElement;
       permalinkBtn.click();
 
@@ -1534,7 +1564,7 @@ describe("escapeHtml", () => {
     });
 
     const permalinkBtn = container.querySelector(
-      "#share-permalink"
+      "#share-permalink",
     ) as HTMLButtonElement;
     permalinkBtn.click();
     await new Promise((r) => setTimeout(r, 50));
@@ -1565,7 +1595,7 @@ describe("escapeHtml", () => {
     });
 
     const permalinkBtn = container.querySelector(
-      "#share-permalink"
+      "#share-permalink",
     ) as HTMLButtonElement;
     permalinkBtn.click();
     await new Promise((r) => setTimeout(r, 50));
@@ -1630,7 +1660,7 @@ describe("Integration", () => {
     const container = document.createElement("div");
     document.body.appendChild(container);
 
-    const longGenome = "ATG ".repeat(1000) + "TAA"; // Long but valid
+    const longGenome = `${"ATG ".repeat(1000)}TAA`; // Long but valid
     new ShareSystem({
       containerElement: container,
       getGenome: () => longGenome,
@@ -1648,7 +1678,8 @@ describe("Integration", () => {
     document.body.appendChild(container);
 
     // Genome with semicolon comments
-    const genomeWithComments = "; This is a comment\nATG GGA TAA\n; Another comment";
+    const genomeWithComments =
+      "; This is a comment\nATG GGA TAA\n; Another comment";
     new ShareSystem({
       containerElement: container,
       getGenome: () => genomeWithComments,
@@ -1659,11 +1690,15 @@ describe("Integration", () => {
     expect(() => copyBtn.click()).not.toThrow();
 
     // Download should work
-    const downloadBtn = container.querySelector("#share-download") as HTMLButtonElement;
+    const downloadBtn = container.querySelector(
+      "#share-download",
+    ) as HTMLButtonElement;
     expect(() => downloadBtn.click()).not.toThrow();
 
     // Permalink should work
-    const permalinkBtn = container.querySelector("#share-permalink") as HTMLButtonElement;
+    const permalinkBtn = container.querySelector(
+      "#share-permalink",
+    ) as HTMLButtonElement;
     expect(() => permalinkBtn.click()).not.toThrow();
 
     container.remove();
@@ -1699,7 +1734,7 @@ describe("Edge Cases", () => {
     });
 
     const twitterBtn = container.querySelector(
-      "#share-twitter"
+      "#share-twitter",
     ) as HTMLButtonElement;
     expect(() => twitterBtn.click()).not.toThrow();
 
@@ -1725,7 +1760,9 @@ describe("Edge Cases", () => {
         getGenome: () => "ATG TAA",
       });
 
-      const copyBtn = container.querySelector("#share-copy") as HTMLButtonElement;
+      const copyBtn = container.querySelector(
+        "#share-copy",
+      ) as HTMLButtonElement;
       expect(() => copyBtn.click()).not.toThrow();
     } finally {
       document.execCommand = originalExecCommand;
@@ -1822,7 +1859,7 @@ describe("Edge Cases", () => {
     });
 
     const permalinkBtn = container.querySelector(
-      "#share-permalink"
+      "#share-permalink",
     ) as HTMLButtonElement;
     permalinkBtn.click();
 

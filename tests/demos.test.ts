@@ -12,10 +12,10 @@ import {
 } from "@/demos-core";
 import { CodonLexer } from "@/lexer";
 import {
-  applySilentMutation,
+  applyFrameshiftMutation,
   applyMissenseMutation,
   applyNonsenseMutation,
-  applyFrameshiftMutation,
+  applySilentMutation,
 } from "@/mutations";
 import { Canvas2DRenderer } from "@/renderer";
 import {
@@ -230,7 +230,9 @@ describe("MutationDemos", () => {
       canvas.width = 400;
       canvas.height = 400;
       // This won't throw but may produce an error internally
-      expect(() => renderGenomeToCanvas("INVALID_GENOME", canvas)).not.toThrow();
+      expect(() =>
+        renderGenomeToCanvas("INVALID_GENOME", canvas),
+      ).not.toThrow();
     });
 
     test("handles canvas without 2D context", () => {
@@ -251,11 +253,15 @@ describe("MutationDemos", () => {
 
     test("finds mutated codon index by comparing original vs mutated", () => {
       const result = applySilentMutation(DEMO_GENOMES.silent);
-      const originalCodons = result.original.split(/\s+/).filter((c) => c.length > 0);
-      const mutatedCodons = result.mutated.split(/\s+/).filter((c) => c.length > 0);
+      const originalCodons = result.original
+        .split(/\s+/)
+        .filter((c) => c.length > 0);
+      const mutatedCodons = result.mutated
+        .split(/\s+/)
+        .filter((c) => c.length > 0);
 
       const mutatedIndex = originalCodons.findIndex(
-        (c, i) => c !== mutatedCodons[i]
+        (c, i) => c !== mutatedCodons[i],
       );
       expect(mutatedIndex).toBeGreaterThanOrEqual(0);
     });
@@ -268,10 +274,14 @@ describe("MutationDemos", () => {
 
     test("displays mutated genome with mutated codon highlighted", () => {
       const result = applySilentMutation(DEMO_GENOMES.silent);
-      const originalCodons = result.original.split(/\s+/).filter((c) => c.length > 0);
-      const mutatedCodons = result.mutated.split(/\s+/).filter((c) => c.length > 0);
+      const originalCodons = result.original
+        .split(/\s+/)
+        .filter((c) => c.length > 0);
+      const mutatedCodons = result.mutated
+        .split(/\s+/)
+        .filter((c) => c.length > 0);
       const mutatedIndex = originalCodons.findIndex(
-        (c, i) => c !== mutatedCodons[i]
+        (c, i) => c !== mutatedCodons[i],
       );
 
       const fragment = highlightGenome(result.mutated, [mutatedIndex], []);
@@ -288,7 +298,9 @@ describe("MutationDemos", () => {
       canvas2.height = 400;
 
       const result = applySilentMutation(DEMO_GENOMES.silent);
-      expect(() => renderGenomeToCanvas(result.original, canvas1)).not.toThrow();
+      expect(() =>
+        renderGenomeToCanvas(result.original, canvas1),
+      ).not.toThrow();
       expect(() => renderGenomeToCanvas(result.mutated, canvas2)).not.toThrow();
     });
   });
@@ -302,11 +314,15 @@ describe("MutationDemos", () => {
 
     test("finds mutated codon index correctly", () => {
       const result = applyMissenseMutation(DEMO_GENOMES.missense);
-      const originalCodons = result.original.split(/\s+/).filter((c) => c.length > 0);
-      const mutatedCodons = result.mutated.split(/\s+/).filter((c) => c.length > 0);
+      const originalCodons = result.original
+        .split(/\s+/)
+        .filter((c) => c.length > 0);
+      const mutatedCodons = result.mutated
+        .split(/\s+/)
+        .filter((c) => c.length > 0);
 
       const mutatedIndex = originalCodons.findIndex(
-        (c, i) => c !== mutatedCodons[i]
+        (c, i) => c !== mutatedCodons[i],
       );
       expect(mutatedIndex).toBeGreaterThanOrEqual(0);
     });
@@ -319,10 +335,14 @@ describe("MutationDemos", () => {
 
     test("displays mutated genome with mutated codon highlighted", () => {
       const result = applyMissenseMutation(DEMO_GENOMES.missense);
-      const originalCodons = result.original.split(/\s+/).filter((c) => c.length > 0);
-      const mutatedCodons = result.mutated.split(/\s+/).filter((c) => c.length > 0);
+      const originalCodons = result.original
+        .split(/\s+/)
+        .filter((c) => c.length > 0);
+      const mutatedCodons = result.mutated
+        .split(/\s+/)
+        .filter((c) => c.length > 0);
       const mutatedIndex = originalCodons.findIndex(
-        (c, i) => c !== mutatedCodons[i]
+        (c, i) => c !== mutatedCodons[i],
       );
 
       const fragment = highlightGenome(result.mutated, [mutatedIndex], []);
@@ -335,7 +355,9 @@ describe("MutationDemos", () => {
       const canvas2 = document.createElement("canvas");
 
       const result = applyMissenseMutation(DEMO_GENOMES.missense);
-      expect(() => renderGenomeToCanvas(result.original, canvas1)).not.toThrow();
+      expect(() =>
+        renderGenomeToCanvas(result.original, canvas1),
+      ).not.toThrow();
       expect(() => renderGenomeToCanvas(result.mutated, canvas2)).not.toThrow();
     });
   });
@@ -349,12 +371,14 @@ describe("MutationDemos", () => {
 
     test("finds where codon changed to STOP", () => {
       const result = applyNonsenseMutation(DEMO_GENOMES.nonsense);
-      const mutatedCodons = result.mutated.split(/\s+/).filter((c) => c.length > 0);
+      const mutatedCodons = result.mutated
+        .split(/\s+/)
+        .filter((c) => c.length > 0);
       const stopCodons = ["TAA", "TAG", "TGA"];
 
       // Should have a new STOP codon somewhere before the end
       const earlyStopIndex = mutatedCodons.findIndex(
-        (c, i) => stopCodons.includes(c) && i < mutatedCodons.length - 1
+        (c, i) => stopCodons.includes(c) && i < mutatedCodons.length - 1,
       );
       // May or may not find early stop depending on mutation result
       expect(typeof earlyStopIndex).toBe("number");
@@ -362,17 +386,21 @@ describe("MutationDemos", () => {
 
     test("calculates affected indices (all codons after early STOP)", () => {
       const result = applyNonsenseMutation(DEMO_GENOMES.nonsense);
-      const originalCodons = result.original.split(/\s+/).filter((c) => c.length > 0);
-      const mutatedCodons = result.mutated.split(/\s+/).filter((c) => c.length > 0);
+      const originalCodons = result.original
+        .split(/\s+/)
+        .filter((c) => c.length > 0);
+      const mutatedCodons = result.mutated
+        .split(/\s+/)
+        .filter((c) => c.length > 0);
 
       const mutatedIndex = originalCodons.findIndex(
-        (c, i) => c !== mutatedCodons[i]
+        (c, i) => c !== mutatedCodons[i],
       );
 
       if (mutatedIndex >= 0) {
         const affectedIndices = Array.from(
           { length: mutatedCodons.length - mutatedIndex - 1 },
-          (_, i) => mutatedIndex + i + 1
+          (_, i) => mutatedIndex + i + 1,
         );
         expect(Array.isArray(affectedIndices)).toBe(true);
       }
@@ -380,23 +408,27 @@ describe("MutationDemos", () => {
 
     test("displays mutated genome with mutated + affected highlighting", () => {
       const result = applyNonsenseMutation(DEMO_GENOMES.nonsense);
-      const originalCodons = result.original.split(/\s+/).filter((c) => c.length > 0);
-      const mutatedCodons = result.mutated.split(/\s+/).filter((c) => c.length > 0);
+      const originalCodons = result.original
+        .split(/\s+/)
+        .filter((c) => c.length > 0);
+      const mutatedCodons = result.mutated
+        .split(/\s+/)
+        .filter((c) => c.length > 0);
 
       const mutatedIndex = originalCodons.findIndex(
-        (c, i) => c !== mutatedCodons[i]
+        (c, i) => c !== mutatedCodons[i],
       );
 
       if (mutatedIndex >= 0) {
         const affectedIndices = Array.from(
           { length: mutatedCodons.length - mutatedIndex - 1 },
-          (_, i) => mutatedIndex + i + 1
+          (_, i) => mutatedIndex + i + 1,
         );
 
         const fragment = highlightGenome(
           result.mutated,
           [mutatedIndex],
-          affectedIndices
+          affectedIndices,
         );
         const mutatedSpans = fragment.querySelectorAll(".mutated");
         const affectedSpans = fragment.querySelectorAll(".affected");
@@ -442,13 +474,15 @@ describe("MutationDemos", () => {
 
     test("calculates affected indices (all codons from frameshift onwards)", () => {
       const result = applyFrameshiftMutation(DEMO_GENOMES.frameshift);
-      const mutatedCodons = result.mutated.split(/\s+/).filter((c) => c.length > 0);
+      const mutatedCodons = result.mutated
+        .split(/\s+/)
+        .filter((c) => c.length > 0);
 
       // Arbitrary frameshift position for testing
       const frameshiftCodonIndex = 3;
       const affectedIndices = Array.from(
         { length: mutatedCodons.length - frameshiftCodonIndex },
-        (_, i) => frameshiftCodonIndex + i
+        (_, i) => frameshiftCodonIndex + i,
       );
 
       expect(affectedIndices.length).toBeGreaterThan(0);
@@ -462,12 +496,14 @@ describe("MutationDemos", () => {
 
     test("displays mutated genome with affected highlighting", () => {
       const result = applyFrameshiftMutation(DEMO_GENOMES.frameshift);
-      const mutatedCodons = result.mutated.split(/\s+/).filter((c) => c.length > 0);
+      const mutatedCodons = result.mutated
+        .split(/\s+/)
+        .filter((c) => c.length > 0);
 
       const frameshiftCodonIndex = 2;
       const affectedIndices = Array.from(
         { length: mutatedCodons.length - frameshiftCodonIndex },
-        (_, i) => frameshiftCodonIndex + i
+        (_, i) => frameshiftCodonIndex + i,
       );
 
       const fragment = highlightGenome(result.mutated, [], affectedIndices);
