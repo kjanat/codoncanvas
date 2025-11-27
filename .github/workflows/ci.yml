@@ -27,8 +27,8 @@ jobs:
       - name: Run typecheck
         run: bun typecheck
 
-  quality:
-    name: Quality
+  lint:
+    name: Lint
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -37,13 +37,19 @@ jobs:
       - name: Setup Biome
         uses: biomejs/setup-biome@v2
 
-      - name: Lint
-        run: |
-          # Biome CI with GitHub Actions reporter
-          biome ci --reporter=github --formatter-enabled=false 2>&1;
+      - name: Run lint
+        run: biome ci --reporter=github --formatter-enabled=false
 
-          # Biome CI for verbose output
-          biome ci --formatter-enabled=false
+      - name: Run lint (verbose)
+        if: failure()
+        run: biome ci --formatter-enabled=false
+
+  formatting:
+    name: Formatting
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
 
       - name: Formatting
         if: always()
