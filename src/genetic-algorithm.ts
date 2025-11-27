@@ -109,6 +109,10 @@ export class GeneticAlgorithm {
    * Initialize population from seed genomes
    */
   private initializePopulation(seedGenomes: string[]): GAIndividual[] {
+    if (seedGenomes.length === 0) {
+      throw new Error("At least one seed genome is required");
+    }
+
     const pop: GAIndividual[] = [];
 
     // Fill population with seed genomes (repeat if needed)

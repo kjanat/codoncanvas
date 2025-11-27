@@ -156,14 +156,10 @@ describe("GeneticAlgorithm", () => {
       expect(population[2].genome).toBe("ATGTAA");
     });
 
-    test("handles empty seed genomes array - should throw or handle gracefully", () => {
-      // With empty seeds, modulo operation would cause issues
-      // The implementation uses seedGenomes[i % 0] which is undefined
-      const ga = new GeneticAlgorithm([], simpleFitness, { populationSize: 3 });
-      const population = ga.getPopulation();
-
-      // Each individual will have undefined genome converted to string
-      expect(population).toHaveLength(3);
+    test("throws error when seed genomes array is empty", () => {
+      expect(
+        () => new GeneticAlgorithm([], simpleFitness, { populationSize: 3 }),
+      ).toThrow("At least one seed genome is required");
     });
   });
 
