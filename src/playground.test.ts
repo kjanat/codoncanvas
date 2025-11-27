@@ -4,7 +4,7 @@
  * Tests for the main playground entry point that coordinates all
  * playground modules and handles user interactions.
  */
-import { afterEach, beforeEach, describe, expect, jest, test } from "bun:test";
+import { afterEach, beforeEach, describe, expect, test } from "bun:test";
 import { CODON_MAP, Opcode } from "./types";
 import {
   mockCanvasContext,
