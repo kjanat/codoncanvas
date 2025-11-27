@@ -38,11 +38,11 @@ jobs:
         uses: biomejs/setup-biome@v2
 
       - name: Run lint
-        run: biome ci --reporter=github --formatter-enabled=false
+        run: biome ci --reporter=github --formatter-enabled=false .
 
       - name: Run lint (verbose)
         if: failure()
-        run: biome ci --formatter-enabled=false
+        run: biome ci --formatter-enabled=false .
 
   formatting:
     name: Formatting
@@ -50,6 +50,9 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v6
+
+      - name: Setup Bun
+        uses: ./.github/actions/setup-bun
 
       - name: Formatting
         if: always()
