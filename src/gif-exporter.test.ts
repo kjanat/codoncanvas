@@ -198,12 +198,16 @@ describe("GifExporter", () => {
         return originalAppendChild(node);
       };
 
-      const blob = new Blob(["test"], { type: "image/gif" });
-      exporter.downloadGif(blob);
+      try {
+        const blob = new Blob(["test"], { type: "image/gif" });
+        exporter.downloadGif(blob);
 
-      expect(appendedElements).toHaveLength(1);
-      const anchor = appendedElements[0] as HTMLAnchorElement;
-      expect(anchor.download).toBe("animation.gif");
+        expect(appendedElements).toHaveLength(1);
+        const anchor = appendedElements[0] as HTMLAnchorElement;
+        expect(anchor.download).toBe("animation.gif");
+      } finally {
+        document.body.appendChild = originalAppendChild;
+      }
     });
 
     test("creates anchor element, sets href/download, clicks, then removes from DOM", () => {
@@ -307,11 +311,15 @@ describe("GifExporter", () => {
         return originalAppendChild(node);
       };
 
-      const blob = new Blob(["test"], { type: "image/gif" });
-      exporter.downloadGif(blob, "my animation (1).gif");
+      try {
+        const blob = new Blob(["test"], { type: "image/gif" });
+        exporter.downloadGif(blob, "my animation (1).gif");
 
-      const anchor = appendedElements[0] as HTMLAnchorElement;
-      expect(anchor.download).toBe("my animation (1).gif");
+        const anchor = appendedElements[0] as HTMLAnchorElement;
+        expect(anchor.download).toBe("my animation (1).gif");
+      } finally {
+        document.body.appendChild = originalAppendChild;
+      }
     });
 
     test("handles very large blob (>10MB)", () => {
@@ -426,16 +434,20 @@ describe("GifExporter", () => {
       const exp = new GifExporter({ width: 100, height: 100 });
       const sourceCanvas = document.createElement("canvas");
 
-      // Override getContext to return null
-      const originalGetContext = HTMLCanvasElement.prototype.getContext;
-      HTMLCanvasElement.prototype.getContext = () => null;
+      // Temporarily restore real context to test null case
+      restoreCanvasContext();
 
-      expect(() => exp.captureFrame(sourceCanvas)).toThrow(
-        "Failed to get 2D context for frame capture",
-      );
+      try {
+        // Override to return null specifically
+        HTMLCanvasElement.prototype.getContext = () => null;
 
-      // Restore original
-      HTMLCanvasElement.prototype.getContext = originalGetContext;
+        expect(() => exp.captureFrame(sourceCanvas)).toThrow(
+          "Failed to get 2D context for frame capture",
+        );
+      } finally {
+        // Re-mock for subsequent tests
+        mockCanvasContext();
+      }
     });
 
     test("handles source canvas without content (blank frame)", () => {
