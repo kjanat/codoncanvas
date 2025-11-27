@@ -1,8 +1,10 @@
 [test]
+root = "tests"
 preload = ["./bun-test-setup.ts"]
 
 coverage = true
 coveragePathIgnorePatterns = [
   "bun-test-setup.ts",
-  "e2e/**"
+  "e2e/**",
+  "tests/**"
 ]
