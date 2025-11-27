@@ -12,7 +12,7 @@
     "cli": "bun --bun cli.ts",
     "dev": "bun --bun run vite",
     "export-examples": "bun --bun scripts/export-examples.ts",
-    "fmt": "bunx dprint fmt",
+    "fmt": "dprint fmt --config .dprint.jsonc --config-discovery=false --allow-no-files",
     "format": "bun fmt",
     "generate-screenshots": "bun scripts/generate-screenshots.ts",
     "postinstall": "lefthook install",
