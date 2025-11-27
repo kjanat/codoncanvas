@@ -425,7 +425,16 @@ describe("GeneticAlgorithm", () => {
       expect(() => ga.evolveGeneration()).not.toThrow();
     });
 
-    test.todo("throws error for unknown selection strategy");
+    test("throws error for unknown selection strategy", () => {
+      // Need to bypass TypeScript to test invalid strategy
+      const ga = new GeneticAlgorithm(sampleGenomes, simpleFitness, {
+        selectionStrategy: "invalid" as "tournament",
+        populationSize: 5,
+      });
+
+      // Error is thrown during evolveGeneration when selectParent is called
+      expect(() => ga.evolveGeneration()).toThrow("Unknown selection strategy");
+    });
   });
 
   // =========================================================================
@@ -491,7 +500,18 @@ describe("GeneticAlgorithm", () => {
       expect(ga.getPopulation()).toHaveLength(10);
     });
 
-    test.todo("throws error for unknown crossover strategy");
+    test("throws error for unknown crossover strategy", () => {
+      // Need to bypass TypeScript to test invalid strategy
+      const ga = new GeneticAlgorithm(sampleGenomes, simpleFitness, {
+        crossoverStrategy: "invalid" as "single-point",
+        crossoverRate: 1.0, // Ensure crossover is always attempted
+        populationSize: 5,
+        eliteCount: 0, // No elitism so all individuals go through crossover
+      });
+
+      // Error is thrown during evolveGeneration when crossover is called
+      expect(() => ga.evolveGeneration()).toThrow("Unknown crossover strategy");
+    });
   });
 
   describe("singlePointCrossover", () => {

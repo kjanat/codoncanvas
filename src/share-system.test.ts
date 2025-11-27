@@ -1646,7 +1646,31 @@ describe("Integration", () => {
     container.remove();
   });
 
-  test.todo("all share methods handle genomes with comments");
+  test("all share methods handle genomes with comments", () => {
+    const container = document.createElement("div");
+    document.body.appendChild(container);
+
+    // Genome with semicolon comments
+    const genomeWithComments = "; This is a comment\nATG GGA TAA\n; Another comment";
+    new ShareSystem({
+      containerElement: container,
+      getGenome: () => genomeWithComments,
+    });
+
+    // Copy should work
+    const copyBtn = container.querySelector("#share-copy") as HTMLButtonElement;
+    expect(() => copyBtn.click()).not.toThrow();
+
+    // Download should work
+    const downloadBtn = container.querySelector("#share-download") as HTMLButtonElement;
+    expect(() => downloadBtn.click()).not.toThrow();
+
+    // Permalink should work
+    const permalinkBtn = container.querySelector("#share-permalink") as HTMLButtonElement;
+    expect(() => permalinkBtn.click()).not.toThrow();
+
+    container.remove();
+  });
 });
 
 describe("Edge Cases", () => {
@@ -1737,7 +1761,34 @@ describe("Edge Cases", () => {
     container.remove();
   });
 
-  test.todo("handles qrserver.com API being unavailable");
+  test("handles qrserver.com API being unavailable", () => {
+    const container = document.createElement("div");
+    document.body.appendChild(container);
+
+    new ShareSystem({
+      containerElement: container,
+      getGenome: () => "ATG TAA",
+    });
+
+    const qrBtn = container.querySelector("#share-qr") as HTMLButtonElement;
+    qrBtn.click();
+
+    // Modal should be shown with QR code
+    const modal = container.querySelector("#share-modal");
+    expect(modal?.classList.contains("hidden")).toBe(false);
+
+    // Image element should have error handler
+    const img = modal?.querySelector("img");
+    expect(img).not.toBeNull();
+
+    // Simulate image load error
+    if (img) {
+      img.dispatchEvent(new Event("error"));
+      // Should handle gracefully without throwing
+    }
+
+    container.remove();
+  });
 
   test("handles URL with existing query parameters", () => {
     const container = document.createElement("div");
