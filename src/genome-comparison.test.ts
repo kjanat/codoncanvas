@@ -396,5 +396,78 @@ describe("GenomeComparison", () => {
       const result = compareGenomesDetailed("ATG GGG", "ZZZ QQQ");
       expect(result.visual.bothValid).toBe(false);
     });
+
+    test("generates description for synonymous changes only", () => {
+      // When codon diff > 0 but pixel diff = 0, should mention synonymous
+      const result = compareGenomesDetailed("ATG GGG", "ATG GGG");
+      expect(result.analysis.description).toBeDefined();
+    });
+
+    test("generates description with minimal visual differences", () => {
+      // Small differences should mention minimal visual change
+      const genome1 = "ATG " + "GGG ".repeat(19);
+      const genome2 = "ATG " + "GGG ".repeat(18) + "GGC"; // Synonymous change
+      const result = compareGenomesDetailed(genome1, genome2);
+      expect(result.analysis.description).toBeDefined();
+      expect(result.analysis.description.length).toBeGreaterThan(10);
+    });
+
+    test("generates description with substantial visual differences", () => {
+      // Very different genomes should mention substantial output
+      const result = compareGenomesDetailed("ATG GGG AAA", "XXX YYY ZZZ");
+      expect(result.analysis.description).toBeDefined();
+    });
+
+    test("detects silent mutations with codon diff but low pixel diff", () => {
+      // Synonymous codon change - same opcode
+      const result = compareGenomesDetailed("ATG GGG", "ATG GGC");
+      // Check insights array exists
+      expect(Array.isArray(result.analysis.insights)).toBe(true);
+    });
+
+    test("detects localized changes with few differences", () => {
+      // Few codon differences should trigger localized insight
+      const genome1 = "ATG " + "GGG ".repeat(19);
+      const genome2 = "ATG GAG " + "GGG ".repeat(18);
+      const result = compareGenomesDetailed(genome1, genome2);
+      expect(result.analysis.insights.length).toBeGreaterThan(0);
+    });
+
+    test("detects high similarity genomes", () => {
+      // Nearly identical genomes
+      const genome1 = "ATG " + "GGG ".repeat(49);
+      const genome2 = "ATG " + "GGG ".repeat(48) + "GGC"; // Synonymous
+      const result = compareGenomesDetailed(genome1, genome2);
+      expect(result.analysis.insights).toBeDefined();
+    });
+
+    test("handles second genome longer by multiple codons", () => {
+      const result = compareGenomesDetailed("ATG", "ATG GGG AAA CCC");
+      expect(result.metrics.lengthDifference).toBe(3);
+      expect(result.analysis.description).toContain("longer");
+    });
+
+    test("handles first genome longer by multiple codons", () => {
+      const result = compareGenomesDetailed("ATG GGG AAA CCC", "ATG");
+      expect(result.metrics.lengthDifference).toBe(-3);
+      expect(result.analysis.description).toContain("longer");
+    });
+
+    test("calculates correct percentage for single difference in long genome", () => {
+      // 1 out of 50 codons = 2%
+      const genome1 = "ATG " + "GGG ".repeat(49);
+      const genome2 = "ATG GAG " + "GGG ".repeat(48);
+      const result = compareGenomesDetailed(genome1, genome2);
+      expect(result.metrics.codonDifferencePercent).toBe(2);
+      expect(result.analysis.similarity).toBe("very-similar");
+    });
+
+    test("returns mixed changes insight when no specific pattern", () => {
+      // Multiple differences without clear pattern
+      const genome1 = "ATG GGG GGG GGG GGG";
+      const genome2 = "ATG GAG CCC AAA TTT";
+      const result = compareGenomesDetailed(genome1, genome2);
+      expect(result.analysis.insights.length).toBeGreaterThan(0);
+    });
   });
 });

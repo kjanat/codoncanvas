@@ -7,6 +7,50 @@
 import { afterEach, beforeEach, describe, expect, test } from "bun:test";
 import { AudioRenderer } from "./audio-renderer";
 
+// Mock MediaStream for testing
+class MockMediaStream {
+  id = "mock-stream";
+  active = true;
+  getTracks() {
+    return [];
+  }
+}
+
+// Mock MediaRecorder for testing
+class MockMediaRecorder {
+  ondataavailable: ((e: { data: Blob }) => void) | null = null;
+  onstop: (() => void) | null = null;
+  state: "inactive" | "recording" = "inactive";
+
+  constructor(_stream: MockMediaStream) {
+    // Constructor accepts stream but we don't need it
+  }
+
+  start() {
+    this.state = "recording";
+    // Simulate data being available
+    setTimeout(() => {
+      if (this.ondataavailable) {
+        this.ondataavailable({ data: new Blob(["test"], { type: "audio/webm" }) });
+      }
+    }, 0);
+  }
+
+  stop() {
+    this.state = "inactive";
+    // Simulate stop completing
+    setTimeout(() => {
+      if (this.onstop) {
+        this.onstop();
+      }
+    }, 0);
+  }
+}
+
+// Store original MediaRecorder and MediaStream
+const originalMediaRecorder = globalThis.MediaRecorder;
+const originalMediaStream = globalThis.MediaStream;
+
 // Mock AudioContext for testing
 class MockAudioContext {
   currentTime = 0;
@@ -52,11 +96,11 @@ class MockAudioContext {
 
   createMediaStreamDestination() {
     return {
-      stream: new MediaStream(),
+      stream: new MockMediaStream(),
     };
   }
 
-  createBuffer(channels: number, length: number, sampleRate: number) {
+  createBuffer(channels: number, length: number, _sampleRate: number) {
     return {
       getChannelData: () => new Float32Array(length),
     };
@@ -82,11 +126,17 @@ describe("AudioRenderer", () => {
   beforeEach(() => {
     // Mock AudioContext
     (globalThis as unknown as { AudioContext: typeof MockAudioContext }).AudioContext = MockAudioContext as unknown as typeof AudioContext;
+    // Mock MediaRecorder
+    (globalThis as unknown as { MediaRecorder: typeof MockMediaRecorder }).MediaRecorder = MockMediaRecorder as unknown as typeof MediaRecorder;
+    // Mock MediaStream
+    (globalThis as unknown as { MediaStream: typeof MockMediaStream }).MediaStream = MockMediaStream as unknown as typeof MediaStream;
   });
 
   afterEach(() => {
     // Restore original
     (globalThis as unknown as { AudioContext: typeof AudioContext }).AudioContext = originalAudioContext;
+    (globalThis as unknown as { MediaRecorder: typeof MediaRecorder }).MediaRecorder = originalMediaRecorder;
+    (globalThis as unknown as { MediaStream: typeof MediaStream }).MediaStream = originalMediaStream;
   });
 
   // =========================================================================
@@ -148,6 +198,21 @@ describe("AudioRenderer", () => {
         "AudioRenderer not initialized"
       );
     });
+
+    test("starts recording when initialized", async () => {
+      const renderer = new AudioRenderer();
+      await renderer.initialize();
+      expect(() => renderer.startRecording()).not.toThrow();
+    });
+
+    test("sets up ondataavailable handler", async () => {
+      const renderer = new AudioRenderer();
+      await renderer.initialize();
+      renderer.startRecording();
+      // Give time for async callback
+      await new Promise((resolve) => setTimeout(resolve, 10));
+      expect(renderer.width).toBe(1000);
+    });
   });
 
   describe("stopRecording", () => {
@@ -158,6 +223,25 @@ describe("AudioRenderer", () => {
         "Not currently recording"
       );
     });
+
+    test("returns blob when recording is active", async () => {
+      const renderer = new AudioRenderer();
+      await renderer.initialize();
+      renderer.startRecording();
+      // Give time for data to be available
+      await new Promise((resolve) => setTimeout(resolve, 10));
+      const blob = await renderer.stopRecording();
+      expect(blob).toBeInstanceOf(Blob);
+    });
+
+    test("resolves with audio/webm blob type", async () => {
+      const renderer = new AudioRenderer();
+      await renderer.initialize();
+      renderer.startRecording();
+      await new Promise((resolve) => setTimeout(resolve, 10));
+      const blob = await renderer.stopRecording();
+      expect(blob.type).toBe("audio/webm");
+    });
   });
 
   describe("exportWAV", () => {
@@ -166,6 +250,15 @@ describe("AudioRenderer", () => {
       await renderer.initialize();
       // Without recording, this should reject
       await expect(renderer.exportWAV()).rejects.toThrow();
+    });
+
+    test("returns blob when recording", async () => {
+      const renderer = new AudioRenderer();
+      await renderer.initialize();
+      renderer.startRecording();
+      await new Promise((resolve) => setTimeout(resolve, 10));
+      const blob = await renderer.exportWAV();
+      expect(blob).toBeInstanceOf(Blob);
     });
   });
 

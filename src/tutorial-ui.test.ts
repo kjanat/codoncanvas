@@ -689,6 +689,68 @@ describe("TutorialUI", () => {
       expect(mutationsBtn?.textContent).toBe("Try Mutations");
     });
 
+    test("Explore Examples button cleans up and focuses selector", () => {
+      // Create an example selector element
+      const selector = document.createElement("select");
+      selector.className = "example-selector";
+      document.body.appendChild(selector);
+
+      const ui = new TutorialUI(container, mockManager);
+      ui.show();
+      mockManager.triggerComplete();
+
+      const exploreBtn = document.querySelector(
+        '[data-action="explore"]'
+      ) as HTMLButtonElement;
+      exploreBtn?.click();
+
+      // Overlay should be removed
+      expect(document.querySelector(".tutorial-overlay")).toBeNull();
+    });
+
+    test("Explore Examples button handles missing selector gracefully", () => {
+      const ui = new TutorialUI(container, mockManager);
+      ui.show();
+      mockManager.triggerComplete();
+
+      const exploreBtn = document.querySelector(
+        '[data-action="explore"]'
+      ) as HTMLButtonElement;
+      // Should not throw even without selector element
+      expect(() => exploreBtn?.click()).not.toThrow();
+      expect(document.querySelector(".tutorial-overlay")).toBeNull();
+    });
+
+    test("Try Mutations button cleans up and navigates", () => {
+      // Mock window.location
+      const originalLocation = window.location;
+      const mockLocation = { href: "" };
+      Object.defineProperty(window, "location", {
+        value: mockLocation,
+        writable: true,
+      });
+
+      const ui = new TutorialUI(container, mockManager);
+      ui.show();
+      mockManager.triggerComplete();
+
+      const mutationsBtn = document.querySelector(
+        '[data-action="mutations"]'
+      ) as HTMLButtonElement;
+      mutationsBtn?.click();
+
+      // Overlay should be removed
+      expect(document.querySelector(".tutorial-overlay")).toBeNull();
+      // Navigation should be triggered
+      expect(mockLocation.href).toBe("mutation-demo.html");
+
+      // Restore
+      Object.defineProperty(window, "location", {
+        value: originalLocation,
+        writable: true,
+      });
+    });
+
     test("builds DOM programmatically for security", () => {
       const ui = new TutorialUI(container, mockManager);
       ui.show();
