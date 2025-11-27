@@ -3,7 +3,7 @@
  * Handles all DOM element access and initialization with type-safe utilities
  */
 
-import { getElement, querySelector, querySelectorAll } from "../utils/dom";
+import { getElement, querySelector, querySelectorAll } from "@/utils/dom";
 
 // Main UI elements
 export const editor = getElement("editor", HTMLTextAreaElement);

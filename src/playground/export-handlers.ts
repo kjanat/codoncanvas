@@ -3,7 +3,7 @@
  * Handles all export functionality (PNG, Audio, MIDI, Genome, Progress)
  */
 
-import { downloadGenomeFile } from "../genome-io";
+import { downloadGenomeFile } from "@/genome-io";
 import { editor } from "./dom-manager";
 import { lastSnapshots, midiExporter, renderer } from "./ui-state";
 import { setStatus } from "./ui-utils";

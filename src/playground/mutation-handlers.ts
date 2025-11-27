@@ -3,7 +3,7 @@
  * Handles genome mutation operations and preview functionality
  */
 
-import { predictMutationImpact } from "../mutation-predictor";
+import { predictMutationImpact } from "@/mutation-predictor";
 import {
   applyDeletion,
   applyFrameshiftMutation,
@@ -13,28 +13,28 @@ import {
   applyPointMutation,
   applySilentMutation,
   type MutationResult,
-} from "../mutations";
-import type { MutationType } from "../types";
+} from "@/mutations";
+import type { MutationType } from "@/types";
 import { diffViewerContainer, diffViewerPanel, editor } from "./dom-manager";
 import { achievementEngine, achievementUI } from "./ui-state";
 import { setStatus } from "./ui-utils";
 
 let originalGenomeBeforeMutation = "";
-let diffViewerInstance: import("../diff-viewer").DiffViewer | null = null; // Cached DiffViewer instance
+let diffViewerInstance: import("@/diff-viewer").DiffViewer | null = null; // Cached DiffViewer instance
 
 /**
  * Initialize or get DiffViewer instance
  */
-function getDiffViewer(): import("../diff-viewer").DiffViewer {
+function getDiffViewer(): import("@/diff-viewer").DiffViewer {
   if (!diffViewerInstance) {
     // Lazy import to avoid circular dependencies
-    const { DiffViewer } = require("../diff-viewer");
+    const { DiffViewer } = require("@/diff-viewer");
     diffViewerInstance = new DiffViewer({
       containerElement: diffViewerContainer,
     });
   }
   // Instance is guaranteed to exist after the if block above
-  return diffViewerInstance as import("../diff-viewer").DiffViewer;
+  return diffViewerInstance as import("@/diff-viewer").DiffViewer;
 }
 
 /**

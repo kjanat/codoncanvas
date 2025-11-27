@@ -3,7 +3,7 @@
  * Handles loading and saving genome files
  */
 
-import { readGenomeFile } from "../genome-io";
+import { readGenomeFile } from "@/genome-io";
 import { editor, genomeFileInput } from "./dom-manager";
 import { runLinter } from "./linter-handlers";
 import { setStatus, updateStats } from "./ui-utils";
