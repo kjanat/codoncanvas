@@ -739,11 +739,19 @@ describe("TeacherDashboard", () => {
 
     test("shows 'N/A' for missing timeToFirstArtifact", () => {
       dashboard.importStudentData(
+        createStudentExport("student-1", { avgTimeToFirstArtifact: undefined })
+      );
+      const csv = dashboard.exportGradingSummary();
+      expect(csv).toContain("N/A");
+    });
+
+    test("shows 'N/A' when timeToFirstArtifact is 0 (falsy)", () => {
+      dashboard.importStudentData(
         createStudentExport("student-1", { avgTimeToFirstArtifact: 0 })
       );
       const csv = dashboard.exportGradingSummary();
-      // May show N/A or 0
-      expect(csv.length).toBeGreaterThan(0);
+      // Zero is treated as falsy/missing and shows N/A
+      expect(csv).toContain("N/A");
     });
 
     test("shows 'N/A' for missing studentName", () => {

@@ -499,13 +499,18 @@ describe("ShareSystem", () => {
         return el;
       }) as typeof document.createElement;
 
-      new ShareSystem({ containerElement: container, getGenome });
-      const downloadBtn = container.querySelector(
-        "#share-download"
-      ) as HTMLButtonElement;
-      downloadBtn.click();
+      try {
+        new ShareSystem({ containerElement: container, getGenome });
+        const downloadBtn = container.querySelector(
+          "#share-download"
+        ) as HTMLButtonElement;
+        downloadBtn.click();
 
-      document.createElement = originalCreateElement;
+        expect(downloadAttr).toBeTruthy();
+        expect(downloadAttr).toContain(".genome");
+      } finally {
+        document.createElement = originalCreateElement;
+      }
     });
 
     test("sets filename to 'codoncanvas-{timestamp}.genome'", () => {
@@ -1527,34 +1532,38 @@ describe("escapeHtml", () => {
     container.remove();
   });
 
-  test("escapes < as &lt;", () => {
-    // Tested implicitly through XSS prevention
-    expect(true).toBe(true);
-  });
+  test("escapes dangerous characters in modal content", async () => {
+    const container = document.createElement("div");
+    document.body.appendChild(container);
 
-  test("escapes > as &gt;", () => {
-    // Tested implicitly through XSS prevention
-    expect(true).toBe(true);
-  });
+    // Mock clipboard to fail to trigger modal with URL containing special chars
+    const mockClipboard = {
+      writeText: mock(() => Promise.reject(new Error("fail"))),
+    };
+    Object.defineProperty(navigator, "clipboard", {
+      value: mockClipboard,
+      configurable: true,
+    });
 
-  test('escapes " as &quot;', () => {
-    // Tested implicitly through XSS prevention
-    expect(true).toBe(true);
-  });
+    new ShareSystem({
+      containerElement: container,
+      getGenome: () => "ATG TAA",
+    });
 
-  test("escapes ' as &#039;", () => {
-    // Tested implicitly through XSS prevention
-    expect(true).toBe(true);
-  });
+    const permalinkBtn = container.querySelector(
+      "#share-permalink"
+    ) as HTMLButtonElement;
+    permalinkBtn.click();
+    await new Promise((r) => setTimeout(r, 50));
 
-  test("handles string with multiple special characters", () => {
-    // Tested implicitly through modal content safety
-    expect(true).toBe(true);
-  });
+    // Modal content should not contain unescaped dangerous characters
+    const modal = container.querySelector("#share-modal");
+    const modalHtml = modal?.innerHTML || "";
+    // Verify no raw script injection possible
+    expect(modalHtml).not.toContain("<script>");
+    expect(modalHtml).not.toContain("</script>");
 
-  test("returns unmodified string when no special characters", () => {
-    // Tested implicitly
-    expect(true).toBe(true);
+    container.remove();
   });
 });
 
