@@ -8,7 +8,7 @@ import { afterEach, beforeEach, describe, expect, test } from "bun:test";
 import {
   mockCanvasContext,
   restoreCanvasContext,
-} from "./test-utils/canvas-mock";
+} from "@/tests/test-utils/canvas-mock";
 import { CODON_MAP, Opcode } from "@/types";
 
 // Mock DOM elements helper

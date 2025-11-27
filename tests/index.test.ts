@@ -45,7 +45,7 @@ import {
 import {
   mockCanvasContext,
   restoreCanvasContext,
-} from "./test-utils/canvas-mock";
+} from "@/tests/test-utils/canvas-mock";
 
 describe("CodonCanvas Library Exports", () => {
   // Class Exports

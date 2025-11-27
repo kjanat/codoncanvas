@@ -3,7 +3,7 @@ import { GifExporter } from "@/gif-exporter";
 import {
   mockCanvasContext,
   restoreCanvasContext,
-} from "./test-utils/canvas-mock";
+} from "@/tests/test-utils/canvas-mock";
 
 describe("GifExporter", () => {
   let exporter: GifExporter;

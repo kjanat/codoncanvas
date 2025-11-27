@@ -16,7 +16,7 @@ import { CodonLexer } from "@/lexer";
 import {
   mockCanvasContext,
   restoreCanvasContext,
-} from "./test-utils/canvas-mock";
+} from "@/tests/test-utils/canvas-mock";
 import type { MutationType } from "@/types";
 
 describe("Examples Library", () => {

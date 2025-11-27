@@ -11,7 +11,7 @@ import { Canvas2DRenderer } from "@/renderer";
 import {
   mockCanvasContext,
   restoreCanvasContext,
-} from "./test-utils/canvas-mock";
+} from "@/tests/test-utils/canvas-mock";
 import { Opcode, type VMState } from "@/types";
 import { CodonVM } from "@/vm";
 

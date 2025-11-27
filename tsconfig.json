@@ -31,7 +31,8 @@
       "@/*": ["./src/*"],
       "@/types": ["./src/types"],
       "@/utils/*": ["./src/utils/*"],
-      "@/playground/*": ["./src/playground/*"]
+      "@/playground/*": ["./src/playground/*"],
+      "@/tests/*": ["./tests/*"]
     }
   },
   "exclude": ["node_modules", "dist"]
