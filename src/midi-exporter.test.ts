@@ -16,7 +16,7 @@ import {
 } from "./test-utils/canvas-mock";
 
 // Helper function to create a minimal VMState snapshot
-function createSnapshot(overrides: Partial<VMState> = {}): VMState {
+function createSnapshot(overrides: Partial<VMState> = {}): Partial<VMState> {
   return {
     pc: 0,
     stack: [],

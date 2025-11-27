@@ -248,7 +248,7 @@ describe("CodonCanvas Library Exports", () => {
 
     test("exports Base type", () => {
       const base: Base = "A";
-      expect(["A", "C", "G", "T"]).toContain(base);
+      expect(["A", "C", "G", "T", "U"]).toContain(base);
     });
 
     test("exports MutationType type", () => {
@@ -289,9 +289,6 @@ describe("CodonCanvas Library Exports", () => {
       const error: ParseError = {
         message: "Test error",
         position: 0,
-        line: 0,
-        column: 0,
-        length: 3,
         severity: "error",
       };
       expect(error.message).toBe("Test error");

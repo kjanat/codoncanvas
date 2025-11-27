@@ -92,10 +92,10 @@ describe("Stats", () => {
       expect(Stats.sd([])).toBe(0);
     });
 
-    test("returns 0 for single value (sample SD)", () => {
-      // Sample SD with n=1 gives NaN due to division by 0, but implementation returns 0
+    test("returns NaN for single value (sample SD)", () => {
+      // Sample SD with n=1 yields NaN due to division by (n-1) = 0
       const result = Stats.sd([42]);
-      expect(result).toBeNaN(); // Division by (n-1) = 0
+      expect(result).toBeNaN();
     });
 
     test("handles arrays with identical values (SD = 0)", () => {
