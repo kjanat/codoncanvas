@@ -12,8 +12,8 @@ import { readdirSync, readFileSync, statSync } from "node:fs";
 import { join } from "node:path";
 import chalk from "chalk";
 import { Command } from "commander";
-import { CodonLexer } from "./src/lexer";
-import type { ParseError } from "./src/types";
+import { CodonLexer } from "@/lexer";
+import type { ParseError } from "@/types";
 
 const program = new Command();
 

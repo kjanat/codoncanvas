@@ -1,3 +1,4 @@
+/// <reference lib="dom" />
 /**
  * Bun test setup file - loaded before all tests
  * Provides minimal DOM environment via happy-dom
@@ -7,38 +8,56 @@
  */
 
 import { afterEach } from "bun:test";
-import { Window } from "happy-dom";
+import { GlobalRegistrator } from "@happy-dom/global-registrator";
+import { Window as HappyWindow } from "happy-dom";
+
+// Register global registrator
+GlobalRegistrator.register();
 
 // Initialize happy-dom environment
-const window = new Window();
+const window = new HappyWindow();
 const document = window.document;
 
 // Set up global DOM APIs (minimal - only what happy-dom provides)
 globalThis.window = window as unknown as Window & typeof globalThis;
-globalThis.document = document;
-globalThis.HTMLElement = window.HTMLElement;
-globalThis.HTMLCanvasElement = window.HTMLCanvasElement;
-globalThis.HTMLAnchorElement = window.HTMLAnchorElement;
-globalThis.HTMLTextAreaElement = window.HTMLTextAreaElement;
-globalThis.HTMLButtonElement = window.HTMLButtonElement;
-globalThis.HTMLSpanElement = window.HTMLSpanElement;
-globalThis.HTMLDivElement = window.HTMLDivElement;
-globalThis.HTMLSelectElement = window.HTMLSelectElement;
-globalThis.HTMLInputElement = window.HTMLInputElement;
-globalThis.HTMLImageElement = window.HTMLImageElement;
-globalThis.HTMLFormElement = window.HTMLFormElement;
-globalThis.HTMLLIElement = window.HTMLLIElement;
-globalThis.HTMLUListElement = window.HTMLUListElement;
-globalThis.HTMLParagraphElement = window.HTMLParagraphElement;
-globalThis.Event = window.Event;
-globalThis.CustomEvent = window.CustomEvent;
-globalThis.KeyboardEvent = window.KeyboardEvent;
-globalThis.MouseEvent = window.MouseEvent;
+globalThis.document = document as unknown as Document;
+globalThis.HTMLElement = window.HTMLElement as unknown as typeof HTMLElement;
+globalThis.HTMLCanvasElement =
+  window.HTMLCanvasElement as unknown as typeof HTMLCanvasElement;
+globalThis.HTMLAnchorElement =
+  window.HTMLAnchorElement as unknown as typeof HTMLAnchorElement;
+globalThis.HTMLTextAreaElement =
+  window.HTMLTextAreaElement as unknown as typeof HTMLTextAreaElement;
+globalThis.HTMLButtonElement =
+  window.HTMLButtonElement as unknown as typeof HTMLButtonElement;
+globalThis.HTMLSpanElement =
+  window.HTMLSpanElement as unknown as typeof HTMLSpanElement;
+globalThis.HTMLDivElement =
+  window.HTMLDivElement as unknown as typeof HTMLDivElement;
+globalThis.HTMLSelectElement =
+  window.HTMLSelectElement as unknown as typeof HTMLSelectElement;
+globalThis.HTMLInputElement =
+  window.HTMLInputElement as unknown as typeof HTMLInputElement;
+globalThis.HTMLImageElement =
+  window.HTMLImageElement as unknown as typeof HTMLImageElement;
+globalThis.HTMLFormElement =
+  window.HTMLFormElement as unknown as typeof HTMLFormElement;
+globalThis.HTMLLIElement =
+  window.HTMLLIElement as unknown as typeof HTMLLIElement;
+globalThis.HTMLUListElement =
+  window.HTMLUListElement as unknown as typeof HTMLUListElement;
+globalThis.HTMLParagraphElement =
+  window.HTMLParagraphElement as unknown as typeof HTMLParagraphElement;
+globalThis.Event = window.Event as unknown as typeof Event;
+globalThis.CustomEvent = window.CustomEvent as unknown as typeof CustomEvent;
+globalThis.KeyboardEvent =
+  window.KeyboardEvent as unknown as typeof KeyboardEvent;
+globalThis.MouseEvent = window.MouseEvent as unknown as typeof MouseEvent;
 
 // File APIs needed for genome-io tests
 // Note: Don't override Blob - native Blob is needed for URL.createObjectURL
-globalThis.FileReader = window.FileReader;
-globalThis.File = window.File;
+globalThis.FileReader = window.FileReader as unknown as typeof FileReader;
+globalThis.File = window.File as unknown as typeof File;
 
 // Storage factory - creates isolated storage instances
 function createStorageMock(): Storage {
