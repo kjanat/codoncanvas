@@ -129,28 +129,43 @@ describe("UI State Management", () => {
   describe("VMState structure", () => {
     test("VMState has required properties", () => {
       const state: VMState = {
-        x: 0,
-        y: 0,
-        angle: 0,
-        color: "#000000",
-        penDown: true,
+        position: { x: 0, y: 0 },
+        rotation: 0,
+        scale: 1,
+        color: { h: 0, s: 0, l: 0 },
+        stack: [],
+        instructionPointer: 0,
+        stateStack: [],
+        instructionCount: 0,
+        seed: 12345,
       };
-      expect(state.x).toBe(0);
-      expect(state.y).toBe(0);
-      expect(state.angle).toBe(0);
-      expect(state.color).toBe("#000000");
-      expect(state.penDown).toBe(true);
+      expect(state.position.x).toBe(0);
+      expect(state.position.y).toBe(0);
+      expect(state.rotation).toBe(0);
+      expect(state.color.h).toBe(0);
+      expect(state.scale).toBe(1);
     });
 
     test("VMState array can store multiple states", () => {
+      const baseState: VMState = {
+        position: { x: 0, y: 0 },
+        rotation: 0,
+        scale: 1,
+        color: { h: 0, s: 0, l: 0 },
+        stack: [],
+        instructionPointer: 0,
+        stateStack: [],
+        instructionCount: 0,
+        seed: 12345,
+      };
       const states: VMState[] = [
-        { x: 0, y: 0, angle: 0, color: "#000", penDown: true },
-        { x: 100, y: 100, angle: 90, color: "#FFF", penDown: false },
-        { x: 200, y: 200, angle: 180, color: "#F00", penDown: true },
+        { ...baseState, position: { x: 0, y: 0 }, rotation: 0, color: { h: 0, s: 0, l: 0 } },
+        { ...baseState, position: { x: 100, y: 100 }, rotation: 90, color: { h: 120, s: 50, l: 50 } },
+        { ...baseState, position: { x: 200, y: 200 }, rotation: 180, color: { h: 240, s: 100, l: 50 } },
       ];
       expect(states.length).toBe(3);
-      expect(states[1].x).toBe(100);
-      expect(states[2].angle).toBe(180);
+      expect(states[1].position.x).toBe(100);
+      expect(states[2].rotation).toBe(180);
     });
   });
 });

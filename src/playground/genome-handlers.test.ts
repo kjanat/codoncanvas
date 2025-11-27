@@ -8,6 +8,7 @@
  * we test the pure logic patterns by reimplementing them.
  */
 import { describe, expect, test } from "bun:test";
+import type { GenomeFile } from "../genome-io";
 
 // Helper function implementations for testing
 
@@ -34,21 +35,13 @@ function hasFile(files: FileList | null | undefined): boolean {
   return !!(files && files.length > 0);
 }
 
-// Genome file structure
-interface GenomeFile {
-  genome: string;
-  title: string;
-  author?: string;
-  description?: string;
-}
-
-// Mock genome file creation
+// Mock genome file creation using the authoritative GenomeFile interface
 function createGenomeFile(
   genome: string,
   title: string,
   author?: string,
 ): GenomeFile {
-  return { genome, title, author };
+  return { version: "1.0", genome, title, author };
 }
 
 describe("Genome Handlers", () => {
