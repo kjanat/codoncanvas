@@ -5,8 +5,8 @@
  * through CodonCanvas concepts with step-by-step instructions.
  */
 import { afterEach, beforeEach, describe, expect, mock, test } from "bun:test";
-import { TutorialUI, initializeTutorial } from "@/tutorial-ui";
-import type { TutorialManager, TutorialStep } from "@/tutorial";
+import type { TutorialManager } from "@/tutorial";
+import { initializeTutorial, TutorialUI } from "@/tutorial-ui";
 
 // Mock TutorialManager
 const createMockManager = (overrides: Partial<TutorialManager> = {}) => {
@@ -17,6 +17,7 @@ const createMockManager = (overrides: Partial<TutorialManager> = {}) => {
 
   return {
     getCurrentStep: mock(() => ({
+      id: "step-1",
       title: "Test Step",
       content: "Test content",
       hint: "Test hint",
@@ -213,6 +214,7 @@ describe("TutorialUI", () => {
 
       const managerWithTarget = createMockManager({
         getCurrentStep: mock(() => ({
+          id: "step-1",
           title: "Test Step",
           content: "Test content",
           targetElement: "#target-element",
@@ -231,6 +233,7 @@ describe("TutorialUI", () => {
     test("renders step title", () => {
       const managerWithTitle = createMockManager({
         getCurrentStep: mock(() => ({
+          id: "step-1",
           title: "My Custom Title",
           content: "Content",
         })),
@@ -247,7 +250,7 @@ describe("TutorialUI", () => {
       const ui = new TutorialUI(container, managerWith50);
       ui.show();
       const progressFill = document.querySelector(
-        ".tutorial-progress-fill"
+        ".tutorial-progress-fill",
       ) as HTMLElement;
       expect(progressFill?.style.width).toBe("50%");
     });
@@ -265,6 +268,7 @@ describe("TutorialUI", () => {
     test("renders step content", () => {
       const managerContent = createMockManager({
         getCurrentStep: mock(() => ({
+          id: "step-1",
           title: "Title",
           content: "This is the step content",
         })),
@@ -278,6 +282,7 @@ describe("TutorialUI", () => {
     test("renders hint if step has hint", () => {
       const managerHint = createMockManager({
         getCurrentStep: mock(() => ({
+          id: "step-1",
           title: "Title",
           content: "Content",
           hint: "This is a helpful hint",
@@ -293,6 +298,7 @@ describe("TutorialUI", () => {
     test("hides hint if step has no hint", () => {
       const managerNoHint = createMockManager({
         getCurrentStep: mock(() => ({
+          id: "step-1",
           title: "Title",
           content: "Content",
           hint: undefined,
@@ -345,6 +351,7 @@ describe("TutorialUI", () => {
     test("disables Next button when step has expectedCode", () => {
       const managerExpectedCode = createMockManager({
         getCurrentStep: mock(() => ({
+          id: "step-1",
           title: "Title",
           content: "Content",
           expectedCode: "ATG",
@@ -353,7 +360,7 @@ describe("TutorialUI", () => {
       const ui = new TutorialUI(container, managerExpectedCode);
       ui.show();
       const nextBtn = document.querySelector(
-        '[data-action="next"]'
+        '[data-action="next"]',
       ) as HTMLButtonElement;
       expect(nextBtn?.disabled).toBe(true);
     });
@@ -365,7 +372,7 @@ describe("TutorialUI", () => {
       const ui = new TutorialUI(container, mockManager);
       ui.show();
       const nextBtn = document.querySelector(
-        '[data-action="next"]'
+        '[data-action="next"]',
       ) as HTMLButtonElement;
       nextBtn?.click();
       expect(mockManager.nextStep).toHaveBeenCalled();
@@ -378,7 +385,7 @@ describe("TutorialUI", () => {
       const ui = new TutorialUI(container, managerSecondStep);
       ui.show();
       const prevBtn = document.querySelector(
-        '[data-action="previous"]'
+        '[data-action="previous"]',
       ) as HTMLButtonElement;
       prevBtn?.click();
       expect(managerSecondStep.previousStep).toHaveBeenCalled();
@@ -392,7 +399,7 @@ describe("TutorialUI", () => {
       const ui = new TutorialUI(container, mockManager);
       ui.show();
       const skipBtn = document.querySelector(
-        '[data-action="skip"]'
+        '[data-action="skip"]',
       ) as HTMLButtonElement;
       skipBtn?.click();
       expect(mockManager.skip).toHaveBeenCalled();
@@ -404,7 +411,7 @@ describe("TutorialUI", () => {
       const ui = new TutorialUI(container, mockManager);
       ui.show();
       const overlay = document.querySelector(
-        ".tutorial-overlay"
+        ".tutorial-overlay",
       ) as HTMLElement;
       overlay?.click();
       // Modal should still be there
@@ -432,6 +439,7 @@ describe("TutorialUI", () => {
 
       const managerExpectedCode = createMockManager({
         getCurrentStep: mock(() => ({
+          id: "step-1",
           title: "Title",
           content: "Content",
           expectedCode: "ATG",
@@ -442,7 +450,7 @@ describe("TutorialUI", () => {
 
       // Enable button to test
       const nextBtn = document.querySelector(
-        '[data-action="next"]'
+        '[data-action="next"]',
       ) as HTMLButtonElement;
       nextBtn.disabled = false;
       nextBtn?.click();
@@ -453,6 +461,7 @@ describe("TutorialUI", () => {
     test("calls manager.nextStep with empty string when no expectedCode", () => {
       const managerNoCode = createMockManager({
         getCurrentStep: mock(() => ({
+          id: "step-1",
           title: "Title",
           content: "Content",
           expectedCode: undefined,
@@ -461,7 +470,7 @@ describe("TutorialUI", () => {
       const ui = new TutorialUI(container, managerNoCode);
       ui.show();
       const nextBtn = document.querySelector(
-        '[data-action="next"]'
+        '[data-action="next"]',
       ) as HTMLButtonElement;
       nextBtn?.click();
       expect(managerNoCode.nextStep).toHaveBeenCalledWith("");
@@ -477,7 +486,7 @@ describe("TutorialUI", () => {
       const ui = new TutorialUI(container, managerSecondStep);
       ui.show();
       const prevBtn = document.querySelector(
-        '[data-action="previous"]'
+        '[data-action="previous"]',
       ) as HTMLButtonElement;
       prevBtn?.click();
       expect(managerSecondStep.previousStep).toHaveBeenCalled();
@@ -493,7 +502,7 @@ describe("TutorialUI", () => {
       const ui = new TutorialUI(container, mockManager);
       ui.show();
       const skipBtn = document.querySelector(
-        '[data-action="skip"]'
+        '[data-action="skip"]',
       ) as HTMLButtonElement;
       skipBtn?.click();
 
@@ -506,7 +515,7 @@ describe("TutorialUI", () => {
       const ui = new TutorialUI(container, mockManager);
       ui.show();
       const skipBtn = document.querySelector(
-        '[data-action="skip"]'
+        '[data-action="skip"]',
       ) as HTMLButtonElement;
       skipBtn?.click();
 
@@ -519,7 +528,7 @@ describe("TutorialUI", () => {
       const ui = new TutorialUI(container, mockManager);
       ui.show();
       const skipBtn = document.querySelector(
-        '[data-action="skip"]'
+        '[data-action="skip"]',
       ) as HTMLButtonElement;
       skipBtn?.click();
 
@@ -532,7 +541,7 @@ describe("TutorialUI", () => {
       const ui = new TutorialUI(container, mockManager);
       ui.show();
       const skipBtn = document.querySelector(
-        '[data-action="skip"]'
+        '[data-action="skip"]',
       ) as HTMLButtonElement;
       skipBtn?.click();
 
@@ -551,6 +560,7 @@ describe("TutorialUI", () => {
 
       const managerFailValidation = createMockManager({
         getCurrentStep: mock(() => ({
+          id: "step-1",
           title: "Title",
           content: "Content",
           hint: "Try ATG instead",
@@ -563,7 +573,7 @@ describe("TutorialUI", () => {
 
       // Enable and click next
       const nextBtn = document.querySelector(
-        '[data-action="next"]'
+        '[data-action="next"]',
       ) as HTMLButtonElement;
       nextBtn.disabled = false;
       nextBtn?.click();
@@ -579,6 +589,7 @@ describe("TutorialUI", () => {
 
       const managerFailValidation = createMockManager({
         getCurrentStep: mock(() => ({
+          id: "step-1",
           title: "Title",
           content: "Content",
           hint: "Try ATG instead",
@@ -590,7 +601,7 @@ describe("TutorialUI", () => {
       ui.show();
 
       const nextBtn = document.querySelector(
-        '[data-action="next"]'
+        '[data-action="next"]',
       ) as HTMLButtonElement;
       nextBtn.disabled = false;
       nextBtn?.click();
@@ -676,7 +687,7 @@ describe("TutorialUI", () => {
       mockManager.triggerComplete();
 
       const exploreBtn = document.querySelector(
-        '[data-action="explore"]'
+        '[data-action="explore"]',
       ) as HTMLButtonElement;
       exploreBtn?.click();
 
@@ -690,7 +701,7 @@ describe("TutorialUI", () => {
       mockManager.triggerComplete();
 
       const exploreBtn = document.querySelector(
-        '[data-action="explore"]'
+        '[data-action="explore"]',
       ) as HTMLButtonElement;
       // Should not throw even without selector element
       expect(() => exploreBtn?.click()).not.toThrow();
@@ -711,7 +722,7 @@ describe("TutorialUI", () => {
       mockManager.triggerComplete();
 
       const mutationsBtn = document.querySelector(
-        '[data-action="mutations"]'
+        '[data-action="mutations"]',
       ) as HTMLButtonElement;
       mutationsBtn?.click();
 
@@ -736,7 +747,7 @@ describe("TutorialUI", () => {
       expect(document.querySelector(".tutorial-success")).not.toBeNull();
       expect(document.querySelector(".tutorial-success-icon")).not.toBeNull();
       expect(
-        document.querySelector(".tutorial-success-actions")
+        document.querySelector(".tutorial-success-actions"),
       ).not.toBeNull();
     });
   });
@@ -750,6 +761,7 @@ describe("TutorialUI", () => {
 
       const managerWithTarget = createMockManager({
         getCurrentStep: mock(() => ({
+          id: "step-1",
           title: "Title",
           content: "Content",
           targetElement: "#highlight-target",
@@ -764,6 +776,7 @@ describe("TutorialUI", () => {
     test("returns early if element not found", () => {
       const managerWithBadTarget = createMockManager({
         getCurrentStep: mock(() => ({
+          id: "step-1",
           title: "Title",
           content: "Content",
           targetElement: "#nonexistent",
@@ -782,6 +795,7 @@ describe("TutorialUI", () => {
 
       const managerWithTarget = createMockManager({
         getCurrentStep: mock(() => ({
+          id: "step-1",
           title: "Title",
           content: "Content",
           targetElement: "#highlight-target",
@@ -791,7 +805,7 @@ describe("TutorialUI", () => {
       ui.show();
 
       expect(target.dataset["originalClasses"]).toBe(
-        "original-class another-class"
+        "original-class another-class",
       );
     });
 
@@ -802,6 +816,7 @@ describe("TutorialUI", () => {
 
       const managerWithTarget = createMockManager({
         getCurrentStep: mock(() => ({
+          id: "step-1",
           title: "Title",
           content: "Content",
           targetElement: "#highlight-target",
@@ -825,6 +840,7 @@ describe("TutorialUI", () => {
     test("returns early if step has no expectedCode", () => {
       const managerNoExpected = createMockManager({
         getCurrentStep: mock(() => ({
+          id: "step-1",
           title: "Title",
           content: "Content",
           expectedCode: undefined,
@@ -839,6 +855,7 @@ describe("TutorialUI", () => {
     test("calls manager.validateStep with code", () => {
       const managerExpected = createMockManager({
         getCurrentStep: mock(() => ({
+          id: "step-1",
           title: "Title",
           content: "Content",
           expectedCode: "ATG",
@@ -853,6 +870,7 @@ describe("TutorialUI", () => {
     test("disables button when validation fails", () => {
       const managerFail = createMockManager({
         getCurrentStep: mock(() => ({
+          id: "step-1",
           title: "Title",
           content: "Content",
           expectedCode: "ATG",
@@ -864,7 +882,7 @@ describe("TutorialUI", () => {
       ui.validateAndUpdateButton("WRONG");
 
       const nextBtn = document.querySelector(
-        '[data-action="next"]'
+        '[data-action="next"]',
       ) as HTMLButtonElement;
       expect(nextBtn?.disabled).toBe(true);
     });
@@ -872,6 +890,7 @@ describe("TutorialUI", () => {
     test("enables button when validation passes", () => {
       const managerPass = createMockManager({
         getCurrentStep: mock(() => ({
+          id: "step-1",
           title: "Title",
           content: "Content",
           expectedCode: "ATG",
@@ -883,7 +902,7 @@ describe("TutorialUI", () => {
       ui.validateAndUpdateButton("ATG");
 
       const nextBtn = document.querySelector(
-        '[data-action="next"]'
+        '[data-action="next"]',
       ) as HTMLButtonElement;
       expect(nextBtn?.disabled).toBe(false);
     });
@@ -891,6 +910,7 @@ describe("TutorialUI", () => {
     test("adds pulse-success class when valid", () => {
       const managerPass = createMockManager({
         getCurrentStep: mock(() => ({
+          id: "step-1",
           title: "Title",
           content: "Content",
           expectedCode: "ATG",
@@ -924,6 +944,7 @@ describe("TutorialUI", () => {
 
       const managerWithTarget = createMockManager({
         getCurrentStep: mock(() => ({
+          id: "step-1",
           title: "Title",
           content: "Content",
           targetElement: "#highlight-target",
@@ -945,6 +966,7 @@ describe("TutorialUI", () => {
 
       const managerWithTarget = createMockManager({
         getCurrentStep: mock(() => ({
+          id: "step-1",
           title: "Title",
           content: "Content",
           targetElement: "#highlight-target",
@@ -965,7 +987,7 @@ describe("TutorialUI", () => {
       ui.show();
 
       const nextBtn = document.querySelector(
-        '[data-action="next"]'
+        '[data-action="next"]',
       ) as HTMLButtonElement;
       nextBtn?.click();
 
@@ -975,6 +997,7 @@ describe("TutorialUI", () => {
     test("code validation enables/disables Next button", () => {
       const managerValidation = createMockManager({
         getCurrentStep: mock(() => ({
+          id: "step-1",
           title: "Title",
           content: "Content",
           expectedCode: "ATG",
@@ -986,14 +1009,14 @@ describe("TutorialUI", () => {
 
       // Initially disabled
       let nextBtn = document.querySelector(
-        '[data-action="next"]'
+        '[data-action="next"]',
       ) as HTMLButtonElement;
       expect(nextBtn?.disabled).toBe(true);
 
       // Valid code enables
       ui.validateAndUpdateButton("ATG GGG");
       nextBtn = document.querySelector(
-        '[data-action="next"]'
+        '[data-action="next"]',
       ) as HTMLButtonElement;
       expect(nextBtn?.disabled).toBe(false);
     });
@@ -1013,7 +1036,7 @@ describe("TutorialUI", () => {
       ui.show();
 
       const skipBtn = document.querySelector(
-        '[data-action="skip"]'
+        '[data-action="skip"]',
       ) as HTMLButtonElement;
       skipBtn?.click();
 
@@ -1027,6 +1050,7 @@ describe("TutorialUI", () => {
     test("handles missing target element for highlighting", () => {
       const managerBadTarget = createMockManager({
         getCurrentStep: mock(() => ({
+          id: "step-1",
           title: "Title",
           content: "Content",
           targetElement: "#nonexistent-element",
@@ -1041,7 +1065,7 @@ describe("TutorialUI", () => {
       ui.show();
 
       const nextBtn = document.querySelector(
-        '[data-action="next"]'
+        '[data-action="next"]',
       ) as HTMLButtonElement;
       nextBtn?.click();
       nextBtn?.click();
@@ -1098,7 +1122,8 @@ describe("initializeTutorial", () => {
   test("attaches input listener to editor element", () => {
     const validatingManager = createMockManager({
       getCurrentStep: mock(() => ({
-        title: "Title",
+        id: "step-1",
+        title: "Step 1",
         content: "Content",
         expectedCode: "ATG",
       })),
