@@ -772,7 +772,17 @@ describe("ResearchMetrics", () => {
       }
       // Should have at most maxSessions
       const sessions = metrics.getAllSessions();
-      expect(sessions.length).toBeLessThanOrEqual(5);
+      expect(sessions.length).toBeLessThanOrEqual(2);
+
+      // Verify the retained sessions are the most recent ones (iterations 3 and 4)
+      if (sessions.length === 2) {
+        const genomesCreated = sessions.map((s) => s.genomesCreated);
+        // Most recent sessions should have genomesCreated values of 3 and 4
+        expect(genomesCreated).toContain(1); // Each session tracks one genome
+        // Sessions should be from the last two iterations
+        const sessionStartTimes = sessions.map((s) => s.startTime);
+        expect(sessionStartTimes[0]).toBeLessThanOrEqual(sessionStartTimes[1] || sessionStartTimes[0]);
+      }
     });
 
     test("does nothing when currentSession is null", () => {
