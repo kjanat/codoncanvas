@@ -4,7 +4,7 @@
  * Tests for privacy-respecting telemetry and educational research data collection.
  * Tracks user interactions for effectiveness studies.
  */
-import { afterEach, beforeEach, describe, expect, test, mock } from "bun:test";
+import { afterEach, beforeEach, describe, expect, test } from "bun:test";
 import { ResearchMetrics } from "./research-metrics";
 
 // Helper to clear localStorage between tests

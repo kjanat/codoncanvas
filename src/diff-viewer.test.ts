@@ -6,7 +6,7 @@
  */
 import { afterEach, beforeEach, describe, expect, test } from "bun:test";
 import { DiffViewer, injectDiffViewerStyles } from "./diff-viewer";
-import { compareGenomes, type MutationResult } from "./mutations";
+import type { MutationResult } from "./mutations";
 import {
   mockCanvasContext,
   restoreCanvasContext,
@@ -48,7 +48,7 @@ describe("DiffViewer", () => {
       viewer.renderComparison("ATG TAA", "ATG TAA");
       // Canvas containers should be rendered
       const canvasContainer = container.querySelector(".diff-canvas-container");
-      expect(canvasContainer).toBeDefined();
+      expect(canvasContainer).not.toBeNull();
     });
 
     test("uses default highlightColor='#ff6b6b' when not specified", () => {
@@ -141,7 +141,7 @@ describe("DiffViewer", () => {
       };
       viewer.renderMutation(result);
       // Should render diff content
-      expect(container.querySelector(".diff-viewer")).toBeDefined();
+      expect(container.querySelector(".diff-viewer")).not.toBeNull();
     });
 
     test("renders correct mutation type badge", () => {
@@ -217,7 +217,7 @@ describe("DiffViewer", () => {
     test("creates diff-viewer container", () => {
       const viewer = new DiffViewer({ containerElement: container });
       viewer.renderComparison("ATG TAA", "ATG GGA TAA");
-      expect(container.querySelector(".diff-viewer")).toBeDefined();
+      expect(container.querySelector(".diff-viewer")).not.toBeNull();
     });
 
     test("creates diff-header with description", () => {
@@ -284,7 +284,7 @@ describe("DiffViewer", () => {
       });
       viewer.renderComparison("ATG TAA", "ATG GGA TAA");
       const canvasContainer = container.querySelector(".diff-canvas-container");
-      expect(canvasContainer).toBeDefined();
+      expect(canvasContainer).not.toBeNull();
     });
 
     test("does not render canvas when showCanvas=false", () => {
@@ -351,7 +351,7 @@ describe("DiffViewer", () => {
     test("creates diff-canvas-container div", () => {
       const viewer = new DiffViewer({ containerElement: container });
       viewer.renderComparison("ATG TAA", "ATG GGA TAA");
-      expect(container.querySelector(".diff-canvas-container")).toBeDefined();
+      expect(container.querySelector(".diff-canvas-container")).not.toBeNull();
     });
 
     test("creates two canvas-wrapper divs", () => {
@@ -384,8 +384,8 @@ describe("DiffViewer", () => {
     test("creates canvas elements with correct IDs", () => {
       const viewer = new DiffViewer({ containerElement: container });
       viewer.renderComparison("ATG TAA", "ATG GGA TAA");
-      expect(container.querySelector("#diff-canvas-original")).toBeDefined();
-      expect(container.querySelector("#diff-canvas-mutated")).toBeDefined();
+      expect(container.querySelector("#diff-canvas-original")).not.toBeNull();
+      expect(container.querySelector("#diff-canvas-mutated")).not.toBeNull();
     });
 
     test("sets canvas dimensions from options", () => {
@@ -505,7 +505,7 @@ describe("DiffViewer", () => {
         position: 4,
       };
       viewer.renderMutation(result);
-      expect(container.querySelector(".mutation-silent")).toBeDefined();
+      expect(container.querySelector(".mutation-silent")).not.toBeNull();
     });
 
     test("correctly displays missense mutation diff", () => {
@@ -518,7 +518,7 @@ describe("DiffViewer", () => {
         position: 4,
       };
       viewer.renderMutation(result);
-      expect(container.querySelector(".mutation-missense")).toBeDefined();
+      expect(container.querySelector(".mutation-missense")).not.toBeNull();
     });
 
     test("correctly displays nonsense mutation diff", () => {
@@ -531,7 +531,7 @@ describe("DiffViewer", () => {
         position: 4,
       };
       viewer.renderMutation(result);
-      expect(container.querySelector(".mutation-nonsense")).toBeDefined();
+      expect(container.querySelector(".mutation-nonsense")).not.toBeNull();
     });
 
     test("correctly displays frameshift mutation diff", () => {
@@ -544,7 +544,7 @@ describe("DiffViewer", () => {
         position: 4,
       };
       viewer.renderMutation(result);
-      expect(container.querySelector(".mutation-frameshift")).toBeDefined();
+      expect(container.querySelector(".mutation-frameshift")).not.toBeNull();
     });
 
     test("correctly displays insertion mutation diff", () => {
@@ -557,7 +557,7 @@ describe("DiffViewer", () => {
         position: 4,
       };
       viewer.renderMutation(result);
-      expect(container.querySelector(".mutation-insertion")).toBeDefined();
+      expect(container.querySelector(".mutation-insertion")).not.toBeNull();
     });
 
     test("correctly displays deletion mutation diff", () => {
@@ -570,7 +570,7 @@ describe("DiffViewer", () => {
         position: 4,
       };
       viewer.renderMutation(result);
-      expect(container.querySelector(".mutation-deletion")).toBeDefined();
+      expect(container.querySelector(".mutation-deletion")).not.toBeNull();
     });
   });
 

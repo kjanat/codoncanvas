@@ -136,7 +136,8 @@ describe("DOM Manager", () => {
     }) as typeof document.querySelector;
     document.querySelectorAll = ((selector: string) => {
       if (selector === 'input[name="mode"]') {
-        return [] as unknown as NodeListOf<Element>;
+        // Use a real empty NodeList instead of casting an empty array
+        return document.querySelectorAll(".nonexistent-element-for-empty-list");
       }
       return originalQuerySelectorAll(selector);
     }) as typeof document.querySelectorAll;

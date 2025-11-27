@@ -561,12 +561,12 @@ describe("CodonCanvas Library Exports", () => {
       expect(module.Canvas2DRenderer).toBeDefined();
     });
 
-    test("named exports are accessible via destructuring", () => {
+    test("named exports are accessible via destructuring", async () => {
       const {
         CodonLexer: Lexer,
         CodonVM: VM,
         Canvas2DRenderer: Renderer,
-      } = require("./index");
+      } = await import("./index");
 
       expect(Lexer).toBeDefined();
       expect(VM).toBeDefined();
