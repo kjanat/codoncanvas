@@ -1228,7 +1228,7 @@ describe("MIDIExporter", () => {
       const tokens = lexer.tokenize(genome);
 
       // Run VM with error handling since some codons may stack underflow
-      let snapshots;
+      let snapshots: VMState[];
       try {
         snapshots = vm.run(tokens);
       } catch {

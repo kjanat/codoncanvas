@@ -1507,6 +1507,7 @@ hintToggle.addEventListener("click", () => {
   hintArrow.textContent = isShown ? "▲" : "▼";
 
   if (isShown) {
+    // biome-ignore lint/correctness/useHookAtTopLevel: useHint is not a React hook
     tutorial.useHint(currentLesson.id);
   }
 });

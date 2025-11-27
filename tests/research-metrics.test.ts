@@ -384,7 +384,7 @@ describe("ResearchMetrics", () => {
 
     test("sets timeToFirstArtifact on first successful execution (event.success=true)", () => {
       const metrics = new ResearchMetrics({ enabled: true });
-      const startTime = metrics.getCurrentSession()?.startTime || 0;
+      const _startTime = metrics.getCurrentSession()?.startTime || 0;
       metrics.trackGenomeExecuted(
         createExecutionEvent({ renderMode: "visual", success: true }),
       );
