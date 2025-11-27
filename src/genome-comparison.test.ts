@@ -20,11 +20,8 @@ describe("GenomeComparison", () => {
     restoreCanvasContext();
   });
 
-  // =========================================================================
   // compareGenomesDetailed - Main Entry Point
-  // =========================================================================
   describe("compareGenomesDetailed", () => {
-    // HAPPY PATHS
     test("returns GenomeComparisonResult with all required fields for two valid genomes", () => {
       const result = compareGenomesDetailed("ATG GGG", "ATG GAG");
       expect(result.codons).toBeDefined();
@@ -61,7 +58,6 @@ describe("GenomeComparison", () => {
       expect(result.visual.mutatedCanvas).toBeDefined();
     });
 
-    // CODON ANALYSIS
     test("correctly identifies differences array with position, original, and mutated codons", () => {
       const result = compareGenomesDetailed("ATG GGG AAA", "ATG GAG AAA");
       const diff = result.codons.differences.find(
@@ -92,7 +88,6 @@ describe("GenomeComparison", () => {
       expect(result.metrics.maxLength).toBe(3);
     });
 
-    // VISUAL COMPARISON
     test("generates data URL for original genome canvas rendering", () => {
       const result = compareGenomesDetailed("ATG GGG", "ATG GAG");
       expect(result.visual.originalCanvas).toContain("data:");
@@ -114,7 +109,6 @@ describe("GenomeComparison", () => {
       expect(result.visual.bothValid).toBe(false);
     });
 
-    // EDGE CASES
     test("handles empty string genomes gracefully", () => {
       const result = compareGenomesDetailed("", "");
       expect(result.metrics.codonDifferencePercent).toBe(0);
@@ -149,9 +143,7 @@ describe("GenomeComparison", () => {
     });
   });
 
-  // =========================================================================
   // calculateHammingDistance (private, tested via compareGenomesDetailed)
-  // =========================================================================
   describe("calculateHammingDistance", () => {
     test("returns 0 for identical codon arrays", () => {
       const result = compareGenomesDetailed("ATG GGG AAA", "ATG GGG AAA");
@@ -181,9 +173,7 @@ describe("GenomeComparison", () => {
     });
   });
 
-  // =========================================================================
   // calculatePixelDifference (private, tested via compareGenomesDetailed)
-  // =========================================================================
   describe("calculatePixelDifference", () => {
     test("returns percentage value for genome comparison", () => {
       const result = compareGenomesDetailed("ATG GGG", "ATG GGG");
@@ -197,9 +187,7 @@ describe("GenomeComparison", () => {
     });
   });
 
-  // =========================================================================
   // classifySimilarity (private, tested via compareGenomesDetailed)
-  // =========================================================================
   describe("classifySimilarity", () => {
     test("returns 'identical' for 0% codon difference", () => {
       const result = compareGenomesDetailed("ATG GGG", "ATG GGG");
@@ -237,9 +225,7 @@ describe("GenomeComparison", () => {
     });
   });
 
-  // =========================================================================
   // generateDescription (private, tested via compareGenomesDetailed)
-  // =========================================================================
   describe("generateDescription", () => {
     test("returns 'identical - no differences' for identical genomes", () => {
       const result = compareGenomesDetailed("ATG GGG", "ATG GGG");
@@ -264,9 +250,7 @@ describe("GenomeComparison", () => {
     });
   });
 
-  // =========================================================================
   // generateInsights (private, tested via compareGenomesDetailed)
-  // =========================================================================
   describe("generateInsights", () => {
     test("detects frameshift when differences have missing original or mutated codons", () => {
       // Length difference indicates insertion/deletion
@@ -293,9 +277,7 @@ describe("GenomeComparison", () => {
     });
   });
 
-  // =========================================================================
   // renderBothGenomes (private, tested via compareGenomesDetailed)
-  // =========================================================================
   describe("renderBothGenomes", () => {
     test("renders first genome to data URL successfully", () => {
       const result = compareGenomesDetailed("ATG GGG", "ATG GAG");
@@ -331,9 +313,7 @@ describe("GenomeComparison", () => {
     });
   });
 
-  // =========================================================================
   // Integration Tests
-  // =========================================================================
   describe("integration", () => {
     test("correctly analyzes silent mutation (codon change, same visual output)", () => {
       // Same amino acid codons would produce same output
@@ -376,9 +356,7 @@ describe("GenomeComparison", () => {
     });
   });
 
-  // =========================================================================
   // Edge Cases
-  // =========================================================================
   describe("edge cases", () => {
     test("handles lexer tokenization errors", () => {
       const result = compareGenomesDetailed("ATG GGG", "XXX YYY");

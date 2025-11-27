@@ -19,9 +19,7 @@ function escapeHtml(unsafe: string): string {
 }
 
 describe("UI Utilities", () => {
-  // =========================================================================
   // escapeHtml (pure function - no DOM needed)
-  // =========================================================================
   describe("escapeHtml", () => {
     test("escapes ampersand (&) to &amp;", () => {
       expect(escapeHtml("foo & bar")).toBe("foo &amp; bar");

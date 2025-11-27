@@ -25,11 +25,8 @@ describe("ResearchMetrics", () => {
     clearLocalStorage();
   });
 
-  // =========================================================================
   // Constructor & Configuration
-  // =========================================================================
   describe("constructor", () => {
-    // DEFAULT OPTIONS
     test("initializes with enabled=false by default (opt-in required)", () => {
       const metrics = new ResearchMetrics();
       expect(metrics.isEnabled()).toBe(false);
@@ -46,7 +43,6 @@ describe("ResearchMetrics", () => {
       expect(metrics).toBeDefined();
     });
 
-    // CUSTOM OPTIONS
     test("accepts enabled option to start collecting immediately", () => {
       const metrics = new ResearchMetrics({ enabled: true });
       expect(metrics.isEnabled()).toBe(true);
@@ -76,9 +72,7 @@ describe("ResearchMetrics", () => {
     });
   });
 
-  // =========================================================================
   // Enable/Disable Lifecycle
-  // =========================================================================
   describe("enable", () => {
     test("sets options.enabled to true", () => {
       const metrics = new ResearchMetrics();
@@ -155,9 +149,7 @@ describe("ResearchMetrics", () => {
     });
   });
 
-  // =========================================================================
   // Session Lifecycle
-  // =========================================================================
   describe("startSession (private, tested via enable)", () => {
     test("creates new ResearchSession with unique sessionId", () => {
       const metrics = new ResearchMetrics({ enabled: true });
@@ -294,9 +286,7 @@ describe("ResearchMetrics", () => {
     });
   });
 
-  // =========================================================================
   // Event Tracking Methods
-  // =========================================================================
   describe("trackGenomeCreated", () => {
     test("increments genomesCreated counter", () => {
       const metrics = new ResearchMetrics({ enabled: true });
@@ -488,9 +478,7 @@ describe("ResearchMetrics", () => {
     });
   });
 
-  // =========================================================================
   // Session Access
-  // =========================================================================
   describe("getCurrentSession", () => {
     test("returns current ResearchSession object when active", () => {
       const metrics = new ResearchMetrics({ enabled: true });
@@ -540,9 +528,7 @@ describe("ResearchMetrics", () => {
     });
   });
 
-  // =========================================================================
   // Data Export
-  // =========================================================================
   describe("exportData", () => {
     test("returns JSON string with exportDate, version, totalSessions, and sessions array", () => {
       const metrics = new ResearchMetrics({ enabled: true });
@@ -633,9 +619,7 @@ describe("ResearchMetrics", () => {
     });
   });
 
-  // =========================================================================
   // Aggregate Statistics
-  // =========================================================================
   describe("getAggregateStats", () => {
     test("returns totalSessions count", () => {
       const metrics = new ResearchMetrics({ enabled: true });
@@ -735,9 +719,7 @@ describe("ResearchMetrics", () => {
     });
   });
 
-  // =========================================================================
   // Data Management
-  // =========================================================================
   describe("clearAllData", () => {
     test("removes STORAGE_KEY from localStorage", () => {
       const metrics = new ResearchMetrics({ enabled: true });
@@ -805,9 +787,7 @@ describe("ResearchMetrics", () => {
     });
   });
 
-  // =========================================================================
   // Auto-Save Timer
-  // =========================================================================
   describe("startAutoSave (private, tested via enable)", () => {
     test("stops any existing timer before creating new one", () => {
       const metrics = new ResearchMetrics({
@@ -865,9 +845,7 @@ describe("ResearchMetrics", () => {
     });
   });
 
-  // =========================================================================
   // Session ID Generation
-  // =========================================================================
   describe("generateSessionId (private, tested via startSession)", () => {
     test("generates unique ID with format: session_{timestamp}_{random}", () => {
       const metrics = new ResearchMetrics({ enabled: true });
@@ -898,9 +876,7 @@ describe("ResearchMetrics", () => {
     });
   });
 
-  // =========================================================================
   // Edge Cases & Error Handling
-  // =========================================================================
   describe("edge cases", () => {
     test("handles localStorage being unavailable (e.g., private browsing)", () => {
       const metrics = new ResearchMetrics();

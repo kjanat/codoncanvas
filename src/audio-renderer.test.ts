@@ -139,9 +139,7 @@ describe("AudioRenderer", () => {
     (globalThis as unknown as { MediaStream: typeof MediaStream }).MediaStream = originalMediaStream;
   });
 
-  // =========================================================================
   // Constructor & Properties
-  // =========================================================================
   describe("constructor", () => {
     test("initializes audioContext as null (lazy initialization)", () => {
       const renderer = new AudioRenderer();
@@ -163,9 +161,7 @@ describe("AudioRenderer", () => {
     });
   });
 
-  // =========================================================================
   // Initialization
-  // =========================================================================
   describe("initialize", () => {
     test("creates new AudioContext", async () => {
       const renderer = new AudioRenderer();
@@ -188,9 +184,7 @@ describe("AudioRenderer", () => {
     });
   });
 
-  // =========================================================================
   // Recording
-  // =========================================================================
   describe("startRecording", () => {
     test("throws error when not initialized", () => {
       const renderer = new AudioRenderer();
@@ -262,9 +256,7 @@ describe("AudioRenderer", () => {
     });
   });
 
-  // =========================================================================
   // Clear/Reset
-  // =========================================================================
   describe("clear", () => {
     test("resets currentFrequency to 440 Hz", () => {
       const renderer = new AudioRenderer();
@@ -282,9 +274,7 @@ describe("AudioRenderer", () => {
     });
   });
 
-  // =========================================================================
   // Drawing Opcodes -> Sound Synthesis
-  // =========================================================================
   describe("circle", () => {
     test("maps radius 0-64 to frequency 220-880 Hz", async () => {
       const renderer = new AudioRenderer();
@@ -374,9 +364,7 @@ describe("AudioRenderer", () => {
     });
   });
 
-  // =========================================================================
   // Transform Opcodes -> Audio Parameters
-  // =========================================================================
   describe("translate", () => {
     test("maps dx -63 to 63 -> pan -1 to 1 (left to right)", async () => {
       const renderer = new AudioRenderer();
@@ -508,9 +496,7 @@ describe("AudioRenderer", () => {
     });
   });
 
-  // =========================================================================
   // Utility Methods
-  // =========================================================================
   describe("getCurrentTransform", () => {
     test("returns x as pan * 63", () => {
       const renderer = new AudioRenderer();
@@ -562,9 +548,7 @@ describe("AudioRenderer", () => {
     });
   });
 
-  // =========================================================================
   // Private playTone Method (tested via public methods)
-  // =========================================================================
   describe("playTone (private, tested via shape methods)", () => {
     test("clamps frequency to audible range 20-20000 Hz", async () => {
       const renderer = new AudioRenderer();
@@ -583,9 +567,7 @@ describe("AudioRenderer", () => {
     });
   });
 
-  // =========================================================================
   // Integration Tests
-  // =========================================================================
   describe("integration", () => {
     test("implements Renderer interface completely", () => {
       const renderer = new AudioRenderer();
@@ -629,9 +611,7 @@ describe("AudioRenderer", () => {
     });
   });
 
-  // =========================================================================
   // Edge Cases
-  // =========================================================================
   describe("edge cases", () => {
     test("handles concurrent shape calls (overlapping sounds)", async () => {
       const renderer = new AudioRenderer();

@@ -88,9 +88,7 @@ describe("TeacherDashboard", () => {
     dashboard = new TeacherDashboard();
   });
 
-  // =========================================================================
   // Constructor
-  // =========================================================================
   describe("constructor", () => {
     test("initializes empty students Map", () => {
       const db = new TeacherDashboard();
@@ -98,9 +96,7 @@ describe("TeacherDashboard", () => {
     });
   });
 
-  // =========================================================================
   // importStudentData
-  // =========================================================================
   describe("importStudentData", () => {
     test("parses valid JSON and adds to students Map", () => {
       const data = createStudentExport("student-1");
@@ -148,9 +144,7 @@ describe("TeacherDashboard", () => {
     });
   });
 
-  // =========================================================================
   // importMultipleFiles
-  // =========================================================================
   describe("importMultipleFiles", () => {
     // Note: happy-dom's FileReader doesn't properly read Blob content,
     // so most file-based tests are marked as todo. The implementation
@@ -350,9 +344,7 @@ describe("TeacherDashboard", () => {
     });
   });
 
-  // =========================================================================
   // getStudents
-  // =========================================================================
   describe("getStudents", () => {
     test("returns array of all TeacherStudentProgress objects", () => {
       dashboard.importStudentData(createStudentExport("student-1"));
@@ -367,9 +359,7 @@ describe("TeacherDashboard", () => {
     });
   });
 
-  // =========================================================================
   // getStudent
-  // =========================================================================
   describe("getStudent", () => {
     test("returns student by ID when exists", () => {
       dashboard.importStudentData(createStudentExport("student-1"));
@@ -383,9 +373,7 @@ describe("TeacherDashboard", () => {
     });
   });
 
-  // =========================================================================
   // removeStudent
-  // =========================================================================
   describe("removeStudent", () => {
     test("removes student by ID and returns true", () => {
       dashboard.importStudentData(createStudentExport("student-1"));
@@ -400,9 +388,7 @@ describe("TeacherDashboard", () => {
     });
   });
 
-  // =========================================================================
   // clearAll
-  // =========================================================================
   describe("clearAll", () => {
     test("clears all students from Map", () => {
       dashboard.importStudentData(createStudentExport("student-1"));
@@ -418,9 +404,7 @@ describe("TeacherDashboard", () => {
     });
   });
 
-  // =========================================================================
   // getClassroomStats
-  // =========================================================================
   describe("getClassroomStats", () => {
     test("returns empty stats when no students", () => {
       const stats = dashboard.getClassroomStats();
@@ -563,9 +547,7 @@ describe("TeacherDashboard", () => {
     });
   });
 
-  // =========================================================================
   // getAtRiskStudents
-  // =========================================================================
   describe("getAtRiskStudents", () => {
     test("returns empty array when no at-risk students", () => {
       dashboard.importStudentData(
@@ -717,9 +699,7 @@ describe("TeacherDashboard", () => {
     });
   });
 
-  // =========================================================================
   // exportGradingSummary
-  // =========================================================================
   describe("exportGradingSummary", () => {
     test("returns 'No student data imported' when empty", () => {
       const summary = dashboard.exportGradingSummary();
@@ -794,9 +774,7 @@ describe("TeacherDashboard", () => {
     });
   });
 
-  // =========================================================================
   // exportClassroomData
-  // =========================================================================
   describe("exportClassroomData", () => {
     test("returns JSON string", () => {
       dashboard.importStudentData(createStudentExport("student-1"));
@@ -847,9 +825,7 @@ describe("TeacherDashboard", () => {
     });
   });
 
-  // =========================================================================
   // getEmptyStats (private)
-  // =========================================================================
   describe("getEmptyStats", () => {
     test("returns ClassroomStats with all zero values", () => {
       const stats = dashboard.getClassroomStats();
@@ -863,9 +839,7 @@ describe("TeacherDashboard", () => {
     });
   });
 
-  // =========================================================================
   // Integration
-  // =========================================================================
   describe("integration", () => {
     test("handles large number of students (100+)", () => {
       for (let i = 0; i < 100; i++) {
@@ -909,9 +883,7 @@ describe("TeacherDashboard", () => {
     });
   });
 
-  // =========================================================================
   // Edge Cases
-  // =========================================================================
   describe("edge cases", () => {
     test("handles student with all null/zero metrics", () => {
       dashboard.importStudentData(

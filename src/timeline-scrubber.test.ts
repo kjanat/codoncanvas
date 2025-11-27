@@ -35,9 +35,7 @@ describe("TimelineScrubber", () => {
     canvas.remove();
   });
 
-  // =========================================================================
   // Constructor
-  // =========================================================================
   describe("constructor", () => {
     test("accepts TimelineOptions with containerElement and canvasElement", () => {
       const scrubber = new TimelineScrubber({
@@ -141,9 +139,7 @@ describe("TimelineScrubber", () => {
     });
   });
 
-  // =========================================================================
   // loadGenome
-  // =========================================================================
   describe("loadGenome", () => {
     test("tokenizes genome using lexer", () => {
       const scrubber = new TimelineScrubber({
@@ -209,9 +205,7 @@ describe("TimelineScrubber", () => {
     });
   });
 
-  // =========================================================================
   // initializeUI (private)
-  // =========================================================================
   describe("initializeUI", () => {
     test("creates timeline-scrubber container", () => {
       new TimelineScrubber({
@@ -371,9 +365,7 @@ describe("TimelineScrubber", () => {
     });
   });
 
-  // =========================================================================
   // renderStep (private)
-  // =========================================================================
   describe("renderStep", () => {
     test("returns early if step out of range (< 0)", () => {
       const scrubber = new TimelineScrubber({
@@ -445,9 +437,7 @@ describe("TimelineScrubber", () => {
     });
   });
 
-  // =========================================================================
   // updateUI (private)
-  // =========================================================================
   describe("updateUI", () => {
     test("returns early if controls not available", () => {
       const scrubber = new TimelineScrubber({
@@ -553,9 +543,7 @@ describe("TimelineScrubber", () => {
     });
   });
 
-  // =========================================================================
   // renderMarkers (private)
-  // =========================================================================
   describe("renderMarkers", () => {
     test("finds timeline-markers container", () => {
       new TimelineScrubber({
@@ -614,9 +602,7 @@ describe("TimelineScrubber", () => {
     });
   });
 
-  // =========================================================================
   // Event Handlers
-  // =========================================================================
   describe("onSliderChange", () => {
     test("parses slider value as integer", () => {
       const scrubber = new TimelineScrubber({
@@ -1066,11 +1052,9 @@ describe("TimelineScrubber", () => {
     });
   });
 
-  // =========================================================================
   // exportToGif
   // Note: GIF export requires gif.js with Web Workers, which isn't available
   // in the test environment. These tests verify the API exists and accepts params.
-  // =========================================================================
   describe("exportToGif", () => {
     test("exportToGif method exists", () => {
       const scrubber = new TimelineScrubber({
@@ -1099,9 +1083,7 @@ describe("TimelineScrubber", () => {
     });
   });
 
-  // =========================================================================
   // destroy
-  // =========================================================================
   describe("destroy", () => {
     test("calls pause() to stop playback", () => {
       const scrubber = new TimelineScrubber({
@@ -1130,9 +1112,7 @@ describe("TimelineScrubber", () => {
     });
   });
 
-  // =========================================================================
   // Integration
-  // =========================================================================
   describe("integration", () => {
     test("correctly steps through simple genome execution", () => {
       const scrubber = new TimelineScrubber({
@@ -1198,9 +1178,7 @@ describe("TimelineScrubber", () => {
     });
   });
 
-  // =========================================================================
   // Edge Cases
-  // =========================================================================
   describe("edge cases", () => {
     test("handles empty genome (no snapshots)", () => {
       const scrubber = new TimelineScrubber({

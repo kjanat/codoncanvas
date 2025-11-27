@@ -43,9 +43,7 @@ describe("MIDIExporter", () => {
     restoreCanvasContext();
   });
 
-  // =========================================================================
   // Constructor & Constants
-  // =========================================================================
   describe("constructor", () => {
     test("initializes with TICKS_PER_QUARTER = 480", async () => {
       // Generate a minimal MIDI file and check header for ticks per quarter
@@ -111,11 +109,8 @@ describe("MIDIExporter", () => {
     });
   });
 
-  // =========================================================================
   // generateMIDI - Main Export Function
-  // =========================================================================
   describe("generateMIDI", () => {
-    // HAPPY PATHS
     test("returns Blob with type 'audio/midi'", () => {
       const snapshots: VMState[] = [createSnapshot({ lastOpcode: Opcode.CIRCLE })];
       const blob = exporter.generateMIDI(snapshots);
@@ -199,7 +194,6 @@ describe("MIDIExporter", () => {
       expect(notes).toContain(67);
     });
 
-    // OPCODE PROCESSING
     test("generates MIDI events from snapshot.lastOpcode", async () => {
       const snapshots: VMState[] = [createSnapshot({ lastOpcode: Opcode.CIRCLE })];
       const blob = exporter.generateMIDI(snapshots);
@@ -247,7 +241,6 @@ describe("MIDIExporter", () => {
       expect(blob.size).toBeGreaterThan(0);
     });
 
-    // VELOCITY TRACKING
     test("tracks lastVelocity starting at DEFAULT_VELOCITY", async () => {
       const snapshots: VMState[] = [createSnapshot({ lastOpcode: Opcode.CIRCLE })];
       const blob = exporter.generateMIDI(snapshots);
@@ -280,7 +273,6 @@ describe("MIDIExporter", () => {
       }
     });
 
-    // EDGE CASES
     test("handles empty snapshots array (returns minimal MIDI file)", async () => {
       const blob = exporter.generateMIDI([]);
       const bytes = await readMIDIBytes(blob);
@@ -309,9 +301,7 @@ describe("MIDIExporter", () => {
     });
   });
 
-  // =========================================================================
   // Opcode to MIDI Mapping
-  // =========================================================================
   describe("opcodeToMIDI (private, tested via generateMIDI)", () => {
     // DRAWING OPCODES -> NOTES
     describe("drawing opcodes produce notes", () => {
@@ -632,9 +622,7 @@ describe("MIDIExporter", () => {
     });
   });
 
-  // =========================================================================
   // MIDI Event Creation Helpers
-  // =========================================================================
   describe("createNoteEvents (private)", () => {
     test("creates Note On event with status 0x90 | channel", async () => {
       const snapshots: VMState[] = [createSnapshot({ lastOpcode: Opcode.CIRCLE })];
@@ -753,9 +741,7 @@ describe("MIDIExporter", () => {
     });
   });
 
-  // =========================================================================
   // Value Scaling
-  // =========================================================================
   describe("scaleToVelocity (private)", () => {
     test("maps CodonCanvas value 0 to MIDI velocity 32", async () => {
       const snapshots: VMState[] = [
@@ -880,9 +866,7 @@ describe("MIDIExporter", () => {
     });
   });
 
-  // =========================================================================
   // MIDI File Building
-  // =========================================================================
   describe("buildMIDIFile (private)", () => {
     test("concatenates header and track chunks", async () => {
       const blob = exporter.generateMIDI([createSnapshot({ lastOpcode: Opcode.CIRCLE })]);
@@ -1109,9 +1093,7 @@ describe("MIDIExporter", () => {
     });
   });
 
-  // =========================================================================
   // Integration Tests
-  // =========================================================================
   describe("integration", () => {
     test("generates playable MIDI file from simple genome", () => {
       const canvas = document.createElement("canvas");
@@ -1260,9 +1242,7 @@ describe("MIDIExporter", () => {
     });
   });
 
-  // =========================================================================
   // Edge Cases
-  // =========================================================================
   describe("edge cases", () => {
     test("handles genome with only stack operations (minimal MIDI output)", async () => {
       const snapshots: VMState[] = [

@@ -56,9 +56,7 @@ describe("Examples Library", () => {
     "frameshift",
   ];
 
-  // =========================================================================
   // Examples Object Structure
-  // =========================================================================
   describe("examples object structure", () => {
     test("exports examples object", () => {
       expect(examples).toBeDefined();
@@ -129,9 +127,7 @@ describe("Examples Library", () => {
     });
   });
 
-  // =========================================================================
   // Difficulty Levels
-  // =========================================================================
   describe("difficulty levels", () => {
     test("beginner examples exist", () => {
       const beginnerExamples = Object.values(examples).filter(
@@ -168,9 +164,7 @@ describe("Examples Library", () => {
     });
   });
 
-  // =========================================================================
   // Concepts Coverage
-  // =========================================================================
   describe("concepts coverage", () => {
     test("examples cover 'drawing' concept", () => {
       const hasDrawing = Object.values(examples).some((e) =>
@@ -251,9 +245,7 @@ describe("Examples Library", () => {
     });
   });
 
-  // =========================================================================
   // Mutation Types
-  // =========================================================================
   describe("mutation types", () => {
     test("goodForMutations contains valid MutationType values", () => {
       for (const example of Object.values(examples)) {
@@ -292,9 +284,7 @@ describe("Examples Library", () => {
     });
   });
 
-  // =========================================================================
   // Genome Validity
-  // =========================================================================
   describe("genome validity", () => {
     test("all genomes start with START codon (ATG/AUG)", () => {
       for (const [key, example] of Object.entries(examples)) {
@@ -385,9 +375,7 @@ describe("Examples Library", () => {
     });
   });
 
-  // =========================================================================
   // Specific Examples
-  // =========================================================================
   describe("specific examples", () => {
     test("helloCircle is minimal beginner example", () => {
       expect(examples.helloCircle).toBeDefined();
@@ -447,9 +435,7 @@ describe("Examples Library", () => {
     });
   });
 
-  // =========================================================================
   // Keywords
-  // =========================================================================
   describe("keywords", () => {
     test("all keywords are lowercase strings", () => {
       for (const example of Object.values(examples)) {
@@ -488,9 +474,7 @@ describe("Examples Library", () => {
     });
   });
 
-  // =========================================================================
   // Type Exports
-  // =========================================================================
   describe("type exports", () => {
     test("exports ExampleDifficulty type", () => {
       // TypeScript check - if this compiles, the type exists
@@ -529,9 +513,7 @@ describe("Examples Library", () => {
     });
   });
 
-  // =========================================================================
   // Pedagogical Progression
-  // =========================================================================
   describe("pedagogical progression", () => {
     test("beginner examples use fewer concepts", () => {
       const beginnerExamples = Object.values(examples).filter(
@@ -613,9 +595,7 @@ describe("Examples Library", () => {
     });
   });
 
-  // =========================================================================
   // Edge Cases
-  // =========================================================================
   describe("edge cases", () => {
     test("handles examples with comments in genome", () => {
       const examplesWithComments = Object.values(examples).filter((e) =>

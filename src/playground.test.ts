@@ -58,9 +58,7 @@ describe("Playground Main Module", () => {
     restoreCanvasContext();
   });
 
-  // =========================================================================
   // trackDrawingOperations
-  // =========================================================================
   describe("trackDrawingOperations", () => {
     test("returns empty array when no drawing tokens", () => {
       // trackDrawingOperations is internal, but we can test the logic
@@ -161,9 +159,7 @@ describe("Playground Main Module", () => {
     });
   });
 
-  // =========================================================================
   // runProgram
-  // =========================================================================
   describe("runProgram", () => {
     test("tokenizes genome from editor", async () => {
       const { CodonLexer } = await import("./lexer");
@@ -228,9 +224,7 @@ describe("Playground Main Module", () => {
     });
   });
 
-  // =========================================================================
   // clearCanvas
-  // =========================================================================
   describe("clearCanvas", () => {
     test("resets VM state", async () => {
       const { Canvas2DRenderer } = await import("./renderer");
@@ -275,9 +269,7 @@ describe("Playground Main Module", () => {
     });
   });
 
-  // =========================================================================
   // getFilteredExamples
-  // =========================================================================
   describe("getFilteredExamples", () => {
     test("returns all examples when no filters applied", async () => {
       const { examples } = await import("./examples");
@@ -356,9 +348,7 @@ describe("Playground Main Module", () => {
     });
   });
 
-  // =========================================================================
   // updateExampleDropdown
-  // =========================================================================
   describe("updateExampleDropdown", () => {
     test("clears existing options", () => {
       const select = createMockSelect("exampleSelect");
@@ -476,9 +466,7 @@ describe("Playground Main Module", () => {
     });
   });
 
-  // =========================================================================
   // showExampleInfo
-  // =========================================================================
   describe("showExampleInfo", () => {
     test("hides info panel when key not found in examples", async () => {
       const { examples } = await import("./examples");
@@ -554,9 +542,7 @@ describe("Playground Main Module", () => {
     });
   });
 
-  // =========================================================================
   // loadExample
-  // =========================================================================
   describe("loadExample", () => {
     test("does nothing when no example selected", () => {
       const select = createMockSelect("exampleSelect");
@@ -608,9 +594,7 @@ describe("Playground Main Module", () => {
     });
   });
 
-  // =========================================================================
   // toggleAudio
-  // =========================================================================
   describe("toggleAudio", () => {
     test("cycles from visual to audio mode", () => {
       const modes = ["visual", "audio", "both"];
@@ -667,9 +651,7 @@ describe("Playground Main Module", () => {
     });
   });
 
-  // =========================================================================
   // toggleTimeline
-  // =========================================================================
   describe("toggleTimeline", () => {
     test("shows timeline panel when hidden", () => {
       const panel = createMockElement("div", "timelinePanel");
@@ -705,9 +687,7 @@ describe("Playground Main Module", () => {
     });
   });
 
-  // =========================================================================
   // switchMode
-  // =========================================================================
   describe("switchMode", () => {
     test("shows playground container in playground mode", () => {
       const container = createMockElement("div", "playgroundContainer");
@@ -734,9 +714,7 @@ describe("Playground Main Module", () => {
     });
   });
 
-  // =========================================================================
   // Event Listeners
-  // =========================================================================
   describe("event listeners", () => {
     test("runBtn click calls runProgram", () => {
       const btn = document.createElement("button");
@@ -877,9 +855,7 @@ describe("Playground Main Module", () => {
     });
   });
 
-  // =========================================================================
   // Integration
-  // =========================================================================
   describe("integration", () => {
     test("full workflow: load example -> run -> clear", async () => {
       const { CodonLexer } = await import("./lexer");
@@ -947,9 +923,7 @@ describe("Playground Main Module", () => {
     });
   });
 
-  // =========================================================================
   // Edge Cases
-  // =========================================================================
   describe("edge cases", () => {
     test("handles empty editor value", () => {
       const editor = createMockTextarea("editor");

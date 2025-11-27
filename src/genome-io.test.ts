@@ -64,9 +64,7 @@ describe("Genome I/O", () => {
     });
   });
 
-  // =========================================================================
   // Tests for downloadGenomeFile (DOM-based file download)
-  // =========================================================================
   describe("downloadGenomeFile", () => {
     let originalCreateObjectURL: typeof URL.createObjectURL;
     let originalRevokeObjectURL: typeof URL.revokeObjectURL;
@@ -81,7 +79,6 @@ describe("Genome I/O", () => {
       URL.revokeObjectURL = originalRevokeObjectURL;
     });
 
-    // HAPPY PATHS
     test("creates blob with correct content and triggers download via anchor element click", () => {
       const createdBlobs: Blob[] = [];
       const clickedElements: HTMLAnchorElement[] = [];
@@ -174,7 +171,6 @@ describe("Genome I/O", () => {
       expect(content.metadata.tags).toEqual(["bio", "test"]);
     });
 
-    // EDGE CASES
     test("handles empty genome string gracefully", async () => {
       const createdBlobs: Blob[] = [];
 
@@ -255,7 +251,6 @@ describe("Genome I/O", () => {
       expect(content.metadata.note).toBe("日本語テスト");
     });
 
-    // DOM INTERACTION
     test("creates temporary anchor element, appends to body, clicks, then removes", () => {
       const appendedElements: Node[] = [];
       const clickedElements: HTMLElement[] = [];
@@ -319,9 +314,7 @@ describe("Genome I/O", () => {
     });
   });
 
-  // =========================================================================
   // Tests for readGenomeFile (FileReader async file reading)
-  // =========================================================================
   describe("readGenomeFile", () => {
     /**
      * Helper to create a File object from content
@@ -330,7 +323,6 @@ describe("Genome I/O", () => {
       return new File([content], filename, { type: "application/json" });
     }
 
-    // HAPPY PATHS
     test("reads valid .genome file and returns parsed GenomeFile object via Promise", async () => {
       const genomeContent = exportGenome("ATG GAA TAA", "Test Genome");
       const file = createGenomeFile(genomeContent);
@@ -362,7 +354,6 @@ describe("Genome I/O", () => {
       expect(result.created).toBeDefined();
     });
 
-    // EDGE CASES
     test("handles File object with empty content", async () => {
       const file = createGenomeFile("");
 
@@ -380,7 +371,6 @@ describe("Genome I/O", () => {
       expect(result.genome.length).toBeGreaterThan(1000000);
     });
 
-    // ERROR CASES
     test("rejects with error when file content is not valid JSON", async () => {
       const file = createGenomeFile("not valid json at all {{{");
 
@@ -423,7 +413,6 @@ describe("Genome I/O", () => {
       }
     });
 
-    // ASYNC BEHAVIOR
     test("returns Promise that resolves after FileReader completes", async () => {
       const genomeContent = exportGenome("ATG TAA", "Async Test");
       const file = createGenomeFile(genomeContent);

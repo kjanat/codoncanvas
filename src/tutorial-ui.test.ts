@@ -64,9 +64,7 @@ describe("TutorialUI", () => {
     document.body.innerHTML = "";
   });
 
-  // =========================================================================
   // Constructor
-  // =========================================================================
   describe("constructor", () => {
     test("accepts container element and TutorialManager", () => {
       const ui = new TutorialUI(container, mockManager);
@@ -97,9 +95,7 @@ describe("TutorialUI", () => {
     });
   });
 
-  // =========================================================================
   // setupCallbacks (private)
-  // =========================================================================
   describe("setupCallbacks", () => {
     test("registers onStepChangeCallback with manager", () => {
       new TutorialUI(container, mockManager);
@@ -138,9 +134,7 @@ describe("TutorialUI", () => {
     });
   });
 
-  // =========================================================================
   // show
-  // =========================================================================
   describe("show", () => {
     test("calls render() to display tutorial", () => {
       const ui = new TutorialUI(container, mockManager);
@@ -149,9 +143,7 @@ describe("TutorialUI", () => {
     });
   });
 
-  // =========================================================================
   // hide
-  // =========================================================================
   describe("hide", () => {
     test("calls cleanup() to remove tutorial UI", () => {
       const ui = new TutorialUI(container, mockManager);
@@ -163,9 +155,7 @@ describe("TutorialUI", () => {
     });
   });
 
-  // =========================================================================
   // render (private)
-  // =========================================================================
   describe("render", () => {
     test("calls cleanup() first to remove previous overlay", () => {
       const ui = new TutorialUI(container, mockManager);
@@ -236,9 +226,7 @@ describe("TutorialUI", () => {
     });
   });
 
-  // =========================================================================
   // renderModal (private)
-  // =========================================================================
   describe("renderModal", () => {
     test("renders step title", () => {
       const managerWithTitle = createMockManager({
@@ -371,9 +359,7 @@ describe("TutorialUI", () => {
     });
   });
 
-  // =========================================================================
   // attachEventListeners (private)
-  // =========================================================================
   describe("attachEventListeners", () => {
     test("attaches click handler to Next button", () => {
       const ui = new TutorialUI(container, mockManager);
@@ -426,9 +412,7 @@ describe("TutorialUI", () => {
     });
   });
 
-  // =========================================================================
   // handleNext (private)
-  // =========================================================================
   describe("handleNext", () => {
     test("returns early if no current step", () => {
       const managerNoStep = createMockManager({
@@ -484,9 +468,7 @@ describe("TutorialUI", () => {
     });
   });
 
-  // =========================================================================
   // handlePrevious (private)
-  // =========================================================================
   describe("handlePrevious", () => {
     test("calls manager.previousStep()", () => {
       const managerSecondStep = createMockManager({
@@ -502,9 +484,7 @@ describe("TutorialUI", () => {
     });
   });
 
-  // =========================================================================
   // handleSkip (private)
-  // =========================================================================
   describe("handleSkip", () => {
     test("shows confirmation dialog", () => {
       const confirmMock = mock(() => false);
@@ -561,9 +541,7 @@ describe("TutorialUI", () => {
     });
   });
 
-  // =========================================================================
   // showValidationError (private)
-  // =========================================================================
   describe("showValidationError", () => {
     test("adds shake class to modal", () => {
       // Create textarea
@@ -622,9 +600,7 @@ describe("TutorialUI", () => {
     });
   });
 
-  // =========================================================================
   // showSuccess (private)
-  // =========================================================================
   describe("showSuccess", () => {
     test("calls cleanup() first", () => {
       const ui = new TutorialUI(container, mockManager);
@@ -765,9 +741,7 @@ describe("TutorialUI", () => {
     });
   });
 
-  // =========================================================================
   // highlightElement (private)
-  // =========================================================================
   describe("highlightElement", () => {
     test("finds element by selector", () => {
       const target = document.createElement("div");
@@ -840,9 +814,7 @@ describe("TutorialUI", () => {
     });
   });
 
-  // =========================================================================
   // validateAndUpdateButton
-  // =========================================================================
   describe("validateAndUpdateButton", () => {
     test("returns early if no overlay", () => {
       const ui = new TutorialUI(container, mockManager);
@@ -934,9 +906,7 @@ describe("TutorialUI", () => {
     });
   });
 
-  // =========================================================================
   // cleanup (private)
-  // =========================================================================
   describe("cleanup", () => {
     test("removes overlayElement from DOM", () => {
       const ui = new TutorialUI(container, mockManager);
@@ -988,9 +958,7 @@ describe("TutorialUI", () => {
     });
   });
 
-  // =========================================================================
   // Integration
-  // =========================================================================
   describe("integration", () => {
     test("progresses through tutorial steps", () => {
       const ui = new TutorialUI(container, mockManager);
@@ -1054,9 +1022,7 @@ describe("TutorialUI", () => {
     });
   });
 
-  // =========================================================================
   // Edge Cases
-  // =========================================================================
   describe("edge cases", () => {
     test("handles missing target element for highlighting", () => {
       const managerBadTarget = createMockManager({

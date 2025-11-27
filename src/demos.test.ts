@@ -99,9 +99,7 @@ describe("MutationDemos", () => {
     restoreCanvasContext();
   });
 
-  // =========================================================================
   // DEMO_GENOMES Constants
-  // =========================================================================
   describe("DEMO_GENOMES", () => {
     test("silent genome is valid and produces visible output", () => {
       const lexer = new CodonLexer();
@@ -142,9 +140,7 @@ describe("MutationDemos", () => {
     });
   });
 
-  // =========================================================================
   // highlightGenome
-  // =========================================================================
   describe("highlightGenome", () => {
     test("returns DocumentFragment with span elements for each codon", () => {
       const fragment = highlightGenome("ATG GGA TAA", [], []);
@@ -248,9 +244,7 @@ describe("MutationDemos", () => {
     });
   });
 
-  // =========================================================================
   // renderGenome
-  // =========================================================================
   describe("renderGenome", () => {
     test("renders valid genome to specified canvas element", () => {
       const canvas = document.createElement("canvas");
@@ -312,9 +306,7 @@ describe("MutationDemos", () => {
     });
   });
 
-  // =========================================================================
   // setupSilentDemo
-  // =========================================================================
   describe("setupSilentDemo", () => {
     test("applies silent mutation to DEMO_GENOMES.silent", () => {
       const result = applySilentMutation(DEMO_GENOMES.silent);
@@ -367,9 +359,7 @@ describe("MutationDemos", () => {
     });
   });
 
-  // =========================================================================
   // setupMissenseDemo
-  // =========================================================================
   describe("setupMissenseDemo", () => {
     test("applies missense mutation to DEMO_GENOMES.missense", () => {
       const result = applyMissenseMutation(DEMO_GENOMES.missense);
@@ -416,9 +406,7 @@ describe("MutationDemos", () => {
     });
   });
 
-  // =========================================================================
   // setupNonsenseDemo
-  // =========================================================================
   describe("setupNonsenseDemo", () => {
     test("applies nonsense mutation to DEMO_GENOMES.nonsense", () => {
       const result = applyNonsenseMutation(DEMO_GENOMES.nonsense);
@@ -485,9 +473,7 @@ describe("MutationDemos", () => {
     });
   });
 
-  // =========================================================================
   // setupFrameshiftDemo
-  // =========================================================================
   describe("setupFrameshiftDemo", () => {
     test("applies frameshift mutation to DEMO_GENOMES.frameshift", () => {
       const result = applyFrameshiftMutation(DEMO_GENOMES.frameshift);
@@ -556,9 +542,7 @@ describe("MutationDemos", () => {
     });
   });
 
-  // =========================================================================
   // initializeDemos
-  // =========================================================================
   describe("initializeDemos", () => {
     test("catches and suppresses initialization errors silently", () => {
       // Simulating a demo that might fail
@@ -598,9 +582,7 @@ describe("MutationDemos", () => {
     });
   });
 
-  // =========================================================================
   // initializeShareSystem
-  // =========================================================================
   describe("initializeShareSystem", () => {
     test("returns early if shareContainer not found", () => {
       const container = document.getElementById("shareContainer");
@@ -659,9 +641,7 @@ ${DEMO_GENOMES.frameshift}`;
     });
   });
 
-  // =========================================================================
   // DOMContentLoaded Integration
-  // =========================================================================
   describe("DOM integration", () => {
     test("handles race condition when DOM loads during script execution", () => {
       // Simulate checking document state
@@ -678,9 +658,7 @@ ${DEMO_GENOMES.frameshift}`;
     });
   });
 
-  // =========================================================================
   // Edge Cases
-  // =========================================================================
   describe("edge cases", () => {
     test("handles multiple calls to initializeDemos (idempotent)", () => {
       let initCount = 0;

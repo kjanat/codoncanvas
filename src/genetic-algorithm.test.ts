@@ -30,11 +30,8 @@ describe("GeneticAlgorithm", () => {
   // Sample valid genomes for testing
   const sampleGenomes = ["ATGATG", "TAAATG", "ATGTAA"];
 
-  // =========================================================================
   // Constructor & Initialization
-  // =========================================================================
   describe("constructor", () => {
-    // HAPPY PATHS
     test("initializes population from seed genomes with default options (size=20, mutation=0.1, crossover=0.7)", () => {
       const ga = new GeneticAlgorithm(sampleGenomes, simpleFitness);
       const population = ga.getPopulation();
@@ -134,7 +131,6 @@ describe("GeneticAlgorithm", () => {
       }
     });
 
-    // EDGE CASES
     test("fills population by repeating seed genomes when fewer seeds than populationSize", () => {
       const ga = new GeneticAlgorithm(["ATGATG"], simpleFitness, {
         populationSize: 5,
@@ -171,11 +167,8 @@ describe("GeneticAlgorithm", () => {
     });
   });
 
-  // =========================================================================
   // Fitness Evaluation
-  // =========================================================================
   describe("evaluateFitness (private, tested via public API)", () => {
-    // HAPPY PATHS
     test("renders genome to offscreen canvas using CodonLexer, Canvas2DRenderer, and CodonVM", () => {
       let canvasReceived: HTMLCanvasElement | null = null;
       const trackingFitness: FitnessFunction = (_genome, canvas) => {
@@ -218,7 +211,6 @@ describe("GeneticAlgorithm", () => {
       expect(ga.getPopulation()[0].fitness).toBe(0.75);
     });
 
-    // ERROR HANDLING
     test("returns 0 fitness when genome causes lexer error", () => {
       // Invalid genome that might cause issues
       const ga = new GeneticAlgorithm(["XXXYYY"], simpleFitness, {
@@ -250,7 +242,6 @@ describe("GeneticAlgorithm", () => {
       mockCanvasContext();
     });
 
-    // CANVAS STATE
     test("clears canvas to white background before each render", () => {
       // We can't easily verify this without more complex mocking
       // But we can verify fitness evaluation completes
@@ -262,11 +253,8 @@ describe("GeneticAlgorithm", () => {
     });
   });
 
-  // =========================================================================
   // Selection Strategies
-  // =========================================================================
   describe("tournamentSelection", () => {
-    // HAPPY PATHS
     test("selects best individual from random tournament of tournamentSize individuals", () => {
       const ga = new GeneticAlgorithm(sampleGenomes, lengthFitness, {
         populationSize: 10,
@@ -299,7 +287,6 @@ describe("GeneticAlgorithm", () => {
       expect(hasFitIndividual).toBe(true);
     });
 
-    // EDGE CASES
     test("handles tournamentSize equal to population size", () => {
       const ga = new GeneticAlgorithm(sampleGenomes, simpleFitness, {
         populationSize: 5,
@@ -330,7 +317,6 @@ describe("GeneticAlgorithm", () => {
   });
 
   describe("rouletteWheelSelection", () => {
-    // HAPPY PATHS
     test("selects individuals proportional to their fitness values", () => {
       const ga = new GeneticAlgorithm(sampleGenomes, lengthFitness, {
         populationSize: 10,
@@ -362,7 +348,6 @@ describe("GeneticAlgorithm", () => {
       expect(stats[0].avgFitness).toBeGreaterThan(0);
     });
 
-    // EDGE CASES
     test("selects randomly when all fitness values are 0", () => {
       const zeroFitness: FitnessFunction = () => 0;
       const ga = new GeneticAlgorithm(sampleGenomes, zeroFitness, {
@@ -437,11 +422,8 @@ describe("GeneticAlgorithm", () => {
     });
   });
 
-  // =========================================================================
   // Crossover Strategies
-  // =========================================================================
   describe("crossover", () => {
-    // NO CROSSOVER CASE
     test("returns original parents unchanged when random > crossoverRate", () => {
       const ga = new GeneticAlgorithm(sampleGenomes, simpleFitness, {
         crossoverRate: 0, // Never crossover
@@ -465,7 +447,6 @@ describe("GeneticAlgorithm", () => {
       expect(ga.getPopulation()).toHaveLength(5);
     });
 
-    // CROSSOVER EXECUTION
     test("performs single-point crossover when strategy is 'single-point'", () => {
       const ga = new GeneticAlgorithm(
         ["ATGATGATG", "TAATAATAA"],
@@ -515,7 +496,6 @@ describe("GeneticAlgorithm", () => {
   });
 
   describe("singlePointCrossover", () => {
-    // HAPPY PATHS
     test("splits parents at random codon boundary and swaps tails", () => {
       const ga = new GeneticAlgorithm(
         ["ATGATGATGATG", "TAATAATAATAA"],
@@ -577,7 +557,6 @@ describe("GeneticAlgorithm", () => {
       }
     });
 
-    // EDGE CASES
     test("returns original parents when either parent has fewer than 6 bases", () => {
       const ga = new GeneticAlgorithm(["ATG", "TAA"], simpleFitness, {
         crossoverStrategy: "single-point",
@@ -624,7 +603,6 @@ describe("GeneticAlgorithm", () => {
   });
 
   describe("uniformCrossover", () => {
-    // HAPPY PATHS
     test("swaps each codon between parents with 50% probability", () => {
       const ga = new GeneticAlgorithm(
         ["ATGATGATG", "TAATAATAA"],
@@ -658,7 +636,6 @@ describe("GeneticAlgorithm", () => {
       expect(ga.getStats()[0]).toBeDefined();
     });
 
-    // EDGE CASES
     test("handles parents of different lengths (uses minimum length)", () => {
       const ga = new GeneticAlgorithm(
         ["ATGATGATGATGATG", "TAATAA"],
@@ -686,11 +663,8 @@ describe("GeneticAlgorithm", () => {
     });
   });
 
-  // =========================================================================
   // Mutation
-  // =========================================================================
   describe("mutate", () => {
-    // NO MUTATION CASE
     test("returns original genome unchanged when random > mutationRate", () => {
       const ga = new GeneticAlgorithm(["ATGATG"], simpleFitness, {
         mutationRate: 0, // Never mutate
@@ -705,7 +679,6 @@ describe("GeneticAlgorithm", () => {
       expect(ga.getPopulation().some((ind) => ind.genome === "ATGATG")).toBe(true);
     });
 
-    // MUTATION TYPES
     test("applies point mutation (applyPointMutation) with 1/3 probability", () => {
       // High mutation rate to ensure mutations happen
       const ga = new GeneticAlgorithm(["ATGATGATGATG"], simpleFitness, {
@@ -749,7 +722,6 @@ describe("GeneticAlgorithm", () => {
       expect(ga.getPopulation()).toHaveLength(20);
     });
 
-    // ERROR HANDLING
     test("returns original genome when mutation function throws error", () => {
       // Short genome that might cause deletion to fail
       const ga = new GeneticAlgorithm(["ATG"], simpleFitness, {
@@ -762,11 +734,8 @@ describe("GeneticAlgorithm", () => {
     });
   });
 
-  // =========================================================================
   // Evolution Lifecycle
-  // =========================================================================
   describe("evolveGeneration", () => {
-    // POPULATION EVOLUTION
     test("sorts population by fitness (descending) before selection", () => {
       const ga = new GeneticAlgorithm(sampleGenomes, lengthFitness, {
         populationSize: 10,
@@ -821,7 +790,6 @@ describe("GeneticAlgorithm", () => {
       expect(ga.getGeneration()).toBe(2);
     });
 
-    // STATISTICS TRACKING
     test("records bestFitness, avgFitness, worstFitness for generation", () => {
       const ga = new GeneticAlgorithm(sampleGenomes, simpleFitness, {
         populationSize: 10,
@@ -865,7 +833,6 @@ describe("GeneticAlgorithm", () => {
       expect(ga.getStats()[2].generation).toBe(2);
     });
 
-    // CHILD GENERATION
     test("selects two parents using configured selection strategy", () => {
       // Verified through successful evolution
       const ga = new GeneticAlgorithm(sampleGenomes, simpleFitness, {
@@ -921,7 +888,6 @@ describe("GeneticAlgorithm", () => {
       }
     });
 
-    // POPULATION SIZE MAINTENANCE
     test("maintains exact populationSize after evolution", () => {
       const ga = new GeneticAlgorithm(sampleGenomes, simpleFitness, {
         populationSize: 15,
@@ -945,9 +911,7 @@ describe("GeneticAlgorithm", () => {
     });
   });
 
-  // =========================================================================
   // Accessor Methods
-  // =========================================================================
   describe("getPopulation", () => {
     test("returns current population array with all GAIndividual objects", () => {
       const ga = new GeneticAlgorithm(sampleGenomes, simpleFitness, {
@@ -1047,9 +1011,7 @@ describe("GeneticAlgorithm", () => {
     });
   });
 
-  // =========================================================================
   // Reset
-  // =========================================================================
   describe("reset", () => {
     test("resets generation counter to 0", () => {
       const ga = new GeneticAlgorithm(sampleGenomes, simpleFitness, {
@@ -1101,9 +1063,7 @@ describe("GeneticAlgorithm", () => {
     });
   });
 
-  // =========================================================================
   // Integration / End-to-End
-  // =========================================================================
   describe("integration", () => {
     test("evolves population over multiple generations with fitness improvement", () => {
       const ga = new GeneticAlgorithm(

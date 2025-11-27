@@ -3,9 +3,7 @@
  * Defines core types, opcodes, VM state, and codon-to-opcode mapping.
  */
 
-// ============================================================================
 // Geometric Types
-// ============================================================================
 
 /**
  * 2D coordinate point for canvas positions.
@@ -28,9 +26,7 @@ export interface HSLColor {
   l: number;
 }
 
-// ============================================================================
 // Common Severity/Status Types
-// ============================================================================
 
 /**
  * General severity level for errors, warnings, and diagnostics.
@@ -42,9 +38,7 @@ export type Severity = "error" | "warning" | "info";
  */
 export type RiskLevel = "high" | "medium" | "low";
 
-// ============================================================================
 // DNA/RNA Core Types
-// ============================================================================
 
 /**
  * Valid DNA/RNA base character.

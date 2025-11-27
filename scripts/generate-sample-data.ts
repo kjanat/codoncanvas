@@ -14,13 +14,6 @@
 
 import * as fs from "node:fs";
 
-// ============================================================================
-// Random Number Generation
-// ============================================================================
-
-/**
- * Normal distribution (Box-Muller transform)
- */
 function randomNormal(mean: number = 0, sd: number = 1): number {
   const u1 = Math.random();
   const u2 = Math.random();
@@ -54,10 +47,6 @@ function randomInt(min: number, max: number): number {
 function randomChoice<T>(arr: T[]): T {
   return arr[Math.floor(Math.random() * arr.length)];
 }
-
-// ============================================================================
-// Data Generation Functions
-// ============================================================================
 
 interface GenerationParams {
   n: number;
@@ -252,10 +241,6 @@ function writeCSV(data: ParticipantData[], filename: string): void {
   fs.writeFileSync(filename, csv, "utf-8");
   console.log(`✅ Generated ${filename} (${data.length} rows)`);
 }
-
-// ============================================================================
-// CLI
-// ============================================================================
 
 function printUsage(): void {
   console.log(`

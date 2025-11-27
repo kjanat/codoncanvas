@@ -48,9 +48,7 @@ import {
 } from "./test-utils/canvas-mock";
 
 describe("CodonCanvas Library Exports", () => {
-  // =========================================================================
   // Class Exports
-  // =========================================================================
   describe("class exports", () => {
     test("exports GeneticAlgorithm class", () => {
       expect(GeneticAlgorithm).toBeDefined();
@@ -78,9 +76,7 @@ describe("CodonCanvas Library Exports", () => {
     });
   });
 
-  // =========================================================================
   // Type Exports
-  // =========================================================================
   describe("type exports", () => {
     test("exports Lexer type interface", () => {
       // Type test - verify a value can satisfy the Lexer interface
@@ -227,9 +223,7 @@ describe("CodonCanvas Library Exports", () => {
     });
   });
 
-  // =========================================================================
   // Re-exported Types from types.ts
-  // =========================================================================
   describe("re-exported types from types.ts", () => {
     test("exports Point2D interface", () => {
       const point: Point2D = { x: 10, y: 20 };
@@ -333,9 +327,7 @@ describe("CodonCanvas Library Exports", () => {
     });
   });
 
-  // =========================================================================
   // Core API Contract
-  // =========================================================================
   describe("core API contract", () => {
     beforeEach(() => mockCanvasContext());
 
@@ -419,9 +411,7 @@ describe("CodonCanvas Library Exports", () => {
     });
   });
 
-  // =========================================================================
   // GeneticAlgorithm Integration
-  // =========================================================================
   describe("GeneticAlgorithm integration", () => {
     beforeEach(() => mockCanvasContext());
 
@@ -493,9 +483,7 @@ describe("CodonCanvas Library Exports", () => {
     });
   });
 
-  // =========================================================================
   // ResearchMetrics Integration
-  // =========================================================================
   describe("ResearchMetrics integration", () => {
     test("ResearchMetrics accepts options in constructor", () => {
       const metrics = new ResearchMetrics({
@@ -566,9 +554,7 @@ describe("CodonCanvas Library Exports", () => {
     });
   });
 
-  // =========================================================================
   // ES Module Compatibility
-  // =========================================================================
   describe("ES module compatibility", () => {
     test("works as single-import ES module", async () => {
       // Dynamic import to test ES module loading
@@ -614,9 +600,7 @@ describe("CodonCanvas Library Exports", () => {
     });
   });
 
-  // =========================================================================
   // Edge Cases
-  // =========================================================================
   describe("edge cases", () => {
     test("exports remain stable across imports", async () => {
       const import1 = await import("./index");

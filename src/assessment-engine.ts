@@ -255,8 +255,6 @@ export class AssessmentEngine {
     };
   }
 
-  // ============= Private Helper Methods =============
-
   /**
    * Apply mutation by type (dispatch to specific mutation functions).
    * @internal

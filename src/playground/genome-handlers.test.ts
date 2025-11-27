@@ -9,9 +9,7 @@
  */
 import { describe, expect, test } from "bun:test";
 
-// =========================================================================
 // Helper function implementations for testing
-// =========================================================================
 
 // Token counting logic from handleFileLoad
 function countTokens(genome: string): number {
@@ -54,9 +52,7 @@ function createGenomeFile(
 }
 
 describe("Genome Handlers", () => {
-  // =========================================================================
   // Token counting
-  // =========================================================================
   describe("token counting", () => {
     test("counts triplet tokens correctly", () => {
       expect(countTokens("ATG GGA TAA")).toBe(3);
@@ -92,9 +88,7 @@ describe("Genome Handlers", () => {
     });
   });
 
-  // =========================================================================
   // Load info formatting
-  // =========================================================================
   describe("load info formatting", () => {
     test("formats title only when no author", () => {
       expect(formatLoadInfo("My Genome")).toBe("My Genome");
@@ -121,9 +115,7 @@ describe("Genome Handlers", () => {
     });
   });
 
-  // =========================================================================
   // File validation
-  // =========================================================================
   describe("file validation", () => {
     test("returns false for null files", () => {
       expect(hasFile(null)).toBe(false);
@@ -146,9 +138,7 @@ describe("Genome Handlers", () => {
     });
   });
 
-  // =========================================================================
   // GenomeFile structure
-  // =========================================================================
   describe("GenomeFile structure", () => {
     test("creates genome file with required fields", () => {
       const file = createGenomeFile("ATG GGA TAA", "Test Genome");
@@ -167,9 +157,7 @@ describe("Genome Handlers", () => {
     });
   });
 
-  // =========================================================================
   // Error handling
-  // =========================================================================
   describe("error handling", () => {
     test("extracts message from Error instance", () => {
       const error = new Error("File read failed");
@@ -197,9 +185,7 @@ describe("Genome Handlers", () => {
     });
   });
 
-  // =========================================================================
   // Edge Cases
-  // =========================================================================
   describe("edge cases", () => {
     test("handles genome with comments", () => {
       // Comments typically start with ; and are filtered out
@@ -229,9 +215,7 @@ describe("Genome Handlers", () => {
     });
   });
 
-  // =========================================================================
   // Integration patterns
-  // =========================================================================
   describe("integration patterns", () => {
     test("full load workflow: validate -> parse -> display info", () => {
       // Simulate loading a genome file

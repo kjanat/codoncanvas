@@ -31,11 +31,8 @@ describe("DOMUtils", () => {
     document.body.innerHTML = "";
   });
 
-  // =========================================================================
   // getElement
-  // =========================================================================
   describe("getElement", () => {
-    // HAPPY PATHS
     test("returns typed element when ID exists and matches expected type", () => {
       createElement("button", "testBtn");
       const result = getElement("testBtn", HTMLButtonElement);
@@ -78,7 +75,6 @@ describe("DOMUtils", () => {
       expect(result).toBeInstanceOf(HTMLTextAreaElement);
     });
 
-    // ERROR CASES
     test("throws Error with message 'DOM element #id not found' when ID doesn't exist", () => {
       expect(() => getElement("nonexistent", HTMLDivElement)).toThrow(
         "DOM element #nonexistent not found",
@@ -104,7 +100,6 @@ describe("DOMUtils", () => {
       }
     });
 
-    // EDGE CASES
     test("handles ID with special characters", () => {
       // Create element with underscore and hyphen
       createElement("div", "test-id_123");
@@ -126,11 +121,8 @@ describe("DOMUtils", () => {
     });
   });
 
-  // =========================================================================
   // getElementOrNull
-  // =========================================================================
   describe("getElementOrNull", () => {
-    // HAPPY PATHS
     test("returns typed element when ID exists and matches expected type", () => {
       createElement("button", "optBtn");
       const result = getElementOrNull("optBtn", HTMLButtonElement);
@@ -149,7 +141,6 @@ describe("DOMUtils", () => {
       expect(result).toBeInstanceOf(HTMLInputElement);
     });
 
-    // NULL CASES
     test("returns null when element ID doesn't exist", () => {
       const result = getElementOrNull("nonexistent", HTMLDivElement);
       expect(result).toBeNull();
@@ -161,7 +152,6 @@ describe("DOMUtils", () => {
       expect(result).toBeNull();
     });
 
-    // USAGE PATTERN
     test("allows conditional element access without try/catch", () => {
       // Element doesn't exist - should not throw
       const missing = getElementOrNull("missing", HTMLDivElement);
@@ -183,11 +173,8 @@ describe("DOMUtils", () => {
     });
   });
 
-  // =========================================================================
   // querySelector
-  // =========================================================================
   describe("querySelector", () => {
-    // HAPPY PATHS
     test("returns typed element for class selector", () => {
       createElement("div", undefined, "status-bar");
       const result = querySelector(".status-bar", HTMLDivElement);
@@ -220,7 +207,6 @@ describe("DOMUtils", () => {
       expect(result.textContent).toBe("first");
     });
 
-    // ERROR CASES
     test("throws Error with message including selector when no match found", () => {
       expect(() => querySelector(".nonexistent", HTMLDivElement)).toThrow(
         /DOM element matching "\.nonexistent" not found/,
@@ -246,7 +232,6 @@ describe("DOMUtils", () => {
       }
     });
 
-    // SELECTOR TYPES
     test("handles ID selector (#id)", () => {
       createElement("div", "idSelector");
       const result = querySelector("#idSelector", HTMLDivElement);
@@ -285,11 +270,8 @@ describe("DOMUtils", () => {
     });
   });
 
-  // =========================================================================
   // querySelectorAll
-  // =========================================================================
   describe("querySelectorAll", () => {
-    // HAPPY PATHS
     test("returns array of typed elements matching selector", () => {
       createElement("div", undefined, "items");
       createElement("div", undefined, "items");
@@ -313,7 +295,6 @@ describe("DOMUtils", () => {
       expect(result[0]).toBeInstanceOf(HTMLDivElement);
     });
 
-    // MULTIPLE ELEMENTS
     test("returns all matching elements of correct type", () => {
       for (let i = 0; i < 5; i++) {
         createElement("button", undefined, "buttons");
@@ -332,7 +313,6 @@ describe("DOMUtils", () => {
       expect(result[2].id).toBe("third");
     });
 
-    // TYPE FILTERING
     test("includes only elements that are instanceof provided elementType", () => {
       createElement("input", undefined, "formEl");
       createElement("select", undefined, "formEl");
@@ -354,7 +334,6 @@ describe("DOMUtils", () => {
       expect(result.length).toBe(0);
     });
 
-    // EDGE CASES
     test("handles mixed element types (only returns matching type)", () => {
       createElement("div", undefined, "any");
       createElement("span", undefined, "any");
@@ -366,9 +345,7 @@ describe("DOMUtils", () => {
     });
   });
 
-  // =========================================================================
   // Type Safety Tests
-  // =========================================================================
   describe("type safety", () => {
     test("works with HTMLFormElement", () => {
       createElement("form", "testForm");
@@ -389,9 +366,7 @@ describe("DOMUtils", () => {
     });
   });
 
-  // =========================================================================
   // Integration Tests
-  // =========================================================================
   describe("integration", () => {
     test("catches runtime type mismatches that TypeScript cannot detect", () => {
       // This simulates a case where DOM has different element than expected
@@ -410,9 +385,7 @@ describe("DOMUtils", () => {
     });
   });
 
-  // =========================================================================
   // Edge Cases
-  // =========================================================================
   describe("edge cases", () => {
     test("handles dynamically added elements", () => {
       // Element doesn't exist initially

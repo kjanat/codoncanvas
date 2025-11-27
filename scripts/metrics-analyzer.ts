@@ -33,10 +33,6 @@ import {
   Stats,
 } from "../src/metrics-analyzer-core";
 
-// ============================================================================
-// CSV Parsing (CLI-specific - uses Node.js fs)
-// ============================================================================
-
 function parseCSV(filepath: string): MetricsSession[] {
   const content = fs.readFileSync(filepath, "utf-8");
   const lines = content.trim().split("\n");
@@ -105,10 +101,6 @@ function parseCSVLine(line: string): string[] {
   result.push(current.trim());
   return result.map((v) => v.replace(/^"(.*)"$/, "$1"));
 }
-
-// ============================================================================
-// Report Generation (CLI-specific - writes to files)
-// ============================================================================
 
 function generateReport(analyzer: MetricsAnalyzer, outputPath: string): void {
   const engagement = analyzer.engagementMetrics();
@@ -343,10 +335,6 @@ function generateComparisonReport(
   fs.writeFileSync(outputPath, report);
   console.log(`\n Comparison report generated: ${outputPath}\n`);
 }
-
-// ============================================================================
-// CLI Interface
-// ============================================================================
 
 function printUsage() {
   console.log(`

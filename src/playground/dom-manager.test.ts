@@ -158,9 +158,7 @@ describe("DOM Manager", () => {
     }
   });
 
-  // =========================================================================
   // Element Exports
-  // =========================================================================
   describe("element exports", () => {
     test("exports editor as HTMLTextAreaElement", () => {
       expect(domManager.editor).toBeInstanceOf(HTMLTextAreaElement);
@@ -229,9 +227,7 @@ describe("DOM Manager", () => {
     });
   });
 
-  // =========================================================================
   // Mutation Button Exports
-  // =========================================================================
   describe("mutation button exports", () => {
     test("exports silentMutationBtn as HTMLButtonElement", () => {
       expect(domManager.silentMutationBtn).toBeInstanceOf(HTMLButtonElement);
@@ -264,9 +260,7 @@ describe("DOM Manager", () => {
     });
   });
 
-  // =========================================================================
   // Panel Exports
-  // =========================================================================
   describe("panel exports", () => {
     test("exports shareContainer as HTMLDivElement", () => {
       expect(domManager.shareContainer).toBeInstanceOf(HTMLDivElement);
@@ -337,9 +331,7 @@ describe("DOM Manager", () => {
     });
   });
 
-  // =========================================================================
   // Audio and Timeline Exports
-  // =========================================================================
   describe("audio and timeline exports", () => {
     test("exports audioToggleBtn as HTMLButtonElement", () => {
       expect(domManager.audioToggleBtn).toBeInstanceOf(HTMLButtonElement);
@@ -358,9 +350,7 @@ describe("DOM Manager", () => {
     });
   });
 
-  // =========================================================================
   // Theme and Mode Exports
-  // =========================================================================
   describe("theme and mode exports", () => {
     test("exports themeToggleBtn as HTMLButtonElement", () => {
       expect(domManager.themeToggleBtn).toBeInstanceOf(HTMLButtonElement);
@@ -379,9 +369,7 @@ describe("DOM Manager", () => {
     });
   });
 
-  // =========================================================================
   // setCompareBtn
-  // =========================================================================
   describe("setCompareBtn", () => {
     test("sets compareBtn to provided button element", () => {
       const mockBtn = document.createElement("button");

@@ -3,9 +3,7 @@
  * Extracts Stats and MetricsAnalyzer classes from CLI script for dashboard integration
  */
 
-// ============================================================================
 // Data Structures
-// ============================================================================
 
 export interface MetricsSession {
   sessionId: string;
@@ -209,9 +207,7 @@ export interface AnalysisReport {
   mutations: MutationPatterns;
 }
 
-// ============================================================================
 // Statistical Functions
-// ============================================================================
 
 /**
  * Static utility methods for statistical calculations
@@ -370,9 +366,7 @@ export class Stats {
   }
 }
 
-// ============================================================================
 // Metrics Analyzer
-// ============================================================================
 
 /**
  * Metrics Analyzer - Aggregates and analyzes learning metrics from sessions
@@ -667,9 +661,7 @@ export class MetricsAnalyzer {
   }
 }
 
-// ============================================================================
 // CSV Parsing (Browser-compatible)
-// ============================================================================
 
 /**
  * Parse CSV string into MetricsSession objects
@@ -743,9 +735,7 @@ function parseCSVLine(line: string): string[] {
   return result.map((v) => v.replace(/^"(.*)"$/, "$1"));
 }
 
-// ============================================================================
 // Formatting Utilities
-// ============================================================================
 
 /**
  * Format milliseconds to human-readable duration string

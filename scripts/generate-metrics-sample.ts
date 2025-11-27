@@ -12,10 +12,6 @@
 
 import * as fs from "node:fs";
 
-// ============================================================================
-// Random Utilities
-// ============================================================================
-
 function randomNormal(mean: number = 0, sd: number = 1): number {
   const u1 = Math.random();
   const u2 = Math.random();
@@ -51,10 +47,6 @@ function randomWeighted<T>(choices: T[], weights: number[]): T {
   }
   return choices[choices.length - 1];
 }
-
-// ============================================================================
-// Learner Profiles
-// ============================================================================
 
 type LearnerProfile =
   | "explorer"
@@ -132,10 +124,6 @@ const PROFILES: Record<LearnerProfile, ProfileCharacteristics> = {
     mutationFocus: ["frameshift", "missense", "insertion", "deletion"],
   },
 };
-
-// ============================================================================
-// Session Generation
-// ============================================================================
 
 interface MetricsSession {
   sessionId: string;
@@ -356,10 +344,6 @@ function generateSession(
   };
 }
 
-// ============================================================================
-// Dataset Generation
-// ============================================================================
-
 function generateMetricsDataset(n: number): MetricsSession[] {
   const sessions: MetricsSession[] = [];
   const baseTime = new Date();
@@ -383,10 +367,6 @@ function generateMetricsDataset(n: number): MetricsSession[] {
 
   return sessions;
 }
-
-// ============================================================================
-// CSV Export
-// ============================================================================
 
 function writeCSV(sessions: MetricsSession[], filename: string): void {
   const headers = [
@@ -446,10 +426,6 @@ function writeCSV(sessions: MetricsSession[], filename: string): void {
   console.log(`✅ Generated ${filename} (${sessions.length} sessions)`);
 }
 
-// ============================================================================
-// Summary Statistics
-// ============================================================================
-
 function printSummary(sessions: MetricsSession[]): void {
   const durations = sessions.map((s) => s.duration);
   const genomesCreated = sessions.map((s) => s.genomesCreated);
@@ -508,10 +484,6 @@ function printSummary(sessions: MetricsSession[]): void {
     `  Evolution:    ${((evolutionUsers / sessions.length) * 100).toFixed(1)}%`,
   );
 }
-
-// ============================================================================
-// CLI
-// ============================================================================
 
 function printUsage(): void {
   console.log(`

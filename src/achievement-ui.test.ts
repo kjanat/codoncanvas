@@ -94,9 +94,7 @@ describe("AchievementUI", () => {
     if (styles) styles.remove();
   });
 
-  // =========================================================================
   // Constructor
-  // =========================================================================
   describe("constructor", () => {
     test("accepts AchievementEngine and containerId", () => {
       const ui = new AchievementUI(mockEngine, "achievement-container");
@@ -140,9 +138,7 @@ describe("AchievementUI", () => {
     });
   });
 
-  // =========================================================================
   // injectStyles (private)
-  // =========================================================================
   describe("injectStyles", () => {
     test("creates style element with id 'achievement-ui-styles'", () => {
       new AchievementUI(mockEngine, "achievement-container");
@@ -190,9 +186,7 @@ describe("AchievementUI", () => {
     });
   });
 
-  // =========================================================================
   // render
-  // =========================================================================
   describe("render", () => {
     test("displays achievement title '🏆 Achievements'", () => {
       new AchievementUI(mockEngine, "achievement-container");
@@ -261,9 +255,7 @@ describe("AchievementUI", () => {
     });
   });
 
-  // =========================================================================
   // renderCategory (private)
-  // =========================================================================
   describe("renderCategory", () => {
     test("renders category header with icon and title", () => {
       new AchievementUI(mockEngine, "achievement-container");
@@ -294,9 +286,7 @@ describe("AchievementUI", () => {
     });
   });
 
-  // =========================================================================
   // renderBadge (private)
-  // =========================================================================
   describe("renderBadge", () => {
     test("renders badge with icon, name, and description", () => {
       new AchievementUI(mockEngine, "achievement-container");
@@ -350,9 +340,7 @@ describe("AchievementUI", () => {
     });
   });
 
-  // =========================================================================
   // formatDate (private)
-  // =========================================================================
   describe("formatDate", () => {
     test("formats Date as 'Month Day, Year' (e.g., 'Jan 15, 2025')", () => {
       new AchievementUI(mockEngine, "achievement-container");
@@ -387,9 +375,7 @@ describe("AchievementUI", () => {
     });
   });
 
-  // =========================================================================
   // showUnlockNotification
-  // =========================================================================
   describe("showUnlockNotification", () => {
     test("adds achievement to notificationQueue", () => {
       const ui = new AchievementUI(mockEngine, "achievement-container");
@@ -430,9 +416,7 @@ describe("AchievementUI", () => {
     });
   });
 
-  // =========================================================================
   // showNextNotification (private)
-  // =========================================================================
   describe("showNextNotification", () => {
     test("creates notification DOM element with correct structure", () => {
       const ui = new AchievementUI(mockEngine, "achievement-container");
@@ -487,9 +471,7 @@ describe("AchievementUI", () => {
     });
   });
 
-  // =========================================================================
   // update
-  // =========================================================================
   describe("update", () => {
     test("calls render() to refresh the UI", () => {
       const ui = new AchievementUI(mockEngine, "achievement-container");
@@ -527,9 +509,7 @@ describe("AchievementUI", () => {
     });
   });
 
-  // =========================================================================
   // handleUnlocks
-  // =========================================================================
   describe("handleUnlocks", () => {
     test("calls showUnlockNotification for each achievement in array", () => {
       const ui = new AchievementUI(mockEngine, "achievement-container");
@@ -573,9 +553,7 @@ describe("AchievementUI", () => {
     });
   });
 
-  // =========================================================================
   // Integration
-  // =========================================================================
   describe("integration", () => {
     test("works with real AchievementEngine instance", () => {
       const ui = new AchievementUI(mockEngine, "achievement-container");
@@ -624,9 +602,7 @@ describe("AchievementUI", () => {
     });
   });
 
-  // =========================================================================
   // Edge Cases
-  // =========================================================================
   describe("edge cases", () => {
     test("handles achievement engine with no achievements", () => {
       const emptyEngine = createMockEngine({

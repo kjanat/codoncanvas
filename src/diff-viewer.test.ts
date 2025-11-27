@@ -30,9 +30,7 @@ describe("DiffViewer", () => {
     if (styles) styles.remove();
   });
 
-  // =========================================================================
   // Constructor
-  // =========================================================================
   describe("constructor", () => {
     test("accepts DiffViewOptions with containerElement", () => {
       const viewer = new DiffViewer({ containerElement: container });
@@ -118,9 +116,7 @@ describe("DiffViewer", () => {
     });
   });
 
-  // =========================================================================
   // renderMutation
-  // =========================================================================
   describe("renderMutation", () => {
     test("accepts MutationResult object", () => {
       const viewer = new DiffViewer({ containerElement: container });
@@ -177,9 +173,7 @@ describe("DiffViewer", () => {
     });
   });
 
-  // =========================================================================
   // renderComparison
-  // =========================================================================
   describe("renderComparison", () => {
     test("accepts original and mutated genome strings", () => {
       const viewer = new DiffViewer({ containerElement: container });
@@ -218,9 +212,7 @@ describe("DiffViewer", () => {
     });
   });
 
-  // =========================================================================
   // render (private)
-  // =========================================================================
   describe("render", () => {
     test("creates diff-viewer container", () => {
       const viewer = new DiffViewer({ containerElement: container });
@@ -313,9 +305,7 @@ describe("DiffViewer", () => {
     });
   });
 
-  // =========================================================================
   // renderCodons (private)
-  // =========================================================================
   describe("renderCodons", () => {
     test("creates span for each codon", () => {
       const viewer = new DiffViewer({ containerElement: container });
@@ -356,9 +346,7 @@ describe("DiffViewer", () => {
     });
   });
 
-  // =========================================================================
   // renderCanvasDiff (private)
-  // =========================================================================
   describe("renderCanvasDiff", () => {
     test("creates diff-canvas-container div", () => {
       const viewer = new DiffViewer({ containerElement: container });
@@ -415,9 +403,7 @@ describe("DiffViewer", () => {
     });
   });
 
-  // =========================================================================
   // renderCanvasOutputs (private)
-  // =========================================================================
   describe("renderCanvasOutputs", () => {
     test("finds original and mutated canvas elements", () => {
       const viewer = new DiffViewer({ containerElement: container });
@@ -437,9 +423,7 @@ describe("DiffViewer", () => {
     });
   });
 
-  // =========================================================================
   // renderDifferencesList (private)
-  // =========================================================================
   describe("renderDifferencesList", () => {
     test("returns 'No differences found' when array empty", () => {
       const viewer = new DiffViewer({ containerElement: container });
@@ -491,9 +475,7 @@ describe("DiffViewer", () => {
     });
   });
 
-  // =========================================================================
   // clear
-  // =========================================================================
   describe("clear", () => {
     test("removes all children from container", () => {
       const viewer = new DiffViewer({ containerElement: container });
@@ -511,9 +493,7 @@ describe("DiffViewer", () => {
     });
   });
 
-  // =========================================================================
   // Integration
-  // =========================================================================
   describe("integration", () => {
     test("correctly displays silent mutation diff", () => {
       const viewer = new DiffViewer({ containerElement: container });
@@ -594,9 +574,7 @@ describe("DiffViewer", () => {
     });
   });
 
-  // =========================================================================
   // Edge Cases
-  // =========================================================================
   describe("edge cases", () => {
     test("handles identical genomes (no differences)", () => {
       const viewer = new DiffViewer({ containerElement: container });

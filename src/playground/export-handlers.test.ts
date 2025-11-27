@@ -9,9 +9,7 @@
  */
 import { describe, expect, test } from "bun:test";
 
-// =========================================================================
 // Helper function implementations for testing
-// =========================================================================
 
 // Filename generation logic from saveGenome
 function generateGenomeFilename(): string {
@@ -59,9 +57,7 @@ function extractErrorMessage(error: unknown): string {
 }
 
 describe("Export Handlers", () => {
-  // =========================================================================
   // exportImage
-  // =========================================================================
   describe("exportImage", () => {
     test("uses correct filename 'codoncanvas-output.png'", () => {
       const filename = "codoncanvas-output.png";
@@ -75,9 +71,7 @@ describe("Export Handlers", () => {
     });
   });
 
-  // =========================================================================
   // saveGenome
-  // =========================================================================
   describe("saveGenome", () => {
     test("detects empty genome", () => {
       expect(isEmptyGenome("")).toBe(true);
@@ -145,9 +139,7 @@ describe("Export Handlers", () => {
     });
   });
 
-  // =========================================================================
   // exportMidi
-  // =========================================================================
   describe("exportMidi", () => {
     test("checks for empty snapshots", () => {
       const snapshots: unknown[] = [];
@@ -176,9 +168,7 @@ describe("Export Handlers", () => {
     });
   });
 
-  // =========================================================================
   // exportStudentProgress
-  // =========================================================================
   describe("exportStudentProgress", () => {
     test("creates achievement data object", () => {
       const data = createAchievementData();
@@ -225,9 +215,7 @@ describe("Export Handlers", () => {
     });
   });
 
-  // =========================================================================
   // Error handling patterns
-  // =========================================================================
   describe("error handling", () => {
     test("Error instance provides message", () => {
       const error = new Error("Test error message");
@@ -243,9 +231,7 @@ describe("Export Handlers", () => {
     });
   });
 
-  // =========================================================================
   // Edge Cases
-  // =========================================================================
   describe("edge cases", () => {
     test("handles genome with only whitespace", () => {
       expect(isEmptyGenome("   \n\t   ")).toBe(true);

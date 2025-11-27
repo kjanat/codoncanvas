@@ -48,9 +48,7 @@ function createMockSession(overrides: Partial<MetricsSession> = {}): MetricsSess
 }
 
 describe("Stats", () => {
-  // =========================================================================
   // Basic Statistics
-  // =========================================================================
   describe("mean", () => {
     test("calculates arithmetic mean correctly", () => {
       expect(Stats.mean([1, 2, 3, 4, 5])).toBe(3);
@@ -225,9 +223,7 @@ describe("Stats", () => {
     });
   });
 
-  // =========================================================================
   // Statistical Tests
-  // =========================================================================
   describe("tTest", () => {
     test("calculates t-statistic for independent samples", () => {
       const group1 = [5, 6, 7, 8, 9];
@@ -416,9 +412,7 @@ describe("Stats", () => {
 });
 
 describe("MetricsAnalyzer", () => {
-  // =========================================================================
   // Constructor
-  // =========================================================================
   describe("constructor", () => {
     test("accepts array of MetricsSession objects", () => {
       const sessions = [createMockSession(), createMockSession()];
@@ -440,9 +434,7 @@ describe("MetricsAnalyzer", () => {
     });
   });
 
-  // =========================================================================
   // engagementMetrics
-  // =========================================================================
   describe("engagementMetrics", () => {
     test("returns totalSessions count", () => {
       const sessions = [createMockSession(), createMockSession(), createMockSession()];
@@ -521,9 +513,7 @@ describe("MetricsAnalyzer", () => {
     });
   });
 
-  // =========================================================================
   // learningVelocity
-  // =========================================================================
   describe("learningVelocity", () => {
     test("returns timeToFirstArtifact as DescriptiveStats", () => {
       const sessions = [
@@ -593,9 +583,7 @@ describe("MetricsAnalyzer", () => {
     });
   });
 
-  // =========================================================================
   // toolAdoption
-  // =========================================================================
   describe("toolAdoption", () => {
     test("returns stats for diffViewer feature", () => {
       const sessions = [createMockSession({ feature_diffViewer: 5 })];
@@ -663,9 +651,7 @@ describe("MetricsAnalyzer", () => {
     });
   });
 
-  // =========================================================================
   // renderModePreferences
-  // =========================================================================
   describe("renderModePreferences", () => {
     test("returns visualOnly sessions count and percentage", () => {
       const sessions = [
@@ -727,9 +713,7 @@ describe("MetricsAnalyzer", () => {
     });
   });
 
-  // =========================================================================
   // mutationPatterns
-  // =========================================================================
   describe("mutationPatterns", () => {
     test("returns DescriptiveStats for silent mutations", () => {
       const sessions = [createMockSession({ mutation_silent: 5 })];
@@ -806,9 +790,7 @@ describe("MetricsAnalyzer", () => {
     });
   });
 
-  // =========================================================================
   // generateReport
-  // =========================================================================
   describe("generateReport", () => {
     test("returns AnalysisReport with all sections", () => {
       const sessions = [createMockSession()];
@@ -863,9 +845,7 @@ describe("MetricsAnalyzer", () => {
     });
   });
 
-  // =========================================================================
   // compareGroups
-  // =========================================================================
   describe("compareGroups", () => {
     test("compares session duration between groups", () => {
       const group1 = [createMockSession({ duration: 60000 })];
@@ -998,9 +978,7 @@ describe("MetricsAnalyzer", () => {
 });
 
 describe("parseCSVContent", () => {
-  // =========================================================================
   // Happy Paths
-  // =========================================================================
   test("parses valid CSV string into MetricsSession array", () => {
     const csv = `sessionId,duration,genomesCreated,genomesExecuted,timeToFirstArtifact,mutationsApplied,startTime,endTime,renderMode_visual,renderMode_audio,renderMode_both,mutation_silent,mutation_missense,mutation_nonsense,mutation_frameshift,mutation_point,mutation_insertion,mutation_deletion,feature_diffViewer,feature_timeline,feature_evolution,feature_assessment,feature_export,errorCount,errorTypes
 session-1,60000,5,3,30000,10,1000,2000,2,1,0,2,2,1,1,2,1,1,3,2,1,0,1,0,[]`;
@@ -1053,9 +1031,7 @@ my-special-session-123,60000,5,3,30000,10,1000,2000,2,1,0,2,2,1,1,2,1,1,3,2,1,0,
     expect(sessions[0].sessionId).toBe("my-special-session-123");
   });
 
-  // =========================================================================
   // CSV Parsing Edge Cases
-  // =========================================================================
   test("handles quoted values with commas inside", () => {
     const csv = `sessionId,duration,genomesCreated,genomesExecuted,timeToFirstArtifact,mutationsApplied,startTime,endTime,renderMode_visual,renderMode_audio,renderMode_both,mutation_silent,mutation_missense,mutation_nonsense,mutation_frameshift,mutation_point,mutation_insertion,mutation_deletion,feature_diffViewer,feature_timeline,feature_evolution,feature_assessment,feature_export,errorCount,errorTypes
 test,60000,5,3,30000,10,1000,2000,2,1,0,2,2,1,1,2,1,1,3,2,1,0,1,0,"[""error1"",""error2""]"`;
@@ -1085,9 +1061,7 @@ session-3,180000,15,12,60000,15,3000,4000,4,3,2,3,3,2,2,3,2,2,4,3,2,1,2,2,[]`;
     expect(sessions[0].sessionId).toBe("test-quoted");
   });
 
-  // =========================================================================
   // Error Handling
-  // =========================================================================
   test("throws Error for empty CSV (less than 2 lines)", () => {
     expect(() => parseCSVContent("")).toThrow();
   });
@@ -1109,9 +1083,7 @@ test,invalid,abc,xyz,30000,10,1000,2000,2,1,0,2,2,1,1,2,1,1,3,2,1,0,1,0,[]`;
 });
 
 describe("Formatting Utilities", () => {
-  // =========================================================================
   // formatDuration
-  // =========================================================================
   describe("formatDuration", () => {
     test("formats milliseconds as seconds for <60 seconds", () => {
       expect(formatDuration(30000)).toBe("30s");
@@ -1137,9 +1109,7 @@ describe("Formatting Utilities", () => {
     });
   });
 
-  // =========================================================================
   // formatPercentage
-  // =========================================================================
   describe("formatPercentage", () => {
     test("formats value with 1 decimal place and % suffix", () => {
       expect(formatPercentage(85.5)).toBe("85.5%");
@@ -1159,9 +1129,7 @@ describe("Formatting Utilities", () => {
     });
   });
 
-  // =========================================================================
   // formatNumber
-  // =========================================================================
   describe("formatNumber", () => {
     test("formats with 1 decimal place by default", () => {
       expect(formatNumber(3.14159)).toBe("3.1");

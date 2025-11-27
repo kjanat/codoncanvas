@@ -87,9 +87,7 @@ describe("AssessmentUI", () => {
     if (styles) styles.remove();
   });
 
-  // =========================================================================
   // Constructor
-  // =========================================================================
   describe("constructor", () => {
     test("accepts AssessmentEngine and container element", () => {
       const ui = new AssessmentUI(mockEngine, container);
@@ -142,9 +140,7 @@ describe("AssessmentUI", () => {
     });
   });
 
-  // =========================================================================
   // show
-  // =========================================================================
   describe("show", () => {
     test("sets container display to 'block'", () => {
       const ui = new AssessmentUI(mockEngine, container);
@@ -160,9 +156,7 @@ describe("AssessmentUI", () => {
     });
   });
 
-  // =========================================================================
   // hide
-  // =========================================================================
   describe("hide", () => {
     test("sets container display to 'none'", () => {
       const ui = new AssessmentUI(mockEngine, container);
@@ -172,9 +166,7 @@ describe("AssessmentUI", () => {
     });
   });
 
-  // =========================================================================
   // getProgress
-  // =========================================================================
   describe("getProgress", () => {
     test("returns progress calculated from engine with current results", () => {
       const ui = new AssessmentUI(mockEngine, container);
@@ -192,9 +184,7 @@ describe("AssessmentUI", () => {
     });
   });
 
-  // =========================================================================
   // exportResults
-  // =========================================================================
   describe("exportResults", () => {
     test("returns JSON string with results array", () => {
       const ui = new AssessmentUI(mockEngine, container);
@@ -224,9 +214,7 @@ describe("AssessmentUI", () => {
     });
   });
 
-  // =========================================================================
   // createUI (private)
-  // =========================================================================
   describe("createUI", () => {
     test("creates assessment-container div", () => {
       new AssessmentUI(mockEngine, container);
@@ -350,9 +338,7 @@ describe("AssessmentUI", () => {
     });
   });
 
-  // =========================================================================
   // startNewChallenge (private)
-  // =========================================================================
   describe("startNewChallenge", () => {
     test("generates new challenge from engine with current difficulty", () => {
       const ui = new AssessmentUI(mockEngine, container);
@@ -435,9 +421,7 @@ describe("AssessmentUI", () => {
     });
   });
 
-  // =========================================================================
   // submitAnswer (private)
-  // =========================================================================
   describe("submitAnswer", () => {
     test("scores response using engine.scoreResponse", () => {
       const ui = new AssessmentUI(mockEngine, container);
@@ -563,9 +547,7 @@ describe("AssessmentUI", () => {
     });
   });
 
-  // =========================================================================
   // displayFeedback (private)
-  // =========================================================================
   describe("displayFeedback", () => {
     test("displays correct icon and message for correct answer", () => {
       const ui = new AssessmentUI(mockEngine, container);
@@ -627,9 +609,7 @@ describe("AssessmentUI", () => {
     });
   });
 
-  // =========================================================================
   // updateProgress (private)
-  // =========================================================================
   describe("updateProgress", () => {
     test("calculates progress from engine", () => {
       const ui = new AssessmentUI(mockEngine, container);
@@ -721,9 +701,7 @@ describe("AssessmentUI", () => {
     });
   });
 
-  // =========================================================================
   // injectStyles (private)
-  // =========================================================================
   describe("injectStyles", () => {
     test("creates style element with id 'assessment-ui-styles'", () => {
       new AssessmentUI(mockEngine, container);
@@ -771,9 +749,7 @@ describe("AssessmentUI", () => {
     });
   });
 
-  // =========================================================================
   // Integration
-  // =========================================================================
   describe("integration", () => {
     test("works with real AssessmentEngine", () => {
       const ui = new AssessmentUI(mockEngine, container);
@@ -869,9 +845,7 @@ describe("AssessmentUI", () => {
     });
   });
 
-  // =========================================================================
   // Edge Cases
-  // =========================================================================
   describe("edge cases", () => {
     test("handles missing achievement engine gracefully", () => {
       const ui = new AssessmentUI(mockEngine, container);

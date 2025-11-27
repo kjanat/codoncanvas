@@ -64,9 +64,7 @@ describe("ShareSystem", () => {
     window.open = originalOpen;
   });
 
-  // =========================================================================
   // Constructor & Configuration
-  // =========================================================================
   describe("constructor", () => {
     test("accepts ShareSystemConfig with containerElement and getGenome", () => {
       const system = new ShareSystem({
@@ -145,9 +143,7 @@ describe("ShareSystem", () => {
     });
   });
 
-  // =========================================================================
   // render (private, tested via constructor)
-  // =========================================================================
   describe("render", () => {
     test("creates share-system container div", () => {
       new ShareSystem({ containerElement: container, getGenome });
@@ -224,9 +220,7 @@ describe("ShareSystem", () => {
     });
   });
 
-  // =========================================================================
   // copyToClipboard
-  // =========================================================================
   describe("copyToClipboard", () => {
     test("copies genome to clipboard using navigator.clipboard.writeText", async () => {
       new ShareSystem({ containerElement: container, getGenome });
@@ -348,9 +342,7 @@ describe("ShareSystem", () => {
     });
   });
 
-  // =========================================================================
   // generatePermalink
-  // =========================================================================
   describe("generatePermalink", () => {
     test("encodes genome using base64 URL-safe encoding", () => {
       new ShareSystem({ containerElement: container, getGenome });
@@ -459,9 +451,7 @@ describe("ShareSystem", () => {
     });
   });
 
-  // =========================================================================
   // downloadGenome
-  // =========================================================================
   describe("downloadGenome", () => {
     test("creates Blob with text/plain type", () => {
       const blobSpy = mock(Blob);
@@ -622,9 +612,7 @@ describe("ShareSystem", () => {
     });
   });
 
-  // =========================================================================
   // generateQRCode
-  // =========================================================================
   describe("generateQRCode", () => {
     test("generates permalink URL for QR content", () => {
       new ShareSystem({ containerElement: container, getGenome });
@@ -697,9 +685,7 @@ describe("ShareSystem", () => {
     });
   });
 
-  // =========================================================================
   // shareToTwitter
-  // =========================================================================
   describe("shareToTwitter", () => {
     test("opens twitter.com/intent/tweet in new window", () => {
       new ShareSystem({ containerElement: container, getGenome });
@@ -779,9 +765,7 @@ describe("ShareSystem", () => {
     });
   });
 
-  // =========================================================================
   // shareToReddit
-  // =========================================================================
   describe("shareToReddit", () => {
     test("opens reddit.com/submit in new tab", () => {
       new ShareSystem({ containerElement: container, getGenome });
@@ -838,9 +822,7 @@ describe("ShareSystem", () => {
     });
   });
 
-  // =========================================================================
   // shareViaEmail
-  // =========================================================================
   describe("shareViaEmail", () => {
     test("sets window.location.href to mailto: URL", () => {
       // Store original href setter
@@ -950,9 +932,7 @@ describe("ShareSystem", () => {
     });
   });
 
-  // =========================================================================
   // showFeedback (private)
-  // =========================================================================
   describe("showFeedback", () => {
     test("finds #share-feedback element", () => {
       new ShareSystem({ containerElement: container, getGenome });
@@ -1018,9 +998,7 @@ describe("ShareSystem", () => {
     });
   });
 
-  // =========================================================================
   // showModal (private)
-  // =========================================================================
   describe("showModal", () => {
     test("finds #share-modal element", () => {
       new ShareSystem({ containerElement: container, getGenome });
@@ -1092,9 +1070,7 @@ describe("ShareSystem", () => {
     });
   });
 
-  // =========================================================================
   // encodeGenome (private)
-  // =========================================================================
   describe("encodeGenome", () => {
     test("encodes genome as base64", () => {
       new ShareSystem({ containerElement: container, getGenome });
@@ -1165,9 +1141,7 @@ describe("ShareSystem", () => {
     });
   });
 
-  // =========================================================================
   // Static Methods
-  // =========================================================================
   describe("decodeGenome (static)", () => {
     test("restores base64 padding (= characters)", () => {
       // Encode with padding removed, then decode

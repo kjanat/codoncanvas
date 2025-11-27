@@ -8,9 +8,7 @@ import { describe, expect, test } from "bun:test";
 import { CODON_MAP, Opcode } from "./types";
 
 describe("Types Module", () => {
-  // =========================================================================
   // CODON_MAP Structure
-  // =========================================================================
   describe("CODON_MAP structure", () => {
     test("exports CODON_MAP as Record<string, Opcode>", () => {
       expect(CODON_MAP).toBeDefined();
@@ -50,9 +48,7 @@ describe("Types Module", () => {
     });
   });
 
-  // =========================================================================
   // Control Flow Codons
-  // =========================================================================
   describe("control flow codons", () => {
     test("ATG maps to Opcode.START", () => {
       expect(CODON_MAP["ATG"]).toBe(Opcode.START);
@@ -79,9 +75,7 @@ describe("Types Module", () => {
     });
   });
 
-  // =========================================================================
   // Drawing Primitive Codons (Synonymous Families)
-  // =========================================================================
   describe("drawing primitive codons", () => {
     test("GGA, GGC, GGG, GGT all map to Opcode.CIRCLE", () => {
       expect(CODON_MAP["GGA"]).toBe(Opcode.CIRCLE);
@@ -136,9 +130,7 @@ describe("Types Module", () => {
     });
   });
 
-  // =========================================================================
   // Transform Operation Codons
-  // =========================================================================
   describe("transform operation codons", () => {
     test("ACA, ACC, ACG, ACT all map to Opcode.TRANSLATE", () => {
       expect(CODON_MAP["ACA"]).toBe(Opcode.TRANSLATE);
@@ -185,9 +177,7 @@ describe("Types Module", () => {
     });
   });
 
-  // =========================================================================
   // Stack Operation Codons
-  // =========================================================================
   describe("stack operation codons", () => {
     test("GAA, GAG, GAC, GAT all map to Opcode.PUSH", () => {
       expect(CODON_MAP["GAA"]).toBe(Opcode.PUSH);
@@ -214,9 +204,7 @@ describe("Types Module", () => {
     });
   });
 
-  // =========================================================================
   // State Management Codons
-  // =========================================================================
   describe("state management codons", () => {
     test("TCA, TCC map to Opcode.SAVE_STATE", () => {
       expect(CODON_MAP["TCA"]).toBe(Opcode.SAVE_STATE);
@@ -229,9 +217,7 @@ describe("Types Module", () => {
     });
   });
 
-  // =========================================================================
   // Arithmetic Operation Codons
-  // =========================================================================
   describe("arithmetic operation codons", () => {
     test("CTG maps to Opcode.ADD", () => {
       expect(CODON_MAP["CTG"]).toBe(Opcode.ADD);
@@ -250,9 +236,7 @@ describe("Types Module", () => {
     });
   });
 
-  // =========================================================================
   // Comparison Operation Codons
-  // =========================================================================
   describe("comparison operation codons", () => {
     test("CTA maps to Opcode.EQ", () => {
       expect(CODON_MAP["CTA"]).toBe(Opcode.EQ);
@@ -263,27 +247,21 @@ describe("Types Module", () => {
     });
   });
 
-  // =========================================================================
   // Control Flow Operation Codons
-  // =========================================================================
   describe("control flow operation codons", () => {
     test("CAA maps to Opcode.LOOP", () => {
       expect(CODON_MAP["CAA"]).toBe(Opcode.LOOP);
     });
   });
 
-  // =========================================================================
   // Utility Codons
-  // =========================================================================
   describe("utility codons", () => {
     test("CAC maps to Opcode.NOP", () => {
       expect(CODON_MAP["CAC"]).toBe(Opcode.NOP);
     });
   });
 
-  // =========================================================================
   // Opcode Enum
-  // =========================================================================
   describe("Opcode enum", () => {
     test("contains START opcode", () => {
       expect(Opcode.START).toBeDefined();
@@ -348,9 +326,7 @@ describe("Types Module", () => {
     });
   });
 
-  // =========================================================================
   // Type Definitions
-  // =========================================================================
   describe("type definitions", () => {
     test("Point2D has x and y number properties", () => {
       // Type-level test - if this compiles, the type is correct
@@ -456,9 +432,7 @@ describe("Types Module", () => {
     });
   });
 
-  // =========================================================================
   // RNA Support
-  // =========================================================================
   describe("RNA support", () => {
     test("U base is included in Base type", () => {
       const base: import("./types").Base = "U";
@@ -485,9 +459,7 @@ describe("Types Module", () => {
     });
   });
 
-  // =========================================================================
   // Pedagogical Design
-  // =========================================================================
   describe("pedagogical design", () => {
     test("synonymous codon families enable silent mutation teaching", () => {
       // Changing third position (wobble) in synonymous family doesn't change opcode
@@ -541,9 +513,7 @@ describe("Types Module", () => {
     });
   });
 
-  // =========================================================================
   // Edge Cases
-  // =========================================================================
   describe("edge cases", () => {
     test("lowercase codons are not in CODON_MAP (case sensitive)", () => {
       expect(CODON_MAP["atg"]).toBeUndefined();

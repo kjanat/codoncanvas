@@ -55,9 +55,7 @@ function autoFixError(errorMessage: string, source: string): string | null {
 }
 
 describe("Linter Handlers", () => {
-  // =========================================================================
   // canAutoFix
-  // =========================================================================
   describe("canAutoFix", () => {
     test("returns true for missing START codon error", () => {
       expect(canAutoFix("Program should begin with START codon (ATG)")).toBe(
@@ -92,9 +90,7 @@ describe("Linter Handlers", () => {
     });
   });
 
-  // =========================================================================
   // autoFixError
-  // =========================================================================
   describe("autoFixError", () => {
     test("prepends ATG for missing START codon", () => {
       const result = autoFixError(
@@ -158,9 +154,7 @@ describe("Linter Handlers", () => {
     });
   });
 
-  // =========================================================================
   // Edge Cases
-  // =========================================================================
   describe("edge cases", () => {
     test("handles empty source string for START fix", () => {
       const result = autoFixError(
@@ -206,9 +200,7 @@ describe("Linter Handlers", () => {
     });
   });
 
-  // =========================================================================
   // Integration-style tests
-  // =========================================================================
   describe("fix workflow", () => {
     test("can fix multiple issues in sequence", () => {
       // Simulate fixing a genome step by step

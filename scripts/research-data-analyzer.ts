@@ -21,10 +21,6 @@
 
 import * as fs from "node:fs";
 
-// ============================================================================
-// Data Structures
-// ============================================================================
-
 interface StudentData {
   id: string;
   group?: "treatment" | "control";
@@ -76,10 +72,6 @@ interface PowerAnalysis {
   inflated_n_per_group: number; // accounting for attrition
   inflated_total: number;
 }
-
-// ============================================================================
-// Statistical Functions
-// ============================================================================
 
 // biome-ignore lint/complexity/noStaticOnlyClass: Intentional grouping for statistical utilities
 class Stats {
@@ -304,10 +296,6 @@ class Stats {
     };
   }
 }
-
-// ============================================================================
-// Analysis Workflows
-// ============================================================================
 
 // biome-ignore lint/complexity/noStaticOnlyClass: Intentional grouping for analysis workflows
 class ResearchAnalyzer {
@@ -647,10 +635,6 @@ class ResearchAnalyzer {
   }
 }
 
-// ============================================================================
-// CSV Parsing
-// ============================================================================
-
 function parseCSV(filepath: string): StudentData[] {
   const content = fs.readFileSync(filepath, "utf-8");
   const lines = content.trim().split("\n");
@@ -677,10 +661,6 @@ function parseCSV(filepath: string): StudentData[] {
     return row as StudentData;
   });
 }
-
-// ============================================================================
-// CLI
-// ============================================================================
 
 function printUsage(): void {
   console.log(`

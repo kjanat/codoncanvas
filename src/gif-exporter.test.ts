@@ -66,11 +66,9 @@ describe("GifExporter", () => {
     });
   });
 
-  // =========================================================================
   // Tests for exportFrames (core GIF generation)
   // Note: These tests verify the API contract. Full gif.js integration
   // requires browser/worker environment not available in test runner.
-  // =========================================================================
   describe("exportFrames", () => {
     // Canvas tests need the 2D context mock
     beforeEach(() => mockCanvasContext());
@@ -124,11 +122,8 @@ describe("GifExporter", () => {
     });
   });
 
-  // =========================================================================
   // Tests for downloadGif (DOM-based blob download)
-  // =========================================================================
   describe("downloadGif", () => {
-    // HAPPY PATHS
     test("creates object URL from blob and triggers download via anchor click", () => {
       const createObjectURLCalls: Blob[] = [];
       const clickedElements: HTMLElement[] = [];
@@ -201,7 +196,6 @@ describe("GifExporter", () => {
       expect(anchor.download).toBe("animation.gif");
     });
 
-    // DOM INTERACTION
     test("creates anchor element, sets href/download, clicks, then removes from DOM", () => {
       const appendedElements: HTMLElement[] = [];
       const clickedElements: HTMLElement[] = [];
@@ -274,7 +268,6 @@ describe("GifExporter", () => {
       }
     });
 
-    // EDGE CASES
     test("handles empty blob gracefully", () => {
       const createObjectURLCalls: Blob[] = [];
       const originalCreateObjectURL = URL.createObjectURL;
@@ -333,15 +326,12 @@ describe("GifExporter", () => {
     });
   });
 
-  // =========================================================================
   // Tests for captureFrame (canvas snapshot for GIF frame)
-  // =========================================================================
   describe("captureFrame", () => {
     // Canvas tests need the 2D context mock
     beforeEach(() => mockCanvasContext());
     afterEach(() => restoreCanvasContext());
 
-    // HAPPY PATHS
     test("creates new canvas with configured dimensions and draws source canvas onto it", () => {
       const exp = new GifExporter({ width: 200, height: 150 });
       const sourceCanvas = document.createElement("canvas");
@@ -385,7 +375,6 @@ describe("GifExporter", () => {
       // The frame should exist and have content drawn via drawImage
     });
 
-    // SCALING BEHAVIOR
     test("scales source canvas to fit configured dimensions (drawImage with scaling)", () => {
       const exp = new GifExporter({ width: 200, height: 200 });
       const sourceCanvas = document.createElement("canvas");
@@ -423,7 +412,6 @@ describe("GifExporter", () => {
       expect(frame.height).toBe(400);
     });
 
-    // ERROR HANDLING
     test("throws Error when 2D context creation fails", () => {
       const exp = new GifExporter({ width: 100, height: 100 });
       const sourceCanvas = document.createElement("canvas");

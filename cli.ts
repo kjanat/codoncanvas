@@ -22,10 +22,6 @@ program
   .description("CLI tool for CodonCanvas genome validation and analysis")
   .version("1.0.0");
 
-// ============================================================================
-// VALIDATE COMMAND
-// ============================================================================
-
 program
   .command("validate <file>")
   .description(
@@ -96,10 +92,6 @@ program
       process.exit(1);
     }
   });
-
-// ============================================================================
-// LINT COMMAND
-// ============================================================================
 
 program
   .command("lint <pattern>")
@@ -208,10 +200,6 @@ program
     process.exit(invalid > 0 ? 1 : 0);
   });
 
-// ============================================================================
-// CHECK-SIMILARITY COMMAND
-// ============================================================================
-
 program
   .command("check-similarity <file1> <file2>")
   .description(
@@ -278,10 +266,6 @@ program
       process.exit(1);
     }
   });
-
-// ============================================================================
-// STATS COMMAND
-// ============================================================================
 
 program
   .command("stats <file>")
@@ -351,10 +335,6 @@ program
     }
   });
 
-// ============================================================================
-// HELPER FUNCTIONS
-// ============================================================================
-
 function levenshteinDistance(str1: string, str2: string): number {
   const m = str1.length;
   const n = str2.length;
@@ -405,9 +385,5 @@ function longestCommonSubstring(str1: string, str2: string): string {
 
   return str1.substring(endIndex - maxLen, endIndex);
 }
-
-// ============================================================================
-// PARSE & EXECUTE
-// ============================================================================
 
 program.parse();

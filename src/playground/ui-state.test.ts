@@ -11,9 +11,7 @@ import { describe, expect, test } from "bun:test";
 import type { RenderMode, VMState } from "../types";
 
 describe("UI State Management", () => {
-  // =========================================================================
   // State Management Functions (Pure logic, no DOM dependencies)
-  // =========================================================================
   describe("state management logic", () => {
     // Test the state management pattern used in ui-state
     let renderMode: RenderMode = "visual";
@@ -109,9 +107,7 @@ describe("UI State Management", () => {
     });
   });
 
-  // =========================================================================
   // RenderMode Type Tests
-  // =========================================================================
   describe("RenderMode type", () => {
     test("accepts 'visual' as valid mode", () => {
       const mode: RenderMode = "visual";
@@ -129,9 +125,7 @@ describe("UI State Management", () => {
     });
   });
 
-  // =========================================================================
   // VMState Type Tests
-  // =========================================================================
   describe("VMState structure", () => {
     test("VMState has required properties", () => {
       const state: VMState = {

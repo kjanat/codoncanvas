@@ -10,9 +10,7 @@
 import { describe, expect, test } from "bun:test";
 import type { MutationType } from "../types";
 
-// =========================================================================
 // Helper function implementations for testing
-// =========================================================================
 
 // Valid mutation types
 const VALID_MUTATION_TYPES: MutationType[] = [
@@ -75,9 +73,7 @@ function getMutationHandler(type: MutationType): string {
 }
 
 describe("Mutation Handlers", () => {
-  // =========================================================================
   // Mutation Type Validation
-  // =========================================================================
   describe("mutation type validation", () => {
     test("recognizes all valid mutation types", () => {
       for (const type of VALID_MUTATION_TYPES) {
@@ -120,9 +116,7 @@ describe("Mutation Handlers", () => {
     });
   });
 
-  // =========================================================================
   // applyMutation logic
-  // =========================================================================
   describe("applyMutation logic", () => {
     test("detects empty genome", () => {
       expect(isEmptyGenome("")).toBe(true);
@@ -151,9 +145,7 @@ describe("Mutation Handlers", () => {
     });
   });
 
-  // =========================================================================
   // previewMutation logic
-  // =========================================================================
   describe("previewMutation logic", () => {
     test("detects empty genome for preview", () => {
       expect(isEmptyGenome("")).toBe(true);
@@ -167,9 +159,7 @@ describe("Mutation Handlers", () => {
     });
   });
 
-  // =========================================================================
   // getOriginalGenomeBeforeMutation
-  // =========================================================================
   describe("getOriginalGenomeBeforeMutation", () => {
     test("returns empty string before any mutation", () => {
       const state = new MutationState();
@@ -190,9 +180,7 @@ describe("Mutation Handlers", () => {
     });
   });
 
-  // =========================================================================
   // resetMutationState
-  // =========================================================================
   describe("resetMutationState", () => {
     test("clears originalGenomeBeforeMutation to empty string", () => {
       const state = new MutationState();
@@ -210,9 +198,7 @@ describe("Mutation Handlers", () => {
     });
   });
 
-  // =========================================================================
   // Error handling
-  // =========================================================================
   describe("error handling", () => {
     test("extracts message from Error instance", () => {
       const error = new Error("Mutation failed: No valid target");
@@ -244,9 +230,7 @@ describe("Mutation Handlers", () => {
     });
   });
 
-  // =========================================================================
   // Edge Cases
-  // =========================================================================
   describe("edge cases", () => {
     test("handles whitespace-only genome", () => {
       expect(isEmptyGenome("   \n\t   ")).toBe(true);
@@ -275,9 +259,7 @@ describe("Mutation Handlers", () => {
     });
   });
 
-  // =========================================================================
   // Integration patterns
-  // =========================================================================
   describe("integration patterns", () => {
     test("mutation workflow: validate -> apply -> store original", () => {
       const genome = "ATG GGA TAA";
