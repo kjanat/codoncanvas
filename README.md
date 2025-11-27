@@ -646,7 +646,44 @@ Delete first 'A': All downstream codons shift, output completely different -->
 ## Project Structure
 
 ```tree
-
+codoncanvas/
+├── docs/                     # User documentation
+├── claudedocs/               # Internal project documentation
+├── src/
+│   ├── types/                # Type definitions
+│   ├── playground/           # Playground UI components
+│   ├── lexer.ts              # Tokenizer and validator
+│   ├── vm.ts                 # Stack machine VM
+│   ├── renderer.ts           # Canvas2D renderer
+│   ├── mutations.ts          # Mutation tools (7 types)
+│   ├── diff-viewer.ts        # Genome comparison component
+│   ├── timeline-scrubber.ts  # Step-through execution
+│   ├── genome-io.ts          # Import/export .genome files
+│   ├── examples.ts           # Built-in example genomes
+│   ├── playground.ts         # Main playground entry point
+│   ├── evolution-engine.ts   # Evolution algorithm logic
+│   ├── assessment-engine.ts  # Assessment system logic
+│   ├── achievement-engine.ts # Gamification logic
+│   ├── research-metrics.ts   # Research data collection
+│   ├── teacher-dashboard.ts  # Teacher dashboard logic
+│   └── ...
+├── tests/
+│   ├── lexer.test.ts         # Lexer validation tests
+│   ├── vm.test.ts            # VM execution tests
+│   ├── mutations.test.ts     # Mutation engine tests
+│   ├── genome-io.test.ts     # File I/O tests
+│   ├── evolution-engine.test.ts   # Evolution algorithm tests
+│   ├── assessment-engine.test.ts  # Assessment system tests
+│   ├── achievement-engine.test.ts # Gamification tests
+│   └── ...
+├── index.html                # Main playground interface
+├── mutation-demo.html        # Mutation laboratory
+├── timeline-demo.html        # Timeline scrubber demo
+├── evolution-demo.html       # Evolution lab
+├── population-genetics-demo.html # Population genetics demo
+├── package.json
+├── tsconfig.json
+└── vite.config.ts
 ```
 
 ## Development
