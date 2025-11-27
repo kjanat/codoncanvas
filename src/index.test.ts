@@ -243,7 +243,7 @@ describe("CodonCanvas Library Exports", () => {
 
     test("exports RiskLevel type", () => {
       const risk: RiskLevel = "high";
-      expect(["none", "low", "medium", "high"]).toContain(risk);
+      expect(["low", "medium", "high"]).toContain(risk);
     });
 
     test("exports Base type", () => {
