@@ -4,16 +4,7 @@
  */
 
 import { predictMutationImpact } from "@/mutation-predictor";
-import {
-  applyDeletion,
-  applyFrameshiftMutation,
-  applyInsertion,
-  applyMissenseMutation,
-  applyNonsenseMutation,
-  applyPointMutation,
-  applySilentMutation,
-  type MutationResult,
-} from "@/mutations";
+import { getMutationByType } from "@/mutations";
 import type { MutationType } from "@/types";
 import { diffViewerContainer, diffViewerPanel, editor } from "./dom-manager";
 import { achievementEngine, achievementUI } from "./ui-state";
@@ -51,33 +42,7 @@ export function applyMutation(type: MutationType) {
 
     originalGenomeBeforeMutation = genome;
 
-    let result: MutationResult;
-
-    switch (type) {
-      case "silent":
-        result = applySilentMutation(genome);
-        break;
-      case "missense":
-        result = applyMissenseMutation(genome);
-        break;
-      case "nonsense":
-        result = applyNonsenseMutation(genome);
-        break;
-      case "point":
-        result = applyPointMutation(genome);
-        break;
-      case "insertion":
-        result = applyInsertion(genome);
-        break;
-      case "deletion":
-        result = applyDeletion(genome);
-        break;
-      case "frameshift":
-        result = applyFrameshiftMutation(genome);
-        break;
-      default:
-        throw new Error(`Unknown mutation type: ${type}`);
-    }
+    const result = getMutationByType(type, genome);
 
     editor.value = result.mutated;
 
@@ -112,33 +77,7 @@ export function previewMutation(type: MutationType) {
       return;
     }
 
-    let result: MutationResult;
-    switch (type) {
-      case "silent":
-        result = applySilentMutation(genome);
-        break;
-      case "missense":
-        result = applyMissenseMutation(genome);
-        break;
-      case "nonsense":
-        result = applyNonsenseMutation(genome);
-        break;
-      case "point":
-        result = applyPointMutation(genome);
-        break;
-      case "insertion":
-        result = applyInsertion(genome);
-        break;
-      case "deletion":
-        result = applyDeletion(genome);
-        break;
-      case "frameshift":
-        result = applyFrameshiftMutation(genome);
-        break;
-      default:
-        throw new Error(`Unknown mutation type: ${type}`);
-    }
-
+    const result = getMutationByType(type, genome);
     const prediction = predictMutationImpact(genome, result);
     setStatus(`Mutation preview: ${prediction.description}`, "info");
   } catch (error) {

@@ -165,19 +165,34 @@ export class ShareSystem {
   }
 
   /**
-   * Generate permalink with genome encoded in URL
+   * Get permalink for current genome, or show error and return null
    */
-  private generatePermalink(): void {
+  private getPermalinkOrFail(errorMessage: string): {
+    genome: string;
+    permalink: string;
+  } | null {
     const genome = this.getGenome();
 
     if (!genome || genome.trim().length === 0) {
-      this.showFeedback("No genome to share", "error");
-      return;
+      this.showFeedback(errorMessage, "error");
+      return null;
     }
 
     const encoded = this.encodeGenome(genome);
     const currentUrl = window.location.href.split("#")[0].split("?")[0];
     const permalink = `${currentUrl}?genome=${encoded}`;
+
+    return { genome, permalink };
+  }
+
+  /**
+   * Generate permalink with genome encoded in URL
+   */
+  private generatePermalink(): void {
+    const result = this.getPermalinkOrFail("No genome to share");
+    if (!result) return;
+
+    const { permalink } = result;
 
     // Copy permalink to clipboard
     navigator.clipboard
@@ -222,16 +237,10 @@ export class ShareSystem {
    * Generate QR code for genome permalink
    */
   private generateQRCode(): void {
-    const genome = this.getGenome();
+    const result = this.getPermalinkOrFail("No genome to encode");
+    if (!result) return;
 
-    if (!genome || genome.trim().length === 0) {
-      this.showFeedback("No genome to encode", "error");
-      return;
-    }
-
-    const encoded = this.encodeGenome(genome);
-    const currentUrl = window.location.href.split("#")[0].split("?")[0];
-    const permalink = `${currentUrl}?genome=${encoded}`;
+    const { permalink } = result;
 
     // Use QR code API
     const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${encodeURIComponent(
@@ -255,16 +264,10 @@ export class ShareSystem {
    * Share to Twitter
    */
   private shareToTwitter(): void {
-    const genome = this.getGenome();
+    const result = this.getPermalinkOrFail("No genome to share");
+    if (!result) return;
 
-    if (!genome || genome.trim().length === 0) {
-      this.showFeedback("No genome to share", "error");
-      return;
-    }
-
-    const encoded = this.encodeGenome(genome);
-    const currentUrl = window.location.href.split("#")[0].split("?")[0];
-    const permalink = `${currentUrl}?genome=${encoded}`;
+    const { permalink } = result;
 
     const text = `Check out my DNA-inspired visual program in ${this.appTitle}! 🧬`;
     const hashtags = "CodonCanvas,BioInformatics,VisualProgramming";
@@ -280,16 +283,10 @@ export class ShareSystem {
    * Share to Reddit
    */
   private shareToReddit(): void {
-    const genome = this.getGenome();
+    const result = this.getPermalinkOrFail("No genome to share");
+    if (!result) return;
 
-    if (!genome || genome.trim().length === 0) {
-      this.showFeedback("No genome to share", "error");
-      return;
-    }
-
-    const encoded = this.encodeGenome(genome);
-    const currentUrl = window.location.href.split("#")[0].split("?")[0];
-    const permalink = `${currentUrl}?genome=${encoded}`;
+    const { permalink } = result;
 
     const title = `My DNA-inspired visual program in ${this.appTitle}`;
 
@@ -304,16 +301,10 @@ export class ShareSystem {
    * Share via email
    */
   private shareViaEmail(): void {
-    const genome = this.getGenome();
+    const result = this.getPermalinkOrFail("No genome to share");
+    if (!result) return;
 
-    if (!genome || genome.trim().length === 0) {
-      this.showFeedback("No genome to share", "error");
-      return;
-    }
-
-    const encoded = this.encodeGenome(genome);
-    const currentUrl = window.location.href.split("#")[0].split("?")[0];
-    const permalink = `${currentUrl}?genome=${encoded}`;
+    const { genome, permalink } = result;
 
     const subject = `Check out my ${this.appTitle} program`;
     const body = `I created a DNA-inspired visual program using ${this.appTitle}!\n\nView it here: ${permalink}\n\nGenome:\n${genome}`;

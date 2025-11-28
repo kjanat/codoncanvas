@@ -3,6 +3,7 @@
  * Provides side-by-side visualization with highlighting
  */
 
+import { escapeHtml } from "./dom-utils";
 import { CodonLexer } from "./lexer";
 import { compareGenomes, type MutationResult } from "./mutations";
 import { Canvas2DRenderer } from "./renderer";
@@ -71,9 +72,9 @@ export class DiffViewer {
     const html = `
       <div class="diff-viewer">
         <div class="diff-header">
-          <h3>${description}</h3>
+          <h3>${escapeHtml(description)}</h3>
           <div class="diff-stats">
-            <span class="badge mutation-${mutationType}">${mutationType}</span>
+            <span class="badge mutation-${escapeHtml(mutationType)}">${escapeHtml(mutationType)}</span>
             <span class="diff-count">${differences.length} codon${
               differences.length !== 1 ? "s" : ""
             } changed</span>
@@ -133,7 +134,7 @@ export class DiffViewer {
       .map((codon, i) => {
         const highlight = highlights.find((h) => h.pos === i);
         const className = highlight ? `codon-${highlight.type}` : "";
-        return `<span class="codon ${className}">${codon}</span>`;
+        return `<span class="codon ${className}">${escapeHtml(codon)}</span>`;
       })
       .join(" ");
   }
@@ -197,9 +198,9 @@ export class DiffViewer {
             (diff) => `
           <li>
             Position ${diff.position}:
-            <code class="codon-removed">${diff.original || "(deleted)"}</code>
+            <code class="codon-removed">${diff.original ? escapeHtml(diff.original) : "(deleted)"}</code>
             →
-            <code class="codon-added">${diff.mutated || "(inserted)"}</code>
+            <code class="codon-added">${diff.mutated ? escapeHtml(diff.mutated) : "(inserted)"}</code>
           </li>
         `,
           )

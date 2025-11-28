@@ -2,20 +2,12 @@ import { DiffViewer, injectDiffViewerStyles } from "../diff-viewer";
 import { escapeHtml, getElement } from "../dom-utils";
 import { examples } from "../examples";
 import { CodonLexer } from "../lexer";
-import type { MutationResult } from "../mutations";
-import {
-  applyDeletion,
-  applyFrameshiftMutation,
-  applyInsertion,
-  applyMissenseMutation,
-  applyNonsenseMutation,
-  applyPointMutation,
-  applySilentMutation,
-} from "../mutations";
+import { getMutationByType } from "../mutations";
 import { Canvas2DRenderer } from "../renderer";
 import { injectShareStyles, ShareSystem } from "../share-system";
 import { mutationTutorial, TutorialManager } from "../tutorial";
 import { TutorialUI } from "../tutorial-ui";
+import type { MutationType } from "../types";
 import "../tutorial-ui.css";
 import { CodonVM } from "../vm";
 
@@ -103,33 +95,7 @@ function loadExample(key: string): void {
 function applyMutation(type: string): void {
   try {
     const genome = editor.value;
-    let result: MutationResult;
-
-    switch (type) {
-      case "silent":
-        result = applySilentMutation(genome);
-        break;
-      case "missense":
-        result = applyMissenseMutation(genome);
-        break;
-      case "nonsense":
-        result = applyNonsenseMutation(genome);
-        break;
-      case "point":
-        result = applyPointMutation(genome);
-        break;
-      case "insertion":
-        result = applyInsertion(genome);
-        break;
-      case "deletion":
-        result = applyDeletion(genome);
-        break;
-      case "frameshift":
-        result = applyFrameshiftMutation(genome);
-        break;
-      default:
-        throw new Error(`Unknown mutation type: ${type}`);
-    }
+    const result = getMutationByType(type as MutationType, genome);
 
     editor.value = result.mutated;
     updateVisualizations();
