@@ -1,4 +1,4 @@
-import { getElement } from "../dom-utils";
+import { escapeHtml, getElement } from "../dom-utils";
 import { examples } from "../examples";
 import { injectShareStyles, ShareSystem } from "../share-system";
 import { injectTimelineStyles, TimelineScrubber } from "../timeline-scrubber";
@@ -28,7 +28,7 @@ new ShareSystem({
 let timeline: TimelineScrubber | null = null;
 
 function showStatus(message: string, type = "success"): void {
-  statusContainer.innerHTML = `<div class="status ${type}">${message}</div>`;
+  statusContainer.innerHTML = `<div class="status ${escapeHtml(type)}">${escapeHtml(message)}</div>`;
   setTimeout(() => {
     statusContainer.innerHTML = "";
   }, 5000);

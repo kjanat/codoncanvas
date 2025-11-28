@@ -1,7 +1,7 @@
 import { AchievementEngine } from "../achievement-engine";
 import { AchievementUI } from "../achievement-ui";
 import "../achievement-ui.css";
-import { getElement } from "../dom-utils";
+import { escapeHtml, getElement } from "../dom-utils";
 import { EvolutionEngine } from "../evolution-engine";
 import { examples } from "../examples";
 import { CodonLexer } from "../lexer";
@@ -54,7 +54,7 @@ new ShareSystem({
 });
 
 function showStatus(message: string, type = "info"): void {
-  statusContainer.innerHTML = `<div class="status ${type}">${message}</div>`;
+  statusContainer.innerHTML = `<div class="status ${escapeHtml(type)}">${escapeHtml(message)}</div>`;
   setTimeout(() => {
     statusContainer.innerHTML = "";
   }, 5000);

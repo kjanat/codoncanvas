@@ -1,4 +1,4 @@
-import { getElement } from "../dom-utils";
+import { escapeHtml, getElement } from "../dom-utils";
 import { CodonLexer } from "../lexer";
 import { Canvas2DRenderer } from "../renderer";
 import { CodonVM } from "../vm";
@@ -673,7 +673,7 @@ function validateLesson(): void {
     if (result.errors.length > 0) {
       errorsHTML += '<ul class="validation-errors">';
       for (const error of result.errors) {
-        errorsHTML += `<li>${error}</li>`;
+        errorsHTML += `<li>${escapeHtml(error)}</li>`;
       }
       errorsHTML += "</ul>";
     }
@@ -681,7 +681,7 @@ function validateLesson(): void {
     if (result.hints.length > 0) {
       errorsHTML +=
         '<div style="margin-top: 8px;"><em>Hint: ' +
-        result.hints[0] +
+        escapeHtml(result.hints[0]) +
         "</em></div>";
     }
 

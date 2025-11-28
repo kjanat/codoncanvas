@@ -4,6 +4,18 @@
  */
 
 /**
+ * Escape HTML special characters to prevent XSS attacks
+ */
+export function escapeHtml(str: string): string {
+  return str
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#39;");
+}
+
+/**
  * Get an element by ID, throwing a clear error if not found
  */
 export function getElement<T extends HTMLElement = HTMLElement>(id: string): T {
