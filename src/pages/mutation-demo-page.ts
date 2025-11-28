@@ -17,14 +17,14 @@ injectShareStyles();
 
 const editor = document.getElementById("editor") as HTMLTextAreaElement;
 const canvasOriginal = document.getElementById(
-  "canvasOriginal",
+  "canvas-original",
 ) as HTMLCanvasElement;
 const canvasCurrent = document.getElementById(
-  "canvasCurrent",
+  "canvas-current",
 ) as HTMLCanvasElement;
 const diffContainer = getElement("diff-container");
-const statusContainer = getElement("statusContainer");
-const shareContainer = getElement("shareContainer");
+const statusContainer = getElement("status-container");
+const shareContainer = getElement("share-container");
 
 const lexer = new CodonLexer();
 const rendererOriginal = new Canvas2DRenderer(canvasOriginal);

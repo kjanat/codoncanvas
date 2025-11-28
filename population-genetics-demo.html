@@ -45,7 +45,7 @@
         <div class="controls">
           <div class="control-group">
             <label>Founder Genome (all organisms start with this):</label>
-            <textarea id="founderGenome">ATG GAA CCC GGA TAA</textarea>
+            <textarea id="founder-genome">ATG GAA CCC GGA TAA</textarea>
           </div>
 
           <div class="control-group">
@@ -53,19 +53,19 @@
             <div class="control-row">
               <div>
                 <label
-                  for="popSize"
+                  for="pop-size"
                   style="font-weight: normal; font-size: 13px"
                 >Population Size:</label>
-                <input type="number" id="popSize" min="2" max="12" value="6" />
+                <input type="number" id="pop-size" min="2" max="12" value="6" />
               </div>
               <div>
                 <label
-                  for="mutationRate"
+                  for="mutation-rate"
                   style="font-weight: normal; font-size: 13px"
                 >Mutation Rate (%):</label>
                 <input
                   type="number"
-                  id="mutationRate"
+                  id="mutation-rate"
                   min="0"
                   max="100"
                   value="15"
@@ -74,12 +74,12 @@
               </div>
               <div>
                 <label
-                  for="generationDelay"
+                  for="generation-delay"
                   style="font-weight: normal; font-size: 13px"
                 >Generation Delay (ms):</label>
                 <input
                   type="number"
-                  id="generationDelay"
+                  id="generation-delay"
                   min="100"
                   max="5000"
                   value="1000"
@@ -94,10 +94,10 @@
             <div class="control-row">
               <div>
                 <label
-                  for="mutationType"
+                  for="mutation-type"
                   style="font-weight: normal; font-size: 13px"
                 >Type:</label>
-                <select id="mutationType">
+                <select id="mutation-type">
                   <option value="balanced">Balanced (all types)</option>
                   <option value="point-only">Point mutations only</option>
                   <option value="frameshift-heavy">Frameshift-heavy</option>
@@ -110,10 +110,10 @@
           </div>
 
           <div class="button-group">
-            <button id="startBtn">Start Simulation</button>
-            <button id="pauseBtn" disabled>Pause</button>
-            <button id="resetBtn">Reset Population</button>
-            <button id="stepBtn">Single Generation</button>
+            <button id="start-btn">Start Simulation</button>
+            <button id="pause-btn" disabled>Pause</button>
+            <button id="reset-btn">Reset Population</button>
+            <button id="step-btn">Single Generation</button>
           </div>
         </div>
 
@@ -122,11 +122,11 @@
           <div class="stats-grid">
             <div class="stat-card">
               <div class="stat-label">Current Generation</div>
-              <div class="stat-value" id="currentGen">0</div>
+              <div class="stat-value" id="current-gen">0</div>
             </div>
             <div class="stat-card">
               <div class="stat-label">Total Mutations</div>
-              <div class="stat-value" id="totalMutations">0</div>
+              <div class="stat-value" id="total-mutations">0</div>
             </div>
             <div class="stat-card">
               <div class="stat-label">Genetic Diversity</div>
@@ -134,15 +134,15 @@
             </div>
             <div class="stat-card">
               <div class="stat-label">Unique Genomes</div>
-              <div class="stat-value" id="uniqueGenomes">1</div>
+              <div class="stat-value" id="unique-genomes">1</div>
             </div>
           </div>
         </div>
 
         <h2 style="margin-bottom: 20px">
-          Population (Generation <span id="generationDisplay">0</span>)
+          Population (Generation <span id="generation-display">0</span>)
         </h2>
-        <div class="population-grid" id="populationGrid"></div>
+        <div class="population-grid" id="population-grid"></div>
 
         <div class="info-box">
           <h3>💡 Observation Tips</h3>

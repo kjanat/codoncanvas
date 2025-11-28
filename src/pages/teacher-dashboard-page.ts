@@ -60,12 +60,12 @@ interface ClassroomStats {
 const dashboard = new TeacherDashboard();
 
 // DOM Elements
-const fileInput = getElement<HTMLInputElement>("fileInput");
+const fileInput = getElement<HTMLInputElement>("file-input");
 const dashboardEl = getElement("dashboard");
-const statsGrid = getElement("statsGrid");
-const atRiskSection = getElement("atRiskSection");
-const engagementBody = getElement("engagementBody");
-const tutorialMatrix = getElement("tutorialMatrix");
+const statsGrid = getElement("stats-grid");
+const atRiskSection = getElement("at-risk-section");
+const engagementBody = getElement("engagement-body");
+const tutorialMatrix = getElement("tutorial-matrix");
 
 // File input handler
 fileInput.addEventListener("change", async (e) => {

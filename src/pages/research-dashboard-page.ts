@@ -84,19 +84,19 @@ interface AnalysisReport {
 const metrics = new ResearchMetrics({ enabled: false }); // Read-only mode
 
 // DOM Elements
-const statusMessage = getElement("statusMessage");
-const noDataMessage = getElement("noDataMessage");
-const dataDisplay = getElement("dataDisplay");
-const totalSessions = getElement("totalSessions");
-const avgDuration = getElement("avgDuration");
-const totalDuration = getElement("totalDuration");
-const totalGenomes = getElement("totalGenomes");
-const totalMutations = getElement("totalMutations");
-const avgTimeToFirst = getElement("avgTimeToFirst");
-const totalErrors = getElement("totalErrors");
-const sessionsBody = getElement("sessionsBody");
-const analysisSection = getElement("analysisSection");
-const analysisResults = getElement("analysisResults");
+const statusMessage = getElement("status-message");
+const noDataMessage = getElement("no-data-message");
+const dataDisplay = getElement("data-display");
+const totalSessions = getElement("total-sessions");
+const avgDuration = getElement("avg-duration");
+const totalDuration = getElement("total-duration");
+const totalGenomes = getElement("total-genomes");
+const totalMutations = getElement("total-mutations");
+const avgTimeToFirst = getElement("avg-time-to-first");
+const totalErrors = getElement("total-errors");
+const sessionsBody = getElement("sessions-body");
+const analysisSection = getElement("analysis-section");
+const analysisResults = getElement("analysis-results");
 
 function showStatus(message: string, type = "info"): void {
   statusMessage.textContent = message;
@@ -179,9 +179,9 @@ function refreshData(): void {
   totalErrors.textContent = String(stats.totalErrors);
 
   // Update charts
-  createBarChart(stats.mutationTypeDistribution, "mutationChart");
-  createBarChart(stats.renderModePreferences, "renderModeChart");
-  createBarChart(stats.featureUsage, "featureChart");
+  createBarChart(stats.mutationTypeDistribution, "mutation-chart");
+  createBarChart(stats.renderModePreferences, "render-mode-chart");
+  createBarChart(stats.featureUsage, "feature-chart");
 
   // Update sessions table
   sessionsBody.innerHTML = "";

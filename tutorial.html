@@ -15,9 +15,9 @@
           <span>CodonCanvas Tutorial</span>
         </h1>
         <div class="progress-bar">
-          <div class="progress-fill" id="progressFill"></div>
+          <div class="progress-fill" id="progress-fill"></div>
         </div>
-        <div class="progress-text" id="progressText">0%</div>
+        <div class="progress-text" id="progress-text">0%</div>
       </div>
 
       <!-- Main Content -->
@@ -25,48 +25,48 @@
         <!-- Left Panel - Instructions -->
         <div class="instructions-panel">
           <div class="lesson-header">
-            <div class="module-badge" id="moduleBadge">MODULE 1</div>
-            <h2 class="lesson-title" id="lessonTitle">Loading...</h2>
-            <p class="lesson-description" id="lessonDescription"></p>
+            <div class="module-badge" id="module-badge">MODULE 1</div>
+            <h2 class="lesson-title" id="lesson-title">Loading...</h2>
+            <p class="lesson-description" id="lesson-description"></p>
           </div>
 
           <div class="lesson-content">
-            <ul class="instruction-list" id="instructionList"></ul>
+            <ul class="instruction-list" id="instruction-list"></ul>
 
             <div
               class="starter-code-section"
-              id="starterCodeSection"
+              id="starter-code-section"
               style="display: none"
             >
               <h4>🎯 Starter Code</h4>
-              <pre class="starter-code" id="starterCode"></pre>
+              <pre class="starter-code" id="starter-code"></pre>
             </div>
 
             <div class="hints-section">
-              <button class="hint-toggle" id="hintToggle">
+              <button class="hint-toggle" id="hint-toggle">
                 <span>💡 Need a hint?</span>
-                <span id="hintArrow">▼</span>
+                <span id="hint-arrow">▼</span>
               </button>
-              <div class="hint-content" id="hintContent"></div>
+              <div class="hint-content" id="hint-content"></div>
             </div>
 
             <div class="objectives-section">
               <h4>📚 Learning Objectives</h4>
-              <ul id="objectivesList"></ul>
+              <ul id="objectives-list"></ul>
             </div>
           </div>
 
           <!-- Navigation Controls -->
           <div class="nav-controls">
-            <button class="nav-btn secondary" id="prevBtn" disabled>
+            <button class="nav-btn secondary" id="prev-btn" disabled>
               <span>←</span>
               <span>Previous</span>
             </button>
-            <button class="nav-btn validate" id="validateBtn">
+            <button class="nav-btn validate" id="validate-btn">
               <span>✓</span>
               <span>Check Answer</span>
             </button>
-            <button class="nav-btn primary" id="nextBtn">
+            <button class="nav-btn primary" id="next-btn">
               <span>Next</span>
               <span>→</span>
             </button>
@@ -83,10 +83,10 @@
             </div>
             <textarea
               class="code-editor"
-              id="codeEditor"
+              id="code-editor"
               placeholder="Type your CodonCanvas code here..."
             ></textarea>
-            <div class="validation-message" id="validationMessage"></div>
+            <div class="validation-message" id="validation-message"></div>
           </div>
 
           <!-- Canvas -->
@@ -104,12 +104,12 @@
     </div>
 
     <!-- Module Selector Overlay -->
-    <div class="module-selector" id="moduleSelector">
+    <div class="module-selector" id="module-selector">
       <div class="module-grid">
         <h2>Choose Your Learning Path</h2>
         <p>Select a module to begin or continue your CodonCanvas journey</p>
 
-        <div class="modules" id="modulesGrid"></div>
+        <div class="modules" id="modules-grid"></div>
 
         <div class="exit-tutorial">
           <button class="exit-btn" onclick="window.location.href='index.html'">
@@ -120,10 +120,10 @@
     </div>
 
     <!-- Completion Badge -->
-    <div class="completion-badge" id="completionBadge">
+    <div class="completion-badge" id="completion-badge">
       <span class="completion-emoji">🏆</span>
       <h2>Lesson Complete!</h2>
-      <p id="completionMessage"></p>
+      <p id="completion-message"></p>
       <button class="nav-btn primary" onclick="hideCompletionBadge()">
         Continue
       </button>

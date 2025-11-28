@@ -554,8 +554,8 @@ describe("MutationDemos", () => {
 
   // initializeShareSystem
   describe("initializeShareSystem", () => {
-    test("returns early if shareContainer not found", () => {
-      const container = document.getElementById("shareContainer");
+    test("returns early if share-container not found", () => {
+      const container = document.getElementById("share-container");
       if (!container) {
         // Should return early
         expect(container).toBeNull();

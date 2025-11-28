@@ -41,7 +41,7 @@
 
             <div class="control-group">
               <label>Fitness Goal</label>
-              <select id="fitnessGoal">
+              <select id="fitness-goal">
                 <option value="center-circle">Centered Circle</option>
                 <option value="corners">Four Corners</option>
                 <option value="symmetry">Horizontal Symmetry</option>
@@ -53,44 +53,44 @@
               <label>Population Size</label>
               <input
                 type="range"
-                id="populationSize"
+                id="population-size"
                 min="10"
                 max="50"
                 value="20"
                 step="5"
               />
-              <span class="range-value" id="populationSizeValue">20</span>
+              <span class="range-value" id="population-size-value">20</span>
             </div>
 
             <div class="control-group">
               <label>Mutation Rate</label>
               <input
                 type="range"
-                id="mutationRate"
+                id="mutation-rate"
                 min="0"
                 max="1"
                 value="0.1"
                 step="0.05"
               />
-              <span class="range-value" id="mutationRateValue">0.10</span>
+              <span class="range-value" id="mutation-rate-value">0.10</span>
             </div>
 
             <div class="control-group">
               <label>Crossover Rate</label>
               <input
                 type="range"
-                id="crossoverRate"
+                id="crossover-rate"
                 min="0"
                 max="1"
                 value="0.7"
                 step="0.05"
               />
-              <span class="range-value" id="crossoverRateValue">0.70</span>
+              <span class="range-value" id="crossover-rate-value">0.70</span>
             </div>
 
             <div class="control-group">
               <label>Selection Strategy</label>
-              <select id="selectionStrategy">
+              <select id="selection-strategy">
                 <option value="tournament">Tournament</option>
                 <option value="roulette">Roulette Wheel</option>
               </select>
@@ -98,7 +98,7 @@
 
             <div class="control-group">
               <label>Crossover Strategy</label>
-              <select id="crossoverStrategy">
+              <select id="crossover-strategy">
                 <option value="single-point">Single-Point</option>
                 <option value="uniform">Uniform</option>
                 <option value="none">None (Mutation Only)</option>
@@ -106,28 +106,28 @@
             </div>
 
             <div class="button-grid">
-              <button id="startBtn">▶ Start</button>
-              <button id="pauseBtn" disabled>⏸ Pause</button>
-              <button id="stepBtn">⏭ Step</button>
-              <button id="resetBtn">🔄 Reset</button>
+              <button id="start-btn">▶ Start</button>
+              <button id="pause-btn" disabled>⏸ Pause</button>
+              <button id="step-btn">⏭ Step</button>
+              <button id="reset-btn">🔄 Reset</button>
             </div>
 
             <div class="stats-grid">
               <div class="stat-box">
                 <div class="stat-label">Generation</div>
-                <div class="stat-value" id="generationStat">0</div>
+                <div class="stat-value" id="generation-stat">0</div>
               </div>
               <div class="stat-box">
                 <div class="stat-label">Best Fitness</div>
-                <div class="stat-value" id="bestFitnessStat">0.00</div>
+                <div class="stat-value" id="best-fitness-stat">0.00</div>
               </div>
               <div class="stat-box">
                 <div class="stat-label">Avg Fitness</div>
-                <div class="stat-value" id="avgFitnessStat">0.00</div>
+                <div class="stat-value" id="avg-fitness-stat">0.00</div>
               </div>
               <div class="stat-box">
                 <div class="stat-label">Diversity</div>
-                <div class="stat-value" id="diversityStat">100%</div>
+                <div class="stat-value" id="diversity-stat">100%</div>
               </div>
             </div>
           </div>
@@ -140,25 +140,25 @@
             <div class="visualization-grid">
               <div class="canvas-container">
                 <div class="canvas-label">🎯 Target Pattern</div>
-                <canvas id="targetCanvas" width="400" height="400"></canvas>
+                <canvas id="target-canvas" width="400" height="400"></canvas>
               </div>
               <div class="canvas-container">
                 <div class="canvas-label">
                   🏆 Best Individual (Fitness:
-                  <span id="bestFitnessLabel">0.00</span>)
+                  <span id="best-fitness-label">0.00</span>)
                 </div>
-                <canvas id="bestCanvas" width="400" height="400"></canvas>
+                <canvas id="best-canvas" width="400" height="400"></canvas>
               </div>
             </div>
 
             <div class="info-box">
               <h3>📊 Fitness Over Time</h3>
-              <canvas id="chartCanvas" width="800" height="200"></canvas>
+              <canvas id="chart-canvas" width="800" height="200"></canvas>
             </div>
 
             <div class="info-box">
               <h3>👥 Current Population (Top 10)</h3>
-              <div class="population-grid" id="populationGrid"></div>
+              <div class="population-grid" id="population-grid"></div>
             </div>
           </div>
         </div>

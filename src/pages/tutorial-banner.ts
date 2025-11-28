@@ -1,6 +1,6 @@
 // Tutorial Banner Dismiss Logic
-const tutorialBanner = document.getElementById("tutorialBanner");
-const dismissBtn = document.getElementById("dismissTutorialBanner");
+const tutorialBanner = document.getElementById("tutorial-banner");
+const dismissBtn = document.getElementById("dismiss-tutorial-banner");
 const BANNER_DISMISSED_KEY = "codoncanvas-tutorial-banner-dismissed";
 
 // Hide banner if previously dismissed

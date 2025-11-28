@@ -26,35 +26,37 @@ let founderGenome = "";
 
 // DOM elements
 const founderGenomeInput = document.getElementById(
-  "founderGenome",
+  "founder-genome",
 ) as HTMLTextAreaElement;
-const popSizeInput = document.getElementById("popSize") as HTMLInputElement;
+const popSizeInput = document.getElementById("pop-size") as HTMLInputElement;
 const mutationRateInput = document.getElementById(
-  "mutationRate",
+  "mutation-rate",
 ) as HTMLInputElement;
 const generationDelayInput = document.getElementById(
-  "generationDelay",
+  "generation-delay",
 ) as HTMLInputElement;
 const mutationTypeSelect = document.getElementById(
-  "mutationType",
+  "mutation-type",
 ) as HTMLSelectElement;
-const startBtn = document.getElementById("startBtn") as HTMLButtonElement;
-const pauseBtn = document.getElementById("pauseBtn") as HTMLButtonElement;
-const resetBtn = document.getElementById("resetBtn") as HTMLButtonElement;
-const stepBtn = document.getElementById("stepBtn") as HTMLButtonElement;
+const startBtn = document.getElementById("start-btn") as HTMLButtonElement;
+const pauseBtn = document.getElementById("pause-btn") as HTMLButtonElement;
+const resetBtn = document.getElementById("reset-btn") as HTMLButtonElement;
+const stepBtn = document.getElementById("step-btn") as HTMLButtonElement;
 const populationGrid = document.getElementById(
-  "populationGrid",
+  "population-grid",
 ) as HTMLDivElement;
-const currentGenSpan = document.getElementById("currentGen") as HTMLSpanElement;
+const currentGenSpan = document.getElementById(
+  "current-gen",
+) as HTMLSpanElement;
 const totalMutationsSpan = document.getElementById(
-  "totalMutations",
+  "total-mutations",
 ) as HTMLSpanElement;
 const diversitySpan = document.getElementById("diversity") as HTMLSpanElement;
 const uniqueGenomesSpan = document.getElementById(
-  "uniqueGenomes",
+  "unique-genomes",
 ) as HTMLSpanElement;
 const generationDisplay = document.getElementById(
-  "generationDisplay",
+  "generation-display",
 ) as HTMLSpanElement;
 
 // Initialize population

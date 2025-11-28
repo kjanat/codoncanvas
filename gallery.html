@@ -34,7 +34,7 @@
         <div class="filter-row" style="margin-top: 1rem">
           <div class="filter-group">
             <label>Difficulty Level</label>
-            <div class="filter-chips" id="difficultyFilters">
+            <div class="filter-chips" id="difficulty-filters">
               <button class="chip active" data-difficulty="all">All</button>
               <button class="chip" data-difficulty="beginner">Beginner</button>
               <button class="chip" data-difficulty="intermediate">
@@ -52,8 +52,8 @@
           style="margin-top: 1rem; justify-content: space-between"
         >
           <div class="sort-control">
-            <label for="sortBy">Sort by:</label>
-            <select id="sortBy">
+            <label for="sort-by">Sort by:</label>
+            <select id="sort-by">
               <option value="default">Default Order</option>
               <option value="name">Name (A-Z)</option>
               <option value="difficulty">Difficulty (Easy to Hard)</option>
@@ -61,28 +61,28 @@
             </select>
           </div>
           <div class="stats">
-            Showing <span id="visibleCount">38</span> of
-            <span id="totalCount">38</span> examples
+            Showing <span id="visible-count">38</span> of
+            <span id="total-count">38</span> examples
           </div>
         </div>
       </div>
 
-      <div class="gallery-grid" id="galleryGrid">
+      <div class="gallery-grid" id="gallery-grid">
         <!-- Gallery cards will be inserted here -->
       </div>
 
       <!-- Modal -->
-      <div class="modal" id="previewModal">
+      <div class="modal" id="preview-modal">
         <div class="modal-content">
           <div class="modal-header">
-            <h2 class="modal-title" id="modalTitle">Example Name</h2>
+            <h2 class="modal-title" id="modal-title">Example Name</h2>
             <button class="modal-close" onclick="closeModal()">&times;</button>
           </div>
           <div class="modal-body">
             <div class="preview-section">
               <div class="section-title">Preview</div>
               <canvas
-                id="modalCanvas"
+                id="modal-canvas"
                 class="preview-canvas"
                 width="400"
                 height="400"
@@ -90,7 +90,7 @@
             </div>
             <div class="code-section">
               <div class="section-title">Genome Code</div>
-              <div class="code-viewer" id="modalCode"></div>
+              <div class="code-viewer" id="modal-code"></div>
             </div>
           </div>
           <div class="modal-footer">

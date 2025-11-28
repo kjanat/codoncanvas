@@ -12,9 +12,9 @@ injectShareStyles();
 
 const editor = document.getElementById("editor") as HTMLTextAreaElement;
 const canvas = document.getElementById("canvas") as HTMLCanvasElement;
-const timelineContainer = getElement("timelineContainer");
-const statusContainer = getElement("statusContainer");
-const shareContainer = getElement("shareContainer");
+const timelineContainer = getElement("timeline-container");
+const statusContainer = getElement("status-container");
+const shareContainer = getElement("share-container");
 
 // Initialize share system
 new ShareSystem({
@@ -94,13 +94,13 @@ async function exportGif(): Promise<void> {
   }
 
   try {
-    const fpsSelect = document.getElementById("gifFps") as HTMLSelectElement;
+    const fpsSelect = document.getElementById("gif-fps") as HTMLSelectElement;
     const qualitySelect = document.getElementById(
-      "gifQuality",
+      "gif-quality",
     ) as HTMLSelectElement;
-    const progressContainer = document.getElementById("gifProgress");
-    const progressBar = document.getElementById("gifProgressBar");
-    const progressText = document.getElementById("gifProgressText");
+    const progressContainer = document.getElementById("gif-progress");
+    const progressBar = document.getElementById("gif-progress-bar");
+    const progressText = document.getElementById("gif-progress-text");
 
     const fps = parseInt(fpsSelect.value, 10);
     const quality = parseInt(qualitySelect.value, 10);
@@ -136,7 +136,7 @@ async function exportGif(): Promise<void> {
       `GIF export failed: ${error instanceof Error ? error.message : "Unknown error"}`,
       "error",
     );
-    const progressContainer = document.getElementById("gifProgress");
+    const progressContainer = document.getElementById("gif-progress");
     if (progressContainer) progressContainer.style.display = "none";
   }
 }

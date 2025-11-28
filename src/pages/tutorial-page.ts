@@ -535,28 +535,32 @@ const lexer = new CodonLexer();
 let currentLesson: TutorialLesson = tutorial.getCurrentLesson();
 
 // DOM Elements
-const codeEditor = document.getElementById("codeEditor") as HTMLTextAreaElement;
+const codeEditor = document.getElementById(
+  "code-editor",
+) as HTMLTextAreaElement;
 const canvas = document.getElementById("output-canvas") as HTMLCanvasElement;
-const moduleBadge = getElement("moduleBadge");
-const lessonTitle = getElement("lessonTitle");
-const lessonDescription = getElement("lessonDescription");
-const instructionList = getElement("instructionList");
-const starterCodeSection = getElement("starterCodeSection");
-const starterCode = getElement("starterCode");
-const hintToggle = getElement("hintToggle");
-const hintContent = getElement("hintContent");
-const hintArrow = getElement("hintArrow");
-const objectivesList = getElement("objectivesList");
-const validationMessage = getElement("validationMessage");
-const progressFill = getElement("progressFill");
-const progressText = getElement("progressText");
-const prevBtn = document.getElementById("prevBtn") as HTMLButtonElement;
-const nextBtn = document.getElementById("nextBtn") as HTMLButtonElement;
-const validateBtn = document.getElementById("validateBtn") as HTMLButtonElement;
-const moduleSelector = getElement("moduleSelector");
-const modulesGrid = getElement("modulesGrid");
-const completionBadge = getElement("completionBadge");
-const completionMessage = getElement("completionMessage");
+const moduleBadge = getElement("module-badge");
+const lessonTitle = getElement("lesson-title");
+const lessonDescription = getElement("lesson-description");
+const instructionList = getElement("instruction-list");
+const starterCodeSection = getElement("starter-code-section");
+const starterCode = getElement("starter-code");
+const hintToggle = getElement("hint-toggle");
+const hintContent = getElement("hint-content");
+const hintArrow = getElement("hint-arrow");
+const objectivesList = getElement("objectives-list");
+const validationMessage = getElement("validation-message");
+const progressFill = getElement("progress-fill");
+const progressText = getElement("progress-text");
+const prevBtn = document.getElementById("prev-btn") as HTMLButtonElement;
+const nextBtn = document.getElementById("next-btn") as HTMLButtonElement;
+const validateBtn = document.getElementById(
+  "validate-btn",
+) as HTMLButtonElement;
+const moduleSelector = getElement("module-selector");
+const modulesGrid = getElement("modules-grid");
+const completionBadge = getElement("completion-badge");
+const completionMessage = getElement("completion-message");
 
 // Initialize renderer
 const renderer = new Canvas2DRenderer(canvas);

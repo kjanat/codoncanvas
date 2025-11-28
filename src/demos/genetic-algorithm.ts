@@ -10,54 +10,56 @@ let animationId: Timer | null = null;
 
 // Elements
 const targetCanvas = document.getElementById(
-  "targetCanvas",
+  "target-canvas",
 ) as HTMLCanvasElement;
-const bestCanvas = document.getElementById("bestCanvas") as HTMLCanvasElement;
-const chartCanvas = document.getElementById("chartCanvas") as HTMLCanvasElement;
+const bestCanvas = document.getElementById("best-canvas") as HTMLCanvasElement;
+const chartCanvas = document.getElementById(
+  "chart-canvas",
+) as HTMLCanvasElement;
 const populationGrid = document.getElementById(
-  "populationGrid",
+  "population-grid",
 ) as HTMLDivElement;
 
-const startBtn = document.getElementById("startBtn") as HTMLButtonElement;
-const pauseBtn = document.getElementById("pauseBtn") as HTMLButtonElement;
-const stepBtn = document.getElementById("stepBtn") as HTMLButtonElement;
-const resetBtn = document.getElementById("resetBtn") as HTMLButtonElement;
+const startBtn = document.getElementById("start-btn") as HTMLButtonElement;
+const pauseBtn = document.getElementById("pause-btn") as HTMLButtonElement;
+const stepBtn = document.getElementById("step-btn") as HTMLButtonElement;
+const resetBtn = document.getElementById("reset-btn") as HTMLButtonElement;
 
 const fitnessGoalSelect = document.getElementById(
-  "fitnessGoal",
+  "fitness-goal",
 ) as HTMLSelectElement;
 const populationSizeSlider = document.getElementById(
-  "populationSize",
+  "population-size",
 ) as HTMLInputElement;
 const mutationRateSlider = document.getElementById(
-  "mutationRate",
+  "mutation-rate",
 ) as HTMLInputElement;
 const crossoverRateSlider = document.getElementById(
-  "crossoverRate",
+  "crossover-rate",
 ) as HTMLInputElement;
 const selectionStrategySelect = document.getElementById(
-  "selectionStrategy",
+  "selection-strategy",
 ) as HTMLSelectElement;
 const crossoverStrategySelect = document.getElementById(
-  "crossoverStrategy",
+  "crossover-strategy",
 ) as HTMLSelectElement;
 
 // Update range displays
 populationSizeSlider.addEventListener("input", (e) => {
   const target = e.target as HTMLInputElement;
-  const val = document.getElementById("populationSizeValue");
+  const val = document.getElementById("population-size-value");
   if (val) val.textContent = target.value;
 });
 
 mutationRateSlider.addEventListener("input", (e) => {
   const target = e.target as HTMLInputElement;
-  const val = document.getElementById("mutationRateValue");
+  const val = document.getElementById("mutation-rate-value");
   if (val) val.textContent = parseFloat(target.value).toFixed(2);
 });
 
 crossoverRateSlider.addEventListener("input", (e) => {
   const target = e.target as HTMLInputElement;
-  const val = document.getElementById("crossoverRateValue");
+  const val = document.getElementById("crossover-rate-value");
   if (val) val.textContent = parseFloat(target.value).toFixed(2);
 });
 
@@ -372,7 +374,7 @@ function updatePopulationGrid() {
 
     card.addEventListener("click", () => {
       renderGenome(individual.genome, bestCanvas);
-      const label = document.getElementById("bestFitnessLabel");
+      const label = document.getElementById("best-fitness-label");
       if (label) label.textContent = individual.fitness.toFixed(3);
     });
 
@@ -390,20 +392,20 @@ function updateStats() {
   const stats = ga.getStats();
   const lastStat = stats[stats.length - 1];
 
-  const genStat = document.getElementById("generationStat");
+  const genStat = document.getElementById("generation-stat");
   if (genStat) genStat.textContent = ga.getGeneration().toString();
 
-  const bestStat = document.getElementById("bestFitnessStat");
+  const bestStat = document.getElementById("best-fitness-stat");
   if (bestStat) bestStat.textContent = lastStat.bestFitness.toFixed(3);
 
-  const avgStat = document.getElementById("avgFitnessStat");
+  const avgStat = document.getElementById("avg-fitness-stat");
   if (avgStat) avgStat.textContent = lastStat.avgFitness.toFixed(3);
 
-  const divStat = document.getElementById("diversityStat");
+  const divStat = document.getElementById("diversity-stat");
   if (divStat) divStat.textContent = `${Math.round(lastStat.diversity * 100)}%`;
 
   const best = ga.getBest();
-  const bestLabel = document.getElementById("bestFitnessLabel");
+  const bestLabel = document.getElementById("best-fitness-label");
   if (bestLabel) bestLabel.textContent = best.fitness.toFixed(3);
   renderGenome(best.genome, bestCanvas);
 
@@ -486,19 +488,19 @@ resetBtn.addEventListener("click", () => {
   }
   ga = null;
 
-  const genStat = document.getElementById("generationStat");
+  const genStat = document.getElementById("generation-stat");
   if (genStat) genStat.textContent = "0";
 
-  const bestStat = document.getElementById("bestFitnessStat");
+  const bestStat = document.getElementById("best-fitness-stat");
   if (bestStat) bestStat.textContent = "0.00";
 
-  const avgStat = document.getElementById("avgFitnessStat");
+  const avgStat = document.getElementById("avg-fitness-stat");
   if (avgStat) avgStat.textContent = "0.00";
 
-  const divStat = document.getElementById("diversityStat");
+  const divStat = document.getElementById("diversity-stat");
   if (divStat) divStat.textContent = "100%";
 
-  const bestLabel = document.getElementById("bestFitnessLabel");
+  const bestLabel = document.getElementById("best-fitness-label");
   if (bestLabel) bestLabel.textContent = "0.00";
 
   const ctx = bestCanvas.getContext("2d");

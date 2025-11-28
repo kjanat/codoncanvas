@@ -28,18 +28,18 @@ let currentCandidates: Candidate[] = [];
 const achievementEngine = new AchievementEngine();
 const achievementUI = new AchievementUI(
   achievementEngine,
-  "achievementContainer",
+  "achievement-container",
 );
 
-const statusContainer = getElement("statusContainer");
-const startPanel = getElement("startPanel");
-const evolutionPanel = getElement("evolutionPanel");
-const lineagePanel = getElement("lineagePanel");
-const sharePanel = getElement("sharePanel");
+const statusContainer = getElement("status-container");
+const startPanel = getElement("start-panel");
+const evolutionPanel = getElement("evolution-panel");
+const lineagePanel = getElement("lineage-panel");
+const sharePanel = getElement("share-panel");
 const candidatesGrid = getElement("candidates-grid");
 const lineageContainer = getElement("lineage-container");
-const shareContainer = getElement("shareContainer");
-const generateBtn = getElement<HTMLButtonElement>("generateBtn");
+const shareContainer = getElement("share-container");
+const generateBtn = getElement<HTMLButtonElement>("generate-btn");
 
 // Initialize share system
 new ShareSystem({
@@ -65,10 +65,10 @@ function updateStats(): void {
   );
   const lineage = engine.getLineage();
 
-  const generationNumber = document.getElementById("generationNumber");
-  const genStat = document.getElementById("genStat");
-  const mutationStat = document.getElementById("mutationStat");
-  const lineageStat = document.getElementById("lineageStat");
+  const generationNumber = document.getElementById("generation-number");
+  const genStat = document.getElementById("gen-stat");
+  const mutationStat = document.getElementById("mutation-stat");
+  const lineageStat = document.getElementById("lineage-stat");
 
   if (generationNumber) generationNumber.textContent = String(gen);
   if (genStat) genStat.textContent = String(gen);

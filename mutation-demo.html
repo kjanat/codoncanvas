@@ -18,14 +18,18 @@
       <div class="info-box">
         <h3>How to use:</h3>
         <p>
-          1. Load an example or write your own genome<br />
-          2. Click a mutation button to apply a mutation<br />
-          3. View the side-by-side comparison showing changes<br />
-          4. Observe how different mutation types produce different effects
+          <ol>
+            <li>Load an example or write your own genome</li>
+            <li>Click a mutation button to apply a mutation</li>
+            <li>View the side-by-side comparison showing changes</li>
+            <li>
+              Observe how different mutation types produce different effects
+            </li>
+          </ol>
         </p>
       </div>
 
-      <div id="statusContainer"></div>
+      <div id="status-container"></div>
 
       <div class="main-content">
         <div class="editor-wrapper">
@@ -91,14 +95,14 @@ ATG GAA AAT GGA TAA</textarea>
         <div class="panel">
           <div class="panel-header">Original Output</div>
           <div class="canvas-container">
-            <canvas id="canvasOriginal" width="350" height="350"></canvas>
+            <canvas id="canvas-original" width="350" height="350"></canvas>
           </div>
         </div>
 
         <div class="panel">
           <div class="panel-header">Current Output</div>
           <div class="canvas-container">
-            <canvas id="canvasCurrent" width="350" height="350"></canvas>
+            <canvas id="canvas-current" width="350" height="350"></canvas>
           </div>
         </div>
 
@@ -109,7 +113,7 @@ ATG GAA AAT GGA TAA</textarea>
       <div class="panel" style="margin-top: 1rem">
         <div class="panel-header">Share & Export</div>
         <div class="panel-content">
-          <div id="shareContainer"></div>
+          <div id="share-container"></div>
         </div>
       </div>
     </div>

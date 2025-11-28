@@ -173,7 +173,7 @@ function initializeDemos(): void {
  * Initialize share system for demos page
  */
 function initializeShareSystem(): void {
-  const shareContainer = document.getElementById("shareContainer");
+  const shareContainer = document.getElementById("share-container");
   if (!shareContainer) {
     return;
   }

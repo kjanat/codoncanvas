@@ -28,7 +28,7 @@
         </p>
       </div>
 
-      <div id="statusContainer"></div>
+      <div id="status-container"></div>
 
       <div class="main-content">
         <div class="panel editor-section">
@@ -65,7 +65,7 @@ ATG GAA AAT GGA TAA</textarea>
         <div class="panel">
           <div class="panel-header">Timeline Controls</div>
           <div class="panel-content">
-            <div id="timelineContainer"></div>
+            <div id="timeline-container"></div>
           </div>
         </div>
 
@@ -73,14 +73,14 @@ ATG GAA AAT GGA TAA</textarea>
         <div class="panel" style="margin-top: 1rem">
           <div class="panel-header">Share & Export</div>
           <div class="panel-content">
-            <div id="shareContainer"></div>
+            <div id="share-container"></div>
             <div
               class="button-group"
               style="margin-top: 1rem; padding-top: 1rem; border-top: 1px solid #3e3e42"
             >
               <button onclick="exportGif()">📹 Export Animation as GIF</button>
               <select
-                id="gifFps"
+                id="gif-fps"
                 style="background: #3e3e42; color: #d4d4d4; border: 1px solid #505052; padding: 0.5rem; border-radius: 3px"
               >
                 <option value="2">2 FPS</option>
@@ -90,7 +90,7 @@ ATG GAA AAT GGA TAA</textarea>
                 <option value="10">10 FPS</option>
               </select>
               <select
-                id="gifQuality"
+                id="gif-quality"
                 style="background: #3e3e42; color: #d4d4d4; border: 1px solid #505052; padding: 0.5rem; border-radius: 3px"
               >
                 <option value="5">Best Quality (slow)</option>
@@ -99,7 +99,7 @@ ATG GAA AAT GGA TAA</textarea>
               </select>
             </div>
             <div
-              id="gifProgress"
+              id="gif-progress"
               style="display: none; margin-top: 0.75rem; padding: 0.75rem; background: #1e1e1e; border-radius: 4px; border: 1px solid #3e3e42"
             >
               <div style="color: #858585; font-size: 0.875rem; margin-bottom: 0.5rem">
@@ -107,13 +107,13 @@ ATG GAA AAT GGA TAA</textarea>
               </div>
               <div style="background: #3e3e42; height: 20px; border-radius: 3px; overflow: hidden">
                 <div
-                  id="gifProgressBar"
+                  id="gif-progress-bar"
                   style="background: #0e639c; height: 100%; width: 0%; transition: width 0.3s"
                 >
                 </div>
               </div>
               <div
-                id="gifProgressText"
+                id="gif-progress-text"
                 style="color: #4ec9b0; font-size: 0.75rem; margin-top: 0.5rem"
               >
                 0%

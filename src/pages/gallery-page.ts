@@ -311,14 +311,16 @@ const difficultyOrder: Record<string, number> = {
 
 // DOM elements
 const searchInput = document.getElementById("search") as HTMLInputElement;
-const sortSelect = document.getElementById("sortBy") as HTMLSelectElement;
-const galleryGrid = getElement("galleryGrid");
-const visibleCount = getElement("visibleCount");
-const totalCount = getElement("totalCount");
-const modalTitle = getElement("modalTitle");
-const previewModal = getElement("previewModal");
-const modalCode = getElement("modalCode");
-const modalCanvas = document.getElementById("modalCanvas") as HTMLCanvasElement;
+const sortSelect = document.getElementById("sort-by") as HTMLSelectElement;
+const galleryGrid = getElement("gallery-grid");
+const visibleCount = getElement("visible-count");
+const totalCount = getElement("total-count");
+const modalTitle = getElement("modal-title");
+const previewModal = getElement("preview-modal");
+const modalCode = getElement("modal-code");
+const modalCanvas = document.getElementById(
+  "modal-canvas",
+) as HTMLCanvasElement;
 
 // Initialize
 renderGallery();
@@ -330,9 +332,9 @@ searchInput.addEventListener("input", (e) => {
 });
 
 // Difficulty filters
-for (const chip of document.querySelectorAll("#difficultyFilters .chip")) {
+for (const chip of document.querySelectorAll("#difficulty-filters .chip")) {
   chip.addEventListener("click", (e) => {
-    for (const c of document.querySelectorAll("#difficultyFilters .chip")) {
+    for (const c of document.querySelectorAll("#difficulty-filters .chip")) {
       c.classList.remove("active");
     }
     (e.target as HTMLElement).classList.add("active");
@@ -533,7 +535,7 @@ window.openInPlayground = openInPlayground;
 
 // Close modal on background click
 previewModal.addEventListener("click", (e) => {
-  if ((e.target as HTMLElement).id === "previewModal") {
+  if ((e.target as HTMLElement).id === "preview-modal") {
     closeModal();
   }
 });

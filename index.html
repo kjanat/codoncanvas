@@ -95,7 +95,7 @@
               </label>
             </div>
             <button
-              id="themeToggleBtn"
+              id="theme-toggle-btn"
               class="secondary"
               aria-label="Cycle through themes: dark, light, high contrast"
               title="Change theme"
@@ -108,7 +108,7 @@
 
       <!-- Tutorial Onboarding Banner -->
       <div
-        id="tutorialBanner"
+        id="tutorial-banner"
         class="tutorial-banner"
         role="region"
         aria-label="Tutorial onboarding"
@@ -126,7 +126,7 @@
           <a href="gallery.html" class="tutorial-banner-btn secondary"
           >Browse Examples 🎨</a>
           <button
-            id="dismissTutorialBanner"
+            id="dismiss-tutorial-banner"
             class="tutorial-banner-dismiss"
             aria-label="Dismiss tutorial banner"
             title="Don't show this again"
@@ -136,21 +136,21 @@
         </div>
       </div>
 
-      <div id="playgroundContainer" style="display: contents">
+      <div id="playground-container" style="display: contents">
         <main id="main-content" class="editor-panel">
           <nav class="toolbar" role="toolbar" aria-label="Main controls">
-            <button id="runBtn" aria-label="Run genome program (Ctrl+Enter)">
+            <button id="run-btn" aria-label="Run genome program (Ctrl+Enter)">
               ▶ Run
             </button>
             <button
-              id="clearBtn"
+              id="clear-btn"
               class="secondary"
               aria-label="Clear canvas output"
             >
               Clear Canvas
             </button>
             <button
-              id="timelineToggleBtn"
+              id="timeline-toggle-btn"
               class="secondary"
               aria-label="Toggle timeline scrubber"
               title="Show/hide step-through execution timeline"
@@ -158,7 +158,7 @@
               ⏱️ Timeline
             </button>
             <button
-              id="audioToggleBtn"
+              id="audio-toggle-btn"
               class="secondary"
               aria-label="Visual mode - click for audio"
               title="Cycle through visual, audio, and multi-sensory modes"
@@ -167,19 +167,19 @@
             </button>
 
             <div class="example-filters">
-              <label for="searchInput" class="sr-only">Search examples</label>
+              <label for="search-input" class="sr-only">Search examples</label>
               <input
                 type="text"
-                id="searchInput"
+                id="search-input"
                 placeholder="🔍 Search examples..."
                 aria-label="Search examples by name or description"
                 style="width: 150px; padding: 6px 8px; border: 1px solid #3c3c3c; background: #1e1e1e; color: #d4d4d4; border-radius: 4px; font-size: 13px"
               />
 
-              <label for="difficultyFilter" class="sr-only"
+              <label for="difficulty-filter" class="sr-only"
               >Filter by difficulty</label>
               <select
-                id="difficultyFilter"
+                id="difficulty-filter"
                 aria-label="Filter examples by difficulty level"
                 style="padding: 6px 8px; border: 1px solid #3c3c3c; background: #1e1e1e; color: #d4d4d4; border-radius: 4px; font-size: 13px"
               >
@@ -189,10 +189,10 @@
                 <option value="advanced">🌳 Advanced</option>
               </select>
 
-              <label for="conceptFilter" class="sr-only"
+              <label for="concept-filter" class="sr-only"
               >Filter by concept</label>
               <select
-                id="conceptFilter"
+                id="concept-filter"
                 aria-label="Filter examples by programming concept"
                 style="padding: 6px 8px; border: 1px solid #3c3c3c; background: #1e1e1e; color: #d4d4d4; border-radius: 4px; font-size: 13px"
               >
@@ -206,23 +206,23 @@
               </select>
             </div>
 
-            <label for="exampleSelect" class="sr-only"
+            <label for="example-select" class="sr-only"
             >Load example genome</label>
             <select
-              id="exampleSelect"
+              id="example-select"
               aria-label="Select example genome to load"
             >
               <option value="">Load Example...</option>
             </select>
             <button
-              id="exportBtn"
+              id="export-btn"
               class="secondary"
               aria-label="Export canvas as PNG image"
             >
               📄 Export PNG
             </button>
             <button
-              id="exportAudioBtn"
+              id="export-audio-btn"
               class="secondary"
               aria-label="Export audio as WAV file"
               style="display: none"
@@ -230,7 +230,7 @@
               🎵 Export Audio
             </button>
             <button
-              id="exportMidiBtn"
+              id="export-midi-btn"
               class="secondary"
               aria-label="Export as MIDI file"
               style="display: none"
@@ -238,38 +238,38 @@
               🎹 Export MIDI
             </button>
             <button
-              id="analyzeBtn"
+              id="analyze-btn"
               class="secondary"
               aria-label="Analyze codon usage patterns"
             >
               📊 Analyze
             </button>
             <button
-              id="saveGenomeBtn"
+              id="save-genome-btn"
               class="secondary"
               aria-label="Save current genome to file"
             >
               💾 Save .genome
             </button>
             <button
-              id="loadGenomeBtn"
+              id="load-genome-btn"
               class="secondary"
               aria-label="Load genome from file"
             >
               📂 Load .genome
             </button>
             <button
-              id="exportStudentProgressBtn"
+              id="export-student-progress-btn"
               class="secondary"
               aria-label="Export student progress for teacher dashboard"
             >
               📊 Export Progress
             </button>
-            <label for="genomeFileInput" class="sr-only"
+            <label for="genome-file-input" class="sr-only"
             >Choose genome file</label>
             <input
               type="file"
-              id="genomeFileInput"
+              id="genome-file-input"
               accept=".genome,.json"
               aria-label="Choose genome file to load"
               style="position: absolute; left: -9999px"
@@ -286,7 +286,7 @@
               aria-hidden="true"
             >🧬 Mutations:</span>
             <button
-              id="silentMutationBtn"
+              id="silent-mutation-btn"
               class="mutation-btn silent"
               title="Change codon to synonymous variant (same opcode)"
               aria-label="Apply silent mutation - change codon to synonymous variant"
@@ -294,7 +294,7 @@
               Silent
             </button>
             <button
-              id="missenseMutationBtn"
+              id="missense-mutation-btn"
               class="mutation-btn missense"
               title="Change codon to different opcode"
               aria-label="Apply missense mutation - change codon to different opcode"
@@ -302,7 +302,7 @@
               Missense
             </button>
             <button
-              id="nonsenseMutationBtn"
+              id="nonsense-mutation-btn"
               class="mutation-btn nonsense"
               title="Introduce STOP codon (early termination)"
               aria-label="Apply nonsense mutation - introduce early STOP codon"
@@ -310,7 +310,7 @@
               Nonsense
             </button>
             <button
-              id="frameshiftMutationBtn"
+              id="frameshift-mutation-btn"
               class="mutation-btn frameshift"
               title="Insert/delete base (reading frame shift)"
               aria-label="Apply frameshift mutation - insert or delete single base"
@@ -318,7 +318,7 @@
               Frameshift
             </button>
             <button
-              id="pointMutationBtn"
+              id="point-mutation-btn"
               class="mutation-btn point"
               title="Random single base change"
               aria-label="Apply point mutation - random single base change"
@@ -326,7 +326,7 @@
               Point
             </button>
             <button
-              id="insertionMutationBtn"
+              id="insertion-mutation-btn"
               class="mutation-btn insertion"
               title="Insert 1-3 bases"
               aria-label="Apply insertion mutation - insert 1 to 3 bases"
@@ -334,7 +334,7 @@
               Insertion
             </button>
             <button
-              id="deletionMutationBtn"
+              id="deletion-mutation-btn"
               class="mutation-btn deletion"
               title="Delete 1-3 bases"
               aria-label="Apply deletion mutation - delete 1 to 3 bases"
@@ -348,7 +348,7 @@
             aria-label="Share and export tools"
             style="border-top: 1px solid #3e3e42"
           >
-            <div id="shareContainer" style="flex: 1"></div>
+            <div id="share-container" style="flex: 1"></div>
           </nav>
           <label for="editor" class="sr-only">Genome code editor</label>
           <textarea
@@ -375,7 +375,7 @@ ATG GAA AAT GGA TAA</textarea>
           </div>
 
           <section
-            id="linterPanel"
+            id="linter-panel"
             role="region"
             aria-labelledby="linter-heading"
             style="margin-top: 12px; background: #2d2d30; border: 1px solid #3c3c3c; border-radius: 4px"
@@ -389,14 +389,14 @@ ATG GAA AAT GGA TAA</textarea>
               </h3>
               <div style="display: flex; gap: 8px">
                 <button
-                  id="fixAllBtn"
+                  id="fix-all-btn"
                   aria-label="Fix all auto-fixable errors"
                   style="padding: 4px 10px; font-size: 11px; background: #4ec9b0; color: #1e1e1e; font-weight: 500; border: none; border-radius: 3px; cursor: pointer"
                 >
                   Fix All
                 </button>
                 <button
-                  id="linterToggle"
+                  id="linter-toggle"
                   aria-label="Toggle linter panel visibility"
                   aria-expanded="true"
                   style="padding: 4px 8px; font-size: 11px; background: #3e3e42"
@@ -406,7 +406,7 @@ ATG GAA AAT GGA TAA</textarea>
               </div>
             </div>
             <div
-              id="linterMessages"
+              id="linter-messages"
               role="log"
               aria-live="polite"
               aria-atomic="false"
@@ -419,7 +419,7 @@ ATG GAA AAT GGA TAA</textarea>
           </section>
 
           <section
-            id="diffViewerPanel"
+            id="diff-viewer-panel"
             role="region"
             aria-labelledby="diff-viewer-heading"
             style="display: none; margin-top: 12px; background: #2d2d30; border: 1px solid #3c3c3c; border-radius: 4px"
@@ -433,14 +433,14 @@ ATG GAA AAT GGA TAA</textarea>
               </h3>
               <div style="display: flex; gap: 8px">
                 <button
-                  id="diffViewerClearBtn"
+                  id="diff-viewer-clear-btn"
                   aria-label="Clear comparison and hide panel"
                   style="padding: 4px 10px; font-size: 11px; background: #3e3e42; color: #d4d4d4; border: none; border-radius: 3px; cursor: pointer"
                 >
                   Clear
                 </button>
                 <button
-                  id="diffViewerToggle"
+                  id="diff-viewer-toggle"
                   aria-label="Toggle diff viewer panel visibility"
                   aria-expanded="true"
                   style="padding: 4px 8px; font-size: 11px; background: #3e3e42"
@@ -450,7 +450,7 @@ ATG GAA AAT GGA TAA</textarea>
               </div>
             </div>
             <div
-              id="diffViewerContainer"
+              id="diff-viewer-container"
               role="log"
               aria-live="polite"
               style="padding: 12px; font-size: 12px; line-height: 1.6; max-height: 400px; overflow-y: auto"
@@ -460,7 +460,7 @@ ATG GAA AAT GGA TAA</textarea>
           </section>
 
           <section
-            id="analyzerPanel"
+            id="analyzer-panel"
             role="region"
             aria-labelledby="analyzer-heading"
             style="display: none; margin-top: 12px; background: #2d2d30; border: 1px solid #3c3c3c; border-radius: 4px"
@@ -474,14 +474,14 @@ ATG GAA AAT GGA TAA</textarea>
               </h3>
               <div style="display: flex; gap: 8px">
                 <button
-                  id="analyzerCompareBtn"
+                  id="analyzer-compare-btn"
                   aria-label="Compare with another genome"
                   style="padding: 4px 10px; font-size: 11px; background: #4ec9b0; color: #1e1e1e; font-weight: 500; border: none; border-radius: 3px; cursor: pointer; display: none"
                 >
                   Compare
                 </button>
                 <button
-                  id="analyzerToggle"
+                  id="analyzer-toggle"
                   aria-label="Toggle analyzer panel visibility"
                   aria-expanded="true"
                   style="padding: 4px 8px; font-size: 11px; background: #3e3e42"
@@ -491,7 +491,7 @@ ATG GAA AAT GGA TAA</textarea>
               </div>
             </div>
             <div
-              id="analyzerContent"
+              id="analyzer-content"
               role="log"
               aria-live="polite"
               style="padding: 12px; font-size: 12px; line-height: 1.6; max-height: 400px; overflow-y: auto"
@@ -501,7 +501,7 @@ ATG GAA AAT GGA TAA</textarea>
           </section>
 
           <section
-            id="exampleInfo"
+            id="example-info"
             role="region"
             aria-labelledby="example-info-heading"
             aria-live="polite"
@@ -533,7 +533,7 @@ ATG GAA AAT GGA TAA</textarea>
             ></canvas>
           </div>
           <div
-            id="timelinePanel"
+            id="timeline-panel"
             style="display: none; border-top: 1px solid #3e3e42; padding: 1rem"
             role="region"
             aria-labelledby="timeline-heading"
@@ -542,17 +542,17 @@ ATG GAA AAT GGA TAA</textarea>
             <h3 id="timeline-heading" class="sr-only">
               Timeline Scrubber Controls
             </h3>
-            <div id="timelineContainer"></div>
+            <div id="timeline-container"></div>
           </div>
           <div
-            id="achievementPanel"
+            id="achievement-panel"
             style="border-top: 1px solid #3e3e42; padding: 1rem; max-height: 400px; overflow-y: auto"
             role="region"
             aria-labelledby="achievement-heading"
             aria-live="polite"
           >
             <h3 id="achievement-heading" class="sr-only">Achievement System</h3>
-            <div id="achievementContainer"></div>
+            <div id="achievement-container"></div>
           </div>
         </aside>
 
@@ -562,11 +562,12 @@ ATG GAA AAT GGA TAA</textarea>
           aria-live="polite"
           aria-atomic="true"
         >
-          <span id="statusMessage">Ready</span>
+          <span id="status-message">Ready</span>
           <div class="stats" aria-label="Program statistics">
-            <span id="codonCount" aria-label="Number of codons">Codons: 0</span>
+            <span id="codon-count" aria-label="Number of codons"
+            >Codons: 0</span>
             <span
-              id="instructionCount"
+              id="instruction-count"
               aria-label="Number of instructions executed"
             >Instructions: 0</span>
           </div>
@@ -575,7 +576,7 @@ ATG GAA AAT GGA TAA</textarea>
 
       <!-- Assessment Mode Container -->
       <div
-        id="assessmentContainer"
+        id="assessment-container"
         style="display: none; grid-column: 1 / -1; overflow-y: auto"
       >
       </div>

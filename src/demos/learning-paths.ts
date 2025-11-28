@@ -36,7 +36,7 @@ async function loadPaths() {
 }
 
 function renderPathSelector() {
-  const container = document.getElementById("pathSelector");
+  const container = document.getElementById("path-selector");
   if (!container || !pathsData) return;
 
   container.innerHTML = pathsData.paths
@@ -82,13 +82,13 @@ function startPath(pathId: string) {
   currentStepIndex = 0;
 
   // Hide selector, show viewer
-  const selector = document.getElementById("pathSelector");
-  const viewer = document.getElementById("pathViewer");
+  const selector = document.getElementById("path-selector");
+  const viewer = document.getElementById("path-viewer");
   if (selector) selector.style.display = "none";
   if (viewer) viewer.classList.add("active");
 
   // Set total steps
-  const totalSteps = document.getElementById("totalSteps");
+  const totalSteps = document.getElementById("total-steps");
   if (totalSteps) totalSteps.textContent = currentPath.steps.length.toString();
 
   // Render first step
@@ -98,7 +98,7 @@ function startPath(pathId: string) {
 function renderStep() {
   if (!currentPath) return;
   const step = currentPath.steps[currentStepIndex];
-  const stepContent = document.getElementById("stepContent");
+  const stepContent = document.getElementById("step-content");
 
   if (stepContent) {
     stepContent.innerHTML = `
@@ -130,18 +130,18 @@ function renderStep() {
 
   // Update progress
   const progress = ((currentStepIndex + 1) / currentPath.steps.length) * 100;
-  const progressFill = document.getElementById("progressFill");
-  const currentStep = document.getElementById("currentStep");
+  const progressFill = document.getElementById("progress-fill");
+  const currentStep = document.getElementById("current-step");
 
   if (progressFill) progressFill.style.width = `${progress}%`;
   if (currentStep) currentStep.textContent = (currentStepIndex + 1).toString();
 
   // Update navigation buttons
   const prevButton = document.getElementById(
-    "prevButton",
+    "prev-button",
   ) as HTMLButtonElement | null;
   const nextButton = document.getElementById(
-    "nextButton",
+    "next-button",
   ) as HTMLButtonElement | null;
 
   if (prevButton) prevButton.disabled = currentStepIndex === 0;
@@ -187,8 +187,8 @@ function prevStep() {
 }
 
 function backToSelector() {
-  const viewer = document.getElementById("pathViewer");
-  const selector = document.getElementById("pathSelector");
+  const viewer = document.getElementById("path-viewer");
+  const selector = document.getElementById("path-selector");
 
   if (viewer) viewer.classList.remove("active");
   if (selector) selector.style.display = "grid";
@@ -198,13 +198,13 @@ function backToSelector() {
 }
 
 // Event listeners
-const nextButton = document.getElementById("nextButton");
+const nextButton = document.getElementById("next-button");
 if (nextButton) nextButton.addEventListener("click", nextStep);
 
-const prevButton = document.getElementById("prevButton");
+const prevButton = document.getElementById("prev-button");
 if (prevButton) prevButton.addEventListener("click", prevStep);
 
-const backButton = document.getElementById("backButton");
+const backButton = document.getElementById("back-button");
 if (backButton) {
   backButton.addEventListener("click", (e) => {
     e.preventDefault();
