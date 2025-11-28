@@ -20,6 +20,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v6
+        with:
+          persist-credentials: false
 
       - name: Setup Bun
         uses: ./.github/actions/setup-bun
@@ -33,9 +35,11 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v6
+        with:
+          persist-credentials: false
 
       - name: Setup Biome
-        uses: biomejs/setup-biome@v2
+        uses: biomejs/setup-biome@dffc78db7e84fe7c20901b2eb7b697f74f916b72 # v2
 
       - name: Run lint
         run: biome ci --reporter=github --formatter-enabled=false .
@@ -50,13 +54,15 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v6
+        with:
+          persist-credentials: false
 
       - name: Setup Bun
         uses: ./.github/actions/setup-bun
 
       - name: Formatting
         if: always()
-        uses: dprint/check@v2.3
+        uses: dprint/check@9cb3a2b17a8e606d37aae341e49df3654933fc23 # v2.3
 
   test:
     name: Test
@@ -64,6 +70,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v6
+        with:
+          persist-credentials: false
 
       - name: Setup Bun
         uses: ./.github/actions/setup-bun
@@ -78,6 +86,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v6
+        with:
+          persist-credentials: false
 
       - name: Check duplication
         uses: ./.github/actions/check-duplication
