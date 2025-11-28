@@ -22,8 +22,12 @@
   },
   "malva": {},
   "markup": {
+    "formatComments": true,
+    "ignoreCommentDirective": "prettier-ignore",
     "ignoreFileCommentDirective": "prettier-ignore-file",
-    "ignoreCommentDirective": "prettier-ignore"
+    "scriptIndent": true,
+    "styleIndent": true,
+    "singleAttrSameLine": true
   },
   "yaml": {
     "indentBlockSequenceInMap": true,

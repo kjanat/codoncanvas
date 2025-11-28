@@ -1,282 +1,284 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>CodonCanvas - Genetic Algorithm Optimization</title>
     <style>
-    * {
-      box-sizing: border-box;
-      padding: 0;
-      margin: 0;
-    }
+      * {
+        box-sizing: border-box;
+        padding: 0;
+        margin: 0;
+      }
 
-    body {
-      padding: 1rem;
-      font-family: "Monaco", "Menlo", "Courier New", monospace;
-      color: #d4d4d4;
-      background: #1e1e1e;
-    }
+      body {
+        padding: 1rem;
+        font-family: "Monaco", "Menlo", "Courier New", monospace;
+        color: #d4d4d4;
+        background: #1e1e1e;
+      }
 
-    .container {
-      max-width: 1600px;
-      margin: 0 auto;
-    }
+      .container {
+        max-width: 1600px;
+        margin: 0 auto;
+      }
 
-    header {
-      padding: 1.5rem;
-      margin-bottom: 1rem;
-      background: #252526;
-      border: 1px solid #3e3e42;
-      border-radius: 4px;
-    }
+      header {
+        padding: 1.5rem;
+        margin-bottom: 1rem;
+        background: #252526;
+        border: 1px solid #3e3e42;
+        border-radius: 4px;
+      }
 
-    h1 {
-      margin-bottom: 0.5rem;
-      font-size: 1.75rem;
-      color: #4ec9b0;
-    }
+      h1 {
+        margin-bottom: 0.5rem;
+        font-size: 1.75rem;
+        color: #4ec9b0;
+      }
 
-    .subtitle {
-      font-size: 0.875rem;
-      color: #858585;
-    }
+      .subtitle {
+        font-size: 0.875rem;
+        color: #858585;
+      }
 
-    .main-grid {
-      display: grid;
-      grid-template-columns: 350px 1fr;
-      gap: 1rem;
-      margin-bottom: 1rem;
-    }
-
-    .panel {
-      overflow: hidden;
-      background: #252526;
-      border: 1px solid #3e3e42;
-      border-radius: 4px;
-    }
-
-    .panel-header {
-      padding: 0.75rem 1rem;
-      font-size: 0.875rem;
-      font-weight: bold;
-      background: #2d2d30;
-      border-bottom: 1px solid #3e3e42;
-    }
-
-    .panel-content {
-      padding: 1rem;
-    }
-
-    .info-box {
-      padding: 0.75rem;
-      margin-bottom: 1rem;
-      font-size: 0.8125rem;
-      line-height: 1.5;
-      background: #1e1e1e;
-      border: 1px solid #3e3e42;
-      border-radius: 4px;
-    }
-
-    .info-box h3 {
-      margin-bottom: 0.5rem;
-      font-size: 0.875rem;
-      color: #4ec9b0;
-    }
-
-    .info-box p {
-      margin-bottom: 0.5rem;
-      color: #858585;
-    }
-
-    .info-box ul {
-      padding-left: 1.25rem;
-      color: #858585;
-    }
-
-    .control-group {
-      margin-bottom: 1rem;
-    }
-
-    .control-group label {
-      display: block;
-      margin-bottom: 0.25rem;
-      font-size: 0.75rem;
-      color: #858585;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-    }
-
-    select, input[type="number"], input[type="range"] {
-      width: 100%;
-      padding: 0.5rem;
-      font-family: inherit;
-      font-size: 0.8125rem;
-      color: #d4d4d4;
-      background: #1e1e1e;
-      border: 1px solid #3e3e42;
-      border-radius: 3px;
-    }
-
-    input[type="range"] {
-      padding: 0;
-    }
-
-    .range-value {
-      display: inline-block;
-      min-width: 3rem;
-      font-weight: bold;
-      color: #4ec9b0;
-      text-align: right;
-    }
-
-    button {
-      width: 100%;
-      padding: 0.75rem 1rem;
-      font-family: inherit;
-      font-size: 0.8125rem;
-      font-weight: 600;
-      color: white;
-      cursor: pointer;
-      background: #0e639c;
-      border: none;
-      border-radius: 3px;
-      transition: background 0.2s;
-    }
-
-    button:hover {
-      background: #1177bb;
-    }
-
-    button:disabled {
-      cursor: not-allowed;
-      background: #3e3e42;
-    }
-
-    .button-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 0.5rem;
-      margin-bottom: 1rem;
-    }
-
-    .stats-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 0.5rem;
-    }
-
-    .stat-box {
-      padding: 0.5rem;
-      background: #1e1e1e;
-      border: 1px solid #3e3e42;
-      border-radius: 3px;
-    }
-
-    .stat-label {
-      font-size: 0.6875rem;
-      color: #858585;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-    }
-
-    .stat-value {
-      font-size: 1.25rem;
-      font-weight: bold;
-      color: #4ec9b0;
-    }
-
-    .visualization-grid {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 1rem;
-    }
-
-    .canvas-container {
-      padding: 1rem;
-      background: #1e1e1e;
-      border: 1px solid #3e3e42;
-      border-radius: 4px;
-    }
-
-    .canvas-label {
-      margin-bottom: 0.5rem;
-      font-size: 0.75rem;
-      color: #858585;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-    }
-
-    canvas {
-      display: block;
-      width: 100%;
-      background: white;
-      border: 1px solid #3e3e42;
-      border-radius: 3px;
-    }
-
-    .population-grid {
-      display: grid;
-      grid-template-columns: repeat(5, 1fr);
-      gap: 0.5rem;
-      margin-top: 1rem;
-    }
-
-    .individual-card {
-      padding: 0.5rem;
-      cursor: pointer;
-      background: #1e1e1e;
-      border: 2px solid #3e3e42;
-      border-radius: 4px;
-      transition: all 0.2s;
-    }
-
-    .individual-card:hover {
-      border-color: #4ec9b0;
-    }
-
-    .individual-card.best {
-      border-color: #4ec9b0;
-      box-shadow: 0 0 10px rgba(78, 201, 176, 0.3);
-    }
-
-    .individual-label {
-      margin-bottom: 0.25rem;
-      font-size: 0.625rem;
-      color: #858585;
-    }
-
-    .individual-fitness {
-      margin-bottom: 0.25rem;
-      font-size: 0.75rem;
-      font-weight: bold;
-      color: #4ec9b0;
-    }
-
-    .chart-container {
-      height: 200px;
-      margin-top: 1rem;
-    }
-
-    @media (max-width: 1200px) {
       .main-grid {
-        grid-template-columns: 1fr;
+        display: grid;
+        grid-template-columns: 350px 1fr;
+        gap: 1rem;
+        margin-bottom: 1rem;
+      }
+
+      .panel {
+        overflow: hidden;
+        background: #252526;
+        border: 1px solid #3e3e42;
+        border-radius: 4px;
+      }
+
+      .panel-header {
+        padding: 0.75rem 1rem;
+        font-size: 0.875rem;
+        font-weight: bold;
+        background: #2d2d30;
+        border-bottom: 1px solid #3e3e42;
+      }
+
+      .panel-content {
+        padding: 1rem;
+      }
+
+      .info-box {
+        padding: 0.75rem;
+        margin-bottom: 1rem;
+        font-size: 0.8125rem;
+        line-height: 1.5;
+        background: #1e1e1e;
+        border: 1px solid #3e3e42;
+        border-radius: 4px;
+      }
+
+      .info-box h3 {
+        margin-bottom: 0.5rem;
+        font-size: 0.875rem;
+        color: #4ec9b0;
+      }
+
+      .info-box p {
+        margin-bottom: 0.5rem;
+        color: #858585;
+      }
+
+      .info-box ul {
+        padding-left: 1.25rem;
+        color: #858585;
+      }
+
+      .control-group {
+        margin-bottom: 1rem;
+      }
+
+      .control-group label {
+        display: block;
+        margin-bottom: 0.25rem;
+        font-size: 0.75rem;
+        color: #858585;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+      }
+
+      select,
+      input[type="number"],
+      input[type="range"] {
+        width: 100%;
+        padding: 0.5rem;
+        font-family: inherit;
+        font-size: 0.8125rem;
+        color: #d4d4d4;
+        background: #1e1e1e;
+        border: 1px solid #3e3e42;
+        border-radius: 3px;
+      }
+
+      input[type="range"] {
+        padding: 0;
+      }
+
+      .range-value {
+        display: inline-block;
+        min-width: 3rem;
+        font-weight: bold;
+        color: #4ec9b0;
+        text-align: right;
+      }
+
+      button {
+        width: 100%;
+        padding: 0.75rem 1rem;
+        font-family: inherit;
+        font-size: 0.8125rem;
+        font-weight: 600;
+        color: white;
+        cursor: pointer;
+        background: #0e639c;
+        border: none;
+        border-radius: 3px;
+        transition: background 0.2s;
+      }
+
+      button:hover {
+        background: #1177bb;
+      }
+
+      button:disabled {
+        cursor: not-allowed;
+        background: #3e3e42;
+      }
+
+      .button-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 0.5rem;
+        margin-bottom: 1rem;
+      }
+
+      .stats-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 0.5rem;
+      }
+
+      .stat-box {
+        padding: 0.5rem;
+        background: #1e1e1e;
+        border: 1px solid #3e3e42;
+        border-radius: 3px;
+      }
+
+      .stat-label {
+        font-size: 0.6875rem;
+        color: #858585;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+      }
+
+      .stat-value {
+        font-size: 1.25rem;
+        font-weight: bold;
+        color: #4ec9b0;
       }
 
       .visualization-grid {
-        grid-template-columns: 1fr;
-      }
-
-      .population-grid {
-        grid-template-columns: repeat(3, 1fr);
-      }
-    }
-
-    @media (max-width: 768px) {
-      .population-grid {
+        display: grid;
         grid-template-columns: repeat(2, 1fr);
+        gap: 1rem;
       }
-    }
+
+      .canvas-container {
+        padding: 1rem;
+        background: #1e1e1e;
+        border: 1px solid #3e3e42;
+        border-radius: 4px;
+      }
+
+      .canvas-label {
+        margin-bottom: 0.5rem;
+        font-size: 0.75rem;
+        color: #858585;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+      }
+
+      canvas {
+        display: block;
+        width: 100%;
+        background: white;
+        border: 1px solid #3e3e42;
+        border-radius: 3px;
+      }
+
+      .population-grid {
+        display: grid;
+        grid-template-columns: repeat(5, 1fr);
+        gap: 0.5rem;
+        margin-top: 1rem;
+      }
+
+      .individual-card {
+        padding: 0.5rem;
+        cursor: pointer;
+        background: #1e1e1e;
+        border: 2px solid #3e3e42;
+        border-radius: 4px;
+        transition: all 0.2s;
+      }
+
+      .individual-card:hover {
+        border-color: #4ec9b0;
+      }
+
+      .individual-card.best {
+        border-color: #4ec9b0;
+        box-shadow: 0 0 10px rgba(78, 201, 176, 0.3);
+      }
+
+      .individual-label {
+        margin-bottom: 0.25rem;
+        font-size: 0.625rem;
+        color: #858585;
+      }
+
+      .individual-fitness {
+        margin-bottom: 0.25rem;
+        font-size: 0.75rem;
+        font-weight: bold;
+        color: #4ec9b0;
+      }
+
+      .chart-container {
+        height: 200px;
+        margin-top: 1rem;
+      }
+
+      @media (max-width: 1200px) {
+        .main-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .visualization-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .population-grid {
+          grid-template-columns: repeat(3, 1fr);
+        }
+      }
+
+      @media (max-width: 768px) {
+        .population-grid {
+          grid-template-columns: repeat(2, 1fr);
+        }
+      }
     </style>
   </head>
   <body>
@@ -331,7 +333,7 @@
                 max="50"
                 value="20"
                 step="5"
-              >
+              />
               <span class="range-value" id="populationSizeValue">20</span>
             </div>
 
@@ -344,7 +346,7 @@
                 max="1"
                 value="0.1"
                 step="0.05"
-              >
+              />
               <span class="range-value" id="mutationRateValue">0.10</span>
             </div>
 
@@ -357,7 +359,7 @@
                 max="1"
                 value="0.7"
                 step="0.05"
-              >
+              />
               <span class="range-value" id="crossoverRateValue">0.70</span>
             </div>
 
@@ -417,8 +419,8 @@
               </div>
               <div class="canvas-container">
                 <div class="canvas-label">
-                  🏆 Best Individual (Fitness: <span id="bestFitnessLabel"
-                  >0.00</span>)
+                  🏆 Best Individual (Fitness:
+                  <span id="bestFitnessLabel">0.00</span>)
                 </div>
                 <canvas id="bestCanvas" width="400" height="400"></canvas>
               </div>
@@ -439,7 +441,7 @@
     </div>
 
     <script type="module">
-    import { GeneticAlgorithm } from "./src/genetic-algorithm.ts";
+      import { GeneticAlgorithm } from "./src/genetic-algorithm.ts";
 import { CodonLexer } from "./src/lexer.ts";
 import { Canvas2DRenderer } from "./src/renderer.ts";
 import { CodonVM } from "./src/vm.ts";
@@ -796,8 +798,9 @@ function updateStats() {
     lastStat.bestFitness.toFixed(3);
   document.getElementById("avgFitnessStat").textContent =
     lastStat.avgFitness.toFixed(3);
-  document.getElementById("diversityStat").textContent =
-    `${Math.round(lastStat.diversity * 100)}%`;
+  document.getElementById("diversityStat").textContent = `${Math.round(
+    lastStat.diversity * 100,
+  )}%`;
 
   const best = ga.getBest();
   document.getElementById("bestFitnessLabel").textContent =
