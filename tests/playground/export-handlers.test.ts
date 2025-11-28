@@ -5,56 +5,18 @@
  * MIDI files, genome files, and student progress data.
  *
  * Note: Since these functions depend on DOM elements and ui-state,
- * we test the pure logic patterns by reimplementing them.
+ * we test the pure logic patterns using shared test utilities.
  */
 import { describe, expect, test } from "bun:test";
-
-// Helper function implementations for testing
-
-// Filename generation logic from saveGenome
-function generateGenomeFilename(): string {
-  const timestamp = new Date().toISOString().slice(0, 10);
-  return `codoncanvas-${timestamp}`;
-}
-
-// Title extraction logic from saveGenome
-function extractTitle(genome: string): string {
-  const firstLine = genome.split("\n")[0].replace(/;.*$/, "").trim();
-  return firstLine.slice(0, 30) || "CodonCanvas Genome";
-}
-
-// Achievement data structure from exportStudentProgress
-function createAchievementData() {
-  return {
-    achievements: [],
-    timestamp: new Date().toISOString(),
-    userAgent:
-      typeof navigator !== "undefined" ? navigator.userAgent : "test-agent",
-  };
-}
-
-// MIDI filename generation
-function generateMidiFilename(): string {
-  return `codoncanvas-${Date.now()}.mid`;
-}
-
-// Progress filename generation
-function generateProgressFilename(): string {
-  return `codoncanvas-progress-${Date.now()}.json`;
-}
-
-// Empty genome check
-function isEmptyGenome(genome: string): boolean {
-  return !genome.trim();
-}
-
-// Error message extraction
-function extractErrorMessage(error: unknown): string {
-  if (error instanceof Error) {
-    return error.message;
-  }
-  return "Unknown error";
-}
+import {
+  createAchievementData,
+  extractErrorMessage,
+  extractTitle,
+  generateGenomeFilename,
+  generateMidiFilename,
+  generateProgressFilename,
+  isEmptyGenome,
+} from "../test-utils";
 
 describe("Export Handlers", () => {
   // exportImage

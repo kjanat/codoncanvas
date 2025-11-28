@@ -5,72 +5,17 @@
  * that applies biological mutation patterns to CodonCanvas genomes.
  *
  * Note: Since these functions depend on DOM elements and ui-state,
- * we test the pure logic patterns by reimplementing them.
+ * we test the pure logic patterns using shared test utilities.
  */
 import { describe, expect, test } from "bun:test";
-import type { MutationType } from "@/types";
-
-// Helper function implementations for testing
-
-// Valid mutation types
-const VALID_MUTATION_TYPES: MutationType[] = [
-  "silent",
-  "missense",
-  "nonsense",
-  "point",
-  "insertion",
-  "deletion",
-  "frameshift",
-];
-
-// Mutation type validation
-function isValidMutationType(type: string): type is MutationType {
-  return VALID_MUTATION_TYPES.includes(type as MutationType);
-}
-
-// Empty genome check
-function isEmptyGenome(genome: string): boolean {
-  return !genome.trim();
-}
-
-// Error message extraction
-function extractErrorMessage(error: unknown): string {
-  if (error instanceof Error) {
-    return error.message;
-  }
-  return "Unknown error";
-}
-
-// State management pattern
-class MutationState {
-  private originalGenome = "";
-
-  setOriginal(genome: string): void {
-    this.originalGenome = genome;
-  }
-
-  getOriginal(): string {
-    return this.originalGenome;
-  }
-
-  reset(): void {
-    this.originalGenome = "";
-  }
-}
-
-// Mutation type to function mapper (for validation)
-function getMutationHandler(type: MutationType): string {
-  const handlers: Record<MutationType, string> = {
-    silent: "applySilentMutation",
-    missense: "applyMissenseMutation",
-    nonsense: "applyNonsenseMutation",
-    point: "applyPointMutation",
-    insertion: "applyInsertion",
-    deletion: "applyDeletion",
-    frameshift: "applyFrameshiftMutation",
-  };
-  return handlers[type];
-}
+import {
+  extractErrorMessage,
+  getMutationHandler,
+  isEmptyGenome,
+  isValidMutationType,
+  MutationState,
+  VALID_MUTATION_TYPES,
+} from "../test-utils";
 
 describe("Mutation Handlers", () => {
   // Mutation Type Validation
@@ -108,7 +53,7 @@ describe("Mutation Handlers", () => {
     });
 
     test("unknown mutation type would throw error", () => {
-      const invalidType = "unknown" as MutationType;
+      const invalidType = "unknown";
       expect(() => {
         if (!isValidMutationType(invalidType)) {
           throw new Error(`Unknown mutation type: ${invalidType}`);
@@ -237,7 +182,7 @@ describe("Mutation Handlers", () => {
   describe("integration patterns", () => {
     test("mutation workflow: validate -> apply -> store original", () => {
       const genome = "ATG GGA TAA";
-      const type: MutationType = "silent";
+      const type = "silent";
       const state = new MutationState();
 
       // Step 1: Validate genome is not empty
@@ -253,7 +198,7 @@ describe("Mutation Handlers", () => {
 
     test("preview workflow: validate -> get type handler", () => {
       const genome = "ATG GGA TAA";
-      const type: MutationType = "missense";
+      const type = "missense";
 
       expect(isEmptyGenome(genome)).toBe(false);
       expect(isValidMutationType(type)).toBe(true);
