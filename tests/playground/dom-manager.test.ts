@@ -7,11 +7,6 @@
 import { afterAll, beforeAll, describe, expect, test } from "bun:test";
 
 describe("DOM Manager", () => {
-  // Store original document methods
-  let originalGetElementById: typeof document.getElementById;
-  let originalQuerySelector: typeof document.querySelector;
-  let originalQuerySelectorAll: typeof document.querySelectorAll;
-
   // Mock DOM elements storage
   let elements: Record<string, HTMLElement>;
   let mockCanvas: HTMLCanvasElement;
@@ -21,34 +16,31 @@ describe("DOM Manager", () => {
   let domManager: typeof import("@/playground/dom-manager");
 
   beforeAll(async () => {
-    // Create mock canvas with getContext
+    // Create mock canvas
     mockCanvas = document.createElement("canvas");
     mockCanvas.id = "canvas";
     mockCanvas.width = 400;
     mockCanvas.height = 400;
+    document.body.appendChild(mockCanvas);
 
-    // Create status bar for querySelector
+    // Create status bar
     mockStatusBar = document.createElement("div");
     mockStatusBar.className = "status-bar";
+    document.body.appendChild(mockStatusBar);
 
-    // Initialize elements map
+    // Initialize elements map (for reference if needed, but we rely on DOM now)
     elements = {
       canvas: mockCanvas,
     };
 
-    createMockElements(elements);
-    setupMockDocument(elements, mockStatusBar);
-
-    // Store original methods
-    originalGetElementById = document.getElementById.bind(document);
-    originalQuerySelector = document.querySelector.bind(document);
-    originalQuerySelectorAll = document.querySelectorAll.bind(document);
+    createMockElements();
 
     // Dynamically import the module after DOM setup
+    // We need to re-import to ensure it grabs the new elements
     domManager = await import("@/playground/dom-manager");
   });
 
-  function createMockElements(elements: Record<string, HTMLElement>) {
+  function createMockElements() {
     const spanElements = ["statusMessage", "codonCount", "instructionCount"];
     const textareaElements = ["editor"];
     const selectElements = [
@@ -108,7 +100,7 @@ describe("DOM Manager", () => {
     ];
 
     for (const id of allIds) {
-      if (!elements[id]) {
+      if (!document.getElementById(id)) {
         const el = createElementByType(
           id,
           textareaElements,
@@ -118,9 +110,21 @@ describe("DOM Manager", () => {
           spanElements,
         );
         el.id = id;
+        document.body.appendChild(el);
         elements[id] = el;
       }
     }
+
+    // Create mode toggle buttons
+    const modeToggle1 = document.createElement("input");
+    modeToggle1.type = "radio";
+    modeToggle1.name = "mode";
+    document.body.appendChild(modeToggle1);
+
+    const modeToggle2 = document.createElement("input");
+    modeToggle2.type = "radio";
+    modeToggle2.name = "mode";
+    document.body.appendChild(modeToggle2);
   }
 
   function createElementByType(
@@ -149,42 +153,9 @@ describe("DOM Manager", () => {
     return document.createElement("div");
   }
 
-  function setupMockDocument(
-    elements: Record<string, HTMLElement>,
-    mockStatusBar: HTMLDivElement,
-  ) {
-    // Mock document methods
-    document.getElementById = (id: string) => {
-      return elements[id] || originalGetElementById(id);
-    };
-    document.querySelector = ((selector: string) => {
-      if (selector === ".status-bar") return mockStatusBar;
-      if (selector.startsWith("#")) {
-        const id = selector.slice(1);
-        return elements[id] || originalQuerySelector(selector);
-      }
-      return originalQuerySelector(selector);
-    }) as typeof document.querySelector;
-    document.querySelectorAll = ((selector: string) => {
-      if (selector === 'input[name="mode"]') {
-        // Return empty array to avoid recursion/stall
-        return [] as unknown as NodeList;
-      }
-      return originalQuerySelectorAll(selector);
-    }) as typeof document.querySelectorAll;
-  }
-
   afterAll(() => {
-    // Restore original document methods
-    if (originalGetElementById) {
-      document.getElementById = originalGetElementById;
-    }
-    if (originalQuerySelector) {
-      document.querySelector = originalQuerySelector;
-    }
-    if (originalQuerySelectorAll) {
-      document.querySelectorAll = originalQuerySelectorAll;
-    }
+    // Clean up DOM
+    document.body.innerHTML = "";
   });
 
   // Element Exports
