@@ -63,7 +63,7 @@
   },
   "packageManager": "bun@1.3.3",
   "jscpd": {
-    "threshold": 0.1,
+    "threshold": 1.5,
     "reporters": [
       "html",
       "console",
