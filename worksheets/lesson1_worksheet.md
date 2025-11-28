@@ -1,6 +1,6 @@
 # Lesson 1 Student Worksheet: Hello DNA
 
-**Name:** ____________________ **Date:** __________
+**Name:** \_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_ **Date:** \_\_\_\_\_\_\_\_\_\_
 
 **Learning Objectives:**
 
@@ -20,14 +20,14 @@ Type this genome into CodonCanvas:
 ATG GAA CCC GGA TAA
 ```
 
-**What do you see?** _______________________________________________
+**What do you see?** \_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
 
 **Explain what each codon does:**
 
-- `ATG`: _______________________________________________________
-- `GAA CCC`: ___________________________________________________
-- `GGA`: _______________________________________________________
-- `TAA`: _______________________________________________________
+- `ATG`: \_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
+- `GAA CCC`: \_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
+- `GGA`: \_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
+- `TAA`: \_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
 
 ---
 
@@ -39,9 +39,9 @@ Now change `GGA` to `GGC`:
 ATG GAA CCC GGC TAA
 ```
 
-**What changed in the output?** _____________________________________
+**What changed in the output?** \_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
 
-Try all four GG* codons (GGA, GGC, GGG, GGT):
+Try all four GG\* codons (GGA, GGC, GGG, GGT):
 
 | Codon | Output Description | Same as GGA? (Y/N) |
 | ----- | ------------------ | ------------------ |
@@ -50,7 +50,7 @@ Try all four GG* codons (GGA, GGC, GGG, GGT):
 | GGG   |                    |                    |
 | GGT   |                    |                    |
 
-**Conclusion:** Codons that start with _______ and _______ all produce the same _________. This is called a **codon family**.
+**Conclusion:** Codons that start with \_\_\_\_\_\_\_ and \_\_\_\_\_\_\_ all produce the same \_\_\_\_\_\_\_\_\_. This is called a **codon family**.
 
 ---
 
@@ -64,9 +64,9 @@ Change `GGA` to `CCA`:
 ATG GAA CCC CCA TAA
 ```
 
-**What happened?** _________________________________________________
+**What happened?** \_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
 
-**Error message (if any):** _________________________________________
+**Error message (if any):** \_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
 
 **Why didn't it work?** HINT: RECT needs TWO numbers (width and height)
 
@@ -76,13 +76,13 @@ ATG GAA CCC CCA TAA
 ATG GAA CCC GAA CCC CCA TAA
 ```
 
-**Now what do you see?** ___________________________________________
+**Now what do you see?** \_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
 
 ---
 
 ### Exercise 1.4: Exploring Families
 
-Test if CC* is a family (like GG* was):
+Test if CC\* is a family (like GG\* was):
 
 | Codon | Output | Same as CCA? |
 | ----- | ------ | ------------ |
@@ -91,21 +91,21 @@ Test if CC* is a family (like GG* was):
 | CCG   |        |              |
 | CCT   |        |              |
 
-**Are they all the same?** _________
+**Are they all the same?** \_\_\_\_\_\_\_\_\_
 
 ---
 
 ### Exercise 1.5: LINE Family
 
-Try the AA* family:
+Try the AA\* family:
 
 ```
 ATG GAA CCC AAA TAA
 ```
 
-**Shape:** ____________ **Needs how many numbers?** _______
+**Shape:** \_\_\_\_\_\_\_\_\_\_\_\_ **Needs how many numbers?** \_\_\_\_\_\_\_
 
-Test AA* family:
+Test AA\* family:
 
 | Codon | Same? (Y/N) |
 | ----- | ----------- |
@@ -157,7 +157,7 @@ ATG
 TAA
 ```
 
-**Describe your composition:** ______________________________________
+**Describe your composition:** \_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
 
 ---
 
@@ -202,8 +202,8 @@ Create the most interesting composition you can using ONLY these codons:
 - START: ATG
 - STOP: TAA
 - PUSH numbers: GAA + any codon for the number
-- CIRCLE: GG*
-- RECT: CC*
+- CIRCLE: GG\*
+- RECT: CC\*
 - TRANSLATE: ACA
 
 **Your creative genome:**
@@ -217,8 +217,14 @@ ATG
 TAA
 ```
 
-**Title for your artwork:** _________________________________________
+**Title for your artwork:** \_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
 
 ---
 
-**Teacher Signature:** _______________ **Completion:** ☐ Excellent ☐ Good ☐ Needs Review
+**Teacher Signature:** \_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
+
+**Completion:**
+
+☐ Excellent
+☐ Good
+☐ Needs Review

@@ -123,15 +123,17 @@ export class AchievementEngine { ... }
 3. **Evolution/Mutation Algorithms** - Biological accuracy claims require documentation
 
 **HIGH (Developer Experience):**
-4. **AssessmentEngine** - Scoring algorithms for educators
-5. **AchievementEngine** - Gamification mechanics
-6. **Audio Renderer** - Audio mode implementation (AUDIO_MODE.md references undocumented APIs)
-7. **GIF Exporter** - Animation export algorithm (referenced in README)
+
+1. **AssessmentEngine** - Scoring algorithms for educators
+2. **AchievementEngine** - Gamification mechanics
+3. **Audio Renderer** - Audio mode implementation (AUDIO_MODE.md references undocumented APIs)
+4. **GIF Exporter** - Animation export algorithm (referenced in README)
 
 **MEDIUM (Code Maintainability):**
-8. **Timeline Scrubber** - Step-through state management
-9. **Share System** - URL encoding/decoding logic
-10. **Theme Manager** - Dark mode implementation
+
+1. **Timeline Scrubber** - Step-through state management
+2. **Share System** - URL encoding/decoding logic
+3. **Theme Manager** - Dark mode implementation
 
 ---
 
@@ -455,7 +457,7 @@ npm run typecheck # Type validation
 
 **Test Infrastructure:**
 
-- ✅ 16 test files (src/*.test.ts)
+- ✅ 16 test files (src/\*.test.ts)
 - ✅ 702 test cases (describe/test blocks)
 - ✅ Coverage across lexer, VM, mutations, genome-io, evolution
 
@@ -534,6 +536,7 @@ npm run typecheck # Type validation
 **⚠️ DISCREPANCIES:**
 
 1. **Test Count Mismatch** (README line 509):
+
    ```markdown
    # README says:
 
@@ -549,6 +552,7 @@ npm run typecheck # Type validation
 
    # Actual test cases: 702 (not documented)
    ```
+
    **Fix:** Update README lines 509-515 with accurate test counts.
 
 2. **NOISE Opcode Removed** (MVP_Technical_Specification.md vs. current):
@@ -819,7 +823,7 @@ graph TD
 /user/ (README, quickstart, tutorials)
 /developer/ (CONTRIBUTING, OPCODES, specs)
 /educator/ (EDUCATORS, lesson plans, assessments)
-/research/ (RESEARCH__, ACADEMIC__)
+/research/ (RESEARCH\_\_, ACADEMIC\_\_)
 /internal/ (claudedocs/ content moved here)
 
 ````

@@ -148,13 +148,13 @@ interface Lexer {
    * @throws ParseError[] if mid-triplet breaks or invalid characters found
    */
   tokenize(source: string): CodonToken[];
-  
+
   /**
    * Validate reading frame alignment
    * @returns errors/warnings for linter display
    */
   validateFrame(source: string): ParseError[];
-  
+
   /**
    * Check for structural issues (START/STOP placement)
    */
@@ -164,19 +164,19 @@ interface Lexer {
 // Example implementation signature
 class CodonLexer implements Lexer {
   private readonly validBases = new Set(['A', 'C', 'G', 'T']);
-  
+
   tokenize(source: string): CodonToken[] {
     const cleaned = source
       .split('\n')
       .map(line => line.split(';')[0])  // Strip comments
       .join(' ')
       .replace(/\s+/g, '');              // Remove whitespace
-    
+
     // Check for non-triplet length
     if (cleaned.length % 3 !== 0) {
       throw new ParseError(/* ... */);
     }
-    
+
     // Chunk into triplets
     const tokens: CodonToken[] = [];
     for (let i = 0; i < cleaned.length; i += 3) {
@@ -388,7 +388,7 @@ Single circle centered at (200, 200) with radius ~131 pixels.
 **Genome:**
 
 ```
-ATG 
+ATG
   GAA CCC GGA           ; Push 21, draw circle
   GAA CTT ACA AAA AAA   ; Push 31, translate by (0, 0)...
 ```
@@ -398,7 +398,7 @@ Wait, TRANSLATE needs 2 values (dx, dy). Let me fix this:
 **Genome:**
 
 ```
-ATG 
+ATG
   GAA CGC GGA                    ; Push 50, draw circle (radius 50)
   GAA CCC GAA CCC ACA            ; Push 21, push 21, translate(21, 21)
   GAA AGC GGA                    ; Push 20, draw another circle
@@ -421,7 +421,7 @@ Let me rewrite with clearer values:
 **Genome:**
 
 ```
-ATG 
+ATG
   GAA TCC GGA        ; Push 57, draw circle
   GAA CCC            ; Push 21
   GAA CCC            ; Push 21
@@ -447,7 +447,7 @@ These radii are too large. Let me scale down the examples:
 **Genome (Fixed):**
 
 ```
-ATG 
+ATG
   GAA AAT GGA        ; Push 3, draw small circle
   GAA CCC            ; Push 21
   GAA AAA            ; Push 0
@@ -471,9 +471,9 @@ Two circles side-by-side.
 **Genome:**
 
 ```
-ATG 
+ATG
   GAA AGG GGA        ; Push 10, draw circle
-  GAA CCC            ; Push 21  
+  GAA CCC            ; Push 21
   GAA AAA            ; Push 0
   ACA                ; Translate(21, 0)
   GAA AGG CCA        ; Push 10, draw RECT (needs w, h - will use 10 for both)
@@ -485,7 +485,7 @@ Wait, RECT needs 2 stack values. Let me fix:
 **Genome:**
 
 ```
-ATG 
+ATG
   GAA AGG            ; Push 10
   GAA AGG            ; Push 10 (now stack = [10, 10])
   GGA                ; Draw circle (uses top value: radius=10)

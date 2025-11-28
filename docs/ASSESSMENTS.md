@@ -120,7 +120,7 @@ How confident are you explaining mutations to a friend?
 - ⚠️ Review needed: "Different shape" / "Unsure"
 
 **Checkpoint 1B: Family Identification (Worksheet)**
-Students complete Exercise 1.4 (testing CC* family)
+Students complete Exercise 1.4 (testing CC\* family)
 
 - ✅ Mastery: Correctly identifies all 4 as same
 - ⚠️ Review: Misses patterns or reports differences
@@ -226,10 +226,12 @@ Deleting one base from a genome affects:
 - [ ] Nothing if you add it back
 
 **6. Mutation Severity (Analysis)**
+
 Rank these from least to most severe effect:
+
 A) Silent B) Missense C) Nonsense D) Frameshift
 
-Order: _____ → _____ → _____ → _____
+Order: \_\_\_\_\_ → \_\_\_\_\_ → \_\_\_\_\_ → \_\_\_\_\_
 
 **7. Reading Frames (Analysis)**
 Why does reading frame matter?
@@ -276,8 +278,8 @@ Original: ATG GAA CCC GGA TAA
 Mutated:  ATG GAA CCC GGT TAA
 ```
 
-**Mutation type:** _________________________
-**Predicted effect:** _________________________
+**Mutation type:** `_________________________`
+**Predicted effect:** `_________________________`
 
 ---
 
@@ -288,8 +290,8 @@ Original: ATG GAA CCC GGA GAA CCC CCA TAA
 Mutated:  ATG GAA CCC GCA GAA CCC CCA TAA
 ```
 
-**Mutation type:** _________________________
-**Predicted effect:** _________________________
+**Mutation type:** `_________________________`
+**Predicted effect:** `_________________________`
 
 ---
 
@@ -300,8 +302,8 @@ Original: ATG GAA CCC GGA GAA CCC CCA TAA
 Mutated:  ATG GAA CCC TAA GAA CCC CCA TAA
 ```
 
-**Mutation type:** _________________________
-**Predicted effect:** _________________________
+**Mutation type:** `_________________________`
+**Predicted effect:** `_________________________`
 
 ---
 
@@ -312,8 +314,8 @@ Original: ATGAAACCCGGATAA
 Mutated:  ATGAACCCGGATAA  (one A deleted)
 ```
 
-**Mutation type:** _________________________
-**Predicted effect:** _________________________
+**Mutation type:** `_________________________`
+**Predicted effect:** `_________________________`
 
 ---
 
@@ -324,8 +326,8 @@ Original: ATG GAA AGG GGA TAA
 Mutated:  ATG GAA AGG CCA TAA
 ```
 
-**Mutation type:** _________________________
-**Predicted effect:** _________________________
+**Mutation type:** `_________________________`
+**Predicted effect:** `_________________________`
 
 ---
 
@@ -413,7 +415,7 @@ Score each challenge (0-2 points):
 ### Lesson 1 Objectives
 
 - [ ] Student can write valid CodonCanvas genome with START/STOP
-- [ ] Student recognizes codon families (GG*, CC*, AA*)
+- [ ] Student recognizes codon families (GG\*, CC\*, AA\*)
 - [ ] Student predicts silent mutation outcomes
 - [ ] Student navigates interface and executes code
 
@@ -446,9 +448,9 @@ Score each challenge (0-2 points):
 
 | Lesson | Students Starting | Students Completing | Retention % |
 | ------ | ----------------- | ------------------- | ----------- |
-| 1      | ___               | ___                 | ___         |
-| 2      | ___               | ___                 | ___         |
-| 3      | ___               | ___                 | ___         |
+| 1      | \_\_\_            | \_\_\_              | \_\_\_      |
+| 2      | \_\_\_            | \_\_\_              | \_\_\_      |
+| 3      | \_\_\_            | \_\_\_              | \_\_\_      |
 
 **Mutation Identification Accuracy:**
 

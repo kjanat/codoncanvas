@@ -752,7 +752,7 @@ Recommend depositing in open repositories (OSF, Dataverse) for scientific transp
 
 **Statistical Analysis Resources:**
 
-- [G*Power Sample Size Calculator](https://www.psychologie.hhu.de/arbeitsgruppen/allgemeine-psychologie-und-arbeitspsychologie/gpower)
+- [G\*Power Sample Size Calculator](https://www.psychologie.hhu.de/arbeitsgruppen/allgemeine-psychologie-und-arbeitspsychologie/gpower)
 - [Effect Size Interpretation Guide](https://imaging.mrc-cbu.cam.ac.uk/statswiki/FAQ/effectSize)
 
 ---

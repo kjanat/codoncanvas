@@ -100,8 +100,8 @@ ATG GGA GGA ACC CCA TCT GAA GAA TAA ; draw two circles, move, draw square, brigh
 
 ```
 ; Draw a flower‑like rosette
-ATG NNN  GAA AAA  GGA  ACU ACG  AGC  TTG  CCA  
-     GAA AAA  GGA  ACU ACG  AGC  TTG  CCA  
+ATG NNN  GAA AAA  GGA  ACU ACG  AGC  TTG  CCA
+     GAA AAA  GGA  ACU ACG  AGC  TTG  CCA
      GAA AAA  GGA  ACU ACG  AGC  TTG  CCA  TAA
 ```
 

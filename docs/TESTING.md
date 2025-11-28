@@ -42,6 +42,7 @@ bun test  # ❌ Don't use this
 ### Configuration Stack
 
 1. **vite.config.ts** - Vitest configuration
+
    ```ts
    test: {
      globals: true,

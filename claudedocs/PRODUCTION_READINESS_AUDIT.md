@@ -118,8 +118,9 @@ All `innerHTML` usage involves:
 **Recommended CSP for GitHub Pages:**
 
 ```html
-<meta http-equiv="Content-Security-Policy"
-      content="default-src 'self';
+<meta
+  http-equiv="Content-Security-Policy"
+  content="default-src 'self';
                script-src 'self' 'unsafe-inline';
                style-src 'self' 'unsafe-inline';
                img-src 'self' data:;
@@ -127,7 +128,8 @@ All `innerHTML` usage involves:
                connect-src 'self';
                frame-ancestors 'none';
                base-uri 'self';
-               form-action 'none';">
+               form-action 'none';"
+/>
 ```
 
 **Why 'unsafe-inline' Required:**

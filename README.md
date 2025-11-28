@@ -88,17 +88,14 @@ _Step through execution instruction-by-instruction with state visualization_
 **Available Paths:**
 
 1. **DNA Fundamentals** (20-30 min, Beginner)
-
    - Codon structure, silent mutations, missense/nonsense mutations, frameshifts
    - Perfect for biology students learning genetic concepts
 
 2. **Visual Programming Journey** (30-45 min, Beginner→Intermediate)
-
    - Drawing primitives, transforms, state management, loops
    - Ideal for CS students learning stack-based graphics programming
 
 3. **Nature's Algorithms** (25-35 min, Intermediate)
-
    - Fractal branching, phyllotaxis, cell division, hexagonal packing, DNA helix, neural networks
    - Connects biology to algorithmic patterns
 
@@ -520,18 +517,18 @@ flowchart LR
         direction LR
         B1[ATG] --> B2[GAA] --> B3[AGG] --> B4[GGA] --> B5[TAA]
     end
-    
+
     subgraph after["After"]
         direction LR
         A1[ATG] --> A2[GAA] --> A3[AGG] --> A4[GGC] --> A5[TAA]
     end
-    
+
     before -->|"GGA → GGC"| after
-    
+
     subgraph output["Output: Identical"]
         O1((CIRCLE))
     end
-    
+
     after --> output
 ```
 
@@ -543,22 +540,22 @@ flowchart LR
         direction LR
         B1[ATG] --> B2[GAA] --> B3[AGG] --> B4[GGA] --> B5[TAA]
     end
-    
+
     subgraph after["After"]
         direction LR
         A1[ATG] --> A2[GAA] --> A3[AGG] --> A4[CCA] --> A5[TAA]
     end
-    
+
     before -->|"GGA → CCA"| after
-    
+
     subgraph out1["Before Output"]
         O1((CIRCLE))
     end
-    
+
     subgraph out2["After Output"]
         O2[RECT]
     end
-    
+
     B4 -.-> O1
     A4 -.-> O2
 ```
@@ -571,18 +568,18 @@ flowchart LR
         direction LR
         B1[ATG] --> B2[GAA] --> B3[AGG] --> B4[GGA] --> B5[CCA] --> B6[TAA]
     end
-    
+
     subgraph after["After: Early STOP"]
         direction LR
         A1[ATG] --> A2[GAA] --> A3[AGG] --> A4[TAA]
     end
-    
+
     before -->|"GGA → TAA"| after
-    
+
     subgraph out1["Before Output"]
         O1((CIRCLE)) --- O2[RECT]
     end
-    
+
     subgraph out2["After Output"]
         O3[❌ Missing shape]
     end
@@ -596,18 +593,18 @@ flowchart TD
         direction LR
         B1["ATG"] --> B2["GAA"] --> B3["AGG"] --> B4["GGA"] --> B5["TAA"]
     end
-    
+
     before -->|"Delete first 'A' from GAA"| shift
-    
+
     subgraph shift["Reading Frame Shifts"]
         direction LR
         S1["ATG"] --> S2["GA_"] --> S3["AAG"] --> S4["GGG"] --> S5["ATA"] --> S6["A??"]
     end
-    
+
     subgraph result["Result"]
         R1["All downstream codons<br>now encode different shapes!"]
     end
-    
+
     shift --> result
 ```
 

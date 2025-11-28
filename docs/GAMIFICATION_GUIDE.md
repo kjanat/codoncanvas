@@ -846,11 +846,11 @@ Benefits for Mentors:
 
 ```html
 <script type="module">
-  import { AchievementEngine } from './dist/achievement-engine.js';
-  import { AchievementUI } from './dist/achievement-ui.js';
+  import { AchievementEngine } from "./dist/achievement-engine.js";
+  import { AchievementUI } from "./dist/achievement-ui.js";
 
   const engine = new AchievementEngine();
-  const ui = new AchievementUI(engine, 'achievements-container');
+  const ui = new AchievementUI(engine, "achievements-container");
 
   // Make globally available
   window.achievementEngine = engine;

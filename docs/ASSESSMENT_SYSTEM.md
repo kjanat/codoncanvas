@@ -39,6 +39,7 @@ The **Assessment System** provides automated challenges and grading for testing 
 ### Standalone Assessment Mode
 
 1. **Open Assessment Demo**:
+
    ```
    Open: assessment-demo.html
    ```

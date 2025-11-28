@@ -194,7 +194,7 @@ maximize learning-focused (germane) load. CodonCanvas reduces cognitive load thr
 
 - **Simple Syntax**: Only triplet combinations (A/C/G/T)
 - **External Memory Aid**: One-page codon chart eliminates memorization burden
-- **Consistent Patterns**: Codon families reduce arbitrary mappings (GG* = shapes)
+- **Consistent Patterns**: Codon families reduce arbitrary mappings (GG\* = shapes)
 - **Progressive Complexity**: Examples scaffold from 3-codon programs → advanced compositions
 
 ### 2.3 Constructionism and Artifact Creation
@@ -349,8 +349,8 @@ Independent observer rated adherence >90% for both conditions.
 Original: ATG GGA CCA TAA
 Mutated: ATG GGC CCA TAA
 
-Classify this mutation: _______
-Explain your reasoning: _______
+Classify this mutation: \_\_\_\_\_\_\_
+Explain your reasoning: \_\_\_\_\_\_\_
 
 ```
 **Scoring Rubric**:

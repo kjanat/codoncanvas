@@ -98,7 +98,7 @@ ATG GAA CCC GGC TAA
 **Ask:** "What changed?" (Answer: Nothing! Silent mutation)
 
 **Step 3:** Change GGA → GGT → GGG
-**Observe:** All four GG* codons produce identical circles
+**Observe:** All four GG\* codons produce identical circles
 
 **Concept Introduction:** "These four codons are a FAMILY - they all mean CIRCLE. This is like how multiple DNA codons can code for the same amino acid!"
 
@@ -119,10 +119,10 @@ ATG GAA CCC GAA CCC CCA TAA
 
 **Result:** Square appears
 
-**Challenge 2:** Explore CC* family (CCA, CCC, CCG, CCT)
+**Challenge 2:** Explore CC\* family (CCA, CCC, CCG, CCT)
 **Observation:** All produce same rectangle (silent mutations)
 
-**Challenge 3:** Try AA* family (LINE)
+**Challenge 3:** Try AA\* family (LINE)
 
 ```
 ATG GAA CCC AAA TAA
@@ -186,7 +186,7 @@ TAA
 
 **Quick Review:**
 
-- "Who can name a codon family?" (GG*, CC*, AA*)
+- "Who can name a codon family?" (GG\*, CC\*, AA\*)
 - "What's a silent mutation?" (Same family, same output)
 
 **Today's Question:** "What if mutations AREN'T silent?"

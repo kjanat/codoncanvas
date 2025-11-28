@@ -135,12 +135,12 @@ CodonCanvas v1.0 | https://github.com/codoncanvas/codoncanvas
 
 **Match each mutation type to its description:**
 
-| Type          | Description                                                                |
-| ------------- | -------------------------------------------------------------------------- |
-| 1. Silent     | ___ A. Changes codon to STOP, causing early termination                    |
-| 2. Missense   | ___ B. Inserts or deletes bases (not multiple of 3), scrambling downstream |
-| 3. Nonsense   | ___ C. Changes codon to synonymous variant, no effect on output            |
-| 4. Frameshift | ___ D. Changes codon to different operation, altering output               |
+| Type          | Description                                                                   |
+| ------------- | ----------------------------------------------------------------------------- |
+| 1. Silent     | \_\_\_ A. Changes codon to STOP, causing early termination                    |
+| 2. Missense   | \_\_\_ B. Inserts or deletes bases (not multiple of 3), scrambling downstream |
+| 3. Nonsense   | \_\_\_ C. Changes codon to synonymous variant, no effect on output            |
+| 4. Frameshift | \_\_\_ D. Changes codon to different operation, altering output               |
 
 **Answers:** 1-C, 2-D, 3-A, 4-B
 
@@ -242,7 +242,10 @@ Effect: _________________________________________________
 
 4. **Real-world connection: Sickle cell anemia is caused by a single base change (GAG → GTG). What type of mutation is this?**
 
-   [ ] Silent [ ] Missense [ ] Nonsense [ ] Frameshift
+   [ ] Silent\
+   [ ] Missense\
+   [ ] Nonsense\
+   [ ] Frameshift
 
 ---
 
@@ -294,45 +297,45 @@ In CodonCanvas:
 
 ### Conversion Table (0-63)
 
-| Codon | Value | Pixels* | Codon | Value | Pixels* |
-| ----- | ----- | ------- | ----- | ----- | ------- |
-| AAA   | 0     | 0       | CAA   | 16    | 100     |
-| AAC   | 1     | 6       | CAC   | 17    | 106     |
-| AAG   | 2     | 13      | CAG   | 18    | 113     |
-| AAT   | 3     | 19      | CAT   | 19    | 119     |
-| ACA   | 4     | 25      | CCA   | 20    | 125     |
-| ACC   | 5     | 31      | CCC   | 21    | 131     |
-| ACG   | 6     | 38      | CCG   | 22    | 138     |
-| ACT   | 7     | 44      | CCT   | 23    | 144     |
-| AGA   | 8     | 50      | CGA   | 24    | 150     |
-| AGC   | 9     | 56      | CGC   | 25    | 156     |
-| AGG   | 10    | 63      | CGG   | 26    | 163     |
-| AGT   | 11    | 69      | CGT   | 27    | 169     |
-| ATA   | 12    | 75      | CTA   | 28    | 175     |
-| ATC   | 13    | 81      | CTC   | 29    | 181     |
-| ATG   | 14    | 88      | CTG   | 30    | 188     |
-| ATT   | 15    | 94      | CTT   | 31    | 194     |
+| Codon | Value | Pixels\* | Codon | Value | Pixels\* |
+| ----- | ----- | -------- | ----- | ----- | -------- |
+| AAA   | 0     | 0        | CAA   | 16    | 100      |
+| AAC   | 1     | 6        | CAC   | 17    | 106      |
+| AAG   | 2     | 13       | CAG   | 18    | 113      |
+| AAT   | 3     | 19       | CAT   | 19    | 119      |
+| ACA   | 4     | 25       | CCA   | 20    | 125      |
+| ACC   | 5     | 31       | CCC   | 21    | 131      |
+| ACG   | 6     | 38       | CCG   | 22    | 138      |
+| ACT   | 7     | 44       | CCT   | 23    | 144      |
+| AGA   | 8     | 50       | CGA   | 24    | 150      |
+| AGC   | 9     | 56       | CGC   | 25    | 156      |
+| AGG   | 10    | 63       | CGG   | 26    | 163      |
+| AGT   | 11    | 69       | CGT   | 27    | 169      |
+| ATA   | 12    | 75       | CTA   | 28    | 175      |
+| ATC   | 13    | 81       | CTC   | 29    | 181      |
+| ATG   | 14    | 88       | CTG   | 30    | 188      |
+| ATT   | 15    | 94       | CTT   | 31    | 194      |
 
-| Codon | Value | Pixels* | Codon | Value | Pixels* |
-| ----- | ----- | ------- | ----- | ----- | ------- |
-| GAA   | 32    | 200     | TAA   | 48    | 300     |
-| GAC   | 33    | 206     | TAC   | 49    | 306     |
-| GAG   | 34    | 213     | TAG   | 50    | 313     |
-| GAT   | 35    | 219     | TAT   | 51    | 319     |
-| GCA   | 36    | 225     | TCA   | 52    | 325     |
-| GCC   | 37    | 231     | TCC   | 53    | 331     |
-| GCG   | 38    | 238     | TCG   | 54    | 338     |
-| GCT   | 39    | 244     | TCT   | 55    | 344     |
-| GGA   | 40    | 250     | TGA   | 56    | 350     |
-| GGC   | 41    | 256     | TGC   | 57    | 356     |
-| GGG   | 42    | 263     | TGG   | 58    | 363     |
-| GGT   | 43    | 269     | TGT   | 59    | 369     |
-| GTA   | 44    | 275     | TTA   | 60    | 375     |
-| GTC   | 45    | 281     | TTC   | 61    | 381     |
-| GTG   | 46    | 288     | TTG   | 62    | 388     |
-| GTT   | 47    | 294     | TTT   | 63    | 394     |
+| Codon | Value | Pixels\* | Codon | Value | Pixels\* |
+| ----- | ----- | -------- | ----- | ----- | -------- |
+| GAA   | 32    | 200      | TAA   | 48    | 300      |
+| GAC   | 33    | 206      | TAC   | 49    | 306      |
+| GAG   | 34    | 213      | TAG   | 50    | 313      |
+| GAT   | 35    | 219      | TAT   | 51    | 319      |
+| GCA   | 36    | 225      | TCA   | 52    | 325      |
+| GCC   | 37    | 231      | TCC   | 53    | 331      |
+| GCG   | 38    | 238      | TCG   | 54    | 338      |
+| GCT   | 39    | 244      | TCT   | 55    | 344      |
+| GGA   | 40    | 250      | TGA   | 56    | 350      |
+| GGC   | 41    | 256      | TGC   | 57    | 356      |
+| GGG   | 42    | 263      | TGG   | 58    | 363      |
+| GGT   | 43    | 269      | TGT   | 59    | 369      |
+| GTA   | 44    | 275      | TTA   | 60    | 375      |
+| GTC   | 45    | 281      | TTC   | 61    | 381      |
+| GTG   | 46    | 288      | TTG   | 62    | 388      |
+| GTT   | 47    | 294      | TTT   | 63    | 394      |
 
-*Pixels = (value / 64) × 400 (for 400×400 canvas)
+\*Pixels = (value / 64) × 400 (for 400×400 canvas)
 
 ---
 
@@ -340,16 +343,16 @@ In CodonCanvas:
 
 **Convert these codons to numbers:**
 
-1. `AAT` = _______
-2. `CCC` = _______
-3. `GAA` = _______
-4. `TTT` = _______
+1. `AAT` = \_\_\_\_\_\_\_
+2. `CCC` = \_\_\_\_\_\_\_
+3. `GAA` = \_\_\_\_\_\_\_
+4. `TTT` = \_\_\_\_\_\_\_
 
 **Convert these numbers to codons:**
 
-5. 10 = _______
-6. 25 = _______
-7. 50 = _______
+5. 10 = \_\_\_\_\_\_\_
+6. 25 = \_\_\_\_\_\_\_
+7. 50 = \_\_\_\_\_\_\_
 
 **Answers:** 1) 3, 2) 21, 3) 32, 4) 63, 5) AGG, 6) CGC, 7) TAG
 
@@ -469,43 +472,43 @@ TAA
 ┌─────────────────────────────────────────────────────────────┐
 │                   DEBUGGING CHECKLIST                       │
 ├─────────────────────────────────────────────────────────────┤
-│                                                              │
+│                                                             │
 │ WHEN YOUR CODE DOESN'T WORK:                                │
-│                                                              │
+│                                                             │
 │ Step 1: READ THE LINTER                                     │
 │ └─ Look at the panel below the editor                       │
 │ └─ Red = error (must fix)                                   │
 │ └─ Yellow = warning (should fix)                            │
-│                                                              │
+│                                                             │
 │ Step 2: CHECK THE BASICS                                    │
-│ ☐ Does it start with ATG?                                   │
-│ ☐ Does it end with TAA, TAG, or TGA?                        │
+│ ☐ Does it start with ATG?                                  │
+│ ☐ Does it end with TAA, TAG, or TGA?                       │
 │ ☐ Are all bases valid? (Only A, C, G, T allowed)           │
 │ ☐ Is length divisible by 3? (Count all letters)            │
-│                                                              │
+│                                                             │
 │ Step 3: CHECK THE STACK                                     │
-│ ☐ Does CIRCLE have 1 value before it?                       │
+│ ☐ Does CIRCLE have 1 value before it?                      │
 │    (PUSH one number first)                                  │
-│ ☐ Does RECT have 2 values?                                  │
+│ ☐ Does RECT have 2 values?                                 │
 │    (PUSH width, PUSH height, then RECT)                     │
-│ ☐ Does TRANSLATE have 2 values?                             │
+│ ☐ Does TRANSLATE have 2 values?                            │
 │    (PUSH dx, PUSH dy, then TRANSLATE)                       │
-│                                                              │
+│                                                             │
 │ Step 4: SIMPLIFY                                            │
 │ └─ Comment out half the code (add ; at start of lines)      │
 │ └─ Which half causes the error?                             │
 │ └─ Keep narrowing until you find the problem codon          │
-│                                                              │
+│                                                             │
 │ Step 5: ASK FOR HELP                                        │
-│ └─ Show your teacher:                                        │
+│ └─ Show your teacher:                                       │
 │    • What you're trying to do                               │
 │    • What's happening instead                               │
 │    • What the linter says                                   │
-│                                                              │
+│                                                             │
 │ STILL STUCK?                                                │
-│ └─ Click "Clear Canvas" and try a fresh start              │
+│ └─ Click "Clear Canvas" and try a fresh start               │
 │ └─ Load a working example and modify it gradually           │
-│                                                              │
+│                                                             │
 └─────────────────────────────────────────────────────────────┘
 ```
 
@@ -559,7 +562,7 @@ TAA
 3. Submit to [LMS/email/folder]
 4. **Optional**: Export PNG for visual portfolio
 
-**Due Date:** _______________
+**Due Date:** \_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
 
 ---
 

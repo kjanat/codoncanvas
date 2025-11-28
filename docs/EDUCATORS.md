@@ -77,6 +77,7 @@ CodonCanvas is an educational programming language that uses **DNA-like triplets
 **Best for:** Schools with reliable internet, BYOD environments, Chromebook labs
 
 1. **Deploy to Static Host** (one-time setup by IT/teacher):
+
    ```bash
    # Clone repository
    git clone https://github.com/codoncanvas/codoncanvas.git
@@ -242,7 +243,7 @@ Complete assessment tools now available in [`ASSESSMENTS.md`](ASSESSMENTS.md):
 **Genetic Redundancy:**
 
 - **LO4**: Define synonymous codons and their biological role
-- **LO5**: Compare codon families with similar functions (e.g., GG* → CIRCLE)
+- **LO5**: Compare codon families with similar functions (e.g., GG\* → CIRCLE)
 
 **Mutation Types:**
 
@@ -515,9 +516,9 @@ Complete assessment tools now available in [`ASSESSMENTS.md`](ASSESSMENTS.md):
 
 **Sample Questions:**
 
-1. `GGA → GGC`: Silent / Missense / Nonsense / Frameshift? Effect: ___________
-2. `GGA → TAA`: Silent / Missense / Nonsense / Frameshift? Effect: ___________
-3. `ATG GAA → ATG GA A`: Silent / Missense / Nonsense / Frameshift? Effect: ___________
+1. `GGA → GGC`: Silent / Missense / Nonsense / Frameshift? Effect: \_\_\_\_\_\_\_\_\_\_\_
+2. `GGA → TAA`: Silent / Missense / Nonsense / Frameshift? Effect: \_\_\_\_\_\_\_\_\_\_\_
+3. `ATG GAA → ATG GA A`: Silent / Missense / Nonsense / Frameshift? Effect: \_\_\_\_\_\_\_\_\_\_\_
 
 ---
 

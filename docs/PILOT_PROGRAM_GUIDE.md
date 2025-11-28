@@ -376,36 +376,37 @@ A **10-student, 3-session pilot** (Week 5 deployment) to empirically validate Co
    - A) 1 B) 2 C) 3 ✓ D) 4
 
 **Computational Thinking Questions:**
-6. What is a stack in programming?
 
-- A) Pile of instructions to execute
-- B) Last-in-first-out data structure ✓
-- C) List of variables
-- D) Type of loop
+1. What is a stack in programming?
 
-7. What does PUSH GAA CCC do?
+   - A) Pile of instructions to execute
+   - B) Last-in-first-out data structure ✓
+   - C) List of variables
+   - D) Type of loop
+
+2. What does PUSH GAA CCC do?
    - A) Draws a shape
    - B) Adds number 21 to stack ✓
    - C) Moves the cursor
    - D) Changes color
 
-8. If a program needs 2 numbers but stack only has 1, what happens?
+3. If a program needs 2 numbers but stack only has 1, what happens?
    - A) Program crashes with stack underflow ✓
    - B) Program uses 0 for missing number
    - C) Program skips the instruction
    - D) Program asks user for input
 
-9. What is abstraction in programming?
+4. What is abstraction in programming?
    - A) Making code confusing
    - B) Hiding complex details behind simple interface ✓
    - C) Deleting unnecessary code
    - D) Using only letters, no numbers
 
-10. What is debugging?
-    - A) Writing code without errors
-    - B) Finding and fixing errors ✓
-    - C) Deleting a program
-    - D) Adding comments to code
+5. What is debugging?
+   - A) Writing code without errors
+   - B) Finding and fixing errors ✓
+   - C) Deleting a program
+   - D) Adding comments to code
 
 **Scoring:**
 
@@ -531,7 +532,7 @@ A **10-student, 3-session pilot** (Week 5 deployment) to empirically validate Co
 - [ ] Students express excitement (verbal/non-verbal)
 - [ ] Students stay on-task (minimal off-topic browsing)
 
-**Notes:** ___________________________________________
+**Notes:** \_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
 
 #### Confusion Indicators
 
@@ -541,7 +542,7 @@ A **10-student, 3-session pilot** (Week 5 deployment) to empirically validate Co
 - [ ] Students attempt same error multiple times
 - [ ] Students request instructor help frequently
 
-**Confused Concepts:** ___________________________________________
+**Confused Concepts:** \_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
 
 #### Technical Issues
 
@@ -551,7 +552,7 @@ A **10-student, 3-session pilot** (Week 5 deployment) to empirically validate Co
 - [ ] Examples fail to run
 - [ ] Canvas rendering errors
 
-**Bug Details:** ___________________________________________
+**Bug Details:** \_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
 
 #### Biological Connections
 
@@ -561,7 +562,7 @@ A **10-student, 3-session pilot** (Week 5 deployment) to empirically validate Co
 - [ ] Students discuss evolutionary implications
 - [ ] Students critique differences from biology
 
-**Quotes:** ___________________________________________
+**Quotes:** \_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
 
 ### Instrument 6: Technical Performance Log
 

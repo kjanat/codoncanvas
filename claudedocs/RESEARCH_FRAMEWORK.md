@@ -457,10 +457,10 @@ Questions:
 #### Fidelity Checklist (Instructor Completes Each Session)
 
 - [ ] Covered all planned content
-- [ ] Students completed tutorials (% completion: ___)
-- [ ] Technical issues encountered (describe: ___)
-- [ ] Time on CodonCanvas: ___ minutes
-- [ ] Deviations from protocol (describe: ___)
+- [ ] Students completed tutorials (% completion: \_\_\_)
+- [ ] Technical issues encountered (describe: \_\_\_)
+- [ ] Time on CodonCanvas: \_\_\_ minutes
+- [ ] Deviations from protocol (describe: \_\_\_)
 
 #### Control Group Activities (Time-Matched)
 
@@ -872,23 +872,27 @@ Post_MCI = β₀ + β₁(Treatment) + β₂(Moderator) + β₃(Treatment × Mode
 **Biology Education:**
 
 1. **CBE—Life Sciences Education** (Impact Factor: 4.5)
+
    - Audience: Biology educators, researchers
    - Article type: Research article (6,000-8,000 words)
    - Focus: Learning outcomes, conceptual change
 
 2. **Journal of Microbiology & Biology Education** (Open Access)
+
    - Audience: STEM educators
    - Article type: Research or Teaching Innovation
    - Focus: Mutation pedagogy, tool evaluation
 
 **Computer Science Education:**
-3. **ACM Transactions on Computing Education** (Impact Factor: 3.2)
 
-- Audience: CS educators, ed-tech researchers
-- Article type: Full research article
-- Focus: DNA programming paradigm, interdisciplinary learning
+1. **ACM Transactions on Computing Education** (Impact Factor: 3.2)
 
-4. **Computer Science Education** (Impact Factor: 2.8)
+   - Audience: CS educators, ed-tech researchers
+   - Article type: Full research article
+   - Focus: DNA programming paradigm, interdisciplinary learning
+
+2. **Computer Science Education** (Impact Factor: 2.8)
+
    - Audience: International CS education community
    - Article type: Empirical research
    - Focus: Visual programming for science concepts

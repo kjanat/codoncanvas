@@ -94,10 +94,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added - Opcodes (Initial Set)
 
 - **Control flow**: START (ATG), STOP (TAA/TAG/TGA)
-- **Drawing primitives**: CIRCLE (GG*), RECT (CC*), LINE (AA*)
-- **Transform operations**: TRANSLATE (AC*), ROTATE (AG*), SCALE (CG*), COLOR (TT*)
-- **Stack operations**: PUSH (GA*), DUP (AT*), POP (TA*/TG*)
-- **Utility**: NOP (CA*)
+- **Drawing primitives**: CIRCLE (GG\*), RECT (CC\*), LINE (AA\*)
+- **Transform operations**: TRANSLATE (AC\*), ROTATE (AG\*), SCALE (CG\*), COLOR (TT\*)
+- **Stack operations**: PUSH (GA\*), DUP (AT\*), POP (TA\*/TG\*)
+- **Utility**: NOP (CA\*)
 
 ### Added - Testing Infrastructure
 

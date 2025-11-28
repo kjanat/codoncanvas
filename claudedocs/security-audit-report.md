@@ -357,13 +357,16 @@ exampleInfo.appendChild(h4);
 Add to index.html:
 
 ```html
-<meta http-equiv="Content-Security-Policy" content="
+<meta
+  http-equiv="Content-Security-Policy"
+  content="
   default-src 'self';
   script-src 'self' 'unsafe-inline';
   style-src 'self' 'unsafe-inline';
   img-src 'self' data: https://api.qrserver.com;
   connect-src 'self' https://api.qrserver.com;
-">
+"
+/>
 ```
 
 **3. Validate URL Parameters**
