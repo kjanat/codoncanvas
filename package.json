@@ -16,6 +16,7 @@
     "format": "bun fmt",
     "generate-screenshots": "bun scripts/generate-screenshots.ts",
     "postinstall": "lefthook install",
+    "jscpd": "bunx jscpd",
     "lint": "biome lint",
     "lint:fix": "biome check --write",
     "metrics:analyze": "bun --bun scripts/metrics-analyzer.ts",
@@ -60,5 +61,18 @@
     "typescript": "^5.0.0",
     "vite": "^7.2.4"
   },
-  "packageManager": "bun@1.3.3"
+  "packageManager": "bun@1.3.3",
+  "jscpd": {
+    "threshold": 0.1,
+    "reporters": [
+      "html",
+      "console",
+      "markdown"
+    ],
+    "ignore": [
+      "**/.serena/**"
+    ],
+    "absolute": false,
+    "gitignore": true
+  }
 }

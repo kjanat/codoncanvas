@@ -81,4 +81,6 @@ jobs:
         uses: actions/checkout@v6
 
       - name: Check duplication
-        run: npx --yes jscpd@latest
+        run: |
+          npx --yes jscpd@latest
+          cat report/jscpd-report.md >> "${GITHUB_STEP_SUMMARY}"
