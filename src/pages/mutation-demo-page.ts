@@ -1,5 +1,5 @@
 import { DiffViewer, injectDiffViewerStyles } from "../diff-viewer";
-import { escapeHtml, getElement } from "../dom-utils";
+import { getElement, showStatus as showStatusBase } from "../dom-utils";
 import { examples } from "../examples";
 import { CodonLexer } from "../lexer";
 import { getMutationByType } from "../mutations";
@@ -48,10 +48,7 @@ new ShareSystem({
 let originalGenome = editor.value;
 
 function showStatus(message: string, type = "info"): void {
-  statusContainer.innerHTML = `<div class="status ${escapeHtml(type)}">${escapeHtml(message)}</div>`;
-  setTimeout(() => {
-    statusContainer.innerHTML = "";
-  }, 5000);
+  showStatusBase(statusContainer, message, type);
 }
 
 function renderGenome(

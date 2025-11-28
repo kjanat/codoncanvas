@@ -1,6 +1,15 @@
 import type { Codon, CodonToken, ParseError } from "./types";
 
 /**
+ * Strip comment from a line (everything after `;`)
+ * @internal
+ */
+function getCodeContent(line: string): string {
+  const commentIdx = line.indexOf(";");
+  return commentIdx >= 0 ? line.slice(0, commentIdx) : line;
+}
+
+/**
  * Lexer interface for CodonCanvas genome parsing.
  * Responsible for tokenizing DNA/RNA triplets and validating genome structure.
  */
@@ -80,8 +89,7 @@ export class CodonLexer implements Lexer {
     for (let lineIdx = 0; lineIdx < lines.length; lineIdx++) {
       const line = lines[lineIdx];
       if (line === undefined) continue;
-      const commentIdx = line.indexOf(";");
-      const codeLine = commentIdx >= 0 ? line.slice(0, commentIdx) : line;
+      const codeLine = getCodeContent(line);
 
       for (let charIdx = 0; charIdx < codeLine.length; charIdx++) {
         const char = codeLine[charIdx];
@@ -147,8 +155,7 @@ export class CodonLexer implements Lexer {
     for (let lineIdx = 0; lineIdx < lines.length; lineIdx++) {
       const line = lines[lineIdx];
       if (line === undefined) continue;
-      const commentIdx = line.indexOf(";");
-      const codeLine = commentIdx >= 0 ? line.slice(0, commentIdx) : line;
+      const codeLine = getCodeContent(line);
 
       // Check for mid-triplet whitespace breaks
       let baseCount = 0;

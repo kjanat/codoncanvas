@@ -49,3 +49,22 @@ export function querySelector<T extends Element = Element>(
   }
   return element;
 }
+
+/**
+ * Show a temporary status message in a container element
+ * @param container - The container element to show the status in
+ * @param message - The message to display
+ * @param type - The status type (info, success, error, warning)
+ * @param duration - How long to show the message in milliseconds (default 5000)
+ */
+export function showStatus(
+  container: HTMLElement,
+  message: string,
+  type: string = "info",
+  duration: number = 5000,
+): void {
+  container.innerHTML = `<div class="status ${escapeHtml(type)}">${escapeHtml(message)}</div>`;
+  setTimeout(() => {
+    container.innerHTML = "";
+  }, duration);
+}

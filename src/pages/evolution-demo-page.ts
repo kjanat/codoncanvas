@@ -1,16 +1,14 @@
 import { AchievementEngine } from "../achievement-engine";
 import { AchievementUI } from "../achievement-ui";
 import "../achievement-ui.css";
-import { escapeHtml, getElement } from "../dom-utils";
+import { renderGenomeToCanvas } from "../demos-core";
+import { getElement, showStatus as showStatusBase } from "../dom-utils";
 import { EvolutionEngine } from "../evolution-engine";
 import { examples } from "../examples";
-import { CodonLexer } from "../lexer";
-import { Canvas2DRenderer } from "../renderer";
 import { injectShareStyles, ShareSystem } from "../share-system";
 import { evolutionTutorial, TutorialManager } from "../tutorial";
 import { TutorialUI } from "../tutorial-ui";
 import "../tutorial-ui.css";
-import { CodonVM } from "../vm";
 
 injectShareStyles();
 
@@ -23,7 +21,6 @@ interface Candidate {
   };
 }
 
-const lexer = new CodonLexer();
 let engine: EvolutionEngine | null = null;
 let currentCandidates: Candidate[] = [];
 
@@ -54,25 +51,7 @@ new ShareSystem({
 });
 
 function showStatus(message: string, type = "info"): void {
-  statusContainer.innerHTML = `<div class="status ${escapeHtml(type)}">${escapeHtml(message)}</div>`;
-  setTimeout(() => {
-    statusContainer.innerHTML = "";
-  }, 5000);
-}
-
-function renderGenome(genome: string, canvas: HTMLCanvasElement): boolean {
-  try {
-    const renderer = new Canvas2DRenderer(canvas);
-    const vm = new CodonVM(renderer);
-    renderer.clear();
-    const tokens = lexer.tokenize(genome);
-    vm.reset();
-    vm.run(tokens);
-    return true;
-  } catch (error) {
-    console.error("Render error:", error);
-    return false;
-  }
+  showStatusBase(statusContainer, message, type);
 }
 
 function updateStats(): void {
@@ -117,7 +96,7 @@ function updateLineage(): void {
     canvas.className = "lineage-canvas";
     canvas.width = 120;
     canvas.height = 120;
-    renderGenome(genome, canvas);
+    renderGenomeToCanvas(genome, canvas);
 
     const label = document.createElement("div");
     label.className = "lineage-label";
@@ -187,7 +166,7 @@ function renderCandidates(): void {
     canvas.className = "candidate-canvas";
     canvas.width = 250;
     canvas.height = 250;
-    renderGenome(candidate.genome, canvas);
+    renderGenomeToCanvas(candidate.genome, canvas);
 
     const mutation = document.createElement("div");
     mutation.className = "candidate-mutation";

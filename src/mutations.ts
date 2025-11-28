@@ -45,6 +45,16 @@ const STOP_CODONS: Set<Codon> = new Set([
 ]);
 
 /**
+ * Clean genome string by removing whitespace and comments.
+ * @param genome - Raw genome string with optional formatting
+ * @returns Continuous base string without whitespace or comments
+ * @internal
+ */
+function cleanGenome(genome: string): string {
+  return genome.replace(/\s+/g, "").replace(/;.*/g, "");
+}
+
+/**
  * Get synonymous codons (same opcode) for a given codon.
  * Used for silent mutation generation.
  * @param codon - Source codon to find synonyms for
@@ -324,7 +334,7 @@ export function applyPointMutation(
   genome: string,
   position?: number,
 ): MutationResult {
-  const cleaned = genome.replace(/\s+/g, "").replace(/;.*/g, "");
+  const cleaned = cleanGenome(genome);
 
   const targetPos = position ?? Math.floor(Math.random() * cleaned.length);
   if (targetPos >= cleaned.length) {
@@ -371,7 +381,7 @@ export function applyInsertion(
   position?: number,
   length: number = 1,
 ): MutationResult {
-  const cleaned = genome.replace(/\s+/g, "").replace(/;.*/g, "");
+  const cleaned = cleanGenome(genome);
 
   const targetPos = position ?? Math.floor(Math.random() * cleaned.length);
   if (targetPos > cleaned.length) {
@@ -421,7 +431,7 @@ export function applyDeletion(
   position?: number,
   length: number = 1,
 ): MutationResult {
-  const cleaned = genome.replace(/\s+/g, "").replace(/;.*/g, "");
+  const cleaned = cleanGenome(genome);
 
   const targetPos =
     position ??

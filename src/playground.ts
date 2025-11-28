@@ -157,6 +157,28 @@ function trackDrawingOperations(tokens: { text: string }[]) {
 }
 
 /**
+ * Track execution metrics and achievements
+ */
+function trackExecutionComplete(
+  tokens: { text: string }[],
+  instructionCount: number,
+  mode: RenderMode,
+): void {
+  researchMetrics.trackGenomeExecuted({
+    timestamp: Date.now(),
+    renderMode: mode,
+    genomeLength: tokens.length,
+    instructionCount,
+    success: true,
+  });
+
+  const opcodes = tokens.map((t) => t.text);
+  const unlocked2 = achievementEngine.trackGenomeExecuted(opcodes);
+  const unlocked3 = trackDrawingOperations(tokens);
+  achievementUI.handleUnlocks([...unlocked2, ...unlocked3]);
+}
+
+/**
  * Run the genome program
  */
 async function runProgram() {
@@ -201,19 +223,7 @@ async function runProgram() {
         `♪ Playing ${audioVM.state.instructionCount} audio instructions`,
         "success",
       );
-
-      researchMetrics.trackGenomeExecuted({
-        timestamp: Date.now(),
-        renderMode: "audio",
-        genomeLength: tokens.length,
-        instructionCount: audioVM.state.instructionCount,
-        success: true,
-      });
-
-      const opcodes = tokens.map((t) => t.text);
-      const unlocked2 = achievementEngine.trackGenomeExecuted(opcodes);
-      const unlocked3 = trackDrawingOperations(tokens);
-      achievementUI.handleUnlocks([...unlocked2, ...unlocked3]);
+      trackExecutionComplete(tokens, audioVM.state.instructionCount, "audio");
     } else if (renderMode === "visual") {
       vm.reset();
       const snapshots = vm.run(tokens);
@@ -224,19 +234,7 @@ async function runProgram() {
         `Executed ${vm.state.instructionCount} instructions successfully`,
         "success",
       );
-
-      researchMetrics.trackGenomeExecuted({
-        timestamp: Date.now(),
-        renderMode: "visual",
-        genomeLength: tokens.length,
-        instructionCount: vm.state.instructionCount,
-        success: true,
-      });
-
-      const opcodes = tokens.map((t) => t.text);
-      const unlocked2 = achievementEngine.trackGenomeExecuted(opcodes);
-      const unlocked3 = trackDrawingOperations(tokens);
-      achievementUI.handleUnlocks([...unlocked2, ...unlocked3]);
+      trackExecutionComplete(tokens, vm.state.instructionCount, "visual");
     } else {
       const audioVM = new CodonVM(audioRenderer);
       renderer.clear();
@@ -256,19 +254,7 @@ async function runProgram() {
         `♪🎨 Playing ${audioVM.state.instructionCount} audio + visual instructions`,
         "success",
       );
-
-      researchMetrics.trackGenomeExecuted({
-        timestamp: Date.now(),
-        renderMode: "both",
-        genomeLength: tokens.length,
-        instructionCount: audioVM.state.instructionCount,
-        success: true,
-      });
-
-      const opcodes = tokens.map((t) => t.text);
-      const unlocked2 = achievementEngine.trackGenomeExecuted(opcodes);
-      const unlocked3 = trackDrawingOperations(tokens);
-      achievementUI.handleUnlocks([...unlocked2, ...unlocked3]);
+      trackExecutionComplete(tokens, audioVM.state.instructionCount, "both");
     }
   } catch (error) {
     if (error instanceof Error) {

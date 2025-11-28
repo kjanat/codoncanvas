@@ -60,11 +60,12 @@ export function highlightGenome(
 
 /**
  * Render a genome to a canvas element
+ * @returns true if rendering succeeded, false on error
  */
 export function renderGenomeToCanvas(
   genome: string,
   canvas: HTMLCanvasElement,
-): void {
+): boolean {
   const lexer = new CodonLexer();
   const renderer = new Canvas2DRenderer(canvas);
   const vm = new CodonVM(renderer);
@@ -73,6 +74,7 @@ export function renderGenomeToCanvas(
     const tokens = lexer.tokenize(genome);
     vm.reset();
     vm.run(tokens);
+    return true;
   } catch (_error) {
     // Draw error indicator on canvas
     const ctx = canvas.getContext("2d");
@@ -81,5 +83,6 @@ export function renderGenomeToCanvas(
       ctx.font = "12px monospace";
       ctx.fillText("Render Error", 10, 100);
     }
+    return false;
   }
 }
