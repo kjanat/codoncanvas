@@ -21,7 +21,7 @@ Implemented **ADD** and **MUL** arithmetic opcodes, unlocking computational crea
 
 - All 64 codons allocated (verified systematically)
 - Need to split existing families (like RESTORE_STATE did in Session 23)
-- NOISE (CT*: 4 codons) identified as best candidate (artistic, non-core)
+- NOISE (CT\*: 4 codons) identified as best candidate (artistic, non-core)
 - Prioritized ADD/MUL over SUB/DIV for pedagogical value
 
 **Why This Direction:**
@@ -36,7 +36,7 @@ Implemented **ADD** and **MUL** arithmetic opcodes, unlocking computational crea
 
 ### Phase 1: Codon Reallocation
 
-**BEFORE:** CT* (4 codons) → NOISE
+**BEFORE:** CT\* (4 codons) → NOISE
 **AFTER:**
 
 - CTA, CTC → NOISE (2 codons, maintains synonymous pair)
@@ -315,7 +315,7 @@ GAA AAT GAA AAT CTT GGA  ; 3 × 3 = 9, draw circle
 ## Success Criteria Met
 
 ✅ Arithmetic opcodes implemented (ADD, MUL)
-✅ Codon reallocation strategy (CT* family split)
+✅ Codon reallocation strategy (CT\* family split)
 ✅ VM execution logic (RPN semantics)
 ✅ Comprehensive tests (8 tests, all passing)
 ✅ Parametric design examples (2 demos)
@@ -330,20 +330,22 @@ GAA AAT GAA AAT CTT GGA  ; 3 × 3 = 9, draw circle
 **Immediate (Session 72, ~30 min):**
 
 1. Add SUB/DIV opcodes (complete arithmetic suite)
-2. Split another family (CA* NOP → NOP/SUB, or reuse stack families)
+2. Split another family (CA\* NOP → NOP/SUB, or reuse stack families)
 3. Examples: subtraction patterns, division ratios
 
 **Medium-Term:**
-4. Update codon chart SVG (CTG=ADD, CTT=MUL)
-5. Tutorial integration ("Computed Values" lesson)
-6. Lesson plan: "From Static to Parametric Design"
-7. Assessment: "Use ADD to create graduated sizes"
+
+1. Update codon chart SVG (CTG=ADD, CTT=MUL)
+2. Tutorial integration ("Computed Values" lesson)
+3. Lesson plan: "From Static to Parametric Design"
+4. Assessment: "Use ADD to create graduated sizes"
 
 **Long-Term:**
-8. Conditional operations (IF/ELSE based on stack values)
-9. Looping constructs (LOOP N times)
-10. Variables/memory (named storage)
-11. Advanced math (SQRT, POW, MOD)
+
+1. Conditional operations (IF/ELSE based on stack values)
+2. Looping constructs (LOOP N times)
+3. Variables/memory (named storage)
+4. Advanced math (SQRT, POW, MOD)
 
 ## Achievement
 

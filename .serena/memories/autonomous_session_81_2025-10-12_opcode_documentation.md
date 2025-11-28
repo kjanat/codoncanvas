@@ -147,7 +147,7 @@ NOISE opcode not implemented in current version. This is acceptable - arithmetic
 ⚠️ Branching: No IF/ELSE (but can simulate via multiplication)
 ⚠️ Recursion: No call stack (could simulate via LOOP + arithmetic)
 
-Conclusion: CodonCanvas is a REAL programming language capable 
+Conclusion: CodonCanvas is a REAL programming language capable
 of expressing algorithms (FizzBuzz, Fibonacci, prime detection).
 ```
 

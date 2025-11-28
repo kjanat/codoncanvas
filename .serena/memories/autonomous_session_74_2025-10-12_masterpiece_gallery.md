@@ -338,16 +338,17 @@ GAA CGT GAA CTT GAA CGC GAA AAA TTA GGA
 3. Screenshot generation for docs
 
 **Medium-Term:**
-4. Tutorial integration ("Build Your Masterpiece" lesson)
-5. Assessment items ("Create Fibonacci-style pattern")
-6. Gallery voting/sharing system
-7. Advanced mutation demos (what happens to Fibonacci if...)
+
+1. Tutorial integration ("Build Your Masterpiece" lesson)
+2. Assessment items ("Create Fibonacci-style pattern")
+3. Gallery voting/sharing system 7. Advanced mutation demos (what happens to Fibonacci if...)
 
 **Long-Term:**
-8. Comparison operations (EQ, LT, GT) for conditionals
-9. Conditional execution (IF or conditional jump)
-10. Nested loop support (grid patterns, 2D iteration)
-11. More masterpieces (fractals, L-systems, cellular automata approximations)
+
+1. Comparison operations (EQ, LT, GT) for conditionals
+2. Conditional execution (IF or conditional jump)
+3. Nested loop support (grid patterns, 2D iteration)
+4. More masterpieces (fractals, L-systems, cellular automata approximations)
 
 ## Achievement
 
@@ -389,7 +390,7 @@ feat: add 3 advanced gallery masterpieces showcasing full system capability
 
 Masterpieces serve multiple goals:
 - Marketing: Visual wow factor for landing pages/galleries
-- Education: Aspirational tier demonstrating composition mastery  
+- Education: Aspirational tier demonstrating composition mastery
 - Technical: Stress tests arithmetic + loop integration
 - Creative: Showcases algorithmic art potential
 

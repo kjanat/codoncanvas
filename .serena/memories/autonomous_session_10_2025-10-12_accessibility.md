@@ -120,7 +120,7 @@ Comprehensive WCAG 2.1 Level AA audit identified 13 critical issues:
 
 ```html
 <!-- Before -->
-<input type="text" id="searchInput" placeholder="🔍 Search..."/>
+<input type="text" id="searchInput" placeholder="🔍 Search..." />
 
 <!-- After -->
 <label for="searchInput" class="sr-only">Search examples</label>
@@ -140,7 +140,9 @@ Comprehensive WCAG 2.1 Level AA audit identified 13 critical issues:
   class="mutation-btn silent"
   title="Change codon to synonymous variant"
   aria-label="Apply silent mutation - change codon to synonymous variant"
->Silent</button>
+>
+  Silent
+</button>
 ```
 
 **Textarea (rich description):**
@@ -151,11 +153,13 @@ Comprehensive WCAG 2.1 Level AA audit identified 13 critical issues:
   id="editor"
   aria-label="Genome code editor. Enter DNA codons using bases A, C, G, T. Press Ctrl+Enter to run."
   aria-describedby="editor-help"
->...</textarea>
+>
+...</textarea
+>
 <div id="editor-help" class="sr-only">
-  DNA codon editor. Use bases A, C, G, and T to create triplet codons.
-  Start programs with ATG (START) and end with TAA, TAG, or TGA (STOP).
-  Semicolons begin comments. Press Ctrl+Enter to run the program.
+  DNA codon editor. Use bases A, C, G, and T to create triplet codons. Start
+  programs with ATG (START) and end with TAA, TAG, or TGA (STOP). Semicolons
+  begin comments. Press Ctrl+Enter to run the program.
 </div>
 ```
 
@@ -178,12 +182,9 @@ Comprehensive WCAG 2.1 Level AA audit identified 13 critical issues:
 **1. Linter Messages:**
 
 ```html
-<div
-  id="linterMessages"
-  role="log"
-  aria-live="polite"
-  aria-atomic="false"
->...</div>
+<div id="linterMessages" role="log" aria-live="polite" aria-atomic="false">
+  ...
+</div>
 ```
 
 - `role="log"`: Specialized live region for messages
@@ -193,12 +194,9 @@ Comprehensive WCAG 2.1 Level AA audit identified 13 critical issues:
 **2. Status Bar:**
 
 ```html
-<footer
-  class="status-bar"
-  role="status"
-  aria-live="polite"
-  aria-atomic="true"
->...</footer>
+<footer class="status-bar" role="status" aria-live="polite" aria-atomic="true">
+  ...
+</footer>
 ```
 
 - `role="status"`: Implicit aria-live
@@ -207,11 +205,7 @@ Comprehensive WCAG 2.1 Level AA audit identified 13 critical issues:
 **3. Example Info:**
 
 ```html
-<section
-  id="exampleInfo"
-  role="region"
-  aria-live="polite"
->...</section>
+<section id="exampleInfo" role="region" aria-live="polite">...</section>
 ```
 
 **4. Toggle State (TypeScript):**

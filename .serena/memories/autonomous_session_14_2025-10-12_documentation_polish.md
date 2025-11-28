@@ -58,7 +58,7 @@ Following session 13 (distribution resources), chose documentation polish as hig
    - STUDENT_HANDOUTS.md:158, STUDENT_HANDOUTS.md:367
    - ✅ Result: All instances identical (`ATG GAA AAT GGA TAA`)
 
-2. **File Reference Validation**: Cross-checked src/*.ts references in README
+2. **File Reference Validation**: Cross-checked src/\*.ts references in README
    - ✅ diff-viewer.ts, examples.ts, genome-io.ts, mutations.ts exist
    - ✅ timeline-scrubber.ts, renderer.ts, vm.ts, lexer.ts exist
    - ✅ All test files present: lexer.test.ts, vm.test.ts, mutations.test.ts, genome-io.test.ts
@@ -98,14 +98,17 @@ Following session 13 (distribution resources), chose documentation polish as hig
 **Changes Applied:**
 
 1. **GitHub URL Replacement** (4 instances):
+
    ```diff
    - git clone https://github.com/yourusername/codoncanvas.git
    + git clone https://github.com/codoncanvas/codoncanvas.git
    ```
+
    - EDUCATORS.md: Lines 72, 112, 710
    - STUDENT_HANDOUTS.md: Line 125
 
 2. **Test Count Corrections** (README.md):
+
    ```diff
    - # Lexer tests (13 tests)
    + # Lexer tests (11 tests)

@@ -169,7 +169,7 @@ Successfully implemented **reduced motion accessibility support** (WCAG 2.3.3 Le
 | ------------------ | ------------------------ | ---------------------------------------------- |
 | Lines added        | +19                      | CSS only, no JavaScript                        |
 | CSS rules          | +2                       | Motion-safe transition, reduced-motion disable |
-| Affected elements  | All (*)                  | Universal reduced-motion protection            |
+| Affected elements  | All (\*)                 | Universal reduced-motion protection            |
 | JavaScript changes | 0                        | Pure CSS solution                              |
 | Build time         | 400ms                    | No regression (was ~390ms)                     |
 | Bundle size        | 20.22 kB (gzip: 5.20 kB) | No change (CSS inline)                         |

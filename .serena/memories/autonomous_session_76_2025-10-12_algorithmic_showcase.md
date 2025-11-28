@@ -45,7 +45,7 @@ Instead of adding new opcodes or VM features, I chose to demonstrate the **power
 ```
 PUSH radius
 DUP (for comparison)
-PUSH threshold  
+PUSH threshold
 SWAP
 LT (returns 1 if less, 0 if greater)
 PUSH 1
@@ -403,7 +403,7 @@ with arithmetic, LOOP, and stack operations for real algorithmic patterns.
 
 New Examples:
 1. conditionalRainbow - threshold-based selective drawing using comparisons
-2. sortingVisualization - comparison-based sorting with before/after bars  
+2. sortingVisualization - comparison-based sorting with before/after bars
 3. collatzSequence - famous unsolved math problem (3n+1) visualization
 4. euclideanGCD - ancient Euclidean algorithm for greatest common divisor
 

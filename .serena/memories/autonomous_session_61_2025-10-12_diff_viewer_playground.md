@@ -28,7 +28,7 @@ Autonomous session completing **MVP Phase B requirement**: integrated DiffViewer
   ```
   Phase B - Pedagogy Tools:
   - Linter (~400 LOC) ✅ Complete
-  - Mutation Tools (~200 LOC) ✅ Complete  
+  - Mutation Tools (~200 LOC) ✅ Complete
   - Diff Viewer (~300 LOC) ❓ Library exists, NOT in playground
   - Timeline Scrubber (~300 LOC) ✅ Complete
   ```
@@ -71,23 +71,47 @@ Integrate DiffViewer into playground as core pedagogical tool (not just demo). T
 **Added Panel:**
 
 ```html
-<section id="diffViewerPanel" role="region" aria-labelledby="diff-viewer-heading" 
-         style="display: none; margin-top: 12px; background: #2d2d30; border: 1px solid #3c3c3c; border-radius: 4px;">
-  <div style="display: flex; justify-content: space-between; align-items: center; padding: 8px 12px; 
-              background: #252526; border-bottom: 1px solid #3c3c3c; border-radius: 4px 4px 0 0;">
-    <h3 id="diff-viewer-heading" style="font-size: 13px; font-weight: 600; color: #4ec9b0;">
+<section
+  id="diffViewerPanel"
+  role="region"
+  aria-labelledby="diff-viewer-heading"
+  style="display: none; margin-top: 12px; background: #2d2d30; border: 1px solid #3c3c3c; border-radius: 4px;"
+>
+  <div
+    style="display: flex; justify-content: space-between; align-items: center; padding: 8px 12px; 
+              background: #252526; border-bottom: 1px solid #3c3c3c; border-radius: 4px 4px 0 0;"
+  >
+    <h3
+      id="diff-viewer-heading"
+      style="font-size: 13px; font-weight: 600; color: #4ec9b0;"
+    >
       🔬 Mutation Comparison
     </h3>
     <div style="display: flex; gap: 8px;">
-      <button id="diffViewerClearBtn" aria-label="Clear comparison and hide panel" 
-              style="padding: 4px 10px; font-size: 11px; background: #3e3e42; color: #d4d4d4; 
-              border: none; border-radius: 3px; cursor: pointer;">Clear</button>
-      <button id="diffViewerToggle" aria-label="Toggle diff viewer panel visibility" aria-expanded="true" 
-              style="padding: 4px 8px; font-size: 11px; background: #3e3e42;">Hide</button>
+      <button
+        id="diffViewerClearBtn"
+        aria-label="Clear comparison and hide panel"
+        style="padding: 4px 10px; font-size: 11px; background: #3e3e42; color: #d4d4d4; 
+              border: none; border-radius: 3px; cursor: pointer;"
+      >
+        Clear
+      </button>
+      <button
+        id="diffViewerToggle"
+        aria-label="Toggle diff viewer panel visibility"
+        aria-expanded="true"
+        style="padding: 4px 8px; font-size: 11px; background: #3e3e42;"
+      >
+        Hide
+      </button>
     </div>
   </div>
-  <div id="diffViewerContainer" role="log" aria-live="polite" 
-       style="padding: 12px; font-size: 12px; line-height: 1.6; max-height: 400px; overflow-y: auto;">
+  <div
+    id="diffViewerContainer"
+    role="log"
+    aria-live="polite"
+    style="padding: 12px; font-size: 12px; line-height: 1.6; max-height: 400px; overflow-y: auto;"
+  >
     <!-- DiffViewer content will be injected here -->
   </div>
 </section>
@@ -162,11 +186,13 @@ let originalGenomeBeforeMutation: string = "";
 **Key Changes:**
 
 1. **Store original genome before mutation:**
+
    ```typescript
    originalGenomeBeforeMutation = genome;
    ```
 
 2. **Render comparison after mutation:**
+
    ```typescript
    // Show DiffViewer with comparison
    diffViewer.renderMutation(result);

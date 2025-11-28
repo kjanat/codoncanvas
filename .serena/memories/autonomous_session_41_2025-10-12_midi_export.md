@@ -249,8 +249,13 @@ execute(opcode: Opcode, codon: string): void {
 ```html
 <!-- Export buttons (toolbar) -->
 <button id="exportBtn" class="secondary">📄 Export PNG</button>
-<button id="exportAudioBtn" class="secondary" style="display: none;">🎵 Export Audio</button>
-<button id="exportMidiBtn" class="secondary" style="display: none;">🎹 Export MIDI</button> <!-- NEW -->
+<button id="exportAudioBtn" class="secondary" style="display: none;">
+  🎵 Export Audio
+</button>
+<button id="exportMidiBtn" class="secondary" style="display: none;">
+  🎹 Export MIDI
+</button>
+<!-- NEW -->
 ```
 
 **Visibility Logic (playground.ts):**

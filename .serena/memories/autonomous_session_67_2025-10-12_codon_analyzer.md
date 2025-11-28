@@ -107,13 +107,15 @@ Real genomics metrics implemented:
 3. Historical Tracking (30-45 min): Composition evolution over time
 
 **Medium-Term:**
-4. Composition-Based Search: Find similar genomes in gallery
-5. Composition Challenges: Assessment targets (GC > 60%, complexity < 30%)
-6. Advanced Visualizations: Pie charts, heatmaps, logo plots
+
+1. Composition-Based Search: Find similar genomes in gallery
+2. Composition Challenges: Assessment targets (GC > 60%, complexity < 30%)
+3. Advanced Visualizations: Pie charts, heatmaps, logo plots
 
 **Long-Term:**
-7. ML Integration: Genome classification by composition
-8. Phylogenetic Analysis: Multiple genome comparison trees
+
+1. ML Integration: Genome classification by composition
+2. Phylogenetic Analysis: Multiple genome comparison trees
 
 ## Key Files
 

@@ -304,11 +304,11 @@ for student in submissions/*.genome; do
   else
     VALIDATION_PTS=0
   fi
-  
+
   # Complexity (30 pts based on codons)
   CODONS=$(npm run cli -- stats "$student" | grep "Total codons" | awk '{print $3}')
   COMPLEXITY_PTS=$((CODONS / 10))  # 1 point per 10 codons, max 30
-  
+
   # Total
   TOTAL=$((VALIDATION_PTS + COMPLEXITY_PTS))
   echo "$student: $TOTAL/80"

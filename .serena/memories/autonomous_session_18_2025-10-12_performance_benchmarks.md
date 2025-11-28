@@ -36,7 +36,7 @@ Created complete performance benchmark suite with automated testing infrastructu
 - **Imports**: CodonLexer, CodonVM, Canvas2DRenderer from existing codebase
 - **Configuration**: 20 iterations, 5 warmup runs, genome sizes [10, 50, 100, 500, 1000]
 - **Test Genome Generators**:
-  - Simple: ATG + (PUSH 10 + CIRCLE) * n + TAA (shape-heavy, worst-case rendering)
+  - Simple: ATG + (PUSH 10 + CIRCLE) \* n + TAA (shape-heavy, worst-case rendering)
   - Complex: Mixed opcodes (CIRCLE, RECT, TRANSLATE, ROTATE, SCALE) (typical usage)
   - Transform-heavy: Nested transforms with SAVE_STATE (advanced patterns)
 

@@ -152,18 +152,22 @@ Oscillator → GainNode (ADSR envelope) → BiquadFilter → StereoPanner → Ma
 **HTML Changes:**
 
 1. Audio toggle button added to toolbar:
+
    ```html
    <button id="audioToggleBtn" class="secondary">🔇 Audio Off</button>
    ```
 
 2. Audio export button (hidden by default):
    ```html
-   <button id="exportAudioBtn" class="secondary" style="display: none;">🎵 Export Audio</button>
+   <button id="exportAudioBtn" class="secondary" style="display: none;">
+     🎵 Export Audio
+   </button>
    ```
 
 **Playground.ts Changes:**
 
 1. **Audio state management:**
+
    ```typescript
    const audioRenderer = new AudioRenderer();
    let audioMode = false; // Start with visual mode

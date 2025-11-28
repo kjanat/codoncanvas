@@ -31,7 +31,7 @@
 
 **From MVP Spec Section 7 (line 687-700):**
 
-- Mentions TC* = SAVE_STATE (implemented)
+- Mentions TC\* = SAVE_STATE (implemented)
 - But NO RESTORE_STATE in spec! (we added it)
 - No mention of arithmetic in spec (we added ADD/SUB/MUL/DIV)
 
@@ -111,7 +111,7 @@ LOOP_END   ; Execute body N times
 
 - Need 1 codon for LOOP
 - Options:
-  1. Split CA* NOP family again (CAA → LOOP, CAC stays NOP)
+  1. Split CA\* NOP family again (CAA → LOOP, CAC stays NOP)
   2. Use existing rare family
   3. Overload with parameter
 

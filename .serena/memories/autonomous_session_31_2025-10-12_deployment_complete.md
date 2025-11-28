@@ -149,21 +149,42 @@ build: {
 **Open Graph Tags:**
 
 ```html
-<meta property="og:type" content="website">
-<meta property="og:url" content="https://yourusername.github.io/codoncanvas/">
-<meta property="og:title" content="CodonCanvas - DNA-Inspired Visual Programming">
-<meta property="og:description" content="Learn genetics through code! Write DNA-like triplets that execute as visual outputs. See mutations, reading frames, and evolution in action.">
-<meta property="og:image" content="https://yourusername.github.io/codoncanvas/screenshot_playground.png">
+<meta property="og:type" content="website" />
+<meta property="og:url" content="https://yourusername.github.io/codoncanvas/" />
+<meta
+  property="og:title"
+  content="CodonCanvas - DNA-Inspired Visual Programming"
+/>
+<meta
+  property="og:description"
+  content="Learn genetics through code! Write DNA-like triplets that execute as visual outputs. See mutations, reading frames, and evolution in action."
+/>
+<meta
+  property="og:image"
+  content="https://yourusername.github.io/codoncanvas/screenshot_playground.png"
+/>
 ```
 
 **Twitter Card Tags:**
 
 ```html
-<meta property="twitter:card" content="summary_large_image">
-<meta property="twitter:url" content="https://yourusername.github.io/codoncanvas/">
-<meta property="twitter:title" content="CodonCanvas - DNA-Inspired Visual Programming">
-<meta property="twitter:description" content="Learn genetics through code! Write DNA-like triplets that execute as visual outputs.">
-<meta property="twitter:image" content="https://yourusername.github.io/codoncanvas/screenshot_playground.png">
+<meta property="twitter:card" content="summary_large_image" />
+<meta
+  property="twitter:url"
+  content="https://yourusername.github.io/codoncanvas/"
+/>
+<meta
+  property="twitter:title"
+  content="CodonCanvas - DNA-Inspired Visual Programming"
+/>
+<meta
+  property="twitter:description"
+  content="Learn genetics through code! Write DNA-like triplets that execute as visual outputs."
+/>
+<meta
+  property="twitter:image"
+  content="https://yourusername.github.io/codoncanvas/screenshot_playground.png"
+/>
 ```
 
 **Impact:**

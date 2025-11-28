@@ -310,7 +310,7 @@ main();
 
 **Rationale:** Script always intended as entry point, no module export needed
 
-### Challenge 2: __dirname in ES Modules
+### Challenge 2: \_\_dirname in ES Modules
 
 **Problem:**
 
@@ -329,7 +329,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 ```
 
-**Rationale:** ES modules don't provide __dirname, must derive from import.meta.url
+**Rationale:** ES modules don't provide \_\_dirname, must derive from import.meta.url
 
 ### Challenge 3: Stack Underflow in fractalFlower
 

@@ -141,8 +141,8 @@ Created comprehensive **Computational Validation Suite** providing empirical evi
 4. **Max Stack Depth:** Estimated from PUSH/POP patterns
 5. **Complexity Score:** Composite metric:
    ```
-   score = instructionCount 
-         + (uniqueOpcodes × 5) 
+   score = instructionCount
+         + (uniqueOpcodes × 5)
          + (maxStackDepth × 3)
          + (hasLoop ? 20 : 0)
          + (hasConditional ? 15 : 0)

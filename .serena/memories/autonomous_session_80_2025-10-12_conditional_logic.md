@@ -202,19 +202,19 @@ This is a MASSIVE narrative upgrade for marketing and CS educator outreach.
 **Gallery Metadata:**
 
 ```javascript
-{ id: 'fizzbuzz-visual', name: 'FizzBuzz Visual', 
-  difficulty: 'advanced-showcase', 
-  concepts: 'conditionals, computational-thinking, FizzBuzz, patterns', 
+{ id: 'fizzbuzz-visual', name: 'FizzBuzz Visual',
+  difficulty: 'advanced-showcase',
+  concepts: 'conditionals, computational-thinking, FizzBuzz, patterns',
   description: 'Classic programming challenge visualized: divisibility by 3, 5, and 15' },
 
-{ id: 'conditional-scaling', name: 'Conditional Scaling', 
-  difficulty: 'advanced-showcase', 
-  concepts: 'EQ, LT, conditionals, arithmetic, comparison-opcodes', 
+{ id: 'conditional-scaling', name: 'Conditional Scaling',
+  difficulty: 'advanced-showcase',
+  concepts: 'EQ, LT, conditionals, arithmetic, comparison-opcodes',
   description: 'Demonstrates EQ/LT opcodes for conditional behavior via size multiplication' },
 
-{ id: 'even-odd-spiral', name: 'Even-Odd Spiral', 
-  difficulty: 'advanced-showcase', 
-  concepts: 'LOOP, DIV, modulo-arithmetic, parity, computational-patterns', 
+{ id: 'even-odd-spiral', name: 'Even-Odd Spiral',
+  difficulty: 'advanced-showcase',
+  concepts: 'LOOP, DIV, modulo-arithmetic, parity, computational-patterns',
   description: 'Spiral with alternating sizes based on even/odd number detection' }
 ```
 
@@ -571,11 +571,11 @@ Classic examples (Hello World, FizzBuzz, Fibonacci) are classics BECAUSE they wo
 **Body:**
 
 ```
-Created three new advanced-showcase examples demonstrating comparison 
+Created three new advanced-showcase examples demonstrating comparison
 opcodes (EQ, LT) and conditional patterns:
 
 1. fizzbuzz-visual.genome: Classic FizzBuzz challenge visualized
-2. conditional-scaling.genome: Pure EQ/LT opcode demonstration  
+2. conditional-scaling.genome: Pure EQ/LT opcode demonstration
 3. even-odd-spiral.genome: Modulo arithmetic + parity patterns
 
 Gallery updated: 35 → 38 examples

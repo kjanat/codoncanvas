@@ -147,8 +147,13 @@ function trackDrawingOperations(tokens: { text: string }[]) {
 **Addition** (lines 708-711):
 
 ```html
-<div id="achievementPanel" style="border-top: 1px solid #3e3e42; padding: 1rem; max-height: 400px; overflow-y: auto;" 
-     role="region" aria-labelledby="achievement-heading" aria-live="polite">
+<div
+  id="achievementPanel"
+  style="border-top: 1px solid #3e3e42; padding: 1rem; max-height: 400px; overflow-y: auto;"
+  role="region"
+  aria-labelledby="achievement-heading"
+  aria-live="polite"
+>
   <h3 id="achievement-heading" class="sr-only">Achievement System</h3>
   <div id="achievementContainer"></div>
 </div>
@@ -265,7 +270,7 @@ User Action → Tracking Function → AchievementEngine Check → Unlock? → UI
 **Genome**:
 
 ```
-ATG 
+ATG
   GAA AAT GGA    ; CIRCLE
   GAA AAT CCA    ; RECT
   GAA AAT AAA    ; LINE
@@ -297,7 +302,7 @@ TAA
 
 ### ✅ 🔍 Exploration (2/4 = 50%)
 
-1. **🌈 Color Artist**: Use COLOR opcode 10 times → unlocks on 10th TT* codon execution
+1. **🌈 Color Artist**: Use COLOR opcode 10 times → unlocks on 10th TT\* codon execution
 2. **🧪 Mad Scientist**: Apply 100 mutations → unlocks on 100th `applyMutation()` call
 
 ### ✅ 💎 Perfection (1/4 = 25%)
@@ -625,10 +630,10 @@ npm run dev -- --port 5173
 **If "How do I unlock [specific achievement]?":**
 
 - **First Genome**: Run any genome (click Run button)
-- **First Draw**: Run genome with any shape opcode (GG*, CC*, AA*, GC*, GT*)
+- **First Draw**: Run genome with any shape opcode (GG\*, CC\*, AA\*, GC\*, GT\*)
 - **First Mutation**: Click any mutation button (Silent, Missense, etc.)
 - **Shape Explorer**: Run genome using all 5 shapes (CIRCLE, RECT, LINE, TRIANGLE, ELLIPSE)
-- **Color Artist**: Run genome with 10 COLOR opcodes (TT*)
+- **Color Artist**: Run genome with 10 COLOR opcodes (TT\*)
 - **Mad Scientist**: Apply 100 total mutations
 - **Elite Coder**: Create genome with 100+ codons (300+ characters excluding whitespace)
 

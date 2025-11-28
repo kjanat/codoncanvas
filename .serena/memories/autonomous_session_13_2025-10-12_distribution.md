@@ -129,6 +129,7 @@ Key Elements:
    - Organizes by difficulty (beginner/intermediate/advanced)
 
 2. **File Format:** Each .genome file contains:
+
    ```
    ; [Title]
    ; [Description]

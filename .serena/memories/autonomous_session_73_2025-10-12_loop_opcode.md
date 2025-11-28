@@ -42,7 +42,7 @@ Implemented LOOP opcode enabling iteration and algorithmic pattern generation. C
    - Can implement in one session (~3-4 hours)
 
 4. **Codon Strategy**
-   - Split CA* NOP family (CAA → LOOP, CAC remains NOP)
+   - Split CA\* NOP family (CAA → LOOP, CAC remains NOP)
    - NOP aesthetic only, losing 1 synonym acceptable
    - Clean allocation maintaining pedagogical clarity
 
@@ -77,8 +77,8 @@ Implemented LOOP opcode enabling iteration and algorithmic pattern generation. C
 
 ```typescript
 // Store instruction history for replay
-private instructionHistory: { 
-  opcode: Opcode; 
+private instructionHistory: {
+  opcode: Opcode;
   codon: Codon;
   pushValue?: number  // Store value for PUSH replay
 }[] = [];
@@ -110,6 +110,7 @@ LOOP               ; Replays last 2 instructions 5 times
 **Critical Implementation Details:**
 
 1. **History Excludes Loop Parameters:**
+
    ```typescript
    const historyBeforeParams = this.instructionHistory.length - 2;
    const startIdx = historyBeforeParams - instructionCount;
@@ -118,10 +119,12 @@ LOOP               ; Replays last 2 instructions 5 times
      historyBeforeParams,
    );
    ```
+
    - Last 2 history items are PUSH instructions for loop params
    - Replay window excludes these to avoid infinite parameter stacking
 
 2. **PUSH Replay Handling:**
+
    ```typescript
    if (loopOpcode === Opcode.PUSH && pushValue !== undefined) {
      this.push(pushValue); // Use stored value
@@ -252,17 +255,17 @@ LOOP               ; Replays last 2 instructions 5 times
 **Instruction History with Push Values:**
 
 ```typescript
-private instructionHistory: { 
-  opcode: Opcode; 
-  codon: Codon; 
-  pushValue?: number 
+private instructionHistory: {
+  opcode: Opcode;
+  codon: Codon;
+  pushValue?: number
 }[] = [];
 
 // When pushing literal
-this.instructionHistory.push({ 
-  opcode: Opcode.PUSH, 
-  codon: token.text, 
-  pushValue: value 
+this.instructionHistory.push({
+  opcode: Opcode.PUSH,
+  codon: token.text,
+  pushValue: value
 });
 ```
 
@@ -433,17 +436,19 @@ TAA
 3. Tutorial integration ("Iteration with LOOP" lesson)
 
 **Medium-Term:**
-4. Comparison operations (EQ, LT, GT) - enable conditionals
-5. Conditional execution (IF/ELSE or conditional jump)
-6. Lesson plan: "Algorithmic Design with Loops"
-7. Assessment: "Create N-petal flower using LOOP"
-8. Nested loops tutorial (grid patterns, 2D layouts)
+
+1. Comparison operations (EQ, LT, GT) - enable conditionals
+2. Conditional execution (IF/ELSE or conditional jump)
+3. Lesson plan: "Algorithmic Design with Loops"
+4. Assessment: "Create N-petal flower using LOOP"
+5. Nested loops tutorial (grid patterns, 2D layouts)
 
 **Long-Term:**
-9. Memory/variables (STORE, LOAD for state)
-10. Advanced loop patterns (LOOP with computed counts from arithmetic)
-11. Conditional loops (WHILE-style with exit conditions)
-12. Function-like abstractions (parameterized patterns)
+
+1. Memory/variables (STORE, LOAD for state)
+2. Advanced loop patterns (LOOP with computed counts from arithmetic)
+3. Conditional loops (WHILE-style with exit conditions)
+4. Function-like abstractions (parameterized patterns)
 
 ## Achievement
 

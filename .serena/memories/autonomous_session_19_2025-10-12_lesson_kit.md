@@ -125,7 +125,7 @@ Made **autonomous strategic decision** to DIVERGE from Session 18 recommendation
 **Lesson 1 Worksheet:**
 
 - Exercise 1.1: Hello Circle (first genome)
-- Exercise 1.2: Silent mutations (GG* family exploration)
+- Exercise 1.2: Silent mutations (GG\* family exploration)
 - Exercise 1.3-1.5: Shape families (RECT, LINE)
 - Exercise 1.6: Two shapes with TRANSLATE
 - Exercise 1.7: Mix shapes (creative)

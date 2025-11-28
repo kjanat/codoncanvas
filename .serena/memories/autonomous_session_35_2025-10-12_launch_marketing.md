@@ -67,7 +67,7 @@ Created **comprehensive launch marketing materials package** with 4 major docume
 ```
 Just launched CodonCanvas - visual programming using DNA syntax 🧬
 
-Write code in triplets (ATG, CCA, GGA) that generate art. 
+Write code in triplets (ATG, CCA, GGA) that generate art.
 Mutate your code to see genetic changes affect output.
 
 Perfect for teaching genetics through hands-on coding.
@@ -275,10 +275,10 @@ Try it: [URL]
 #### 2. Essential Opcodes (organized by category)
 
 - Control (ATG, TAA, TAG, TGA)
-- Drawing shapes (GGA*, CCA*, AAA*, GCA*)
-- Moving & rotating (ACA*, AGA*)
-- Colors (TTA*)
-- Stack operations (GAA*, ATA*, TAC*)
+- Drawing shapes (GGA\*, CCA\*, AAA\*, GCA\*)
+- Moving & rotating (ACA\*, AGA\*)
+- Colors (TTA\*)
+- Stack operations (GAA\*, ATA\*, TAC\*)
 
 #### 3. Number Encoding
 

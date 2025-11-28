@@ -26,7 +26,7 @@ Implemented missing RESTORE_STATE opcode to complement existing SAVE_STATE, comp
 
 **Gap Identified:**
 
-- SAVE_STATE implemented: Opcode.SAVE_STATE, TC* codons (TCA/TCC/TCG/TCT all → SAVE_STATE)
+- SAVE_STATE implemented: Opcode.SAVE_STATE, TC\* codons (TCA/TCC/TCG/TCT all → SAVE_STATE)
 - RESTORE_STATE missing: Not in Opcode enum, no codon allocation, no VM execution
 - stateStack exists in VMState but no way to pop from it
 - Example in examples.ts used SAVE_STATE 3x but never restored
@@ -43,14 +43,14 @@ Incomplete spec implementation. Spec mentioned SAVE_STATE for nested composition
 **Challenge:** All 64 codons already allocated in spec
 
 - Control: 4 (ATG, TAA/TAG/TGA)
-- Drawing: 20 (GG*, CC*, AA*, GC*, GT*)
+- Drawing: 20 (GG*, CC*, AA*, GC*, GT\*)
 - Transform: 16 (AC*, AG*, CG*, TT*)
-- Stack: 7 (GA*=4, ATA/ATC/ATT=3)
-- Utility: 7 (CA*=4, TAC/TAT/TGC=3)
+- Stack: 7 (GA\*=4, ATA/ATC/ATT=3)
+- Utility: 7 (CA\*=4, TAC/TAT/TGC=3)
 - Advanced: 10 (TGG/TGT=2, CT*=4, TC*=4)
   Total: 64 ✓
 
-**Solution:** Split TC* family between save/restore
+**Solution:** Split TC\* family between save/restore
 
 - TCA/TCC → SAVE_STATE (2 codons)
 - TCG/TCT → RESTORE_STATE (2 codons) ⭐ NEW
@@ -60,7 +60,7 @@ Incomplete spec implementation. Spec mentioned SAVE_STATE for nested composition
 1. Paired operations share codon family (pedagogically sound)
 2. Maintains synonymous codons within each operation (genetic metaphor)
 3. Biological parallel: save/restore like checkpoint/recovery
-4. Clean 50/50 split of TC* family
+4. Clean 50/50 split of TC\* family
 
 ---
 
@@ -278,7 +278,7 @@ npm run build
 
 - Followed existing codon allocation patterns
 - Maintained pedagogical consistency (family grouping)
-- Split TC* family cleanly (2/2 allocation)
+- Split TC\* family cleanly (2/2 allocation)
 - No arbitrary decisions (all justified by patterns)
 
 **3. Complete Implementation:**
@@ -309,7 +309,7 @@ npm run build
 **2. Codon Allocation Matters:**
 
 - All 64 codons pre-allocated in design
-- Required splitting existing family (TC*)
+- Required splitting existing family (TC\*)
 - Pedagogically sound split (save vs restore)
 - **Learning:** Family grouping enables clean splits
 
@@ -380,7 +380,7 @@ npm run build
 
 ## Conclusion
 
-Session 23 successfully implemented RESTORE_STATE opcode, completing the state management system originally spec'd but incompletely implemented. Autonomous decision to split TC* codon family enabled paired save/restore operations while maintaining pedagogical consistency. Implementation includes type system, VM execution, comprehensive tests, and updated examples. All validation passed (63 tests, TypeScript strict, production build). Enables advanced nested composition patterns for complex artistic/geometric demonstrations.
+Session 23 successfully implemented RESTORE_STATE opcode, completing the state management system originally spec'd but incompletely implemented. Autonomous decision to split TC\* codon family enabled paired save/restore operations while maintaining pedagogical consistency. Implementation includes type system, VM execution, comprehensive tests, and updated examples. All validation passed (63 tests, TypeScript strict, production build). Enables advanced nested composition patterns for complex artistic/geometric demonstrations.
 
 **Strategic Impact:**
 

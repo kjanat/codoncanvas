@@ -276,15 +276,17 @@ if (pixelDiff > 70) {
 3. Export comparison results as report
 
 **Medium-Term:**
-4. Alignment visualization (vertical bars showing divergence)
-5. Common pattern extraction ("both use CIRCLE → TRANSLATE")
-6. Mutation path finder ("minimal edits to transform A → B")
-7. Tutorial integration ("Compare your solution to the reference")
+
+1. Alignment visualization (vertical bars showing divergence)
+2. Common pattern extraction ("both use CIRCLE → TRANSLATE")
+3. Mutation path finder ("minimal edits to transform A → B")
+4. Tutorial integration ("Compare your solution to the reference")
 
 **Long-Term:**
-8. Multi-genome comparison (3-way, 4-way)
-9. Similarity heatmap (class-wide)
-10. Automated feedback ("Your solution is 80% similar but uses 2x more codons")
+
+1. Multi-genome comparison (3-way, 4-way)
+2. Similarity heatmap (class-wide)
+3. Automated feedback ("Your solution is 80% similar but uses 2x more codons")
 
 ## Achievement
 

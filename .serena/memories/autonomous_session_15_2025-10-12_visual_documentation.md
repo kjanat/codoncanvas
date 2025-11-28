@@ -51,7 +51,7 @@ python3 -m http.server 8765 &  # Local server on port 8765
 chromium --headless --screenshot=screenshot_playground.png \
   --window-size=1400,900 http://localhost:8765/index.html
 
-# Mutation Lab (57KB)  
+# Mutation Lab (57KB)
 chromium --headless --screenshot=screenshot_mutations.png \
   --window-size=1400,900 http://localhost:8765/mutation-demo.html
 

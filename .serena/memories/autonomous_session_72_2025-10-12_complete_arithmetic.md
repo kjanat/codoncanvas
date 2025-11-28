@@ -6,7 +6,9 @@
 
 ## Summary
 
-Completed arithmetic suite by implementing SUB and DIV opcodes, building on Session 71's ADD/MUL foundation. Enables ratios, differences, proportions, and relative sizing for complete computational creativity. Split NOP family (CA*) to allocate codons while maintaining pedagogical redundancy.
+Completed arithmetic suite by implementing SUB and DIV opcodes, building on Session 71's ADD/MUL foundation.
+Enables ratios, differences, proportions, and relative sizing for complete computational creativity.
+Split NOP family (CA\*) to allocate codons while maintaining pedagogical redundancy.
 
 ## Autonomous Direction Decision
 
@@ -20,7 +22,7 @@ Completed arithmetic suite by implementing SUB and DIV opcodes, building on Sess
 **Analysis:**
 
 - All 64 codons allocated (need to split existing family)
-- NOP (CA*: 4 codons) identified as best candidate (aesthetic/readability only)
+- NOP (CA\*: 4 codons) identified as best candidate (aesthetic/readability only)
 - SUB/DIV prioritized as logical completion of arithmetic
 - Maintains pedagogical clarity with practical use cases
 
@@ -36,7 +38,7 @@ Completed arithmetic suite by implementing SUB and DIV opcodes, building on Sess
 
 ### Phase 1: Codon Reallocation
 
-**BEFORE:** CA* (4 codons) → NOP
+**BEFORE:** CA\* (4 codons) → NOP
 **AFTER:**
 
 - CAA, CAC → NOP (2 codons, maintains synonymous pair)
@@ -109,25 +111,30 @@ Order matters: a / b (not commutative)
 2. DIV basic: 25 / 8 = 3
 
 **Larger Values:**
-3. SUB larger: 58 - 15 = 43
-4. DIV larger: 53 / 13 = 4
+
+1. SUB larger: 58 - 15 = 43
+2. DIV larger: 53 / 13 = 4
 
 **Edge Cases:**
-5. SUB resulting in negative: 7 - 10 = -3
-6. DIV with floor division: 10 / 3 = 3
-7. DIV by zero: throws error
-8. DIV resulting in zero: 2 / 7 = 0
+
+1. SUB resulting in negative: 7 - 10 = -3
+2. DIV with floor division: 10 / 3 = 3
+3. DIV by zero: throws error
+4. DIV resulting in zero: 2 / 7 = 0
 
 **Stack Underflow:**
-9. SUB underflow throws error
-10. DIV underflow throws error
+
+1. SUB underflow throws error
+2. DIV underflow throws error
 
 **Integration with Drawing:**
-11. Computed circle radius via SUB: 52 - 10 = 42
-12. Computed circle radius via DIV: 52 / 2 = 26
+
+1. Computed circle radius via SUB: 52 - 10 = 42
+2. Computed circle radius via DIV: 52 / 2 = 26
 
 **Complex Formulas:**
-13. Combined arithmetic: (25+7) - (25/8) = 32 - 3 = 29
+
+1. Combined arithmetic: (25+7) - (25/8) = 32 - 3 = 29
 
 **Coverage:**
 
@@ -390,7 +397,7 @@ PUSH diameter, PUSH 2, DIV    ; radius = d/2
 ## Success Criteria Met
 
 ✅ SUB and DIV opcodes implemented
-✅ Codon reallocation strategy (CA* NOP family split)
+✅ Codon reallocation strategy (CA\* NOP family split)
 ✅ VM execution logic (RPN semantics with safety)
 ✅ Comprehensive tests (14 tests, all passing)
 ✅ Pedagogical examples (3 demos: proportions, differences, centering)
@@ -410,16 +417,18 @@ PUSH diameter, PUSH 2, DIV    ; radius = d/2
 3. Tutorial integration ("Complete Arithmetic" lesson)
 
 **Medium-Term:**
-4. Comparison operations (EQ, LT, GT for conditionals)
-5. Conditional execution (IF/ELSE or conditional jump)
-6. Lesson plan: "Computational Design with Arithmetic"
-7. Assessment: "Use SUB/DIV to create proportional patterns"
+
+1. Comparison operations (EQ, LT, GT for conditionals)
+2. Conditional execution (IF/ELSE or conditional jump)
+3. Lesson plan: "Computational Design with Arithmetic"
+4. Assessment: "Use SUB/DIV to create proportional patterns"
 
 **Long-Term:**
-8. Looping constructs (LOOP N times)
-9. Memory/variables (STORE, LOAD for named storage)
-10. Advanced math (SQRT, POW, MOD, ABS)
-11. Conditional flow (IF/ELSE/JUMP for algorithms)
+
+1. Looping constructs (LOOP N times)
+2. Memory/variables (STORE, LOAD for named storage)
+3. Advanced math (SQRT, POW, MOD, ABS)
+4. Conditional flow (IF/ELSE/JUMP for algorithms)
 
 ## Achievement
 

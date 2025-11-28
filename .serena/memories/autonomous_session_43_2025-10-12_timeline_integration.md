@@ -61,7 +61,14 @@ Successfully integrated **Timeline Scrubber** into main playground, completing P
 <!-- AFTER: Timeline button added -->
 <button id="runBtn">▶ Run</button>
 <button id="clearBtn" class="secondary">Clear Canvas</button>
-<button id="timelineToggleBtn" class="secondary" aria-label="Toggle timeline scrubber" title="Show/hide step-through execution timeline">⏱️ Timeline</button>
+<button
+  id="timelineToggleBtn"
+  class="secondary"
+  aria-label="Toggle timeline scrubber"
+  title="Show/hide step-through execution timeline"
+>
+  ⏱️ Timeline
+</button>
 <button id="audioToggleBtn" class="secondary">🎨 Visual</button>
 ```
 
@@ -86,7 +93,13 @@ Successfully integrated **Timeline Scrubber** into main playground, completing P
   <div class="canvas-container">
     <canvas id="canvas" width="400" height="400"></canvas>
   </div>
-  <div id="timelinePanel" style="display: none; border-top: 1px solid #3e3e42; padding: 1rem;" role="region" aria-labelledby="timeline-heading" aria-live="polite">
+  <div
+    id="timelinePanel"
+    style="display: none; border-top: 1px solid #3e3e42; padding: 1rem;"
+    role="region"
+    aria-labelledby="timeline-heading"
+    aria-live="polite"
+  >
     <h3 id="timeline-heading" class="sr-only">Timeline Scrubber Controls</h3>
     <div id="timelineContainer"></div>
   </div>

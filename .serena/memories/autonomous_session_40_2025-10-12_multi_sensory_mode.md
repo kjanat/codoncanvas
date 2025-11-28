@@ -67,14 +67,14 @@ toggleAudio() {
   const modes: RenderMode[] = ['visual', 'audio', 'both'];
   const currentIndex = modes.indexOf(renderMode);
   const nextMode = modes[(currentIndex + 1) % modes.length]; // Cycle
-  
+
   // Initialize AudioContext on first audio/both activation
   if ((nextMode === 'audio' || nextMode === 'both') && renderMode === 'visual') {
     await audioRenderer.initialize();
   }
-  
+
   renderMode = nextMode;
-  
+
   // Update UI based on mode
   if (renderMode === 'visual') {
     audioToggleBtn.textContent = '🎨 Visual';
@@ -193,10 +193,24 @@ async function runProgram() {
 
 ```html
 <!-- OLD -->
-<button id="audioToggleBtn" class="secondary" aria-label="Toggle audio mode" title="Enable audio synthesis (experimental)">🔇 Audio Off</button>
+<button
+  id="audioToggleBtn"
+  class="secondary"
+  aria-label="Toggle audio mode"
+  title="Enable audio synthesis (experimental)"
+>
+  🔇 Audio Off
+</button>
 
 <!-- NEW -->
-<button id="audioToggleBtn" class="secondary" aria-label="Visual mode - click for audio" title="Cycle through visual, audio, and multi-sensory modes">🎨 Visual</button>
+<button
+  id="audioToggleBtn"
+  class="secondary"
+  aria-label="Visual mode - click for audio"
+  title="Cycle through visual, audio, and multi-sensory modes"
+>
+  🎨 Visual
+</button>
 ```
 
 **Changes:**

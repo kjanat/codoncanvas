@@ -212,7 +212,7 @@ private handleSystemThemeChange(event: MediaQueryListEvent): void {
 private applyTheme(theme: Theme): void {
   // Set data attribute on <html> element
   document.documentElement.setAttribute('data-theme', theme);
-  
+
   // CSS cascade applies theme-specific custom properties
   // [data-theme="light"] { --color-bg-primary: #ffffff; ... }
 }
@@ -238,14 +238,19 @@ private applyTheme(theme: Theme): void {
 
 ```html
 <header role="banner">
-  <div style="display: flex; justify-content: space-between; align-items: center;">
+  <div
+    style="display: flex; justify-content: space-between; align-items: center;"
+  >
     <div>
       <h1>🧬 CodonCanvas</h1>
       <div class="subtitle">DNA-Inspired Visual Programming Language</div>
     </div>
-    <button id="themeToggleBtn" class="secondary" 
-            aria-label="Cycle through themes: dark, light, high contrast" 
-            title="Change theme">
+    <button
+      id="themeToggleBtn"
+      class="secondary"
+      aria-label="Cycle through themes: dark, light, high contrast"
+      title="Change theme"
+    >
       🌙 Dark
     </button>
   </div>

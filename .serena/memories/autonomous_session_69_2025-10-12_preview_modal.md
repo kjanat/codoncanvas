@@ -218,15 +218,17 @@ Integrated session 68's mutation predictor into playground with full UI. Users c
 3. Keyboard shortcuts: `P` key to open preview
 
 **Medium-Term:**
-4. Hover tooltips: Mini 100x100px preview on hover
-5. Prediction history: Track accuracy over time
-6. Comparison mode: Compare 2-3 mutations side-by-side
-7. "Why?" explanations: Annotated analysis of impact
+
+1. Hover tooltips: Mini 100x100px preview on hover
+2. Prediction history: Track accuracy over time
+3. Comparison mode: Compare 2-3 mutations side-by-side
+4. "Why?" explanations: Annotated analysis of impact
 
 **Long-Term:**
-8. Adaptive scaffolding: Hide predictions as confidence grows
-9. Prediction challenges: "Find mutation with LOCAL impact"
-10. ML enhancement: Learn from user corrections
+
+1. Adaptive scaffolding: Hide predictions as confidence grows
+2. Prediction challenges: "Find mutation with LOCAL impact"
+3. ML enhancement: Learn from user corrections
 
 ## Research Implications
 

@@ -426,7 +426,7 @@ Test Files  13 passed (13)
 test: add comprehensive Canvas2DRenderer test coverage (53 tests)
 
 Closes critical gap: renderer.ts (251 lines) had zero dedicated tests.
-Added 53 tests covering all drawing primitives, transforms, color 
+Added 53 tests covering all drawing primitives, transforms, color
 management, and state isolation.
 
 Test Breakdown:

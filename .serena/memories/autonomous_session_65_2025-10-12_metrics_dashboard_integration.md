@@ -150,15 +150,17 @@ formatNumber(value, decimals): string
 ```html
 <div id="analysisSection" class="section" style="display: none;">
   <h2 class="section-title">📊 Statistical Analysis</h2>
-  <div id="analysisResults" style="
+  <div
+    id="analysisResults"
+    style="
     background: white; 
     padding: 20px; 
     border-radius: 8px; 
     font-family: 'Courier New', monospace; 
     white-space: pre-wrap; 
     font-size: 0.9em; 
-    line-height: 1.6;">
-  </div>
+    line-height: 1.6;"
+  ></div>
 </div>
 ```
 

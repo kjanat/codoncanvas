@@ -362,7 +362,7 @@ input: {
 - **Test status**: ✅ 252/252 passing (no regressions)
 - **Built artifacts**: dist/tutorial.html (11.7KB)
 - **Bundle sizes**:
-  - tutorial-B9guyx-_.js (15.40KB, 5.52KB gzipped)
+  - tutorial-B9guyx-\_.js (15.40KB, 5.52KB gzipped)
   - tutorial-ui-PcwsShys.js (43.63KB, 11.15KB gzipped)
 
 **Performance:**

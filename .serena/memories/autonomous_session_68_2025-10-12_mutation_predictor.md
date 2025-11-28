@@ -151,15 +151,17 @@ LOW (0.50-0.70):    Frameshift (cascading unpredictability)
    - Achievement: "Accurate Predictor" (10 correct predictions)
 
 **Medium-Term:**
-4. **Comparison Mode**: Compare 2-3 mutation predictions side-by-side
-5. **Prediction History**: Track accuracy over time
-6. **Adaptive Scaffolding**: Hide predictions as confidence increases
-7. **Explain Mode**: Annotate WHY impact classified as LOCAL vs MAJOR
+
+1. **Comparison Mode**: Compare 2-3 mutation predictions side-by-side
+2. **Prediction History**: Track accuracy over time
+3. **Adaptive Scaffolding**: Hide predictions as confidence increases
+4. **Explain Mode**: Annotate WHY impact classified as LOCAL vs MAJOR
 
 **Long-Term:**
-8. **ML Enhancement**: Train on user data to improve predictions
-9. **Phenotype Target**: "Find mutation that changes circle to square"
-10. **Prediction Challenges**: Assessment items with scoring
+
+1. **ML Enhancement**: Train on user data to improve predictions
+2. **Phenotype Target**: "Find mutation that changes circle to square"
+3. **Prediction Challenges**: Assessment items with scoring
 
 ## Key Files
 

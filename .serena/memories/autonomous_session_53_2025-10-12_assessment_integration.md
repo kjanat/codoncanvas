@@ -105,15 +105,18 @@ function switchMode(mode: "playground" | "assessment") {
 **Mode Toggle UI** (lines 570-580):
 
 ```html
-<div role="group" aria-label="Application mode" 
-     style="display: flex; gap: 0.5rem; background: var(--color-bg-tertiary); 
-            padding: 0.25rem; border-radius: 6px;">
+<div
+  role="group"
+  aria-label="Application mode"
+  style="display: flex; gap: 0.5rem; background: var(--color-bg-tertiary); 
+            padding: 0.25rem; border-radius: 6px;"
+>
   <label style="...">
-    <input type="radio" name="mode" value="playground" checked>
+    <input type="radio" name="mode" value="playground" checked />
     <span>🧪 Playground</span>
   </label>
   <label style="...">
-    <input type="radio" name="mode" value="assessment">
+    <input type="radio" name="mode" value="assessment" />
     <span>🎓 Assessment</span>
   </label>
 </div>
@@ -134,9 +137,10 @@ function switchMode(mode: "playground" | "assessment") {
 **Assessment Container** (line 737):
 
 ```html
-<div id="assessmentContainer" 
-     style="display: none; grid-column: 1 / -1; overflow-y: auto;">
-</div>
+<div
+  id="assessmentContainer"
+  style="display: none; grid-column: 1 / -1; overflow-y: auto;"
+></div>
 ```
 
 **CSS Styling** (lines 559-591):
@@ -193,12 +197,13 @@ npm run test
 7. ✅ Evolution Enthusiast (evolution lab)
 
 **NOT Unlockable** (assessment-demo only):
-8. ❌ Mutation Detective (5 correct answers)
-9. ❌ Mutation Expert (10 correct)
-10. ❌ Mutation Master (20 correct)
-11. ❌ Silent Hunter (identify 3 silent)
-12. ❌ Frameshift Finder (identify 3 frameshifts)
-13. ❌ Perfect Score (100% accuracy)
+
+1. ❌ Mutation Detective (5 correct answers)
+2. ❌ Mutation Expert (10 correct)
+3. ❌ Mutation Master (20 correct)
+4. ❌ Silent Hunter (identify 3 silent)
+5. ❌ Frameshift Finder (identify 3 frameshifts)
+6. ❌ Perfect Score (100% accuracy)
 
 ### After Integration (100% - 16/16 achievements)
 

@@ -100,7 +100,7 @@ Conducted comprehensive documentation audit after 90 sessions of development. In
    - **Fix**: Replace with actual GitHub URLs or remove placeholders
 
 **NON-CRITICAL (Internal/Memory Files):**
-3-5. ⚠️ `.serena/memories/autonomous_session_15_*.md` → screenshot_*.png
+3-5. ⚠️ `.serena/memories/autonomous_session_15_*.md` → screenshot\_\*.png
 
 - **Impact**: LOW - Internal memory files, screenshots were temporary
 - **Fix**: Not required (historical documentation)

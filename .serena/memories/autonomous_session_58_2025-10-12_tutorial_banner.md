@@ -119,14 +119,31 @@ Autonomous session delivering **Tutorial Onboarding Banner** - prominent CTA on 
 **Structure:**
 
 ```html
-<div id="tutorialBanner" class="tutorial-banner" role="region" aria-label="Tutorial onboarding">
+<div
+  id="tutorialBanner"
+  class="tutorial-banner"
+  role="region"
+  aria-label="Tutorial onboarding"
+>
   <div class="tutorial-banner-content">
     <h2 class="tutorial-banner-title">🎓 New to CodonCanvas?</h2>
-    <p class="tutorial-banner-description">Start with our interactive tutorial! Learn DNA-inspired programming step-by-step with 10 guided lessons.</p>
+    <p class="tutorial-banner-description">
+      Start with our interactive tutorial! Learn DNA-inspired programming
+      step-by-step with 10 guided lessons.
+    </p>
   </div>
   <div class="tutorial-banner-actions">
-    <a href="tutorial.html" class="tutorial-banner-btn primary">Start Tutorial →</a>
-    <button id="dismissTutorialBanner" class="tutorial-banner-dismiss" aria-label="Dismiss tutorial banner" title="Don't show this again">✕</button>
+    <a href="tutorial.html" class="tutorial-banner-btn primary"
+      >Start Tutorial →</a
+    >
+    <button
+      id="dismissTutorialBanner"
+      class="tutorial-banner-dismiss"
+      aria-label="Dismiss tutorial banner"
+      title="Don't show this again"
+    >
+      ✕
+    </button>
   </div>
 </div>
 ```
