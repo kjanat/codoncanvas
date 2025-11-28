@@ -13,7 +13,6 @@ jobs:
   lint:
     name: Lint
     runs-on: ubuntu-latest
-    continue-on-error: true
 
     permissions:
       contents: read
@@ -35,6 +34,10 @@ jobs:
 
       - name: Super-linter
         uses: super-linter/super-linter@v8.2.1
+        continue-on-error: true
         env:
           # To report GitHub Actions status checks
           GITHUB_TOKEN: ${{ github.token }}
+
+      - name: Prevents job failure
+        run: echo "Hi!"

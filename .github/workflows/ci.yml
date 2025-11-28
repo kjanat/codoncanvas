@@ -75,10 +75,13 @@ jobs:
     name: Check duplicated code
     runs-on: ubuntu-latest
     if: ${{ github.event_name == 'pull_request' }}
-    continue-on-error: true
     steps:
       - name: Checkout
         uses: actions/checkout@v6
 
       - name: Check duplication
         uses: ./.github/actions/check-duplication
+        continue-on-error: true
+
+      - name: Prevents job failure
+        run: echo "Hi!"
