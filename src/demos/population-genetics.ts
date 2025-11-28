@@ -176,13 +176,13 @@ function renderPopulation() {
     const genomeDiv = document.createElement("div");
     genomeDiv.className = "organism-genome";
 
-    // Highlight mutations if any
-    let genomeDisplay = organism.genome;
+    // Highlight mutations if any - using DOM APIs to prevent XSS
     if (organism.mutations.length > 0) {
-      genomeDisplay = `<span class="mutation-highlight" title="${organism.mutations.join(
-        ", ",
-      )}">${organism.genome}</span>`;
-      genomeDiv.innerHTML = genomeDisplay;
+      const mutationSpan = document.createElement("span");
+      mutationSpan.className = "mutation-highlight";
+      mutationSpan.title = organism.mutations.join(", ");
+      mutationSpan.textContent = organism.genome;
+      genomeDiv.appendChild(mutationSpan);
     } else {
       genomeDiv.textContent = organism.genome;
     }
