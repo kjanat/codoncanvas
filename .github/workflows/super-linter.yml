@@ -29,6 +29,10 @@ jobs:
           fetch-depth: 0
           persist-credentials: false
 
+      - name: Setup Bun
+        uses: ./.github/actions/setup-bun
+        with: { install-node: "true" }
+
       - name: Super-linter
         uses: super-linter/super-linter@v8.2.1
         env:
