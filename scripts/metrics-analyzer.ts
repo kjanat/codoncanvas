@@ -383,92 +383,137 @@ function main() {
     process.exit(0);
   }
 
-  // Parse arguments
-  let dataFile = "";
-  let groupName = "Group 1";
-  let baselineFile = "";
-  let _reportType = "full";
-  let outputDir = ".";
+  const options = parseArguments(args);
 
-  for (let i = 0; i < args.length; i++) {
-    if (args[i] === "--data" && i + 1 < args.length) {
-      dataFile = args[++i];
-    } else if (args[i] === "--group" && i + 1 < args.length) {
-      groupName = args[++i];
-    } else if (args[i] === "--baseline" && i + 1 < args.length) {
-      baselineFile = args[++i];
-    } else if (args[i] === "--report" && i + 1 < args.length) {
-      _reportType = args[++i];
-    } else if (args[i] === "--output" && i + 1 < args.length) {
-      outputDir = args[++i];
-    }
-  }
-
-  if (!dataFile) {
+  if (!options.dataFile) {
     console.error("Error: --data <file> is required\n");
     printUsage();
     process.exit(1);
   }
 
-  if (!fs.existsSync(dataFile)) {
-    console.error(`Error: Data file not found: ${dataFile}\n`);
+  if (!fs.existsSync(options.dataFile)) {
+    console.error(`Error: Data file not found: ${options.dataFile}\n`);
     process.exit(1);
   }
 
   // Ensure output directory exists
-  if (!fs.existsSync(outputDir)) {
-    fs.mkdirSync(outputDir, { recursive: true });
+  if (!fs.existsSync(options.outputDir)) {
+    fs.mkdirSync(options.outputDir, { recursive: true });
   }
 
   console.log("\nCodonCanvas Metrics Analyzer\n");
-  console.log(`Data file: ${dataFile}`);
+  console.log(`Data file: ${options.dataFile}`);
 
   try {
-    // Parse CSV
-    console.log("Parsing CSV...");
-    const sessions = parseCSV(dataFile);
-    console.log(`Loaded ${sessions.length} sessions\n`);
-
-    // Create analyzer
-    const analyzer = new MetricsAnalyzer(sessions);
-
-    // Generate main report
-    const timestamp = new Date().toISOString().slice(0, 10);
-    const reportPath = path.join(outputDir, `metrics_report_${timestamp}.txt`);
-    generateReport(analyzer, reportPath);
-
-    // If baseline provided, run comparison
-    if (baselineFile) {
-      if (!fs.existsSync(baselineFile)) {
-        console.error(`Error: Baseline file not found: ${baselineFile}\n`);
-        process.exit(1);
-      }
-
-      console.log(`Baseline file: ${baselineFile}`);
-      const baselineSessions = parseCSV(baselineFile);
-      console.log(`Loaded ${baselineSessions.length} baseline sessions\n`);
-
-      const comparisons = analyzer.compareGroups(
-        sessions,
-        baselineSessions,
-        groupName,
-        "Baseline",
-      );
-
-      const comparisonPath = path.join(
-        outputDir,
-        `comparison_report_${timestamp}.txt`,
-      );
-      generateComparisonReport(comparisons, comparisonPath);
-    }
-
-    console.log("Analysis complete!\n");
+    runAnalysis(options);
   } catch (error) {
     console.error(
       `Error: ${error instanceof Error ? error.message : "Unknown error"}\n`,
     );
     process.exit(1);
   }
+}
+
+function parseArguments(args: string[]) {
+  let dataFile = "";
+  let groupName = "Group 1";
+  let baselineFile = "";
+  let reportType = "full";
+  let outputDir = ".";
+
+  for (let i = 0; i < args.length; i++) {
+    const arg = args[i];
+    if (i + 1 >= args.length) break;
+
+    switch (arg) {
+      case "--data":
+        dataFile = args[++i];
+        break;
+      case "--group":
+        groupName = args[++i];
+        break;
+      case "--baseline":
+        baselineFile = args[++i];
+        break;
+      case "--report":
+        reportType = args[++i];
+        break;
+      case "--output":
+        outputDir = args[++i];
+        break;
+    }
+  }
+
+  return { dataFile, groupName, baselineFile, reportType, outputDir };
+}
+
+function runAnalysis(options: {
+  dataFile: string;
+  groupName: string;
+  baselineFile: string;
+  reportType: string;
+  outputDir: string;
+}) {
+  // Parse CSV
+  console.log("Parsing CSV...");
+  const sessions = parseCSV(options.dataFile);
+  console.log(`Loaded ${sessions.length} sessions\n`);
+
+  // Create analyzer
+  const analyzer = new MetricsAnalyzer(sessions);
+
+  // Generate main report
+  const timestamp = new Date().toISOString().slice(0, 10);
+  const reportPath = path.join(
+    options.outputDir,
+    `metrics_report_${timestamp}.txt`,
+  );
+  generateReport(analyzer, reportPath);
+
+  // If baseline provided, run comparison
+  if (options.baselineFile) {
+    runComparison(
+      analyzer,
+      sessions,
+      options.baselineFile,
+      options.groupName,
+      options.outputDir,
+      timestamp,
+    );
+  }
+
+  console.log("Analysis complete!\n");
+}
+
+function runComparison(
+  analyzer: MetricsAnalyzer,
+  sessions: MetricsSession[],
+  baselineFile: string,
+  groupName: string,
+  outputDir: string,
+  timestamp: string,
+) {
+  if (!fs.existsSync(baselineFile)) {
+    console.error(`Error: Baseline file not found: ${baselineFile}\n`);
+    process.exit(1);
+  }
+
+  console.log(`Baseline file: ${baselineFile}`);
+  const baselineSessions = parseCSV(baselineFile);
+  console.log(`Loaded ${baselineSessions.length} baseline sessions\n`);
+
+  const comparisons = analyzer.compareGroups(
+    sessions,
+    baselineSessions,
+    groupName,
+    "Baseline",
+  );
+
+  const comparisonPath = path.join(
+    outputDir,
+    `comparison_report_${timestamp}.txt`,
+  );
+  generateComparisonReport(comparisons, comparisonPath);
 }
 
 main();

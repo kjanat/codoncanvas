@@ -97,14 +97,14 @@ button {
   transition: background 0.2s;
 }
 
-button:hover:not(:disabled) {
-  background: #17b;
-}
-
 button:disabled {
   cursor: not-allowed;
   background: #3e3e42;
   opacity: 0.5;
+}
+
+button:hover:not(:disabled) {
+  background: #17b;
 }
 
 button.primary {
@@ -132,6 +132,7 @@ button.secondary:hover:not(:disabled) {
   margin-bottom: 1rem;
 }
 
+/* stylelint-disable-next-line no-descending-specificity -- button base must come before :hover/:disabled */
 .example-buttons button {
   padding: 0.5rem 0.75rem;
   font-size: 0.75rem;
@@ -162,7 +163,7 @@ button.secondary:hover:not(:disabled) {
   color: #4ec9b0;
 }
 
-#candidatesGrid {
+#candidates-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
   gap: 1rem;
@@ -219,7 +220,7 @@ button.secondary:hover:not(:disabled) {
   color: #4ec9b0;
 }
 
-#lineageContainer {
+#lineage-container {
   display: flex;
   gap: 0.5rem;
   padding: 0.5rem 0;
@@ -280,12 +281,12 @@ button.secondary:hover:not(:disabled) {
   display: none;
 }
 
-#startContainer {
+#start-container {
   padding: 2rem;
   text-align: center;
 }
 
-#startContainer h2 {
+#start-container h2 {
   margin-bottom: 1rem;
   color: #4ec9b0;
 }

@@ -36,8 +36,8 @@ const startPanel = getElement("startPanel");
 const evolutionPanel = getElement("evolutionPanel");
 const lineagePanel = getElement("lineagePanel");
 const sharePanel = getElement("sharePanel");
-const candidatesGrid = getElement("candidatesGrid");
-const lineageContainer = getElement("lineageContainer");
+const candidatesGrid = getElement("candidates-grid");
+const lineageContainer = getElement("lineage-container");
 const shareContainer = getElement("shareContainer");
 const generateBtn = getElement<HTMLButtonElement>("generateBtn");
 

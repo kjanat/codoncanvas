@@ -131,29 +131,44 @@ function trackDrawingOperations(tokens: { text: string }[]) {
 
   for (const token of tokens) {
     const codon = token.text;
-
-    if (["GGA", "GGC", "GGG", "GGT"].includes(codon)) {
-      allUnlocked.push(...achievementEngine.trackShapeDrawn("CIRCLE"));
-    } else if (["CCA", "CCC", "CCG", "CCT"].includes(codon)) {
-      allUnlocked.push(...achievementEngine.trackShapeDrawn("RECT"));
-    } else if (["AAA", "AAC", "AAG", "AAT"].includes(codon)) {
-      allUnlocked.push(...achievementEngine.trackShapeDrawn("LINE"));
-    } else if (["GCA", "GCC", "GCG", "GCT"].includes(codon)) {
-      allUnlocked.push(...achievementEngine.trackShapeDrawn("TRIANGLE"));
-    } else if (["GTA", "GTC", "GTG", "GTT"].includes(codon)) {
-      allUnlocked.push(...achievementEngine.trackShapeDrawn("ELLIPSE"));
-    } else if (["TTA", "TTC", "TTG", "TTT"].includes(codon)) {
-      allUnlocked.push(...achievementEngine.trackColorUsed());
-    } else if (["ACA", "ACC", "ACG", "ACT"].includes(codon)) {
-      allUnlocked.push(...achievementEngine.trackTransformApplied("TRANSLATE"));
-    } else if (["AGA", "AGC", "AGG", "AGT"].includes(codon)) {
-      allUnlocked.push(...achievementEngine.trackTransformApplied("ROTATE"));
-    } else if (["CGA", "CGC", "CGG", "CGT"].includes(codon)) {
-      allUnlocked.push(...achievementEngine.trackTransformApplied("SCALE"));
+    const achievements = getAchievementsForCodon(codon);
+    if (achievements.length > 0) {
+      allUnlocked.push(...achievements);
     }
   }
 
   return allUnlocked;
+}
+
+function getAchievementsForCodon(codon: string): Achievement[] {
+  if (["GGA", "GGC", "GGG", "GGT"].includes(codon)) {
+    return achievementEngine.trackShapeDrawn("CIRCLE");
+  }
+  if (["CCA", "CCC", "CCG", "CCT"].includes(codon)) {
+    return achievementEngine.trackShapeDrawn("RECT");
+  }
+  if (["AAA", "AAC", "AAG", "AAT"].includes(codon)) {
+    return achievementEngine.trackShapeDrawn("LINE");
+  }
+  if (["GCA", "GCC", "GCG", "GCT"].includes(codon)) {
+    return achievementEngine.trackShapeDrawn("TRIANGLE");
+  }
+  if (["GTA", "GTC", "GTG", "GTT"].includes(codon)) {
+    return achievementEngine.trackShapeDrawn("ELLIPSE");
+  }
+  if (["TTA", "TTC", "TTG", "TTT"].includes(codon)) {
+    return achievementEngine.trackColorUsed();
+  }
+  if (["ACA", "ACC", "ACG", "ACT"].includes(codon)) {
+    return achievementEngine.trackTransformApplied("TRANSLATE");
+  }
+  if (["AGA", "AGC", "AGG", "AGT"].includes(codon)) {
+    return achievementEngine.trackTransformApplied("ROTATE");
+  }
+  if (["CGA", "CGC", "CGG", "CGT"].includes(codon)) {
+    return achievementEngine.trackTransformApplied("SCALE");
+  }
+  return [];
 }
 
 /**

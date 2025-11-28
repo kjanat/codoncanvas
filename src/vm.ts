@@ -222,46 +222,94 @@ export class CodonVM implements VM {
     this.state.lastOpcode = opcode;
 
     switch (opcode) {
+      case Opcode.CIRCLE:
+      case Opcode.RECT:
+      case Opcode.LINE:
+      case Opcode.TRIANGLE:
+      case Opcode.ELLIPSE:
+        this.executeDrawOp(opcode);
+        break;
+
+      case Opcode.TRANSLATE:
+      case Opcode.ROTATE:
+      case Opcode.SCALE:
+      case Opcode.COLOR:
+        this.executeTransformOp(opcode);
+        break;
+
+      case Opcode.ADD:
+      case Opcode.MUL:
+      case Opcode.SUB:
+      case Opcode.DIV:
+        this.executeMathOp(opcode);
+        break;
+
+      case Opcode.DUP:
+      case Opcode.POP:
+      case Opcode.SWAP:
+        this.executeStackOp(opcode);
+        break;
+
+      case Opcode.SAVE_STATE:
+      case Opcode.RESTORE_STATE:
+        this.executeStateOp(opcode);
+        break;
+
+      case Opcode.LOOP:
+        this.executeLoopOp();
+        break;
+
+      case Opcode.EQ:
+      case Opcode.LT:
+        this.executeCompareOp(opcode);
+        break;
+
       case Opcode.START:
-        // Initialize execution
-        break;
-
       case Opcode.STOP:
-        // Terminate execution (handled by run loop)
+      case Opcode.PUSH:
+      case Opcode.NOP:
+        // No operation or handled elsewhere
         break;
 
+      default:
+        throw new Error(`Unknown opcode: ${opcode}`);
+    }
+  }
+
+  private executeDrawOp(opcode: Opcode): void {
+    switch (opcode) {
       case Opcode.CIRCLE: {
         const radius = this.scaleValue(this.pop());
         this.renderer.circle(radius);
         break;
       }
-
       case Opcode.RECT: {
         const height = this.scaleValue(this.pop());
         const width = this.scaleValue(this.pop());
         this.renderer.rect(width, height);
         break;
       }
-
       case Opcode.LINE: {
         const length = this.scaleValue(this.pop());
         this.renderer.line(length);
         break;
       }
-
       case Opcode.TRIANGLE: {
         const size = this.scaleValue(this.pop());
         this.renderer.triangle(size);
         break;
       }
-
       case Opcode.ELLIPSE: {
         const ry = this.scaleValue(this.pop());
         const rx = this.scaleValue(this.pop());
         this.renderer.ellipse(rx, ry);
         break;
       }
+    }
+  }
 
+  private executeTransformOp(opcode: Opcode): void {
+    switch (opcode) {
       case Opcode.TRANSLATE: {
         const dy = this.scaleValue(this.pop());
         const dx = this.scaleValue(this.pop());
@@ -270,21 +318,18 @@ export class CodonVM implements VM {
         this.state.position = { x: transform.x, y: transform.y };
         break;
       }
-
       case Opcode.ROTATE: {
         const degrees = this.pop();
         this.renderer.rotate(degrees);
         this.state.rotation = this.renderer.getCurrentTransform().rotation;
         break;
       }
-
       case Opcode.SCALE: {
         const factor = this.pop() / SCALE_DIVISOR;
         this.renderer.scale(factor);
         this.state.scale = this.renderer.getCurrentTransform().scale;
         break;
       }
-
       case Opcode.COLOR: {
         const l = this.pop() * (PERCENT_SCALE / STACK_VALUE_RANGE);
         const s = this.pop() * (PERCENT_SCALE / STACK_VALUE_RANGE);
@@ -293,89 +338,23 @@ export class CodonVM implements VM {
         this.state.color = { h, s, l };
         break;
       }
+    }
+  }
 
-      case Opcode.PUSH:
-        // Push is handled in run() as it needs the next codon
-        break;
-
-      case Opcode.DUP: {
-        const value = this.pop();
-        this.push(value);
-        this.push(value);
-        break;
-      }
-
-      case Opcode.POP:
-        this.pop();
-        break;
-
-      case Opcode.SWAP: {
-        const b = this.pop();
-        const a = this.pop();
-        this.push(b);
-        this.push(a);
-        break;
-      }
-
-      case Opcode.NOP:
-        // No operation
-        break;
-
-      case Opcode.SAVE_STATE: {
-        const snapshot = this.snapshot();
-        this.state.stateStack.push(snapshot);
-        break;
-      }
-
-      case Opcode.RESTORE_STATE: {
-        if (this.state.stateStack.length === 0) {
-          throw new Error("RESTORE_STATE with empty state stack");
-        }
-        const savedState = this.state.stateStack.pop();
-        if (!savedState) {
-          throw new Error("RESTORE_STATE failed to pop state");
-        }
-        // Restore transform state (position, rotation, scale, color)
-        this.state.position = { ...savedState.position };
-        this.state.rotation = savedState.rotation;
-        this.state.scale = savedState.scale;
-        this.state.color = { ...savedState.color };
-        // Actually apply the restored transform to the renderer
-        this.renderer.setPosition(savedState.position.x, savedState.position.y);
-        this.renderer.setRotation(savedState.rotation);
-        this.renderer.setScale(savedState.scale);
-        this.renderer.setColor(
-          savedState.color.h,
-          savedState.color.s,
-          savedState.color.l,
-        );
-        break;
-      }
-
-      case Opcode.ADD: {
-        const b = this.pop();
-        const a = this.pop();
+  private executeMathOp(opcode: Opcode): void {
+    const b = this.pop();
+    const a = this.pop();
+    switch (opcode) {
+      case Opcode.ADD:
         this.push(a + b);
         break;
-      }
-
-      case Opcode.MUL: {
-        const b = this.pop();
-        const a = this.pop();
+      case Opcode.MUL:
         this.push(a * b);
         break;
-      }
-
-      case Opcode.SUB: {
-        const b = this.pop();
-        const a = this.pop();
+      case Opcode.SUB:
         this.push(a - b);
         break;
-      }
-
-      case Opcode.DIV: {
-        const b = this.pop();
-        const a = this.pop();
+      case Opcode.DIV:
         if (b === 0) {
           throw new Error(
             `Division by zero at instruction ${this.state.instructionPointer}`,
@@ -383,83 +362,122 @@ export class CodonVM implements VM {
         }
         this.push(Math.floor(a / b));
         break;
+    }
+  }
+
+  private executeStackOp(opcode: Opcode): void {
+    switch (opcode) {
+      case Opcode.DUP: {
+        const value = this.pop();
+        this.push(value);
+        this.push(value);
+        break;
       }
+      case Opcode.POP:
+        this.pop();
+        break;
+      case Opcode.SWAP: {
+        const b = this.pop();
+        const a = this.pop();
+        this.push(b);
+        this.push(a);
+        break;
+      }
+    }
+  }
 
-      case Opcode.LOOP: {
-        // Stack: [..., instructionCount, loopCount]
-        // Replays the last N instructions M times
-        const loopCount = this.pop();
-        const instructionCount = this.pop();
+  private executeStateOp(opcode: Opcode): void {
+    if (opcode === Opcode.SAVE_STATE) {
+      const snapshot = this.snapshot();
+      this.state.stateStack.push(snapshot);
+    } else if (opcode === Opcode.RESTORE_STATE) {
+      if (this.state.stateStack.length === 0) {
+        throw new Error("RESTORE_STATE with empty state stack");
+      }
+      const savedState = this.state.stateStack.pop();
+      if (!savedState) {
+        throw new Error("RESTORE_STATE failed to pop state");
+      }
+      // Restore transform state (position, rotation, scale, color)
+      this.state.position = { ...savedState.position };
+      this.state.rotation = savedState.rotation;
+      this.state.scale = savedState.scale;
+      this.state.color = { ...savedState.color };
+      // Actually apply the restored transform to the renderer
+      this.renderer.setPosition(savedState.position.x, savedState.position.y);
+      this.renderer.setRotation(savedState.rotation);
+      this.renderer.setScale(savedState.scale);
+      this.renderer.setColor(
+        savedState.color.h,
+        savedState.color.s,
+        savedState.color.l,
+      );
+    }
+  }
 
-        // Validate loop parameters
-        if (loopCount < 0 || instructionCount < 0) {
+  private executeLoopOp(): void {
+    // Stack: [..., instructionCount, loopCount]
+    // Replays the last N instructions M times
+    const loopCount = this.pop();
+    const instructionCount = this.pop();
+
+    // Validate loop parameters
+    if (loopCount < 0 || instructionCount < 0) {
+      throw new Error(
+        `LOOP requires non-negative parameters (count: ${loopCount}, instructions: ${instructionCount})`,
+      );
+    }
+
+    if (instructionCount > this.instructionHistory.length) {
+      throw new Error(
+        `LOOP instruction count (${instructionCount}) exceeds history length (${this.instructionHistory.length})`,
+      );
+    }
+
+    // Get the instructions to replay
+    // Note: The last LOOP_PARAMETER_COUNT instructions in history are the PUSH operations for loop parameters
+    // We want to replay instructions BEFORE those parameter PUSHes
+    const historyBeforeParams =
+      this.instructionHistory.length - LOOP_PARAMETER_COUNT;
+    const startIdx = historyBeforeParams - instructionCount;
+    const instructionsToRepeat = this.instructionHistory.slice(
+      startIdx,
+      historyBeforeParams,
+    );
+
+    // Execute the loop body loopCount times
+    for (let iteration = 0; iteration < loopCount; iteration++) {
+      for (const {
+        opcode: loopOpcode,
+        codon: loopCodon,
+        pushValue,
+      } of instructionsToRepeat) {
+        // Check instruction limit
+        this.state.instructionCount++;
+        if (this.state.instructionCount > this.maxInstructions) {
           throw new Error(
-            `LOOP requires non-negative parameters (count: ${loopCount}, instructions: ${instructionCount})`,
+            `Instruction limit exceeded (${this.maxInstructions})`,
           );
         }
 
-        if (instructionCount > this.instructionHistory.length) {
-          throw new Error(
-            `LOOP instruction count (${instructionCount}) exceeds history length (${this.instructionHistory.length})`,
-          );
+        // Handle PUSH specially - use stored value instead of executing
+        if (loopOpcode === Opcode.PUSH && pushValue !== undefined) {
+          this.push(pushValue);
+        } else {
+          // Execute other instructions normally (don't add to history - avoid infinite growth)
+          this.execute(loopOpcode, loopCodon);
         }
-
-        // Get the instructions to replay
-        // Note: The last LOOP_PARAMETER_COUNT instructions in history are the PUSH operations for loop parameters
-        // We want to replay instructions BEFORE those parameter PUSHes
-        const historyBeforeParams =
-          this.instructionHistory.length - LOOP_PARAMETER_COUNT;
-        const startIdx = historyBeforeParams - instructionCount;
-        const instructionsToRepeat = this.instructionHistory.slice(
-          startIdx,
-          historyBeforeParams,
-        );
-
-        // Execute the loop body loopCount times
-        for (let iteration = 0; iteration < loopCount; iteration++) {
-          for (const {
-            opcode: loopOpcode,
-            codon: loopCodon,
-            pushValue,
-          } of instructionsToRepeat) {
-            // Check instruction limit
-            this.state.instructionCount++;
-            if (this.state.instructionCount > this.maxInstructions) {
-              throw new Error(
-                `Instruction limit exceeded (${this.maxInstructions})`,
-              );
-            }
-
-            // Handle PUSH specially - use stored value instead of executing
-            if (loopOpcode === Opcode.PUSH && pushValue !== undefined) {
-              this.push(pushValue);
-            } else {
-              // Execute other instructions normally (don't add to history - avoid infinite growth)
-              this.execute(loopOpcode, loopCodon);
-            }
-          }
-        }
-        break;
       }
+    }
+  }
 
-      case Opcode.EQ: {
-        // Equality comparison: [a, b] → [1 if a==b else 0]
-        const b = this.pop();
-        const a = this.pop();
-        this.push(a === b ? BOOLEAN_TRUE : BOOLEAN_FALSE);
-        break;
-      }
-
-      case Opcode.LT: {
-        // Less than comparison: [a, b] → [1 if a<b else 0]
-        const b = this.pop();
-        const a = this.pop();
-        this.push(a < b ? BOOLEAN_TRUE : BOOLEAN_FALSE);
-        break;
-      }
-
-      default:
-        throw new Error(`Unknown opcode: ${opcode}`);
+  private executeCompareOp(opcode: Opcode): void {
+    const b = this.pop();
+    const a = this.pop();
+    if (opcode === Opcode.EQ) {
+      this.push(a === b ? BOOLEAN_TRUE : BOOLEAN_FALSE);
+    } else if (opcode === Opcode.LT) {
+      this.push(a < b ? BOOLEAN_TRUE : BOOLEAN_FALSE);
     }
   }
 

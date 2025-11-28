@@ -89,44 +89,12 @@ export function analyzeCodonUsage(tokens: CodonToken[]): CodonAnalysis {
   const codonFrequency = new Map<string, number>();
   const opcodeDistribution = new Map<string, number>();
 
-  // Count base composition for GC content
-  let gCount = 0;
-  let cCount = 0;
-  let aCount = 0;
-  let tCount = 0;
-
-  // Analyze each codon
-  for (const token of tokens) {
-    const codon = normalizeCodon(token.text);
-
-    // Codon frequency
-    codonFrequency.set(codon, (codonFrequency.get(codon) || 0) + 1);
-
-    // Base composition (normalize U→T for GC calculation)
-    const bases = codon.split("");
-    for (const base of bases) {
-      const normalizedBase = base === "U" ? "T" : base;
-      if (normalizedBase === "G") gCount++;
-      else if (normalizedBase === "C") cCount++;
-      else if (normalizedBase === "A") aCount++;
-      else if (normalizedBase === "T") tCount++;
-    }
-
-    // Opcode distribution
-    const opcode = CODON_MAP[codon];
-    if (opcode !== undefined) {
-      const opcodeName = Opcode[opcode];
-      opcodeDistribution.set(
-        opcodeName,
-        (opcodeDistribution.get(opcodeName) || 0) + 1,
-      );
-    }
-  }
-
-  // Calculate GC/AT content
-  const totalBases = gCount + cCount + aCount + tCount;
-  const gcContent = totalBases > 0 ? ((gCount + cCount) / totalBases) * 100 : 0;
-  const atContent = totalBases > 0 ? ((aCount + tCount) / totalBases) * 100 : 0;
+  // Analyze codon composition and distribution
+  const { gcContent, atContent } = analyzeComposition(
+    tokens,
+    codonFrequency,
+    opcodeDistribution,
+  );
 
   // Calculate opcode family percentages
   const opcodeFamilies = calculateOpcodeFamilies(
@@ -134,25 +102,12 @@ export function analyzeCodonUsage(tokens: CodonToken[]): CodonAnalysis {
     totalCodons,
   );
 
-  // Top codons
-  const topCodons = Array.from(codonFrequency.entries())
-    .sort((a, b) => b[1] - a[1])
-    .slice(0, 5)
-    .map(([codon, count]) => ({
-      codon,
-      count,
-      percentage: (count / totalCodons) * 100,
-    }));
-
-  // Top opcodes
-  const topOpcodes = Array.from(opcodeDistribution.entries())
-    .sort((a, b) => b[1] - a[1])
-    .slice(0, 5)
-    .map(([opcode, count]) => ({
-      opcode,
-      count,
-      percentage: (count / totalCodons) * 100,
-    }));
+  // Top codons and opcodes
+  const { topCodons, topOpcodes } = calculateTopStats(
+    codonFrequency,
+    opcodeDistribution,
+    totalCodons,
+  );
 
   // Codon family usage (e.g., GG*, CC*, etc.)
   const codonFamilyUsage = calculateCodonFamilyUsage(codonFrequency);
@@ -172,6 +127,100 @@ export function analyzeCodonUsage(tokens: CodonToken[]): CodonAnalysis {
     codonFamilyUsage,
     signature,
   };
+}
+
+function calculateTopStats(
+  codonFrequency: Map<string, number>,
+  opcodeDistribution: Map<string, number>,
+  totalCodons: number,
+) {
+  const topCodons = getTopItems(codonFrequency, totalCodons);
+  const topOpcodes = getTopItems(opcodeDistribution, totalCodons).map(
+    (item) => ({
+      opcode: item.codon, // Reuse interface property name mapping
+      count: item.count,
+      percentage: item.percentage,
+    }),
+  );
+  return { topCodons, topOpcodes };
+}
+
+function analyzeComposition(
+  tokens: CodonToken[],
+  codonFrequency: Map<string, number>,
+  opcodeDistribution: Map<string, number>,
+) {
+  let gCount = 0;
+  let cCount = 0;
+  let aCount = 0;
+  let tCount = 0;
+
+  for (const token of tokens) {
+    const codon = normalizeCodon(token.text);
+
+    // Codon frequency
+    codonFrequency.set(codon, (codonFrequency.get(codon) || 0) + 1);
+
+    // Base composition
+    const counts = countBases(codon);
+    gCount += counts.g;
+    cCount += counts.c;
+    aCount += counts.a;
+    tCount += counts.t;
+
+    // Opcode distribution
+    updateOpcodeDistribution(codon, opcodeDistribution);
+  }
+
+  const totalBases = gCount + cCount + aCount + tCount;
+  const gcContent = totalBases > 0 ? ((gCount + cCount) / totalBases) * 100 : 0;
+  const atContent = totalBases > 0 ? ((aCount + tCount) / totalBases) * 100 : 0;
+
+  return { gcContent, atContent };
+}
+
+function countBases(codon: string) {
+  let g = 0;
+  let c = 0;
+  let a = 0;
+  let t = 0;
+  const bases = codon.split("");
+  for (const base of bases) {
+    const normalizedBase = base === "U" ? "T" : base;
+    if (normalizedBase === "G") g++;
+    else if (normalizedBase === "C") c++;
+    else if (normalizedBase === "A") a++;
+    else if (normalizedBase === "T") t++;
+  }
+  return { g, c, a, t };
+}
+
+function updateOpcodeDistribution(
+  codon: string,
+  opcodeDistribution: Map<string, number>,
+) {
+  const opcode = CODON_MAP[codon];
+  if (opcode !== undefined) {
+    const opcodeName = Opcode[opcode];
+    opcodeDistribution.set(
+      opcodeName,
+      (opcodeDistribution.get(opcodeName) || 0) + 1,
+    );
+  }
+}
+
+function getTopItems(
+  frequencyMap: Map<string, number>,
+  total: number,
+): Array<{ codon: string; count: number; percentage: number }> {
+  return Array.from(frequencyMap.entries())
+    .sort((a, b) => b[1] - a[1])
+    .slice(0, 5)
+    .map(([key, count]) => ({
+      codon: key,
+      count,
+      percentage: (count / total) * 100,
+    }));
 }
 
 /**

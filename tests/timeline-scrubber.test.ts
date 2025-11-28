@@ -457,7 +457,7 @@ describe("TimelineScrubber", () => {
       const slider = container.querySelector(
         "#timeline-slider",
       ) as HTMLInputElement;
-      expect(parseInt(slider.max)).toBeGreaterThanOrEqual(0);
+      expect(parseInt(slider.max, 10)).toBeGreaterThanOrEqual(0);
     });
 
     test("sets slider value to currentStep", () => {
@@ -615,7 +615,7 @@ describe("TimelineScrubber", () => {
       ) as HTMLInputElement;
       slider.value = "0";
       slider.dispatchEvent(new Event("input"));
-      expect(parseInt(slider.value)).toBe(0);
+      expect(parseInt(slider.value, 10)).toBe(0);
     });
 
     test("updates currentStep", () => {

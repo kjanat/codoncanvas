@@ -317,7 +317,7 @@ describe("Stats", () => {
       const d = Stats.cohensD(group1, group2);
 
       expect(typeof d).toBe("number");
-      expect(isFinite(d)).toBe(true);
+      expect(Number.isFinite(d)).toBe(true);
     });
   });
 
@@ -1181,13 +1181,13 @@ describe("Formatting Utilities", () => {
   // formatNumber
   describe("formatNumber", () => {
     test("formats with 1 decimal place by default", () => {
-      expect(formatNumber(3.14159)).toBe("3.1");
+      expect(formatNumber(Math.PI)).toBe("3.1");
       expect(formatNumber(42.567)).toBe("42.6");
     });
 
     test("accepts custom decimal places parameter", () => {
-      expect(formatNumber(3.14159, 2)).toBe("3.14");
-      expect(formatNumber(3.14159, 4)).toBe("3.1416");
+      expect(formatNumber(Math.PI, 2)).toBe("3.14");
+      expect(formatNumber(Math.PI, 4)).toBe("3.1416");
     });
 
     test("handles 0 decimal places", () => {
@@ -1196,7 +1196,7 @@ describe("Formatting Utilities", () => {
     });
 
     test("handles negative numbers", () => {
-      expect(formatNumber(-3.14159)).toBe("-3.1");
+      expect(formatNumber(-Math.PI)).toBe("-3.1");
       expect(formatNumber(-42.567, 2)).toBe("-42.57");
     });
   });

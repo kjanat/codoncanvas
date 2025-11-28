@@ -119,16 +119,19 @@ const fitnessFunctions: Record<string, FitnessFunction> = {
       let darkPixels = 0;
       let totalPixels = 0;
 
-      for (let y = corner.y - 30; y < corner.y + 30; y++) {
-        for (let x = corner.x - 30; x < corner.x + 30; x++) {
-          if (x >= 0 && x < 400 && y >= 0 && y < 400) {
-            totalPixels++;
-            const idx = (y * 400 + x) * 4;
-            const brightness = (data[idx] + data[idx + 1] + data[idx + 2]) / 3;
+      const startY = Math.max(0, corner.y - 30);
+      const endY = Math.min(400, corner.y + 30);
+      const startX = Math.max(0, corner.x - 30);
+      const endX = Math.min(400, corner.x + 30);
 
-            if (brightness < 200) {
-              darkPixels++;
-            }
+      for (let y = startY; y < endY; y++) {
+        for (let x = startX; x < endX; x++) {
+          totalPixels++;
+          const idx = (y * 400 + x) * 4;
+          const brightness = (data[idx] + data[idx + 1] + data[idx + 2]) / 3;
+
+          if (brightness < 200) {
+            darkPixels++;
           }
         }
       }

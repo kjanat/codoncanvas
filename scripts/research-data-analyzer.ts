@@ -569,7 +569,7 @@ class ResearchAnalyzer {
 
     if (retentionTest.p >= 0.05) {
       console.log("✅ Learning gains maintained (no significant decay)");
-    } else if (retentionTest.mean_diff > 0) {
+    } else if (retentionTest.mean_diff < 0) {
       console.log("⚠️  Some decay detected, but scores still above baseline");
     } else {
       console.log("✅ Learning gains actually increased (sleeper effect)");
@@ -648,6 +648,7 @@ function parseCSV(filepath: string): StudentData[] {
       // Convert numeric fields
       if (
         header.includes("test_") ||
+        header.includes("delayed_") ||
         header === "mtt_score" ||
         header === "gpa" ||
         header.includes("imi_") ||
@@ -718,44 +719,52 @@ function main(): void {
 
   // Power analysis
   if (args.includes("--power-analysis")) {
-    const effectIdx = args.indexOf("--effect");
-    const alphaIdx = args.indexOf("--alpha");
-    const powerIdx = args.indexOf("--power");
-
-    const effect = effectIdx !== -1 ? parseFloat(args[effectIdx + 1]) : 0.5;
-    const alpha = alphaIdx !== -1 ? parseFloat(args[alphaIdx + 1]) : 0.05;
-    const power = powerIdx !== -1 ? parseFloat(args[powerIdx + 1]) : 0.8;
-
-    console.log(
-      "\n╔══════════════════════════════════════════════════════════════╗",
-    );
-    console.log(
-      "║                     Power Analysis                           ║",
-    );
-    console.log(
-      "╚══════════════════════════════════════════════════════════════╝\n",
-    );
-
-    const result = Stats.powerAnalysis(effect, alpha, power);
-
-    console.log(`Parameters:`);
-    console.log(`  Effect size (Cohen's d): ${effect}`);
-    console.log(`  Alpha level:             ${alpha}`);
-    console.log(`  Desired power:           ${power}\n`);
-
-    console.log(`Sample Size Required:`);
-    console.log(`  Per group:               ${result.required_n_per_group}`);
-    console.log(`  Total (2 groups):        ${result.total_n}\n`);
-
-    console.log(`With 20% Attrition Buffer:`);
-    console.log(`  Per group:               ${result.inflated_n_per_group}`);
-    console.log(`  Total (2 groups):        ${result.inflated_total}\n`);
-
-    console.log(`${"═".repeat(64)}\n`);
+    handlePowerAnalysis(args);
     return;
   }
 
   // Data analysis
+  handleDataAnalysis(args);
+}
+
+function handlePowerAnalysis(args: string[]) {
+  const effectIdx = args.indexOf("--effect");
+  const alphaIdx = args.indexOf("--alpha");
+  const powerIdx = args.indexOf("--power");
+
+  const effect = effectIdx !== -1 ? parseFloat(args[effectIdx + 1]) : 0.5;
+  const alpha = alphaIdx !== -1 ? parseFloat(args[alphaIdx + 1]) : 0.05;
+  const power = powerIdx !== -1 ? parseFloat(args[powerIdx + 1]) : 0.8;
+
+  console.log(
+    "\n╔══════════════════════════════════════════════════════════════╗",
+  );
+  console.log(
+    "║                     Power Analysis                           ║",
+  );
+  console.log(
+    "╚══════════════════════════════════════════════════════════════╝\n",
+  );
+
+  const result = Stats.powerAnalysis(effect, alpha, power);
+
+  console.log(`Parameters:`);
+  console.log(`  Effect size (Cohen's d): ${effect}`);
+  console.log(`  Alpha level:             ${alpha}`);
+  console.log(`  Desired power:           ${power}\n`);
+
+  console.log(`Sample Size Required:`);
+  console.log(`  Per group:               ${result.required_n_per_group}`);
+  console.log(`  Total (2 groups):        ${result.total_n}\n`);
+
+  console.log(`With 20% Attrition Buffer:`);
+  console.log(`  Per group:               ${result.inflated_n_per_group}`);
+  console.log(`  Total (2 groups):        ${result.inflated_total}\n`);
+
+  console.log(`${"═".repeat(64)}\n`);
+}
+
+function handleDataAnalysis(args: string[]) {
   const designIdx = args.indexOf("--design");
   const dataIdx = args.indexOf("--data");
   const controlIdx = args.indexOf("--control");
@@ -783,31 +792,39 @@ function main(): void {
       ResearchAnalyzer.generateTable(data, "all");
     }
   } else if (design === "rct") {
-    if (controlIdx === -1) {
-      // Assume data file has 'group' column
-      const treatment = data.filter((d) => d.group === "treatment");
-      const control = data.filter((d) => d.group === "control");
-
-      if (treatment.length === 0 || control.length === 0) {
-        console.error(
-          'Error: For RCT, either provide --control file or include "group" column in data',
-        );
-        process.exit(1);
-      }
-
-      ResearchAnalyzer.analyzeRCT(treatment, control);
-    } else {
-      const controlFile = args[controlIdx + 1];
-      if (!fs.existsSync(controlFile)) {
-        console.error(`Error: Control file not found: ${controlFile}`);
-        process.exit(1);
-      }
-      const controlData = parseCSV(controlFile);
-      ResearchAnalyzer.analyzeRCT(data, controlData);
-    }
+    handleRCTAnalysis(data, args, controlIdx);
   } else {
     console.error(`Error: Unknown design: ${design}. Use "prepost" or "rct"`);
     process.exit(1);
+  }
+}
+
+function handleRCTAnalysis(
+  data: StudentData[],
+  args: string[],
+  controlIdx: number,
+) {
+  if (controlIdx === -1) {
+    // Assume data file has 'group' column
+    const treatment = data.filter((d) => d.group === "treatment");
+    const control = data.filter((d) => d.group === "control");
+
+    if (treatment.length === 0 || control.length === 0) {
+      console.error(
+        'Error: For RCT, either provide --control file or include "group" column in data',
+      );
+      process.exit(1);
+    }
+
+    ResearchAnalyzer.analyzeRCT(treatment, control);
+  } else {
+    const controlFile = args[controlIdx + 1];
+    if (!fs.existsSync(controlFile)) {
+      console.error(`Error: Control file not found: ${controlFile}`);
+      process.exit(1);
+    }
+    const controlData = parseCSV(controlFile);
+    ResearchAnalyzer.analyzeRCT(data, controlData);
   }
 }
 

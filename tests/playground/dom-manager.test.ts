@@ -31,7 +31,24 @@ describe("DOM Manager", () => {
     mockStatusBar = document.createElement("div");
     mockStatusBar.className = "status-bar";
 
-    // Element type mappings matching dom-manager.ts
+    // Initialize elements map
+    elements = {
+      canvas: mockCanvas,
+    };
+
+    createMockElements(elements);
+    setupMockDocument(elements, mockStatusBar);
+
+    // Store original methods
+    originalGetElementById = document.getElementById.bind(document);
+    originalQuerySelector = document.querySelector.bind(document);
+    originalQuerySelectorAll = document.querySelectorAll.bind(document);
+
+    // Dynamically import the module after DOM setup
+    domManager = await import("@/playground/dom-manager");
+  });
+
+  function createMockElements(elements: Record<string, HTMLElement>) {
     const spanElements = ["statusMessage", "codonCount", "instructionCount"];
     const textareaElements = ["editor"];
     const selectElements = [
@@ -81,12 +98,6 @@ describe("DOM Manager", () => {
       "assessmentContainer",
     ];
 
-    // Initialize elements map
-    elements = {
-      canvas: mockCanvas,
-    };
-
-    // Create all required elements
     const allIds = [
       ...spanElements,
       ...textareaElements,
@@ -98,30 +109,50 @@ describe("DOM Manager", () => {
 
     for (const id of allIds) {
       if (!elements[id]) {
-        let el: HTMLElement;
-        if (textareaElements.includes(id)) {
-          el = document.createElement("textarea");
-        } else if (selectElements.includes(id)) {
-          el = document.createElement("select");
-        } else if (inputElements.includes(id)) {
-          el = document.createElement("input");
-        } else if (buttonElements.includes(id)) {
-          el = document.createElement("button");
-        } else if (spanElements.includes(id)) {
-          el = document.createElement("span");
-        } else {
-          el = document.createElement("div");
-        }
+        const el = createElementByType(
+          id,
+          textareaElements,
+          selectElements,
+          inputElements,
+          buttonElements,
+          spanElements,
+        );
         el.id = id;
         elements[id] = el;
       }
     }
+  }
 
-    // Store original methods
-    originalGetElementById = document.getElementById.bind(document);
-    originalQuerySelector = document.querySelector.bind(document);
-    originalQuerySelectorAll = document.querySelectorAll.bind(document);
+  function createElementByType(
+    id: string,
+    textareaElements: string[],
+    selectElements: string[],
+    inputElements: string[],
+    buttonElements: string[],
+    spanElements: string[],
+  ): HTMLElement {
+    if (textareaElements.includes(id)) {
+      return document.createElement("textarea");
+    }
+    if (selectElements.includes(id)) {
+      return document.createElement("select");
+    }
+    if (inputElements.includes(id)) {
+      return document.createElement("input");
+    }
+    if (buttonElements.includes(id)) {
+      return document.createElement("button");
+    }
+    if (spanElements.includes(id)) {
+      return document.createElement("span");
+    }
+    return document.createElement("div");
+  }
 
+  function setupMockDocument(
+    elements: Record<string, HTMLElement>,
+    mockStatusBar: HTMLDivElement,
+  ) {
     // Mock document methods
     document.getElementById = (id: string) => {
       return elements[id] || originalGetElementById(id);
@@ -130,21 +161,18 @@ describe("DOM Manager", () => {
       if (selector === ".status-bar") return mockStatusBar;
       if (selector.startsWith("#")) {
         const id = selector.slice(1);
-        return elements[id] || null;
+        return elements[id] || originalQuerySelector(selector);
       }
       return originalQuerySelector(selector);
     }) as typeof document.querySelector;
     document.querySelectorAll = ((selector: string) => {
       if (selector === 'input[name="mode"]') {
-        // Use a real empty NodeList instead of casting an empty array
-        return document.querySelectorAll(".nonexistent-element-for-empty-list");
+        // Return empty array to avoid recursion/stall
+        return [] as unknown as NodeList;
       }
       return originalQuerySelectorAll(selector);
     }) as typeof document.querySelectorAll;
-
-    // Dynamically import the module after DOM setup
-    domManager = await import("@/playground/dom-manager");
-  });
+  }
 
   afterAll(() => {
     // Restore original document methods

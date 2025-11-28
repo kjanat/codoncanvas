@@ -73,7 +73,7 @@ describe("TutorialUI", () => {
     });
 
     test("stores manager reference", () => {
-      const ui = new TutorialUI(container, mockManager);
+      const _ui = new TutorialUI(container, mockManager);
       // The manager is used internally - verified by callbacks being registered
       expect(mockManager.onStepChangeCallback).toHaveBeenCalled();
     });

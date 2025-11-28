@@ -37,6 +37,39 @@ async function readMIDIBytes(blob: Blob): Promise<Uint8Array> {
   return new Uint8Array(buffer);
 }
 
+function findCCEvent(
+  bytes: Uint8Array,
+  cc: number,
+): { value: number; index: number } | undefined {
+  for (let i = 0; i < bytes.length - 2; i++) {
+    if (bytes[i] === 0xb0 && bytes[i + 1] === cc) {
+      return { value: bytes[i + 2], index: i };
+    }
+  }
+  return undefined;
+}
+
+function findNoteOnEvent(
+  bytes: Uint8Array,
+  note: number,
+): { velocity: number; index: number } | undefined {
+  for (let i = 0; i < bytes.length - 2; i++) {
+    if (bytes[i] === 0x90 && bytes[i + 1] === note) {
+      return { velocity: bytes[i + 2], index: i };
+    }
+  }
+  return undefined;
+}
+
+function findTempo(bytes: Uint8Array): number | undefined {
+  for (let i = 0; i < bytes.length - 5; i++) {
+    if (bytes[i] === 0xff && bytes[i + 1] === 0x51 && bytes[i + 2] === 0x03) {
+      return (bytes[i + 3] << 16) | (bytes[i + 4] << 8) | bytes[i + 5];
+    }
+  }
+  return undefined;
+}
+
 describe("MIDIExporter", () => {
   let exporter: MIDIExporter;
 
@@ -480,24 +513,16 @@ describe("MIDIExporter", () => {
         const bytes = await readMIDIBytes(blob);
 
         // Find CC10 (Pan) and CC74 (Brightness)
-        let foundCC10 = false;
-        let foundCC74 = false;
-        for (let i = 0; i < bytes.length - 2; i++) {
-          if (bytes[i] === 0xb0) {
-            if (bytes[i + 1] === 10) {
-              // Hue 180/360 * 127 ≈ 63
-              expect(bytes[i + 2]).toBeCloseTo(63, 0);
-              foundCC10 = true;
-            }
-            if (bytes[i + 1] === 74) {
-              // Lightness 75/100 * 127 ≈ 95
-              expect(bytes[i + 2]).toBeCloseTo(95, 0);
-              foundCC74 = true;
-            }
-          }
-        }
-        expect(foundCC10).toBe(true);
-        expect(foundCC74).toBe(true);
+        const cc10 = findCCEvent(bytes, 10);
+        const cc74 = findCCEvent(bytes, 74);
+
+        expect(cc10).toBeDefined();
+        // Hue 180/360 * 127 ≈ 63
+        expect(cc10?.value).toBeCloseTo(63, 0);
+
+        expect(cc74).toBeDefined();
+        // Lightness 75/100 * 127 ≈ 95
+        expect(cc74?.value).toBeCloseTo(95, 0);
       });
 
       test("TRANSLATE -> CC91 (Reverb) from dx, CC93 (Chorus) from dy", async () => {
@@ -508,22 +533,14 @@ describe("MIDIExporter", () => {
         const bytes = await readMIDIBytes(blob);
 
         // Find CC91 and CC93
-        let foundCC91 = false;
-        let foundCC93 = false;
-        for (let i = 0; i < bytes.length - 2; i++) {
-          if (bytes[i] === 0xb0) {
-            if (bytes[i + 1] === 91) {
-              expect(bytes[i + 2]).toBe(50);
-              foundCC91 = true;
-            }
-            if (bytes[i + 1] === 93) {
-              expect(bytes[i + 2]).toBe(80);
-              foundCC93 = true;
-            }
-          }
-        }
-        expect(foundCC91).toBe(true);
-        expect(foundCC93).toBe(true);
+        const cc91 = findCCEvent(bytes, 91);
+        const cc93 = findCCEvent(bytes, 93);
+
+        expect(cc91).toBeDefined();
+        expect(cc91?.value).toBe(50);
+
+        expect(cc93).toBeDefined();
+        expect(cc93?.value).toBe(80);
       });
     });
 
@@ -1284,25 +1301,8 @@ describe("MIDIExporter", () => {
       const bytes60 = await readMIDIBytes(blob60);
       const bytes120 = await readMIDIBytes(blob120);
 
-      // Find and compare tempo values
-      let tempo60 = 0;
-      let tempo120 = 0;
-
-      for (let i = 0; i < bytes60.length - 5; i++) {
-        if (bytes60[i] === 0xff && bytes60[i + 1] === 0x51) {
-          tempo60 =
-            (bytes60[i + 3] << 16) | (bytes60[i + 4] << 8) | bytes60[i + 5];
-          break;
-        }
-      }
-
-      for (let i = 0; i < bytes120.length - 5; i++) {
-        if (bytes120[i] === 0xff && bytes120[i + 1] === 0x51) {
-          tempo120 =
-            (bytes120[i + 3] << 16) | (bytes120[i + 4] << 8) | bytes120[i + 5];
-          break;
-        }
-      }
+      const tempo60 = findTempo(bytes60);
+      const tempo120 = findTempo(bytes120);
 
       expect(tempo60).toBe(1000000); // 60 BPM
       expect(tempo120).toBe(500000); // 120 BPM
@@ -1324,25 +1324,14 @@ describe("MIDIExporter", () => {
       const lowBytes = await readMIDIBytes(lowBlob);
       const highBytes = await readMIDIBytes(highBlob);
 
-      let lowVel = 0;
-      let highVel = 0;
+      const lowNote = findNoteOnEvent(lowBytes, 60);
+      const highNote = findNoteOnEvent(highBytes, 60);
 
-      for (let i = 0; i < lowBytes.length - 2; i++) {
-        if (lowBytes[i] === 0x90 && lowBytes[i + 1] === 60) {
-          lowVel = lowBytes[i + 2];
-          break;
-        }
-      }
+      expect(lowNote).toBeDefined();
+      expect(lowNote?.velocity).toBe(32);
 
-      for (let i = 0; i < highBytes.length - 2; i++) {
-        if (highBytes[i] === 0x90 && highBytes[i + 1] === 60) {
-          highVel = highBytes[i + 2];
-          break;
-        }
-      }
-
-      expect(lowVel).toBe(32);
-      expect(highVel).toBe(127);
+      expect(highNote).toBeDefined();
+      expect(highNote?.velocity).toBe(127);
     });
 
     test("control changes are properly interleaved with notes", async () => {

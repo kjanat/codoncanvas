@@ -22,7 +22,7 @@ const canvasOriginal = document.getElementById(
 const canvasCurrent = document.getElementById(
   "canvasCurrent",
 ) as HTMLCanvasElement;
-const diffContainer = getElement("diffContainer");
+const diffContainer = getElement("diff-container");
 const statusContainer = getElement("statusContainer");
 const shareContainer = getElement("shareContainer");
 

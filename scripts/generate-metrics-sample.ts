@@ -175,6 +175,51 @@ function generateSession(
   ); // Past week
 
   // Engagement metrics
+  const engagement = calculateEngagementMetrics(char, duration);
+
+  // Render mode distribution
+  const renderModes = calculateRenderModeDistribution(
+    char,
+    engagement.genomesExecuted,
+  );
+
+  // Mutation type distribution
+  const mutationTypes = calculateMutationDistribution(
+    char,
+    engagement.mutationsApplied,
+  );
+
+  // Feature usage
+  const features = calculateFeatureUsage(
+    char,
+    duration,
+    engagement.genomesCreated,
+    engagement.genomesExecuted,
+    engagement.mutationsApplied,
+  );
+
+  // Error count
+  const errorCount =
+    Math.random() < char.errorRate
+      ? randomInt(1, Math.ceil(engagement.mutationsApplied * 0.3))
+      : 0;
+
+  return {
+    sessionId: id,
+    startTime: startTime.toISOString(),
+    duration,
+    ...engagement,
+    ...renderModes,
+    ...mutationTypes,
+    ...features,
+    errorCount,
+  };
+}
+
+function calculateEngagementMetrics(
+  char: ProfileCharacteristics,
+  duration: number,
+) {
   const genomesCreated = Math.max(
     0,
     Math.round(randomNormal(char.genomesCreated.mean, char.genomesCreated.sd)),
@@ -207,14 +252,26 @@ function generateSession(
         )
       : 0;
 
-  // Render mode distribution (must sum to genomesExecuted)
-  const renderModeRoll = Math.random();
-  let visualMode = 0,
-    audioMode = 0,
-    bothMode = 0;
+  return {
+    genomesCreated,
+    genomesExecuted,
+    mutationsApplied,
+    timeToFirstArtifact,
+  };
+}
+
+function calculateRenderModeDistribution(
+  char: ProfileCharacteristics,
+  genomesExecuted: number,
+) {
+  let visualMode = 0;
+  let audioMode = 0;
+  let bothMode = 0;
 
   if (genomesExecuted > 0) {
+    const renderModeRoll = Math.random();
     const total = genomesExecuted;
+
     if (renderModeRoll < char.renderModePreference.visual) {
       visualMode = Math.max(
         1,
@@ -223,7 +280,6 @@ function generateSession(
       audioMode = Math.round(
         (total - visualMode) * randomBoundedNormal(0.3, 0.2, 0, 0.5),
       );
-      bothMode = total - visualMode - audioMode;
     } else if (
       renderModeRoll <
       char.renderModePreference.visual + char.renderModePreference.audio
@@ -235,7 +291,6 @@ function generateSession(
       visualMode = Math.round(
         (total - audioMode) * randomBoundedNormal(0.3, 0.2, 0, 0.5),
       );
-      bothMode = total - visualMode - audioMode;
     } else {
       bothMode = Math.max(
         1,
@@ -244,34 +299,45 @@ function generateSession(
       visualMode = Math.round(
         (total - bothMode) * randomBoundedNormal(0.5, 0.2, 0, 0.7),
       );
-      audioMode = total - visualMode - bothMode;
     }
+    bothMode = total - visualMode - audioMode;
   }
 
-  // Mutation type distribution
+  return { visualMode, audioMode, bothMode };
+}
+
+function calculateMutationDistribution(
+  char: ProfileCharacteristics,
+  mutationsApplied: number,
+) {
   const mutationTypes = {
-    silent: 0,
-    missense: 0,
-    nonsense: 0,
-    frameshift: 0,
-    point: 0,
-    insertion: 0,
-    deletion: 0,
+    silentMutations: 0,
+    missenseMutations: 0,
+    nonsenseMutations: 0,
+    frameshiftMutations: 0,
+    pointMutations: 0,
+    insertions: 0,
+    deletions: 0,
   };
 
   if (mutationsApplied > 0) {
-    // Distribute mutations based on profile focus
     const focusSet = new Set(char.mutationFocus);
+    const typeMap: Record<string, keyof typeof mutationTypes> = {
+      silent: "silentMutations",
+      missense: "missenseMutations",
+      nonsense: "nonsenseMutations",
+      frameshift: "frameshiftMutations",
+      point: "pointMutations",
+      insertion: "insertions",
+      deletion: "deletions",
+    };
+
     for (let i = 0; i < mutationsApplied; i++) {
+      let typeKey: string;
       if (Math.random() < 0.7 && focusSet.size > 0) {
-        // 70% chance to use focused mutation
-        const type = randomChoice(
-          char.mutationFocus,
-        ) as keyof typeof mutationTypes;
-        mutationTypes[type]++;
+        typeKey = randomChoice(char.mutationFocus);
       } else {
-        // 30% chance for random mutation
-        const type = randomChoice([
+        typeKey = randomChoice([
           "silent",
           "missense",
           "nonsense",
@@ -279,15 +345,28 @@ function generateSession(
           "point",
           "insertion",
           "deletion",
-        ]) as keyof typeof mutationTypes;
-        mutationTypes[type]++;
+        ]);
+      }
+      const mappedKey = typeMap[typeKey];
+      if (mappedKey) {
+        mutationTypes[mappedKey]++;
       }
     }
   }
 
-  // Feature usage (correlated with mutations and duration)
+  return mutationTypes;
+}
+
+function calculateFeatureUsage(
+  char: ProfileCharacteristics,
+  duration: number,
+  genomesCreated: number,
+  genomesExecuted: number,
+  mutationsApplied: number,
+) {
   const featureUsageProbability =
-    char.featureAdoption * (duration / (30 * 60 * 1000)); // Higher for longer sessions
+    char.featureAdoption * (duration / (30 * 60 * 1000));
+
   const diffViewerUsage =
     mutationsApplied > 5 && Math.random() < featureUsageProbability
       ? randomInt(1, Math.ceil(mutationsApplied / 3))
@@ -311,36 +390,12 @@ function generateSession(
       ? randomInt(1, Math.ceil(genomesCreated / 2))
       : 0;
 
-  // Error count
-  const errorCount =
-    Math.random() < char.errorRate
-      ? randomInt(1, Math.ceil(mutationsApplied * 0.3))
-      : 0;
-
   return {
-    sessionId: id,
-    startTime: startTime.toISOString(),
-    duration,
-    genomesCreated,
-    genomesExecuted,
-    mutationsApplied,
-    timeToFirstArtifact,
-    visualMode,
-    audioMode,
-    bothMode,
-    silentMutations: mutationTypes.silent,
-    missenseMutations: mutationTypes.missense,
-    nonsenseMutations: mutationTypes.nonsense,
-    frameshiftMutations: mutationTypes.frameshift,
-    pointMutations: mutationTypes.point,
-    insertions: mutationTypes.insertion,
-    deletions: mutationTypes.deletion,
     diffViewerUsage,
     timelineUsage,
     evolutionUsage,
     assessmentUsage,
     exportUsage,
-    errorCount,
   };
 }
 

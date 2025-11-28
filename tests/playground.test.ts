@@ -18,7 +18,7 @@ function createMockElement(tagName: string, id?: string): HTMLElement {
   return el;
 }
 
-function createMockCanvas(
+function _createMockCanvas(
   id: string,
   width = 400,
   height = 400,
@@ -43,7 +43,7 @@ function createMockSelect(id: string): HTMLSelectElement {
   return select;
 }
 
-function createMockInput(id: string, type = "text"): HTMLInputElement {
+function _createMockInput(id: string, type = "text"): HTMLInputElement {
   const input = document.createElement("input");
   input.id = id;
   input.type = type;
@@ -442,7 +442,7 @@ describe("Playground Main Module", () => {
     });
 
     test("shows filtered count in default option when filters applied", () => {
-      const select = createMockSelect("exampleSelect");
+      const _select = createMockSelect("exampleSelect");
       const option = document.createElement("option");
       const totalCount = 20;
       const filteredCount = 5;
@@ -558,7 +558,7 @@ describe("Playground Main Module", () => {
       const { examples } = await import("@/examples");
       const entries = Object.entries(examples);
       if (entries.length > 0) {
-        const [key, ex] = entries[0];
+        const [_key, ex] = entries[0];
         const editor = createMockTextarea("editor");
         editor.value = ex.genome;
         expect(editor.value).toBe(ex.genome);
@@ -569,7 +569,7 @@ describe("Playground Main Module", () => {
       const { examples } = await import("@/examples");
       const entries = Object.entries(examples);
       if (entries.length > 0) {
-        const [key, ex] = entries[0];
+        const [_key, ex] = entries[0];
         const status = `Loaded: ${ex.title}`;
         expect(status).toContain("Loaded:");
         expect(status).toContain(ex.title);

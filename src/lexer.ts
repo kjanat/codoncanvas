@@ -89,24 +89,10 @@ export class CodonLexer implements Lexer {
     for (let lineIdx = 0; lineIdx < lines.length; lineIdx++) {
       const line = lines[lineIdx];
       if (line === undefined) continue;
-      const codeLine = getCodeContent(line);
-
-      for (let charIdx = 0; charIdx < codeLine.length; charIdx++) {
-        const char = codeLine[charIdx];
-        if (char === undefined) continue;
-        if (this.validBases.has(char)) {
-          // Normalize U→T (RNA to DNA notation)
-          const normalizedChar = char === "U" ? "T" : char;
-          cleanedSource += normalizedChar;
-          positionMap.push({ line: lineIdx + 1, column: charIdx });
-        } else if (char.trim() !== "") {
-          throw new Error(
-            `Invalid character '${char}' at line ${
-              lineIdx + 1
-            }, column ${charIdx}`,
-          );
-        }
-      }
+      this.processTokenizeLine(line, lineIdx, (char, pos) => {
+        cleanedSource += char;
+        positionMap.push(pos);
+      });
     }
 
     // Check for non-triplet length
@@ -155,29 +141,7 @@ export class CodonLexer implements Lexer {
     for (let lineIdx = 0; lineIdx < lines.length; lineIdx++) {
       const line = lines[lineIdx];
       if (line === undefined) continue;
-      const codeLine = getCodeContent(line);
-
-      // Check for mid-triplet whitespace breaks
-      let baseCount = 0;
-      for (let charIdx = 0; charIdx < codeLine.length; charIdx++) {
-        const char = codeLine[charIdx];
-        if (char === undefined) continue;
-        if (this.validBases.has(char)) {
-          baseCount++;
-        } else if (char.trim() === "") {
-          // Whitespace detected
-          if (baseCount % 3 !== 0) {
-            errors.push({
-              message: `Mid-triplet break detected at line ${lineIdx + 1}. ${
-                baseCount % 3
-              } base(s) before whitespace.`,
-              position: charIdx,
-              severity: "warning",
-              fix: "Remove whitespace or complete the codon",
-            });
-          }
-        }
-      }
+      this.validateLineFrame(line, lineIdx, errors);
     }
 
     return errors;
@@ -210,7 +174,66 @@ export class CodonLexer implements Lexer {
       return errors;
     }
 
-    // Check for START codon
+    this.checkStartCodon(tokens, errors);
+    this.checkStopCodons(tokens, errors);
+
+    return errors;
+  }
+
+  private processTokenizeLine(
+    line: string,
+    lineIdx: number,
+    onBase: (char: string, pos: { line: number; column: number }) => void,
+  ) {
+    const codeLine = getCodeContent(line);
+
+    for (let charIdx = 0; charIdx < codeLine.length; charIdx++) {
+      const char = codeLine[charIdx];
+      if (char === undefined) continue;
+      if (this.validBases.has(char)) {
+        // Normalize U→T (RNA to DNA notation)
+        const normalizedChar = char === "U" ? "T" : char;
+        onBase(normalizedChar, { line: lineIdx + 1, column: charIdx });
+      } else if (char.trim() !== "") {
+        throw new Error(
+          `Invalid character '${char}' at line ${
+            lineIdx + 1
+          }, column ${charIdx}`,
+        );
+      }
+    }
+  }
+
+  private validateLineFrame(
+    line: string,
+    lineIdx: number,
+    errors: ParseError[],
+  ) {
+    const codeLine = getCodeContent(line);
+    let baseCount = 0;
+
+    for (let charIdx = 0; charIdx < codeLine.length; charIdx++) {
+      const char = codeLine[charIdx];
+      if (char === undefined) continue;
+      if (this.validBases.has(char)) {
+        baseCount++;
+      } else if (char.trim() === "") {
+        // Whitespace detected
+        if (baseCount % 3 !== 0) {
+          errors.push({
+            message: `Mid-triplet break detected at line ${lineIdx + 1}. ${
+              baseCount % 3
+            } base(s) before whitespace.`,
+            position: charIdx,
+            severity: "warning",
+            fix: "Remove whitespace or complete the codon",
+          });
+        }
+      }
+    }
+  }
+
+  private checkStartCodon(tokens: CodonToken[], errors: ParseError[]) {
     const firstToken = tokens[0];
     if (firstToken && firstToken.text !== "ATG") {
       errors.push({
@@ -220,8 +243,9 @@ export class CodonLexer implements Lexer {
         fix: "Add ATG at the beginning",
       });
     }
+  }
 
-    // Check for STOP codons
+  private checkStopCodons(tokens: CodonToken[], errors: ParseError[]) {
     const stopCodons = new Set(["TAA", "TAG", "TGA"]);
     let firstStopIdx = -1;
 
@@ -254,7 +278,5 @@ export class CodonLexer implements Lexer {
         fix: "Add TAA at the end",
       });
     }
-
-    return errors;
   }
 }

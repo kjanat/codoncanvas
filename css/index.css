@@ -349,7 +349,7 @@ input:focus {
   overflow: hidden;
   white-space: nowrap;
   border-width: 0;
-  clip: rect(0, 0, 0, 0);
+  clip-path: inset(50%);
 }
 
 .canvas-panel {
@@ -551,16 +551,16 @@ input[type="radio"][name="mode"]:checked + span {
   border-radius: 4px;
 }
 
+input[type="radio"][name="mode"]:focus-visible + span {
+  outline: 2px solid var(--color-focus);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
 input[type="radio"][name="mode"]:not(:checked) + span:hover {
   padding: 0.5rem 0.75rem;
   margin: -0.5rem -0.75rem;
   background: var(--color-button-secondary-hover);
-  border-radius: 4px;
-}
-
-input[type="radio"][name="mode"]:focus-visible + span {
-  outline: 2px solid var(--color-focus);
-  outline-offset: 2px;
   border-radius: 4px;
 }
 

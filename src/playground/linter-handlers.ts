@@ -125,39 +125,13 @@ export function fixAllErrors(): void {
   let fixedCount = 0;
 
   while (iterations < maxIterations) {
-    try {
-      const tokens = lexer.tokenize(source);
-      const frameErrors = lexer.validateFrame(source);
-      const structErrors = lexer.validateStructure(tokens);
-      const allErrors = [...frameErrors, ...structErrors];
-
-      const fixableError = allErrors.find((err) => canAutoFix(err.message));
-
-      if (!fixableError) {
-        break;
-      }
-
-      const fixed = autoFixError(fixableError.message, source);
-      if (fixed && fixed !== source) {
-        source = fixed;
-        fixedCount++;
-      } else {
-        break;
-      }
-    } catch (error) {
-      if (error instanceof Error) {
-        const fixed = autoFixError(error.message, source);
-        if (fixed && fixed !== source) {
-          source = fixed;
-          fixedCount++;
-        } else {
-          break;
-        }
-      } else {
-        break;
-      }
+    const result = attemptSingleFix(source);
+    if (result.fixed && result.source !== source) {
+      source = result.source;
+      fixedCount++;
+    } else {
+      break;
     }
-
     iterations++;
   }
 
@@ -171,6 +145,37 @@ export function fixAllErrors(): void {
   } else {
     setStatus("No auto-fixable errors found", "info");
   }
+}
+
+function attemptSingleFix(currentSource: string): {
+  fixed: boolean;
+  source: string;
+} {
+  try {
+    const tokens = lexer.tokenize(currentSource);
+    const frameErrors = lexer.validateFrame(currentSource);
+    const structErrors = lexer.validateStructure(tokens);
+    const allErrors = [...frameErrors, ...structErrors];
+
+    const fixableError = allErrors.find((err) => canAutoFix(err.message));
+
+    if (!fixableError) {
+      return { fixed: false, source: currentSource };
+    }
+
+    const fixed = autoFixError(fixableError.message, currentSource);
+    if (fixed && fixed !== currentSource) {
+      return { fixed: true, source: fixed };
+    }
+  } catch (error) {
+    if (error instanceof Error) {
+      const fixed = autoFixError(error.message, currentSource);
+      if (fixed && fixed !== currentSource) {
+        return { fixed: true, source: fixed };
+      }
+    }
+  }
+  return { fixed: false, source: currentSource };
 }
 
 /**
@@ -192,75 +197,78 @@ function displayLinterErrors(
     linterMessages.appendChild(successDiv);
   } else {
     errors.forEach((err) => {
-      const icon =
-        err.severity === "error"
-          ? "🔴"
-          : err.severity === "warning"
-            ? "🟡"
-            : "ℹ️";
-      const color =
-        err.severity === "error"
-          ? "#f48771"
-          : err.severity === "warning"
-            ? "#dcdcaa"
-            : "#4ec9b0";
-
-      const errorDiv = document.createElement("div");
-      errorDiv.style.cssText = `margin-bottom: 8px; padding: 6px 8px; border-left: 3px solid ${color}; background: rgba(255,255,255,0.03); display: flex; align-items: center;`;
-
-      const iconSpan = document.createElement("span");
-      iconSpan.style.marginRight = "8px";
-      iconSpan.textContent = icon;
-
-      const severitySpan = document.createElement("span");
-      severitySpan.style.cssText = `color: ${color}; font-weight: 500;`;
-      severitySpan.textContent = err.severity.toUpperCase();
-
-      const messageSpan = document.createElement("span");
-      messageSpan.style.cssText = "color: #d4d4d4; margin-left: 8px; flex: 1;";
-      messageSpan.textContent = err.message;
-
-      errorDiv.appendChild(iconSpan);
-      errorDiv.appendChild(severitySpan);
-      errorDiv.appendChild(messageSpan);
-
-      if (err.position !== undefined) {
-        const posSpan = document.createElement("span");
-        posSpan.style.cssText =
-          "color: #858585; margin-left: 8px; font-size: 0.9em;";
-        posSpan.textContent = `(pos: ${err.position})`;
-        errorDiv.appendChild(posSpan);
-      }
-
-      if (canAutoFix(err.message)) {
-        const fixButton = document.createElement("button");
-        fixButton.className = "fix-button";
-        fixButton.dataset.errorMsg = err.message;
-        fixButton.style.cssText =
-          "margin-left: 12px; padding: 2px 8px; background: #4ec9b0; color: #1e1e1e; border: none; border-radius: 3px; cursor: pointer; font-size: 0.85em; font-weight: 500;";
-        fixButton.textContent = "Fix";
-
-        fixButton.addEventListener("mouseover", () => {
-          fixButton.style.background = "#6dd3bb";
-        });
-        fixButton.addEventListener("mouseout", () => {
-          fixButton.style.background = "#4ec9b0";
-        });
-        fixButton.addEventListener("click", (e) => {
-          const errorMsg = (e.target as HTMLElement).getAttribute(
-            "data-error-msg",
-          );
-          if (errorMsg) {
-            applyAutoFix(errorMsg);
-          }
-        });
-
-        errorDiv.appendChild(fixButton);
-      }
-
+      const errorDiv = createErrorElement(err);
       linterMessages.appendChild(errorDiv);
     });
   }
+}
+
+function createErrorElement(err: {
+  message: string;
+  position: number;
+  severity: "error" | "warning" | "info";
+}): HTMLElement {
+  const icon =
+    err.severity === "error" ? "🔴" : err.severity === "warning" ? "🟡" : "ℹ️";
+  const color =
+    err.severity === "error"
+      ? "#f48771"
+      : err.severity === "warning"
+        ? "#dcdcaa"
+        : "#4ec9b0";
+
+  const errorDiv = document.createElement("div");
+  errorDiv.style.cssText = `margin-bottom: 8px; padding: 6px 8px; border-left: 3px solid ${color}; background: rgba(255,255,255,0.03); display: flex; align-items: center;`;
+
+  const iconSpan = document.createElement("span");
+  iconSpan.style.marginRight = "8px";
+  iconSpan.textContent = icon;
+
+  const severitySpan = document.createElement("span");
+  severitySpan.style.cssText = `color: ${color}; font-weight: 500;`;
+  severitySpan.textContent = err.severity.toUpperCase();
+
+  const messageSpan = document.createElement("span");
+  messageSpan.style.cssText = "color: #d4d4d4; margin-left: 8px; flex: 1;";
+  messageSpan.textContent = err.message;
+
+  errorDiv.appendChild(iconSpan);
+  errorDiv.appendChild(severitySpan);
+  errorDiv.appendChild(messageSpan);
+
+  if (err.position !== undefined) {
+    const posSpan = document.createElement("span");
+    posSpan.style.cssText =
+      "color: #858585; margin-left: 8px; font-size: 0.9em;";
+    posSpan.textContent = `(pos: ${err.position})`;
+    errorDiv.appendChild(posSpan);
+  }
+
+  if (canAutoFix(err.message)) {
+    const fixButton = document.createElement("button");
+    fixButton.className = "fix-button";
+    fixButton.dataset.errorMsg = err.message;
+    fixButton.style.cssText =
+      "margin-left: 12px; padding: 2px 8px; background: #4ec9b0; color: #1e1e1e; border: none; border-radius: 3px; cursor: pointer; font-size: 0.85em; font-weight: 500;";
+    fixButton.textContent = "Fix";
+
+    fixButton.addEventListener("mouseover", () => {
+      fixButton.style.background = "#6dd3bb";
+    });
+    fixButton.addEventListener("mouseout", () => {
+      fixButton.style.background = "#4ec9b0";
+    });
+    fixButton.addEventListener("click", (e) => {
+      const errorMsg = (e.target as HTMLElement).getAttribute("data-error-msg");
+      if (errorMsg) {
+        applyAutoFix(errorMsg);
+      }
+    });
+
+    errorDiv.appendChild(fixButton);
+  }
+
+  return errorDiv;
 }
 
 /**

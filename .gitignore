@@ -8,6 +8,7 @@ coverage
 *.tsbuildinfo
 package-lock.json
 report/
+*report*.txt
 
 # Created by https://gitignore.kjanat.com/api/node,linux,macos,windows
 # Edit at https://gitignore.kjanat.com?templates=node,linux,macos,windows

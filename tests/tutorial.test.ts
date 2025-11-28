@@ -538,7 +538,7 @@ describe("evolutionTutorial", () => {
     expect(compareStep).toBeTruthy();
     expect(compareStep?.content.toLowerCase()).toContain("candidate");
     expect(compareStep?.content.toLowerCase()).toContain("look");
-    expect(compareStep?.targetElement).toBe("#candidatesGrid");
+    expect(compareStep?.targetElement).toBe("#candidates-grid");
   });
 
   test("should explain selection process", () => {

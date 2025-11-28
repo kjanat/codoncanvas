@@ -270,15 +270,15 @@ h1 {
   transition: all 0.2s ease;
 }
 
+.nav-button:disabled {
+  cursor: not-allowed;
+  opacity: 0.4;
+}
+
 .nav-button:hover:not(:disabled) {
   color: #1e1e1e;
   background: #4ec9b0;
   border-color: #4ec9b0;
-}
-
-.nav-button:disabled {
-  cursor: not-allowed;
-  opacity: 0.4;
 }
 
 .back-button {
