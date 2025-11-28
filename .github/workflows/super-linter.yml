@@ -13,6 +13,7 @@ jobs:
   lint:
     name: Lint
     runs-on: ubuntu-latest
+    # checkov:skip=CKV2_GHA_1: "Ensure top-level permissions are not set to write-all"
 
     permissions:
       contents: read
@@ -38,6 +39,11 @@ jobs:
         env:
           # To report GitHub Actions status checks
           GITHUB_TOKEN: ${{ github.token }}
+          IGNORE_GITIGNORED_FILES: true
+          JSCPD_CONFIG_FILE: package.json
+          CHECKOV_FILE_NAME: .github/linters/checkov.yaml
+          VALIDATE_BIOME_FORMAT: false
+          VALIDATE_BIOME_LINT: false
 
       - name: Prevents job failure
         run: echo "Hi!"

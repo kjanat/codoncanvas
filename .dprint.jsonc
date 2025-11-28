@@ -42,7 +42,7 @@
       },
       {
         /** Prettifies anf minifies SVG files */
-        "command": "bunx svgo --config .github/.config/svgo.mjs --pretty -q --input - --output -",
+        "command": "bunx svgo --config .github/linters/svgo.mjs --pretty -q --input - --output -",
         "exts": ["svg"],
         "stdin": true
       },

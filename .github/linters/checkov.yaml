@@ -1,0 +1,15 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bridgecrewio/checkov/
+---
+block-list-secret-scan: []
+branch: master
+custom-tool-name: Checkov
+directory:
+  - .
+evaluate-variables: true
+external-modules-download-path: .external_modules
+mask: []
+secrets-history-timeout: 12h
+secrets-scan-file-type: []
+summary-position: top
+skip-check:
+  - CKV2_GHA_1

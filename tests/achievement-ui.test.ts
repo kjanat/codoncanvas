@@ -177,10 +177,10 @@ describe("AchievementUI", () => {
       expect(style?.textContent).toContain(".achievement-badge:hover");
     });
 
-    test("includes CSS for notification animations (slideIn, pulse)", () => {
+    test("includes CSS for notification animations (slide-in, pulse)", () => {
       new AchievementUI(mockEngine, "achievement-container");
       const style = document.getElementById("achievement-ui-styles");
-      expect(style?.textContent).toContain("@keyframes slideIn");
+      expect(style?.textContent).toContain("@keyframes slide-in");
       expect(style?.textContent).toContain("@keyframes pulse");
     });
 

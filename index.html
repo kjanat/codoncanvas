@@ -1,57 +1,57 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <meta charset="UTF-8">
+    <meta charset="UTF-8" />
     <meta
       name="viewport"
       content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes"
-    >
-    <meta name="mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-capable" content="yes">
+    />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta
       name="apple-mobile-web-app-status-bar-style"
       content="black-translucent"
-    >
+    />
     <title>CodonCanvas - DNA-Inspired Visual Programming</title>
     <meta
       name="description"
       content="Educational DNA-inspired visual programming language for learning genetic concepts through code"
-    >
+    />
 
     <!-- Open Graph / Social Sharing -->
-    <meta property="og:type" content="website">
-    <meta property="og:url" content="https://kjanat.github.io/codoncanvas/">
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://kjanat.github.io/codoncanvas/" />
     <meta
       property="og:title"
       content="CodonCanvas - DNA-Inspired Visual Programming"
-    >
+    />
     <meta
       property="og:description"
       content="Learn genetics through code! Write DNA-like triplets that execute as visual outputs. See mutations, reading frames, and evolution in action."
-    >
+    />
     <meta
       property="og:image"
       content="https://kjanat.github.io/codoncanvas/screenshot_playground.png"
-    >
+    />
 
     <!-- Twitter Card -->
-    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:card" content="summary_large_image" />
     <meta
       property="twitter:url"
       content="https://kjanat.github.io/codoncanvas/"
-    >
+    />
     <meta
       property="twitter:title"
       content="CodonCanvas - DNA-Inspired Visual Programming"
-    >
+    />
     <meta
       property="twitter:description"
       content="Learn genetics through code! Write DNA-like triplets that execute as visual outputs."
-    >
+    />
     <meta
       property="twitter:image"
       content="https://kjanat.github.io/codoncanvas/screenshot_playground.png"
-    >
+    />
     <style>
     /* Theme Variables */
     :root {
@@ -631,10 +631,10 @@
       background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
       border-radius: 8px;
       box-shadow: 0 4px 12px rgba(102, 126, 234, 0.2);
-      animation: slideInFromTop 0.5s ease-out;
+      animation: slide-in-from-top 0.5s ease-out;
     }
 
-    @keyframes slideInFromTop {
+    @keyframes slide-in-from-top {
       from {
         opacity: 0;
         transform: translateY(-20px);
@@ -781,7 +781,7 @@
                   value="playground"
                   checked
                   style="margin: 0"
-                >
+                />
                 <span>🧪 Playground</span>
               </label>
               <label
@@ -792,7 +792,7 @@
                   name="mode"
                   value="assessment"
                   style="margin: 0"
-                >
+                />
                 <span>🎓 Assessment</span>
               </label>
             </div>
@@ -975,7 +975,7 @@
               accept=".genome,.json"
               aria-label="Choose genome file to load"
               style="position: absolute; left: -9999px"
-            >
+            />
           </nav>
           <nav
             class="toolbar"
@@ -1067,7 +1067,8 @@ ATG GAA AAT GGA TAA
 ; GAA AAT = PUSH 3
 ; GGA = CIRCLE
 ; TAA = STOP"
-          >ATG GAA AAT GGA TAA</textarea>
+          >
+ATG GAA AAT GGA TAA</textarea>
           <div id="editor-help" class="sr-only">
             DNA codon editor. Use bases A, C, G, and T to create triplet codons.
             Start programs with ATG (START) and end with TAA, TAG, or TGA

@@ -216,10 +216,10 @@ export class AchievementUI {
         box-shadow: 0 4px 20px rgba(0,0,0,0.3);
         max-width: 350px;
         z-index: 10000;
-        animation: slideIn 0.5s ease, pulse 0.5s ease 0.5s;
+        animation: slide-in 0.5s ease, pulse 0.5s ease 0.5s;
       }
 
-      @keyframes slideIn {
+      @keyframes slide-in {
         from {
           transform: translateX(400px);
           opacity: 0;
@@ -480,7 +480,7 @@ export class AchievementUI {
 
     // Auto-remove after 5 seconds
     setTimeout(() => {
-      notification.style.animation = "slideIn 0.5s ease reverse";
+      notification.style.animation = "slide-in 0.5s ease reverse";
       setTimeout(() => {
         notification.remove();
         this.showNextNotification();

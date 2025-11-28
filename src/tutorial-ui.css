@@ -2,16 +2,13 @@
 
 .tutorial-overlay {
   position: fixed;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
+  inset: 0;
   z-index: 9998;
   display: flex;
   align-items: center;
   justify-content: center;
-  background: rgba(0, 0, 0, 0.75);
-  animation: fadeIn 0.3s ease-in;
+  background: rgb(0 0 0 / 75%);
+  animation: fade-in 0.3s ease-in;
 }
 
 .tutorial-modal {
@@ -25,8 +22,8 @@
   overflow: hidden;
   background: white;
   border-radius: 12px;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
-  animation: slideUp 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 8px 32px rgb(0 0 0 / 30%);
+  animation: slide-up 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .tutorial-header {
@@ -37,7 +34,7 @@
 }
 
 .tutorial-header h2 {
-  margin: 0 0 8px 0;
+  margin: 0 0 8px;
   font-size: 24px;
   font-weight: 600;
 }
@@ -53,7 +50,7 @@
   flex: 1;
   height: 6px;
   overflow: hidden;
-  background: rgba(255, 255, 255, 0.3);
+  background: rgb(255 255 255 / 30%);
   border-radius: 3px;
 }
 
@@ -77,7 +74,7 @@
 }
 
 .tutorial-step-title {
-  margin: 0 0 16px 0;
+  margin: 0 0 16px;
   font-size: 20px;
   font-weight: 600;
   color: #333;
@@ -144,7 +141,7 @@
 }
 
 .tutorial-button-primary:hover {
-  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+  box-shadow: 0 4px 12px rgb(102 126 234 / 40%);
   transform: translateY(-2px);
 }
 
@@ -183,9 +180,7 @@
   position: relative;
   z-index: 10000;
   border-radius: 8px;
-  box-shadow:
-    0 0 0 4px rgba(102, 126, 234, 0.5),
-    0 0 0 9999px rgba(0, 0, 0, 0.75);
+  box-shadow: 0 0 0 4px rgb(102 126 234 / 50%), 0 0 0 9999px rgb(0 0 0 / 75%);
   animation: pulse 2s infinite;
 }
 
@@ -201,7 +196,7 @@
 }
 
 .tutorial-success h3 {
-  margin: 0 0 12px 0;
+  margin: 0 0 12px;
   font-size: 24px;
   color: #333;
 }
@@ -220,20 +215,22 @@
 }
 
 /* Animations */
-@keyframes fadeIn {
+@keyframes fade-in {
   from {
     opacity: 0;
   }
+
   to {
     opacity: 1;
   }
 }
 
-@keyframes slideUp {
+@keyframes slide-up {
   from {
     transform: translateY(50px);
     opacity: 0;
   }
+
   to {
     transform: translateY(0);
     opacity: 1;
@@ -243,19 +240,16 @@
 @keyframes pulse {
   0%,
   100% {
-    box-shadow:
-      0 0 0 4px rgba(102, 126, 234, 0.5),
-      0 0 0 9999px rgba(0, 0, 0, 0.75);
+    box-shadow: 0 0 0 4px rgb(102 126 234 / 50%), 0 0 0 9999px rgb(0 0 0 / 75%);
   }
+
   50% {
-    box-shadow:
-      0 0 0 8px rgba(102, 126, 234, 0.8),
-      0 0 0 9999px rgba(0, 0, 0, 0.75);
+    box-shadow: 0 0 0 8px rgb(102 126 234 / 80%), 0 0 0 9999px rgb(0 0 0 / 75%);
   }
 }
 
 /* Responsive */
-@media (max-width: 768px) {
+@media (width <= 768px) {
   .tutorial-modal {
     width: 95%;
     max-height: 90vh;
