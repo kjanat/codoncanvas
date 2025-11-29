@@ -5,7 +5,10 @@
  * monitor student progress, identify at-risk learners, and export grades.
  */
 import { beforeEach, describe, expect, test } from "bun:test";
-import { generateStudentExport, TeacherDashboard } from "@/teacher-dashboard";
+import {
+  generateStudentExport,
+  TeacherDashboard,
+} from "@/education/teacher-dashboard";
 
 // Helper to create a FileReader mock with custom content function
 const createFileReaderMock = (contentFn: (index: number) => string) => {

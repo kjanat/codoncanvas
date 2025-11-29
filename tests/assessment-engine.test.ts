@@ -4,8 +4,11 @@
  */
 
 import { beforeEach, describe, expect, test } from "bun:test";
-import type { AssessmentResult, Challenge } from "@/assessment-engine";
-import { AssessmentEngine } from "@/assessment-engine";
+import type {
+  AssessmentResult,
+  Challenge,
+} from "@/education/assessments/assessment-engine";
+import { AssessmentEngine } from "@/education/assessments/assessment-engine";
 import type { MutationType } from "@/types";
 
 describe("AssessmentEngine", () => {

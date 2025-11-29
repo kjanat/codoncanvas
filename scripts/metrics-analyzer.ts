@@ -31,7 +31,7 @@ import {
   MetricsAnalyzer,
   type MetricsSession,
   Stats,
-} from "../src/metrics-analyzer-core";
+} from "../src/analysis/metrics-analyzer-core";
 
 /** Required fields for a valid MetricsSession */
 const REQUIRED_SESSION_FIELDS = [

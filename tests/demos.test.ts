@@ -5,24 +5,24 @@
  * Educational visualizations of silent, missense, nonsense, and frameshift mutations.
  */
 import { afterEach, beforeEach, describe, expect, test } from "bun:test";
+import { CodonLexer } from "@/core/lexer";
+import { Canvas2DRenderer } from "@/core/renderer";
+import { CodonVM } from "@/core/vm";
 import {
   DEMO_GENOMES,
   highlightGenome,
   renderGenomeToCanvas,
-} from "@/demos-core";
-import { CodonLexer } from "@/lexer";
+} from "@/demos/demos-core";
 import {
   applyFrameshiftMutation,
   applyMissenseMutation,
   applyNonsenseMutation,
   applySilentMutation,
-} from "@/mutations";
-import { Canvas2DRenderer } from "@/renderer";
+} from "@/genetics/mutations";
 import {
   mockCanvasContext,
   restoreCanvasContext,
 } from "@/tests/test-utils/canvas-mock";
-import { CodonVM } from "@/vm";
 
 describe("MutationDemos", () => {
   beforeEach(() => {

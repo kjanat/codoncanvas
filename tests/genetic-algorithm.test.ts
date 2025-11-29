@@ -5,7 +5,10 @@
  * Core module for automated genome evolution experiments.
  */
 import { afterEach, beforeEach, describe, expect, test } from "bun:test";
-import { type FitnessFunction, GeneticAlgorithm } from "@/genetic-algorithm";
+import {
+  type FitnessFunction,
+  GeneticAlgorithm,
+} from "@/genetics/genetic-algorithm";
 import {
   mockCanvasContext,
   restoreCanvasContext,

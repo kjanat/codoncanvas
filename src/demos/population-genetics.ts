@@ -1,12 +1,12 @@
-import { CodonLexer } from "@/lexer";
+import { CodonLexer } from "@/core/lexer";
+import { Canvas2DRenderer } from "@/core/renderer";
+import { CodonVM } from "@/core/vm";
 import {
   applyDeletion,
   applyFrameshiftMutation,
   applyInsertion,
   applyPointMutation,
-} from "@/mutations";
-import { Canvas2DRenderer } from "@/renderer";
-import { CodonVM } from "@/vm";
+} from "@/genetics/mutations";
 
 interface Organism {
   id: number;

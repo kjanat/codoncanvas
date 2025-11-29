@@ -5,7 +5,7 @@ import {
   importGenome,
   readGenomeFile,
   validateGenomeFile,
-} from "@/genome-io";
+} from "@/genetics/genome-io";
 
 describe("Genome I/O", () => {
   const sampleGenome = "ATG GAA AAT GGA TAA";

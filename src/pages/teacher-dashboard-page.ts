@@ -1,4 +1,7 @@
-import { generateStudentExport, TeacherDashboard } from "@/teacher-dashboard";
+import {
+  generateStudentExport,
+  TeacherDashboard,
+} from "@/education/teacher-dashboard";
 import { getElementUnsafe as getElement } from "@/utils/dom";
 
 interface StudentData {

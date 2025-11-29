@@ -1,5 +1,5 @@
 import { afterEach, beforeEach, describe, expect, mock, test } from "bun:test";
-import { ThemeManager } from "@/theme-manager";
+import { ThemeManager } from "@/ui/theme-manager";
 
 // happy-dom provides localStorage automatically via bun-test-setup.ts
 

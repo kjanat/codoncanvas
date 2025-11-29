@@ -1,8 +1,11 @@
 import { describe, expect, test } from "bun:test";
 import { readdirSync, readFileSync } from "node:fs";
 import { join } from "node:path";
-import { analyzeComplexity, type GenomeComplexity } from "@/codon-analyzer";
-import { CodonLexer } from "@/lexer";
+import {
+  analyzeComplexity,
+  type GenomeComplexity,
+} from "@/analysis/codon-analyzer";
+import { CodonLexer } from "@/core/lexer";
 
 /**
  * Learning Path Validation Test Suite

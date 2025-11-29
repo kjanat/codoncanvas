@@ -7,7 +7,7 @@ import { afterEach, beforeEach, describe, expect, test } from "bun:test";
 import {
   predictMutationImpact,
   predictMutationImpactBatch,
-} from "@/mutation-predictor";
+} from "@/genetics/mutation-predictor";
 import {
   applyDeletion,
   applyFrameshiftMutation,
@@ -16,7 +16,7 @@ import {
   applyNonsenseMutation,
   applyPointMutation,
   applySilentMutation,
-} from "@/mutations";
+} from "@/genetics/mutations";
 import {
   mockCanvasContext,
   restoreCanvasContext,

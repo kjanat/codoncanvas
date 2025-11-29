@@ -8,7 +8,7 @@ import {
   applyPointMutation,
   applySilentMutation,
   compareGenomes,
-} from "@/mutations";
+} from "@/genetics/mutations";
 import { CODON_MAP } from "@/types";
 
 describe("Mutation Tools", () => {

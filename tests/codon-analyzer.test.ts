@@ -7,7 +7,7 @@ import {
   analyzeCodonUsage,
   compareAnalyses,
   formatAnalysis,
-} from "@/codon-analyzer";
+} from "@/analysis/codon-analyzer";
 import type { CodonToken } from "@/types";
 
 describe("CodonAnalyzer", () => {

@@ -13,7 +13,7 @@ import {
   type MetricsSession,
   parseCSVContent,
   Stats,
-} from "@/metrics-analyzer-core";
+} from "@/analysis/metrics-analyzer-core";
 
 // Helper function to create mock sessions
 function createMockSession(

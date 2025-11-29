@@ -14,22 +14,22 @@ export * from "@/playground/linter-handlers";
 export * from "@/playground/ui-state";
 export * from "@/playground/ui-utils";
 
-import type { Achievement } from "@/achievement-engine";
-import { DiffViewer, injectDiffViewerStyles } from "@/diff-viewer";
+import { CodonVM } from "@/core/vm";
 import {
   type Concept,
   type ExampleDifficulty,
   type ExampleKey,
   type ExampleMetadata,
   examples,
-} from "@/examples";
-import { injectShareStyles, ShareSystem } from "@/share-system";
-import { TutorialManager } from "@/tutorial";
-import { initializeTutorial } from "@/tutorial-ui";
-import { CodonVM } from "@/vm";
+} from "@/data/examples";
+import type { Achievement } from "@/education/achievements/achievement-engine";
+import { TutorialManager } from "@/education/tutorials/tutorial";
+import { initializeTutorial } from "@/education/tutorials/tutorial-ui";
+import { DiffViewer, injectDiffViewerStyles } from "@/ui/diff-viewer";
+import { injectShareStyles, ShareSystem } from "@/ui/share-system";
 import "@/tutorial-ui.css";
 import "@/achievement-ui.css";
-import { AssessmentUI } from "@/assessment-ui";
+import { AssessmentUI } from "@/education/assessments/assessment-ui";
 // Import DOM elements
 import {
   assessmentContainer,
@@ -104,7 +104,7 @@ import {
   updateStats,
   updateThemeButton,
 } from "@/playground/ui-utils";
-import { injectTimelineStyles } from "@/timeline-scrubber";
+import { injectTimelineStyles } from "@/ui/timeline-scrubber";
 
 // Initialize UI button state
 updateThemeButton();

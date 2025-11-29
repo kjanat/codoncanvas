@@ -9,8 +9,8 @@ import type {
   ExecutionEvent,
   FeatureEvent,
   MutationEvent,
-} from "@/research-metrics";
-import { ResearchMetrics } from "@/research-metrics";
+} from "@/analysis/research-metrics";
+import { ResearchMetrics } from "@/analysis/research-metrics";
 
 // Helper to create a complete ExecutionEvent
 function createExecutionEvent(

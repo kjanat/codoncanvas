@@ -6,7 +6,7 @@
 
 import { mkdirSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
-import { examples } from "../src/examples";
+import { examples } from "../src/data/examples";
 
 const OUTPUT_DIR = "examples";
 const README_TEMPLATE = `# CodonCanvas Example Programs

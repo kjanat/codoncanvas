@@ -5,13 +5,25 @@ export default defineConfig({
   // GitHub Pages base path (will be /codoncanvas/ when deployed)
   base: process.env.NODE_ENV === "production" ? "/codoncanvas/" : "/",
 
+  // Public directory for static assets
+  publicDir: "public",
+
   // Path aliases matching tsconfig.json
   resolve: {
     alias: {
       "@": resolve(__dirname, "src"),
+      "@/core": resolve(__dirname, "src/core"),
+      "@/genetics": resolve(__dirname, "src/genetics"),
+      "@/analysis": resolve(__dirname, "src/analysis"),
+      "@/education": resolve(__dirname, "src/education"),
+      "@/exporters": resolve(__dirname, "src/exporters"),
+      "@/ui": resolve(__dirname, "src/ui"),
+      "@/demos": resolve(__dirname, "src/demos"),
+      "@/data": resolve(__dirname, "src/data"),
       "@/types": resolve(__dirname, "src/types"),
       "@/utils": resolve(__dirname, "src/utils"),
       "@/playground": resolve(__dirname, "src/playground"),
+      "@/pages": resolve(__dirname, "src/pages"),
     },
   },
 
@@ -35,15 +47,35 @@ export default defineConfig({
     outDir: "dist",
     rollupOptions: {
       input: {
-        main: resolve(__dirname, "index.html"),
-        demos: resolve(__dirname, "demos.html"),
-        mutation: resolve(__dirname, "mutation-demo.html"),
-        timeline: resolve(__dirname, "timeline-demo.html"),
-        evolution: resolve(__dirname, "evolution-demo.html"),
-        population: resolve(__dirname, "population-genetics-demo.html"),
-        genetic: resolve(__dirname, "genetic-algorithm-demo.html"),
-        tutorial: resolve(__dirname, "tutorial.html"),
-        gallery: resolve(__dirname, "gallery.html"),
+        // Main pages
+        main: resolve(__dirname, "public/pages/index.html"),
+        gallery: resolve(__dirname, "public/pages/gallery.html"),
+        tutorial: resolve(__dirname, "public/pages/tutorial.html"),
+        demos: resolve(__dirname, "public/pages/demos.html"),
+        // Demo pages
+        mutation: resolve(__dirname, "public/pages/demos/mutation.html"),
+        timeline: resolve(__dirname, "public/pages/demos/timeline.html"),
+        evolution: resolve(__dirname, "public/pages/demos/evolution.html"),
+        population: resolve(
+          __dirname,
+          "public/pages/demos/population-genetics.html",
+        ),
+        genetic: resolve(
+          __dirname,
+          "public/pages/demos/genetic-algorithm.html",
+        ),
+        achievements: resolve(
+          __dirname,
+          "public/pages/demos/achievements.html",
+        ),
+        assessment: resolve(__dirname, "public/pages/demos/assessment.html"),
+        // Dashboard pages
+        research: resolve(__dirname, "public/pages/dashboards/research.html"),
+        teacher: resolve(__dirname, "public/pages/dashboards/teacher.html"),
+        learningPaths: resolve(
+          __dirname,
+          "public/pages/dashboards/learning-paths.html",
+        ),
       },
     },
   },

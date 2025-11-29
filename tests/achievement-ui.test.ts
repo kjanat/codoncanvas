@@ -10,8 +10,8 @@ import type {
   AchievementCategory,
   AchievementEngine,
   UnlockedAchievement,
-} from "@/achievement-engine";
-import { AchievementUI } from "@/achievement-ui";
+} from "@/education/achievements/achievement-engine";
+import { AchievementUI } from "@/education/achievements/achievement-ui";
 
 // Mock Achievement
 const createMockAchievement = (

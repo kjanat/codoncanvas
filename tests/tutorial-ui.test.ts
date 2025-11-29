@@ -5,8 +5,11 @@
  * through CodonCanvas concepts with step-by-step instructions.
  */
 import { afterEach, beforeEach, describe, expect, mock, test } from "bun:test";
-import type { TutorialManager } from "@/tutorial";
-import { initializeTutorial, TutorialUI } from "@/tutorial-ui";
+import type { TutorialManager } from "@/education/tutorials/tutorial";
+import {
+  initializeTutorial,
+  TutorialUI,
+} from "@/education/tutorials/tutorial-ui";
 
 // Mock TutorialManager
 const createMockManager = (overrides: Partial<TutorialManager> = {}) => {

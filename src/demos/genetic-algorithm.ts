@@ -1,7 +1,7 @@
-import { GeneticAlgorithm } from "@/genetic-algorithm";
-import { CodonLexer } from "@/lexer";
-import { Canvas2DRenderer } from "@/renderer";
-import { CodonVM } from "@/vm";
+import { CodonLexer } from "@/core/lexer";
+import { Canvas2DRenderer } from "@/core/renderer";
+import { CodonVM } from "@/core/vm";
+import { GeneticAlgorithm } from "@/genetics/genetic-algorithm";
 
 // State
 let ga: GeneticAlgorithm | null = null;

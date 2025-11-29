@@ -5,7 +5,7 @@ import {
   mutationTutorial,
   TutorialManager,
   timelineTutorial,
-} from "@/tutorial";
+} from "@/education/tutorials/tutorial";
 
 // Mock localStorage
 const localStorageMock = (() => {

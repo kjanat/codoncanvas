@@ -163,7 +163,7 @@ describe("Playground Main Module", () => {
   // runProgram
   describe("runProgram", () => {
     test("tokenizes genome from editor", async () => {
-      const { CodonLexer } = await import("@/lexer");
+      const { CodonLexer } = await import("@/core/lexer");
       const lexer = new CodonLexer();
       const tokens = lexer.tokenize("ATG GGA TAA");
       expect(tokens.length).toBe(3);
@@ -171,14 +171,14 @@ describe("Playground Main Module", () => {
     });
 
     test("updates stats with token count", async () => {
-      const { CodonLexer } = await import("@/lexer");
+      const { CodonLexer } = await import("@/core/lexer");
       const lexer = new CodonLexer();
       const tokens = lexer.tokenize("ATG GGA CCA TAA");
       expect(tokens.length).toBe(4);
     });
 
     test("validates structure and shows critical errors", async () => {
-      const { CodonLexer } = await import("@/lexer");
+      const { CodonLexer } = await import("@/core/lexer");
       const lexer = new CodonLexer();
       const tokens = lexer.tokenize("GGA TAA"); // Missing START
       const errors = lexer.validateStructure(tokens);
@@ -187,7 +187,7 @@ describe("Playground Main Module", () => {
     });
 
     test("validates frame and shows warnings", async () => {
-      const { CodonLexer } = await import("@/lexer");
+      const { CodonLexer } = await import("@/core/lexer");
       const lexer = new CodonLexer();
       // Frame error - not multiple of 3 characters
       const errors = lexer.validateFrame("ATG GG TAA");
@@ -196,9 +196,9 @@ describe("Playground Main Module", () => {
     });
 
     test("runs in visual mode by default", async () => {
-      const { Canvas2DRenderer } = await import("@/renderer");
-      const { CodonVM } = await import("@/vm");
-      const { CodonLexer } = await import("@/lexer");
+      const { Canvas2DRenderer } = await import("@/core/renderer");
+      const { CodonVM } = await import("@/core/vm");
+      const { CodonLexer } = await import("@/core/lexer");
 
       const canvas = document.createElement("canvas");
       const renderer = new Canvas2DRenderer(canvas);
@@ -210,14 +210,14 @@ describe("Playground Main Module", () => {
     });
 
     test("handles Error exceptions with error status", async () => {
-      const { CodonLexer } = await import("@/lexer");
+      const { CodonLexer } = await import("@/core/lexer");
       const lexer = new CodonLexer();
       // Invalid genome should throw an error during tokenization
       expect(() => lexer.tokenize("XYZ INVALID")).toThrow();
     });
 
     test("handles parse errors from lexer validation", async () => {
-      const { CodonLexer } = await import("@/lexer");
+      const { CodonLexer } = await import("@/core/lexer");
       const lexer = new CodonLexer();
       // Missing START codon should be flagged
       const tokens = lexer.tokenize("GGA TAA");
@@ -229,15 +229,15 @@ describe("Playground Main Module", () => {
   // clearCanvas
   describe("clearCanvas", () => {
     test("resets VM state", async () => {
-      const { Canvas2DRenderer } = await import("@/renderer");
-      const { CodonVM } = await import("@/vm");
+      const { Canvas2DRenderer } = await import("@/core/renderer");
+      const { CodonVM } = await import("@/core/vm");
 
       const canvas = document.createElement("canvas");
       const renderer = new Canvas2DRenderer(canvas);
       const vm = new CodonVM(renderer);
 
       // Run some code first
-      const { CodonLexer } = await import("@/lexer");
+      const { CodonLexer } = await import("@/core/lexer");
       const lexer = new CodonLexer();
       const tokens = lexer.tokenize("ATG TAA");
       vm.run(tokens);
@@ -251,7 +251,7 @@ describe("Playground Main Module", () => {
     });
 
     test("clears renderer", async () => {
-      const { Canvas2DRenderer } = await import("@/renderer");
+      const { Canvas2DRenderer } = await import("@/core/renderer");
       const canvas = document.createElement("canvas");
       const renderer = new Canvas2DRenderer(canvas);
 
@@ -260,8 +260,8 @@ describe("Playground Main Module", () => {
     });
 
     test("VM can be reset to initial state", async () => {
-      const { Canvas2DRenderer } = await import("@/renderer");
-      const { CodonVM } = await import("@/vm");
+      const { Canvas2DRenderer } = await import("@/core/renderer");
+      const { CodonVM } = await import("@/core/vm");
       const canvas = document.createElement("canvas");
       const renderer = new Canvas2DRenderer(canvas);
       const vm = new CodonVM(renderer);
@@ -273,13 +273,13 @@ describe("Playground Main Module", () => {
   // getFilteredExamples
   describe("getFilteredExamples", () => {
     test("returns all examples when no filters applied", async () => {
-      const { examples } = await import("@/examples");
+      const { examples } = await import("@/data/examples");
       const allExamples = Object.entries(examples);
       expect(allExamples.length).toBeGreaterThan(0);
     });
 
     test("filters by difficulty when difficultyFilter has value", async () => {
-      const { examples } = await import("@/examples");
+      const { examples } = await import("@/data/examples");
       const beginnerExamples = Object.entries(examples).filter(
         ([_, ex]) => ex.difficulty === "beginner",
       );
@@ -287,7 +287,7 @@ describe("Playground Main Module", () => {
     });
 
     test("filters by concept when conceptFilter has value", async () => {
-      const { examples } = await import("@/examples");
+      const { examples } = await import("@/data/examples");
       const drawingExamples = Object.entries(examples).filter(([_, ex]) =>
         ex.concepts.includes("drawing"),
       );
@@ -296,7 +296,7 @@ describe("Playground Main Module", () => {
     });
 
     test("filters by search term (case-insensitive)", async () => {
-      const { examples } = await import("@/examples");
+      const { examples } = await import("@/data/examples");
       const searchTerm = "circle";
       const filtered = Object.entries(examples).filter(([_, ex]) =>
         [ex.title, ex.description, ...ex.keywords, ...ex.concepts]
@@ -308,7 +308,7 @@ describe("Playground Main Module", () => {
     });
 
     test("searches in title, description, keywords, and concepts", async () => {
-      const { examples } = await import("@/examples");
+      const { examples } = await import("@/data/examples");
       const exampleList = Object.values(examples);
       if (exampleList.length > 0) {
         const ex = exampleList[0];
@@ -320,7 +320,7 @@ describe("Playground Main Module", () => {
     });
 
     test("combines multiple filters (AND logic)", async () => {
-      const { examples } = await import("@/examples");
+      const { examples } = await import("@/data/examples");
       const filtered = Object.entries(examples).filter(([_, ex]) => {
         const matchesDifficulty = ex.difficulty === "beginner";
         const matchesSearch = ex.title.toLowerCase().includes("a");
@@ -330,7 +330,7 @@ describe("Playground Main Module", () => {
     });
 
     test("returns empty array when no matches", async () => {
-      const { examples } = await import("@/examples");
+      const { examples } = await import("@/data/examples");
       const filtered = Object.entries(examples).filter(
         ([_, ex]) => ex.title === "nonexistent_title_xyz",
       );
@@ -338,7 +338,7 @@ describe("Playground Main Module", () => {
     });
 
     test("returns ExampleKey and ExampleMetadata tuples", async () => {
-      const { examples } = await import("@/examples");
+      const { examples } = await import("@/data/examples");
       const entries = Object.entries(examples);
       if (entries.length > 0) {
         const [key, metadata] = entries[0];
@@ -372,7 +372,7 @@ describe("Playground Main Module", () => {
     });
 
     test("groups examples by difficulty level", async () => {
-      const { examples } = await import("@/examples");
+      const { examples } = await import("@/data/examples");
       const grouped = {
         beginner: [] as string[],
         intermediate: [] as string[],
@@ -390,7 +390,7 @@ describe("Playground Main Module", () => {
     });
 
     test("creates beginner optgroup when beginner examples exist", async () => {
-      const { examples } = await import("@/examples");
+      const { examples } = await import("@/data/examples");
       const beginnerExamples = Object.entries(examples).filter(
         ([_, ex]) => ex.difficulty === "beginner",
       );
@@ -403,7 +403,7 @@ describe("Playground Main Module", () => {
     });
 
     test("creates intermediate optgroup when intermediate examples exist", async () => {
-      const { examples } = await import("@/examples");
+      const { examples } = await import("@/data/examples");
       const intermediateExamples = Object.entries(examples).filter(
         ([_, ex]) => ex.difficulty === "intermediate",
       );
@@ -416,7 +416,7 @@ describe("Playground Main Module", () => {
     });
 
     test("creates advanced optgroup when advanced examples exist", async () => {
-      const { examples } = await import("@/examples");
+      const { examples } = await import("@/data/examples");
       const advancedExamples = Object.entries(examples).filter(
         ([_, ex]) => ex.difficulty === "advanced",
       );
@@ -429,7 +429,7 @@ describe("Playground Main Module", () => {
     });
 
     test("creates advanced-showcase optgroup when showcase examples exist", async () => {
-      const { examples } = await import("@/examples");
+      const { examples } = await import("@/data/examples");
       const showcaseExamples = Object.entries(examples).filter(
         ([_, ex]) => ex.difficulty === "advanced-showcase",
       );
@@ -452,7 +452,7 @@ describe("Playground Main Module", () => {
     });
 
     test("creates option elements with correct value and text", async () => {
-      const { examples } = await import("@/examples");
+      const { examples } = await import("@/data/examples");
       const entries = Object.entries(examples);
 
       if (entries.length > 0) {
@@ -470,7 +470,7 @@ describe("Playground Main Module", () => {
   // showExampleInfo
   describe("showExampleInfo", () => {
     test("hides info panel when key not found in examples", async () => {
-      const { examples } = await import("@/examples");
+      const { examples } = await import("@/data/examples");
       const invalidKey = "nonexistent_key_xyz";
       const ex = examples[invalidKey as keyof typeof examples];
       expect(ex).toBeUndefined();
@@ -484,7 +484,7 @@ describe("Playground Main Module", () => {
     });
 
     test("displays example title", async () => {
-      const { examples } = await import("@/examples");
+      const { examples } = await import("@/data/examples");
       const entries = Object.entries(examples);
       if (entries.length > 0) {
         const [_, ex] = entries[0];
@@ -495,7 +495,7 @@ describe("Playground Main Module", () => {
     });
 
     test("displays difficulty badge", async () => {
-      const { examples } = await import("@/examples");
+      const { examples } = await import("@/data/examples");
       const entries = Object.entries(examples);
       if (entries.length > 0) {
         const [_, ex] = entries[0];
@@ -511,7 +511,7 @@ describe("Playground Main Module", () => {
     });
 
     test("displays description", async () => {
-      const { examples } = await import("@/examples");
+      const { examples } = await import("@/data/examples");
       const entries = Object.entries(examples);
       if (entries.length > 0) {
         const [_, ex] = entries[0];
@@ -521,7 +521,7 @@ describe("Playground Main Module", () => {
     });
 
     test("displays concepts list", async () => {
-      const { examples } = await import("@/examples");
+      const { examples } = await import("@/data/examples");
       const entries = Object.entries(examples);
       if (entries.length > 0) {
         const [_, ex] = entries[0];
@@ -530,7 +530,7 @@ describe("Playground Main Module", () => {
     });
 
     test("displays goodForMutations list", async () => {
-      const { examples } = await import("@/examples");
+      const { examples } = await import("@/data/examples");
       const entries = Object.entries(examples);
       if (entries.length > 0) {
         const [_, ex] = entries[0];
@@ -555,7 +555,7 @@ describe("Playground Main Module", () => {
     });
 
     test("loads genome into editor", async () => {
-      const { examples } = await import("@/examples");
+      const { examples } = await import("@/data/examples");
       const entries = Object.entries(examples);
       if (entries.length > 0) {
         const [_key, ex] = entries[0];
@@ -566,7 +566,7 @@ describe("Playground Main Module", () => {
     });
 
     test("sets status with example title", async () => {
-      const { examples } = await import("@/examples");
+      const { examples } = await import("@/data/examples");
       const entries = Object.entries(examples);
       if (entries.length > 0) {
         const [_key, ex] = entries[0];
@@ -577,8 +577,8 @@ describe("Playground Main Module", () => {
     });
 
     test("runs linter on loaded genome", async () => {
-      const { CodonLexer } = await import("@/lexer");
-      const { examples } = await import("@/examples");
+      const { CodonLexer } = await import("@/core/lexer");
+      const { examples } = await import("@/data/examples");
       const entries = Object.entries(examples);
 
       if (entries.length > 0) {
@@ -874,10 +874,10 @@ describe("Playground Main Module", () => {
   // Integration
   describe("integration", () => {
     test("full workflow: load example -> run -> clear", async () => {
-      const { CodonLexer } = await import("@/lexer");
-      const { Canvas2DRenderer } = await import("@/renderer");
-      const { CodonVM } = await import("@/vm");
-      const { examples } = await import("@/examples");
+      const { CodonLexer } = await import("@/core/lexer");
+      const { Canvas2DRenderer } = await import("@/core/renderer");
+      const { CodonVM } = await import("@/core/vm");
+      const { examples } = await import("@/data/examples");
 
       const entries = Object.entries(examples);
       if (entries.length > 0) {
@@ -903,9 +903,9 @@ describe("Playground Main Module", () => {
     });
 
     test("full workflow: edit genome -> run -> export", async () => {
-      const { CodonLexer } = await import("@/lexer");
-      const { Canvas2DRenderer } = await import("@/renderer");
-      const { CodonVM } = await import("@/vm");
+      const { CodonLexer } = await import("@/core/lexer");
+      const { Canvas2DRenderer } = await import("@/core/renderer");
+      const { CodonVM } = await import("@/core/vm");
 
       // Use a simple genome that doesn't require stack values
       const genome = "ATG TAA";
@@ -924,7 +924,7 @@ describe("Playground Main Module", () => {
     });
 
     test("filter and load workflow", async () => {
-      const { examples } = await import("@/examples");
+      const { examples } = await import("@/data/examples");
 
       // Filter by difficulty
       const beginnerExamples = Object.entries(examples).filter(
@@ -959,7 +959,7 @@ describe("Playground Main Module", () => {
     });
 
     test("handles very long genomes", async () => {
-      const { CodonLexer } = await import("@/lexer");
+      const { CodonLexer } = await import("@/core/lexer");
       const lexer = new CodonLexer();
 
       // Generate a long genome
@@ -971,9 +971,9 @@ describe("Playground Main Module", () => {
     });
 
     test("handles rapid successive runs", async () => {
-      const { CodonLexer } = await import("@/lexer");
-      const { Canvas2DRenderer } = await import("@/renderer");
-      const { CodonVM } = await import("@/vm");
+      const { CodonLexer } = await import("@/core/lexer");
+      const { Canvas2DRenderer } = await import("@/core/renderer");
+      const { CodonVM } = await import("@/core/vm");
 
       const canvas = document.createElement("canvas");
       const renderer = new Canvas2DRenderer(canvas);

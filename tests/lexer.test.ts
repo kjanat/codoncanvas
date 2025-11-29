@@ -1,5 +1,5 @@
 import { describe, expect, test } from "bun:test";
-import { CodonLexer } from "@/lexer";
+import { CodonLexer } from "@/core/lexer";
 
 describe("CodonLexer", () => {
   const lexer = new CodonLexer();

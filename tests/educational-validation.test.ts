@@ -1,19 +1,19 @@
 import { afterEach, beforeEach, describe, expect, test } from "bun:test";
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
-import { CodonLexer } from "@/lexer";
+import { CodonLexer } from "@/core/lexer";
+import { Canvas2DRenderer } from "@/core/renderer";
+import { CodonVM } from "@/core/vm";
 import {
   applyMissenseMutation,
   applyNonsenseMutation,
   applySilentMutation,
-} from "@/mutations";
-import { Canvas2DRenderer } from "@/renderer";
+} from "@/genetics/mutations";
 import {
   mockCanvasContext,
   restoreCanvasContext,
 } from "@/tests/test-utils/canvas-mock";
 import { CODON_MAP, Opcode, type VMState } from "@/types";
-import { CodonVM } from "@/vm";
 
 /**
  * Educational Validation Test Suite

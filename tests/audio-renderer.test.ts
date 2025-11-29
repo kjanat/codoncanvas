@@ -5,7 +5,7 @@
  * Implements the Renderer interface for multi-sensory learning.
  */
 import { afterEach, beforeEach, describe, expect, test } from "bun:test";
-import { AudioRenderer } from "@/audio-renderer";
+import { AudioRenderer } from "@/exporters/audio-renderer";
 
 // Mock MediaStream for testing
 class MockMediaStream {

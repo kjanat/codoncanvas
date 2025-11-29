@@ -1,8 +1,8 @@
 import { beforeEach, describe, expect, test } from "bun:test";
-import { CodonLexer } from "@/lexer";
-import type { Renderer } from "@/renderer";
+import { CodonLexer } from "@/core/lexer";
+import type { Renderer } from "@/core/renderer";
+import { CodonVM } from "@/core/vm";
 import type { Codon } from "@/types";
-import { CodonVM } from "@/vm";
 
 // Mock renderer for testing
 class MockRenderer implements Renderer {

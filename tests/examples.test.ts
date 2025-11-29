@@ -5,14 +5,14 @@
  * pedagogical examples for learning CodonCanvas concepts.
  */
 import { afterEach, beforeEach, describe, expect, test } from "bun:test";
+import { CodonLexer } from "@/core/lexer";
 import {
   type Concept,
   type ExampleDifficulty,
   type ExampleKey,
   type ExampleMetadata,
   examples,
-} from "@/examples";
-import { CodonLexer } from "@/lexer";
+} from "@/data/examples";
 import {
   mockCanvasContext,
   restoreCanvasContext,
@@ -327,10 +327,10 @@ describe("Examples Library", () => {
       }
     });
 
-    test("all genomes execute without error", () => {
+    test("all genomes execute without error", async () => {
       // Import VM and renderer dynamically to avoid circular deps
-      const { CodonVM } = require("@/vm");
-      const { Canvas2DRenderer } = require("@/renderer");
+      const { CodonVM } = await import("@/core/vm");
+      const { Canvas2DRenderer } = await import("@/core/renderer");
 
       const canvas = document.createElement("canvas");
       canvas.width = 400;

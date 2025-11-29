@@ -1,5 +1,5 @@
-import { AssessmentEngine } from "@/assessment-engine";
-import { AssessmentUI } from "@/assessment-ui";
+import { AssessmentEngine } from "@/education/assessments/assessment-engine";
+import { AssessmentUI } from "@/education/assessments/assessment-ui";
 import { getElementUnsafe as getElement } from "@/utils/dom";
 
 // Initialize assessment system

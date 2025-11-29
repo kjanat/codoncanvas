@@ -9,7 +9,7 @@ import {
   mockCanvasContext,
   restoreCanvasContext,
 } from "@/tests/test-utils/canvas-mock";
-import { injectTimelineStyles, TimelineScrubber } from "@/timeline-scrubber";
+import { injectTimelineStyles, TimelineScrubber } from "@/ui/timeline-scrubber";
 
 describe("TimelineScrubber", () => {
   let container: HTMLElement;

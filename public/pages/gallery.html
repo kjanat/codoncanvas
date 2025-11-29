@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Example Gallery - CodonCanvas</title>
+    <link rel="stylesheet" href="../../css/variables.css" />
+    <link rel="stylesheet" href="../../css/gallery.css" />
+  </head>
+  <body>
+    <div class="container">
+      <header>
+        <h1>🎨 Example Gallery</h1>
+        <p class="subtitle">
+          Explore 38 CodonCanvas genomes - from beginner to advanced showcase
+        </p>
+        <div class="header-actions">
+          <a href="index.html" class="btn btn-primary">Open Playground</a>
+          <a href="tutorial.html" class="btn btn-secondary">Start Tutorial</a>
+        </div>
+      </header>
+
+      <div class="filter-panel">
+        <div class="filter-row">
+          <div class="filter-group">
+            <label for="search">Search Examples</label>
+            <input
+              type="text"
+              id="search"
+              class="search-box"
+              placeholder="Search by name or concept..."
+            />
+          </div>
+        </div>
+        <div class="filter-row" style="margin-top: 1rem">
+          <div class="filter-group">
+            <label>Difficulty Level</label>
+            <div class="filter-chips" id="difficulty-filters">
+              <button class="chip active" data-difficulty="all">All</button>
+              <button class="chip" data-difficulty="beginner">Beginner</button>
+              <button class="chip" data-difficulty="intermediate">
+                Intermediate
+              </button>
+              <button class="chip" data-difficulty="advanced">Advanced</button>
+              <button class="chip" data-difficulty="advanced-showcase">
+                Showcase
+              </button>
+            </div>
+          </div>
+        </div>
+        <div
+          class="filter-row"
+          style="margin-top: 1rem; justify-content: space-between"
+        >
+          <div class="sort-control">
+            <label for="sort-by">Sort by:</label>
+            <select id="sort-by">
+              <option value="default">Default Order</option>
+              <option value="name">Name (A-Z)</option>
+              <option value="difficulty">Difficulty (Easy to Hard)</option>
+              <option value="difficulty-desc">Difficulty (Hard to Easy)</option>
+            </select>
+          </div>
+          <div class="stats">
+            Showing <span id="visible-count">38</span> of
+            <span id="total-count">38</span> examples
+          </div>
+        </div>
+      </div>
+
+      <div class="gallery-grid" id="gallery-grid">
+        <!-- Gallery cards will be inserted here -->
+      </div>
+
+      <!-- Modal -->
+      <div class="modal" id="preview-modal">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h2 class="modal-title" id="modal-title">Example Name</h2>
+            <button class="modal-close" id="modal-close-x">&times;</button>
+          </div>
+          <div class="modal-body">
+            <div class="preview-section">
+              <div class="section-title">Preview</div>
+              <canvas
+                id="modal-canvas"
+                class="preview-canvas"
+                width="400"
+                height="400"
+              ></canvas>
+            </div>
+            <div class="code-section">
+              <div class="section-title">Genome Code</div>
+              <div class="code-viewer" id="modal-code"></div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button class="btn btn-secondary" id="modal-close-btn">
+              Close
+            </button>
+            <button class="btn btn-primary" id="open-playground-btn">
+              Open in Playground
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script type="module" src="../../src/pages/gallery-page.ts"></script>
+  </body>
+</html>

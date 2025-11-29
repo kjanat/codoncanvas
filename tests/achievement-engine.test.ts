@@ -3,7 +3,7 @@
  */
 
 import { beforeEach, describe, expect, test } from "bun:test";
-import { AchievementEngine } from "@/achievement-engine";
+import { AchievementEngine } from "@/education/achievements/achievement-engine";
 
 // localStorage is mocked in bun-test-setup.ts
 

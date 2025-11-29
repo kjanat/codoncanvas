@@ -12,7 +12,7 @@ import { readdirSync, readFileSync, statSync } from "node:fs";
 import { join } from "node:path";
 import chalk from "chalk";
 import { Command } from "commander";
-import { CodonLexer } from "@/lexer";
+import { CodonLexer } from "@/core/lexer";
 import type { ParseError } from "@/types";
 
 const program = new Command();

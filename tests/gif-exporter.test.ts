@@ -1,5 +1,5 @@
 import { afterEach, beforeEach, describe, expect, test } from "bun:test";
-import { GifExporter } from "@/gif-exporter";
+import { GifExporter } from "@/exporters/gif-exporter";
 import {
   mockCanvasContext,
   restoreCanvasContext,

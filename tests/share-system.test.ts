@@ -5,7 +5,7 @@
  * Enables viral sharing, teacher workflows, and cross-device collaboration.
  */
 import { afterEach, beforeEach, describe, expect, mock, test } from "bun:test";
-import { injectShareStyles, ShareSystem } from "@/share-system";
+import { injectShareStyles, ShareSystem } from "@/ui/share-system";
 
 // Mock clipboard API
 const mockClipboard = {

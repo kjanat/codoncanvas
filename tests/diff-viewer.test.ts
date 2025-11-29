@@ -5,12 +5,12 @@
  * Provides visual diff for original vs mutated genomes.
  */
 import { afterEach, beforeEach, describe, expect, test } from "bun:test";
-import { DiffViewer, injectDiffViewerStyles } from "@/diff-viewer";
-import type { MutationResult } from "@/mutations";
+import type { MutationResult } from "@/genetics/mutations";
 import {
   mockCanvasContext,
   restoreCanvasContext,
 } from "@/tests/test-utils/canvas-mock";
+import { DiffViewer, injectDiffViewerStyles } from "@/ui/diff-viewer";
 
 describe("DiffViewer", () => {
   let container: HTMLElement;

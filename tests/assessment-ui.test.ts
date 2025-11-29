@@ -5,14 +5,14 @@
  * answer submission, and progress tracking for mutation identification.
  */
 import { afterEach, beforeEach, describe, expect, mock, test } from "bun:test";
-import type { AchievementEngine } from "@/achievement-engine";
-import type { AchievementUI } from "@/achievement-ui";
+import type { AchievementEngine } from "@/education/achievements/achievement-engine";
+import type { AchievementUI } from "@/education/achievements/achievement-ui";
 import type {
   AssessmentEngine,
   AssessmentResult,
   Challenge,
-} from "@/assessment-engine";
-import { AssessmentUI } from "@/assessment-ui";
+} from "@/education/assessments/assessment-engine";
+import { AssessmentUI } from "@/education/assessments/assessment-ui";
 import type { MutationType } from "@/types";
 
 // Mock AssessmentEngine

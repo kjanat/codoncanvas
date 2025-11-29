@@ -8,7 +8,7 @@
  * we test the pure logic patterns by reimplementing them.
  */
 import { describe, expect, test } from "bun:test";
-import type { GenomeFile } from "@/genome-io";
+import type { GenomeFile } from "@/genetics/genome-io";
 
 // Helper function implementations for testing
 

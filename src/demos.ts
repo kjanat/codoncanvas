@@ -9,10 +9,10 @@ import {
   DEMO_GENOMES,
   highlightGenome,
   renderGenomeToCanvas,
-} from "@/demos-core";
-import { getMutationByType } from "@/mutations";
-import { injectShareStyles, ShareSystem } from "@/share-system";
+} from "@/demos/demos-core";
+import { getMutationByType } from "@/genetics/mutations";
 import type { MutationType } from "@/types";
+import { injectShareStyles, ShareSystem } from "@/ui/share-system";
 
 /**
  * Render a genome to a canvas by ID

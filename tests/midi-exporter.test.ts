@@ -5,15 +5,15 @@
  * Maps visual opcodes to musical notes and control changes.
  */
 import { afterEach, beforeEach, describe, expect, test } from "bun:test";
-import { CodonLexer } from "@/lexer";
-import { MIDIExporter } from "@/midi-exporter";
-import { Canvas2DRenderer } from "@/renderer";
+import { CodonLexer } from "@/core/lexer";
+import { Canvas2DRenderer } from "@/core/renderer";
+import { CodonVM } from "@/core/vm";
+import { MIDIExporter } from "@/exporters/midi-exporter";
 import {
   mockCanvasContext,
   restoreCanvasContext,
 } from "@/tests/test-utils/canvas-mock";
 import { Opcode, type VMState } from "@/types";
-import { CodonVM } from "@/vm";
 
 // Helper function to create a complete VMState snapshot
 function createSnapshot(overrides: Partial<VMState> = {}): VMState {

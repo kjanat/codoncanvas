@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CodonCanvas - Genetic Algorithm Optimization</title>
+    <link rel="stylesheet" href="../../../css/variables.css" />
+    <link rel="stylesheet" href="../../../css/demo-base.css" />
+    <link rel="stylesheet" href="../../../css/genetic-algorithm-demo.css" />
+  </head>
+  <body>
+    <div class="container">
+      <header>
+        <h1>🧬 Genetic Algorithm Optimization</h1>
+        <p class="subtitle">
+          Automated fitness-driven evolution with selection, crossover, and
+          mutation
+        </p>
+      </header>
+
+      <div class="main-grid">
+        <!-- Control Panel -->
+        <div class="panel">
+          <div class="panel-header">Configuration</div>
+          <div class="panel-content">
+            <div class="info-box">
+              <h3>How It Works</h3>
+              <p>
+                This demo uses a <strong>genetic algorithm</strong> to evolve
+                CodonCanvas genomes that match a target pattern.
+              </p>
+              <ul>
+                <li>
+                  <strong>Selection:</strong> Fitter individuals more likely to
+                  reproduce
+                </li>
+                <li>
+                  <strong>Crossover:</strong> Combine genes from two parents
+                </li>
+                <li><strong>Mutation:</strong> Random genetic changes</li>
+              </ul>
+            </div>
+
+            <div class="control-group">
+              <label>Fitness Goal</label>
+              <select id="fitness-goal">
+                <option value="center-circle">Centered Circle</option>
+                <option value="corners">Four Corners</option>
+                <option value="symmetry">Horizontal Symmetry</option>
+                <option value="density">Pixel Density</option>
+              </select>
+            </div>
+
+            <div class="control-group">
+              <label>Population Size</label>
+              <input
+                type="range"
+                id="population-size"
+                min="10"
+                max="50"
+                value="20"
+                step="5"
+              />
+              <span class="range-value" id="population-size-value">20</span>
+            </div>
+
+            <div class="control-group">
+              <label>Mutation Rate</label>
+              <input
+                type="range"
+                id="mutation-rate"
+                min="0"
+                max="1"
+                value="0.1"
+                step="0.05"
+              />
+              <span class="range-value" id="mutation-rate-value">0.10</span>
+            </div>
+
+            <div class="control-group">
+              <label>Crossover Rate</label>
+              <input
+                type="range"
+                id="crossover-rate"
+                min="0"
+                max="1"
+                value="0.7"
+                step="0.05"
+              />
+              <span class="range-value" id="crossover-rate-value">0.70</span>
+            </div>
+
+            <div class="control-group">
+              <label>Selection Strategy</label>
+              <select id="selection-strategy">
+                <option value="tournament">Tournament</option>
+                <option value="roulette">Roulette Wheel</option>
+              </select>
+            </div>
+
+            <div class="control-group">
+              <label>Crossover Strategy</label>
+              <select id="crossover-strategy">
+                <option value="single-point">Single-Point</option>
+                <option value="uniform">Uniform</option>
+                <option value="none">None (Mutation Only)</option>
+              </select>
+            </div>
+
+            <div class="button-grid">
+              <button id="start-btn">▶ Start</button>
+              <button id="pause-btn" disabled>⏸ Pause</button>
+              <button id="step-btn">⏭ Step</button>
+              <button id="reset-btn">🔄 Reset</button>
+            </div>
+
+            <div class="stats-grid">
+              <div class="stat-box">
+                <div class="stat-label">Generation</div>
+                <div class="stat-value" id="generation-stat">0</div>
+              </div>
+              <div class="stat-box">
+                <div class="stat-label">Best Fitness</div>
+                <div class="stat-value" id="best-fitness-stat">0.00</div>
+              </div>
+              <div class="stat-box">
+                <div class="stat-label">Avg Fitness</div>
+                <div class="stat-value" id="avg-fitness-stat">0.00</div>
+              </div>
+              <div class="stat-box">
+                <div class="stat-label">Diversity</div>
+                <div class="stat-value" id="diversity-stat">100%</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Visualization Panel -->
+        <div class="panel">
+          <div class="panel-header">Visualization</div>
+          <div class="panel-content">
+            <div class="visualization-grid">
+              <div class="canvas-container">
+                <div class="canvas-label">🎯 Target Pattern</div>
+                <canvas id="target-canvas" width="400" height="400"></canvas>
+              </div>
+              <div class="canvas-container">
+                <div class="canvas-label">
+                  🏆 Best Individual (Fitness:
+                  <span id="best-fitness-label">0.00</span>)
+                </div>
+                <canvas id="best-canvas" width="400" height="400"></canvas>
+              </div>
+            </div>
+
+            <div class="info-box">
+              <h3>📊 Fitness Over Time</h3>
+              <canvas id="chart-canvas" width="800" height="200"></canvas>
+            </div>
+
+            <div class="info-box">
+              <h3>👥 Current Population (Top 10)</h3>
+              <div class="population-grid" id="population-grid"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script type="module" src="../../../src/demos/genetic-algorithm.ts">
+    </script>
+  </body>
+</html>

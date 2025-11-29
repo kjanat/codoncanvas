@@ -5,7 +5,7 @@
  * Provides metrics for comparing two arbitrary genomes with visual and sequence analysis.
  */
 import { afterEach, beforeEach, describe, expect, test } from "bun:test";
-import { compareGenomesDetailed } from "@/genome-comparison";
+import { compareGenomesDetailed } from "@/genetics/genome-comparison";
 import {
   mockCanvasContext,
   restoreCanvasContext,

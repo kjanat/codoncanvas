@@ -3,8 +3,8 @@
  * Handles genome mutation operations and preview functionality
  */
 
-import { predictMutationImpact } from "@/mutation-predictor";
-import { getMutationByType } from "@/mutations";
+import { predictMutationImpact } from "@/genetics/mutation-predictor";
+import { getMutationByType } from "@/genetics/mutations";
 import {
   diffViewerContainer,
   diffViewerPanel,
@@ -13,29 +13,29 @@ import {
 import { achievementEngine, achievementUI } from "@/playground/ui-state";
 import { setStatus } from "@/playground/ui-utils";
 import type { MutationType } from "@/types";
+import type { DiffViewer } from "@/ui/diff-viewer";
 
 let originalGenomeBeforeMutation = "";
-let diffViewerInstance: import("@/diff-viewer").DiffViewer | null = null; // Cached DiffViewer instance
+let diffViewerInstance: DiffViewer | null = null; // Cached DiffViewer instance
 
 /**
- * Initialize or get DiffViewer instance
+ * Initialize or get DiffViewer instance (lazy loaded)
  */
-function getDiffViewer(): import("@/diff-viewer").DiffViewer {
+async function getDiffViewer(): Promise<DiffViewer> {
   if (!diffViewerInstance) {
     // Lazy import to avoid circular dependencies
-    const { DiffViewer } = require("@/diff-viewer");
+    const { DiffViewer } = await import("@/ui/diff-viewer");
     diffViewerInstance = new DiffViewer({
       containerElement: diffViewerContainer,
     });
   }
-  // Instance is guaranteed to exist after the if block above
-  return diffViewerInstance as import("@/diff-viewer").DiffViewer;
+  return diffViewerInstance;
 }
 
 /**
  * Apply mutation to current genome
  */
-export function applyMutation(type: MutationType) {
+export async function applyMutation(type: MutationType): Promise<void> {
   try {
     const genome = editor.value.trim();
 
@@ -53,13 +53,13 @@ export function applyMutation(type: MutationType) {
     const unlocked = achievementEngine.trackMutationApplied();
     achievementUI.handleUnlocks(unlocked);
 
-    const diffViewer = getDiffViewer();
+    const diffViewer = await getDiffViewer();
     diffViewer.renderMutation(result);
     diffViewerPanel.style.display = "block";
 
     diffViewerPanel.scrollIntoView({ behavior: "smooth", block: "nearest" });
 
-    setStatus(`🧬 ${result.description}`, "success");
+    setStatus(`${result.description}`, "success");
   } catch (error) {
     if (error instanceof Error) {
       setStatus(`Mutation failed: ${error.message}`, "error");
