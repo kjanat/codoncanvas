@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import { CanvasPreview } from "@/components/CanvasPreview";
+import { ProgressBar } from "@/components/ProgressBar";
 import { CodonLexer } from "@/core/lexer";
 import {
   getLessonById,
@@ -347,12 +348,7 @@ export default function Tutorial() {
               lessons ({progressPercent}%)
             </span>
           </div>
-          <div className="h-2 overflow-hidden rounded-full bg-border">
-            <div
-              className="h-full bg-gradient-to-r from-primary to-success transition-all"
-              style={{ width: `${progressPercent}%` }}
-            />
-          </div>
+          <ProgressBar value={progressPercent} variant="gradient" />
         </div>
 
         <div className="mx-auto max-w-4xl">

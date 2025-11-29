@@ -4,6 +4,7 @@ import { CanvasPreview } from "@/components/CanvasPreview";
 import { FilterToggle } from "@/components/FilterToggle";
 import { PageContainer } from "@/components/PageContainer";
 import { PageHeader } from "@/components/PageHeader";
+import { Select } from "@/components/Select";
 import { type ExampleMetadata, examples } from "@/data/examples";
 
 // --- Types & Constants ---
@@ -93,19 +94,7 @@ function SortSelect({
   value: SortOption;
   onChange: (value: SortOption) => void;
 }) {
-  return (
-    <select
-      className="rounded-lg border border-border bg-surface px-3 py-2 text-sm focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20"
-      onChange={(e) => onChange(e.target.value as SortOption)}
-      value={value}
-    >
-      {sortOptions.map((opt) => (
-        <option key={opt.value} value={opt.value}>
-          {opt.label}
-        </option>
-      ))}
-    </select>
-  );
+  return <Select onChange={onChange} options={sortOptions} value={value} />;
 }
 
 function ExampleCard({

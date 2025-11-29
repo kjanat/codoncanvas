@@ -3,12 +3,21 @@ import { Card } from "@/components/Card";
 import { ErrorAlert } from "@/components/ErrorAlert";
 import { PageContainer } from "@/components/PageContainer";
 import { PageHeader } from "@/components/PageHeader";
+import { RangeSlider } from "@/components/RangeSlider";
+import { Select } from "@/components/Select";
 import { CodonLexer } from "@/core/lexer";
 import { Canvas2DRenderer } from "@/core/renderer";
 import { CodonVM } from "@/core/vm";
 import { examples } from "@/data/examples";
 import { GifExporter } from "@/exporters/gif-exporter";
 import type { VMState } from "@/types";
+
+const SPEED_OPTIONS = [
+  { value: 1000, label: "0.5x" },
+  { value: 500, label: "1x" },
+  { value: 250, label: "2x" },
+  { value: 100, label: "5x" },
+];
 
 export default function TimelineDemo() {
   const [genome, setGenome] = useState(
@@ -348,29 +357,23 @@ export default function TimelineDemo() {
             </button>
 
             {/* Timeline slider */}
-            <input
+            <RangeSlider
               className="flex-1"
               max={snapshots.length - 1}
               min={0}
-              onChange={(e) => {
+              onChange={(val) => {
                 setIsPlaying(false);
-                setCurrentStep(Number(e.target.value));
+                setCurrentStep(val);
               }}
-              type="range"
               value={currentStep}
             />
 
             {/* Speed selector */}
-            <select
-              className="rounded-md border border-border px-3 py-2 text-sm"
-              onChange={(e) => setPlaybackSpeed(Number(e.target.value))}
+            <Select
+              onChange={setPlaybackSpeed}
+              options={SPEED_OPTIONS}
               value={playbackSpeed}
-            >
-              <option value={1000}>0.5x</option>
-              <option value={500}>1x</option>
-              <option value={250}>2x</option>
-              <option value={100}>5x</option>
-            </select>
+            />
 
             {/* Export GIF button */}
             <button

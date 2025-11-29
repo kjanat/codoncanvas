@@ -6,8 +6,8 @@ afterEach(() => {
   cleanup();
 });
 
-// Mock canvas context
-const mockContext = {
+// Mock canvas context (kept for potential future use)
+const _mockContext = {
   clearRect: mock(() => {}),
   fillRect: mock(() => {}),
   beginPath: mock(() => {}),

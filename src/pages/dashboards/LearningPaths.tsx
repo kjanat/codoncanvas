@@ -7,6 +7,7 @@
 
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import { ProgressBar } from "@/components/ProgressBar";
 
 interface LearningPath {
   id: string;
@@ -189,12 +190,11 @@ export default function LearningPaths() {
                     <span className="text-text-muted">Progress</span>
                     <span className="text-primary">{pathProgress}%</span>
                   </div>
-                  <div className="h-2 overflow-hidden rounded-full bg-border">
-                    <div
-                      className={`h-full bg-gradient-to-r ${path.color} transition-all`}
-                      style={{ width: `${pathProgress}%` }}
-                    />
-                  </div>
+                  <ProgressBar
+                    gradientClass={path.color}
+                    value={pathProgress}
+                    variant="gradient"
+                  />
                 </div>
 
                 {/* Action button */}

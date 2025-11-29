@@ -29,6 +29,9 @@ export { Playground } from "./Playground";
 export { PlaygroundCanvas } from "./PlaygroundCanvas";
 export { PlaygroundEditor } from "./PlaygroundEditor";
 export { PlaygroundToolbar } from "./PlaygroundToolbar";
+export { ProgressBar, type ProgressBarProps } from "./ProgressBar";
+export { RangeSlider, type RangeSliderProps } from "./RangeSlider";
+export { Select, type SelectOption, type SelectProps } from "./Select";
 export { ShareQRCode } from "./ShareQRCode";
 export {
   SimulationControls,

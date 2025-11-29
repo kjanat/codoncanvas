@@ -3,6 +3,8 @@ import { Card } from "@/components/Card";
 import { Label } from "@/components/Label";
 import { PageContainer } from "@/components/PageContainer";
 import { PageHeader } from "@/components/PageHeader";
+import { RangeSlider } from "@/components/RangeSlider";
+import { Select } from "@/components/Select";
 import { SimulationControls } from "@/components/SimulationControls";
 import { applyPointMutation } from "@/genetics/mutations";
 import { useLineChart } from "@/hooks/useLineChart";
@@ -10,6 +12,13 @@ import { useRenderGenome } from "@/hooks/useRenderGenome";
 import { useSimulation } from "@/hooks/useSimulation";
 
 type FitnessType = "coverage" | "symmetry" | "colorVariety" | "complexity";
+
+const FITNESS_OPTIONS = [
+  { value: "coverage" as const, label: "Canvas Coverage" },
+  { value: "symmetry" as const, label: "Symmetry" },
+  { value: "colorVariety" as const, label: "Color Variety" },
+  { value: "complexity" as const, label: "Genome Complexity" },
+];
 
 interface Individual {
   id: string;
@@ -300,33 +309,27 @@ export default function GeneticDemo() {
           <div className="space-y-4">
             <div>
               <Label htmlFor="fitness-function">Fitness Function</Label>
-              <select
-                className="w-full rounded-lg border border-border px-3 py-2 text-sm"
+              <Select
+                className="w-full"
                 disabled={simulation.state.isRunning}
                 id="fitness-function"
-                onChange={(e) => setFitnessType(e.target.value as FitnessType)}
+                onChange={setFitnessType}
+                options={FITNESS_OPTIONS}
                 value={fitnessType}
-              >
-                <option value="coverage">Canvas Coverage</option>
-                <option value="symmetry">Symmetry</option>
-                <option value="colorVariety">Color Variety</option>
-                <option value="complexity">Genome Complexity</option>
-              </select>
+              />
             </div>
 
             <div>
               <Label htmlFor="ga-population">
                 Population: {populationSize}
               </Label>
-              <input
-                className="w-full"
+              <RangeSlider
                 disabled={simulation.state.isRunning}
                 id="ga-population"
-                max="24"
-                min="6"
-                onChange={(e) => setPopulationSize(Number(e.target.value))}
-                step="2"
-                type="range"
+                max={24}
+                min={6}
+                onChange={setPopulationSize}
+                step={2}
                 value={populationSize}
               />
             </div>
@@ -335,14 +338,12 @@ export default function GeneticDemo() {
               <Label htmlFor="mutation-rate">
                 Mutation Rate: {(mutationRate * 100).toFixed(0)}%
               </Label>
-              <input
-                className="w-full"
+              <RangeSlider
                 id="mutation-rate"
-                max="0.8"
-                min="0.05"
-                onChange={(e) => setMutationRate(Number(e.target.value))}
-                step="0.05"
-                type="range"
+                max={0.8}
+                min={0.05}
+                onChange={setMutationRate}
+                step={0.05}
                 value={mutationRate}
               />
             </div>

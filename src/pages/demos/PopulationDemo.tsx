@@ -3,6 +3,7 @@ import { Card } from "@/components/Card";
 import { Label } from "@/components/Label";
 import { PageContainer } from "@/components/PageContainer";
 import { PageHeader } from "@/components/PageHeader";
+import { RangeSlider } from "@/components/RangeSlider";
 import { SimulationControls } from "@/components/SimulationControls";
 import { useLineChart } from "@/hooks/useLineChart";
 import { useSimulation } from "@/hooks/useSimulation";
@@ -156,15 +157,13 @@ export default function PopulationDemo() {
               <Label htmlFor="population-size">
                 Population Size: {populationSize}
               </Label>
-              <input
-                className="w-full"
+              <RangeSlider
                 disabled={simulation.state.isRunning}
                 id="population-size"
-                max="500"
-                min="10"
-                onChange={(e) => setPopulationSize(Number(e.target.value))}
-                step="10"
-                type="range"
+                max={500}
+                min={10}
+                onChange={setPopulationSize}
+                step={10}
                 value={populationSize}
               />
               <p className="mt-1 text-xs text-text-muted">
@@ -176,28 +175,24 @@ export default function PopulationDemo() {
               <Label htmlFor="num-alleles">
                 Number of Alleles: {numAlleles}
               </Label>
-              <input
-                className="w-full"
+              <RangeSlider
                 disabled={simulation.state.isRunning}
                 id="num-alleles"
-                max="5"
-                min="2"
-                onChange={(e) => handleAllelesChange(Number(e.target.value))}
-                type="range"
+                max={5}
+                min={2}
+                onChange={handleAllelesChange}
                 value={numAlleles}
               />
             </div>
 
             <div>
               <Label htmlFor="simulation-speed">Speed: {speed}ms</Label>
-              <input
-                className="w-full"
+              <RangeSlider
                 id="simulation-speed"
-                max="500"
-                min="50"
-                onChange={(e) => setSpeed(Number(e.target.value))}
-                step="50"
-                type="range"
+                max={500}
+                min={50}
+                onChange={setSpeed}
+                step={50}
                 value={speed}
               />
             </div>
