@@ -8,7 +8,7 @@
   },
   "scripts": {
     "benchmark": "bun --bun scripts/benchmark.ts",
-    "build": "tsgo && vite build",
+    "build": "bun typecheck&& vite build",
     "cli": "bun --bun cli.ts",
     "dev": "bun --bun run vite",
     "export-examples": "bun --bun scripts/export-examples.ts",
@@ -27,6 +27,7 @@
     "research:analyze": "bun --bun scripts/research-data-analyzer.ts",
     "research:generate-data": "bun --bun scripts/generate-sample-data.ts",
     "test": "bun test",
+    "test:coverage": "bun test --coverage",
     "test:watch": "bun test --watch",
     "typecheck": "tsgo --noEmit",
     "zip-examples": "./scripts/zip-examples.sh"
