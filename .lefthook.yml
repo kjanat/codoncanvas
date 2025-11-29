@@ -17,3 +17,9 @@ pre-push:
   commands:
     typecheck:
       run: bun typecheck
+
+# Validate commit messages
+commit-msg:
+  commands:
+    "lint commit message":
+      run: bun run commitlint --edit {1}
