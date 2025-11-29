@@ -1,35 +1,39 @@
 # CodonCanvas Project Status
 
-## Current State (2025-10-12)
+## Current State (Nov 2025)
 
-Phase A MVP implementation in progress. Core components exist:
+MVP v1.0.0 complete. Production-ready. Active development continues.
 
-- Lexer: CodonLexer class with tokenize, validateFrame, validateStructure
-- VM: CodonVM class with execute, run methods
-- Types: Complete type definitions, CODON_MAP (64 codons)
+## Test Status
 
-## Architecture Overview
+- 2233 pass, 4 fail, 1 skip (99.8% passing)
+- 43 test files, 6351 assertions
+- Runtime: ~3.5s
 
-- **Lexer**: Parses DNA triplets (codons) into tokens
-- **VM**: Stack-based execution engine with drawing primitives
-- **Renderer**: Not yet implemented - needs Canvas2D integration
-- **Playground**: Not yet implemented - UI/UX layer
+## Architecture
 
-## Staged Changes
+- **Lexer**: CodonLexer - parses DNA codons to tokens
+- **VM**: CodonVM - stack-based execution (17 opcodes)
+- **Renderer**: Canvas2DRenderer with 64-codon support
+- **Playground**: Full UI with live preview, timeline, exports
 
-Modified files suggest recent work on lexer, VM, tests, and documentation.
+## Tech Stack
 
-## Next Priorities
+- TypeScript + Vite + Bun
+- Tests: bun:test with happy-dom
+- Deploy: GitHub Actions -> GitHub Pages
 
-1. Implement Renderer interface (Canvas2DRenderer)
-2. Complete test coverage
-3. Build playground UI
-4. Add mutation tools
-5. Implement diff viewer
+## Key Features
 
-## Technical Details
-
-- TypeScript + Vite build system
-- 64 codon instruction set with synonymous codons
+- 64-codon instruction set with synonymous codons
 - Base-4 numeric encoding (0-63 range)
-- Stack-based architecture with transform state
+- Visual/audio rendering modes
+- Research metrics dashboard
+- Achievement/gamification system
+- Population genetics simulation
+- Learning paths with assessments
+
+## Documentation
+
+- docs/: Technical guides, lesson plans, research docs
+- claudedocs/: Strategic planning, roadmap, research framework
