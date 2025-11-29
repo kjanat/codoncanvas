@@ -26,5 +26,18 @@
     "linux-x64-musl": "./node_modules/@biomejs/cli-linux-x64-musl/biome",
     "win32-arm64": "./node_modules/@biomejs/cli-win32-arm64/biome",
     "win32-x64": "./node_modules/@biomejs/cli-win32-x64/biome"
+  },
+
+  /** Tailwind settings */
+  "tailwindCSS.includeLanguages": {
+    "plaintext": "html"
+  },
+  "tailwindCSS.validate": true,
+  "tailwindCSS.codeActions": true,
+  "files.associations": {
+    "*.css": "tailwindcss"
+  },
+  "editor.quickSuggestions": {
+    "strings": "on"
   }
 }
