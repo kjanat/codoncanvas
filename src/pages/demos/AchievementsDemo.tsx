@@ -1,4 +1,8 @@
 import { useCallback, useEffect, useState } from "react";
+import { Button } from "@/components/Button";
+import { Card } from "@/components/Card";
+import { PageContainer } from "@/components/PageContainer";
+import { PageHeader } from "@/components/PageHeader";
 import {
   type Achievement,
   type AchievementCategory,
@@ -21,6 +25,15 @@ const CATEGORY_COLORS: Record<AchievementCategory, string> = {
   perfection: "bg-amber-100 text-amber-800 border-amber-200",
 };
 
+function StatCard({ label, value }: { label: string; value: number }) {
+  return (
+    <div className="rounded-lg bg-surface p-4 text-center">
+      <div className="text-2xl font-bold text-primary">{value}</div>
+      <div className="mt-1 text-xs text-text-muted">{label}</div>
+    </div>
+  );
+}
+
 export default function AchievementsDemo() {
   const [engine] = useState(() => new AchievementEngine());
   const [stats, setStats] = useState<PlayerStats>(() => engine.getStats());
@@ -40,7 +53,6 @@ export default function AchievementsDemo() {
     setUnlocked(engine.getUnlockedAchievements());
   }, [engine]);
 
-  // Check for new achievements after any action
   const checkNewAchievements = useCallback(
     (newlyUnlocked: Achievement[]) => {
       if (newlyUnlocked.length > 0) {
@@ -52,27 +64,23 @@ export default function AchievementsDemo() {
     [refreshState],
   );
 
-  // Simulate various actions
   const simulateGenomeExecution = () => {
     const opcodes = ["CIRCLE", "RECT", "COLOR", "LINE", "TRIANGLE"];
     const randomOpcodes = Array.from(
       { length: Math.floor(Math.random() * 5) + 1 },
       () => opcodes[Math.floor(Math.random() * opcodes.length)],
     );
-    const newAchievements = engine.trackGenomeExecuted(randomOpcodes);
-    checkNewAchievements(newAchievements);
+    checkNewAchievements(engine.trackGenomeExecuted(randomOpcodes));
   };
 
   const simulateShapeDraw = () => {
     const shapes = ["CIRCLE", "RECT", "LINE", "TRIANGLE", "ELLIPSE"];
     const shape = shapes[Math.floor(Math.random() * shapes.length)];
-    const newAchievements = engine.trackShapeDrawn(shape);
-    checkNewAchievements(newAchievements);
+    checkNewAchievements(engine.trackShapeDrawn(shape));
   };
 
   const simulateMutation = () => {
-    const newAchievements = engine.trackMutationApplied();
-    checkNewAchievements(newAchievements);
+    checkNewAchievements(engine.trackMutationApplied());
   };
 
   const simulateChallenge = (correct: boolean) => {
@@ -85,13 +93,11 @@ export default function AchievementsDemo() {
       "deletion",
     ];
     const type = types[Math.floor(Math.random() * types.length)];
-    const newAchievements = engine.trackChallengeCompleted(correct, type);
-    checkNewAchievements(newAchievements);
+    checkNewAchievements(engine.trackChallengeCompleted(correct, type));
   };
 
   const simulateEvolution = () => {
-    const newAchievements = engine.trackEvolutionGeneration();
-    checkNewAchievements(newAchievements);
+    checkNewAchievements(engine.trackEvolutionGeneration());
   };
 
   const resetProgress = () => {
@@ -99,7 +105,6 @@ export default function AchievementsDemo() {
     refreshState();
   };
 
-  // Initial load
   useEffect(() => {
     refreshState();
   }, [refreshState]);
@@ -115,7 +120,7 @@ export default function AchievementsDemo() {
   const progress = engine.getProgressPercentage();
 
   return (
-    <div className="mx-auto max-w-7xl px-4 py-8">
+    <PageContainer>
       {/* Achievement unlock notification */}
       {recentUnlock && (
         <div className="fixed right-4 top-4 z-50 animate-pulse rounded-lg border border-yellow-400 bg-yellow-50 p-4 shadow-lg">
@@ -131,13 +136,13 @@ export default function AchievementsDemo() {
         </div>
       )}
 
-      <div className="mb-8 text-center">
-        <h1 className="mb-2 text-3xl font-bold text-text">Achievements</h1>
-        <p className="text-text-muted">Track your progress and earn badges</p>
-      </div>
+      <PageHeader
+        subtitle="Track your progress and earn badges"
+        title="Achievements"
+      />
 
       {/* Progress bar */}
-      <div className="mb-8 rounded-xl border border-border bg-white p-6 shadow-sm">
+      <Card className="mb-8">
         <div className="mb-2 flex items-center justify-between">
           <span className="font-medium text-text">Overall Progress</span>
           <span className="text-sm text-text-muted">
@@ -153,11 +158,11 @@ export default function AchievementsDemo() {
         <div className="mt-2 text-right text-sm font-medium text-primary">
           {progress}%
         </div>
-      </div>
+      </Card>
 
       <div className="grid gap-6 lg:grid-cols-4">
         {/* Simulation controls */}
-        <div className="rounded-xl border border-border bg-white p-6 shadow-sm">
+        <Card>
           <h2 className="mb-4 text-lg font-semibold text-text">
             Simulate Actions
           </h2>
@@ -166,63 +171,65 @@ export default function AchievementsDemo() {
           </p>
 
           <div className="space-y-2">
-            <button
-              className="w-full rounded-lg border border-border px-4 py-2 text-left text-sm hover:bg-surface"
+            <Button
+              className="justify-start text-left"
+              fullWidth
               onClick={simulateGenomeExecution}
-              type="button"
+              variant="secondary"
             >
               Execute Genome
-            </button>
-            <button
-              className="w-full rounded-lg border border-border px-4 py-2 text-left text-sm hover:bg-surface"
+            </Button>
+            <Button
+              className="justify-start text-left"
+              fullWidth
               onClick={simulateShapeDraw}
-              type="button"
+              variant="secondary"
             >
               Draw Shape
-            </button>
-            <button
-              className="w-full rounded-lg border border-border px-4 py-2 text-left text-sm hover:bg-surface"
+            </Button>
+            <Button
+              className="justify-start text-left"
+              fullWidth
               onClick={simulateMutation}
-              type="button"
+              variant="secondary"
             >
               Apply Mutation
-            </button>
-            <button
-              className="w-full rounded-lg border border-border px-4 py-2 text-left text-sm hover:bg-surface"
+            </Button>
+            <Button
+              className="justify-start text-left"
+              fullWidth
               onClick={() => simulateChallenge(true)}
-              type="button"
+              variant="secondary"
             >
               Correct Challenge
-            </button>
-            <button
-              className="w-full rounded-lg border border-border px-4 py-2 text-left text-sm hover:bg-surface"
+            </Button>
+            <Button
+              className="justify-start text-left"
+              fullWidth
               onClick={() => simulateChallenge(false)}
-              type="button"
+              variant="secondary"
             >
               Incorrect Challenge
-            </button>
-            <button
-              className="w-full rounded-lg border border-border px-4 py-2 text-left text-sm hover:bg-surface"
+            </Button>
+            <Button
+              className="justify-start text-left"
+              fullWidth
               onClick={simulateEvolution}
-              type="button"
+              variant="secondary"
             >
               Evolution Generation
-            </button>
+            </Button>
           </div>
 
           <hr className="my-4 border-border" />
 
-          <button
-            className="w-full rounded-lg border border-red-200 bg-red-50 px-4 py-2 text-sm text-red-700 hover:bg-red-100"
-            onClick={resetProgress}
-            type="button"
-          >
+          <Button fullWidth onClick={resetProgress} variant="danger">
             Reset All Progress
-          </button>
-        </div>
+          </Button>
+        </Card>
 
         {/* Achievements grid */}
-        <div className="lg:col-span-3 rounded-xl border border-border bg-white p-6 shadow-sm">
+        <Card className="lg:col-span-3">
           {/* Category filter */}
           <div className="mb-6 flex flex-wrap gap-2">
             <button
@@ -303,11 +310,11 @@ export default function AchievementsDemo() {
               );
             })}
           </div>
-        </div>
+        </Card>
       </div>
 
       {/* Stats panel */}
-      <div className="mt-8 rounded-xl border border-border bg-white p-6 shadow-sm">
+      <Card className="mt-8">
         <h2 className="mb-4 text-lg font-semibold text-text">Your Stats</h2>
         <div className="grid gap-4 sm:grid-cols-3 lg:grid-cols-6">
           <StatCard label="Genomes Executed" value={stats.genomesExecuted} />
@@ -320,16 +327,7 @@ export default function AchievementsDemo() {
           <StatCard label="Perfect Scores" value={stats.perfectScores} />
           <StatCard label="Evolution Gens" value={stats.evolutionGenerations} />
         </div>
-      </div>
-    </div>
-  );
-}
-
-function StatCard({ label, value }: { label: string; value: number }) {
-  return (
-    <div className="rounded-lg bg-surface p-4 text-center">
-      <div className="text-2xl font-bold text-primary">{value}</div>
-      <div className="mt-1 text-xs text-text-muted">{label}</div>
-    </div>
+      </Card>
+    </PageContainer>
   );
 }
