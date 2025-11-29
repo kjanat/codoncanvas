@@ -13,7 +13,10 @@
  * @module core/lexer
  */
 
-import type { Codon, CodonToken, ParseError } from "@/types";
+import { BASES, type Codon, type CodonToken, type ParseError } from "@/types";
+
+/** Valid base letters for lexer validation, derived from BASES */
+const VALID_BASES = new Set<string>(Object.keys(BASES));
 
 /**
  * Strip comment from a line (everything after `;`).
@@ -85,7 +88,7 @@ export interface Lexer {
  * ```
  */
 export class CodonLexer implements Lexer {
-  private readonly validBases = new Set<string>(["A", "C", "G", "T", "U"]);
+  private readonly validBases = VALID_BASES;
 
   /**
    * Tokenize source genome into codons.

@@ -13,9 +13,10 @@
  */
 
 import {
-  type Base,
+  type BaseLetter,
   CODON_MAP,
   type Codon,
+  DNA_LETTERS,
   type MutationType,
   Opcode,
 } from "@/types";
@@ -37,7 +38,8 @@ export interface MutationResult {
   description: string;
 }
 
-const BASES: Base[] = ["A", "C", "G", "T"];
+/** DNA bases used for mutation operations (excludes U since we normalize to T) */
+const BASES: readonly BaseLetter[] = DNA_LETTERS;
 const STOP_CODONS: Set<Codon> = new Set([
   "TAA" as Codon,
   "TAG" as Codon,
