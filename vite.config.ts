@@ -1,4 +1,6 @@
 import { resolve } from "node:path";
+import tailwindcss from "@tailwindcss/vite";
+import react from "@vitejs/plugin-react";
 import { defineConfig } from "vite";
 
 export default defineConfig({
@@ -7,6 +9,9 @@ export default defineConfig({
 
   // Public directory for static assets
   publicDir: "public",
+
+  // Plugins
+  plugins: [react(), tailwindcss()],
 
   // Path aliases matching tsconfig.json
   resolve: {
@@ -24,6 +29,8 @@ export default defineConfig({
       "@/utils": resolve(__dirname, "src/utils"),
       "@/playground": resolve(__dirname, "src/playground"),
       "@/pages": resolve(__dirname, "src/pages"),
+      "@/components": resolve(__dirname, "src/components"),
+      "@/hooks": resolve(__dirname, "src/hooks"),
     },
   },
 
@@ -45,29 +52,5 @@ export default defineConfig({
 
   build: {
     outDir: "dist",
-    rollupOptions: {
-      input: {
-        // Main pages
-        main: resolve(__dirname, "pages/index.html"),
-        gallery: resolve(__dirname, "pages/gallery.html"),
-        tutorial: resolve(__dirname, "pages/tutorial.html"),
-        demos: resolve(__dirname, "pages/demos.html"),
-        // Demo pages
-        mutation: resolve(__dirname, "pages/demos/mutation.html"),
-        timeline: resolve(__dirname, "pages/demos/timeline.html"),
-        evolution: resolve(__dirname, "pages/demos/evolution.html"),
-        population: resolve(__dirname, "pages/demos/population-genetics.html"),
-        genetic: resolve(__dirname, "pages/demos/genetic-algorithm.html"),
-        achievements: resolve(__dirname, "pages/demos/achievements.html"),
-        assessment: resolve(__dirname, "pages/demos/assessment.html"),
-        // Dashboard pages
-        research: resolve(__dirname, "pages/dashboards/research.html"),
-        teacher: resolve(__dirname, "pages/dashboards/teacher.html"),
-        learningPaths: resolve(
-          __dirname,
-          "pages/dashboards/learning-paths.html",
-        ),
-      },
-    },
   },
 });

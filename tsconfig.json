@@ -5,6 +5,9 @@
     "lib": ["ES2022", "DOM", "DOM.Iterable"],
     "moduleResolution": "bundler",
 
+    // JSX for React
+    "jsx": "react-jsx",
+
     // Strict type checking
     "strict": true,
     // noUncheckedIndexedAccess: Disabled - requires extensive codebase changes
@@ -51,7 +54,12 @@
       "@/utils/*": ["./src/utils/*"],
       "@/playground": ["./src/playground"],
       "@/playground/*": ["./src/playground/*"],
+      "@/pages": ["./src/pages"],
       "@/pages/*": ["./src/pages/*"],
+      "@/components": ["./src/components"],
+      "@/components/*": ["./src/components/*"],
+      "@/hooks": ["./src/hooks"],
+      "@/hooks/*": ["./src/hooks/*"],
       "@/tests/*": ["./tests/*"]
     }
   },

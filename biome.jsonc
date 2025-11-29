@@ -48,6 +48,13 @@
   "css": {
     "formatter": {
       "enabled": false
+    },
+    "linter": {
+      "enabled": false
+    },
+    "parser": {
+      "cssModules": true,
+      "tailwindDirectives": true
     }
   },
   "assist": {
