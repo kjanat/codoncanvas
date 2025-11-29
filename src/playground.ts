@@ -27,8 +27,8 @@ import { TutorialManager } from "@/education/tutorials/tutorial";
 import { initializeTutorial } from "@/education/tutorials/tutorial-ui";
 import { DiffViewer, injectDiffViewerStyles } from "@/ui/diff-viewer";
 import { injectShareStyles, ShareSystem } from "@/ui/share-system";
-import "@/tutorial-ui.css";
-import "@/achievement-ui.css";
+import "@/education/tutorials/tutorial-ui.css";
+import "@/education/achievements/achievement-ui.css";
 import { AssessmentUI } from "@/education/assessments/assessment-ui";
 // Import DOM elements
 import {

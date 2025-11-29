@@ -7,7 +7,7 @@ import { TutorialUI } from "@/education/tutorials/tutorial-ui";
 import { injectShareStyles, ShareSystem } from "@/ui/share-system";
 import { injectTimelineStyles, TimelineScrubber } from "@/ui/timeline-scrubber";
 import { escapeHtml, getElementUnsafe as getElement } from "@/utils/dom";
-import "@/tutorial-ui.css";
+import "@/education/tutorials/tutorial-ui.css";
 
 // Inject styles
 injectTimelineStyles();

@@ -1,6 +1,6 @@
 import { AchievementEngine } from "@/education/achievements/achievement-engine";
 import { AchievementUI } from "@/education/achievements/achievement-ui";
-import "@/achievement-ui.css";
+import "@/education/achievements/achievement-ui.css";
 import { examples } from "@/data/examples";
 import { renderGenomeToCanvas } from "@/demos/demos-core";
 import {
@@ -14,7 +14,7 @@ import {
   getElementUnsafe as getElement,
   showStatus as showStatusBase,
 } from "@/utils/dom";
-import "@/tutorial-ui.css";
+import "@/education/tutorials/tutorial-ui.css";
 
 injectShareStyles();
 

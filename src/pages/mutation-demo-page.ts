@@ -14,7 +14,7 @@ import {
   getElementUnsafe as getElement,
   showStatus as showStatusBase,
 } from "@/utils/dom";
-import "@/tutorial-ui.css";
+import "@/education/tutorials/tutorial-ui.css";
 import { CodonVM } from "@/core/vm";
 
 // Inject styles
