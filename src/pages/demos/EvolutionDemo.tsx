@@ -4,6 +4,7 @@ import { Canvas2DRenderer } from "@/core/renderer";
 import { CodonVM } from "@/core/vm";
 import { examples } from "@/data/examples";
 import { getMutationByType } from "@/genetics/mutations";
+import { useAchievements } from "@/hooks/useAchievements";
 import type { MutationType } from "@/types";
 
 interface Candidate {
@@ -37,6 +38,8 @@ export default function EvolutionDemo() {
 
   const parentCanvasRef = useRef<HTMLCanvasElement>(null);
   const canvasRefs = useRef<(HTMLCanvasElement | null)[]>([]);
+
+  const { trackEvolutionGeneration, trackMutationApplied } = useAchievements();
 
   const renderGenome = useCallback(
     (genome: string, canvas: HTMLCanvasElement | null): boolean => {
@@ -77,6 +80,7 @@ export default function EvolutionDemo() {
           mutationType: result.type,
           description: result.description,
         });
+        trackMutationApplied();
       } catch (err) {
         // If mutation fails, use parent with a note
         newCandidates.push({
@@ -89,7 +93,7 @@ export default function EvolutionDemo() {
     }
 
     setCandidates(newCandidates);
-  }, [parentGenome]);
+  }, [parentGenome, trackMutationApplied]);
 
   // Render all candidates
   useEffect(() => {
@@ -114,6 +118,7 @@ export default function EvolutionDemo() {
     setParentGenome(candidate.genome);
     setCandidates([]);
     setGeneration((g) => g + 1);
+    trackEvolutionGeneration();
   };
 
   // Reset to initial state
