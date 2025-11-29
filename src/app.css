@@ -35,6 +35,10 @@
   --color-dark-border: #3e3e42;
   --color-dark-text: #d4d4d4;
 
+  /* Semantic Colors */
+  --color-surface: #ffffff;
+  --color-surface-alt: #f8f9fa;
+
   /* ===== Typography ===== */
   --font-base:
     -apple-system,
@@ -82,6 +86,19 @@
       transform: translateY(0);
     }
   }
+}
+
+@custom-variant dark (&:where([data-theme=dark], [data-theme=dark] *));
+
+:root[data-theme="dark"] {
+  --color-text: var(--color-dark-text);
+  --color-bg-light: var(--color-dark-bg);
+  --color-border: var(--color-dark-border);
+  --color-text-muted: #a0a0a0;
+  --color-text-light: #d4d4d4;
+  --color-border-light: #3e3e42;
+  --color-surface: var(--color-dark-surface);
+  --color-surface-alt: var(--color-dark-bg-alt);
 }
 
 /* Base styles */

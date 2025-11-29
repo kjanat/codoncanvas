@@ -50,7 +50,7 @@ function NucleotideModeToggle({
       </button>
 
       {showInfo && (
-        <div className="absolute left-0 top-full z-50 mt-1 w-64 rounded-lg border border-border bg-white p-3 shadow-lg">
+        <div className="absolute left-0 top-full z-50 mt-1 w-64 rounded-lg border border-border bg-surface p-3 shadow-lg">
           <div className="mb-2 font-medium text-text">
             {info.nucleicAcid} Mode
           </div>

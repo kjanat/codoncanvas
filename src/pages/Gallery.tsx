@@ -79,7 +79,7 @@ function CategoryFilter({
           className={`rounded-full px-4 py-2 text-sm font-medium transition-colors ${
             selected === cat.value
               ? "bg-primary text-white"
-              : "bg-white text-text hover:bg-bg-light"
+              : "bg-surface text-text hover:bg-bg-light"
           }`}
           key={cat.value}
           onClick={() => onSelect(cat.value)}
@@ -119,7 +119,7 @@ function SortSelect({
 }) {
   return (
     <select
-      className="rounded-lg border border-border bg-white px-3 py-2 text-sm focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20"
+      className="rounded-lg border border-border bg-surface px-3 py-2 text-sm focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20"
       onChange={(e) => onChange(e.target.value as SortOption)}
       value={value}
     >
@@ -141,7 +141,7 @@ function ExampleCard({
 }) {
   return (
     <button
-      className="group overflow-hidden rounded-xl border border-border bg-white shadow-sm transition-all hover:shadow-md text-left w-full"
+      className="group overflow-hidden rounded-xl border border-border bg-surface shadow-sm transition-all hover:shadow-md text-left w-full"
       onClick={onClick}
       type="button"
     >
@@ -206,9 +206,9 @@ function PreviewModal({
       }}
       role="dialog"
     >
-      <div className="relative max-h-[90vh] w-full max-w-4xl overflow-auto rounded-2xl bg-white shadow-xl">
+      <div className="relative max-h-[90vh] w-full max-w-4xl overflow-auto rounded-2xl bg-surface shadow-xl">
         {/* Header */}
-        <div className="sticky top-0 flex items-center justify-between border-b border-border bg-white p-4">
+        <div className="sticky top-0 flex items-center justify-between border-b border-border bg-surface p-4">
           <div>
             <h2 className="text-xl font-bold text-text">{example.title}</h2>
             <p className="text-sm text-text-muted">{example.description}</p>

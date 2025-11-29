@@ -119,7 +119,7 @@ export const PlaygroundEditor = memo(
       ref,
     ) {
       return (
-        <div className="flex flex-1 flex-col border-r border-border bg-white">
+        <div className="flex flex-1 flex-col border-r border-border bg-surface">
           {/* Editor textarea */}
           <div className="flex flex-1 flex-col p-4">
             <textarea

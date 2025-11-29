@@ -108,7 +108,7 @@ export const CodonReference = memo(function CodonReference({
   }
 
   return (
-    <div className="flex w-72 flex-col border-l border-border bg-white">
+    <div className="flex w-72 flex-col border-l border-border bg-surface">
       {/* Header */}
       <div className="flex items-center justify-between border-b border-border px-3 py-2">
         <h3 className="text-sm font-semibold text-text">Codon Reference</h3>

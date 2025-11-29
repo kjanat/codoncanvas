@@ -50,8 +50,10 @@ export function Layout({ children }: LayoutProps) {
     const theme = preferences.theme;
 
     if (theme === "dark") {
-      root.classList.add("dark");
+      root.setAttribute("data-theme", "dark");
+      root.classList.add("dark"); // Keep for backward compatibility if needed, but data-theme is primary
     } else if (theme === "light") {
+      root.setAttribute("data-theme", "light");
       root.classList.remove("dark");
     } else {
       // System preference
@@ -59,8 +61,10 @@ export function Layout({ children }: LayoutProps) {
         "(prefers-color-scheme: dark)",
       ).matches;
       if (prefersDark) {
+        root.setAttribute("data-theme", "dark");
         root.classList.add("dark");
       } else {
+        root.setAttribute("data-theme", "light");
         root.classList.remove("dark");
       }
     }
@@ -87,7 +91,7 @@ export function Layout({ children }: LayoutProps) {
   return (
     <div className="flex min-h-screen flex-col bg-bg-light">
       {/* Header */}
-      <header className="border-b border-border bg-white shadow-sm">
+      <header className="border-b border-border bg-surface shadow-sm">
         <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3">
           {/* Logo */}
           <Link className="flex items-center gap-2" to="/">
@@ -123,7 +127,7 @@ export function Layout({ children }: LayoutProps) {
                 <ChevronDownIcon />
               </button>
 
-              <div className="invisible absolute right-0 top-full z-50 mt-1 w-56 rounded-lg border border-border bg-white p-2 opacity-0 shadow-lg transition-all group-hover:visible group-hover:opacity-100">
+              <div className="invisible absolute right-0 top-full z-50 mt-1 w-56 rounded-lg border border-border bg-surface p-2 opacity-0 shadow-lg transition-all group-hover:visible group-hover:opacity-100">
                 <div className="mb-2 border-b border-border pb-2">
                   <p className="px-3 py-1 text-xs font-semibold uppercase text-text-muted">
                     Demos
@@ -184,7 +188,7 @@ export function Layout({ children }: LayoutProps) {
       <main className="flex-1">{children}</main>
 
       {/* Footer */}
-      <footer className="border-t border-border bg-white py-6">
+      <footer className="border-t border-border bg-surface py-6">
         <div className="mx-auto max-w-7xl px-4 text-center text-sm text-text-muted">
           <p>CodonCanvas - DNA-Inspired Visual Programming Language</p>
           <p className="mt-1">
