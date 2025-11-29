@@ -572,7 +572,7 @@ input[type="radio"][name="mode"]:not(:checked) + span:hover {
   padding: 1.5rem 2rem;
   margin-bottom: 1rem;
   color: white;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: var(--gradient-primary);
   border-radius: 8px;
   box-shadow: 0 4px 12px rgb(102 126 234 / 20%);
   animation: slide-in-from-top 0.5s ease-out;

@@ -10,7 +10,7 @@ body {
   font-family:
     -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   color: #333;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: var(--gradient-primary);
 }
 
 .container {
@@ -55,7 +55,7 @@ h1 {
 
 .btn-primary {
   font-weight: 600;
-  color: #667eea;
+  color: var(--color-primary);
   background: white;
 }
 
@@ -113,7 +113,7 @@ h1 {
 
 .search-box:focus {
   outline: none;
-  border-color: #667eea;
+  border-color: var(--color-primary);
 }
 
 .filter-chips {
@@ -134,13 +134,13 @@ h1 {
 
 .chip:hover {
   background: #f8f9ff;
-  border-color: #667eea;
+  border-color: var(--color-primary);
 }
 
 .chip.active {
   color: white;
-  background: #667eea;
-  border-color: #667eea;
+  background: var(--color-primary);
+  border-color: var(--color-primary);
 }
 
 .stats {
@@ -239,7 +239,7 @@ h1 {
 
 .badge-showcase {
   color: white;
-  background: linear-gradient(135deg, #667eea, #764ba2);
+  background: var(--gradient-primary);
 }
 
 .card-concepts {
@@ -267,7 +267,7 @@ h1 {
 
 .concept-tag:hover {
   color: white;
-  background: #667eea;
+  background: var(--color-primary);
 }
 
 .sort-control {

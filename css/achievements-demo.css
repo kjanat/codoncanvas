@@ -9,7 +9,7 @@ body {
   padding: 40px 20px;
   font-family:
     -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: var(--gradient-primary);
 }
 
 .demo-container {
@@ -76,7 +76,7 @@ body {
   font-weight: 600;
   color: white;
   cursor: pointer;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: var(--gradient-primary);
   border: none;
   border-radius: 8px;
   box-shadow: 0 4px 15px rgb(102 126 234 / 30%);
@@ -84,7 +84,7 @@ body {
 }
 
 .action-button:hover {
-  box-shadow: 0 6px 20px rgb(102 126 234 / 40%);
+  box-shadow: var(--shadow-primary);
   transform: translateY(-2px);
 }
 
@@ -108,14 +108,14 @@ body {
   padding: 20px;
   margin: 20px 0;
   background: #f5f7fa;
-  border-left: 4px solid #667eea;
+  border-left: 4px solid var(--color-primary);
   border-radius: 8px;
 }
 
 .info-box h4 {
   margin-bottom: 10px;
   font-size: 18px;
-  color: #667eea;
+  color: var(--color-primary);
 }
 
 .info-box p {
