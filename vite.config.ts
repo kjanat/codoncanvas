@@ -28,7 +28,7 @@ export default defineConfig({
           "style-src 'self' 'unsafe-inline'", // unsafe-inline needed for dynamic styles
           "img-src 'self' data: https:",
           "font-src 'self' data:",
-          "connect-src 'self' https://api.qrserver.com",
+          "connect-src 'self'",
           "base-uri 'self'",
           "form-action 'self'",
         ].join("; ");

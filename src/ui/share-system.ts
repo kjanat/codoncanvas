@@ -217,22 +217,33 @@ export class ShareSystem {
 
     const { permalink } = result;
 
-    // Use QR code API
-    const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${encodeURIComponent(
-      permalink,
-    )}`;
+    // Use react-qr-code
+    import("react-dom/client").then(({ createRoot }) => {
+      import("react-qr-code").then(({ default: QRCode }) => {
+        import("react").then(({ createElement }) => {
+          this.showModal(
+            "QR Code",
+            `<div id="qr-code-container" style="display: flex; justify-content: center; padding: 1rem;"></div>
+             <p style="text-align: center; margin-top: 1rem; font-size: 0.875rem; color: #888;">
+               Scan with mobile device to open genome
+             </p>`,
+          );
 
-    this.showModal(
-      "QR Code",
-      `
-      <div style="text-align: center;">
-        <img src="${escapeHtml(qrUrl)}" alt="QR Code" style="max-width: 100%;">
-        <p style="margin-top: 1rem; font-size: 0.875rem; color: #888;">
-          Scan with mobile device to open genome
-        </p>
-      </div>
-    `,
-    );
+          const container = document.getElementById("qr-code-container");
+          if (container) {
+            const root = createRoot(container);
+            root.render(
+              createElement(QRCode, {
+                value: permalink,
+                size: 256,
+                style: { height: "auto", maxWidth: "100%", width: "100%" },
+                viewBox: `0 0 256 256`,
+              }),
+            );
+          }
+        });
+      });
+    });
   }
 
   /**
