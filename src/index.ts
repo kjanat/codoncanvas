@@ -143,14 +143,18 @@ export type {
  *
  * @example
  * ```typescript
- * const ga = new GeneticAlgorithm({
+ * const initialGenomes = ["ATG GGA TAA", "ATG CCA TAA", "ATG AAA TAA"];
+ * const fitness: FitnessFunction = (genome) => evaluateGenome(genome);
+ *
+ * const ga = new GeneticAlgorithm(initialGenomes, fitness, {
  *   populationSize: 50,
- *   fitness: (genome) => evaluateGenome(genome),
- *   selectionStrategy: 'tournament',
- *   crossoverRate: 0.7
+ *   selectionStrategy: "tournament",
+ *   crossoverRate: 0.7,
+ *   mutationRate: 0.1,
  * });
  *
- * const population = ga.evolve();
+ * ga.evolveGeneration();
+ * const best = ga.getBest();
  * ```
  */
 export { GeneticAlgorithm } from "@/genetics/genetic-algorithm";
