@@ -29,10 +29,10 @@ export interface UseHistoryReturn<T> {
   state: T;
   /** Set new state (adds to history) */
   setState: (newState: T | ((prev: T) => T)) => void;
-  /** Undo to previous state */
-  undo: () => void;
-  /** Redo to next state */
-  redo: () => void;
+  /** Undo to previous state, returns new state */
+  undo: () => T;
+  /** Redo to next state, returns new state */
+  redo: () => T;
   /** Whether undo is available */
   canUndo: boolean;
   /** Whether redo is available */
@@ -122,7 +122,7 @@ export function useHistory<T>(
   const undo = useCallback(() => {
     const history = historyRef.current;
 
-    if (history.past.length === 0) return;
+    if (history.past.length === 0) return history.present;
 
     const previous = history.past[history.past.length - 1];
     const newPast = history.past.slice(0, -1);
@@ -134,13 +134,14 @@ export function useHistory<T>(
     };
 
     forceUpdate({});
+    return previous;
   }, []);
 
   // Redo to next state
   const redo = useCallback(() => {
     const history = historyRef.current;
 
-    if (history.future.length === 0) return;
+    if (history.future.length === 0) return history.present;
 
     const next = history.future[0];
     const newFuture = history.future.slice(1);
@@ -152,6 +153,7 @@ export function useHistory<T>(
     };
 
     forceUpdate({});
+    return next;
   }, []);
 
   // Clear all history

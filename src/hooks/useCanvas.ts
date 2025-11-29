@@ -46,6 +46,8 @@ export interface UseCanvasReturn {
   toDataURL: (type?: string, quality?: number) => string | null;
   /** Get canvas as Blob (for download) */
   toBlob: (type?: string, quality?: number) => Promise<Blob | null>;
+  /** Export canvas as PNG file download */
+  exportPNG: (filename?: string) => void;
   /** Force renderer refresh */
   refreshRenderer: () => void;
 }
@@ -197,6 +199,21 @@ export function useCanvas(options: UseCanvasOptions = {}): UseCanvasReturn {
     [],
   );
 
+  // Export canvas as PNG file download
+  const exportPNG = useCallback(
+    (filename: string = "codoncanvas-output.png") => {
+      const canvas = canvasRef.current;
+      if (!canvas) return;
+
+      const dataUrl = canvas.toDataURL("image/png");
+      const link = document.createElement("a");
+      link.download = filename;
+      link.href = dataUrl;
+      link.click();
+    },
+    [],
+  );
+
   // Initialize renderer on mount and when ref changes
   useEffect(() => {
     // Use MutationObserver to detect when canvas is added to DOM
@@ -266,6 +283,7 @@ export function useCanvas(options: UseCanvasOptions = {}): UseCanvasReturn {
     resize,
     toDataURL,
     toBlob,
+    exportPNG,
     refreshRenderer,
   };
 }

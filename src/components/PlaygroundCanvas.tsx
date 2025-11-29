@@ -59,6 +59,7 @@ export const PlaygroundCanvas = memo(
             <span className="text-sm text-dark-text">Output</span>
             <div className="flex gap-2">
               <button
+                aria-label="Clear canvas"
                 className="rounded-md px-3 py-1 text-sm text-dark-text hover:bg-dark-surface"
                 onClick={onClear}
                 type="button"
@@ -66,6 +67,7 @@ export const PlaygroundCanvas = memo(
                 Clear
               </button>
               <button
+                aria-label="Export canvas as PNG"
                 className="rounded-md px-3 py-1 text-sm text-dark-text hover:bg-dark-surface"
                 onClick={onExportPNG}
                 type="button"
@@ -78,9 +80,11 @@ export const PlaygroundCanvas = memo(
           {/* Canvas container */}
           <div className="flex flex-1 items-center justify-center p-4">
             <canvas
+              aria-label="Genome execution output"
               className="rounded-lg border border-dark-border bg-white shadow-lg"
               height={height}
               ref={ref}
+              role="img"
               width={width}
             />
           </div>

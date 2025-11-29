@@ -34,6 +34,7 @@ function NucleotideModeToggle({
   return (
     <div className="relative">
       <button
+        aria-label={`Switch to ${mode === "DNA" ? "RNA" : "DNA"} display mode`}
         className={`rounded-md px-3 py-1.5 text-sm transition-colors ${
           mode === "RNA"
             ? "bg-accent/10 text-accent"
@@ -134,6 +135,7 @@ export const PlaygroundToolbar = memo(function PlaygroundToolbar({
     <div className="flex flex-wrap items-center gap-2 border-b border-border px-4 py-2">
       {/* Example selector */}
       <select
+        aria-label="Select example genome"
         className="rounded-md border border-border px-3 py-1.5 text-sm focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20"
         onChange={(e) => onExampleChange(e.target.value)}
         value={selectedExampleKey ?? ""}
@@ -149,15 +151,17 @@ export const PlaygroundToolbar = memo(function PlaygroundToolbar({
       {/* File I/O buttons */}
       <div className="flex items-center gap-1">
         <label className="cursor-pointer rounded-md px-3 py-1.5 text-sm text-text hover:bg-bg-light">
-          Load
+          <span>Load</span>
           <input
             accept=".genome,.txt"
+            aria-label="Load genome file"
             className="hidden"
             onChange={onLoad}
             type="file"
           />
         </label>
         <button
+          aria-label="Save genome file"
           className="rounded-md px-3 py-1.5 text-sm text-text hover:bg-bg-light"
           onClick={onSave}
           title="Save (Ctrl+S)"
@@ -166,6 +170,7 @@ export const PlaygroundToolbar = memo(function PlaygroundToolbar({
           Save
         </button>
         <button
+          aria-label={copied ? "Copied to clipboard" : "Copy genome code"}
           className="rounded-md px-3 py-1.5 text-sm text-text hover:bg-bg-light"
           onClick={onCopy}
           title="Copy genome code"
@@ -174,6 +179,7 @@ export const PlaygroundToolbar = memo(function PlaygroundToolbar({
           {copied ? "Copied!" : "Copy"}
         </button>
         <button
+          aria-label="Copy shareable link"
           className="rounded-md px-3 py-1.5 text-sm text-text hover:bg-bg-light"
           onClick={onShare}
           title="Copy shareable link"
@@ -186,6 +192,7 @@ export const PlaygroundToolbar = memo(function PlaygroundToolbar({
       {/* Undo/Redo */}
       <div className="flex items-center gap-1">
         <button
+          aria-label="Undo last change"
           className="rounded-md px-2 py-1.5 text-sm text-text hover:bg-bg-light disabled:opacity-40"
           disabled={!canUndo}
           onClick={onUndo}
@@ -195,6 +202,7 @@ export const PlaygroundToolbar = memo(function PlaygroundToolbar({
           Undo
         </button>
         <button
+          aria-label="Redo last change"
           className="rounded-md px-2 py-1.5 text-sm text-text hover:bg-bg-light disabled:opacity-40"
           disabled={!canRedo}
           onClick={onRedo}
@@ -215,6 +223,10 @@ export const PlaygroundToolbar = memo(function PlaygroundToolbar({
 
       {/* Reference toggle */}
       <button
+        aria-label={
+          showReference ? "Hide codon reference" : "Show codon reference"
+        }
+        aria-pressed={showReference}
         className={`rounded-md px-3 py-1.5 text-sm transition-colors ${
           showReference
             ? "bg-primary/10 text-primary"
@@ -229,6 +241,7 @@ export const PlaygroundToolbar = memo(function PlaygroundToolbar({
 
       {/* Run button */}
       <button
+        aria-label="Run genome"
         className="ml-auto rounded-md bg-primary px-4 py-1.5 text-sm font-medium text-white transition-colors hover:bg-primary-hover disabled:opacity-50"
         disabled={!canRun}
         onClick={onRun}

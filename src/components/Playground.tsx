@@ -8,6 +8,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import { CodonReference } from "@/components/CodonReference";
+import { KeyboardShortcutsHelp } from "@/components/KeyboardShortcutsHelp";
 import { PlaygroundCanvas } from "@/components/PlaygroundCanvas";
 import { PlaygroundEditor } from "@/components/PlaygroundEditor";
 import { PlaygroundToolbar } from "@/components/PlaygroundToolbar";
@@ -20,6 +21,7 @@ import {
   useGenome,
   useHistory,
   useKeyboardShortcuts,
+  useLocalStorage,
   useShareUrl,
 } from "@/hooks";
 import {
@@ -30,11 +32,19 @@ import {
   transformFromDisplay,
 } from "@/playground/nucleotide-display";
 
+const DRAFT_STORAGE_KEY = "codoncanvas-draft-genome";
+const DEFAULT_GENOME = "ATG GAA AAT GGA TAA";
+
 export function Playground() {
   const [searchParams, setSearchParams] = useSearchParams();
   const exampleFromUrl = searchParams.get("example");
 
   // --- Hooks ---
+
+  const [draftGenome, setDraftGenome] = useLocalStorage<string | null>(
+    DRAFT_STORAGE_KEY,
+    null,
+  );
 
   const { allExamples, selectedExample, selectExample, getExample } =
     useExamples({
@@ -43,13 +53,15 @@ export function Playground() {
 
   const { sharedGenome, copyShareUrl } = useShareUrl();
 
+  // Priority: URL shared genome > URL example > draft > default
+  const initialGenome =
+    sharedGenome ?? selectedExample?.genome ?? draftGenome ?? DEFAULT_GENOME;
+
   const { genome, setGenome, validation, isPending } = useGenome({
-    initialGenome:
-      sharedGenome ?? selectedExample?.genome ?? "ATG GAA AAT GGA TAA",
+    initialGenome,
   });
 
   const {
-    state: historyState,
     setState: setHistoryState,
     undo,
     redo,
@@ -57,7 +69,7 @@ export function Playground() {
     canRedo,
   } = useHistory<string>(genome);
 
-  const { canvasRef, renderer, isReady, clear, toDataURL } = useCanvas({
+  const { canvasRef, renderer, isReady, clear, exportPNG } = useCanvas({
     width: 400,
     height: 400,
   });
@@ -68,6 +80,7 @@ export function Playground() {
 
   const [stats, setStats] = useState({ codons: 0, instructions: 0 });
   const [showReference, setShowReference] = useState(false);
+  const [showShortcutsHelp, setShowShortcutsHelp] = useState(false);
   const [nucleotideMode, setNucleotideMode] = useState<NucleotideDisplayMode>(
     getNucleotideDisplayMode,
   );
@@ -88,23 +101,24 @@ export function Playground() {
       const newGenome = transformFromDisplay(e.target.value);
       setGenome(newGenome);
       setHistoryState(newGenome);
+      setDraftGenome(newGenome);
     },
-    [setGenome, setHistoryState],
+    [setGenome, setHistoryState, setDraftGenome],
   );
 
   const handleUndo = useCallback(() => {
     if (canUndo) {
-      undo();
-      setGenome(historyState);
+      const newState = undo();
+      setGenome(newState);
     }
-  }, [canUndo, undo, historyState, setGenome]);
+  }, [canUndo, undo, setGenome]);
 
   const handleRedo = useCallback(() => {
     if (canRedo) {
-      redo();
-      setGenome(historyState);
+      const newState = redo();
+      setGenome(newState);
     }
-  }, [canRedo, redo, historyState, setGenome]);
+  }, [canRedo, redo, setGenome]);
 
   const handleShare = useCallback(() => {
     copyShareUrl(genome);
@@ -167,13 +181,8 @@ export function Playground() {
   );
 
   const handleExportPNG = useCallback(() => {
-    const dataUrl = toDataURL("image/png");
-    if (!dataUrl) return;
-    const link = document.createElement("a");
-    link.download = "codoncanvas-output.png";
-    link.href = dataUrl;
-    link.click();
-  }, [toDataURL]);
+    exportPNG("codoncanvas-output.png");
+  }, [exportPNG]);
 
   const handleInsertCodon = useCallback(
     (codon: string) => {
@@ -215,7 +224,7 @@ export function Playground() {
   }, [exampleFromUrl, getExample, selectExample, setGenome]);
 
   // Keyboard shortcuts
-  useKeyboardShortcuts([
+  const shortcuts = [
     { key: "s", ctrl: true, handler: handleSave, description: "Save genome" },
     {
       key: "Enter",
@@ -232,7 +241,14 @@ export function Playground() {
       description: "Redo",
     },
     { key: "y", ctrl: true, handler: handleRedo, description: "Redo" },
-  ]);
+    {
+      key: "?",
+      handler: () => setShowShortcutsHelp((s) => !s),
+      description: "Show shortcuts",
+      preventDefault: true,
+    },
+  ];
+  useKeyboardShortcuts(shortcuts);
 
   // --- Render ---
 
@@ -290,6 +306,13 @@ export function Playground() {
           onToggleCollapse={() => setShowReference(false)}
         />
       )}
+
+      {/* Keyboard Shortcuts Help */}
+      <KeyboardShortcutsHelp
+        isOpen={showShortcutsHelp}
+        onClose={() => setShowShortcutsHelp(false)}
+        shortcuts={shortcuts}
+      />
     </div>
   );
 }
