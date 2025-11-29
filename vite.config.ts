@@ -1,81 +1,65 @@
-import { resolve } from "node:path";
 import tailwindcss from "@tailwindcss/vite";
 import react from "@vitejs/plugin-react";
 import { defineConfig } from "vite";
 
+const root = import.meta.dirname;
+
+// Content Security Policy for static GH Pages hosting
+const CSP = [
+  "default-src 'self'",
+  "script-src 'self' 'unsafe-inline'",
+  "style-src 'self' 'unsafe-inline'",
+  "img-src 'self' data: https:",
+  "font-src 'self' data:",
+  "connect-src 'self'",
+  "frame-ancestors 'none'",
+  "base-uri 'self'",
+  "form-action 'self'",
+].join("; ");
+
 export default defineConfig({
-  // GitHub Pages base path - controlled by VITE_BASE_PATH env var
-  // Set by deploy.yml from actions/configure-pages output
+  // GitHub Pages base path - set by deploy.yml from actions/configure-pages
   base: process.env.VITE_BASE_PATH ? `${process.env.VITE_BASE_PATH}/` : "/",
 
-  // Public directory for static assets
   publicDir: "public",
 
-  // Plugins
   plugins: [
     react(),
     tailwindcss(),
     {
       name: "html-csp-injection",
       transformIndexHtml(html, ctx) {
-        // Only inject CSP during build (when server is not defined)
         if (ctx.server) return html;
-
-        // Production CSP - stricter than dev (no unsafe-eval)
-        const csp = [
-          "default-src 'self'",
-          "script-src 'self' 'unsafe-inline'", // unsafe-inline might be needed for some inline scripts, but unsafe-eval is removed
-          "style-src 'self' 'unsafe-inline'", // unsafe-inline needed for dynamic styles
-          "img-src 'self' data: https:",
-          "font-src 'self' data:",
-          "connect-src 'self'",
-          "base-uri 'self'",
-          "form-action 'self'",
-        ].join("; ");
-
         return html.replace(
           "</head>",
-          `<meta http-equiv="Content-Security-Policy" content="${csp}">\n  </head>`,
+          `<meta http-equiv="Content-Security-Policy" content="${CSP}">\n  </head>`,
         );
       },
     },
   ],
 
-  // Path aliases matching tsconfig.json
   resolve: {
     alias: {
-      "@": resolve(__dirname, "src"),
-      "@/core": resolve(__dirname, "src/core"),
-      "@/genetics": resolve(__dirname, "src/genetics"),
-      "@/analysis": resolve(__dirname, "src/analysis"),
-      "@/education": resolve(__dirname, "src/education"),
-      "@/exporters": resolve(__dirname, "src/exporters"),
-      "@/ui": resolve(__dirname, "src/ui"),
-      "@/demos": resolve(__dirname, "src/demos"),
-      "@/data": resolve(__dirname, "src/data"),
-      "@/types": resolve(__dirname, "src/types"),
-      "@/utils": resolve(__dirname, "src/utils"),
-      "@/playground": resolve(__dirname, "src/playground"),
-      "@/pages": resolve(__dirname, "src/pages"),
-      "@/components": resolve(__dirname, "src/components"),
-      "@/hooks": resolve(__dirname, "src/hooks"),
+      "@": `${root}/src`,
+      "@/core": `${root}/src/core`,
+      "@/genetics": `${root}/src/genetics`,
+      "@/analysis": `${root}/src/analysis`,
+      "@/education": `${root}/src/education`,
+      "@/exporters": `${root}/src/exporters`,
+      "@/ui": `${root}/src/ui`,
+      "@/demos": `${root}/src/demos`,
+      "@/data": `${root}/src/data`,
+      "@/types": `${root}/src/types`,
+      "@/utils": `${root}/src/utils`,
+      "@/playground": `${root}/src/playground`,
+      "@/pages": `${root}/src/pages`,
+      "@/components": `${root}/src/components`,
+      "@/hooks": `${root}/src/hooks`,
     },
   },
 
-  // SECURITY: Content Security Policy headers (Dev Server only)
   server: {
-    headers: {
-      "Content-Security-Policy":
-        "default-src 'self'; " +
-        "script-src 'self' 'unsafe-inline' 'unsafe-eval'; " + // unsafe-inline needed for Vite HMR in dev
-        "style-src 'self' 'unsafe-inline'; " + // unsafe-inline for inline styles
-        "img-src 'self' data: https:; " + // data: for canvas toDataURL, https: for external images
-        "font-src 'self' data:; " + // data: for embedded fonts
-        "connect-src 'self' https://api.qrserver.com; " + // Allow QR code API
-        "frame-ancestors 'none'; " + // Prevent clickjacking
-        "base-uri 'self'; " +
-        "form-action 'self';",
-    },
+    headers: { "Content-Security-Policy": CSP },
   },
 
   build: {
