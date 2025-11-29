@@ -47,6 +47,140 @@ interface StudentData {
   institution?: string;
 }
 
+/**
+ * Required fields for StudentData validation (must be present and correct type)
+ */
+const REQUIRED_STUDENT_FIELDS = [
+  "id",
+  "pretest_total",
+  "posttest_total",
+  "pretest_silent",
+  "pretest_missense",
+  "pretest_nonsense",
+  "pretest_frameshift",
+  "pretest_indel",
+  "posttest_silent",
+  "posttest_missense",
+  "posttest_nonsense",
+  "posttest_frameshift",
+  "posttest_indel",
+] as const;
+
+/**
+ * Fields that should be parsed as numbers
+ */
+const NUMERIC_STUDENT_FIELDS = new Set([
+  "pretest_total",
+  "posttest_total",
+  "delayed_total",
+  "pretest_silent",
+  "pretest_missense",
+  "pretest_nonsense",
+  "pretest_frameshift",
+  "pretest_indel",
+  "posttest_silent",
+  "posttest_missense",
+  "posttest_nonsense",
+  "posttest_frameshift",
+  "posttest_indel",
+  "mtt_score",
+  "imi_interest",
+  "imi_competence",
+  "imi_effort",
+  "imi_value",
+  "gpa",
+  "prior_programming",
+]);
+
+/**
+ * Validate and construct StudentData from a parsed row
+ * Returns the validated StudentData or null if invalid
+ */
+// biome-ignore lint/complexity/noExcessiveCognitiveComplexity: Explicit field validation requires checking each field
+function validateStudentData(
+  row: Record<string, string | number | undefined>,
+  rowIndex: number,
+): StudentData | null {
+  // Validate id is a string
+  const id = row.id;
+  if (typeof id !== "string" || id.trim() === "") {
+    console.error(`Error: Row ${rowIndex + 1} "id" must be a non-empty string`);
+    return null;
+  }
+
+  // Validate all required numeric fields
+  for (const field of REQUIRED_STUDENT_FIELDS) {
+    if (field === "id") continue;
+    const value = row[field];
+    if (
+      value === undefined ||
+      typeof value !== "number" ||
+      !Number.isFinite(value)
+    ) {
+      console.error(
+        `Error: Row ${rowIndex + 1} field "${field}" must be a valid number, got: ${value}`,
+      );
+      return null;
+    }
+  }
+
+  // Construct StudentData with validated required fields
+  const data: StudentData = {
+    id,
+    pretest_total: row.pretest_total as number,
+    posttest_total: row.posttest_total as number,
+    pretest_silent: row.pretest_silent as number,
+    pretest_missense: row.pretest_missense as number,
+    pretest_nonsense: row.pretest_nonsense as number,
+    pretest_frameshift: row.pretest_frameshift as number,
+    pretest_indel: row.pretest_indel as number,
+    posttest_silent: row.posttest_silent as number,
+    posttest_missense: row.posttest_missense as number,
+    posttest_nonsense: row.posttest_nonsense as number,
+    posttest_frameshift: row.posttest_frameshift as number,
+    posttest_indel: row.posttest_indel as number,
+  };
+
+  // Add optional fields if present
+  if (row.group === "treatment" || row.group === "control") {
+    data.group = row.group;
+  }
+  if (typeof row.delayed_total === "number") {
+    data.delayed_total = row.delayed_total;
+  }
+  if (typeof row.mtt_score === "number") {
+    data.mtt_score = row.mtt_score;
+  }
+  if (typeof row.imi_interest === "number") {
+    data.imi_interest = row.imi_interest;
+  }
+  if (typeof row.imi_competence === "number") {
+    data.imi_competence = row.imi_competence;
+  }
+  if (typeof row.imi_effort === "number") {
+    data.imi_effort = row.imi_effort;
+  }
+  if (typeof row.imi_value === "number") {
+    data.imi_value = row.imi_value;
+  }
+  if (typeof row.gpa === "number") {
+    data.gpa = row.gpa;
+  }
+  if (
+    row.prior_programming === 0 ||
+    row.prior_programming === 1 ||
+    row.prior_programming === 2 ||
+    row.prior_programming === 3
+  ) {
+    data.prior_programming = row.prior_programming;
+  }
+  if (typeof row.institution === "string") {
+    data.institution = row.institution;
+  }
+
+  return data;
+}
+
 interface DescriptiveStats {
   n: number;
   mean: number;
@@ -640,27 +774,45 @@ function parseCSV(filepath: string): StudentData[] {
   const lines = content.trim().split("\n");
   const headers = lines[0].split(",").map((h) => h.trim());
 
-  return lines.slice(1).map((line) => {
+  const results: StudentData[] = [];
+  let hasErrors = false;
+
+  for (let rowIndex = 0; rowIndex < lines.length - 1; rowIndex++) {
+    const line = lines[rowIndex + 1];
     const values = line.split(",").map((v) => v.trim());
     const row: Record<string, string | number | undefined> = {};
+
     headers.forEach((header, i) => {
       const value = values[i];
-      // Convert numeric fields
-      if (
-        header.includes("test_") ||
-        header.includes("delayed_") ||
-        header === "mtt_score" ||
-        header === "gpa" ||
-        header.includes("imi_") ||
-        header === "prior_programming"
-      ) {
+      // Convert numeric fields using the defined set
+      if (NUMERIC_STUDENT_FIELDS.has(header)) {
         row[header] = value ? parseFloat(value) : undefined;
       } else {
         row[header] = value;
       }
     });
-    return row as unknown as StudentData;
-  });
+
+    // Validate row before adding to results
+    const validated = validateStudentData(row, rowIndex);
+    if (validated !== null) {
+      results.push(validated);
+    } else {
+      hasErrors = true;
+    }
+  }
+
+  if (hasErrors) {
+    console.error(
+      "\nWarning: Some rows failed validation and were skipped. Check CSV format.",
+    );
+  }
+
+  if (results.length === 0) {
+    console.error("Error: No valid data rows found in CSV");
+    process.exit(1);
+  }
+
+  return results;
 }
 
 function printUsage(): void {
