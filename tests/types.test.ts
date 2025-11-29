@@ -5,7 +5,7 @@
  * that maps DNA/RNA triplets to VM opcodes.
  */
 import { describe, expect, test } from "bun:test";
-import { CODON_MAP, Opcode } from "@/types";
+import { CODON_MAP, DNA_LETTERS, Opcode } from "@/types";
 
 describe("Types Module", () => {
   // CODON_MAP Structure
@@ -23,7 +23,7 @@ describe("Types Module", () => {
     });
 
     test("all keys are valid 3-character codon strings", () => {
-      const validBases = ["A", "C", "G", "T"];
+      const validBases: string[] = [...DNA_LETTERS];
       for (const key of Object.keys(CODON_MAP)) {
         expect(key).toHaveLength(3);
         for (const char of key) {

@@ -3,6 +3,8 @@ import {
   CODON_MAP,
   type Codon,
   type CodonToken,
+  DNA_BASE_TO_INDEX,
+  type DNABaseLetter,
   Opcode,
   type VMState,
 } from "@/types";
@@ -195,10 +197,9 @@ export class CodonVM implements VM {
    * Decode base-4 numeric literal from codon
    */
   private decodeNumericLiteral(codon: string): number {
-    const baseMap: Record<string, number> = { A: 0, C: 1, G: 2, T: 3 };
-    const d1 = baseMap[codon[0]] || 0;
-    const d2 = baseMap[codon[1]] || 0;
-    const d3 = baseMap[codon[2]] || 0;
+    const d1 = DNA_BASE_TO_INDEX[codon[0] as DNABaseLetter] ?? 0;
+    const d2 = DNA_BASE_TO_INDEX[codon[1] as DNABaseLetter] ?? 0;
+    const d3 = DNA_BASE_TO_INDEX[codon[2] as DNABaseLetter] ?? 0;
     return d1 * BASE4_DIGIT1_WEIGHT + d2 * BASE4_DIGIT2_WEIGHT + d3;
   }
 

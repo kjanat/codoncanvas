@@ -2,7 +2,7 @@ import { beforeEach, describe, expect, test } from "bun:test";
 import { CodonLexer } from "@/core/lexer";
 import type { Renderer } from "@/core/renderer";
 import { CodonVM } from "@/core/vm";
-import type { Codon } from "@/types";
+import { type Codon, DNA_LETTERS } from "@/types";
 
 // Mock renderer for testing
 class MockRenderer implements Renderer {
@@ -122,14 +122,12 @@ describe("CodonVM", () => {
 
     test("all 64 numeric literals (0-63) decode correctly", () => {
       // Base-4 encoding: value = d1×16 + d2×4 + d3 where A=0, C=1, G=2, T=3
-      const bases = ["A", "C", "G", "T"];
-
       for (let value = 0; value < 64; value++) {
         // Convert value to base-4 codon
         const d1 = Math.floor(value / 16);
         const d2 = Math.floor((value % 16) / 4);
         const d3 = value % 4;
-        const codon = `${bases[d1]}${bases[d2]}${bases[d3]}`;
+        const codon = `${DNA_LETTERS[d1]}${DNA_LETTERS[d2]}${DNA_LETTERS[d3]}`;
 
         const genome = `ATG GAA ${codon} TAA`;
         const tokens = lexer.tokenize(genome);
