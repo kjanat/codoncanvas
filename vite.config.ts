@@ -1,5 +1,5 @@
 import { resolve } from "node:path";
-import { defineConfig } from "vitest/config";
+import { defineConfig } from "vite";
 
 export default defineConfig({
   // GitHub Pages base path (will be /codoncanvas/ when deployed)
@@ -46,17 +46,5 @@ export default defineConfig({
         gallery: resolve(__dirname, "gallery.html"),
       },
     },
-  },
-
-  test: {
-    globals: true,
-    environment: "happy-dom",
-    setupFiles: ["./vitest.setup.ts"],
-    // Disable file parallelism to prevent DOM environment race conditions
-    // Each test file gets its own DOM environment sequentially
-    // This ensures DOM globals are properly initialized before tests run
-    fileParallelism: false,
-    // Tests within a file still run in parallel for performance
-    pool: "threads",
   },
 });

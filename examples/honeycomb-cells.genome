@@ -17,7 +17,7 @@ ATG
     ; Draw hexagon (6-sided polygon using lines)
     TGG                        ; SAVE_STATE
     GAA AAG                    ; PUSH 5, (side length)
-    DUP DUP DUP DUP DUP        ; 6 copies for 6 sides
+    ATA ATA ATA ATA ATA        ; DUP x5: 6 copies for 6 sides
     GAA AAA TCA                ; PUSH 0, LOOP (draw 6 sides)
       AAA                      ; LINE (one side)
       GAA TGA AGA              ; PUSH 56(-8), ROTATE (60°)
@@ -33,7 +33,7 @@ ATG
   GAA AAC TCA                  ; PUSH 3, LOOP
     TGG                        ; SAVE_STATE
     GAA AAG                    ; PUSH 5
-    DUP DUP DUP DUP DUP
+    ATA ATA ATA ATA ATA        ; DUP x5
     GAA AAA TCA                ; LOOP hexagon
       AAA                      ; LINE
       GAA TGA AGA              ; ROTATE 60°
@@ -49,7 +49,7 @@ ATG
   GAA AAC TCA                  ; PUSH 3, LOOP
     TGG
     GAA AAG
-    DUP DUP DUP DUP DUP
+    ATA ATA ATA ATA ATA        ; DUP x5
     GAA AAA TCA                ; LOOP hexagon
       AAA
       GAA TGA AGA

@@ -3,15 +3,15 @@
  * Implements automated fitness-driven evolution with selection, crossover, mutation
  */
 
-import { CodonLexer } from "./lexer.js";
+import { CodonLexer } from "@/lexer";
 import {
   applyDeletion,
   applyInsertion,
   applyPointMutation,
   type MutationResult,
-} from "./mutations.js";
-import { Canvas2DRenderer } from "./renderer.js";
-import { CodonVM } from "./vm.js";
+} from "@/mutations";
+import { Canvas2DRenderer } from "@/renderer";
+import { CodonVM } from "@/vm";
 
 export interface GAIndividual {
   /** Genome string */
@@ -109,6 +109,10 @@ export class GeneticAlgorithm {
    * Initialize population from seed genomes
    */
   private initializePopulation(seedGenomes: string[]): GAIndividual[] {
+    if (seedGenomes.length === 0) {
+      throw new Error("At least one seed genome is required");
+    }
+
     const pop: GAIndividual[] = [];
 
     // Fill population with seed genomes (repeat if needed)

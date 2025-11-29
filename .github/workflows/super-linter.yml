@@ -1,0 +1,49 @@
+name: Super-Linter
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  lint:
+    name: Lint
+    runs-on: ubuntu-latest
+    # checkov:skip=CKV2_GHA_1: "Ensure top-level permissions are not set to write-all"
+
+    permissions:
+      contents: read
+      packages: read
+      # To report GitHub Actions status checks
+      statuses: write
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v6
+        with:
+          # super-linter needs the full git history to get the
+          # list of files that changed across commits
+          fetch-depth: 0
+          persist-credentials: false
+
+      - name: Setup Bun
+        uses: ./.github/actions/setup-bun
+        with: { install-node: "true" }
+
+      - name: Super-linter
+        uses: super-linter/super-linter@2bdd90ed3262e023ac84bf8fe35dc480721fc1f2 # v8.2.1
+        continue-on-error: true
+        env:
+          # To report GitHub Actions status checks
+          GITHUB_TOKEN: ${{ github.token }}
+          IGNORE_GITIGNORED_FILES: true
+          JSCPD_CONFIG_FILE: package.json
+          CHECKOV_FILE_NAME: .github/linters/checkov.yaml
+          VALIDATE_BIOME_FORMAT: false
+          VALIDATE_BIOME_LINT: false
+
+      - name: Prevents job failure
+        run: echo "Hi!"

@@ -1,86 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>CodonCanvas Assessment Mode - Demo</title>
-    <style>
-    * {
-      box-sizing: border-box;
-      padding: 0;
-      margin: 0;
-    }
-
-    body {
-      min-height: 100vh;
-      padding: 20px;
-      font-family:
-        -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu,
-        sans-serif;
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    }
-
-    .page-header {
-      margin-bottom: 30px;
-      color: white;
-      text-align: center;
-    }
-
-    .page-header h1 {
-      margin-bottom: 10px;
-      font-size: 36px;
-      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
-    }
-
-    .page-header p {
-      font-size: 18px;
-      opacity: 0.9;
-    }
-
-    #assessment-container {
-      overflow: hidden;
-      background: white;
-      border-radius: 12px;
-      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
-    }
-
-    .export-section {
-      max-width: 900px;
-      margin: 20px auto 0;
-      text-align: center;
-    }
-
-    .export-btn {
-      padding: 12px 24px;
-      font-size: 16px;
-      font-weight: 600;
-      color: #667eea;
-      cursor: pointer;
-      background: white;
-      border: none;
-      border-radius: 6px;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-      transition: transform 0.2s, box-shadow 0.2s;
-    }
-
-    .export-btn:hover {
-      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
-      transform: translateY(-2px);
-    }
-
-    .footer {
-      max-width: 900px;
-      margin: 30px auto 0;
-      color: white;
-      text-align: center;
-      opacity: 0.9;
-    }
-
-    .footer a {
-      color: white;
-      text-decoration: underline;
-    }
-    </style>
+    <link rel="stylesheet" href="css/variables.css" />
+    <link rel="stylesheet" href="css/assessment-demo.css" />
   </head>
   <body>
     <div class="page-header">
@@ -105,37 +30,6 @@
       </p>
     </div>
 
-    <script type="module">
-    import { AssessmentEngine } from "./dist/assessment-engine.js";
-import { AssessmentUI } from "./dist/assessment-ui.js";
-
-// Initialize assessment system
-const engine = new AssessmentEngine();
-const container = document.getElementById("assessment-container");
-const assessmentUI = new AssessmentUI(engine, container);
-
-// Show assessment UI
-assessmentUI.show();
-
-// Setup export button
-document.getElementById("export-btn").addEventListener("click", () => {
-  const results = assessmentUI.exportResults();
-
-  // Download as JSON file
-  const blob = new Blob([results], { type: "application/json" });
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement("a");
-  a.href = url;
-  a.download = `codoncanvas-assessment-${
-    new Date().toISOString().split("T")[0]
-  }.json`;
-  document.body.appendChild(a);
-  a.click();
-  document.body.removeChild(a);
-  URL.revokeObjectURL(url);
-
-  alert("✅ Results exported! Check your downloads folder.");
-});
-    </script>
+    <script type="module" src="src/pages/assessment-demo-page.ts"></script>
   </body>
 </html>

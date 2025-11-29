@@ -17,9 +17,25 @@
     "rules": {
       "recommended": true,
       "complexity": {
-        // Allow bracket notation for dataset properties - required by TypeScript's noPropertyAccessFromIndexSignature
-        // DOMStringMap (dataset) has index signature, TypeScript requires bracket notation
-        "useLiteralKeys": "off"
+        "noExcessiveCognitiveComplexity": {
+          "level": "warn",
+          "options": {
+            "maxAllowedComplexity": 15
+          }
+        },
+        "useLiteralKeys": {
+          "level": "warn",
+          "fix": "safe"
+        }
+      },
+      "style": {
+        "useTemplate": {
+          "level": "warn",
+          "fix": "safe"
+        }
+      },
+      "nursery": {
+        "recommended": true
       }
     },
     "domains": {}
@@ -27,6 +43,11 @@
   "javascript": {
     "formatter": {
       "quoteStyle": "double"
+    }
+  },
+  "css": {
+    "formatter": {
+      "enabled": false
     }
   },
   "assist": {
@@ -38,5 +59,22 @@
         "useSortedProperties": "on"
       }
     }
-  }
+  },
+  "overrides": [
+    {
+      "includes": ["tests/**"],
+      "linter": {
+        "rules": {
+          "complexity": {
+            // Allow bracket notation for dataset properties - required by TypeScript's noPropertyAccessFromIndexSignature
+            // DOMStringMap (dataset) has index signature, TypeScript requires bracket notation
+            "useLiteralKeys": "off"
+          },
+          "style": {
+            "noNonNullAssertion": "off"
+          }
+        }
+      }
+    }
+  ]
 }

@@ -1,302 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>CodonCanvas - Evolution Lab</title>
-    <style>
-    * {
-      box-sizing: border-box;
-      padding: 0;
-      margin: 0;
-    }
-
-    body {
-      padding: 1rem;
-      font-family: "Monaco", "Menlo", "Courier New", monospace;
-      color: #d4d4d4;
-      background: #1e1e1e;
-    }
-
-    .container {
-      max-width: 1400px;
-      margin: 0 auto;
-    }
-
-    header {
-      padding: 1.5rem;
-      margin-bottom: 1rem;
-      background: #252526;
-      border: 1px solid #3e3e42;
-      border-radius: 4px;
-    }
-
-    h1 {
-      margin-bottom: 0.5rem;
-      font-size: 1.75rem;
-      color: #4ec9b0;
-    }
-
-    .subtitle {
-      font-size: 0.875rem;
-      color: #858585;
-    }
-
-    .panel {
-      margin-bottom: 1rem;
-      overflow: hidden;
-      background: #252526;
-      border: 1px solid #3e3e42;
-      border-radius: 4px;
-    }
-
-    .panel-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 0.75rem 1rem;
-      font-size: 0.875rem;
-      font-weight: bold;
-      background: #2d2d30;
-      border-bottom: 1px solid #3e3e42;
-    }
-
-    .panel-content {
-      padding: 1rem;
-    }
-
-    .info-box {
-      padding: 1rem;
-      margin-bottom: 1rem;
-      background: #1e1e1e;
-      border: 1px solid #3e3e42;
-      border-radius: 4px;
-    }
-
-    .info-box h3 {
-      margin-bottom: 0.5rem;
-      font-size: 1rem;
-      color: #4ec9b0;
-    }
-
-    .info-box p {
-      font-size: 0.875rem;
-      line-height: 1.6;
-      color: #858585;
-    }
-
-    .controls {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.5rem;
-      align-items: center;
-    }
-
-    button {
-      padding: 0.75rem 1rem;
-      font-family: inherit;
-      font-size: 0.875rem;
-      color: white;
-      cursor: pointer;
-      background: #0e639c;
-      border: none;
-      border-radius: 3px;
-      transition: background 0.2s;
-    }
-
-    button:hover:not(:disabled) {
-      background: #1177bb;
-    }
-
-    button:disabled {
-      cursor: not-allowed;
-      background: #3e3e42;
-      opacity: 0.5;
-    }
-
-    button.primary {
-      font-weight: bold;
-      color: #1e1e1e;
-      background: #4ec9b0;
-    }
-
-    button.primary:hover:not(:disabled) {
-      background: #5ed9c0;
-    }
-
-    button.secondary {
-      background: #3e3e42;
-    }
-
-    button.secondary:hover:not(:disabled) {
-      background: #505052;
-    }
-
-    .example-buttons {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.5rem;
-      margin-bottom: 1rem;
-    }
-
-    .example-buttons button {
-      padding: 0.5rem 0.75rem;
-      font-size: 0.75rem;
-      background: #3e3e42;
-    }
-
-    .stats {
-      display: flex;
-      gap: 2rem;
-      margin-bottom: 1rem;
-      font-size: 0.875rem;
-    }
-
-    .stat-item {
-      display: flex;
-      flex-direction: column;
-      gap: 0.25rem;
-    }
-
-    .stat-label {
-      font-size: 0.75rem;
-      color: #858585;
-    }
-
-    .stat-value {
-      font-size: 1.25rem;
-      font-weight: bold;
-      color: #4ec9b0;
-    }
-
-    #candidatesGrid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-      gap: 1rem;
-    }
-
-    .candidate-card {
-      padding: 0.75rem;
-      cursor: pointer;
-      background: #1e1e1e;
-      border: 2px solid #3e3e42;
-      border-radius: 4px;
-      transition: all 0.2s;
-    }
-
-    .candidate-card:hover {
-      border-color: #4ec9b0;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-      transform: translateY(-2px);
-    }
-
-    .candidate-card.selected {
-      background: rgba(137, 209, 133, 0.1);
-      border-color: #89d185;
-    }
-
-    .candidate-header {
-      display: flex;
-      justify-content: space-between;
-      margin-bottom: 0.5rem;
-      font-size: 0.75rem;
-      color: #858585;
-    }
-
-    .candidate-canvas {
-      width: 100%;
-      height: auto;
-      margin-bottom: 0.5rem;
-      background: white;
-      border: 1px solid #3e3e42;
-      border-radius: 4px;
-    }
-
-    .candidate-mutation {
-      padding: 0.5rem;
-      margin-top: 0.5rem;
-      font-size: 0.7rem;
-      color: #858585;
-      background: #252526;
-      border-radius: 3px;
-    }
-
-    .mutation-type {
-      font-weight: bold;
-      color: #4ec9b0;
-    }
-
-    #lineageContainer {
-      display: flex;
-      gap: 0.5rem;
-      padding: 0.5rem 0;
-      overflow-x: auto;
-    }
-
-    .lineage-item {
-      flex-shrink: 0;
-      text-align: center;
-    }
-
-    .lineage-canvas {
-      width: 120px;
-      height: 120px;
-      background: white;
-      border: 1px solid #3e3e42;
-      border-radius: 4px;
-    }
-
-    .lineage-label {
-      margin-top: 0.25rem;
-      font-size: 0.7rem;
-      color: #858585;
-    }
-
-    .lineage-arrow {
-      align-self: center;
-      font-size: 1.5rem;
-      color: #4ec9b0;
-    }
-
-    .status {
-      padding: 0.75rem 1rem;
-      margin-bottom: 1rem;
-      font-size: 0.875rem;
-      border-radius: 4px;
-    }
-
-    .status.success {
-      color: #89d185;
-      background: rgba(137, 209, 133, 0.2);
-      border: 1px solid #89d185;
-    }
-
-    .status.error {
-      color: #ff6b6b;
-      background: rgba(255, 107, 107, 0.2);
-      border: 1px solid #ff6b6b;
-    }
-
-    .status.info {
-      color: #4ec9b0;
-      background: rgba(78, 201, 176, 0.2);
-      border: 1px solid #4ec9b0;
-    }
-
-    .hidden {
-      display: none;
-    }
-
-    #startContainer {
-      padding: 2rem;
-      text-align: center;
-    }
-
-    #startContainer h2 {
-      margin-bottom: 1rem;
-      color: #4ec9b0;
-    }
-    </style>
+    <link rel="stylesheet" href="css/demo-base.css" />
+    <link rel="stylesheet" href="css/evolution-demo.css" />
   </head>
   <body>
     <div class="container">
@@ -320,357 +29,80 @@
         </p>
       </div>
 
-      <div id="statusContainer"></div>
+      <div id="status-container"></div>
 
       <!-- Start Panel -->
-      <div id="startPanel" class="panel">
+      <div id="start-panel" class="panel">
         <div class="panel-header">Start Evolution</div>
         <div class="panel-content">
-          <div id="startContainer">
+          <div id="start-container">
             <h2>Choose Starting Genome</h2>
             <div class="example-buttons">
-              <button onclick="startEvolution('helloCircle')">
-                Hello Circle
-              </button>
-              <button onclick="startEvolution('twoShapes')">Two Shapes</button>
-              <button onclick="startEvolution('colorfulPattern')">
-                Colorful Pattern
-              </button>
-              <button onclick="startEvolution('mandala')">Mandala</button>
-              <button onclick="startEvolution('spiral')">Spiral</button>
+              <button data-example="helloCircle">Hello Circle</button>
+              <button data-example="twoShapes">Two Shapes</button>
+              <button data-example="colorfulPattern">Colorful Pattern</button>
+              <button data-example="mandala">Mandala</button>
+              <button data-example="spiral">Spiral</button>
             </div>
           </div>
         </div>
       </div>
 
       <!-- Evolution Panel -->
-      <div id="evolutionPanel" class="panel hidden">
+      <div id="evolution-panel" class="panel hidden">
         <div class="panel-header">
-          <span>Generation <span id="generationNumber">0</span></span>
+          <span>Generation <span id="generation-number">0</span></span>
           <div class="controls">
-            <button
-              class="primary"
-              id="generateBtn"
-              onclick="generateGeneration()"
-            >
+            <button class="primary" id="generate-btn">
               🧬 Generate Candidates
             </button>
-            <button class="secondary" onclick="resetEvolution()">
-              ↻ Reset
-            </button>
+            <button class="secondary" id="reset-btn">↻ Reset</button>
           </div>
         </div>
         <div class="panel-content">
           <div class="stats">
             <div class="stat-item">
               <div class="stat-label">Generation</div>
-              <div class="stat-value" id="genStat">0</div>
+              <div class="stat-value" id="gen-stat">0</div>
             </div>
             <div class="stat-item">
               <div class="stat-label">Total Mutations</div>
-              <div class="stat-value" id="mutationStat">0</div>
+              <div class="stat-value" id="mutation-stat">0</div>
             </div>
             <div class="stat-item">
               <div class="stat-label">Lineage Length</div>
-              <div class="stat-value" id="lineageStat">1</div>
+              <div class="stat-value" id="lineage-stat">1</div>
             </div>
           </div>
-          <div id="candidatesGrid"></div>
+          <div id="candidates-grid"></div>
         </div>
       </div>
 
       <!-- Lineage Panel -->
-      <div id="lineagePanel" class="panel hidden">
+      <div id="lineage-panel" class="panel hidden">
         <div class="panel-header">Evolutionary Lineage</div>
         <div class="panel-content">
-          <div id="lineageContainer"></div>
+          <div id="lineage-container"></div>
         </div>
       </div>
 
       <!-- Share System -->
-      <div id="sharePanel" class="panel hidden">
+      <div id="share-panel" class="panel hidden">
         <div class="panel-header">Share Evolution</div>
         <div class="panel-content">
-          <div id="shareContainer"></div>
+          <div id="share-container"></div>
         </div>
       </div>
 
       <!-- Achievement System -->
-      <div id="achievementPanel" class="panel">
+      <div id="achievement-panel" class="panel">
         <div class="panel-header">🏆 Achievements</div>
         <div class="panel-content">
-          <div id="achievementContainer"></div>
+          <div id="achievement-container"></div>
         </div>
       </div>
     </div>
 
-    <script type="module">
-    import { EvolutionEngine } from "./src/evolution-engine.ts";
-import { examples } from "./src/examples.ts";
-import { CodonLexer } from "./src/lexer.ts";
-import { Canvas2DRenderer } from "./src/renderer.ts";
-import { injectShareStyles, ShareSystem } from "./src/share-system.ts";
-import { evolutionTutorial, TutorialManager } from "./src/tutorial.ts";
-import { TutorialUI } from "./src/tutorial-ui.ts";
-import { CodonVM } from "./src/vm.ts";
-import "./src/tutorial-ui.css";
-import { AchievementEngine } from "./src/achievement-engine.ts";
-import { AchievementUI } from "./src/achievement-ui.ts";
-import "./src/achievement-ui.css";
-
-injectShareStyles();
-
-const lexer = new CodonLexer();
-let engine = null;
-let currentCandidates = [];
-
-// Initialize achievement system
-const achievementEngine = new AchievementEngine();
-const achievementUI = new AchievementUI(
-  achievementEngine,
-  "achievementContainer",
-);
-
-const statusContainer = document.getElementById("statusContainer");
-const startPanel = document.getElementById("startPanel");
-const evolutionPanel = document.getElementById("evolutionPanel");
-const lineagePanel = document.getElementById("lineagePanel");
-const sharePanel = document.getElementById("sharePanel");
-const candidatesGrid = document.getElementById("candidatesGrid");
-const lineageContainer = document.getElementById("lineageContainer");
-const shareContainer = document.getElementById("shareContainer");
-const generateBtn = document.getElementById("generateBtn");
-
-// Initialize share system
-const _shareSystem = new ShareSystem({
-  containerElement: shareContainer,
-  getGenome: () => engine?.getCurrentParent() ?? "",
-  appTitle: "CodonCanvas Evolution Lab",
-  showQRCode: true,
-  socialPlatforms: ["twitter", "reddit", "email"],
-});
-
-function showStatus(message, type = "info") {
-  statusContainer.innerHTML = `<div class="status ${type}">${message}</div>`;
-  setTimeout(() => {
-    statusContainer.innerHTML = "";
-  }, 5000);
-}
-
-function renderGenome(genome, canvas) {
-  try {
-    const renderer = new Canvas2DRenderer(canvas);
-    const vm = new CodonVM(renderer);
-    renderer.clear();
-    const tokens = lexer.tokenize(genome);
-    vm.reset();
-    vm.run(tokens);
-    return true;
-  } catch (error) {
-    console.error("Render error:", error);
-    return false;
-  }
-}
-
-function updateStats() {
-  const gen = engine.getCurrentGeneration();
-  const history = engine.getHistory();
-  const totalMutations = history.reduce(
-    (sum, record) => sum + record.candidates.length,
-    0,
-  );
-  const lineage = engine.getLineage();
-
-  document.getElementById("generationNumber").textContent = gen;
-  document.getElementById("genStat").textContent = gen;
-  document.getElementById("mutationStat").textContent = totalMutations;
-  document.getElementById("lineageStat").textContent = lineage.length;
-}
-
-function updateLineage() {
-  const lineage = engine.getLineage();
-  lineageContainer.innerHTML = "";
-
-  lineage.forEach((genome, index) => {
-    if (index > 0) {
-      const arrow = document.createElement("div");
-      arrow.className = "lineage-arrow";
-      arrow.textContent = "→";
-      lineageContainer.appendChild(arrow);
-    }
-
-    const item = document.createElement("div");
-    item.className = "lineage-item";
-
-    const canvas = document.createElement("canvas");
-    canvas.className = "lineage-canvas";
-    canvas.width = 120;
-    canvas.height = 120;
-    renderGenome(genome, canvas);
-
-    const label = document.createElement("div");
-    label.className = "lineage-label";
-    label.textContent = index === 0 ? "Original" : `Gen ${index}`;
-
-    item.appendChild(canvas);
-    item.appendChild(label);
-    lineageContainer.appendChild(item);
-  });
-
-  lineagePanel.classList.remove("hidden");
-}
-
-window.startEvolution = (exampleKey) => {
-  const example = examples[exampleKey];
-  if (!example) {
-    showStatus("Example not found", "error");
-    return;
-  }
-
-  engine = new EvolutionEngine(example.genome, {
-    candidatesPerGeneration: 6,
-    mutationTypes: ["point", "silent", "missense", "insertion", "deletion"],
-  });
-
-  startPanel.classList.add("hidden");
-  evolutionPanel.classList.remove("hidden");
-  sharePanel.classList.remove("hidden");
-
-  updateStats();
-  showStatus(`Evolution started with: ${example.title}`, "success");
-};
-
-window.generateGeneration = () => {
-  if (!engine) return;
-
-  try {
-    currentCandidates = engine.generateGeneration();
-    renderCandidates();
-    generateBtn.disabled = true;
-    updateStats();
-    showStatus(
-      `Generated ${currentCandidates.length} candidates - select the fittest!`,
-      "info",
-    );
-  } catch (error) {
-    showStatus(`Generation failed: ${error.message}`, "error");
-  }
-};
-
-function renderCandidates() {
-  candidatesGrid.innerHTML = "";
-
-  currentCandidates.forEach((candidate, index) => {
-    const card = document.createElement("div");
-    card.className = "candidate-card";
-    card.onclick = () => selectCandidate(candidate.id);
-
-    const header = document.createElement("div");
-    header.className = "candidate-header";
-    header.innerHTML = `<span>Candidate ${
-      index + 1
-    }</span><span>${candidate.id}</span>`;
-
-    const canvas = document.createElement("canvas");
-    canvas.className = "candidate-canvas";
-    canvas.width = 250;
-    canvas.height = 250;
-    renderGenome(candidate.genome, canvas);
-
-    const mutation = document.createElement("div");
-    mutation.className = "candidate-mutation";
-    if (candidate.mutation) {
-      mutation.innerHTML = `<span class="mutation-type">${candidate.mutation.type}</span>: ${candidate.mutation.description}`;
-    }
-
-    card.appendChild(header);
-    card.appendChild(canvas);
-    card.appendChild(mutation);
-    candidatesGrid.appendChild(card);
-  });
-}
-
-window.selectCandidate = (candidateId) => {
-  if (!engine) return;
-
-  try {
-    engine.selectCandidate(candidateId);
-
-    // Track evolution generation for achievement
-    const unlocked = achievementEngine.trackEvolutionGeneration();
-    achievementUI.handleUnlocks(unlocked);
-
-    // Visual feedback
-    document.querySelectorAll(".candidate-card").forEach((card) => {
-      card.classList.remove("selected");
-      if (
-        card.querySelector(".candidate-header span:last-child").textContent ===
-        candidateId
-      ) {
-        card.classList.add("selected");
-      }
-    });
-
-    generateBtn.disabled = false;
-    updateStats();
-    updateLineage();
-    showStatus(
-      "✓ Candidate selected! Generate next generation to continue evolution.",
-      "success",
-    );
-  } catch (error) {
-    showStatus(`Selection failed: ${error.message}`, "error");
-  }
-};
-
-window.resetEvolution = () => {
-  if (confirm("Reset evolution and start over?")) {
-    engine = null;
-    currentCandidates = [];
-    startPanel.classList.remove("hidden");
-    evolutionPanel.classList.add("hidden");
-    lineagePanel.classList.add("hidden");
-    sharePanel.classList.add("hidden");
-    candidatesGrid.innerHTML = "";
-    lineageContainer.innerHTML = "";
-    showStatus("Evolution reset", "info");
-  }
-};
-
-// Load from URL if present
-const urlGenome = ShareSystem.loadFromURL();
-if (urlGenome) {
-  engine = new EvolutionEngine(urlGenome);
-  startPanel.classList.add("hidden");
-  evolutionPanel.classList.remove("hidden");
-  sharePanel.classList.remove("hidden");
-  updateStats();
-  showStatus("Loaded genome from share link", "success");
-}
-
-// Tutorial integration
-const tutorialManager = new TutorialManager(
-  "codoncanvas_evolution_tutorial_completed",
-);
-const tutorialUI = new TutorialUI(tutorialManager);
-
-// Show tutorial on first visit
-if (!tutorialManager.isCompleted()) {
-  setTimeout(() => {
-    tutorialUI.show(evolutionTutorial);
-  }, 2000); // 2 second delay for page to settle
-}
-
-// Tutorial callbacks
-tutorialManager.onCompleteCallback(() => {
-  console.log("Evolution tutorial completed! 🏆");
-});
-
-// Global function to reset tutorial (for testing)
-window.resetEvolutionTutorial = () => {
-  tutorialManager.reset();
-  console.log("Evolution tutorial reset. Reload page to see it again.");
-};
-    </script>
+    <script type="module" src="src/pages/evolution-demo-page.ts"></script>
   </body>
 </html>

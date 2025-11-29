@@ -1,8 +1,8 @@
 {
   "compilerOptions": {
-    "target": "ES2020",
+    "target": "ES2022",
     "module": "ESNext",
-    "lib": ["ES2020", "DOM", "DOM.Iterable"],
+    "lib": ["ES2022", "DOM", "DOM.Iterable"],
     "moduleResolution": "bundler",
 
     // Strict type checking
@@ -11,7 +11,7 @@
     // Consider enabling incrementally for new code
     "noImplicitReturns": true,
     "noFallthroughCasesInSwitch": true,
-    "noPropertyAccessFromIndexSignature": true,
+    "noPropertyAccessFromIndexSignature": false,
 
     // Module interop
     "esModuleInterop": true,
@@ -22,7 +22,6 @@
 
     // Output
     "outDir": "./dist",
-    "rootDir": "./src",
     "declaration": true,
     "declarationMap": true,
     "sourceMap": true,
@@ -32,9 +31,9 @@
       "@/*": ["./src/*"],
       "@/types": ["./src/types"],
       "@/utils/*": ["./src/utils/*"],
-      "@/playground/*": ["./src/playground/*"]
+      "@/playground/*": ["./src/playground/*"],
+      "@/tests/*": ["./tests/*"]
     }
   },
-  "include": ["src/**/*"],
-  "exclude": ["node_modules", "dist", "**/*.test.ts"]
+  "exclude": ["node_modules", "dist"]
 }

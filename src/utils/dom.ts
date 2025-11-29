@@ -5,6 +5,51 @@
  * replacing unsafe `as HTMLElement` assertions with validated accessors.
  */
 
+// =============================================================================
+// Security Utilities
+// =============================================================================
+
+/**
+ * SECURITY: Escape HTML special characters to prevent XSS attacks
+ * Use this when building HTML strings from user input
+ */
+export function escapeHtml(str: string): string {
+  return str
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#39;")
+    .replace(/\//g, "&#x2F;");
+}
+
+// =============================================================================
+// UI Helpers
+// =============================================================================
+
+/**
+ * Show a temporary status message in a container element
+ * @param container - The container element to show the status in
+ * @param message - The message to display
+ * @param type - The status type (info, success, error, warning)
+ * @param duration - How long to show the message in milliseconds (default 5000)
+ */
+export function showStatus(
+  container: HTMLElement,
+  message: string,
+  type: string = "info",
+  duration: number = 5000,
+): void {
+  container.innerHTML = `<div class="status ${escapeHtml(type)}">${escapeHtml(message)}</div>`;
+  setTimeout(() => {
+    container.innerHTML = "";
+  }, duration);
+}
+
+// =============================================================================
+// Type-safe Element Accessors (with runtime validation)
+// =============================================================================
+
 /**
  * Type-safe element getter by ID with runtime validation
  *
@@ -112,4 +157,48 @@ export function querySelectorAll<T extends HTMLElement>(
     }
   });
   return result;
+}
+
+// =============================================================================
+// Legacy API (simple type casts, no runtime validation)
+// Use these for backward compatibility with existing code
+// =============================================================================
+
+/**
+ * Get element by ID with simple type cast (no runtime validation)
+ * @deprecated Prefer getElement() with elementType for runtime safety
+ */
+export function getElementUnsafe<T extends HTMLElement = HTMLElement>(
+  id: string,
+): T {
+  const element = document.getElementById(id);
+  if (!element) {
+    throw new Error(`Element with id "${id}" not found`);
+  }
+  return element as T;
+}
+
+/**
+ * Get element by ID, returning null if not found (no runtime validation)
+ * @deprecated Prefer getElementOrNull() with elementType for runtime safety
+ */
+export function getElementOrNullUnsafe<T extends HTMLElement = HTMLElement>(
+  id: string,
+): T | null {
+  return document.getElementById(id) as T | null;
+}
+
+/**
+ * Query selector with simple type cast (no runtime validation)
+ * @deprecated Prefer querySelector() with elementType for runtime safety
+ */
+export function querySelectorUnsafe<T extends Element = Element>(
+  selector: string,
+  parent: ParentNode = document,
+): T {
+  const element = parent.querySelector<T>(selector);
+  if (!element) {
+    throw new Error(`Element matching "${selector}" not found`);
+  }
+  return element;
 }

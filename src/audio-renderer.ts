@@ -24,7 +24,7 @@
  * ```
  */
 
-import type { Renderer } from "./renderer.js";
+import type { Renderer } from "@/renderer";
 
 /**
  * Web Audio-based implementation of Renderer interface.

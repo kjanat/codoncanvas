@@ -17,8 +17,8 @@
  * - Supports formative assessment and early intervention
  */
 
-import type { ResearchSession } from "./research-metrics";
-import type { RiskLevel } from "./types";
+import type { ResearchSession } from "@/research-metrics";
+import type { RiskLevel } from "@/types";
 
 /**
  * Student progress data exported for teacher dashboard analysis
@@ -346,65 +346,9 @@ export class TeacherDashboard {
     const atRiskList: AtRiskStudent[] = [];
 
     students.forEach((student) => {
-      const reasons: string[] = [];
-      let severity: "high" | "medium" | "low" = "low";
-
-      // Check: No first artifact achieved
-      if (student.aggregateMetrics.avgTimeToFirstArtifact === 0) {
-        reasons.push("Has not created first successful artifact");
-        severity = "high";
-      }
-
-      // Check: Very low session count
-      if (student.aggregateMetrics.totalSessions < 1) {
-        reasons.push("No completed sessions");
-        severity = "high";
-      } else if (student.aggregateMetrics.totalSessions < 2) {
-        reasons.push("Only 1 session completed");
-        severity = severity === "high" ? "high" : "medium";
-      }
-
-      // Check: No tutorials started
-      const tutorialsStarted = Object.values(student.tutorials).filter(
-        (t) => t.startedAt !== null,
-      ).length;
-      if (tutorialsStarted === 0) {
-        reasons.push("No tutorials started");
-        severity = "high";
-      }
-
-      // Check: No genomes created
-      if (student.aggregateMetrics.totalGenomesCreated === 0) {
-        reasons.push("No genomes created");
-        severity = "high";
-      }
-
-      // Check: Low tutorial completion rate
-      if (
-        student.aggregateMetrics.completionRate < 0.25 &&
-        tutorialsStarted > 0
-      ) {
-        reasons.push("Low tutorial completion rate (<25%)");
-        severity = severity === "high" ? "high" : "medium";
-      }
-
-      // Only include if there are risk factors
-      if (reasons.length > 0) {
-        atRiskList.push({
-          studentId: student.studentId,
-          studentName: student.studentName,
-          reasons,
-          severity,
-          metrics: {
-            sessions: student.aggregateMetrics.totalSessions,
-            timeToFirstArtifact:
-              student.aggregateMetrics.avgTimeToFirstArtifact,
-            tutorialsStarted,
-            tutorialsCompleted: Object.values(student.tutorials).filter(
-              (t) => t.completed,
-            ).length,
-          },
-        });
+      const riskAssessment = this.evaluateStudentRisk(student);
+      if (riskAssessment) {
+        atRiskList.push(riskAssessment);
       }
     });
 
@@ -510,6 +454,71 @@ export class TeacherDashboard {
       },
       tutorialCompletion: {},
     };
+  }
+  private evaluateStudentRisk(
+    student: TeacherStudentProgress,
+  ): AtRiskStudent | null {
+    const reasons: string[] = [];
+    let severity: "high" | "medium" | "low" = "low";
+
+    // Check: No first artifact achieved
+    if (student.aggregateMetrics.avgTimeToFirstArtifact === 0) {
+      reasons.push("Has not created first successful artifact");
+      severity = "high";
+    }
+
+    // Check: Very low session count
+    if (student.aggregateMetrics.totalSessions < 1) {
+      reasons.push("No completed sessions");
+      severity = "high";
+    } else if (student.aggregateMetrics.totalSessions < 2) {
+      reasons.push("Only 1 session completed");
+      severity = severity === "high" ? "high" : "medium";
+    }
+
+    // Check: No tutorials started
+    const tutorialsStarted = Object.values(student.tutorials).filter(
+      (t) => t.startedAt !== null,
+    ).length;
+    if (tutorialsStarted === 0) {
+      reasons.push("No tutorials started");
+      severity = "high";
+    }
+
+    // Check: No genomes created
+    if (student.aggregateMetrics.totalGenomesCreated === 0) {
+      reasons.push("No genomes created");
+      severity = "high";
+    }
+
+    // Check: Low tutorial completion rate
+    if (
+      student.aggregateMetrics.completionRate < 0.25 &&
+      tutorialsStarted > 0
+    ) {
+      reasons.push("Low tutorial completion rate (<25%)");
+      severity = severity === "high" ? "high" : "medium";
+    }
+
+    // Only include if there are risk factors
+    if (reasons.length > 0) {
+      return {
+        studentId: student.studentId,
+        studentName: student.studentName,
+        reasons,
+        severity,
+        metrics: {
+          sessions: student.aggregateMetrics.totalSessions,
+          timeToFirstArtifact: student.aggregateMetrics.avgTimeToFirstArtifact,
+          tutorialsStarted,
+          tutorialsCompleted: Object.values(student.tutorials).filter(
+            (t) => t.completed,
+          ).length,
+        },
+      };
+    }
+
+    return null;
   }
 }
 

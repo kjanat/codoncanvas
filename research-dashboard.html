@@ -1,645 +1,134 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Research Dashboard - CodonCanvas</title>
-  <style>
-    * {
-      box-sizing: border-box;
-      padding: 0;
-      margin: 0;
-    }
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Research Dashboard - CodonCanvas</title>
+    <link rel="stylesheet" href="css/variables.css" />
+    <link rel="stylesheet" href="css/research-dashboard.css" />
+  </head>
+  <body>
+    <div class="container">
+      <header>
+        <h1>🔬 Research Dashboard</h1>
+        <div class="subtitle">
+          Privacy-Respecting Learning Analytics for CodonCanvas
+        </div>
+      </header>
 
-    body {
-      min-height: 100vh;
-      padding: 20px;
-      font-family: 'Courier New', monospace;
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    }
+      <div class="dashboard">
+        <div
+          id="status-message"
+          class="status-message status-info"
+          style="display: none"
+        ></div>
 
-    .container {
-      max-width: 1400px;
-      margin: 0 auto;
-      overflow: hidden;
-      background: white;
-      border-radius: 12px;
-      box-shadow: 0 10px 40px rgba(0,0,0,0.2);
-    }
-
-    header {
-      padding: 30px;
-      color: white;
-      text-align: center;
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    }
-
-    h1 {
-      margin-bottom: 10px;
-      font-size: 2.5em;
-    }
-
-    .subtitle {
-      font-size: 1.1em;
-      opacity: 0.9;
-    }
-
-    .dashboard {
-      padding: 30px;
-    }
-
-    .metrics-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-      gap: 20px;
-      margin-bottom: 30px;
-    }
-
-    .metric-card {
-      padding: 20px;
-      background: #f8f9fa;
-      border-left: 4px solid #667eea;
-      border-radius: 8px;
-    }
-
-    .metric-label {
-      margin-bottom: 8px;
-      font-size: 0.9em;
-      color: #666;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-    }
-
-    .metric-value {
-      font-size: 2em;
-      font-weight: bold;
-      color: #333;
-    }
-
-    .metric-subvalue {
-      margin-top: 4px;
-      font-size: 0.9em;
-      color: #888;
-    }
-
-    .section {
-      padding: 20px;
-      margin-bottom: 30px;
-      background: #f8f9fa;
-      border-radius: 8px;
-    }
-
-    .section-title {
-      padding-bottom: 10px;
-      margin-bottom: 15px;
-      font-size: 1.5em;
-      color: #333;
-      border-bottom: 2px solid #667eea;
-    }
-
-    .chart {
-      padding: 20px;
-      margin-top: 15px;
-      background: white;
-      border-radius: 8px;
-    }
-
-    .bar-chart {
-      display: flex;
-      flex-direction: column;
-      gap: 15px;
-    }
-
-    .bar-item {
-      display: flex;
-      gap: 15px;
-      align-items: center;
-    }
-
-    .bar-label {
-      min-width: 150px;
-      font-weight: bold;
-      color: #555;
-    }
-
-    .bar-container {
-      position: relative;
-      flex: 1;
-      height: 30px;
-      overflow: hidden;
-      background: #e9ecef;
-      border-radius: 4px;
-    }
-
-    .bar-fill {
-      display: flex;
-      align-items: center;
-      justify-content: flex-end;
-      height: 100%;
-      padding-right: 10px;
-      font-weight: bold;
-      color: white;
-      background: linear-gradient(90deg, #667eea, #764ba2);
-      border-radius: 4px;
-      transition: width 0.5s ease;
-    }
-
-    .controls {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 15px;
-      margin-bottom: 30px;
-    }
-
-    button {
-      padding: 12px 24px;
-      font-family: 'Courier New', monospace;
-      font-size: 1em;
-      color: white;
-      cursor: pointer;
-      background: #667eea;
-      border: none;
-      border-radius: 6px;
-      transition: all 0.3s ease;
-    }
-
-    button:hover {
-      background: #764ba2;
-      box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
-      transform: translateY(-2px);
-    }
-
-    button:active {
-      transform: translateY(0);
-    }
-
-    .status-message {
-      padding: 15px;
-      margin-bottom: 20px;
-      font-weight: bold;
-      border-radius: 6px;
-    }
-
-    .status-info {
-      color: #0c5460;
-      background: #d1ecf1;
-      border-left: 4px solid #17a2b8;
-    }
-
-    .status-success {
-      color: #155724;
-      background: #d4edda;
-      border-left: 4px solid #28a745;
-    }
-
-    .status-warning {
-      color: #856404;
-      background: #fff3cd;
-      border-left: 4px solid #ffc107;
-    }
-
-    .sessions-table {
-      margin-top: 15px;
-      overflow-x: auto;
-    }
-
-    table {
-      width: 100%;
-      overflow: hidden;
-      border-collapse: collapse;
-      background: white;
-      border-radius: 8px;
-    }
-
-    th, td {
-      padding: 12px;
-      text-align: left;
-      border-bottom: 1px solid #e9ecef;
-    }
-
-    th {
-      font-size: 0.9em;
-      font-weight: bold;
-      color: white;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-      background: #667eea;
-    }
-
-    tr:hover {
-      background: #f8f9fa;
-    }
-
-    .empty-state {
-      padding: 60px 20px;
-      color: #999;
-      text-align: center;
-    }
-
-    .empty-state-icon {
-      margin-bottom: 20px;
-      font-size: 4em;
-    }
-
-    @media (max-width: 768px) {
-      h1 {
-        font-size: 1.8em;
-      }
-
-      .metrics-grid {
-        grid-template-columns: 1fr;
-      }
-
-      .controls {
-        flex-direction: column;
-      }
-
-      button {
-        width: 100%;
-      }
-    }
-  </style>
-</head>
-<body>
-  <div class="container">
-    <header>
-      <h1>🔬 Research Dashboard</h1>
-      <div class="subtitle">Privacy-Respecting Learning Analytics for CodonCanvas</div>
-    </header>
-
-    <div class="dashboard">
-      <div id="statusMessage" class="status-message status-info" style="display: none;"></div>
-
-      <div class="controls">
-        <button onclick="refreshData()">🔄 Refresh Data</button>
-        <button onclick="exportJSON()">📊 Export JSON</button>
-        <button onclick="exportCSV()">📋 Export CSV</button>
-        <button onclick="analyzeData()">📈 Analyze Data</button>
-        <button onclick="clearData()">🗑️ Clear All Data</button>
-      </div>
-
-      <div id="noDataMessage" class="empty-state" style="display: none;">
-        <div class="empty-state-icon">📭</div>
-        <h2>No Research Data Collected Yet</h2>
-        <p>Enable research metrics in the main playground to start collecting data.</p>
-        <p style="margin-top: 10px; color: #666;">
-          Go to <strong>Settings → Research Participation</strong> and opt in to data collection.
-        </p>
-      </div>
-
-      <div id="dataDisplay">
-        <div class="metrics-grid">
-          <div class="metric-card">
-            <div class="metric-label">Total Sessions</div>
-            <div class="metric-value" id="totalSessions">0</div>
-          </div>
-
-          <div class="metric-card">
-            <div class="metric-label">Avg Session Duration</div>
-            <div class="metric-value" id="avgDuration">0m</div>
-            <div class="metric-subvalue" id="totalDuration"></div>
-          </div>
-
-          <div class="metric-card">
-            <div class="metric-label">Genomes Created</div>
-            <div class="metric-value" id="totalGenomes">0</div>
-          </div>
-
-          <div class="metric-card">
-            <div class="metric-label">Mutations Applied</div>
-            <div class="metric-value" id="totalMutations">0</div>
-          </div>
-
-          <div class="metric-card">
-            <div class="metric-label">Avg Time to First Artifact</div>
-            <div class="metric-value" id="avgTimeToFirst">--</div>
-            <div class="metric-subvalue">Key learning metric</div>
-          </div>
-
-          <div class="metric-card">
-            <div class="metric-label">Total Errors</div>
-            <div class="metric-value" id="totalErrors">0</div>
-          </div>
+        <div class="controls">
+          <button id="refresh-data-btn">🔄 Refresh Data</button>
+          <button id="export-json-btn">📊 Export JSON</button>
+          <button id="export-csv-btn">📋 Export CSV</button>
+          <button id="analyze-data-btn">📈 Analyze Data</button>
+          <button id="clear-data-btn">🗑️ Clear All Data</button>
         </div>
 
-        <div class="section">
-          <h2 class="section-title">📊 Mutation Type Distribution</h2>
-          <div class="chart">
-            <div class="bar-chart" id="mutationChart"></div>
-          </div>
+        <div id="no-data-message" class="empty-state" style="display: none">
+          <div class="empty-state-icon">📭</div>
+          <h2>No Research Data Collected Yet</h2>
+          <p>
+            Enable research metrics in the main playground to start collecting
+            data.
+          </p>
+          <p style="margin-top: 10px; color: #666">
+            Go to <strong>Settings → Research Participation</strong> and opt in
+            to data collection.
+          </p>
         </div>
 
-        <div class="section">
-          <h2 class="section-title">🎨 Render Mode Preferences</h2>
-          <div class="chart">
-            <div class="bar-chart" id="renderModeChart"></div>
-          </div>
-        </div>
+        <div id="data-display">
+          <div class="metrics-grid">
+            <div class="metric-card">
+              <div class="metric-label">Total Sessions</div>
+              <div class="metric-value" id="total-sessions">0</div>
+            </div>
 
-        <div class="section">
-          <h2 class="section-title">🛠️ Feature Usage</h2>
-          <div class="chart">
-            <div class="bar-chart" id="featureChart"></div>
-          </div>
-        </div>
+            <div class="metric-card">
+              <div class="metric-label">Avg Session Duration</div>
+              <div class="metric-value" id="avg-duration">0m</div>
+              <div class="metric-subvalue" id="total-duration"></div>
+            </div>
 
-        <div class="section">
-          <h2 class="section-title">📝 Recent Sessions</h2>
-          <div class="sessions-table">
-            <table id="sessionsTable">
-              <thead>
-                <tr>
-                  <th>Session ID</th>
-                  <th>Date</th>
-                  <th>Duration</th>
-                  <th>Genomes</th>
-                  <th>Mutations</th>
-                  <th>Time to First</th>
-                  <th>Errors</th>
-                </tr>
-              </thead>
-              <tbody id="sessionsBody"></tbody>
-            </table>
-          </div>
-        </div>
+            <div class="metric-card">
+              <div class="metric-label">Genomes Created</div>
+              <div class="metric-value" id="total-genomes">0</div>
+            </div>
 
-        <!-- Statistical Analysis Section -->
-        <div id="analysisSection" class="section" style="display: none;">
-          <h2 class="section-title">📊 Statistical Analysis</h2>
-          <div id="analysisResults" style="background: white; padding: 20px; border-radius: 8px; font-family: 'Courier New', monospace; white-space: pre-wrap; font-size: 0.9em; line-height: 1.6;"></div>
+            <div class="metric-card">
+              <div class="metric-label">Mutations Applied</div>
+              <div class="metric-value" id="total-mutations">0</div>
+            </div>
+
+            <div class="metric-card">
+              <div class="metric-label">Avg Time to First Artifact</div>
+              <div class="metric-value" id="avg-time-to-first">--</div>
+              <div class="metric-subvalue">Key learning metric</div>
+            </div>
+
+            <div class="metric-card">
+              <div class="metric-label">Total Errors</div>
+              <div class="metric-value" id="total-errors">0</div>
+            </div>
+          </div>
+
+          <div class="section">
+            <h2 class="section-title">📊 Mutation Type Distribution</h2>
+            <div class="chart">
+              <div class="bar-chart" id="mutation-chart"></div>
+            </div>
+          </div>
+
+          <div class="section">
+            <h2 class="section-title">🎨 Render Mode Preferences</h2>
+            <div class="chart">
+              <div class="bar-chart" id="render-mode-chart"></div>
+            </div>
+          </div>
+
+          <div class="section">
+            <h2 class="section-title">🛠️ Feature Usage</h2>
+            <div class="chart">
+              <div class="bar-chart" id="feature-chart"></div>
+            </div>
+          </div>
+
+          <div class="section">
+            <h2 class="section-title">📝 Recent Sessions</h2>
+            <div class="sessions-table">
+              <table id="sessions-table">
+                <thead>
+                  <tr>
+                    <th>Session ID</th>
+                    <th>Date</th>
+                    <th>Duration</th>
+                    <th>Genomes</th>
+                    <th>Mutations</th>
+                    <th>Time to First</th>
+                    <th>Errors</th>
+                  </tr>
+                </thead>
+                <tbody id="sessions-body"></tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- Statistical Analysis Section -->
+          <div id="analysis-section" class="section" style="display: none">
+            <h2 class="section-title">📊 Statistical Analysis</h2>
+            <div id="analysis-results" class="analysis-results"></div>
+          </div>
         </div>
       </div>
     </div>
-  </div>
 
-  <script type="module">
-    import { formatDuration as formatDurationAnalyzer, MetricsAnalyzer, parseCSVContent } from './src/metrics-analyzer-core.ts';
-    import { ResearchMetrics } from './src/research-metrics.ts';
-
-    const metrics = new ResearchMetrics({ enabled: false }); // Read-only mode
-
-    function showStatus(message, type = 'info') {
-      const statusEl = document.getElementById('statusMessage');
-      statusEl.textContent = message;
-      statusEl.className = `status-message status-${type}`;
-      statusEl.style.display = 'block';
-
-      setTimeout(() => {
-        statusEl.style.display = 'none';
-      }, 3000);
-    }
-
-    function formatDuration(ms) {
-      if (!ms || ms === 0) return '0m';
-      const minutes = Math.floor(ms / 60000);
-      const seconds = Math.floor((ms % 60000) / 1000);
-      return minutes > 0 ? `${minutes}m ${seconds}s` : `${seconds}s`;
-    }
-
-    function formatTime(ms) {
-      if (!ms || ms === 0) return '--';
-      const seconds = Math.floor(ms / 1000);
-      return `${seconds}s`;
-    }
-
-    function createBarChart(data, containerId) {
-      const container = document.getElementById(containerId);
-      container.innerHTML = '';
-
-      const maxValue = Math.max(...Object.values(data));
-
-      Object.entries(data).forEach(([label, value]) => {
-        const percentage = maxValue > 0 ? (value / maxValue) * 100 : 0;
-
-        const item = document.createElement('div');
-        item.className = 'bar-item';
-
-        const labelEl = document.createElement('div');
-        labelEl.className = 'bar-label';
-        labelEl.textContent = label.charAt(0).toUpperCase() + label.slice(1);
-
-        const barContainer = document.createElement('div');
-        barContainer.className = 'bar-container';
-
-        const barFill = document.createElement('div');
-        barFill.className = 'bar-fill';
-        barFill.style.width = `${percentage}%`;
-        barFill.textContent = value;
-
-        barContainer.appendChild(barFill);
-        item.appendChild(labelEl);
-        item.appendChild(barContainer);
-        container.appendChild(item);
-      });
-    }
-
-    function refreshData() {
-      const stats = metrics.getAggregateStats();
-      const sessions = metrics.getAllSessions();
-
-      if (sessions.length === 0) {
-        document.getElementById('noDataMessage').style.display = 'block';
-        document.getElementById('dataDisplay').style.display = 'none';
-        return;
-      }
-
-      document.getElementById('noDataMessage').style.display = 'none';
-      document.getElementById('dataDisplay').style.display = 'block';
-
-      // Update metrics
-      document.getElementById('totalSessions').textContent = stats.totalSessions;
-      document.getElementById('avgDuration').textContent = formatDuration(stats.avgDuration);
-      document.getElementById('totalDuration').textContent = `Total: ${formatDuration(stats.totalDuration)}`;
-      document.getElementById('totalGenomes').textContent = stats.totalGenomesCreated;
-      document.getElementById('totalMutations').textContent = stats.totalMutations;
-      document.getElementById('avgTimeToFirst').textContent = formatTime(stats.avgTimeToFirstArtifact);
-      document.getElementById('totalErrors').textContent = stats.totalErrors;
-
-      // Update charts
-      createBarChart(stats.mutationTypeDistribution, 'mutationChart');
-      createBarChart(stats.renderModePreferences, 'renderModeChart');
-      createBarChart(stats.featureUsage, 'featureChart');
-
-      // Update sessions table
-      const tbody = document.getElementById('sessionsBody');
-      tbody.innerHTML = '';
-
-      // Show last 20 sessions
-      const recentSessions = sessions.slice(-20).reverse();
-
-      recentSessions.forEach(session => {
-        const row = tbody.insertRow();
-        row.insertCell().textContent = `${session.sessionId.substring(0, 20)}...`;
-        row.insertCell().textContent = new Date(session.startTime).toLocaleString();
-        row.insertCell().textContent = formatDuration(session.duration);
-        row.insertCell().textContent = session.genomesCreated;
-        row.insertCell().textContent = session.mutationsApplied;
-        row.insertCell().textContent = formatTime(session.timeToFirstArtifact);
-        row.insertCell().textContent = session.errors.length;
-      });
-
-      showStatus('Data refreshed successfully', 'success');
-    }
-
-    function exportJSON() {
-      const data = metrics.exportData();
-      const blob = new Blob([data], { type: 'application/json' });
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = `codoncanvas-research-data-${Date.now()}.json`;
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
-      URL.revokeObjectURL(url);
-
-      showStatus('JSON data exported successfully', 'success');
-    }
-
-    function exportCSV() {
-      const data = metrics.exportCSV();
-      const blob = new Blob([data], { type: 'text/csv' });
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = `codoncanvas-research-data-${Date.now()}.csv`;
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
-      URL.revokeObjectURL(url);
-
-      showStatus('CSV data exported successfully', 'success');
-    }
-
-    function clearData() {
-      if (confirm('Are you sure you want to clear all research data? This cannot be undone.')) {
-        metrics.clearAllData();
-        refreshData();
-        showStatus('All research data cleared', 'warning');
-      }
-    }
-
-    function analyzeData() {
-      const sessions = metrics.getAllSessions();
-
-      if (sessions.length === 0) {
-        showStatus('No data to analyze. Collect some research data first.', 'warning');
-        return;
-      }
-
-      try {
-        // Get CSV data and parse it
-        const csvData = metrics.exportCSV();
-        const parsedSessions = parseCSVContent(csvData);
-
-        // Create analyzer and generate report
-        const analyzer = new MetricsAnalyzer(parsedSessions);
-        const report = analyzer.generateReport();
-
-        // Format report for display
-        let output = '═══════════════════════════════════════════════════════════════════\n';
-        output += '           CODONCANVAS STATISTICAL ANALYSIS REPORT\n';
-        output += '═══════════════════════════════════════════════════════════════════\n\n';
-
-        // 1. Engagement Metrics
-        output += '───────────────────────────────────────────────────────────────────\n';
-        output += '1. ENGAGEMENT METRICS\n';
-        output += '───────────────────────────────────────────────────────────────────\n\n';
-        output += `Total Sessions:              ${report.engagement.totalSessions}\n`;
-        output += `Average Session Duration:    ${formatDurationAnalyzer(report.engagement.avgSessionDuration.mean)}\n`;
-        output += `  (SD = ${formatDurationAnalyzer(report.engagement.avgSessionDuration.sd)}, Range: ${formatDurationAnalyzer(report.engagement.avgSessionDuration.min)} - ${formatDurationAnalyzer(report.engagement.avgSessionDuration.max)})\n\n`;
-        output += `Total Genomes Created:       ${report.engagement.totalGenomesCreated}\n`;
-        output += `Avg Genomes per Session:     ${report.engagement.avgGenomesPerSession.mean.toFixed(1)}\n`;
-        output += `  (SD = ${report.engagement.avgGenomesPerSession.sd.toFixed(1)})\n`;
-        output += `Genome Execution Rate:       ${report.engagement.genomesExecutedRate.toFixed(1)}%\n\n`;
-
-        // 2. Learning Velocity
-        output += '───────────────────────────────────────────────────────────────────\n';
-        output += '2. LEARNING VELOCITY\n';
-        output += '───────────────────────────────────────────────────────────────────\n\n';
-        output += `Time to First Artifact:\n`;
-        output += `  Mean:     ${formatDurationAnalyzer(report.velocity.timeToFirstArtifact.mean)}\n`;
-        output += `  Median:   ${formatDurationAnalyzer(report.velocity.timeToFirstArtifact.median)}\n`;
-        output += `  SD:       ${formatDurationAnalyzer(report.velocity.timeToFirstArtifact.sd)}\n`;
-        output += `  Range:    ${formatDurationAnalyzer(report.velocity.timeToFirstArtifact.min)} - ${formatDurationAnalyzer(report.velocity.timeToFirstArtifact.max)}\n\n`;
-        output += `Learner Distribution:\n`;
-        output += `  Fast (<5 min):       ${report.velocity.fastLearners} (${((report.velocity.fastLearners / report.engagement.totalSessions) * 100).toFixed(1)}%)\n`;
-        output += `  Moderate (5-15 min): ${report.velocity.moderateLearners} (${((report.velocity.moderateLearners / report.engagement.totalSessions) * 100).toFixed(1)}%)\n`;
-        output += `  Slow (>15 min):      ${report.velocity.slowLearners} (${((report.velocity.slowLearners / report.engagement.totalSessions) * 100).toFixed(1)}%)\n`;
-        output += `  No Artifact:         ${report.velocity.noArtifact} (${((report.velocity.noArtifact / report.engagement.totalSessions) * 100).toFixed(1)}%)\n\n`;
-
-        // 3. Tool Adoption
-        output += '───────────────────────────────────────────────────────────────────\n';
-        output += '3. TOOL ADOPTION\n';
-        output += '───────────────────────────────────────────────────────────────────\n\n';
-        output += formatToolRow('Diff Viewer', report.tools.diffViewer, report.engagement.totalSessions);
-        output += formatToolRow('Timeline Scrubber', report.tools.timeline, report.engagement.totalSessions);
-        output += formatToolRow('Evolution Lab', report.tools.evolution, report.engagement.totalSessions);
-        output += formatToolRow('Assessment System', report.tools.assessment, report.engagement.totalSessions);
-        output += formatToolRow('Export Features', report.tools.export, report.engagement.totalSessions);
-        output += '\n';
-
-        // 4. Render Mode Preferences
-        output += '───────────────────────────────────────────────────────────────────\n';
-        output += '4. RENDER MODE PREFERENCES\n';
-        output += '───────────────────────────────────────────────────────────────────\n\n';
-        output += `Visual Only:         ${report.renderMode.visualOnly.percentage.toFixed(1)}% (${report.renderMode.visualOnly.sessions} executions)\n`;
-        output += `Audio Only:          ${report.renderMode.audioOnly.percentage.toFixed(1)}% (${report.renderMode.audioOnly.sessions} executions)\n`;
-        output += `Multi-Sensory:       ${report.renderMode.multiSensory.percentage.toFixed(1)}% (${report.renderMode.multiSensory.sessions} executions)\n\n`;
-
-        // 5. Mutation Patterns
-        output += '───────────────────────────────────────────────────────────────────\n';
-        output += '5. MUTATION PATTERNS\n';
-        output += '───────────────────────────────────────────────────────────────────\n\n';
-        output += `Total Mutations Applied: ${report.mutations.totalMutations}\n\n`;
-        output += `Mutation Type Distribution:\n`;
-        output += formatMutationRow('Silent', report.mutations.silent, report.mutations.totalMutations);
-        output += formatMutationRow('Missense', report.mutations.missense, report.mutations.totalMutations);
-        output += formatMutationRow('Nonsense', report.mutations.nonsense, report.mutations.totalMutations);
-        output += formatMutationRow('Frameshift', report.mutations.frameshift, report.mutations.totalMutations);
-        output += formatMutationRow('Point', report.mutations.point, report.mutations.totalMutations);
-        output += formatMutationRow('Insertion', report.mutations.insertion, report.mutations.totalMutations);
-        output += formatMutationRow('Deletion', report.mutations.deletion, report.mutations.totalMutations);
-        output += '\n';
-
-        output += '═══════════════════════════════════════════════════════════════════\n';
-        output += '                         END OF REPORT\n';
-        output += '═══════════════════════════════════════════════════════════════════\n';
-
-        // Display results
-        document.getElementById('analysisResults').textContent = output;
-        document.getElementById('analysisSection').style.display = 'block';
-
-        // Scroll to results
-        document.getElementById('analysisSection').scrollIntoView({ behavior: 'smooth' });
-
-        showStatus('Analysis complete! Results displayed below.', 'success');
-      } catch (error) {
-        console.error('Analysis error:', error);
-        showStatus(`Analysis failed: ${error.message}`, 'warning');
-      }
-    }
-
-    function formatToolRow(name, toolData, totalSessions) {
-      const adoptionRate = totalSessions > 0 ? (toolData.users / totalSessions) * 100 : 0;
-      return `${name.padEnd(20)} ${adoptionRate.toFixed(1).padStart(6)}% adoption  (avg ${toolData.avgUsage.toFixed(1)} uses/session)\n`;
-    }
-
-    function formatMutationRow(name, stats, totalMutations) {
-      const total = stats.mean * stats.n;
-      const percentage = totalMutations > 0 ? (total / totalMutations) * 100 : 0;
-      return `  ${name.padEnd(12)} M=${stats.mean.toFixed(1).padStart(5)}, SD=${stats.sd.toFixed(1).padStart(4)}  (${percentage.toFixed(1).padStart(5)}% of total)\n`;
-    }
-
-    // Make functions global
-    window.refreshData = refreshData;
-    window.exportJSON = exportJSON;
-    window.exportCSV = exportCSV;
-    window.analyzeData = analyzeData;
-    window.clearData = clearData;
-
-    // Initial load
-    refreshData();
-  </script>
-</body>
+    <script type="module" src="src/pages/research-dashboard-page.ts"></script>
+  </body>
 </html>

@@ -1,0 +1,115 @@
+/**
+ * CodonCanvas Design System Variables
+ *
+ * Shared CSS custom properties for consistent theming across all pages.
+ * Import this file first in any stylesheet that needs these values.
+ */
+
+:root {
+  /* ===== Color Palette ===== */
+
+  /* Primary (Purple) */
+  --color-primary: #667eea;
+  --color-primary-dark: #764ba2;
+  --color-primary-hover: #5568d3;
+  --color-primary-rgb: 102, 126, 234;
+
+  /* Secondary (Teal/Blue - used in learning paths) */
+  --color-secondary: #4ec9b0;
+  --color-secondary-dark: #569cd6;
+
+  /* Status Colors */
+  --color-success: #28a745;
+  --color-success-hover: #218838;
+  --color-warning: #ffc107;
+  --color-danger: #dc3545;
+  --color-danger-hover: #c82333;
+  --color-info: #17a2b8;
+
+  /* Neutral Colors */
+  --color-text: #333;
+  --color-text-muted: #6c757d;
+  --color-text-light: #495057;
+  --color-bg-light: #f8f9fa;
+  --color-border: #dee2e6;
+  --color-border-light: #e9ecef;
+
+  /* Dark Theme (demos) */
+  --color-dark-bg: #1e1e1e;
+  --color-dark-bg-alt: #2d2d30;
+  --color-dark-surface: #252526;
+  --color-dark-border: #3e3e42;
+  --color-dark-text: #d4d4d4;
+
+  /* ===== Gradients ===== */
+
+  /* Primary gradient (diagonal) - headers, cards, buttons */
+  --gradient-primary: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+
+  /* Progress gradient (horizontal) - progress bars */
+  --gradient-progress: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+
+  /* Dark theme gradient */
+  --gradient-dark: linear-gradient(135deg, #1e1e1e 0%, #2d2d30 100%);
+
+  /* Secondary gradient (teal/blue) */
+  --gradient-secondary: linear-gradient(135deg, #4ec9b0 0%, #569cd6 100%);
+  --gradient-secondary-horizontal: linear-gradient(
+    90deg,
+    #4ec9b0 0%,
+    #569cd6 100%
+  );
+
+  /* ===== Typography ===== */
+  --font-family-base:
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    Roboto,
+    Oxygen,
+    Ubuntu,
+    Cantarell,
+    sans-serif;
+  --font-family-mono: "Consolas", "Monaco", "Courier New", monospace;
+
+  /* ===== Spacing ===== */
+  --spacing-xs: 4px;
+  --spacing-sm: 8px;
+  --spacing-md: 16px;
+  --spacing-lg: 24px;
+  --spacing-xl: 40px;
+
+  /* ===== Borders ===== */
+  --border-radius-sm: 4px;
+  --border-radius-md: 8px;
+  --border-radius-lg: 12px;
+  --border-radius-pill: 9999px;
+
+  /* ===== Shadows ===== */
+  --shadow-sm: 0 2px 4px rgb(0 0 0 / 10%);
+  --shadow-md: 0 4px 12px rgb(0 0 0 / 15%);
+  --shadow-lg: 0 10px 40px rgb(0 0 0 / 10%);
+  --shadow-primary: 0 4px 12px rgb(102 126 234 / 40%);
+
+  /* ===== Transitions ===== */
+  --transition-fast: 0.15s ease;
+  --transition-base: 0.2s ease;
+  --transition-slow: 0.3s ease;
+
+  /* ===== Breakpoints (for reference in media queries) ===== */
+  /*
+   * --breakpoint-sm: 576px;
+   * --breakpoint-md: 768px;
+   * --breakpoint-lg: 992px;
+   * --breakpoint-xl: 1200px;
+   *
+   * Note: CSS custom properties cannot be used in media queries.
+   * Use these values directly: @media (min-width: 768px) { }
+   */
+
+  /* ===== Z-Index Scale ===== */
+  --z-dropdown: 100;
+  --z-modal-backdrop: 200;
+  --z-modal: 300;
+  --z-tooltip: 400;
+}

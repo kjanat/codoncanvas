@@ -1,0 +1,55 @@
+/* Mutation Demo - Specific styles (base styles in demo-base.css) */
+
+.container {
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.main-content {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.editor-wrapper {
+  grid-column: 1 / -1;
+}
+
+#editor {
+  width: 100%;
+  min-height: 150px;
+  padding: 1rem;
+  font-family: Monaco, Menlo, "Courier New", monospace;
+  font-size: 14px;
+  line-height: 1.5;
+  color: #d4d4d4;
+  resize: vertical;
+  background: #1e1e1e;
+  border: 1px solid #3e3e42;
+  border-radius: 4px;
+}
+
+.button-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+button.mutation-btn {
+  background: #3e3e42;
+}
+
+button.mutation-btn:hover {
+  background: #505052;
+}
+
+.examples-section {
+  margin-bottom: 1rem;
+}
+
+#diff-container {
+  grid-column: 1 / -1;
+  margin-top: 1rem;
+}

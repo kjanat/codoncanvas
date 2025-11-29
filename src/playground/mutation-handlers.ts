@@ -3,38 +3,33 @@
  * Handles genome mutation operations and preview functionality
  */
 
-import { predictMutationImpact } from "../mutation-predictor";
+import { predictMutationImpact } from "@/mutation-predictor";
+import { getMutationByType } from "@/mutations";
 import {
-  applyDeletion,
-  applyFrameshiftMutation,
-  applyInsertion,
-  applyMissenseMutation,
-  applyNonsenseMutation,
-  applyPointMutation,
-  applySilentMutation,
-  type MutationResult,
-} from "../mutations";
-import type { MutationType } from "../types";
-import { diffViewerContainer, diffViewerPanel, editor } from "./dom-manager";
-import { achievementEngine, achievementUI } from "./ui-state";
-import { setStatus } from "./ui-utils";
+  diffViewerContainer,
+  diffViewerPanel,
+  editor,
+} from "@/playground/dom-manager";
+import { achievementEngine, achievementUI } from "@/playground/ui-state";
+import { setStatus } from "@/playground/ui-utils";
+import type { MutationType } from "@/types";
 
 let originalGenomeBeforeMutation = "";
-let diffViewerInstance: import("../diff-viewer").DiffViewer | null = null; // Cached DiffViewer instance
+let diffViewerInstance: import("@/diff-viewer").DiffViewer | null = null; // Cached DiffViewer instance
 
 /**
  * Initialize or get DiffViewer instance
  */
-function getDiffViewer(): import("../diff-viewer").DiffViewer {
+function getDiffViewer(): import("@/diff-viewer").DiffViewer {
   if (!diffViewerInstance) {
     // Lazy import to avoid circular dependencies
-    const { DiffViewer } = require("../diff-viewer");
+    const { DiffViewer } = require("@/diff-viewer");
     diffViewerInstance = new DiffViewer({
       containerElement: diffViewerContainer,
     });
   }
   // Instance is guaranteed to exist after the if block above
-  return diffViewerInstance as import("../diff-viewer").DiffViewer;
+  return diffViewerInstance as import("@/diff-viewer").DiffViewer;
 }
 
 /**
@@ -51,33 +46,7 @@ export function applyMutation(type: MutationType) {
 
     originalGenomeBeforeMutation = genome;
 
-    let result: MutationResult;
-
-    switch (type) {
-      case "silent":
-        result = applySilentMutation(genome);
-        break;
-      case "missense":
-        result = applyMissenseMutation(genome);
-        break;
-      case "nonsense":
-        result = applyNonsenseMutation(genome);
-        break;
-      case "point":
-        result = applyPointMutation(genome);
-        break;
-      case "insertion":
-        result = applyInsertion(genome);
-        break;
-      case "deletion":
-        result = applyDeletion(genome);
-        break;
-      case "frameshift":
-        result = applyFrameshiftMutation(genome);
-        break;
-      default:
-        throw new Error(`Unknown mutation type: ${type}`);
-    }
+    const result = getMutationByType(type, genome);
 
     editor.value = result.mutated;
 
@@ -112,33 +81,7 @@ export function previewMutation(type: MutationType) {
       return;
     }
 
-    let result: MutationResult;
-    switch (type) {
-      case "silent":
-        result = applySilentMutation(genome);
-        break;
-      case "missense":
-        result = applyMissenseMutation(genome);
-        break;
-      case "nonsense":
-        result = applyNonsenseMutation(genome);
-        break;
-      case "point":
-        result = applyPointMutation(genome);
-        break;
-      case "insertion":
-        result = applyInsertion(genome);
-        break;
-      case "deletion":
-        result = applyDeletion(genome);
-        break;
-      case "frameshift":
-        result = applyFrameshiftMutation(genome);
-        break;
-      default:
-        throw new Error(`Unknown mutation type: ${type}`);
-    }
-
+    const result = getMutationByType(type, genome);
     const prediction = predictMutationImpact(genome, result);
     setStatus(`Mutation preview: ${prediction.description}`, "info");
   } catch (error) {

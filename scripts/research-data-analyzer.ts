@@ -21,10 +21,6 @@
 
 import * as fs from "node:fs";
 
-// ============================================================================
-// Data Structures
-// ============================================================================
-
 interface StudentData {
   id: string;
   group?: "treatment" | "control";
@@ -49,6 +45,149 @@ interface StudentData {
   gpa?: number;
   prior_programming?: 0 | 1 | 2 | 3;
   institution?: string;
+}
+
+/**
+ * Required fields for StudentData validation (must be present and correct type)
+ */
+const REQUIRED_STUDENT_FIELDS = [
+  "id",
+  "pretest_total",
+  "posttest_total",
+  "pretest_silent",
+  "pretest_missense",
+  "pretest_nonsense",
+  "pretest_frameshift",
+  "pretest_indel",
+  "posttest_silent",
+  "posttest_missense",
+  "posttest_nonsense",
+  "posttest_frameshift",
+  "posttest_indel",
+] as const;
+
+/**
+ * Fields that should be parsed as numbers
+ */
+const NUMERIC_STUDENT_FIELDS = new Set([
+  "pretest_total",
+  "posttest_total",
+  "delayed_total",
+  "pretest_silent",
+  "pretest_missense",
+  "pretest_nonsense",
+  "pretest_frameshift",
+  "pretest_indel",
+  "posttest_silent",
+  "posttest_missense",
+  "posttest_nonsense",
+  "posttest_frameshift",
+  "posttest_indel",
+  "mtt_score",
+  "imi_interest",
+  "imi_competence",
+  "imi_effort",
+  "imi_value",
+  "gpa",
+  "prior_programming",
+]);
+
+/**
+ * Validate and construct StudentData from a parsed row
+ * Returns the validated StudentData or null if invalid
+ */
+// biome-ignore lint/complexity/noExcessiveCognitiveComplexity: Explicit field validation requires checking each field
+function validateStudentData(
+  row: Record<string, string | number | undefined>,
+  rowIndex: number,
+): StudentData | null {
+  // Validate id is a string
+  const id = row.id;
+  if (typeof id !== "string" || id.trim() === "") {
+    console.error(`Error: Row ${rowIndex + 1} "id" must be a non-empty string`);
+    return null;
+  }
+
+  // Validate all required numeric fields
+  for (const field of REQUIRED_STUDENT_FIELDS) {
+    if (field === "id") continue;
+    const value = row[field];
+    if (
+      value === undefined ||
+      typeof value !== "number" ||
+      !Number.isFinite(value)
+    ) {
+      console.error(
+        `Error: Row ${rowIndex + 1} field "${field}" must be a valid number, got: ${value}`,
+      );
+      return null;
+    }
+  }
+
+  // Construct StudentData with validated required fields
+  const data: StudentData = {
+    id,
+    pretest_total: row.pretest_total as number,
+    posttest_total: row.posttest_total as number,
+    pretest_silent: row.pretest_silent as number,
+    pretest_missense: row.pretest_missense as number,
+    pretest_nonsense: row.pretest_nonsense as number,
+    pretest_frameshift: row.pretest_frameshift as number,
+    pretest_indel: row.pretest_indel as number,
+    posttest_silent: row.posttest_silent as number,
+    posttest_missense: row.posttest_missense as number,
+    posttest_nonsense: row.posttest_nonsense as number,
+    posttest_frameshift: row.posttest_frameshift as number,
+    posttest_indel: row.posttest_indel as number,
+  };
+
+  // Add optional fields if present
+  if (row.group === "treatment" || row.group === "control") {
+    data.group = row.group;
+  }
+  if (
+    typeof row.delayed_total === "number" &&
+    Number.isFinite(row.delayed_total)
+  ) {
+    data.delayed_total = row.delayed_total;
+  }
+  if (typeof row.mtt_score === "number" && Number.isFinite(row.mtt_score)) {
+    data.mtt_score = row.mtt_score;
+  }
+  if (
+    typeof row.imi_interest === "number" &&
+    Number.isFinite(row.imi_interest)
+  ) {
+    data.imi_interest = row.imi_interest;
+  }
+  if (
+    typeof row.imi_competence === "number" &&
+    Number.isFinite(row.imi_competence)
+  ) {
+    data.imi_competence = row.imi_competence;
+  }
+  if (typeof row.imi_effort === "number" && Number.isFinite(row.imi_effort)) {
+    data.imi_effort = row.imi_effort;
+  }
+  if (typeof row.imi_value === "number" && Number.isFinite(row.imi_value)) {
+    data.imi_value = row.imi_value;
+  }
+  if (typeof row.gpa === "number" && Number.isFinite(row.gpa)) {
+    data.gpa = row.gpa;
+  }
+  if (
+    row.prior_programming === 0 ||
+    row.prior_programming === 1 ||
+    row.prior_programming === 2 ||
+    row.prior_programming === 3
+  ) {
+    data.prior_programming = row.prior_programming;
+  }
+  if (typeof row.institution === "string") {
+    data.institution = row.institution;
+  }
+
+  return data;
 }
 
 interface DescriptiveStats {
@@ -76,10 +215,6 @@ interface PowerAnalysis {
   inflated_n_per_group: number; // accounting for attrition
   inflated_total: number;
 }
-
-// ============================================================================
-// Statistical Functions
-// ============================================================================
 
 // biome-ignore lint/complexity/noStaticOnlyClass: Intentional grouping for statistical utilities
 class Stats {
@@ -304,10 +439,6 @@ class Stats {
     };
   }
 }
-
-// ============================================================================
-// Analysis Workflows
-// ============================================================================
 
 // biome-ignore lint/complexity/noStaticOnlyClass: Intentional grouping for analysis workflows
 class ResearchAnalyzer {
@@ -581,7 +712,7 @@ class ResearchAnalyzer {
 
     if (retentionTest.p >= 0.05) {
       console.log("✅ Learning gains maintained (no significant decay)");
-    } else if (retentionTest.mean_diff > 0) {
+    } else if (retentionTest.mean_diff < 0) {
       console.log("⚠️  Some decay detected, but scores still above baseline");
     } else {
       console.log("✅ Learning gains actually increased (sleeper effect)");
@@ -647,40 +778,50 @@ class ResearchAnalyzer {
   }
 }
 
-// ============================================================================
-// CSV Parsing
-// ============================================================================
-
 function parseCSV(filepath: string): StudentData[] {
   const content = fs.readFileSync(filepath, "utf-8");
   const lines = content.trim().split("\n");
   const headers = lines[0].split(",").map((h) => h.trim());
 
-  return lines.slice(1).map((line) => {
+  const results: StudentData[] = [];
+  let hasErrors = false;
+
+  for (let rowIndex = 0; rowIndex < lines.length - 1; rowIndex++) {
+    const line = lines[rowIndex + 1];
     const values = line.split(",").map((v) => v.trim());
     const row: Record<string, string | number | undefined> = {};
+
     headers.forEach((header, i) => {
       const value = values[i];
-      // Convert numeric fields
-      if (
-        header.includes("test_") ||
-        header === "mtt_score" ||
-        header === "gpa" ||
-        header.includes("imi_") ||
-        header === "prior_programming"
-      ) {
+      // Convert numeric fields using the defined set
+      if (NUMERIC_STUDENT_FIELDS.has(header)) {
         row[header] = value ? parseFloat(value) : undefined;
       } else {
         row[header] = value;
       }
     });
-    return row as StudentData;
-  });
-}
 
-// ============================================================================
-// CLI
-// ============================================================================
+    // Validate row before adding to results
+    const validated = validateStudentData(row, rowIndex);
+    if (validated !== null) {
+      results.push(validated);
+    } else {
+      hasErrors = true;
+    }
+  }
+
+  if (hasErrors) {
+    console.error(
+      "\nWarning: Some rows failed validation and were skipped. Check CSV format.",
+    );
+  }
+
+  if (results.length === 0) {
+    throw new Error("No valid data rows found in CSV");
+  }
+
+  return results;
+}
 
 function printUsage(): void {
   console.log(`
@@ -728,6 +869,68 @@ CSV FORMAT:
 `);
 }
 
+/**
+ * Safely get a numeric flag value from CLI args
+ * Returns fallback if flag not present, exits with error if value invalid
+ */
+function getNumericFlag(
+  args: string[],
+  flag: string,
+  fallback: number,
+): number {
+  const idx = args.indexOf(flag);
+  if (idx === -1) return fallback;
+
+  if (idx + 1 >= args.length) {
+    console.error(`Error: ${flag} requires a numeric value`);
+    process.exit(1);
+  }
+
+  const value = Number(args[idx + 1]);
+  if (!Number.isFinite(value)) {
+    console.error(`Error: Invalid value for ${flag}: "${args[idx + 1]}"`);
+    process.exit(1);
+  }
+
+  return value;
+}
+
+/**
+ * Safely get a required string flag value from CLI args
+ * Exits with error if flag not present or value missing
+ */
+function getRequiredFlag(args: string[], flag: string): string {
+  const idx = args.indexOf(flag);
+  if (idx === -1) {
+    console.error(`Error: ${flag} is required`);
+    printUsage();
+    process.exit(1);
+  }
+
+  if (idx + 1 >= args.length || args[idx + 1].startsWith("--")) {
+    console.error(`Error: ${flag} requires a value`);
+    process.exit(1);
+  }
+
+  return args[idx + 1];
+}
+
+/**
+ * Safely get an optional string flag value from CLI args
+ * Returns undefined if flag not present, exits with error if value missing
+ */
+function getOptionalFlag(args: string[], flag: string): string | undefined {
+  const idx = args.indexOf(flag);
+  if (idx === -1) return undefined;
+
+  if (idx + 1 >= args.length || args[idx + 1].startsWith("--")) {
+    console.error(`Error: ${flag} requires a value`);
+    process.exit(1);
+  }
+
+  return args[idx + 1];
+}
+
 function main(): void {
   const args = process.argv.slice(2);
 
@@ -738,64 +941,85 @@ function main(): void {
 
   // Power analysis
   if (args.includes("--power-analysis")) {
-    const effectIdx = args.indexOf("--effect");
-    const alphaIdx = args.indexOf("--alpha");
-    const powerIdx = args.indexOf("--power");
-
-    const effect = effectIdx !== -1 ? parseFloat(args[effectIdx + 1]) : 0.5;
-    const alpha = alphaIdx !== -1 ? parseFloat(args[alphaIdx + 1]) : 0.05;
-    const power = powerIdx !== -1 ? parseFloat(args[powerIdx + 1]) : 0.8;
-
-    console.log(
-      "\n╔══════════════════════════════════════════════════════════════╗",
-    );
-    console.log(
-      "║                     Power Analysis                           ║",
-    );
-    console.log(
-      "╚══════════════════════════════════════════════════════════════╝\n",
-    );
-
-    const result = Stats.powerAnalysis(effect, alpha, power);
-
-    console.log(`Parameters:`);
-    console.log(`  Effect size (Cohen's d): ${effect}`);
-    console.log(`  Alpha level:             ${alpha}`);
-    console.log(`  Desired power:           ${power}\n`);
-
-    console.log(`Sample Size Required:`);
-    console.log(`  Per group:               ${result.required_n_per_group}`);
-    console.log(`  Total (2 groups):        ${result.total_n}\n`);
-
-    console.log(`With 20% Attrition Buffer:`);
-    console.log(`  Per group:               ${result.inflated_n_per_group}`);
-    console.log(`  Total (2 groups):        ${result.inflated_total}\n`);
-
-    console.log(`${"═".repeat(64)}\n`);
+    handlePowerAnalysis(args);
     return;
   }
 
   // Data analysis
-  const designIdx = args.indexOf("--design");
-  const dataIdx = args.indexOf("--data");
-  const controlIdx = args.indexOf("--control");
-  const generateTable = args.includes("--table");
+  handleDataAnalysis(args);
+}
 
-  if (designIdx === -1 || dataIdx === -1) {
-    console.error("Error: --design and --data are required");
-    printUsage();
+function handlePowerAnalysis(args: string[]) {
+  const effect = getNumericFlag(args, "--effect", 0.5);
+  const alpha = getNumericFlag(args, "--alpha", 0.05);
+  const power = getNumericFlag(args, "--power", 0.8);
+
+  // Validate supported alpha values
+  const SUPPORTED_ALPHA = [0.05, 0.01];
+  if (!SUPPORTED_ALPHA.includes(alpha)) {
+    console.error(
+      `Error: --alpha must be one of [${SUPPORTED_ALPHA.join(", ")}], got: ${alpha}`,
+    );
     process.exit(1);
   }
 
-  const design = args[designIdx + 1];
-  const dataFile = args[dataIdx + 1];
+  // Validate supported power values
+  const SUPPORTED_POWER = [0.8, 0.9];
+  if (!SUPPORTED_POWER.includes(power)) {
+    console.error(
+      `Error: --power must be one of [${SUPPORTED_POWER.join(", ")}], got: ${power}`,
+    );
+    process.exit(1);
+  }
+
+  console.log(
+    "\n╔══════════════════════════════════════════════════════════════╗",
+  );
+  console.log(
+    "║                     Power Analysis                           ║",
+  );
+  console.log(
+    "╚══════════════════════════════════════════════════════════════╝\n",
+  );
+
+  const result = Stats.powerAnalysis(effect, alpha, power);
+
+  console.log(`Parameters:`);
+  console.log(`  Effect size (Cohen's d): ${effect}`);
+  console.log(`  Alpha level:             ${alpha}`);
+  console.log(`  Desired power:           ${power}\n`);
+
+  console.log(`Sample Size Required:`);
+  console.log(`  Per group:               ${result.required_n_per_group}`);
+  console.log(`  Total (2 groups):        ${result.total_n}\n`);
+
+  console.log(`With 20% Attrition Buffer:`);
+  console.log(`  Per group:               ${result.inflated_n_per_group}`);
+  console.log(`  Total (2 groups):        ${result.inflated_total}\n`);
+
+  console.log(`${"═".repeat(64)}\n`);
+}
+
+function handleDataAnalysis(args: string[]) {
+  const design = getRequiredFlag(args, "--design");
+  const dataFile = getRequiredFlag(args, "--data");
+  const controlFile = getOptionalFlag(args, "--control");
+  const generateTable = args.includes("--table");
 
   if (!fs.existsSync(dataFile)) {
     console.error(`Error: Data file not found: ${dataFile}`);
     process.exit(1);
   }
 
-  const data = parseCSV(dataFile);
+  let data: StudentData[];
+  try {
+    data = parseCSV(dataFile);
+  } catch (error) {
+    console.error(
+      `Error: ${error instanceof Error ? error.message : "Failed to parse CSV"}`,
+    );
+    process.exit(1);
+  }
 
   if (design === "prepost") {
     ResearchAnalyzer.analyzePrePost(data);
@@ -803,31 +1027,63 @@ function main(): void {
       ResearchAnalyzer.generateTable(data, "all");
     }
   } else if (design === "rct") {
-    if (controlIdx === -1) {
-      // Assume data file has 'group' column
-      const treatment = data.filter((d) => d.group === "treatment");
-      const control = data.filter((d) => d.group === "control");
-
-      if (treatment.length === 0 || control.length === 0) {
-        console.error(
-          'Error: For RCT, either provide --control file or include "group" column in data',
-        );
-        process.exit(1);
-      }
-
-      ResearchAnalyzer.analyzeRCT(treatment, control);
-    } else {
-      const controlFile = args[controlIdx + 1];
-      if (!fs.existsSync(controlFile)) {
-        console.error(`Error: Control file not found: ${controlFile}`);
-        process.exit(1);
-      }
-      const controlData = parseCSV(controlFile);
-      ResearchAnalyzer.analyzeRCT(data, controlData);
-    }
+    handleRCTAnalysis(data, controlFile);
   } else {
     console.error(`Error: Unknown design: ${design}. Use "prepost" or "rct"`);
     process.exit(1);
+  }
+}
+
+/**
+ * Validate that both groups have sufficient sample size for statistical analysis
+ */
+function validateGroupSizes(
+  treatment: StudentData[],
+  control: StudentData[],
+): void {
+  if (treatment.length < 2 || control.length < 2) {
+    console.error(
+      `Error: Each group must have at least 2 participants for statistical analysis (treatment: ${treatment.length}, control: ${control.length})`,
+    );
+    process.exit(1);
+  }
+}
+
+function handleRCTAnalysis(
+  data: StudentData[],
+  controlFile: string | undefined,
+) {
+  if (controlFile === undefined) {
+    // Assume data file has 'group' column
+    const treatment = data.filter((d) => d.group === "treatment");
+    const control = data.filter((d) => d.group === "control");
+
+    if (treatment.length === 0 || control.length === 0) {
+      console.error(
+        'Error: For RCT, either provide --control file or include "group" column in data',
+      );
+      process.exit(1);
+    }
+
+    validateGroupSizes(treatment, control);
+    ResearchAnalyzer.analyzeRCT(treatment, control);
+  } else {
+    if (!fs.existsSync(controlFile)) {
+      console.error(`Error: Control file not found: ${controlFile}`);
+      process.exit(1);
+    }
+    let controlData: StudentData[];
+    try {
+      controlData = parseCSV(controlFile);
+    } catch (error) {
+      console.error(
+        `Error: ${error instanceof Error ? error.message : "Failed to parse control CSV"}`,
+      );
+      process.exit(1);
+    }
+
+    validateGroupSizes(data, controlData);
+    ResearchAnalyzer.analyzeRCT(data, controlData);
   }
 }
 

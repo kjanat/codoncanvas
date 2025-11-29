@@ -16,7 +16,7 @@ ATG
     ; Calculate distance from center (grows with each seed)
     ; Distance = loop_counter * 0.5 (approximation)
     GAA AAT                     ; PUSH 3 (base distance)
-    DUP                         ; Duplicate for width/height
+    ATA                         ; DUP: Duplicate for width/height
     ACA                         ; TRANSLATE (move outward)
 
     ; Draw seed

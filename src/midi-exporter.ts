@@ -29,8 +29,8 @@
  * ```
  */
 
-import type { VMState } from "./types.js";
-import { Opcode } from "./types.js";
+import type { VMState } from "@/types";
+import { Opcode } from "@/types";
 
 /**
  * MIDI file generator for CodonCanvas genomes.

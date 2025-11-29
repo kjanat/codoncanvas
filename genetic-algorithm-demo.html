@@ -1,283 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>CodonCanvas - Genetic Algorithm Optimization</title>
-    <style>
-    * {
-      box-sizing: border-box;
-      padding: 0;
-      margin: 0;
-    }
-
-    body {
-      padding: 1rem;
-      font-family: "Monaco", "Menlo", "Courier New", monospace;
-      color: #d4d4d4;
-      background: #1e1e1e;
-    }
-
-    .container {
-      max-width: 1600px;
-      margin: 0 auto;
-    }
-
-    header {
-      padding: 1.5rem;
-      margin-bottom: 1rem;
-      background: #252526;
-      border: 1px solid #3e3e42;
-      border-radius: 4px;
-    }
-
-    h1 {
-      margin-bottom: 0.5rem;
-      font-size: 1.75rem;
-      color: #4ec9b0;
-    }
-
-    .subtitle {
-      font-size: 0.875rem;
-      color: #858585;
-    }
-
-    .main-grid {
-      display: grid;
-      grid-template-columns: 350px 1fr;
-      gap: 1rem;
-      margin-bottom: 1rem;
-    }
-
-    .panel {
-      overflow: hidden;
-      background: #252526;
-      border: 1px solid #3e3e42;
-      border-radius: 4px;
-    }
-
-    .panel-header {
-      padding: 0.75rem 1rem;
-      font-size: 0.875rem;
-      font-weight: bold;
-      background: #2d2d30;
-      border-bottom: 1px solid #3e3e42;
-    }
-
-    .panel-content {
-      padding: 1rem;
-    }
-
-    .info-box {
-      padding: 0.75rem;
-      margin-bottom: 1rem;
-      font-size: 0.8125rem;
-      line-height: 1.5;
-      background: #1e1e1e;
-      border: 1px solid #3e3e42;
-      border-radius: 4px;
-    }
-
-    .info-box h3 {
-      margin-bottom: 0.5rem;
-      font-size: 0.875rem;
-      color: #4ec9b0;
-    }
-
-    .info-box p {
-      margin-bottom: 0.5rem;
-      color: #858585;
-    }
-
-    .info-box ul {
-      padding-left: 1.25rem;
-      color: #858585;
-    }
-
-    .control-group {
-      margin-bottom: 1rem;
-    }
-
-    .control-group label {
-      display: block;
-      margin-bottom: 0.25rem;
-      font-size: 0.75rem;
-      color: #858585;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-    }
-
-    select, input[type="number"], input[type="range"] {
-      width: 100%;
-      padding: 0.5rem;
-      font-family: inherit;
-      font-size: 0.8125rem;
-      color: #d4d4d4;
-      background: #1e1e1e;
-      border: 1px solid #3e3e42;
-      border-radius: 3px;
-    }
-
-    input[type="range"] {
-      padding: 0;
-    }
-
-    .range-value {
-      display: inline-block;
-      min-width: 3rem;
-      font-weight: bold;
-      color: #4ec9b0;
-      text-align: right;
-    }
-
-    button {
-      width: 100%;
-      padding: 0.75rem 1rem;
-      font-family: inherit;
-      font-size: 0.8125rem;
-      font-weight: 600;
-      color: white;
-      cursor: pointer;
-      background: #0e639c;
-      border: none;
-      border-radius: 3px;
-      transition: background 0.2s;
-    }
-
-    button:hover {
-      background: #1177bb;
-    }
-
-    button:disabled {
-      cursor: not-allowed;
-      background: #3e3e42;
-    }
-
-    .button-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 0.5rem;
-      margin-bottom: 1rem;
-    }
-
-    .stats-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 0.5rem;
-    }
-
-    .stat-box {
-      padding: 0.5rem;
-      background: #1e1e1e;
-      border: 1px solid #3e3e42;
-      border-radius: 3px;
-    }
-
-    .stat-label {
-      font-size: 0.6875rem;
-      color: #858585;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-    }
-
-    .stat-value {
-      font-size: 1.25rem;
-      font-weight: bold;
-      color: #4ec9b0;
-    }
-
-    .visualization-grid {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 1rem;
-    }
-
-    .canvas-container {
-      padding: 1rem;
-      background: #1e1e1e;
-      border: 1px solid #3e3e42;
-      border-radius: 4px;
-    }
-
-    .canvas-label {
-      margin-bottom: 0.5rem;
-      font-size: 0.75rem;
-      color: #858585;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-    }
-
-    canvas {
-      display: block;
-      width: 100%;
-      background: white;
-      border: 1px solid #3e3e42;
-      border-radius: 3px;
-    }
-
-    .population-grid {
-      display: grid;
-      grid-template-columns: repeat(5, 1fr);
-      gap: 0.5rem;
-      margin-top: 1rem;
-    }
-
-    .individual-card {
-      padding: 0.5rem;
-      cursor: pointer;
-      background: #1e1e1e;
-      border: 2px solid #3e3e42;
-      border-radius: 4px;
-      transition: all 0.2s;
-    }
-
-    .individual-card:hover {
-      border-color: #4ec9b0;
-    }
-
-    .individual-card.best {
-      border-color: #4ec9b0;
-      box-shadow: 0 0 10px rgba(78, 201, 176, 0.3);
-    }
-
-    .individual-label {
-      margin-bottom: 0.25rem;
-      font-size: 0.625rem;
-      color: #858585;
-    }
-
-    .individual-fitness {
-      margin-bottom: 0.25rem;
-      font-size: 0.75rem;
-      font-weight: bold;
-      color: #4ec9b0;
-    }
-
-    .chart-container {
-      height: 200px;
-      margin-top: 1rem;
-    }
-
-    @media (max-width: 1200px) {
-      .main-grid {
-        grid-template-columns: 1fr;
-      }
-
-      .visualization-grid {
-        grid-template-columns: 1fr;
-      }
-
-      .population-grid {
-        grid-template-columns: repeat(3, 1fr);
-      }
-    }
-
-    @media (max-width: 768px) {
-      .population-grid {
-        grid-template-columns: repeat(2, 1fr);
-      }
-    }
-    </style>
+    <link rel="stylesheet" href="css/variables.css" />
+    <link rel="stylesheet" href="css/demo-base.css" />
+    <link rel="stylesheet" href="css/genetic-algorithm-demo.css" />
   </head>
   <body>
     <div class="container">
@@ -314,7 +43,7 @@
 
             <div class="control-group">
               <label>Fitness Goal</label>
-              <select id="fitnessGoal">
+              <select id="fitness-goal">
                 <option value="center-circle">Centered Circle</option>
                 <option value="corners">Four Corners</option>
                 <option value="symmetry">Horizontal Symmetry</option>
@@ -326,44 +55,44 @@
               <label>Population Size</label>
               <input
                 type="range"
-                id="populationSize"
+                id="population-size"
                 min="10"
                 max="50"
                 value="20"
                 step="5"
-              >
-              <span class="range-value" id="populationSizeValue">20</span>
+              />
+              <span class="range-value" id="population-size-value">20</span>
             </div>
 
             <div class="control-group">
               <label>Mutation Rate</label>
               <input
                 type="range"
-                id="mutationRate"
+                id="mutation-rate"
                 min="0"
                 max="1"
                 value="0.1"
                 step="0.05"
-              >
-              <span class="range-value" id="mutationRateValue">0.10</span>
+              />
+              <span class="range-value" id="mutation-rate-value">0.10</span>
             </div>
 
             <div class="control-group">
               <label>Crossover Rate</label>
               <input
                 type="range"
-                id="crossoverRate"
+                id="crossover-rate"
                 min="0"
                 max="1"
                 value="0.7"
                 step="0.05"
-              >
-              <span class="range-value" id="crossoverRateValue">0.70</span>
+              />
+              <span class="range-value" id="crossover-rate-value">0.70</span>
             </div>
 
             <div class="control-group">
               <label>Selection Strategy</label>
-              <select id="selectionStrategy">
+              <select id="selection-strategy">
                 <option value="tournament">Tournament</option>
                 <option value="roulette">Roulette Wheel</option>
               </select>
@@ -371,7 +100,7 @@
 
             <div class="control-group">
               <label>Crossover Strategy</label>
-              <select id="crossoverStrategy">
+              <select id="crossover-strategy">
                 <option value="single-point">Single-Point</option>
                 <option value="uniform">Uniform</option>
                 <option value="none">None (Mutation Only)</option>
@@ -379,28 +108,28 @@
             </div>
 
             <div class="button-grid">
-              <button id="startBtn">▶ Start</button>
-              <button id="pauseBtn" disabled>⏸ Pause</button>
-              <button id="stepBtn">⏭ Step</button>
-              <button id="resetBtn">🔄 Reset</button>
+              <button id="start-btn">▶ Start</button>
+              <button id="pause-btn" disabled>⏸ Pause</button>
+              <button id="step-btn">⏭ Step</button>
+              <button id="reset-btn">🔄 Reset</button>
             </div>
 
             <div class="stats-grid">
               <div class="stat-box">
                 <div class="stat-label">Generation</div>
-                <div class="stat-value" id="generationStat">0</div>
+                <div class="stat-value" id="generation-stat">0</div>
               </div>
               <div class="stat-box">
                 <div class="stat-label">Best Fitness</div>
-                <div class="stat-value" id="bestFitnessStat">0.00</div>
+                <div class="stat-value" id="best-fitness-stat">0.00</div>
               </div>
               <div class="stat-box">
                 <div class="stat-label">Avg Fitness</div>
-                <div class="stat-value" id="avgFitnessStat">0.00</div>
+                <div class="stat-value" id="avg-fitness-stat">0.00</div>
               </div>
               <div class="stat-box">
                 <div class="stat-label">Diversity</div>
-                <div class="stat-value" id="diversityStat">100%</div>
+                <div class="stat-value" id="diversity-stat">100%</div>
               </div>
             </div>
           </div>
@@ -413,489 +142,31 @@
             <div class="visualization-grid">
               <div class="canvas-container">
                 <div class="canvas-label">🎯 Target Pattern</div>
-                <canvas id="targetCanvas" width="400" height="400"></canvas>
+                <canvas id="target-canvas" width="400" height="400"></canvas>
               </div>
               <div class="canvas-container">
                 <div class="canvas-label">
-                  🏆 Best Individual (Fitness: <span id="bestFitnessLabel"
-                  >0.00</span>)
+                  🏆 Best Individual (Fitness:
+                  <span id="best-fitness-label">0.00</span>)
                 </div>
-                <canvas id="bestCanvas" width="400" height="400"></canvas>
+                <canvas id="best-canvas" width="400" height="400"></canvas>
               </div>
             </div>
 
             <div class="info-box">
               <h3>📊 Fitness Over Time</h3>
-              <canvas id="chartCanvas" width="800" height="200"></canvas>
+              <canvas id="chart-canvas" width="800" height="200"></canvas>
             </div>
 
             <div class="info-box">
               <h3>👥 Current Population (Top 10)</h3>
-              <div class="population-grid" id="populationGrid"></div>
+              <div class="population-grid" id="population-grid"></div>
             </div>
           </div>
         </div>
       </div>
     </div>
 
-    <script type="module">
-    import { GeneticAlgorithm } from "./src/genetic-algorithm.ts";
-import { CodonLexer } from "./src/lexer.ts";
-import { Canvas2DRenderer } from "./src/renderer.ts";
-import { CodonVM } from "./src/vm.ts";
-
-// State
-let ga = null;
-let running = false;
-let animationId = null;
-
-// Elements
-const targetCanvas = document.getElementById("targetCanvas");
-const bestCanvas = document.getElementById("bestCanvas");
-const chartCanvas = document.getElementById("chartCanvas");
-const populationGrid = document.getElementById("populationGrid");
-
-const startBtn = document.getElementById("startBtn");
-const pauseBtn = document.getElementById("pauseBtn");
-const stepBtn = document.getElementById("stepBtn");
-const resetBtn = document.getElementById("resetBtn");
-
-const fitnessGoalSelect = document.getElementById("fitnessGoal");
-const populationSizeSlider = document.getElementById("populationSize");
-const mutationRateSlider = document.getElementById("mutationRate");
-const crossoverRateSlider = document.getElementById("crossoverRate");
-const selectionStrategySelect = document.getElementById("selectionStrategy");
-const crossoverStrategySelect = document.getElementById("crossoverStrategy");
-
-// Update range displays
-populationSizeSlider.addEventListener("input", (e) => {
-  document.getElementById("populationSizeValue").textContent = e.target.value;
-});
-
-mutationRateSlider.addEventListener("input", (e) => {
-  document.getElementById("mutationRateValue").textContent = parseFloat(
-    e.target.value,
-  ).toFixed(2);
-});
-
-crossoverRateSlider.addEventListener("input", (e) => {
-  document.getElementById("crossoverRateValue").textContent = parseFloat(
-    e.target.value,
-  ).toFixed(2);
-});
-
-// Fitness Functions
-const fitnessFunctions = {
-  "center-circle": (_genome, canvas) => {
-    const ctx = canvas.getContext("2d");
-    const imageData = ctx.getImageData(0, 0, 400, 400);
-    const data = imageData.data;
-
-    // Check for dark pixels in center circle (radius 100)
-    let centerPixels = 0;
-    let darkCenterPixels = 0;
-
-    for (let y = 150; y < 250; y++) {
-      for (let x = 150; x < 250; x++) {
-        const dx = x - 200;
-        const dy = y - 200;
-        const dist = Math.sqrt(dx * dx + dy * dy);
-
-        if (dist < 100) {
-          centerPixels++;
-          const idx = (y * 400 + x) * 4;
-          const r = data[idx];
-          const g = data[idx + 1];
-          const b = data[idx + 2];
-          const brightness = (r + g + b) / 3;
-
-          if (brightness < 200) {
-            darkCenterPixels++;
-          }
-        }
-      }
-    }
-
-    return darkCenterPixels / centerPixels;
-  },
-
-  corners: (_genome, canvas) => {
-    const ctx = canvas.getContext("2d");
-    const imageData = ctx.getImageData(0, 0, 400, 400);
-    const data = imageData.data;
-
-    const corners = [
-      { x: 50, y: 50 },
-      { x: 350, y: 50 },
-      { x: 50, y: 350 },
-      { x: 350, y: 350 },
-    ];
-
-    let totalScore = 0;
-
-    corners.forEach((corner) => {
-      let darkPixels = 0;
-      let totalPixels = 0;
-
-      for (let y = corner.y - 30; y < corner.y + 30; y++) {
-        for (let x = corner.x - 30; x < corner.x + 30; x++) {
-          if (x >= 0 && x < 400 && y >= 0 && y < 400) {
-            totalPixels++;
-            const idx = (y * 400 + x) * 4;
-            const brightness = (data[idx] + data[idx + 1] + data[idx + 2]) / 3;
-
-            if (brightness < 200) {
-              darkPixels++;
-            }
-          }
-        }
-      }
-
-      totalScore += darkPixels / totalPixels;
-    });
-
-    return totalScore / 4;
-  },
-
-  symmetry: (_genome, canvas) => {
-    const ctx = canvas.getContext("2d");
-    const imageData = ctx.getImageData(0, 0, 400, 400);
-    const data = imageData.data;
-
-    let symmetryScore = 0;
-    let totalPixels = 0;
-
-    for (let y = 0; y < 400; y++) {
-      for (let x = 0; x < 200; x++) {
-        const leftIdx = (y * 400 + x) * 4;
-        const rightIdx = (y * 400 + (399 - x)) * 4;
-
-        const leftBrightness =
-          (data[leftIdx] + data[leftIdx + 1] + data[leftIdx + 2]) / 3;
-        const rightBrightness =
-          (data[rightIdx] + data[rightIdx + 1] + data[rightIdx + 2]) / 3;
-
-        const diff = Math.abs(leftBrightness - rightBrightness);
-        symmetryScore += 1 - diff / 255;
-        totalPixels++;
-      }
-    }
-
-    return symmetryScore / totalPixels;
-  },
-
-  density: (_genome, canvas) => {
-    const ctx = canvas.getContext("2d");
-    const imageData = ctx.getImageData(0, 0, 400, 400);
-    const data = imageData.data;
-
-    let darkPixels = 0;
-
-    for (let i = 0; i < data.length; i += 4) {
-      const brightness = (data[i] + data[i + 1] + data[i + 2]) / 3;
-      if (brightness < 200) {
-        darkPixels++;
-      }
-    }
-
-    const totalPixels = 400 * 400;
-    const density = darkPixels / totalPixels;
-
-    // Target 30-50% density
-    if (density < 0.3) {
-      return density / 0.3;
-    } else if (density > 0.5) {
-      return 1 - (density - 0.5) / 0.5;
-    } else {
-      return 1.0;
-    }
-  },
-};
-
-// Draw target pattern
-function drawTarget() {
-  const goal = fitnessGoalSelect.value;
-  const ctx = targetCanvas.getContext("2d");
-  ctx.fillStyle = "white";
-  ctx.fillRect(0, 0, 400, 400);
-  ctx.fillStyle = "black";
-
-  switch (goal) {
-    case "center-circle":
-      ctx.beginPath();
-      ctx.arc(200, 200, 100, 0, Math.PI * 2);
-      ctx.fill();
-      break;
-
-    case "corners":
-      [50, 350].forEach((x) => {
-        [50, 350].forEach((y) => {
-          ctx.beginPath();
-          ctx.arc(x, y, 30, 0, Math.PI * 2);
-          ctx.fill();
-        });
-      });
-      break;
-
-    case "symmetry":
-      ctx.font = "20px monospace";
-      ctx.textAlign = "center";
-      ctx.fillText("Horizontal", 200, 190);
-      ctx.fillText("Symmetry", 200, 220);
-      break;
-
-    case "density":
-      ctx.font = "16px monospace";
-      ctx.textAlign = "center";
-      ctx.fillText("Target:", 200, 180);
-      ctx.fillText("30-50%", 200, 210);
-      ctx.fillText("Pixel Density", 200, 240);
-      break;
-  }
-}
-
-// Render genome on canvas
-function renderGenome(genome, canvas) {
-  try {
-    const ctx = canvas.getContext("2d");
-    ctx.fillStyle = "white";
-    ctx.fillRect(0, 0, 400, 400);
-
-    const lexer = new CodonLexer();
-    const tokens = lexer.tokenize(genome);
-    const renderer = new Canvas2DRenderer(canvas);
-    const vm = new CodonVM(renderer);
-    vm.run(tokens);
-  } catch (_error) {
-    const ctx = canvas.getContext("2d");
-    ctx.fillStyle = "#ffcccc";
-    ctx.fillRect(0, 0, 400, 400);
-    ctx.fillStyle = "#cc0000";
-    ctx.font = "12px monospace";
-    ctx.textAlign = "center";
-    ctx.fillText("Invalid Genome", 200, 200);
-  }
-}
-
-// Draw fitness chart
-function drawChart() {
-  if (!ga) return;
-
-  const stats = ga.getStats();
-  if (stats.length === 0) return;
-
-  const ctx = chartCanvas.getContext("2d");
-  const width = chartCanvas.width;
-  const height = chartCanvas.height;
-
-  ctx.fillStyle = "#1e1e1e";
-  ctx.fillRect(0, 0, width, height);
-
-  const maxGen = Math.max(stats.length - 1, 1);
-  const xScale = width / maxGen;
-  const yScale = height;
-
-  // Draw grid
-  ctx.strokeStyle = "#3e3e42";
-  ctx.lineWidth = 1;
-  for (let i = 0; i <= 10; i++) {
-    const y = height - (i * height) / 10;
-    ctx.beginPath();
-    ctx.moveTo(0, y);
-    ctx.lineTo(width, y);
-    ctx.stroke();
-  }
-
-  // Draw best fitness line
-  ctx.strokeStyle = "#4ec9b0";
-  ctx.lineWidth = 2;
-  ctx.beginPath();
-  stats.forEach((stat, i) => {
-    const x = i * xScale;
-    const y = height - stat.bestFitness * yScale;
-    if (i === 0) {
-      ctx.moveTo(x, y);
-    } else {
-      ctx.lineTo(x, y);
-    }
-  });
-  ctx.stroke();
-
-  // Draw avg fitness line
-  ctx.strokeStyle = "#858585";
-  ctx.lineWidth = 1;
-  ctx.beginPath();
-  stats.forEach((stat, i) => {
-    const x = i * xScale;
-    const y = height - stat.avgFitness * yScale;
-    if (i === 0) {
-      ctx.moveTo(x, y);
-    } else {
-      ctx.lineTo(x, y);
-    }
-  });
-  ctx.stroke();
-
-  // Legend
-  ctx.font = "10px monospace";
-  ctx.fillStyle = "#4ec9b0";
-  ctx.fillText("Best", 10, 15);
-  ctx.fillStyle = "#858585";
-  ctx.fillText("Avg", 50, 15);
-}
-
-// Update population grid
-function updatePopulationGrid() {
-  if (!ga) return;
-
-  const population = ga.getPopulation().slice(0, 10);
-  populationGrid.innerHTML = "";
-
-  population.forEach((individual, index) => {
-    const card = document.createElement("div");
-    card.className = `individual-card${index === 0 ? " best" : ""}`;
-
-    const label = document.createElement("div");
-    label.className = "individual-label";
-    label.textContent = `#${index + 1}`;
-
-    const fitness = document.createElement("div");
-    fitness.className = "individual-fitness";
-    fitness.textContent = `Fitness: ${individual.fitness.toFixed(3)}`;
-
-    const canvas = document.createElement("canvas");
-    canvas.width = 100;
-    canvas.height = 100;
-
-    card.appendChild(label);
-    card.appendChild(fitness);
-    card.appendChild(canvas);
-
-    card.addEventListener("click", () => {
-      renderGenome(individual.genome, bestCanvas);
-      document.getElementById("bestFitnessLabel").textContent =
-        individual.fitness.toFixed(3);
-    });
-
-    populationGrid.appendChild(card);
-
-    // Render on small canvas
-    renderGenome(individual.genome, canvas);
-  });
-}
-
-// Update stats
-function updateStats() {
-  if (!ga) return;
-
-  const stats = ga.getStats();
-  const lastStat = stats[stats.length - 1];
-
-  document.getElementById("generationStat").textContent = ga.getGeneration();
-  document.getElementById("bestFitnessStat").textContent =
-    lastStat.bestFitness.toFixed(3);
-  document.getElementById("avgFitnessStat").textContent =
-    lastStat.avgFitness.toFixed(3);
-  document.getElementById("diversityStat").textContent =
-    `${Math.round(lastStat.diversity * 100)}%`;
-
-  const best = ga.getBest();
-  document.getElementById("bestFitnessLabel").textContent =
-    best.fitness.toFixed(3);
-  renderGenome(best.genome, bestCanvas);
-
-  drawChart();
-  updatePopulationGrid();
-}
-
-// Initialize GA
-function initGA() {
-  const goal = fitnessGoalSelect.value;
-  const fitnessFunc = fitnessFunctions[goal];
-
-  // Simple seed genome
-  const seedGenome = "ATG GAA AGG GGA TAA";
-
-  ga = new GeneticAlgorithm([seedGenome], fitnessFunc, {
-    populationSize: parseInt(populationSizeSlider.value, 10),
-    mutationRate: parseFloat(mutationRateSlider.value),
-    crossoverRate: parseFloat(crossoverRateSlider.value),
-    selectionStrategy: selectionStrategySelect.value,
-    crossoverStrategy: crossoverStrategySelect.value,
-  });
-
-  updateStats();
-}
-
-// Evolution loop
-function evolve() {
-  if (!running || !ga) return;
-
-  ga.evolveGeneration();
-  updateStats();
-
-  animationId = setTimeout(evolve, 100);
-}
-
-// Event handlers
-startBtn.addEventListener("click", () => {
-  if (!ga) {
-    initGA();
-  }
-  running = true;
-  startBtn.disabled = true;
-  pauseBtn.disabled = false;
-  evolve();
-});
-
-pauseBtn.addEventListener("click", () => {
-  running = false;
-  startBtn.disabled = false;
-  pauseBtn.disabled = true;
-  if (animationId) {
-    clearTimeout(animationId);
-    animationId = null;
-  }
-});
-
-stepBtn.addEventListener("click", () => {
-  if (!ga) {
-    initGA();
-  }
-  ga.evolveGeneration();
-  updateStats();
-});
-
-resetBtn.addEventListener("click", () => {
-  running = false;
-  startBtn.disabled = false;
-  pauseBtn.disabled = true;
-  if (animationId) {
-    clearTimeout(animationId);
-    animationId = null;
-  }
-  ga = null;
-  document.getElementById("generationStat").textContent = "0";
-  document.getElementById("bestFitnessStat").textContent = "0.00";
-  document.getElementById("avgFitnessStat").textContent = "0.00";
-  document.getElementById("diversityStat").textContent = "100%";
-  document.getElementById("bestFitnessLabel").textContent = "0.00";
-
-  const ctx = bestCanvas.getContext("2d");
-  ctx.fillStyle = "white";
-  ctx.fillRect(0, 0, 400, 400);
-
-  populationGrid.innerHTML = "";
-
-  const chartCtx = chartCanvas.getContext("2d");
-  chartCtx.fillStyle = "#1e1e1e";
-  chartCtx.fillRect(0, 0, chartCanvas.width, chartCanvas.height);
-});
-
-fitnessGoalSelect.addEventListener("change", drawTarget);
-
-// Initial draw
-drawTarget();
-    </script>
+    <script type="module" src="src/demos/genetic-algorithm.ts"></script>
   </body>
 </html>

@@ -1,4 +1,4 @@
-import type { Point2D } from "./types";
+import type { Point2D } from "@/types";
 
 /**
  * Transform state for VM tracking.

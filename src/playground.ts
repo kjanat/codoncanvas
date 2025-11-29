@@ -7,29 +7,29 @@
  */
 
 // Re-export all public modules for backward compatibility
-export * from "./playground/dom-manager";
-export * from "./playground/export-handlers";
-export * from "./playground/genome-handlers";
-export * from "./playground/linter-handlers";
-export * from "./playground/ui-state";
-export * from "./playground/ui-utils";
+export * from "@/playground/dom-manager";
+export * from "@/playground/export-handlers";
+export * from "@/playground/genome-handlers";
+export * from "@/playground/linter-handlers";
+export * from "@/playground/ui-state";
+export * from "@/playground/ui-utils";
 
-import type { Achievement } from "./achievement-engine";
-import { DiffViewer, injectDiffViewerStyles } from "./diff-viewer";
+import type { Achievement } from "@/achievement-engine";
+import { DiffViewer, injectDiffViewerStyles } from "@/diff-viewer";
 import {
   type Concept,
   type ExampleDifficulty,
   type ExampleKey,
   type ExampleMetadata,
   examples,
-} from "./examples";
-import { injectShareStyles, ShareSystem } from "./share-system";
-import { TutorialManager } from "./tutorial";
-import { initializeTutorial } from "./tutorial-ui";
-import { CodonVM } from "./vm";
-import "./tutorial-ui.css";
-import "./achievement-ui.css";
-import { AssessmentUI } from "./assessment-ui";
+} from "@/examples";
+import { injectShareStyles, ShareSystem } from "@/share-system";
+import { TutorialManager } from "@/tutorial";
+import { initializeTutorial } from "@/tutorial-ui";
+import { CodonVM } from "@/vm";
+import "@/tutorial-ui.css";
+import "@/achievement-ui.css";
+import { AssessmentUI } from "@/assessment-ui";
 // Import DOM elements
 import {
   assessmentContainer,
@@ -63,20 +63,20 @@ import {
   themeToggleBtn,
   timelinePanel,
   timelineToggleBtn,
-} from "./playground/dom-manager";
+} from "@/playground/dom-manager";
 // Import handlers
 import {
   exportImage,
   exportStudentProgress,
   saveGenome,
-} from "./playground/export-handlers";
-import { handleFileLoad, loadGenome } from "./playground/genome-handlers";
+} from "@/playground/export-handlers";
+import { handleFileLoad, loadGenome } from "@/playground/genome-handlers";
 import {
   fixAllErrors,
   runLinter,
   toggleLinter,
-} from "./playground/linter-handlers";
-import { applyMutation } from "./playground/mutation-handlers";
+} from "@/playground/linter-handlers";
+import { applyMutation } from "@/playground/mutation-handlers";
 // Import state managers
 import {
   achievementEngine,
@@ -85,9 +85,9 @@ import {
   assessmentUI,
   audioRenderer,
   lexer,
+  type RenderMode,
   renderer,
   renderMode,
-  type RenderMode,
   researchMetrics,
   setAssessmentUI,
   setLastSnapshots,
@@ -97,14 +97,14 @@ import {
   timelineScrubber,
   timelineVisible,
   vm,
-} from "./playground/ui-state";
+} from "@/playground/ui-state";
 // Import UI utilities
 import {
   setStatus,
   updateStats,
   updateThemeButton,
-} from "./playground/ui-utils";
-import { injectTimelineStyles } from "./timeline-scrubber";
+} from "@/playground/ui-utils";
+import { injectTimelineStyles } from "@/timeline-scrubber";
 
 // Initialize UI button state
 updateThemeButton();
@@ -131,29 +131,66 @@ function trackDrawingOperations(tokens: { text: string }[]) {
 
   for (const token of tokens) {
     const codon = token.text;
-
-    if (["GGA", "GGC", "GGG", "GGT"].includes(codon)) {
-      allUnlocked.push(...achievementEngine.trackShapeDrawn("CIRCLE"));
-    } else if (["CCA", "CCC", "CCG", "CCT"].includes(codon)) {
-      allUnlocked.push(...achievementEngine.trackShapeDrawn("RECT"));
-    } else if (["AAA", "AAC", "AAG", "AAT"].includes(codon)) {
-      allUnlocked.push(...achievementEngine.trackShapeDrawn("LINE"));
-    } else if (["GCA", "GCC", "GCG", "GCT"].includes(codon)) {
-      allUnlocked.push(...achievementEngine.trackShapeDrawn("TRIANGLE"));
-    } else if (["GTA", "GTC", "GTG", "GTT"].includes(codon)) {
-      allUnlocked.push(...achievementEngine.trackShapeDrawn("ELLIPSE"));
-    } else if (["TTA", "TTC", "TTG", "TTT"].includes(codon)) {
-      allUnlocked.push(...achievementEngine.trackColorUsed());
-    } else if (["ACA", "ACC", "ACG", "ACT"].includes(codon)) {
-      allUnlocked.push(...achievementEngine.trackTransformApplied("TRANSLATE"));
-    } else if (["AGA", "AGC", "AGG", "AGT"].includes(codon)) {
-      allUnlocked.push(...achievementEngine.trackTransformApplied("ROTATE"));
-    } else if (["CGA", "CGC", "CGG", "CGT"].includes(codon)) {
-      allUnlocked.push(...achievementEngine.trackTransformApplied("SCALE"));
+    const achievements = getAchievementsForCodon(codon);
+    if (achievements.length > 0) {
+      allUnlocked.push(...achievements);
     }
   }
 
   return allUnlocked;
+}
+
+function getAchievementsForCodon(codon: string): Achievement[] {
+  if (["GGA", "GGC", "GGG", "GGT"].includes(codon)) {
+    return achievementEngine.trackShapeDrawn("CIRCLE");
+  }
+  if (["CCA", "CCC", "CCG", "CCT"].includes(codon)) {
+    return achievementEngine.trackShapeDrawn("RECT");
+  }
+  if (["AAA", "AAC", "AAG", "AAT"].includes(codon)) {
+    return achievementEngine.trackShapeDrawn("LINE");
+  }
+  if (["GCA", "GCC", "GCG", "GCT"].includes(codon)) {
+    return achievementEngine.trackShapeDrawn("TRIANGLE");
+  }
+  if (["GTA", "GTC", "GTG", "GTT"].includes(codon)) {
+    return achievementEngine.trackShapeDrawn("ELLIPSE");
+  }
+  if (["TTA", "TTC", "TTG", "TTT"].includes(codon)) {
+    return achievementEngine.trackColorUsed();
+  }
+  if (["ACA", "ACC", "ACG", "ACT"].includes(codon)) {
+    return achievementEngine.trackTransformApplied("TRANSLATE");
+  }
+  if (["AGA", "AGC", "AGG", "AGT"].includes(codon)) {
+    return achievementEngine.trackTransformApplied("ROTATE");
+  }
+  if (["CGA", "CGC", "CGG", "CGT"].includes(codon)) {
+    return achievementEngine.trackTransformApplied("SCALE");
+  }
+  return [];
+}
+
+/**
+ * Track execution metrics and achievements
+ */
+function trackExecutionComplete(
+  tokens: { text: string }[],
+  instructionCount: number,
+  mode: RenderMode,
+): void {
+  researchMetrics.trackGenomeExecuted({
+    timestamp: Date.now(),
+    renderMode: mode,
+    genomeLength: tokens.length,
+    instructionCount,
+    success: true,
+  });
+
+  const opcodes = tokens.map((t) => t.text);
+  const unlocked2 = achievementEngine.trackGenomeExecuted(opcodes);
+  const unlocked3 = trackDrawingOperations(tokens);
+  achievementUI.handleUnlocks([...unlocked2, ...unlocked3]);
 }
 
 /**
@@ -201,19 +238,7 @@ async function runProgram() {
         `♪ Playing ${audioVM.state.instructionCount} audio instructions`,
         "success",
       );
-
-      researchMetrics.trackGenomeExecuted({
-        timestamp: Date.now(),
-        renderMode: "audio",
-        genomeLength: tokens.length,
-        instructionCount: audioVM.state.instructionCount,
-        success: true,
-      });
-
-      const opcodes = tokens.map((t) => t.text);
-      const unlocked2 = achievementEngine.trackGenomeExecuted(opcodes);
-      const unlocked3 = trackDrawingOperations(tokens);
-      achievementUI.handleUnlocks([...unlocked2, ...unlocked3]);
+      trackExecutionComplete(tokens, audioVM.state.instructionCount, "audio");
     } else if (renderMode === "visual") {
       vm.reset();
       const snapshots = vm.run(tokens);
@@ -224,19 +249,7 @@ async function runProgram() {
         `Executed ${vm.state.instructionCount} instructions successfully`,
         "success",
       );
-
-      researchMetrics.trackGenomeExecuted({
-        timestamp: Date.now(),
-        renderMode: "visual",
-        genomeLength: tokens.length,
-        instructionCount: vm.state.instructionCount,
-        success: true,
-      });
-
-      const opcodes = tokens.map((t) => t.text);
-      const unlocked2 = achievementEngine.trackGenomeExecuted(opcodes);
-      const unlocked3 = trackDrawingOperations(tokens);
-      achievementUI.handleUnlocks([...unlocked2, ...unlocked3]);
+      trackExecutionComplete(tokens, vm.state.instructionCount, "visual");
     } else {
       const audioVM = new CodonVM(audioRenderer);
       renderer.clear();
@@ -256,19 +269,7 @@ async function runProgram() {
         `♪🎨 Playing ${audioVM.state.instructionCount} audio + visual instructions`,
         "success",
       );
-
-      researchMetrics.trackGenomeExecuted({
-        timestamp: Date.now(),
-        renderMode: "both",
-        genomeLength: tokens.length,
-        instructionCount: audioVM.state.instructionCount,
-        success: true,
-      });
-
-      const opcodes = tokens.map((t) => t.text);
-      const unlocked2 = achievementEngine.trackGenomeExecuted(opcodes);
-      const unlocked3 = trackDrawingOperations(tokens);
-      achievementUI.handleUnlocks([...unlocked2, ...unlocked3]);
+      trackExecutionComplete(tokens, audioVM.state.instructionCount, "both");
     }
   } catch (error) {
     if (error instanceof Error) {

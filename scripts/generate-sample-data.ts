@@ -14,13 +14,6 @@
 
 import * as fs from "node:fs";
 
-// ============================================================================
-// Random Number Generation
-// ============================================================================
-
-/**
- * Normal distribution (Box-Muller transform)
- */
 function randomNormal(mean: number = 0, sd: number = 1): number {
   const u1 = Math.random();
   const u2 = Math.random();
@@ -55,10 +48,6 @@ function randomChoice<T>(arr: T[]): T {
   return arr[Math.floor(Math.random() * arr.length)];
 }
 
-// ============================================================================
-// Data Generation Functions
-// ============================================================================
-
 interface GenerationParams {
   n: number;
   effect_size: number;
@@ -69,6 +58,19 @@ interface GenerationParams {
 }
 
 /** Subscale scores for mutation types */
+/**
+ * Mutation types as const tuple for type-safe key generation
+ */
+const MUTATION_TYPES = [
+  "silent",
+  "missense",
+  "nonsense",
+  "frameshift",
+  "indel",
+] as const;
+
+type MutationType = (typeof MUTATION_TYPES)[number];
+
 interface SubscaleScores {
   pretest_silent: number;
   posttest_silent: number;
@@ -80,6 +82,67 @@ interface SubscaleScores {
   posttest_frameshift: number;
   pretest_indel: number;
   posttest_indel: number;
+}
+
+/**
+ * Required keys for SubscaleScores validation
+ */
+const SUBSCALE_KEYS: readonly (keyof SubscaleScores)[] = [
+  "pretest_silent",
+  "posttest_silent",
+  "pretest_missense",
+  "posttest_missense",
+  "pretest_nonsense",
+  "posttest_nonsense",
+  "pretest_frameshift",
+  "posttest_frameshift",
+  "pretest_indel",
+  "posttest_indel",
+] as const;
+
+/**
+ * Type guard to validate a partial subscale object has all required keys
+ */
+function isCompleteSubscaleScores(
+  partial: Partial<SubscaleScores>,
+): partial is SubscaleScores {
+  return SUBSCALE_KEYS.every(
+    (key) => key in partial && typeof partial[key] === "number",
+  );
+}
+
+/**
+ * Build SubscaleScores with type-safe key construction
+ */
+function buildSubscaleScores(
+  pretest_total: number,
+  true_gain: number,
+): SubscaleScores {
+  const partial: Partial<SubscaleScores> = {};
+
+  for (const type of MUTATION_TYPES) {
+    const pre_sub = Math.round(
+      randomBoundedNormal(pretest_total / 5, 4, 0, 20),
+    );
+    let post_sub = Math.round(pre_sub + true_gain / 5 + randomNormal(0, 2));
+    post_sub = Math.max(0, Math.min(20, post_sub));
+
+    // Type-safe key assignment using template literal types
+    const preKey = `pretest_${type}` as `pretest_${MutationType}`;
+    const postKey = `posttest_${type}` as `posttest_${MutationType}`;
+
+    partial[preKey] = pre_sub;
+    partial[postKey] = post_sub;
+  }
+
+  // Runtime validation before final assertion
+  if (!isCompleteSubscaleScores(partial)) {
+    throw new Error(
+      "Failed to build complete SubscaleScores: missing required keys",
+    );
+  }
+
+  return partial;
 }
 
 /** Research participant data record */
@@ -126,25 +189,7 @@ function generatePrePostData(params: GenerationParams): ParticipantData[] {
     posttest_total = Math.min(params.ceiling, posttest_total);
 
     // Subscale scores (5 mutation types, each 0-20 points)
-    const mutation_types = [
-      "silent",
-      "missense",
-      "nonsense",
-      "frameshift",
-      "indel",
-    ];
-    const subscales = {} as Record<string, number>;
-
-    for (const type of mutation_types) {
-      const pre_sub = Math.round(
-        randomBoundedNormal(pretest_total / 5, 4, 0, 20),
-      );
-      let post_sub = Math.round(pre_sub + true_gain / 5 + randomNormal(0, 2));
-      post_sub = Math.max(0, Math.min(20, post_sub));
-
-      subscales[`pretest_${type}`] = pre_sub;
-      subscales[`posttest_${type}`] = post_sub;
-    }
+    const subscales = buildSubscaleScores(pretest_total, true_gain);
 
     // Delayed retention (4-6 weeks later, slight decay)
     const retention_rate = randomBoundedNormal(0.9, 0.1, 0.7, 1.0);
@@ -178,7 +223,7 @@ function generatePrePostData(params: GenerationParams): ParticipantData[] {
       pretest_total,
       posttest_total,
       delayed_total,
-      ...(subscales as SubscaleScores),
+      ...subscales,
       mtt_score: mtt_score.toFixed(1),
       imi_interest: imi_interest.toFixed(1),
       imi_competence: imi_competence.toFixed(1),
@@ -252,10 +297,6 @@ function writeCSV(data: ParticipantData[], filename: string): void {
   fs.writeFileSync(filename, csv, "utf-8");
   console.log(`✅ Generated ${filename} (${data.length} rows)`);
 }
-
-// ============================================================================
-// CLI
-// ============================================================================
 
 function printUsage(): void {
   console.log(`

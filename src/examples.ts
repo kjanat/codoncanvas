@@ -2,7 +2,7 @@
  * Built-in example genomes for the playground
  */
 
-import type { MutationType } from "./types";
+import type { MutationType } from "@/types";
 
 /**
  * Difficulty level for example genomes in the gallery.

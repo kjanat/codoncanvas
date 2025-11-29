@@ -3,10 +3,10 @@
  * Handles all export functionality (PNG, Audio, MIDI, Genome, Progress)
  */
 
-import { downloadGenomeFile } from "../genome-io";
-import { editor } from "./dom-manager";
-import { lastSnapshots, midiExporter, renderer } from "./ui-state";
-import { setStatus } from "./ui-utils";
+import { downloadGenomeFile } from "@/genome-io";
+import { editor } from "@/playground/dom-manager";
+import { lastSnapshots, midiExporter, renderer } from "@/playground/ui-state";
+import { setStatus } from "@/playground/ui-utils";
 
 /**
  * Export canvas as PNG image

@@ -3,117 +3,123 @@
  * Handles all DOM element access and initialization with type-safe utilities
  */
 
-import { getElement, querySelector, querySelectorAll } from "../utils/dom";
+import { getElement, querySelector, querySelectorAll } from "@/utils/dom";
 
 // Main UI elements
 export const editor = getElement("editor", HTMLTextAreaElement);
 export const canvas = getElement("canvas", HTMLCanvasElement);
-export const runBtn = getElement("runBtn", HTMLButtonElement);
-export const clearBtn = getElement("clearBtn", HTMLButtonElement);
-export const exampleSelect = getElement("exampleSelect", HTMLSelectElement);
-export const exportBtn = getElement("exportBtn", HTMLButtonElement);
-export const exportAudioBtn = getElement("exportAudioBtn", HTMLButtonElement);
-export const exportMidiBtn = getElement("exportMidiBtn", HTMLButtonElement);
-export const saveGenomeBtn = getElement("saveGenomeBtn", HTMLButtonElement);
-export const loadGenomeBtn = getElement("loadGenomeBtn", HTMLButtonElement);
+export const runBtn = getElement("run-btn", HTMLButtonElement);
+export const clearBtn = getElement("clear-btn", HTMLButtonElement);
+export const exampleSelect = getElement("example-select", HTMLSelectElement);
+export const exportBtn = getElement("export-btn", HTMLButtonElement);
+export const exportAudioBtn = getElement("export-audio-btn", HTMLButtonElement);
+export const exportMidiBtn = getElement("export-midi-btn", HTMLButtonElement);
+export const saveGenomeBtn = getElement("save-genome-btn", HTMLButtonElement);
+export const loadGenomeBtn = getElement("load-genome-btn", HTMLButtonElement);
 export const exportStudentProgressBtn = getElement(
-  "exportStudentProgressBtn",
+  "export-student-progress-btn",
   HTMLButtonElement,
 );
-export const genomeFileInput = getElement("genomeFileInput", HTMLInputElement);
-export const statusMessage = getElement("statusMessage", HTMLSpanElement);
-export const codonCount = getElement("codonCount", HTMLSpanElement);
-export const instructionCount = getElement("instructionCount", HTMLSpanElement);
+export const genomeFileInput = getElement(
+  "genome-file-input",
+  HTMLInputElement,
+);
+export const statusMessage = getElement("status-message", HTMLSpanElement);
+export const codonCount = getElement("codon-count", HTMLSpanElement);
+export const instructionCount = getElement(
+  "instruction-count",
+  HTMLSpanElement,
+);
 export const statusBar = querySelector(".status-bar", HTMLDivElement);
 
 // Mutation buttons
 export const silentMutationBtn = getElement(
-  "silentMutationBtn",
+  "silent-mutation-btn",
   HTMLButtonElement,
 );
 export const missenseMutationBtn = getElement(
-  "missenseMutationBtn",
+  "missense-mutation-btn",
   HTMLButtonElement,
 );
 export const nonsenseMutationBtn = getElement(
-  "nonsenseMutationBtn",
+  "nonsense-mutation-btn",
   HTMLButtonElement,
 );
 export const frameshiftMutationBtn = getElement(
-  "frameshiftMutationBtn",
+  "frameshift-mutation-btn",
   HTMLButtonElement,
 );
 export const pointMutationBtn = getElement(
-  "pointMutationBtn",
+  "point-mutation-btn",
   HTMLButtonElement,
 );
 export const insertionMutationBtn = getElement(
-  "insertionMutationBtn",
+  "insertion-mutation-btn",
   HTMLButtonElement,
 );
 export const deletionMutationBtn = getElement(
-  "deletionMutationBtn",
+  "deletion-mutation-btn",
   HTMLButtonElement,
 );
 
 // Share system
-export const shareContainer = getElement("shareContainer", HTMLDivElement);
+export const shareContainer = getElement("share-container", HTMLDivElement);
 
 // Example filter elements
 export const difficultyFilter = getElement(
-  "difficultyFilter",
+  "difficulty-filter",
   HTMLSelectElement,
 );
-export const conceptFilter = getElement("conceptFilter", HTMLSelectElement);
-export const searchInput = getElement("searchInput", HTMLInputElement);
-export const exampleInfo = getElement("exampleInfo", HTMLDivElement);
+export const conceptFilter = getElement("concept-filter", HTMLSelectElement);
+export const searchInput = getElement("search-input", HTMLInputElement);
+export const exampleInfo = getElement("example-info", HTMLDivElement);
 
 // Linter elements
-export const linterPanel = getElement("linterPanel", HTMLDivElement);
-export const linterToggle = getElement("linterToggle", HTMLButtonElement);
-export const linterMessages = getElement("linterMessages", HTMLDivElement);
-export const fixAllBtn = getElement("fixAllBtn", HTMLButtonElement);
+export const linterPanel = getElement("linter-panel", HTMLDivElement);
+export const linterToggle = getElement("linter-toggle", HTMLButtonElement);
+export const linterMessages = getElement("linter-messages", HTMLDivElement);
+export const fixAllBtn = getElement("fix-all-btn", HTMLButtonElement);
 
 // DiffViewer elements
-export const diffViewerPanel = getElement("diffViewerPanel", HTMLDivElement);
+export const diffViewerPanel = getElement("diff-viewer-panel", HTMLDivElement);
 export const diffViewerToggle = getElement(
-  "diffViewerToggle",
+  "diff-viewer-toggle",
   HTMLButtonElement,
 );
 export const diffViewerClearBtn = getElement(
-  "diffViewerClearBtn",
+  "diff-viewer-clear-btn",
   HTMLButtonElement,
 );
 export const diffViewerContainer = getElement(
-  "diffViewerContainer",
+  "diff-viewer-container",
   HTMLDivElement,
 );
 
 // Analyzer elements
-export const analyzeBtn = getElement("analyzeBtn", HTMLButtonElement);
-export const analyzerPanel = getElement("analyzerPanel", HTMLDivElement);
-export const analyzerToggle = getElement("analyzerToggle", HTMLButtonElement);
-export const analyzerContent = getElement("analyzerContent", HTMLDivElement);
+export const analyzeBtn = getElement("analyze-btn", HTMLButtonElement);
+export const analyzerPanel = getElement("analyzer-panel", HTMLDivElement);
+export const analyzerToggle = getElement("analyzer-toggle", HTMLButtonElement);
+export const analyzerContent = getElement("analyzer-content", HTMLDivElement);
 
 // Comparison button (will be injected)
 export let compareBtn: HTMLButtonElement;
 
 // Audio elements
-export const audioToggleBtn = getElement("audioToggleBtn", HTMLButtonElement);
+export const audioToggleBtn = getElement("audio-toggle-btn", HTMLButtonElement);
 
 // Timeline elements
 export const timelineToggleBtn = getElement(
-  "timelineToggleBtn",
+  "timeline-toggle-btn",
   HTMLButtonElement,
 );
-export const timelinePanel = getElement("timelinePanel", HTMLDivElement);
+export const timelinePanel = getElement("timeline-panel", HTMLDivElement);
 export const timelineContainer = getElement(
-  "timelineContainer",
+  "timeline-container",
   HTMLDivElement,
 );
 
 // Theme elements
-export const themeToggleBtn = getElement("themeToggleBtn", HTMLButtonElement);
+export const themeToggleBtn = getElement("theme-toggle-btn", HTMLButtonElement);
 
 // Mode toggle elements
 export const modeToggleBtns = querySelectorAll(
@@ -121,11 +127,11 @@ export const modeToggleBtns = querySelectorAll(
   HTMLInputElement,
 );
 export const playgroundContainer = getElement(
-  "playgroundContainer",
+  "playground-container",
   HTMLDivElement,
 );
 export const assessmentContainer = getElement(
-  "assessmentContainer",
+  "assessment-container",
   HTMLDivElement,
 );
 

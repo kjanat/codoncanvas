@@ -3,7 +3,7 @@
  * Renders and manages the interactive tutorial interface
  */
 
-import type { TutorialManager, TutorialStep } from "./tutorial";
+import type { TutorialManager, TutorialStep } from "@/tutorial";
 
 export class TutorialUI {
   private manager: TutorialManager;
@@ -313,7 +313,7 @@ export class TutorialUI {
     this.highlightedElement = element;
 
     // Restore on cleanup
-    element.dataset["originalClasses"] = originalClasses;
+    element.dataset.originalClasses = originalClasses;
   }
 
   /**
@@ -356,8 +356,7 @@ export class TutorialUI {
 
     if (this.highlightedElement) {
       this.highlightedElement.classList.remove("tutorial-highlight");
-      const originalClasses =
-        this.highlightedElement.dataset["originalClasses"];
+      const originalClasses = this.highlightedElement.dataset.originalClasses;
       if (originalClasses) {
         this.highlightedElement.className = originalClasses;
       }

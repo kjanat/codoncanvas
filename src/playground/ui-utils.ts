@@ -9,21 +9,11 @@ import {
   statusBar,
   statusMessage,
   themeToggleBtn,
-} from "./dom-manager";
-import { themeManager } from "./ui-state";
+} from "@/playground/dom-manager";
+import { themeManager } from "@/playground/ui-state";
 
-/**
- * SECURITY: Escape HTML to prevent XSS attacks
- * Use this when building HTML strings from user input
- */
-export function escapeHtml(unsafe: string): string {
-  return unsafe
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;")
-    .replace(/"/g, "&quot;")
-    .replace(/'/g, "&#039;");
-}
+// Re-export escapeHtml from consolidated DOM utilities
+export { escapeHtml } from "@/utils/dom";
 
 /**
  * Set status message and bar styling

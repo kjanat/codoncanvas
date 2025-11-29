@@ -18,7 +18,7 @@ import {
   type Codon,
   type MutationType,
   Opcode,
-} from "./types";
+} from "@/types";
 
 /**
  * Result of applying a mutation to a genome.
@@ -43,6 +43,16 @@ const STOP_CODONS: Set<Codon> = new Set([
   "TAG" as Codon,
   "TGA" as Codon,
 ]);
+
+/**
+ * Clean genome string by removing whitespace and comments.
+ * @param genome - Raw genome string with optional formatting
+ * @returns Continuous base string without whitespace or comments
+ * @internal
+ */
+function cleanGenome(genome: string): string {
+  return genome.replace(/\s+/g, "").replace(/;.*/g, "");
+}
 
 /**
  * Get synonymous codons (same opcode) for a given codon.
@@ -324,7 +334,7 @@ export function applyPointMutation(
   genome: string,
   position?: number,
 ): MutationResult {
-  const cleaned = genome.replace(/\s+/g, "").replace(/;.*/g, "");
+  const cleaned = cleanGenome(genome);
 
   const targetPos = position ?? Math.floor(Math.random() * cleaned.length);
   if (targetPos >= cleaned.length) {
@@ -340,15 +350,9 @@ export function applyPointMutation(
     newBase +
     cleaned.substring(targetPos + 1);
 
-  // Format as codons
-  const codons: string[] = [];
-  for (let i = 0; i < mutated.length; i += 3) {
-    codons.push(mutated.slice(i, i + 3));
-  }
-
   return {
     original: genome,
-    mutated: codons.join(" "),
+    mutated: formatAsCodons(mutated),
     type: "point",
     position: targetPos,
     description: `Point mutation at base ${targetPos}: ${originalBase} → ${newBase}`,
@@ -377,7 +381,7 @@ export function applyInsertion(
   position?: number,
   length: number = 1,
 ): MutationResult {
-  const cleaned = genome.replace(/\s+/g, "").replace(/;.*/g, "");
+  const cleaned = cleanGenome(genome);
 
   const targetPos = position ?? Math.floor(Math.random() * cleaned.length);
   if (targetPos > cleaned.length) {
@@ -393,15 +397,9 @@ export function applyInsertion(
   const mutated =
     cleaned.substring(0, targetPos) + insertion + cleaned.substring(targetPos);
 
-  // Format as codons
-  const codons: string[] = [];
-  for (let i = 0; i < mutated.length; i += 3) {
-    codons.push(mutated.slice(i, i + 3));
-  }
-
   return {
     original: genome,
-    mutated: codons.join(" "),
+    mutated: formatAsCodons(mutated),
     type: "insertion",
     position: targetPos,
     description: `Insertion at base ${targetPos}: +${insertion} (${length} base${
@@ -433,7 +431,7 @@ export function applyDeletion(
   position?: number,
   length: number = 1,
 ): MutationResult {
-  const cleaned = genome.replace(/\s+/g, "").replace(/;.*/g, "");
+  const cleaned = cleanGenome(genome);
 
   const targetPos =
     position ??
@@ -448,15 +446,9 @@ export function applyDeletion(
   const mutated =
     cleaned.substring(0, targetPos) + cleaned.substring(targetPos + length);
 
-  // Format as codons
-  const codons: string[] = [];
-  for (let i = 0; i < mutated.length; i += 3) {
-    codons.push(mutated.slice(i, i + 3));
-  }
-
   return {
     original: genome,
-    mutated: codons.join(" "),
+    mutated: formatAsCodons(mutated),
     type: "deletion",
     position: targetPos,
     description: `Deletion at base ${targetPos}: -${deleted} (${length} base${
@@ -501,6 +493,60 @@ export function applyFrameshiftMutation(
     result.description = `Frameshift (deletion): ${result.description}`;
     return result;
   }
+}
+
+/**
+ * Format a continuous base string as space-separated codons.
+ * @param bases - Continuous string of bases (e.g., "ATGGGATAA")
+ * @returns Space-separated codon string (e.g., "ATG GGA TAA")
+ * @internal
+ */
+function formatAsCodons(bases: string): string {
+  const codons: string[] = [];
+  for (let i = 0; i < bases.length; i += 3) {
+    codons.push(bases.slice(i, i + 3));
+  }
+  return codons.join(" ");
+}
+
+/**
+ * Mutation function lookup table for type-safe dispatch.
+ * Maps mutation type strings to their implementation functions.
+ */
+const MUTATION_FUNCTIONS = {
+  silent: applySilentMutation,
+  missense: applyMissenseMutation,
+  nonsense: applyNonsenseMutation,
+  point: applyPointMutation,
+  insertion: applyInsertion,
+  deletion: applyDeletion,
+  frameshift: applyFrameshiftMutation,
+} as const;
+
+/**
+ * Apply a mutation by type name.
+ * Convenience function that dispatches to the appropriate mutation function.
+ *
+ * @param type - Mutation type to apply
+ * @param genome - Source genome string
+ * @returns Mutation result with original, mutated, and metadata
+ * @throws Error if mutation type is unknown
+ *
+ * @example
+ * ```typescript
+ * const result = getMutationByType('silent', 'ATG GGA TAA');
+ * // Applies silent mutation and returns result
+ * ```
+ */
+export function getMutationByType(
+  type: MutationType,
+  genome: string,
+): MutationResult {
+  const mutationFn = MUTATION_FUNCTIONS[type];
+  if (!mutationFn) {
+    throw new Error(`Unknown mutation type: ${type}`);
+  }
+  return mutationFn(genome);
 }
 
 /**

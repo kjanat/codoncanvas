@@ -659,7 +659,7 @@ Look at each candidate:
 <strong>Remember:</strong> You are the fitness function! Your preference determines which traits survive.
 
 Take your time evaluating the phenotypes. 👁️`,
-      targetElement: "#candidatesGrid",
+      targetElement: "#candidates-grid",
       hint: "Visually compare all 6 candidates",
     },
     {
@@ -678,7 +678,7 @@ When you click:
 In nature, organisms with favorable traits are more likely to reproduce. Here, only your selected genome reproduces - the other 5 "die out"!
 
 This is how evolution creates cumulative change over time. 🏆`,
-      targetElement: "#candidatesGrid",
+      targetElement: "#candidates-grid",
       hint: "Click your favorite candidate",
     },
     {

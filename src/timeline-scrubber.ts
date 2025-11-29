@@ -3,11 +3,11 @@
  * Allows users to see genome execution frame-by-frame like a ribosome
  */
 
-import { GifExporter } from "./gif-exporter";
-import { CodonLexer } from "./lexer";
-import { Canvas2DRenderer } from "./renderer";
-import type { CodonToken, VMState } from "./types";
-import { CodonVM } from "./vm";
+import { GifExporter } from "@/gif-exporter";
+import { CodonLexer } from "@/lexer";
+import { Canvas2DRenderer } from "@/renderer";
+import type { CodonToken, VMState } from "@/types";
+import { CodonVM } from "@/vm";
 
 export interface TimelineOptions {
   containerElement: HTMLElement;

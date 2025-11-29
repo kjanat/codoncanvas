@@ -1,760 +1,59 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <meta charset="UTF-8">
+    <meta charset="UTF-8" />
     <meta
       name="viewport"
       content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes"
-    >
-    <meta name="mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-capable" content="yes">
+    />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta
       name="apple-mobile-web-app-status-bar-style"
       content="black-translucent"
-    >
+    />
     <title>CodonCanvas - DNA-Inspired Visual Programming</title>
     <meta
       name="description"
       content="Educational DNA-inspired visual programming language for learning genetic concepts through code"
-    >
+    />
 
     <!-- Open Graph / Social Sharing -->
-    <meta property="og:type" content="website">
-    <meta property="og:url" content="https://kjanat.github.io/codoncanvas/">
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://kjanat.github.io/codoncanvas/" />
     <meta
       property="og:title"
       content="CodonCanvas - DNA-Inspired Visual Programming"
-    >
+    />
     <meta
       property="og:description"
       content="Learn genetics through code! Write DNA-like triplets that execute as visual outputs. See mutations, reading frames, and evolution in action."
-    >
+    />
     <meta
       property="og:image"
       content="https://kjanat.github.io/codoncanvas/screenshot_playground.png"
-    >
+    />
 
     <!-- Twitter Card -->
-    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:card" content="summary_large_image" />
     <meta
       property="twitter:url"
       content="https://kjanat.github.io/codoncanvas/"
-    >
+    />
     <meta
       property="twitter:title"
       content="CodonCanvas - DNA-Inspired Visual Programming"
-    >
+    />
     <meta
       property="twitter:description"
       content="Learn genetics through code! Write DNA-like triplets that execute as visual outputs."
-    >
+    />
     <meta
       property="twitter:image"
       content="https://kjanat.github.io/codoncanvas/screenshot_playground.png"
-    >
-    <style>
-    /* Theme Variables */
-    :root {
-      --color-bg-primary: #1e1e1e;
-      --color-bg-secondary: #252526;
-      --color-bg-tertiary: #2d2d30;
-      --color-text-primary: #d4d4d4;
-      --color-text-secondary: #a0a0a0;
-      --color-text-accent: #4ec9b0;
-      --color-border: #3e3e42;
-      --color-border-light: #505052;
-      --color-button-primary: #0e639c;
-      --color-button-primary-hover: #1177bb;
-      --color-button-secondary: #3e3e42;
-      --color-button-secondary-hover: #505052;
-      --color-focus: #007acc;
-      --color-error: #f48771;
-      --color-success: #89d185;
-      --color-info: #007acc;
-      --color-canvas-bg: white;
-    }
-
-    /* Dark Theme (default, matches existing) */
-    [data-theme="dark"] {
-      --color-bg-primary: #1e1e1e;
-      --color-bg-secondary: #252526;
-      --color-bg-tertiary: #2d2d30;
-      --color-text-primary: #d4d4d4;
-      --color-text-secondary: #a0a0a0;
-      --color-text-accent: #4ec9b0;
-      --color-border: #3e3e42;
-      --color-border-light: #505052;
-      --color-button-primary: #0e639c;
-      --color-button-primary-hover: #1177bb;
-      --color-button-secondary: #3e3e42;
-      --color-button-secondary-hover: #505052;
-      --color-focus: #007acc;
-      --color-error: #f48771;
-      --color-success: #89d185;
-      --color-info: #007acc;
-      --color-canvas-bg: white;
-    }
-
-    /* Light Theme */
-    [data-theme="light"] {
-      --color-bg-primary: #ffffff;
-      --color-bg-secondary: #f3f3f3;
-      --color-bg-tertiary: #e8e8e8;
-      --color-text-primary: #1e1e1e;
-      --color-text-secondary: #616161;
-      --color-text-accent: #0b7d69;
-      --color-border: #d0d0d0;
-      --color-border-light: #b0b0b0;
-      --color-button-primary: #0e639c;
-      --color-button-primary-hover: #1177bb;
-      --color-button-secondary: #d0d0d0;
-      --color-button-secondary-hover: #c0c0c0;
-      --color-focus: #007acc;
-      --color-error: #c42b1c;
-      --color-success: #107c10;
-      --color-info: #005a9e;
-      --color-canvas-bg: white;
-    }
-
-    /* High Contrast Theme */
-    [data-theme="high-contrast"] {
-      --color-bg-primary: #000000;
-      --color-bg-secondary: #000000;
-      --color-bg-tertiary: #000000;
-      --color-text-primary: #ffffff;
-      --color-text-secondary: #ffffff;
-      --color-text-accent: #00ff00;
-      --color-border: #ffffff;
-      --color-border-light: #ffffff;
-      --color-button-primary: #ffff00;
-      --color-button-primary-hover: #ffff33;
-      --color-button-secondary: #ffffff;
-      --color-button-secondary-hover: #cccccc;
-      --color-focus: #00ff00;
-      --color-error: #ff0000;
-      --color-success: #00ff00;
-      --color-info: #00ffff;
-      --color-canvas-bg: white;
-    }
-
-    * {
-      box-sizing: border-box;
-      padding: 0;
-      margin: 0;
-    }
-
-    body {
-      height: 100vh;
-      overflow: hidden;
-      font-family: "Monaco", "Menlo", "Courier New", monospace;
-      color: var(--color-text-primary);
-      background: var(--color-bg-primary);
-    }
-
-    .container {
-      display: grid;
-      grid-template-rows: auto 1fr auto;
-      grid-template-columns: 1fr 400px;
-      height: 100vh;
-    }
-
-    /* Responsive: Mobile-first approach */
-    @media (max-width: 768px) {
-      .container {
-        grid-template-rows: auto auto 1fr auto;
-        grid-template-columns: 1fr;
-      }
-
-      .editor-panel {
-        max-height: 40vh;
-        border-right: none;
-        border-bottom: 1px solid var(--color-border);
-      }
-
-      .canvas-panel {
-        max-height: 50vh;
-      }
-    }
-
-    /* Responsive: Tablet portrait */
-    @media (min-width: 769px) and (max-width: 1024px) {
-      .container {
-        grid-template-columns: 1fr 350px;
-      }
-    }
-
-    /* Responsive: Large desktop */
-    @media (min-width: 1440px) {
-      .container {
-        grid-template-columns: 1fr 500px;
-      }
-    }
-
-    header {
-      grid-column: 1 / -1;
-      padding: 1rem;
-      background: var(--color-bg-secondary);
-      border-bottom: 1px solid var(--color-border);
-    }
-
-    h1 {
-      font-size: 1.5rem;
-      color: var(--color-text-accent);
-    }
-
-    .subtitle {
-      margin-top: 0.25rem;
-      font-size: 0.875rem;
-      color: var(--color-text-secondary);
-    }
-
-    .editor-panel {
-      display: flex;
-      flex-direction: column;
-      border-right: 1px solid var(--color-border);
-    }
-
-    .toolbar {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.5rem;
-      align-items: center;
-      padding: 0.5rem;
-      background: var(--color-bg-tertiary);
-      border-bottom: 1px solid var(--color-border);
-    }
-
-    .example-filters {
-      display: flex;
-      gap: 0.5rem;
-      align-items: center;
-      padding: 0 0.5rem;
-      margin-left: auto;
-      border-left: 1px solid var(--color-border);
-    }
-
-    button {
-      min-width: 44px;
-      min-height: 44px; /* Touch-friendly */
-      padding: 0.5rem 1rem;
-      font-family: inherit;
-      font-size: 0.875rem;
-      color: white;
-      cursor: pointer;
-      background: var(--color-button-primary);
-      border: none;
-      border-radius: 3px;
-    }
-
-    /* Mobile: Touch-friendly button sizing */
-    @media (max-width: 768px) {
-      button {
-        min-width: 48px;
-        min-height: 48px; /* WCAG AA touch target */
-        padding: 0.75rem 1.25rem;
-      }
-
-      .toolbar {
-        gap: 0.75rem;
-        padding: 0.75rem;
-      }
-
-      .mutation-btn {
-        padding: 0.6rem 1rem;
-        font-size: 0.8rem;
-      }
-    }
-
-    button:hover {
-      background: var(--color-button-primary-hover);
-    }
-
-    button.secondary {
-      background: var(--color-button-secondary);
-    }
-
-    button.secondary:hover {
-      background: var(--color-button-secondary-hover);
-    }
-
-    select {
-      min-height: 44px;
-      padding: 0.5rem;
-      font-family: inherit;
-      color: var(--color-text-primary);
-      cursor: pointer;
-      background: var(--color-button-secondary);
-      border: 1px solid var(--color-border-light);
-      border-radius: 3px;
-    }
-
-    input[type="text"],
-    input[type="search"] {
-      min-height: 44px;
-    }
-
-    /* Mobile: Larger form controls */
-    @media (max-width: 768px) {
-      select,
-      input[type="text"],
-      input[type="search"] {
-        min-height: 48px;
-        font-size: 16px; /* Prevents iOS zoom on focus */
-      }
-    }
-
-    /* Landscape mobile: Optimize vertical space */
-    @media (max-width: 768px) and (orientation: landscape) {
-      .container {
-        grid-template-rows: auto 1fr auto;
-        grid-template-columns: 1fr 1fr;
-      }
-
-      .editor-panel {
-        max-height: none;
-        border-right: 1px solid #3e3e42;
-        border-bottom: none;
-      }
-
-      .canvas-panel {
-        max-height: none;
-      }
-
-      header {
-        padding: 0.5rem 1rem;
-      }
-
-      h1 {
-        font-size: 1.1rem;
-      }
-
-      .subtitle {
-        display: none; /* Save vertical space */
-      }
-    }
-
-    #editor {
-      flex: 1;
-      padding: 1rem;
-      overflow-y: auto;
-      font-family: "Monaco", "Menlo", "Courier New", monospace;
-      font-size: 14px;
-      line-height: 1.5;
-      color: var(--color-text-primary);
-      resize: none;
-      background: var(--color-bg-primary);
-      border: none;
-    }
-
-    /* Accessibility: Visible focus indicators */
-    *:focus {
-      outline: 2px solid var(--color-focus);
-      outline-offset: 2px;
-    }
-
-    button:focus,
-    select:focus,
-    input:focus {
-      outline: 2px solid var(--color-focus);
-      outline-offset: 2px;
-    }
-
-    /* Skip to content link */
-    .skip-link {
-      position: absolute;
-      top: -40px;
-      left: 0;
-      z-index: 100;
-      padding: 8px;
-      color: white;
-      text-decoration: none;
-      background: var(--color-focus);
-    }
-
-    .skip-link:focus {
-      top: 0;
-    }
-
-    /* Smooth transitions for motion-safe users */
-    @media (prefers-reduced-motion: no-preference) {
-      .skip-link {
-        transition: top 0.2s ease-out;
-      }
-    }
-
-    /* Respect reduced motion preference */
-    @media (prefers-reduced-motion: reduce) {
-      *,
-      *::before,
-      *::after {
-        animation-duration: 0.01ms;
-        animation-iteration-count: 1;
-        transition-duration: 0.01ms;
-        scroll-behavior: auto;
-      }
-    }
-
-    /* Visually hidden but screen reader accessible */
-    .sr-only {
-      position: absolute;
-      width: 1px;
-      height: 1px;
-      padding: 0;
-      margin: -1px;
-      overflow: hidden;
-      white-space: nowrap;
-      border-width: 0;
-      clip: rect(0, 0, 0, 0);
-    }
-
-    .canvas-panel {
-      display: flex;
-      flex-direction: column;
-      background: var(--color-bg-secondary);
-    }
-
-    .canvas-header {
-      padding: 0.5rem 1rem;
-      font-weight: bold;
-      background: var(--color-bg-tertiary);
-      border-bottom: 1px solid var(--color-border);
-    }
-
-    .canvas-container {
-      display: flex;
-      flex: 1;
-      align-items: center;
-      justify-content: center;
-      padding: 1rem;
-    }
-
-    #canvas {
-      max-width: 100%;
-      max-height: 100%;
-      background: var(--color-canvas-bg);
-      border: 1px solid var(--color-border);
-    }
-
-    /* Responsive canvas sizing */
-    @media (max-width: 768px) {
-      #canvas {
-        width: 100%;
-        max-width: 350px;
-        height: auto;
-        max-height: 350px;
-      }
-
-      .canvas-container {
-        padding: 0.5rem;
-      }
-
-      h1 {
-        font-size: 1.25rem;
-      }
-
-      .subtitle {
-        font-size: 0.75rem;
-      }
-    }
-
-    @media (min-width: 769px) and (max-width: 1024px) {
-      #canvas {
-        max-width: 320px;
-        max-height: 320px;
-      }
-    }
-
-    .status-bar {
-      display: flex;
-      grid-column: 1 / -1;
-      align-items: center;
-      justify-content: space-between;
-      padding: 0.5rem 1rem;
-      font-size: 0.875rem;
-      color: white;
-      background: var(--color-info);
-    }
-
-    .error {
-      color: #1e1e1e;
-      background: var(--color-error);
-    }
-
-    .success {
-      color: #1e1e1e;
-      background: var(--color-success);
-    }
-
-    .info {
-      background: var(--color-info);
-    }
-
-    .stats {
-      display: flex;
-      gap: 1rem;
-      font-size: 0.75rem;
-    }
-
-    /* Mobile: Stack stats vertically */
-    @media (max-width: 480px) {
-      .status-bar {
-        flex-direction: column;
-        gap: 0.5rem;
-        align-items: flex-start;
-        padding: 0.75rem 1rem;
-      }
-
-      .stats {
-        flex-wrap: wrap;
-        gap: 0.5rem;
-      }
-
-      .example-filters {
-        width: 100%;
-        padding: 0;
-        margin-left: 0;
-        border-left: none;
-      }
-    }
-
-    /* Mutation button styling */
-    .mutation-btn {
-      padding: 0.4rem 0.8rem;
-      font-size: 0.75rem;
-    }
-
-    .mutation-btn.silent {
-      color: #1e1e1e;
-      background: #4ec9b0;
-    }
-
-    .mutation-btn.silent:hover {
-      background: #5ed9c0;
-    }
-
-    .mutation-btn.missense {
-      color: #1e1e1e;
-      background: #ce9178;
-    }
-
-    .mutation-btn.missense:hover {
-      background: #dea188;
-    }
-
-    .mutation-btn.nonsense {
-      color: #1e1e1e;
-      background: #f48771;
-    }
-
-    .mutation-btn.nonsense:hover {
-      background: #ff9781;
-    }
-
-    .mutation-btn.frameshift {
-      color: #1e1e1e;
-      background: #c586c0;
-    }
-
-    .mutation-btn.frameshift:hover {
-      background: #d596d0;
-    }
-
-    .mutation-btn.point {
-      color: #1e1e1e;
-      background: #569cd6;
-    }
-
-    .mutation-btn.point:hover {
-      background: #66ace6;
-    }
-
-    .mutation-btn.insertion {
-      color: #1e1e1e;
-      background: #89d185;
-    }
-
-    .mutation-btn.insertion:hover {
-      background: #99e195;
-    }
-
-    .mutation-btn.deletion {
-      color: #1e1e1e;
-      background: #dcdcaa;
-    }
-
-    .mutation-btn.deletion:hover {
-      background: #ececba;
-    }
-
-    /* Mode toggle styles */
-    input[type="radio"][name="mode"] {
-      position: absolute;
-      -webkit-appearance: none;
-      appearance: none;
-      opacity: 0;
-    }
-
-    input[type="radio"][name="mode"] + span {
-      transition: all 0.2s;
-    }
-
-    input[type="radio"][name="mode"]:checked + span {
-      padding: 0.5rem 0.75rem;
-      margin: -0.5rem -0.75rem;
-      font-weight: 600;
-      color: white;
-      background: var(--color-button-primary);
-      border-radius: 4px;
-    }
-
-    input[type="radio"][name="mode"]:not(:checked) + span:hover {
-      padding: 0.5rem 0.75rem;
-      margin: -0.5rem -0.75rem;
-      background: var(--color-button-secondary-hover);
-      border-radius: 4px;
-    }
-
-    input[type="radio"][name="mode"]:focus-visible + span {
-      outline: 2px solid var(--color-focus);
-      outline-offset: 2px;
-      border-radius: 4px;
-    }
-
-    /* Tutorial Onboarding Banner */
-    .tutorial-banner {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 1.5rem 2rem;
-      margin-bottom: 1rem;
-      color: white;
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-      border-radius: 8px;
-      box-shadow: 0 4px 12px rgba(102, 126, 234, 0.2);
-      animation: slideInFromTop 0.5s ease-out;
-    }
-
-    @keyframes slideInFromTop {
-      from {
-        opacity: 0;
-        transform: translateY(-20px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-
-    .tutorial-banner-content {
-      flex: 1;
-    }
-
-    .tutorial-banner-title {
-      margin: 0 0 0.5rem 0;
-      font-size: 1.25rem;
-      font-weight: 600;
-    }
-
-    .tutorial-banner-description {
-      margin: 0;
-      font-size: 0.95rem;
-      opacity: 0.95;
-    }
-
-    .tutorial-banner-actions {
-      display: flex;
-      gap: 1rem;
-      align-items: center;
-    }
-
-    .tutorial-banner-btn {
-      display: inline-block;
-      padding: 0.75rem 1.5rem;
-      font-size: 1rem;
-      font-weight: 600;
-      text-decoration: none;
-      cursor: pointer;
-      border: none;
-      border-radius: 6px;
-      transition: all 0.2s ease;
-    }
-
-    .tutorial-banner-btn.primary {
-      color: #667eea;
-      background: white;
-    }
-
-    .tutorial-banner-btn.primary:hover {
-      box-shadow: 0 4px 12px rgba(255, 255, 255, 0.3);
-      transform: translateY(-2px);
-    }
-
-    .tutorial-banner-btn.secondary {
-      color: white;
-      background: transparent;
-      border: 2px solid rgba(255, 255, 255, 0.5);
-    }
-
-    .tutorial-banner-btn.secondary:hover {
-      background: rgba(255, 255, 255, 0.1);
-      border-color: white;
-    }
-
-    .tutorial-banner-dismiss {
-      padding: 0.25rem 0.5rem;
-      margin-left: 1rem;
-      font-size: 1.5rem;
-      color: white;
-      cursor: pointer;
-      background: none;
-      border: none;
-      opacity: 0.7;
-      transition: opacity 0.2s;
-    }
-
-    .tutorial-banner-dismiss:hover {
-      opacity: 1;
-    }
-
-    .tutorial-banner.hidden {
-      display: none;
-    }
-
-    /* Responsive: Stack banner on mobile */
-    @media (max-width: 768px) {
-      .tutorial-banner {
-        flex-direction: column;
-        gap: 1.5rem;
-        padding: 1.25rem 1rem;
-        text-align: center;
-      }
-
-      .tutorial-banner-actions {
-        flex-direction: column;
-        gap: 0.75rem;
-        width: 100%;
-      }
-
-      .tutorial-banner-btn {
-        width: 100%;
-      }
-
-      .tutorial-banner-dismiss {
-        position: absolute;
-        top: 0.5rem;
-        right: 0.5rem;
-        margin: 0;
-      }
-
-      .tutorial-banner-title {
-        font-size: 1.1rem;
-      }
-
-      .tutorial-banner-description {
-        font-size: 0.875rem;
-      }
-    }
-    </style>
+    />
+    <link rel="stylesheet" href="css/variables.css" />
+    <link rel="stylesheet" href="css/index.css" />
   </head>
   <body>
     <a href="#main-content" class="skip-link">Skip to main content</a>
@@ -781,7 +80,7 @@
                   value="playground"
                   checked
                   style="margin: 0"
-                >
+                />
                 <span>🧪 Playground</span>
               </label>
               <label
@@ -792,12 +91,12 @@
                   name="mode"
                   value="assessment"
                   style="margin: 0"
-                >
+                />
                 <span>🎓 Assessment</span>
               </label>
             </div>
             <button
-              id="themeToggleBtn"
+              id="theme-toggle-btn"
               class="secondary"
               aria-label="Cycle through themes: dark, light, high contrast"
               title="Change theme"
@@ -810,7 +109,7 @@
 
       <!-- Tutorial Onboarding Banner -->
       <div
-        id="tutorialBanner"
+        id="tutorial-banner"
         class="tutorial-banner"
         role="region"
         aria-label="Tutorial onboarding"
@@ -828,7 +127,7 @@
           <a href="gallery.html" class="tutorial-banner-btn secondary"
           >Browse Examples 🎨</a>
           <button
-            id="dismissTutorialBanner"
+            id="dismiss-tutorial-banner"
             class="tutorial-banner-dismiss"
             aria-label="Dismiss tutorial banner"
             title="Don't show this again"
@@ -838,21 +137,21 @@
         </div>
       </div>
 
-      <div id="playgroundContainer" style="display: contents">
+      <div id="playground-container" style="display: contents">
         <main id="main-content" class="editor-panel">
           <nav class="toolbar" role="toolbar" aria-label="Main controls">
-            <button id="runBtn" aria-label="Run genome program (Ctrl+Enter)">
+            <button id="run-btn" aria-label="Run genome program (Ctrl+Enter)">
               ▶ Run
             </button>
             <button
-              id="clearBtn"
+              id="clear-btn"
               class="secondary"
               aria-label="Clear canvas output"
             >
               Clear Canvas
             </button>
             <button
-              id="timelineToggleBtn"
+              id="timeline-toggle-btn"
               class="secondary"
               aria-label="Toggle timeline scrubber"
               title="Show/hide step-through execution timeline"
@@ -860,7 +159,7 @@
               ⏱️ Timeline
             </button>
             <button
-              id="audioToggleBtn"
+              id="audio-toggle-btn"
               class="secondary"
               aria-label="Visual mode - click for audio"
               title="Cycle through visual, audio, and multi-sensory modes"
@@ -869,19 +168,19 @@
             </button>
 
             <div class="example-filters">
-              <label for="searchInput" class="sr-only">Search examples</label>
+              <label for="search-input" class="sr-only">Search examples</label>
               <input
                 type="text"
-                id="searchInput"
+                id="search-input"
                 placeholder="🔍 Search examples..."
                 aria-label="Search examples by name or description"
                 style="width: 150px; padding: 6px 8px; border: 1px solid #3c3c3c; background: #1e1e1e; color: #d4d4d4; border-radius: 4px; font-size: 13px"
               />
 
-              <label for="difficultyFilter" class="sr-only"
+              <label for="difficulty-filter" class="sr-only"
               >Filter by difficulty</label>
               <select
-                id="difficultyFilter"
+                id="difficulty-filter"
                 aria-label="Filter examples by difficulty level"
                 style="padding: 6px 8px; border: 1px solid #3c3c3c; background: #1e1e1e; color: #d4d4d4; border-radius: 4px; font-size: 13px"
               >
@@ -891,10 +190,10 @@
                 <option value="advanced">🌳 Advanced</option>
               </select>
 
-              <label for="conceptFilter" class="sr-only"
+              <label for="concept-filter" class="sr-only"
               >Filter by concept</label>
               <select
-                id="conceptFilter"
+                id="concept-filter"
                 aria-label="Filter examples by programming concept"
                 style="padding: 6px 8px; border: 1px solid #3c3c3c; background: #1e1e1e; color: #d4d4d4; border-radius: 4px; font-size: 13px"
               >
@@ -908,23 +207,23 @@
               </select>
             </div>
 
-            <label for="exampleSelect" class="sr-only"
+            <label for="example-select" class="sr-only"
             >Load example genome</label>
             <select
-              id="exampleSelect"
+              id="example-select"
               aria-label="Select example genome to load"
             >
               <option value="">Load Example...</option>
             </select>
             <button
-              id="exportBtn"
+              id="export-btn"
               class="secondary"
               aria-label="Export canvas as PNG image"
             >
               📄 Export PNG
             </button>
             <button
-              id="exportAudioBtn"
+              id="export-audio-btn"
               class="secondary"
               aria-label="Export audio as WAV file"
               style="display: none"
@@ -932,7 +231,7 @@
               🎵 Export Audio
             </button>
             <button
-              id="exportMidiBtn"
+              id="export-midi-btn"
               class="secondary"
               aria-label="Export as MIDI file"
               style="display: none"
@@ -940,42 +239,42 @@
               🎹 Export MIDI
             </button>
             <button
-              id="analyzeBtn"
+              id="analyze-btn"
               class="secondary"
               aria-label="Analyze codon usage patterns"
             >
               📊 Analyze
             </button>
             <button
-              id="saveGenomeBtn"
+              id="save-genome-btn"
               class="secondary"
               aria-label="Save current genome to file"
             >
               💾 Save .genome
             </button>
             <button
-              id="loadGenomeBtn"
+              id="load-genome-btn"
               class="secondary"
               aria-label="Load genome from file"
             >
               📂 Load .genome
             </button>
             <button
-              id="exportStudentProgressBtn"
+              id="export-student-progress-btn"
               class="secondary"
               aria-label="Export student progress for teacher dashboard"
             >
               📊 Export Progress
             </button>
-            <label for="genomeFileInput" class="sr-only"
+            <label for="genome-file-input" class="sr-only"
             >Choose genome file</label>
             <input
               type="file"
-              id="genomeFileInput"
+              id="genome-file-input"
               accept=".genome,.json"
               aria-label="Choose genome file to load"
               style="position: absolute; left: -9999px"
-            >
+            />
           </nav>
           <nav
             class="toolbar"
@@ -988,7 +287,7 @@
               aria-hidden="true"
             >🧬 Mutations:</span>
             <button
-              id="silentMutationBtn"
+              id="silent-mutation-btn"
               class="mutation-btn silent"
               title="Change codon to synonymous variant (same opcode)"
               aria-label="Apply silent mutation - change codon to synonymous variant"
@@ -996,7 +295,7 @@
               Silent
             </button>
             <button
-              id="missenseMutationBtn"
+              id="missense-mutation-btn"
               class="mutation-btn missense"
               title="Change codon to different opcode"
               aria-label="Apply missense mutation - change codon to different opcode"
@@ -1004,7 +303,7 @@
               Missense
             </button>
             <button
-              id="nonsenseMutationBtn"
+              id="nonsense-mutation-btn"
               class="mutation-btn nonsense"
               title="Introduce STOP codon (early termination)"
               aria-label="Apply nonsense mutation - introduce early STOP codon"
@@ -1012,7 +311,7 @@
               Nonsense
             </button>
             <button
-              id="frameshiftMutationBtn"
+              id="frameshift-mutation-btn"
               class="mutation-btn frameshift"
               title="Insert/delete base (reading frame shift)"
               aria-label="Apply frameshift mutation - insert or delete single base"
@@ -1020,7 +319,7 @@
               Frameshift
             </button>
             <button
-              id="pointMutationBtn"
+              id="point-mutation-btn"
               class="mutation-btn point"
               title="Random single base change"
               aria-label="Apply point mutation - random single base change"
@@ -1028,7 +327,7 @@
               Point
             </button>
             <button
-              id="insertionMutationBtn"
+              id="insertion-mutation-btn"
               class="mutation-btn insertion"
               title="Insert 1-3 bases"
               aria-label="Apply insertion mutation - insert 1 to 3 bases"
@@ -1036,7 +335,7 @@
               Insertion
             </button>
             <button
-              id="deletionMutationBtn"
+              id="deletion-mutation-btn"
               class="mutation-btn deletion"
               title="Delete 1-3 bases"
               aria-label="Apply deletion mutation - delete 1 to 3 bases"
@@ -1050,7 +349,7 @@
             aria-label="Share and export tools"
             style="border-top: 1px solid #3e3e42"
           >
-            <div id="shareContainer" style="flex: 1"></div>
+            <div id="share-container" style="flex: 1"></div>
           </nav>
           <label for="editor" class="sr-only">Genome code editor</label>
           <textarea
@@ -1067,7 +366,8 @@ ATG GAA AAT GGA TAA
 ; GAA AAT = PUSH 3
 ; GGA = CIRCLE
 ; TAA = STOP"
-          >ATG GAA AAT GGA TAA</textarea>
+          >
+ATG GAA AAT GGA TAA</textarea>
           <div id="editor-help" class="sr-only">
             DNA codon editor. Use bases A, C, G, and T to create triplet codons.
             Start programs with ATG (START) and end with TAA, TAG, or TGA
@@ -1076,7 +376,7 @@ ATG GAA AAT GGA TAA
           </div>
 
           <section
-            id="linterPanel"
+            id="linter-panel"
             role="region"
             aria-labelledby="linter-heading"
             style="margin-top: 12px; background: #2d2d30; border: 1px solid #3c3c3c; border-radius: 4px"
@@ -1090,14 +390,14 @@ ATG GAA AAT GGA TAA
               </h3>
               <div style="display: flex; gap: 8px">
                 <button
-                  id="fixAllBtn"
+                  id="fix-all-btn"
                   aria-label="Fix all auto-fixable errors"
                   style="padding: 4px 10px; font-size: 11px; background: #4ec9b0; color: #1e1e1e; font-weight: 500; border: none; border-radius: 3px; cursor: pointer"
                 >
                   Fix All
                 </button>
                 <button
-                  id="linterToggle"
+                  id="linter-toggle"
                   aria-label="Toggle linter panel visibility"
                   aria-expanded="true"
                   style="padding: 4px 8px; font-size: 11px; background: #3e3e42"
@@ -1107,7 +407,7 @@ ATG GAA AAT GGA TAA
               </div>
             </div>
             <div
-              id="linterMessages"
+              id="linter-messages"
               role="log"
               aria-live="polite"
               aria-atomic="false"
@@ -1120,7 +420,7 @@ ATG GAA AAT GGA TAA
           </section>
 
           <section
-            id="diffViewerPanel"
+            id="diff-viewer-panel"
             role="region"
             aria-labelledby="diff-viewer-heading"
             style="display: none; margin-top: 12px; background: #2d2d30; border: 1px solid #3c3c3c; border-radius: 4px"
@@ -1134,14 +434,14 @@ ATG GAA AAT GGA TAA
               </h3>
               <div style="display: flex; gap: 8px">
                 <button
-                  id="diffViewerClearBtn"
+                  id="diff-viewer-clear-btn"
                   aria-label="Clear comparison and hide panel"
                   style="padding: 4px 10px; font-size: 11px; background: #3e3e42; color: #d4d4d4; border: none; border-radius: 3px; cursor: pointer"
                 >
                   Clear
                 </button>
                 <button
-                  id="diffViewerToggle"
+                  id="diff-viewer-toggle"
                   aria-label="Toggle diff viewer panel visibility"
                   aria-expanded="true"
                   style="padding: 4px 8px; font-size: 11px; background: #3e3e42"
@@ -1151,7 +451,7 @@ ATG GAA AAT GGA TAA
               </div>
             </div>
             <div
-              id="diffViewerContainer"
+              id="diff-viewer-container"
               role="log"
               aria-live="polite"
               style="padding: 12px; font-size: 12px; line-height: 1.6; max-height: 400px; overflow-y: auto"
@@ -1161,7 +461,7 @@ ATG GAA AAT GGA TAA
           </section>
 
           <section
-            id="analyzerPanel"
+            id="analyzer-panel"
             role="region"
             aria-labelledby="analyzer-heading"
             style="display: none; margin-top: 12px; background: #2d2d30; border: 1px solid #3c3c3c; border-radius: 4px"
@@ -1175,14 +475,14 @@ ATG GAA AAT GGA TAA
               </h3>
               <div style="display: flex; gap: 8px">
                 <button
-                  id="analyzerCompareBtn"
+                  id="analyzer-compare-btn"
                   aria-label="Compare with another genome"
                   style="padding: 4px 10px; font-size: 11px; background: #4ec9b0; color: #1e1e1e; font-weight: 500; border: none; border-radius: 3px; cursor: pointer; display: none"
                 >
                   Compare
                 </button>
                 <button
-                  id="analyzerToggle"
+                  id="analyzer-toggle"
                   aria-label="Toggle analyzer panel visibility"
                   aria-expanded="true"
                   style="padding: 4px 8px; font-size: 11px; background: #3e3e42"
@@ -1192,7 +492,7 @@ ATG GAA AAT GGA TAA
               </div>
             </div>
             <div
-              id="analyzerContent"
+              id="analyzer-content"
               role="log"
               aria-live="polite"
               style="padding: 12px; font-size: 12px; line-height: 1.6; max-height: 400px; overflow-y: auto"
@@ -1202,7 +502,7 @@ ATG GAA AAT GGA TAA
           </section>
 
           <section
-            id="exampleInfo"
+            id="example-info"
             role="region"
             aria-labelledby="example-info-heading"
             aria-live="polite"
@@ -1234,7 +534,7 @@ ATG GAA AAT GGA TAA
             ></canvas>
           </div>
           <div
-            id="timelinePanel"
+            id="timeline-panel"
             style="display: none; border-top: 1px solid #3e3e42; padding: 1rem"
             role="region"
             aria-labelledby="timeline-heading"
@@ -1243,17 +543,17 @@ ATG GAA AAT GGA TAA
             <h3 id="timeline-heading" class="sr-only">
               Timeline Scrubber Controls
             </h3>
-            <div id="timelineContainer"></div>
+            <div id="timeline-container"></div>
           </div>
           <div
-            id="achievementPanel"
+            id="achievement-panel"
             style="border-top: 1px solid #3e3e42; padding: 1rem; max-height: 400px; overflow-y: auto"
             role="region"
             aria-labelledby="achievement-heading"
             aria-live="polite"
           >
             <h3 id="achievement-heading" class="sr-only">Achievement System</h3>
-            <div id="achievementContainer"></div>
+            <div id="achievement-container"></div>
           </div>
         </aside>
 
@@ -1263,11 +563,12 @@ ATG GAA AAT GGA TAA
           aria-live="polite"
           aria-atomic="true"
         >
-          <span id="statusMessage">Ready</span>
+          <span id="status-message">Ready</span>
           <div class="stats" aria-label="Program statistics">
-            <span id="codonCount" aria-label="Number of codons">Codons: 0</span>
+            <span id="codon-count" aria-label="Number of codons"
+            >Codons: 0</span>
             <span
-              id="instructionCount"
+              id="instruction-count"
               aria-label="Number of instructions executed"
             >Instructions: 0</span>
           </div>
@@ -1276,31 +577,13 @@ ATG GAA AAT GGA TAA
 
       <!-- Assessment Mode Container -->
       <div
-        id="assessmentContainer"
+        id="assessment-container"
         style="display: none; grid-column: 1 / -1; overflow-y: auto"
       >
       </div>
     </div>
 
-    <script type="module" src="/src/playground.ts"></script>
-
-    <!-- Tutorial Banner Dismiss Logic -->
-    <script>
-    // Check if user has dismissed the tutorial banner
-const tutorialBanner = document.getElementById("tutorialBanner");
-const dismissBtn = document.getElementById("dismissTutorialBanner");
-const BANNER_DISMISSED_KEY = "codoncanvas-tutorial-banner-dismissed";
-
-// Hide banner if previously dismissed
-if (localStorage.getItem(BANNER_DISMISSED_KEY) === "true") {
-  tutorialBanner?.classList.add("hidden");
-}
-
-// Handle dismiss button click
-dismissBtn?.addEventListener("click", () => {
-  localStorage.setItem(BANNER_DISMISSED_KEY, "true");
-  tutorialBanner?.classList.add("hidden");
-});
-    </script>
+    <script type="module" src="src/playground.ts"></script>
+    <script type="module" src="src/pages/tutorial-banner.ts"></script>
   </body>
 </html>

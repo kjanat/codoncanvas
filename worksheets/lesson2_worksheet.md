@@ -1,6 +1,6 @@
 # Lesson 2 Student Worksheet: Mutation Gallery
 
-**Name:** ____________________ **Date:** __________
+**Name:** \_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_ **Date:** \_\_\_\_\_\_\_\_\_\_
 
 **Learning Objectives:**
 
@@ -16,11 +16,11 @@
 
 **1. Name three codon families you learned:**
 
-- ________ family (shape: _______)
-- ________ family (shape: _______)
-- ________ family (shape: _______)
+- \_\_\_\_\_\_\_\_ family (shape: \_\_\_\_\_\_\_)
+- \_\_\_\_\_\_\_\_ family (shape: \_\_\_\_\_\_\_)
+- \_\_\_\_\_\_\_\_ family (shape: \_\_\_\_\_\_\_)
 
-**2. What is a silent mutation?** ____________________________________
+**2. What is a silent mutation?** \_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
 
 ---
 
@@ -38,7 +38,7 @@ A **missense mutation** changes one codon to a DIFFERENT codon family, producing
 ATG GAA AGG GGA TAA
 ```
 
-**Original output:** _________________________
+**Original output:** \_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
 
 Now make these changes ONE AT A TIME (undo after each):
 
@@ -49,9 +49,9 @@ Now make these changes ONE AT A TIME (undo after each):
 | GGA → GTA | GTA (ELLIPSE)  |           |                   |
 | GGA → AAA | AAA (LINE)     |           |                   |
 
-**Which mutations worked?** _________________________________________
+**Which mutations worked?** \_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
 
-**Which mutations failed?** _________________________________________
+**Which mutations failed?** \_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
 
 **Why did some fail?** HINT: Look at how many numbers each shape needs
 
@@ -71,7 +71,7 @@ Create a missense mutation that WORKS:
 ATG GAA AGG GAA AGG GGA TAA
 ```
 
-**Your mutation:** Change _____ to _____
+**Your mutation:** Change \_\_\_\_\_ to \_\_\_\_\_
 
 **New genome:**
 
@@ -79,13 +79,13 @@ ATG GAA AGG GAA AGG GGA TAA
 ATG GAA AGG GAA AGG _____ TAA
 ```
 
-**Result:** Circle became ___________________
+**Result:** Circle became \_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
 
 **Biological parallel:** In real biology, a missense mutation changes one amino acid to another. Sometimes the protein still works (like your drawing), sometimes it doesn't. Can you think of an example of each?
 
-Works: ____________________________________________________________
+Works: \_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
 
-Doesn't work: ______________________________________________________
+Doesn't work: \_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
 
 ---
 
@@ -105,7 +105,7 @@ ATG
 TAA
 ```
 
-**How many circles do you see?** _______
+**How many circles do you see?** \_\_\_\_\_\_\_
 
 **Now introduce a nonsense mutation:** Change the SECOND `GGA` to `TAA`
 
@@ -119,9 +119,9 @@ ATG
 TAA
 ```
 
-**How many circles now?** _______
+**How many circles now?** \_\_\_\_\_\_\_
 
-**What happened?** __________________________________________________
+**What happened?** \_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
 
 ---
 
@@ -139,7 +139,7 @@ Test these three genomes:
 ATG TAA GAA CCC GGA GAA CCC GGA TAA
 ```
 
-**Circles drawn:** _______
+**Circles drawn:** \_\_\_\_\_\_\_
 
 **B) Middle STOP:**
 
@@ -147,7 +147,7 @@ ATG TAA GAA CCC GGA GAA CCC GGA TAA
 ATG GAA CCC GGA TAA GAA CCC GGA TAA
 ```
 
-**Circles drawn:** _______
+**Circles drawn:** \_\_\_\_\_\_\_
 
 **C) Late STOP:**
 
@@ -155,10 +155,9 @@ ATG GAA CCC GGA TAA GAA CCC GGA TAA
 ATG GAA CCC GGA GAA CCC GGA TAA
 ```
 
-**Circles drawn:** _______
+**Circles drawn:** \_\_\_\_\_\_\_
 
-**Conclusion:** The earlier the nonsense mutation, the _____________
-information is lost.
+**Conclusion:** The earlier the nonsense mutation, the \_\_\_\_\_\_\_\_\_\_\_\_\_ information is lost.
 
 ---
 
@@ -208,7 +207,7 @@ ATG|GAC|CCG|GAT|AA   (new frame!)
 ATG AAA GGA TAA
 ```
 
-**Normal output:** _________________________
+**Normal output:** \_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
 
 **Now create frameshift:** Insert ONE extra base anywhere after ATG
 
@@ -262,12 +261,12 @@ Delete C: ATGAAACCGGATAA
 New:      ATG|AAA|CCG|GAT|AA
 ```
 
-| Mutation Type | Codons Affected | Severity     |
-| ------------- | --------------- | ------------ |
-| Missense      | ____________    | Low/Med/High |
-| Frameshift    | ____________    | Low/Med/High |
+| Mutation Type | Codons Affected  | Severity     |
+| ------------- | ---------------- | ------------ |
+| Missense      | \_\_\_\_\_\_\_\_ | Low/Med/High |
+| Frameshift    | \_\_\_\_\_\_\_\_ | Low/Med/High |
 
-**Why is frameshift more severe?** ___________________________________
+**Why is frameshift more severe?** \_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
 
 ---
 
@@ -284,7 +283,7 @@ For each pair, identify the mutation type AND predict the visual effect.
 
 **Mutation type:** ☐ Silent ☐ Missense ☐ Nonsense ☐ Frameshift
 
-**Predicted effect:** _______________________________________________
+**Predicted effect:** \_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
 
 ---
 
@@ -295,7 +294,7 @@ For each pair, identify the mutation type AND predict the visual effect.
 
 **Mutation type:** ☐ Silent ☐ Missense ☐ Nonsense ☐ Frameshift
 
-**Predicted effect:** _______________________________________________
+**Predicted effect:** \_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
 
 ---
 
@@ -306,7 +305,7 @@ For each pair, identify the mutation type AND predict the visual effect.
 
 **Mutation type:** ☐ Silent ☐ Missense ☐ Nonsense ☐ Frameshift
 
-**Predicted effect:** _______________________________________________
+**Predicted effect:** \_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
 
 ---
 
@@ -317,7 +316,7 @@ For each pair, identify the mutation type AND predict the visual effect.
 
 **Mutation type:** ☐ Silent ☐ Missense ☐ Nonsense ☐ Frameshift
 
-**Predicted effect:** _______________________________________________
+**Predicted effect:** \_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
 
 ---
 
@@ -328,7 +327,7 @@ For each pair, identify the mutation type AND predict the visual effect.
 
 **Mutation type:** ☐ Silent ☐ Missense ☐ Nonsense ☐ Frameshift
 
-**Predicted effect:** _______________________________________________
+**Predicted effect:** \_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
 
 ---
 
@@ -338,12 +337,12 @@ For each pair, identify the mutation type AND predict the visual effect.
 
 Rank these mutation types from least to most severe (1 = least, 4 = most):
 
-_____ Silent
-_____ Missense
-_____ Nonsense
-_____ Frameshift
+\_\_\_\_\_ Silent
+\_\_\_\_\_ Missense
+\_\_\_\_\_ Nonsense
+\_\_\_\_\_ Frameshift
 
-**Explain your ranking:** ___________________________________________
+**Explain your ranking:** \_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
 
 ---
 
@@ -369,11 +368,11 @@ In real biology, sickle cell anemia is caused by a single base change in the hem
 
 If an organism has a mutation in its DNA, which mutation type would be:
 
-**Most likely to be passed to offspring without harm?** _________________
+**Most likely to be passed to offspring without harm?** \_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
 
-**Most likely to be lethal?** _________________
+**Most likely to be lethal?** \_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
 
-**Why?** ____________________________________________________________
+**Why?** \_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
 
 ---
 
@@ -423,8 +422,8 @@ TAA
 
 (Show actual base deletion/insertion)
 
-**Which had the biggest visual impact?** ____________________________
+**Which had the biggest visual impact?** \_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
 
 ---
 
-**Teacher Signature:** _______________ **Completion:** ☐ Excellent ☐ Good ☐ Needs Review
+**Teacher Signature:** \_\_\_\_\_\_\_\_\_\_\_\_\_\_\_ **Completion:** ☐ Excellent ☐ Good ☐ Needs Review

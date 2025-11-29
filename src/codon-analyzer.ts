@@ -11,7 +11,7 @@
  * (codon usage bias, GC content, compositional analysis)
  */
 
-import { CODON_MAP, type CodonToken, Opcode } from "./types";
+import { CODON_MAP, type CodonToken, Opcode } from "@/types";
 
 /**
  * Complete codon usage analysis results
@@ -89,44 +89,12 @@ export function analyzeCodonUsage(tokens: CodonToken[]): CodonAnalysis {
   const codonFrequency = new Map<string, number>();
   const opcodeDistribution = new Map<string, number>();
 
-  // Count base composition for GC content
-  let gCount = 0;
-  let cCount = 0;
-  let aCount = 0;
-  let tCount = 0;
-
-  // Analyze each codon
-  for (const token of tokens) {
-    const codon = normalizeCodon(token.text);
-
-    // Codon frequency
-    codonFrequency.set(codon, (codonFrequency.get(codon) || 0) + 1);
-
-    // Base composition (normalize U→T for GC calculation)
-    const bases = codon.split("");
-    for (const base of bases) {
-      const normalizedBase = base === "U" ? "T" : base;
-      if (normalizedBase === "G") gCount++;
-      else if (normalizedBase === "C") cCount++;
-      else if (normalizedBase === "A") aCount++;
-      else if (normalizedBase === "T") tCount++;
-    }
-
-    // Opcode distribution
-    const opcode = CODON_MAP[codon];
-    if (opcode !== undefined) {
-      const opcodeName = Opcode[opcode];
-      opcodeDistribution.set(
-        opcodeName,
-        (opcodeDistribution.get(opcodeName) || 0) + 1,
-      );
-    }
-  }
-
-  // Calculate GC/AT content
-  const totalBases = gCount + cCount + aCount + tCount;
-  const gcContent = totalBases > 0 ? ((gCount + cCount) / totalBases) * 100 : 0;
-  const atContent = totalBases > 0 ? ((aCount + tCount) / totalBases) * 100 : 0;
+  // Analyze codon composition and distribution
+  const { gcContent, atContent } = analyzeComposition(
+    tokens,
+    codonFrequency,
+    opcodeDistribution,
+  );
 
   // Calculate opcode family percentages
   const opcodeFamilies = calculateOpcodeFamilies(
@@ -134,25 +102,12 @@ export function analyzeCodonUsage(tokens: CodonToken[]): CodonAnalysis {
     totalCodons,
   );
 
-  // Top codons
-  const topCodons = Array.from(codonFrequency.entries())
-    .sort((a, b) => b[1] - a[1])
-    .slice(0, 5)
-    .map(([codon, count]) => ({
-      codon,
-      count,
-      percentage: (count / totalCodons) * 100,
-    }));
-
-  // Top opcodes
-  const topOpcodes = Array.from(opcodeDistribution.entries())
-    .sort((a, b) => b[1] - a[1])
-    .slice(0, 5)
-    .map(([opcode, count]) => ({
-      opcode,
-      count,
-      percentage: (count / totalCodons) * 100,
-    }));
+  // Top codons and opcodes
+  const { topCodons, topOpcodes } = calculateTopStats(
+    codonFrequency,
+    opcodeDistribution,
+    totalCodons,
+  );
 
   // Codon family usage (e.g., GG*, CC*, etc.)
   const codonFamilyUsage = calculateCodonFamilyUsage(codonFrequency);
@@ -172,6 +127,100 @@ export function analyzeCodonUsage(tokens: CodonToken[]): CodonAnalysis {
     codonFamilyUsage,
     signature,
   };
+}
+
+function calculateTopStats(
+  codonFrequency: Map<string, number>,
+  opcodeDistribution: Map<string, number>,
+  totalCodons: number,
+) {
+  const topCodons = getTopItems(codonFrequency, totalCodons);
+  const topOpcodes = getTopItems(opcodeDistribution, totalCodons).map(
+    (item) => ({
+      opcode: item.codon, // Reuse interface property name mapping
+      count: item.count,
+      percentage: item.percentage,
+    }),
+  );
+  return { topCodons, topOpcodes };
+}
+
+function analyzeComposition(
+  tokens: CodonToken[],
+  codonFrequency: Map<string, number>,
+  opcodeDistribution: Map<string, number>,
+) {
+  let gCount = 0;
+  let cCount = 0;
+  let aCount = 0;
+  let tCount = 0;
+
+  for (const token of tokens) {
+    const codon = normalizeCodon(token.text);
+
+    // Codon frequency
+    codonFrequency.set(codon, (codonFrequency.get(codon) || 0) + 1);
+
+    // Base composition
+    const counts = countBases(codon);
+    gCount += counts.g;
+    cCount += counts.c;
+    aCount += counts.a;
+    tCount += counts.t;
+
+    // Opcode distribution
+    updateOpcodeDistribution(codon, opcodeDistribution);
+  }
+
+  const totalBases = gCount + cCount + aCount + tCount;
+  const gcContent = totalBases > 0 ? ((gCount + cCount) / totalBases) * 100 : 0;
+  const atContent = totalBases > 0 ? ((aCount + tCount) / totalBases) * 100 : 0;
+
+  return { gcContent, atContent };
+}
+
+function countBases(codon: string) {
+  let g = 0;
+  let c = 0;
+  let a = 0;
+  let t = 0;
+  const bases = codon.split("");
+  for (const base of bases) {
+    const normalizedBase = base === "U" ? "T" : base;
+    if (normalizedBase === "G") g++;
+    else if (normalizedBase === "C") c++;
+    else if (normalizedBase === "A") a++;
+    else if (normalizedBase === "T") t++;
+  }
+  return { g, c, a, t };
+}
+
+function updateOpcodeDistribution(
+  codon: string,
+  opcodeDistribution: Map<string, number>,
+) {
+  const opcode = CODON_MAP[codon];
+  if (opcode !== undefined) {
+    const opcodeName = Opcode[opcode];
+    opcodeDistribution.set(
+      opcodeName,
+      (opcodeDistribution.get(opcodeName) || 0) + 1,
+    );
+  }
+}
+
+function getTopItems(
+  frequencyMap: Map<string, number>,
+  total: number,
+): Array<{ codon: string; count: number; percentage: number }> {
+  return Array.from(frequencyMap.entries())
+    .sort((a, b) => b[1] - a[1])
+    .slice(0, 5)
+    .map(([key, count]) => ({
+      codon: key,
+      count,
+      percentage: (count / total) * 100,
+    }));
 }
 
 /**
@@ -307,6 +356,143 @@ export function compareAnalyses(a: CodonAnalysis, b: CodonAnalysis): number {
   return (
     familySimilarity * 0.5 + gcSimilarity * 0.2 + signatureSimilarity * 0.3
   );
+}
+
+/**
+ * Genome complexity analysis result
+ */
+export interface GenomeComplexity {
+  filename: string;
+  instructionCount: number;
+  uniqueOpcodes: number;
+  opcodeDistribution: Record<string, number>;
+  maxStackDepth: number;
+  complexityScore: number;
+  hasPush: boolean;
+  hasLoop: boolean;
+  hasComparison: boolean;
+  hasArithmetic: boolean;
+}
+
+// Stack effect mapping: opcode -> items consumed from stack
+const STACK_CONSUMERS_1 = new Set([
+  Opcode.CIRCLE,
+  Opcode.LINE,
+  Opcode.TRIANGLE,
+  Opcode.ROTATE,
+  Opcode.SCALE,
+  Opcode.POP,
+]);
+const STACK_CONSUMERS_2 = new Set([
+  Opcode.RECT,
+  Opcode.ELLIPSE,
+  Opcode.TRANSLATE,
+]);
+const STACK_CONSUMERS_3 = new Set([Opcode.COLOR]);
+const STACK_PRODUCERS = new Set([Opcode.PUSH, Opcode.DUP]);
+
+/** Calculate stack effect for an opcode (-N = consumes, +1 = produces) */
+function getStackEffect(opcode: Opcode | undefined): number {
+  if (opcode === undefined) return 0;
+  if (STACK_PRODUCERS.has(opcode)) return 1;
+  if (STACK_CONSUMERS_1.has(opcode)) return -1;
+  if (STACK_CONSUMERS_2.has(opcode)) return -2;
+  if (STACK_CONSUMERS_3.has(opcode)) return -3;
+  return 0;
+}
+
+/** Build opcode distribution and collect unique opcodes */
+function buildOpcodeStats(tokens: CodonToken[]): {
+  distribution: Record<string, number>;
+  unique: Set<Opcode>;
+} {
+  const distribution: Record<string, number> = {};
+  const unique = new Set<Opcode>();
+
+  for (const token of tokens) {
+    const opcode = CODON_MAP[token.text];
+    if (opcode !== undefined) {
+      unique.add(opcode);
+      const name = Opcode[opcode];
+      distribution[name] = (distribution[name] || 0) + 1;
+    }
+  }
+  return { distribution, unique };
+}
+
+/** Calculate maximum stack depth from token sequence */
+function calculateMaxStackDepth(tokens: CodonToken[]): number {
+  let current = 0;
+  let max = 0;
+  for (const token of tokens) {
+    const effect = getStackEffect(CODON_MAP[token.text]);
+    current = Math.max(0, current + effect);
+    max = Math.max(max, current);
+  }
+  return max;
+}
+
+/** Detect advanced feature usage */
+function detectFeatures(unique: Set<Opcode>) {
+  return {
+    hasPush: unique.has(Opcode.PUSH),
+    hasLoop: unique.has(Opcode.LOOP),
+    hasComparison: unique.has(Opcode.EQ) || unique.has(Opcode.LT),
+    hasArithmetic:
+      unique.has(Opcode.ADD) ||
+      unique.has(Opcode.SUB) ||
+      unique.has(Opcode.MUL) ||
+      unique.has(Opcode.DIV),
+  };
+}
+
+/** Calculate weighted complexity score */
+function calculateComplexityScore(
+  instructionCount: number,
+  uniqueCount: number,
+  maxStackDepth: number,
+  features: ReturnType<typeof detectFeatures>,
+): number {
+  let score = instructionCount;
+  score += uniqueCount * 5; // Variety of opcodes
+  score += maxStackDepth * 3; // Stack management complexity
+  if (features.hasLoop) score += 20;
+  if (features.hasComparison) score += 5;
+  if (features.hasArithmetic) score += 10;
+  return score;
+}
+
+/**
+ * Analyze genome complexity from tokenized codons
+ * Provides metrics for educational progression and difficulty assessment
+ *
+ * @param filename - Name of the genome file
+ * @param tokens - Tokenized codon sequence
+ * @returns Complexity analysis with score and feature flags
+ */
+export function analyzeComplexity(
+  filename: string,
+  tokens: CodonToken[],
+): GenomeComplexity {
+  const { distribution, unique } = buildOpcodeStats(tokens);
+  const maxStackDepth = calculateMaxStackDepth(tokens);
+  const features = detectFeatures(unique);
+  const complexityScore = calculateComplexityScore(
+    tokens.length,
+    unique.size,
+    maxStackDepth,
+    features,
+  );
+
+  return {
+    filename,
+    instructionCount: tokens.length,
+    uniqueOpcodes: unique.size,
+    opcodeDistribution: distribution,
+    maxStackDepth,
+    complexityScore,
+    ...features,
+  };
 }
 
 /**

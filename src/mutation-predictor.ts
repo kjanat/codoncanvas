@@ -15,10 +15,10 @@
  * - Scaffolds learning progression
  */
 
-import { CodonLexer } from "./lexer";
-import type { MutationResult } from "./mutations";
-import { Canvas2DRenderer } from "./renderer";
-import { CodonVM } from "./vm";
+import { CodonLexer } from "@/lexer";
+import type { MutationResult } from "@/mutations";
+import { Canvas2DRenderer } from "@/renderer";
+import { CodonVM } from "@/vm";
 
 /**
  * Impact classification for mutation effects.

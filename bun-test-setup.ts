@@ -1,28 +1,25 @@
+/// <reference lib="dom" />
 /**
  * Bun test setup file - loaded before all tests
- * Provides DOM environment mocking and global test utilities
+ * Provides minimal DOM environment via happy-dom
+ *
+ * NOTE: Canvas getContext('2d') returns null in happy-dom by design.
+ * Tests that need canvas mocking should mock it locally, not globally.
  */
 
-import { beforeEach, afterEach } from "bun:test";
-import { Window } from "happy-dom";
+import { afterEach } from "bun:test";
+import { GlobalRegistrator } from "@happy-dom/global-registrator";
 
-// Initialize happy-dom environment
-const window = new Window();
-const document = window.document;
+// Register global registrator
+GlobalRegistrator.register();
 
-// Set up global DOM APIs
-globalThis.window = window as unknown as Window & typeof globalThis;
-globalThis.document = document;
-globalThis.HTMLElement = window.HTMLElement;
-globalThis.HTMLCanvasElement = window.HTMLCanvasElement;
-
-// Initialize localStorage mock for Bun test environment
-const localStorageMock = (() => {
+// Storage factory - creates isolated storage instances
+function createStorageMock(): Storage {
   let store: Record<string, string> = {};
   return {
-    getItem: (key: string) => store[key] || null,
+    getItem: (key: string) => store[key] ?? null,
     setItem: (key: string, value: string) => {
-      store[key] = value?.toString() || "";
+      store[key] = String(value);
     },
     removeItem: (key: string) => {
       delete store[key];
@@ -33,150 +30,35 @@ const localStorageMock = (() => {
     get length() {
       return Object.keys(store).length;
     },
-    key: (index: number) => {
-      const keys = Object.keys(store);
-      return keys[index] || null;
+    key: (index: number) => Object.keys(store)[index] ?? null,
+    // Add missing properties required by Storage interface
+    [Symbol.iterator]: function* () {
+      for (const key of Object.keys(store)) {
+        yield key;
+      }
     },
-  };
-})();
+  } as unknown as Storage;
+}
 
-// Override global.localStorage
+// Create storage instances
+const localStorageMock = createStorageMock();
+const sessionStorageMock = createStorageMock();
+
+// Override global storage
 Object.defineProperty(globalThis, "localStorage", {
   value: localStorageMock,
   writable: true,
   configurable: true,
 });
 
-// Mock HTMLCanvasElement.getContext for tests that use canvas
-if (typeof HTMLCanvasElement !== "undefined") {
-  HTMLCanvasElement.prototype.getContext = ((
-    contextId: string,
-  ): RenderingContext | null => {
-    if (contextId === "2d") {
-      // Track canvas state for rendering validation
-      let hasDrawn = false;
+Object.defineProperty(globalThis, "sessionStorage", {
+  value: sessionStorageMock,
+  writable: true,
+  configurable: true,
+});
 
-      return {
-        fillStyle: "",
-        strokeStyle: "",
-        lineWidth: 1,
-        font: "",
-        textAlign: "start",
-        textBaseline: "alphabetic",
-        globalAlpha: 1,
-        globalCompositeOperation: "source-over",
-        shadowBlur: 0,
-        shadowColor: "transparent",
-        shadowOffsetX: 0,
-        shadowOffsetY: 0,
-        lineCap: "butt",
-        lineJoin: "miter",
-        miterLimit: 10,
-        lineDashOffset: 0,
-        fillRect: () => {
-          hasDrawn = true;
-        },
-        strokeRect: () => {
-          hasDrawn = true;
-        },
-        clearRect: () => {},
-        fillText: () => {
-          hasDrawn = true;
-        },
-        strokeText: () => {
-          hasDrawn = true;
-        },
-        measureText: (text: string) => ({ width: text.length * 10 }),
-        beginPath: () => {},
-        closePath: () => {},
-        moveTo: () => {},
-        lineTo: () => {},
-        arc: () => {
-          hasDrawn = true;
-        },
-        arcTo: () => {
-          hasDrawn = true;
-        },
-        ellipse: () => {
-          hasDrawn = true;
-        },
-        rect: () => {
-          hasDrawn = true;
-        },
-        quadraticCurveTo: () => {},
-        bezierCurveTo: () => {},
-        stroke: () => {
-          hasDrawn = true;
-        },
-        fill: () => {
-          hasDrawn = true;
-        },
-        clip: () => {},
-        isPointInPath: () => false,
-        isPointInStroke: () => false,
-        save: () => {},
-        restore: () => {},
-        translate: () => {},
-        rotate: () => {},
-        scale: () => {},
-        transform: () => {},
-        setTransform: () => {},
-        resetTransform: () => {},
-        drawImage: () => {
-          hasDrawn = true;
-        },
-        createLinearGradient: () => ({
-          addColorStop: () => {},
-        }),
-        createRadialGradient: () => ({
-          addColorStop: () => {},
-        }),
-        createPattern: () => null,
-        setLineDash: () => {},
-        getLineDash: () => [],
-        getImageData: (_sx: number, _sy: number, sw: number, sh: number) => {
-          const size = sw * sh * 4;
-          const data = new Uint8ClampedArray(size);
-          if (hasDrawn) {
-            // Fill with non-transparent data to indicate rendering occurred
-            for (let i = 0; i < size; i += 4) {
-              data[i] = 128; // R
-              data[i + 1] = 128; // G
-              data[i + 2] = 128; // B
-              data[i + 3] = 255; // A (opaque)
-            }
-          }
-          return {
-            data,
-            width: sw,
-            height: sh,
-          };
-        },
-        putImageData: () => {},
-        createImageData: (width: number, height: number) => ({
-          data: new Uint8ClampedArray(width * height * 4),
-          width,
-          height,
-        }),
-      } as unknown as RenderingContext;
-    }
-    return null;
-  }) as typeof HTMLCanvasElement.prototype.getContext;
-
-  // Mock toDataURL for canvas
-  HTMLCanvasElement.prototype.toDataURL = () =>
-    "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==";
-
-  // Mock toBlob for canvas
-  HTMLCanvasElement.prototype.toBlob = (callback: BlobCallback) => {
-    setTimeout(() => {
-      callback(new Blob([""], { type: "image/png" }));
-    }, 0);
-  };
-}
-
-// Clean up after each test
+// Clean up storage after each test for isolation
 afterEach(() => {
-  // Clear localStorage between tests
   localStorage.clear();
+  sessionStorage.clear();
 });

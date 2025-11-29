@@ -1,0 +1,9 @@
+name: "Check Duplication"
+description: "Runs jscpd and reports to GITHUB_STEP_SUMMARY"
+
+runs:
+  using: "composite"
+  steps:
+    - name: Check duplication
+      shell: bash
+      run: ${{ github.action_path }}/check-duplication.sh

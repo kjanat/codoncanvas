@@ -128,8 +128,12 @@ export class GifExporter {
         resolve(blob);
       });
 
-      // Error callback
-      gif.on("error", (error: Error) => {
+      // Error callback - cast to bypass incomplete type definitions
+      (
+        gif as unknown as {
+          on(event: string, callback: (err: Error) => void): void;
+        }
+      ).on("error", (error: Error) => {
         reject(error);
       });
 

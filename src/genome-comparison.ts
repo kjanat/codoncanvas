@@ -9,10 +9,10 @@
  * - Analyze solution diversity in research studies
  */
 
-import { CodonLexer } from "./lexer";
-import { compareGenomes } from "./mutations";
-import { Canvas2DRenderer } from "./renderer";
-import { CodonVM } from "./vm";
+import { CodonLexer } from "@/lexer";
+import { compareGenomes } from "@/mutations";
+import { Canvas2DRenderer } from "@/renderer";
+import { CodonVM } from "@/vm";
 
 /**
  * Detailed comparison result with educational metrics

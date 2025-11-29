@@ -1,6 +1,6 @@
 # Lesson 3 Student Worksheet: Genome Composition
 
-**Name:** ____________________ **Date:** __________
+**Name:** \_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_ **Date:** \_\_\_\_\_\_\_\_\_\_
 
 **Learning Objectives:**
 
@@ -140,9 +140,9 @@ With base-4 encoding (0-63), you're working with scaled values!
 
 **List your shapes and their positions:**
 
-1. _____________ at position (_____, _____)
-2. _____________ at position (_____, _____)
-3. _____________ at position (_____, _____)
+1. \_\_\_\_\_\_\_\_\_\_\_\_\_ at position (\_\_\_\_\_, \_\_\_\_\_)
+2. \_\_\_\_\_\_\_\_\_\_\_\_\_ at position (\_\_\_\_\_, \_\_\_\_\_)
+3. \_\_\_\_\_\_\_\_\_\_\_\_\_ at position (\_\_\_\_\_, \_\_\_\_\_)
 
 ---
 
@@ -163,7 +163,7 @@ ATG
 TAA
 ```
 
-**Title for your artwork:** _________________________________________
+**Title for your artwork:** \_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
 
 **Description (what were you trying to create?):**
 
@@ -219,7 +219,7 @@ ATG
 TAA
 ```
 
-**Pattern name:** __________________________________________________
+**Pattern name:** \_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
 
 ---
 
@@ -241,31 +241,31 @@ TAA
 ```
 
 **Mutation 1 (Silent):**
-Change: _______ → _______
+Change: \_\_\_\_\_\_\_ → \_\_\_\_\_\_\_
 
 **Predicted effect:** No change (same family)
 
-**Actual result:** _________________________________________________
+**Actual result:** \_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
 
 ---
 
 **Mutation 2 (Missense):**
-Change: _______ → _______
+Change: \_\_\_\_\_\_\_ → \_\_\_\_\_\_\_
 
-**Predicted effect:** _______________________________________________
+**Predicted effect:** \_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
 
-**Actual result:** _________________________________________________
+**Actual result:** \_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
 
 ---
 
 **Mutation 3 (Your Choice):**
-Change: _______ → _______
+Change: \_\_\_\_\_\_\_ → \_\_\_\_\_\_\_
 
 **Mutation type:** ☐ Silent ☐ Missense ☐ Nonsense ☐ Frameshift
 
-**Predicted effect:** _______________________________________________
+**Predicted effect:** \_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
 
-**Actual result:** _________________________________________________
+**Actual result:** \_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
 
 ---
 
@@ -282,11 +282,11 @@ Change: _______ → _______
 
 **Biological parallel:** In evolution, "fitness" means better at surviving and reproducing. In art, "fitness" might mean more appealing or interesting. How are these similar? Different?
 
-Similar: ___________________________________________________________
+Similar: \_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
 
 ---
 
-Different: _________________________________________________________
+Different: \_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
 
 ---
 
@@ -351,7 +351,7 @@ ATG
 TAA
 ```
 
-**Artwork title:** _________________________________________________
+**Artwork title:** \_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
 
 **Artist statement (what does it represent?):**
 
@@ -361,7 +361,7 @@ TAA
 
 ---
 
-**Estimated time to first artifact:** _______ minutes
+**Estimated time to first artifact:** \_\_\_\_\_\_\_ minutes
 
 ---
 
@@ -407,9 +407,9 @@ Could an organism "intentionally" mutate? Why or why not?
 
 The codon system limits what you can express (only certain shapes, limited numbers, specific transforms). How did these constraints affect your creativity?
 
-Did they make it easier or harder? ___________________________________
+Did they make it easier or harder? \_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
 
-Did they make your work more or less interesting? ____________________
+Did they make your work more or less interesting? \_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
 
 **Real biology parallel:** DNA can only code for 20 amino acids, yet creates incredible diversity. How is this similar to your experience?
 
@@ -436,11 +436,11 @@ Did they make your work more or less interesting? ____________________
 ---
 
 **How has your understanding of mutations changed?**
-Before CodonCanvas: _________________________________________________
+Before CodonCanvas: \_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
 
 ---
 
-After CodonCanvas: _________________________________________________
+After CodonCanvas: \_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
 
 ---
 
@@ -451,10 +451,11 @@ After CodonCanvas: _________________________________________________
 **Would you like to share your work in the class gallery?** ☐ Yes ☐ No
 
 **If yes, which genome would you showcase?**
-☐ Exercise 3.5 (Geometric Garden)
-☐ Exercise 3.6 (Pattern Creation)
-☐ Exercise 3.10 (Maximum Complexity)
-☐ Other: _________________________________________________________
+
+☐ Exercise 3.5 (Geometric Garden)\
+☐ Exercise 3.6 (Pattern Creation)\
+☐ Exercise 3.10 (Maximum Complexity)\
+☐ Other: \_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
 
 **Export your genome:** Save as .ccd file and submit with this worksheet
 
@@ -479,15 +480,24 @@ Rate yourself on these skills (1 = still learning, 5 = confident):
 - Genotype vs phenotype: 1 2 3 4 5
 
 **What would help you improve most?**
-☐ More practice examples
-☐ Better codon chart reference
-☐ Video tutorials
-☐ Pair programming with peer
-☐ Other: _________________________________________________________
+
+☐ More practice examples\
+☐ Better codon chart reference\
+☐ Video tutorials\
+☐ Pair programming with peer\
+☐ Other: \_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
 
 ---
 
-**Teacher Signature:** _______________ **Completion:** ☐ Excellent ☐ Good ☐ Needs Review
+**Teacher Signature:**
+
+\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
+
+**Completion:**
+
+☐ Excellent\
+☐ Good\
+☐ Needs Review
 
 **Teacher Comments:**
 

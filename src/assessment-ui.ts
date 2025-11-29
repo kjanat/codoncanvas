@@ -14,15 +14,15 @@
  * ```
  */
 
-import type { AchievementEngine } from "./achievement-engine";
-import type { AchievementUI } from "./achievement-ui";
+import type { AchievementEngine } from "@/achievement-engine";
+import type { AchievementUI } from "@/achievement-ui";
 import type {
   AssessmentDifficulty,
   AssessmentEngine,
   AssessmentResult,
   Challenge,
-} from "./assessment-engine";
-import type { MutationType } from "./types";
+} from "@/assessment-engine";
+import type { MutationType } from "@/types";
 
 /**
  * UI manager for assessment mode.
@@ -96,8 +96,6 @@ export class AssessmentUI {
       2,
     );
   }
-
-  // ============= Private Methods =============
 
   /**
    * Create UI structure.
@@ -263,7 +261,7 @@ export class AssessmentUI {
     // Setup answer buttons
     const buttons = this.container.querySelectorAll(".answer-btn");
     buttons.forEach((btn) => {
-      const type = (btn as HTMLButtonElement).dataset["type"] as MutationType;
+      const type = (btn as HTMLButtonElement).dataset.type as MutationType;
       this.answerButtons.set(type, btn as HTMLButtonElement);
 
       btn.addEventListener("click", () => this.submitAnswer(type));

@@ -3,9 +3,7 @@
  * Extracts Stats and MetricsAnalyzer classes from CLI script for dashboard integration
  */
 
-// ============================================================================
 // Data Structures
-// ============================================================================
 
 export interface MetricsSession {
   sessionId: string;
@@ -209,9 +207,7 @@ export interface AnalysisReport {
   mutations: MutationPatterns;
 }
 
-// ============================================================================
 // Statistical Functions
-// ============================================================================
 
 /**
  * Static utility methods for statistical calculations
@@ -287,18 +283,38 @@ export class Stats {
   }
 
   /**
+   * Compute group statistics for two-sample comparisons
+   * @internal
+   */
+  private static groupStats(
+    group1: number[],
+    group2: number[],
+  ): {
+    n1: number;
+    n2: number;
+    m1: number;
+    m2: number;
+    v1: number;
+    v2: number;
+  } {
+    return {
+      n1: group1.length,
+      n2: group2.length,
+      m1: Stats.mean(group1),
+      m2: Stats.mean(group2),
+      v1: Stats.sd(group1) ** 2,
+      v2: Stats.sd(group2) ** 2,
+    };
+  }
+
+  /**
    * Independent samples t-test
    */
   static tTest(
     group1: number[],
     group2: number[],
   ): { t: number; df: number; p: number } {
-    const n1 = group1.length;
-    const n2 = group2.length;
-    const m1 = Stats.mean(group1);
-    const m2 = Stats.mean(group2);
-    const v1 = Stats.sd(group1) ** 2;
-    const v2 = Stats.sd(group2) ** 2;
+    const { n1, n2, m1, m2, v1, v2 } = Stats.groupStats(group1, group2);
 
     const pooledVar = ((n1 - 1) * v1 + (n2 - 1) * v2) / (n1 + n2 - 2);
     const se = Math.sqrt(pooledVar * (1 / n1 + 1 / n2));
@@ -315,12 +331,7 @@ export class Stats {
    * Cohen's d effect size
    */
   static cohensD(group1: number[], group2: number[]): number {
-    const n1 = group1.length;
-    const n2 = group2.length;
-    const m1 = Stats.mean(group1);
-    const m2 = Stats.mean(group2);
-    const v1 = Stats.sd(group1) ** 2;
-    const v2 = Stats.sd(group2) ** 2;
+    const { n1, n2, m1, m2, v1, v2 } = Stats.groupStats(group1, group2);
 
     const pooledSD = Math.sqrt(((n1 - 1) * v1 + (n2 - 1) * v2) / (n1 + n2 - 2));
     return (m1 - m2) / pooledSD;
@@ -370,9 +381,7 @@ export class Stats {
   }
 }
 
-// ============================================================================
 // Metrics Analyzer
-// ============================================================================
 
 /**
  * Metrics Analyzer - Aggregates and analyzes learning metrics from sessions
@@ -667,9 +676,7 @@ export class MetricsAnalyzer {
   }
 }
 
-// ============================================================================
 // CSV Parsing (Browser-compatible)
-// ============================================================================
 
 /**
  * Parse CSV string into MetricsSession objects
@@ -743,9 +750,7 @@ function parseCSVLine(line: string): string[] {
   return result.map((v) => v.replace(/^"(.*)"$/, "$1"));
 }
 
-// ============================================================================
 // Formatting Utilities
-// ============================================================================
 
 /**
  * Format milliseconds to human-readable duration string

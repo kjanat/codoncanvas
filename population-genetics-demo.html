@@ -1,299 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Population Genetics Simulator - CodonCanvas</title>
-    <style>
-    * {
-      box-sizing: border-box;
-      padding: 0;
-      margin: 0;
-    }
-
-    body {
-      min-height: 100vh;
-      padding: 20px;
-      font-family:
-        -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
-      color: #333;
-      background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
-    }
-
-    .container {
-      max-width: 1400px;
-      margin: 0 auto;
-      overflow: hidden;
-      background: white;
-      border-radius: 12px;
-      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
-    }
-
-    header {
-      padding: 30px;
-      color: white;
-      text-align: center;
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    }
-
-    header h1 {
-      margin-bottom: 10px;
-      font-size: 2.5em;
-      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
-    }
-
-    header p {
-      font-size: 1.2em;
-      opacity: 0.9;
-    }
-
-    .content {
-      padding: 30px;
-    }
-
-    .intro {
-      padding: 20px;
-      margin-bottom: 30px;
-      background: #f8f9fa;
-      border-left: 4px solid #667eea;
-      border-radius: 4px;
-    }
-
-    .intro h2 {
-      margin-bottom: 10px;
-      color: #667eea;
-    }
-
-    .controls {
-      padding: 20px;
-      margin-bottom: 30px;
-      background: #f8f9fa;
-      border-radius: 8px;
-    }
-
-    .control-group {
-      margin-bottom: 20px;
-    }
-
-    .control-group label {
-      display: block;
-      margin-bottom: 8px;
-      font-weight: 600;
-      color: #555;
-    }
-
-    .control-row {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 15px;
-      align-items: center;
-    }
-
-    input[type="number"], select, textarea {
-      padding: 10px;
-      font-family: inherit;
-      font-size: 14px;
-      border: 2px solid #ddd;
-      border-radius: 6px;
-      transition: border-color 0.3s;
-    }
-
-    input[type="number"]:focus, select:focus, textarea:focus {
-      outline: none;
-      border-color: #667eea;
-    }
-
-    input[type="number"] {
-      width: 120px;
-    }
-
-    select {
-      width: 200px;
-    }
-
-    textarea {
-      width: 100%;
-      min-height: 100px;
-      font-family: "Courier New", monospace;
-      resize: vertical;
-    }
-
-    button {
-      padding: 12px 24px;
-      font-size: 16px;
-      font-weight: 600;
-      color: white;
-      cursor: pointer;
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-      border: none;
-      border-radius: 6px;
-      transition: transform 0.2s, box-shadow 0.2s;
-    }
-
-    button:hover {
-      box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
-      transform: translateY(-2px);
-    }
-
-    button:active {
-      transform: translateY(0);
-    }
-
-    button:disabled {
-      cursor: not-allowed;
-      background: #ccc;
-      transform: none;
-    }
-
-    .button-group {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-    }
-
-    .population-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 20px;
-      margin-bottom: 30px;
-    }
-
-    .organism-card {
-      overflow: hidden;
-      background: white;
-      border: 2px solid #ddd;
-      border-radius: 8px;
-      transition: transform 0.2s, box-shadow 0.2s;
-    }
-
-    .organism-card:hover {
-      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
-      transform: translateY(-4px);
-    }
-
-    .organism-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 12px;
-      font-weight: 600;
-      color: white;
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    }
-
-    .generation-badge {
-      padding: 4px 10px;
-      font-size: 12px;
-      background: rgba(255, 255, 255, 0.3);
-      border-radius: 12px;
-    }
-
-    .organism-canvas {
-      display: block;
-      width: 100%;
-      height: 250px;
-      background: #f8f9fa;
-    }
-
-    .organism-genome {
-      max-height: 80px;
-      padding: 12px;
-      overflow-y: auto;
-      font-family: "Courier New", monospace;
-      font-size: 11px;
-      line-height: 1.4;
-      word-break: break-all;
-      background: #f8f9fa;
-      border-top: 1px solid #ddd;
-    }
-
-    .mutation-highlight {
-      padding: 2px;
-      background: #ffd700;
-      border-radius: 2px;
-    }
-
-    .stats-panel {
-      padding: 20px;
-      margin-bottom: 30px;
-      background: #f8f9fa;
-      border-radius: 8px;
-    }
-
-    .stats-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-      gap: 20px;
-    }
-
-    .stat-card {
-      padding: 15px;
-      background: white;
-      border-left: 4px solid #667eea;
-      border-radius: 6px;
-    }
-
-    .stat-label {
-      margin-bottom: 5px;
-      font-size: 14px;
-      color: #666;
-    }
-
-    .stat-value {
-      font-size: 24px;
-      font-weight: 700;
-      color: #333;
-    }
-
-    .info-box {
-      padding: 15px;
-      margin: 20px 0;
-      background: #e3f2fd;
-      border-left: 4px solid #2196f3;
-      border-radius: 4px;
-    }
-
-    .info-box h3 {
-      margin-bottom: 8px;
-      color: #1976d2;
-    }
-
-    .info-box ul {
-      margin-left: 20px;
-    }
-
-    .info-box li {
-      margin: 5px 0;
-    }
-
-    footer {
-      padding: 20px;
-      color: #666;
-      text-align: center;
-      background: #f8f9fa;
-      border-top: 1px solid #ddd;
-    }
-
-    footer a {
-      font-weight: 600;
-      color: #667eea;
-      text-decoration: none;
-    }
-
-    footer a:hover {
-      text-decoration: underline;
-    }
-
-    @media (max-width: 768px) {
-      header h1 {
-        font-size: 1.8em;
-      }
-
-      .population-grid {
-        grid-template-columns: 1fr;
-      }
-    }
-    </style>
+    <link rel="stylesheet" href="css/variables.css" />
+    <link rel="stylesheet" href="css/population-genetics-demo.css" />
   </head>
   <body>
     <div class="container">
@@ -334,7 +46,7 @@
         <div class="controls">
           <div class="control-group">
             <label>Founder Genome (all organisms start with this):</label>
-            <textarea id="founderGenome">ATG GAA CCC GGA TAA</textarea>
+            <textarea id="founder-genome">ATG GAA CCC GGA TAA</textarea>
           </div>
 
           <div class="control-group">
@@ -342,38 +54,38 @@
             <div class="control-row">
               <div>
                 <label
-                  for="popSize"
+                  for="pop-size"
                   style="font-weight: normal; font-size: 13px"
                 >Population Size:</label>
-                <input type="number" id="popSize" min="2" max="12" value="6">
+                <input type="number" id="pop-size" min="2" max="12" value="6" />
               </div>
               <div>
                 <label
-                  for="mutationRate"
+                  for="mutation-rate"
                   style="font-weight: normal; font-size: 13px"
                 >Mutation Rate (%):</label>
                 <input
                   type="number"
-                  id="mutationRate"
+                  id="mutation-rate"
                   min="0"
                   max="100"
                   value="15"
                   step="5"
-                >
+                />
               </div>
               <div>
                 <label
-                  for="generationDelay"
+                  for="generation-delay"
                   style="font-weight: normal; font-size: 13px"
                 >Generation Delay (ms):</label>
                 <input
                   type="number"
-                  id="generationDelay"
+                  id="generation-delay"
                   min="100"
                   max="5000"
                   value="1000"
                   step="100"
-                >
+                />
               </div>
             </div>
           </div>
@@ -383,10 +95,10 @@
             <div class="control-row">
               <div>
                 <label
-                  for="mutationType"
+                  for="mutation-type"
                   style="font-weight: normal; font-size: 13px"
                 >Type:</label>
-                <select id="mutationType">
+                <select id="mutation-type">
                   <option value="balanced">Balanced (all types)</option>
                   <option value="point-only">Point mutations only</option>
                   <option value="frameshift-heavy">Frameshift-heavy</option>
@@ -399,10 +111,10 @@
           </div>
 
           <div class="button-group">
-            <button id="startBtn">Start Simulation</button>
-            <button id="pauseBtn" disabled>Pause</button>
-            <button id="resetBtn">Reset Population</button>
-            <button id="stepBtn">Single Generation</button>
+            <button id="start-btn">Start Simulation</button>
+            <button id="pause-btn" disabled>Pause</button>
+            <button id="reset-btn">Reset Population</button>
+            <button id="step-btn">Single Generation</button>
           </div>
         </div>
 
@@ -411,11 +123,11 @@
           <div class="stats-grid">
             <div class="stat-card">
               <div class="stat-label">Current Generation</div>
-              <div class="stat-value" id="currentGen">0</div>
+              <div class="stat-value" id="current-gen">0</div>
             </div>
             <div class="stat-card">
               <div class="stat-label">Total Mutations</div>
-              <div class="stat-value" id="totalMutations">0</div>
+              <div class="stat-value" id="total-mutations">0</div>
             </div>
             <div class="stat-card">
               <div class="stat-label">Genetic Diversity</div>
@@ -423,15 +135,15 @@
             </div>
             <div class="stat-card">
               <div class="stat-label">Unique Genomes</div>
-              <div class="stat-value" id="uniqueGenomes">1</div>
+              <div class="stat-value" id="unique-genomes">1</div>
             </div>
           </div>
         </div>
 
         <h2 style="margin-bottom: 20px">
-          Population (Generation <span id="generationDisplay">0</span>)
+          Population (Generation <span id="generation-display">0</span>)
         </h2>
-        <div class="population-grid" id="populationGrid"></div>
+        <div class="population-grid" id="population-grid"></div>
 
         <div class="info-box">
           <h3>💡 Observation Tips</h3>
@@ -462,7 +174,7 @@
 
       <footer>
         <p>
-          <strong>CodonCanvas Population Genetics Simulator</strong><br>
+          <strong>CodonCanvas Population Genetics Simulator</strong><br />
           Explore more demos:
           <a href="index.html">Playground</a> |
           <a href="mutation-demo.html">Mutation Lab</a> |
@@ -472,253 +184,6 @@
       </footer>
     </div>
 
-    <script type="module">
-    import { CodonLexer } from "./src/lexer.ts";
-import {
-  applyDeletion,
-  applyFrameshiftMutation,
-  applyInsertion,
-  applyPointMutation,
-} from "./src/mutations.ts";
-import { Canvas2DRenderer } from "./src/renderer.ts";
-import { CodonVM } from "./src/vm.ts";
-
-// Population state
-let population = [];
-let generation = 0;
-let totalMutations = 0;
-let isRunning = false;
-let intervalId = null;
-let founderGenome = "";
-
-// DOM elements
-const founderGenomeInput = document.getElementById("founderGenome");
-const popSizeInput = document.getElementById("popSize");
-const mutationRateInput = document.getElementById("mutationRate");
-const generationDelayInput = document.getElementById("generationDelay");
-const mutationTypeSelect = document.getElementById("mutationType");
-const startBtn = document.getElementById("startBtn");
-const pauseBtn = document.getElementById("pauseBtn");
-const resetBtn = document.getElementById("resetBtn");
-const stepBtn = document.getElementById("stepBtn");
-const populationGrid = document.getElementById("populationGrid");
-const currentGenSpan = document.getElementById("currentGen");
-const totalMutationsSpan = document.getElementById("totalMutations");
-const diversitySpan = document.getElementById("diversity");
-const uniqueGenomesSpan = document.getElementById("uniqueGenomes");
-const generationDisplay = document.getElementById("generationDisplay");
-
-// Initialize population
-function initializePopulation() {
-  const popSize = parseInt(popSizeInput.value, 10);
-  founderGenome = founderGenomeInput.value.trim();
-
-  population = Array.from({ length: popSize }, (_, i) => ({
-    id: i,
-    genome: founderGenome,
-    generation: 0,
-    mutations: [],
-    parentId: null,
-  }));
-
-  generation = 0;
-  totalMutations = 0;
-  renderPopulation();
-  updateStats();
-}
-
-// Apply mutation based on type distribution
-function applyMutation(genome) {
-  const mutationType = mutationTypeSelect.value;
-  const rand = Math.random();
-
-  let result;
-  switch (mutationType) {
-    case "point-only":
-      result = applyPointMutation(genome);
-      break;
-    case "frameshift-heavy":
-      if (rand < 0.6) {
-        result = applyFrameshiftMutation(genome);
-      } else if (rand < 0.8) {
-        result = applyInsertion(genome);
-      } else {
-        result = applyPointMutation(genome);
-      }
-      break;
-    case "conservative":
-      if (rand < 0.7) {
-        // Silent mutation - pick a codon and replace with synonymous
-        result = applyPointMutation(genome);
-      } else if (rand < 0.9) {
-        result = applyPointMutation(genome);
-      } else {
-        result = applyInsertion(genome);
-      }
-      break;
-    default: // balanced
-      if (rand < 0.5) {
-        result = applyPointMutation(genome);
-      } else if (rand < 0.7) {
-        result = applyInsertion(genome);
-      } else if (rand < 0.85) {
-        result = applyDeletion(genome);
-      } else {
-        result = applyFrameshiftMutation(genome);
-      }
-  }
-
-  return result;
-}
-
-// Advance one generation
-function advanceGeneration() {
-  generation++;
-  const mutationRate = parseFloat(mutationRateInput.value) / 100;
-
-  population = population.map((organism, _idx) => {
-    let newGenome = organism.genome;
-    const mutations = [];
-
-    // Apply mutations based on rate
-    if (Math.random() < mutationRate) {
-      const mutationResult = applyMutation(newGenome);
-      newGenome = mutationResult.mutated;
-      mutations.push(mutationResult.description);
-      totalMutations++;
-    }
-
-    return {
-      id: organism.id,
-      genome: newGenome,
-      generation,
-      mutations,
-      parentId: organism.id,
-    };
-  });
-
-  renderPopulation();
-  updateStats();
-}
-
-// Render population grid
-function renderPopulation() {
-  populationGrid.innerHTML = "";
-  generationDisplay.textContent = generation;
-
-  population.forEach((organism, idx) => {
-    const card = document.createElement("div");
-    card.className = "organism-card";
-
-    const header = document.createElement("div");
-    header.className = "organism-header";
-    header.innerHTML = `
-          <span>Organism ${idx + 1}</span>
-          <span class="generation-badge">Gen ${organism.generation}</span>
-        `;
-
-    const canvas = document.createElement("canvas");
-    canvas.className = "organism-canvas";
-    canvas.width = 400;
-    canvas.height = 400;
-
-    const genomeDiv = document.createElement("div");
-    genomeDiv.className = "organism-genome";
-
-    // Highlight mutations if any
-    let genomeDisplay = organism.genome;
-    if (organism.mutations.length > 0) {
-      genomeDisplay = `<span class="mutation-highlight" title="${organism.mutations.join(
-        ", ",
-      )}">${organism.genome}</span>`;
-      genomeDiv.innerHTML = genomeDisplay;
-    } else {
-      genomeDiv.textContent = organism.genome;
-    }
-
-    card.appendChild(header);
-    card.appendChild(canvas);
-    card.appendChild(genomeDiv);
-    populationGrid.appendChild(card);
-
-    // Render genome on canvas
-    try {
-      const lexer = new CodonLexer();
-      const tokens = lexer.tokenize(organism.genome);
-      const renderer = new Canvas2DRenderer(canvas);
-      const vm = new CodonVM(renderer);
-      vm.run(tokens);
-    } catch (error) {
-      const ctx = canvas.getContext("2d");
-      ctx.fillStyle = "#ffebee";
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
-      ctx.fillStyle = "#c62828";
-      ctx.font = "14px sans-serif";
-      ctx.textAlign = "center";
-      ctx.fillText("Render Error", canvas.width / 2, canvas.height / 2 - 10);
-      ctx.font = "11px sans-serif";
-      ctx.fillText(
-        error.message.substring(0, 40),
-        canvas.width / 2,
-        canvas.height / 2 + 10,
-      );
-    }
-  });
-}
-
-// Update statistics
-function updateStats() {
-  currentGenSpan.textContent = generation;
-  totalMutationsSpan.textContent = totalMutations;
-
-  // Calculate genetic diversity (unique genomes / total)
-  const uniqueGenomes = new Set(population.map((org) => org.genome)).size;
-  const diversity = ((uniqueGenomes / population.length) * 100).toFixed(0);
-
-  diversitySpan.textContent = `${diversity}%`;
-  uniqueGenomesSpan.textContent = uniqueGenomes;
-}
-
-// Event handlers
-startBtn.addEventListener("click", () => {
-  if (!isRunning) {
-    isRunning = true;
-    startBtn.disabled = true;
-    pauseBtn.disabled = false;
-    stepBtn.disabled = true;
-
-    const delay = parseInt(generationDelayInput.value, 10);
-    intervalId = setInterval(advanceGeneration, delay);
-  }
-});
-
-pauseBtn.addEventListener("click", () => {
-  if (isRunning) {
-    isRunning = false;
-    startBtn.disabled = false;
-    pauseBtn.disabled = true;
-    stepBtn.disabled = false;
-    clearInterval(intervalId);
-  }
-});
-
-resetBtn.addEventListener("click", () => {
-  if (isRunning) {
-    clearInterval(intervalId);
-    isRunning = false;
-    startBtn.disabled = false;
-    pauseBtn.disabled = true;
-  }
-  stepBtn.disabled = false;
-  initializePopulation();
-});
-
-stepBtn.addEventListener("click", () => {
-  advanceGeneration();
-});
-
-// Initialize on load
-initializePopulation();
-    </script>
+    <script type="module" src="src/demos/population-genetics.ts"></script>
   </body>
 </html>

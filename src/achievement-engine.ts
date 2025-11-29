@@ -161,7 +161,7 @@ export class AchievementEngine {
    */
   private defineAchievements(): Achievement[] {
     return [
-      // ===== BASICS (Onboarding) =====
+      // Basics (Onboarding)
       {
         id: "first_genome",
         name: "First Genome",
@@ -205,7 +205,7 @@ export class AchievementEngine {
         },
       },
 
-      // ===== MASTERY (Skill Development) =====
+      // Mastery (Skill Development)
       {
         id: "mutation_expert",
         name: "Mutation Expert",
@@ -245,7 +245,7 @@ export class AchievementEngine {
         condition: (stats) => stats.consecutiveCorrect >= 5, // Simplified condition
       },
 
-      // ===== EXPLORATION (Discovery) =====
+      // Exploration (Discovery)
       {
         id: "color_artist",
         name: "Color Artist",
@@ -279,7 +279,7 @@ export class AchievementEngine {
         condition: (stats) => stats.evolutionGenerations >= 50,
       },
 
-      // ===== PERFECTION (Excellence) =====
+      // Perfection (Excellence)
       {
         id: "flawless",
         name: "Flawless",
