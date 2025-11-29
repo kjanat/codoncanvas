@@ -1,6 +1,11 @@
 /**
- * Mutation Handlers Module
- * Handles genome mutation operations and preview functionality
+ * @fileoverview Mutation Handlers Module (LEGACY)
+ *
+ * @deprecated This module is legacy code for vanilla JS HTML pages.
+ * For React, mutation logic is handled in demo components directly.
+ *
+ * @see src/pages/demos/MutationDemo.tsx - React replacement
+ * @see src/genetics/mutations.ts - Core mutation logic (keep)
  */
 
 import { predictMutationImpact } from "@/genetics/mutation-predictor";

@@ -1,3 +1,10 @@
+/**
+ * @fileoverview Assessment Demo Page (LEGACY)
+ *
+ * @deprecated This is a legacy vanilla JS page for pages/demos/assessment.html.
+ * Use the React component instead: src/pages/demos/AssessmentDemo.tsx
+ */
+
 import { AssessmentEngine } from "@/education/assessments/assessment-engine";
 import { AssessmentUI } from "@/education/assessments/assessment-ui";
 import { getElementUnsafe as getElement } from "@/utils/dom";

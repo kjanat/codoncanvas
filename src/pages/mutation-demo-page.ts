@@ -1,3 +1,10 @@
+/**
+ * @fileoverview Mutation Demo Page (LEGACY)
+ *
+ * @deprecated This is a legacy vanilla JS page for pages/demos/mutation.html.
+ * Use the React component instead: src/pages/demos/MutationDemo.tsx
+ */
+
 import { CodonLexer } from "@/core/lexer";
 import { Canvas2DRenderer } from "@/core/renderer";
 import { examples } from "@/data/examples";

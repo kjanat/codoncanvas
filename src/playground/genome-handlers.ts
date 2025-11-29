@@ -1,6 +1,11 @@
 /**
- * Genome File Handlers Module
- * Handles loading and saving genome files
+ * @fileoverview Genome File Handlers Module (LEGACY)
+ *
+ * @deprecated This module is legacy code for vanilla JS HTML pages.
+ * For React, file I/O is handled in Playground.tsx (handleLoad, handleSave).
+ *
+ * @see src/components/Playground.tsx - React replacement
+ * @see src/genetics/genome-io.ts - Core I/O logic (keep)
  */
 
 import { readGenomeFile } from "@/genetics/genome-io";

@@ -1,3 +1,10 @@
+/**
+ * @fileoverview Timeline Demo Page (LEGACY)
+ *
+ * @deprecated This is a legacy vanilla JS page for pages/demos/timeline.html.
+ * Use the React component instead: src/pages/demos/TimelineDemo.tsx
+ */
+
 import { examples } from "@/data/examples";
 import {
   TutorialManager,

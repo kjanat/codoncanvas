@@ -1,15 +1,24 @@
 /**
- * Icons - Shared icon components
+ * @fileoverview Shared SVG Icon Components
  *
- * SVG icon components used across the application.
+ * Memoized React components for common UI icons.
+ * All icons support custom className for sizing/styling.
+ *
+ * @module ui/Icons
  */
 
 import { memo } from "react";
 
+/** Props for all icon components */
 interface IconProps {
+  /** CSS class for sizing/styling (default varies by icon) */
   className?: string;
 }
 
+/**
+ * Sun icon for light theme indicator.
+ * @param props - Icon props with optional className
+ */
 export const SunIcon = memo(function SunIcon({
   className = "h-5 w-5",
 }: IconProps) {
@@ -31,6 +40,10 @@ export const SunIcon = memo(function SunIcon({
   );
 });
 
+/**
+ * Moon icon for dark theme indicator.
+ * @param props - Icon props with optional className
+ */
 export const MoonIcon = memo(function MoonIcon({
   className = "h-5 w-5",
 }: IconProps) {
@@ -52,6 +65,10 @@ export const MoonIcon = memo(function MoonIcon({
   );
 });
 
+/**
+ * Monitor icon for system theme indicator.
+ * @param props - Icon props with optional className
+ */
 export const SystemIcon = memo(function SystemIcon({
   className = "h-5 w-5",
 }: IconProps) {
@@ -69,6 +86,10 @@ export const SystemIcon = memo(function SystemIcon({
   );
 });
 
+/**
+ * GitHub logo icon for repository links.
+ * @param props - Icon props with optional className
+ */
 export const GitHubIcon = memo(function GitHubIcon({
   className = "h-5 w-5",
 }: IconProps) {
@@ -88,6 +109,10 @@ export const GitHubIcon = memo(function GitHubIcon({
   );
 });
 
+/**
+ * Chevron down icon for dropdowns/accordions.
+ * @param props - Icon props with optional className
+ */
 export const ChevronDownIcon = memo(function ChevronDownIcon({
   className = "h-4 w-4",
 }: IconProps) {
@@ -109,6 +134,10 @@ export const ChevronDownIcon = memo(function ChevronDownIcon({
   );
 });
 
+/**
+ * Checkmark icon for success/completion states.
+ * @param props - Icon props with optional className
+ */
 export const CheckIcon = memo(function CheckIcon({
   className = "h-4 w-4",
 }: IconProps) {
@@ -128,6 +157,10 @@ export const CheckIcon = memo(function CheckIcon({
   );
 });
 
+/**
+ * Error/warning icon for error states.
+ * @param props - Icon props with optional className
+ */
 export const ErrorIcon = memo(function ErrorIcon({
   className = "h-4 w-4",
 }: IconProps) {
@@ -147,6 +180,10 @@ export const ErrorIcon = memo(function ErrorIcon({
   );
 });
 
+/**
+ * Chevron right icon for navigation/expansion.
+ * @param props - Icon props with optional className
+ */
 export const ChevronRightIcon = memo(function ChevronRightIcon({
   className = "h-5 w-5",
 }: IconProps) {
@@ -168,6 +205,10 @@ export const ChevronRightIcon = memo(function ChevronRightIcon({
   );
 });
 
+/**
+ * Close/X icon for dismissing modals/panels.
+ * @param props - Icon props with optional className
+ */
 export const CloseIcon = memo(function CloseIcon({
   className = "h-4 w-4",
 }: IconProps) {

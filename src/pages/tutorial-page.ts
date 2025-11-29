@@ -1,3 +1,10 @@
+/**
+ * @fileoverview Tutorial Page (LEGACY)
+ *
+ * @deprecated This is a legacy vanilla JS page for pages/tutorial.html.
+ * Use the React component instead: src/pages/Tutorial.tsx
+ */
+
 import { CodonLexer } from "@/core/lexer";
 import { Canvas2DRenderer } from "@/core/renderer";
 import { CodonVM } from "@/core/vm";

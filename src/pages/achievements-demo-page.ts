@@ -1,3 +1,10 @@
+/**
+ * @fileoverview Achievements Demo Page (LEGACY)
+ *
+ * @deprecated This is a legacy vanilla JS page for pages/demos/achievements.html.
+ * Use the React component instead: src/pages/demos/AchievementsDemo.tsx
+ */
+
 import type { Achievement } from "@/education/achievements/achievement-engine";
 import { AchievementEngine } from "@/education/achievements/achievement-engine";
 import { AchievementUI } from "@/education/achievements/achievement-ui";

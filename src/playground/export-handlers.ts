@@ -1,6 +1,11 @@
 /**
- * Export Handlers Module
- * Handles all export functionality (PNG, Audio, MIDI, Genome, Progress)
+ * @fileoverview Export Handlers Module (LEGACY)
+ *
+ * @deprecated This module is legacy code for vanilla JS HTML pages.
+ * For React, export logic is in Playground.tsx (handleSave, handleExportPNG).
+ *
+ * @see src/components/Playground.tsx - React replacement
+ * @see src/hooks/useCanvas.ts - exportPNG method
  */
 
 import { downloadGenomeFile } from "@/genetics/genome-io";

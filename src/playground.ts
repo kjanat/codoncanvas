@@ -1,9 +1,14 @@
 /**
- * CodonCanvas Playground - Main Entry Point
- * Refactored version using modular architecture
+ * @fileoverview CodonCanvas Playground - Legacy Entry Point
  *
- * This file coordinates all playground modules and exports from the original playground.ts
- * for backward compatibility with index.html
+ * @deprecated This entire module is legacy code for vanilla JS HTML pages.
+ * The React SPA uses src/components/Playground.tsx instead.
+ *
+ * This file and all src/playground/*.ts modules will be removed once
+ * legacy HTML demo pages (pages/*.html) are fully migrated to React.
+ *
+ * @see src/components/Playground.tsx - React replacement
+ * @see src/App.tsx - React SPA entry point
  */
 
 // Re-export all public modules for backward compatibility

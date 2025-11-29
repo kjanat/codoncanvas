@@ -1,3 +1,10 @@
+/**
+ * @fileoverview Teacher Dashboard Page (LEGACY)
+ *
+ * @deprecated This is a legacy vanilla JS page for pages/dashboards/teacher.html.
+ * Use the React component instead: src/pages/dashboards/TeacherDashboard.tsx
+ */
+
 import {
   generateStudentExport,
   TeacherDashboard,

@@ -1,6 +1,18 @@
 /**
- * UI Utilities Module
- * Common helper functions for UI updates and status management
+ * @fileoverview UI Utilities Module (LEGACY)
+ *
+ * @deprecated This module is legacy code for vanilla JS HTML pages.
+ * For React components, use:
+ * - Status: Local component state in Playground.tsx
+ * - Stats: Props to PlaygroundEditor component
+ * - Theme: usePreferences hook + Layout.tsx
+ *
+ * This file will be removed once all legacy HTML demo pages
+ * are migrated to React components.
+ *
+ * @see src/components/Playground.tsx - React replacement
+ * @see src/components/PlaygroundEditor.tsx - Stats display
+ * @see src/hooks/usePreferences.ts - Theme management
  */
 
 import {
@@ -12,11 +24,9 @@ import {
 } from "@/playground/dom-manager";
 import { themeManager } from "@/playground/ui-state";
 
-// Re-export escapeHtml from consolidated DOM utilities
-export { escapeHtml } from "@/utils/dom";
-
 /**
  * Set status message and bar styling
+ * @deprecated Use React component state instead
  */
 export function setStatus(message: string, type: "info" | "error" | "success") {
   statusMessage.textContent = message;
@@ -25,6 +35,7 @@ export function setStatus(message: string, type: "info" | "error" | "success") {
 
 /**
  * Update codon and instruction count displays
+ * @deprecated Use React props to PlaygroundEditor instead
  */
 export function updateStats(codons: number, instructions: number) {
   codonCount.textContent = `Codons: ${codons}`;
@@ -33,6 +44,7 @@ export function updateStats(codons: number, instructions: number) {
 
 /**
  * Update theme button text and aria label
+ * @deprecated Use usePreferences hook + Layout.tsx instead
  */
 export function updateThemeButton() {
   const icon = themeManager.getThemeIcon();

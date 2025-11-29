@@ -1,3 +1,12 @@
+/**
+ * @fileoverview Evolution Demo Page (LEGACY)
+ *
+ * @deprecated This is a legacy vanilla JS page for pages/demos/evolution.html.
+ * Use the React component instead: src/pages/demos/EvolutionDemo.tsx
+ *
+ * This file will be removed when legacy HTML pages are deleted.
+ */
+
 import { AchievementEngine } from "@/education/achievements/achievement-engine";
 import { AchievementUI } from "@/education/achievements/achievement-ui";
 import "@/education/achievements/achievement-ui.css";

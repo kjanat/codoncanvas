@@ -1,3 +1,10 @@
+/**
+ * @fileoverview Research Dashboard Page (LEGACY)
+ *
+ * @deprecated This is a legacy vanilla JS page for pages/dashboards/research.html.
+ * Use the React component instead: src/pages/dashboards/ResearchDashboard.tsx
+ */
+
 import {
   formatDuration as formatDurationAnalyzer,
   MetricsAnalyzer,

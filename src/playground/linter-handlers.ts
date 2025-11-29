@@ -1,6 +1,11 @@
 /**
- * Linter Handlers Module
- * Manages linting and auto-fix functionality
+ * @fileoverview Linter Handlers Module (LEGACY)
+ *
+ * @deprecated This module is legacy code for vanilla JS HTML pages.
+ * For React, validation is handled by useGenome hook.
+ *
+ * @see src/hooks/useGenome.ts - React validation hook
+ * @see src/components/PlaygroundEditor.tsx - Error display
  */
 
 import {

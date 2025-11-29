@@ -1,3 +1,10 @@
+/**
+ * @fileoverview Gallery Page (LEGACY)
+ *
+ * @deprecated This is a legacy vanilla JS page for pages/gallery.html.
+ * Use the React component instead: src/pages/Gallery.tsx
+ */
+
 import { CodonLexer } from "@/core/lexer";
 import { Canvas2DRenderer } from "@/core/renderer";
 import { CodonVM } from "@/core/vm";
