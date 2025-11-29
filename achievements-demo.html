@@ -22,16 +22,16 @@
         <div class="action-section">
           <div class="section-title">🧬 Genome Activities</div>
           <div class="action-grid">
-            <button class="action-button" onclick="simulateGenomeCreation()">
+            <button class="action-button" data-action="simulateGenomeCreation">
               Create Genome
             </button>
-            <button class="action-button" onclick="simulateGenomeExecution()">
+            <button class="action-button" data-action="simulateGenomeExecution">
               Execute Genome
             </button>
-            <button class="action-button" onclick="simulateLongGenome()">
+            <button class="action-button" data-action="simulateLongGenome">
               Create Long Genome (100+)
             </button>
-            <button class="action-button" onclick="simulateMutation()">
+            <button class="action-button" data-action="simulateMutation">
               Apply Mutation
             </button>
           </div>
@@ -42,25 +42,25 @@
           <div class="action-grid">
             <button
               class="action-button secondary"
-              onclick="simulateAllShapes()"
+              data-action="simulateAllShapes"
             >
               Use All Shapes
             </button>
             <button
               class="action-button secondary"
-              onclick="simulateColorUsage()"
+              data-action="simulateColorUsage"
             >
               Use Colors (10x)
             </button>
             <button
               class="action-button secondary"
-              onclick="simulateTransforms()"
+              data-action="simulateTransforms"
             >
               Apply Transforms
             </button>
             <button
               class="action-button secondary"
-              onclick="simulateMadScientist()"
+              data-action="simulateMadScientist"
             >
               100 Mutations!
             </button>
@@ -72,22 +72,25 @@
           <div class="action-grid">
             <button
               class="action-button success"
-              onclick="simulateCorrectChallenge()"
+              data-action="simulateCorrectChallenge"
             >
               Complete Challenge (Correct)
             </button>
             <button
               class="action-button success"
-              onclick="simulateAllMutationTypes()"
+              data-action="simulateAllMutationTypes"
             >
               Identify All Types
             </button>
-            <button class="action-button success" onclick="simulateFlawless()">
+            <button
+              class="action-button success"
+              data-action="simulateFlawless"
+            >
               10 Consecutive Correct
             </button>
             <button
               class="action-button success"
-              onclick="simulatePerfectScore()"
+              data-action="simulatePerfectScore"
             >
               Perfect Score
             </button>
@@ -97,19 +100,28 @@
         <div class="action-section">
           <div class="section-title">🔬 Advanced Activities</div>
           <div class="action-grid">
-            <button class="action-button warning" onclick="simulateEvolution()">
+            <button
+              class="action-button warning"
+              data-action="simulateEvolution"
+            >
               Run Evolution (50 gen)
             </button>
             <button
               class="action-button warning"
-              onclick="simulateAudioSynthesis()"
+              data-action="simulateAudioSynthesis"
             >
               Try Audio Synthesis
             </button>
-            <button class="action-button warning" onclick="simulateTimeline()">
+            <button
+              class="action-button warning"
+              data-action="simulateTimeline"
+            >
               Use Timeline
             </button>
-            <button class="action-button warning" onclick="simulateProfessor()">
+            <button
+              class="action-button warning"
+              data-action="simulateProfessor"
+            >
               Become Professor (50 @ 95%)
             </button>
           </div>
@@ -143,7 +155,7 @@
           </p>
         </div>
 
-        <button class="reset-button" onclick="resetProgress()">
+        <button class="reset-button" id="reset-progress-btn">
           🔄 Reset All Progress
         </button>
       </div>

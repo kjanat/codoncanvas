@@ -803,13 +803,13 @@ function hideCompletionBadge(): void {
   completionBadge.classList.remove("show");
 }
 
-// Expose to window for HTML onclick handlers
-declare global {
-  interface Window {
-    hideCompletionBadge: () => void;
-  }
-}
-window.hideCompletionBadge = hideCompletionBadge;
+// Bind event listeners for buttons
+document.getElementById("exit-tutorial-btn")?.addEventListener("click", () => {
+  window.location.href = "index.html";
+});
+document
+  .getElementById("completion-continue-btn")
+  ?.addEventListener("click", hideCompletionBadge);
 
 // Event listeners
 codeEditor.addEventListener("input", () => {

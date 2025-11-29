@@ -438,21 +438,18 @@ function analyzeData(): void {
   }
 }
 
-// Expose functions to window
-declare global {
-  interface Window {
-    refreshData: () => void;
-    exportJSON: () => void;
-    exportCSV: () => void;
-    analyzeData: () => void;
-    clearData: () => void;
-  }
-}
-window.refreshData = refreshData;
-window.exportJSON = exportJSON;
-window.exportCSV = exportCSV;
-window.analyzeData = analyzeData;
-window.clearData = clearData;
+// Bind event listeners for control buttons
+document
+  .getElementById("refresh-data-btn")
+  ?.addEventListener("click", refreshData);
+document
+  .getElementById("export-json-btn")
+  ?.addEventListener("click", exportJSON);
+document.getElementById("export-csv-btn")?.addEventListener("click", exportCSV);
+document
+  .getElementById("analyze-data-btn")
+  ?.addEventListener("click", analyzeData);
+document.getElementById("clear-data-btn")?.addEventListener("click", clearData);
 
 // Initial load
 refreshData();

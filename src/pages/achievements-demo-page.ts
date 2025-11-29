@@ -164,50 +164,52 @@ function resetProgress(): void {
   }
 }
 
-// Expose to window for HTML onclick handlers
+// Action handlers map for data-action buttons
+const actionHandlers: Record<string, () => void> = {
+  simulateGenomeCreation,
+  simulateGenomeExecution,
+  simulateLongGenome,
+  simulateMutation,
+  simulateAllShapes,
+  simulateColorUsage,
+  simulateTransforms,
+  simulateMadScientist,
+  simulateCorrectChallenge,
+  simulateAllMutationTypes,
+  simulateFlawless,
+  simulatePerfectScore,
+  simulateEvolution,
+  simulateAudioSynthesis,
+  simulateTimeline,
+  simulateProfessor,
+};
+
+// Bind event listeners for action buttons
+for (const btn of document.querySelectorAll<HTMLButtonElement>(
+  "[data-action]",
+)) {
+  btn.addEventListener("click", () => {
+    const action = btn.dataset.action;
+    if (action && action in actionHandlers) {
+      actionHandlers[action]();
+    }
+  });
+}
+
+// Bind reset progress button
+document
+  .getElementById("reset-progress-btn")
+  ?.addEventListener("click", resetProgress);
+
+// Expose for debugging only
 declare global {
   interface Window {
     achievementEngine: AchievementEngine;
     achievementUI: AchievementUI;
-    simulateGenomeCreation: () => void;
-    simulateGenomeExecution: () => void;
-    simulateLongGenome: () => void;
-    simulateMutation: () => void;
-    simulateAllShapes: () => void;
-    simulateColorUsage: () => void;
-    simulateTransforms: () => void;
-    simulateMadScientist: () => void;
-    simulateCorrectChallenge: () => void;
-    simulateAllMutationTypes: () => void;
-    simulateFlawless: () => void;
-    simulatePerfectScore: () => void;
-    simulateEvolution: () => void;
-    simulateAudioSynthesis: () => void;
-    simulateTimeline: () => void;
-    simulateProfessor: () => void;
-    resetProgress: () => void;
   }
 }
-
 window.achievementEngine = engine;
 window.achievementUI = ui;
-window.simulateGenomeCreation = simulateGenomeCreation;
-window.simulateGenomeExecution = simulateGenomeExecution;
-window.simulateLongGenome = simulateLongGenome;
-window.simulateMutation = simulateMutation;
-window.simulateAllShapes = simulateAllShapes;
-window.simulateColorUsage = simulateColorUsage;
-window.simulateTransforms = simulateTransforms;
-window.simulateMadScientist = simulateMadScientist;
-window.simulateCorrectChallenge = simulateCorrectChallenge;
-window.simulateAllMutationTypes = simulateAllMutationTypes;
-window.simulateFlawless = simulateFlawless;
-window.simulatePerfectScore = simulatePerfectScore;
-window.simulateEvolution = simulateEvolution;
-window.simulateAudioSynthesis = simulateAudioSynthesis;
-window.simulateTimeline = simulateTimeline;
-window.simulateProfessor = simulateProfessor;
-window.resetProgress = resetProgress;
 
 console.log("🎮 Achievement Demo Ready!");
 console.log("Try the buttons above to unlock achievements.");

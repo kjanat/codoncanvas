@@ -412,18 +412,22 @@ function loadDemoData(): void {
   alert("Loaded 12 demo students with varying engagement levels");
 }
 
-// Expose functions to window
+// Bind event listeners for action buttons
+document
+  .getElementById("load-demo-data-btn")
+  ?.addEventListener("click", loadDemoData);
+document
+  .getElementById("export-grading-btn")
+  ?.addEventListener("click", exportGradingSummary);
+document
+  .getElementById("export-classroom-btn")
+  ?.addEventListener("click", exportClassroomData);
+document.getElementById("clear-data-btn")?.addEventListener("click", clearData);
+
+// Expose for debugging only
 declare global {
   interface Window {
-    exportGradingSummary: () => void;
-    exportClassroomData: () => void;
-    clearData: () => void;
-    loadDemoData: () => void;
     teacherDashboard: TeacherDashboard;
   }
 }
-window.exportGradingSummary = exportGradingSummary;
-window.exportClassroomData = exportClassroomData;
-window.clearData = clearData;
-window.loadDemoData = loadDemoData;
 window.teacherDashboard = dashboard;

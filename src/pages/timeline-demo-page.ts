@@ -141,20 +141,31 @@ async function exportGif(): Promise<void> {
   }
 }
 
-// Expose functions to window
+// Bind event listeners for example buttons
+for (const btn of document.querySelectorAll<HTMLButtonElement>(
+  "[data-example]",
+)) {
+  btn.addEventListener("click", () => {
+    const key = btn.dataset.example;
+    if (key) loadExample(key);
+  });
+}
+
+// Bind main action buttons
+document
+  .getElementById("load-execute-btn")
+  ?.addEventListener("click", loadAndExecute);
+document
+  .getElementById("clear-canvas-btn")
+  ?.addEventListener("click", clearCanvas);
+document.getElementById("export-gif-btn")?.addEventListener("click", exportGif);
+
+// Expose for debugging only
 declare global {
   interface Window {
-    loadExample: (key: string) => void;
-    loadAndExecute: () => void;
-    clearCanvas: () => void;
-    exportGif: () => Promise<void>;
     resetTimelineTutorial: () => void;
   }
 }
-window.loadExample = loadExample;
-window.loadAndExecute = loadAndExecute;
-window.clearCanvas = clearCanvas;
-window.exportGif = exportGif;
 
 // Load genome from URL if present, otherwise auto-load default
 const urlGenome = ShareSystem.loadFromURL();

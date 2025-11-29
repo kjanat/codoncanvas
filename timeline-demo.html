@@ -36,9 +36,9 @@
           <div class="panel-header">Genome Editor</div>
           <div class="panel-content">
             <div class="button-group">
-              <button onclick="loadExample('helloCircle')">Hello Circle</button>
-              <button onclick="loadExample('twoShapes')">Two Shapes</button>
-              <button onclick="loadExample('colorfulPattern')">
+              <button data-example="helloCircle">Hello Circle</button>
+              <button data-example="twoShapes">Two Shapes</button>
+              <button data-example="colorfulPattern">
                 Colorful Pattern
               </button>
             </div>
@@ -48,8 +48,8 @@
             >
 ATG GAA AAT GGA TAA</textarea>
             <div class="button-group">
-              <button onclick="loadAndExecute()">🚀 Load & Execute</button>
-              <button class="secondary" onclick="clearCanvas()">
+              <button id="load-execute-btn">🚀 Load & Execute</button>
+              <button class="secondary" id="clear-canvas-btn">
                 Clear Canvas
               </button>
             </div>
@@ -79,7 +79,7 @@ ATG GAA AAT GGA TAA</textarea>
               class="button-group"
               style="margin-top: 1rem; padding-top: 1rem; border-top: 1px solid #3e3e42"
             >
-              <button onclick="exportGif()">📹 Export Animation as GIF</button>
+              <button id="export-gif-btn">📹 Export Animation as GIF</button>
               <select
                 id="gif-fps"
                 style="background: #3e3e42; color: #d4d4d4; border: 1px solid #505052; padding: 0.5rem; border-radius: 3px"

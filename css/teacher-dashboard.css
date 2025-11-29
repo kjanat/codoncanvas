@@ -4,13 +4,20 @@
   margin: 0;
 }
 
+:root {
+  --gradient-primary: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  --gradient-progress: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+  --color-primary: #667eea;
+  --color-primary-hover: #5568d3;
+}
+
 body {
   min-height: 100vh;
   padding: 20px;
   font-family:
     -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu,
     Cantarell, sans-serif;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: var(--gradient-primary);
 }
 
 .container {
@@ -25,7 +32,7 @@ body {
 header {
   padding: 30px 40px;
   color: white;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: var(--gradient-primary);
 }
 
 header h1 {
@@ -93,18 +100,18 @@ header p {
 
 .btn-primary {
   color: white;
-  background: #667eea;
+  background: var(--color-primary);
 }
 
 .btn-primary:hover {
-  background: #5568d3;
+  background: var(--color-primary-hover);
   box-shadow: 0 4px 12px rgb(102 126 234 / 40%);
   transform: translateY(-2px);
 }
 
 .btn-primary:focus-visible {
   outline: none;
-  background: #5568d3;
+  background: var(--color-primary-hover);
   box-shadow: 0 0 0 4px rgb(102 126 234 / 50%);
 }
 
@@ -164,7 +171,7 @@ header p {
 .stat-card {
   padding: 24px;
   color: white;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: var(--gradient-primary);
   border-radius: 8px;
   box-shadow: 0 4px 12px rgb(102 126 234 / 20%);
 }
@@ -195,7 +202,7 @@ header p {
   margin-bottom: 20px;
   font-size: 24px;
   color: #333;
-  border-bottom: 2px solid #667eea;
+  border-bottom: 2px solid var(--color-primary);
 }
 
 .alert {
@@ -305,7 +312,7 @@ tr:focus-within {
   font-size: 12px;
   font-weight: 600;
   color: white;
-  background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+  background: var(--gradient-progress);
   transition: width 0.3s ease;
 }
 
@@ -339,9 +346,15 @@ tr:focus-within {
 
 .tutorial-row {
   display: grid;
-  grid-template-columns: 200px 1fr;
+  grid-template-columns: 1fr;
   gap: 12px;
   align-items: center;
+}
+
+@media (min-width: 768px) {
+  .tutorial-row {
+    grid-template-columns: 200px 1fr;
+  }
 }
 
 .tutorial-name {
