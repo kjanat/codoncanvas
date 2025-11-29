@@ -28,7 +28,7 @@ interface GenomeComplexity {
   complexityScore: number;
   hasPush: boolean;
   hasLoop: boolean;
-  hasConditional: boolean;
+  hasComparison: boolean;
   hasArithmetic: boolean;
 }
 
@@ -110,8 +110,10 @@ function analyzeGenome(filename: string, content: string): GenomeComplexity {
     // Detect advanced features
     const hasPush = uniqueOpcodes.has(Opcode.PUSH);
     const hasLoop = uniqueOpcodes.has(Opcode.LOOP);
-    // Conditional opcodes (IF, IFELSE) are not implemented yet
-    const hasConditional =
+    // Comparison operators (EQ, LT) push boolean results onto the stack.
+    // Note: Actual conditional branching (IF, IFELSE) is not yet implemented.
+    // When IF/IFELSE are added, add a separate hasConditional check with +15 bonus.
+    const hasComparison =
       uniqueOpcodes.has(Opcode.EQ) || uniqueOpcodes.has(Opcode.LT);
     const hasArithmetic =
       uniqueOpcodes.has(Opcode.ADD) ||
@@ -124,7 +126,7 @@ function analyzeGenome(filename: string, content: string): GenomeComplexity {
     complexityScore += uniqueOpcodes.size * 5; // Variety of opcodes
     complexityScore += maxStackDepth * 3; // Stack management complexity
     if (hasLoop) complexityScore += 20;
-    if (hasConditional) complexityScore += 15;
+    if (hasComparison) complexityScore += 5; // Comparison ops (reserve +15 for actual branching)
     if (hasArithmetic) complexityScore += 10;
 
     return {
@@ -136,7 +138,7 @@ function analyzeGenome(filename: string, content: string): GenomeComplexity {
       complexityScore,
       hasPush,
       hasLoop,
-      hasConditional,
+      hasComparison,
       hasArithmetic,
     };
   } catch (_error) {
@@ -150,7 +152,7 @@ function analyzeGenome(filename: string, content: string): GenomeComplexity {
       complexityScore: 0,
       hasPush: false,
       hasLoop: false,
-      hasConditional: false,
+      hasComparison: false,
       hasArithmetic: false,
     };
   }
