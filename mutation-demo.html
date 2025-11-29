@@ -42,11 +42,9 @@
                   style="font-size: 0.875rem; display: block; margin-bottom: 0.5rem"
                 >Load Example:</strong>
                 <div class="example-buttons">
-                  <button onclick="loadExample('helloCircle')">
-                    Hello Circle
-                  </button>
-                  <button onclick="loadExample('twoShapes')">Two Shapes</button>
-                  <button onclick="loadExample('colorfulPattern')">
+                  <button data-example="helloCircle">Hello Circle</button>
+                  <button data-example="twoShapes">Two Shapes</button>
+                  <button data-example="colorfulPattern">
                     Colorful Pattern
                   </button>
                 </div>
@@ -64,31 +62,26 @@ ATG GAA AAT GGA TAA</textarea>
           <div class="panel-header">Mutation Tools</div>
           <div class="panel-content">
             <div class="button-grid">
-              <button class="mutation-btn" onclick="applyMutation('silent')">
+              <button class="mutation-btn" data-mutation="silent">
                 Silent
               </button>
-              <button class="mutation-btn" onclick="applyMutation('missense')">
+              <button class="mutation-btn" data-mutation="missense">
                 Missense
               </button>
-              <button class="mutation-btn" onclick="applyMutation('nonsense')">
+              <button class="mutation-btn" data-mutation="nonsense">
                 Nonsense
               </button>
-              <button class="mutation-btn" onclick="applyMutation('point')">
-                Point
-              </button>
-              <button class="mutation-btn" onclick="applyMutation('insertion')">
+              <button class="mutation-btn" data-mutation="point">Point</button>
+              <button class="mutation-btn" data-mutation="insertion">
                 Insertion
               </button>
-              <button class="mutation-btn" onclick="applyMutation('deletion')">
+              <button class="mutation-btn" data-mutation="deletion">
                 Deletion
               </button>
-              <button
-                class="mutation-btn"
-                onclick="applyMutation('frameshift')"
-              >
+              <button class="mutation-btn" data-mutation="frameshift">
                 Frameshift
               </button>
-              <button class="primary" onclick="clearDiff()">Clear Diff</button>
+              <button class="primary" id="clear-diff-btn">Clear Diff</button>
             </div>
           </div>
         </div>

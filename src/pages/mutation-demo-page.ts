@@ -114,18 +114,35 @@ function clearDiff(): void {
   showStatus("Diff cleared - current genome is now the original", "info");
 }
 
-// Expose functions to window
+// Bind event listeners for example buttons
+for (const btn of document.querySelectorAll<HTMLButtonElement>(
+  "[data-example]",
+)) {
+  btn.addEventListener("click", () => {
+    const key = btn.dataset.example;
+    if (key) loadExample(key);
+  });
+}
+
+// Bind event listeners for mutation buttons
+for (const btn of document.querySelectorAll<HTMLButtonElement>(
+  "[data-mutation]",
+)) {
+  btn.addEventListener("click", () => {
+    const type = btn.dataset.mutation;
+    if (type) applyMutation(type);
+  });
+}
+
+// Bind clear diff button
+document.getElementById("clear-diff-btn")?.addEventListener("click", clearDiff);
+
+// Expose tutorial reset to window for debugging
 declare global {
   interface Window {
-    loadExample: (key: string) => void;
-    applyMutation: (type: string) => void;
-    clearDiff: () => void;
     resetMutationTutorial: () => void;
   }
 }
-window.loadExample = loadExample;
-window.applyMutation = applyMutation;
-window.clearDiff = clearDiff;
 
 // Load genome from URL if present
 const urlGenome = ShareSystem.loadFromURL();

@@ -423,7 +423,7 @@ function createGalleryCard(example: GalleryExample): HTMLElement {
         ${conceptTags
           .map(
             (tag) =>
-              `<span class="concept-tag" onclick="filterByConcept('${tag}'); event.stopPropagation();">${tag}</span>`,
+              `<span class="concept-tag" data-concept="${tag}">${tag}</span>`,
           )
           .join("")}
       </div>
@@ -521,17 +521,23 @@ async function openInPlayground(): Promise<void> {
   }
 }
 
-// Expose functions to window for HTML onclick handlers
-declare global {
-  interface Window {
-    filterByConcept: (concept: string) => void;
-    closeModal: () => void;
-    openInPlayground: () => Promise<void>;
+// Bind modal button event listeners
+document.getElementById("modal-close-x")?.addEventListener("click", closeModal);
+document
+  .getElementById("modal-close-btn")
+  ?.addEventListener("click", closeModal);
+document
+  .getElementById("open-playground-btn")
+  ?.addEventListener("click", openInPlayground);
+
+// Event delegation for dynamically created concept tags
+galleryGrid.addEventListener("click", (e) => {
+  const target = e.target as HTMLElement;
+  if (target.classList.contains("concept-tag") && target.dataset.concept) {
+    e.stopPropagation();
+    filterByConcept(target.dataset.concept);
   }
-}
-window.filterByConcept = filterByConcept;
-window.closeModal = closeModal;
-window.openInPlayground = openInPlayground;
+});
 
 // Close modal on background click
 previewModal.addEventListener("click", (e) => {
