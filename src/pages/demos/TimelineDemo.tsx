@@ -1,4 +1,8 @@
 import { useCallback, useEffect, useRef, useState } from "react";
+import { Card } from "@/components/Card";
+import { ErrorAlert } from "@/components/ErrorAlert";
+import { PageContainer } from "@/components/PageContainer";
+import { PageHeader } from "@/components/PageHeader";
 import { CodonLexer } from "@/core/lexer";
 import { Canvas2DRenderer } from "@/core/renderer";
 import { CodonVM } from "@/core/vm";
@@ -153,17 +157,15 @@ export default function TimelineDemo() {
   }, [genome, snapshots]);
 
   return (
-    <div className="mx-auto max-w-7xl px-4 py-8">
-      <div className="mb-8 text-center">
-        <h1 className="mb-2 text-3xl font-bold text-text">Timeline Scrubber</h1>
-        <p className="text-text-muted">
-          Step through execution like a ribosome translating mRNA
-        </p>
-      </div>
+    <PageContainer>
+      <PageHeader
+        subtitle="Step through execution like a ribosome translating mRNA"
+        title="Timeline Scrubber"
+      />
 
       <div className="grid gap-6 lg:grid-cols-3">
         {/* Editor */}
-        <div className="rounded-xl border border-border bg-white p-6 shadow-sm">
+        <Card>
           <h2 className="mb-4 text-lg font-semibold text-text">Genome</h2>
           <textarea
             className="mb-4 w-full rounded-lg border border-border bg-dark-bg p-3 font-mono text-sm text-dark-text"
@@ -180,15 +182,11 @@ export default function TimelineDemo() {
             Run & Capture Timeline
           </button>
 
-          {error && (
-            <div className="mt-4 rounded-lg border border-danger/20 bg-danger/5 p-3 text-sm text-danger">
-              {error}
-            </div>
-          )}
-        </div>
+          {error && <ErrorAlert className="mt-4">{error}</ErrorAlert>}
+        </Card>
 
         {/* Canvas */}
-        <div className="rounded-xl border border-border bg-white p-6 shadow-sm">
+        <Card>
           <h2 className="mb-4 text-lg font-semibold text-text">Output</h2>
           <div className="flex justify-center">
             <canvas
@@ -203,10 +201,10 @@ export default function TimelineDemo() {
               Step {currentStep + 1} of {snapshots.length}
             </div>
           )}
-        </div>
+        </Card>
 
         {/* State Panel */}
-        <div className="rounded-xl border border-border bg-white p-6 shadow-sm">
+        <Card>
           <h2 className="mb-4 text-lg font-semibold text-text">VM State</h2>
           {currentSnapshot ? (
             <div className="space-y-3 font-mono text-sm">
@@ -257,12 +255,12 @@ export default function TimelineDemo() {
               Run genome to see state snapshots
             </div>
           )}
-        </div>
+        </Card>
       </div>
 
       {/* Timeline controls */}
       {snapshots.length > 0 && (
-        <div className="mt-6 rounded-xl border border-border bg-white p-6 shadow-sm">
+        <Card className="mt-6">
           <div className="flex items-center gap-4">
             {/* Reset button */}
             <button
@@ -385,8 +383,8 @@ export default function TimelineDemo() {
               {isExporting ? `Exporting ${exportProgress}%` : "Export GIF"}
             </button>
           </div>
-        </div>
+        </Card>
       )}
-    </div>
+    </PageContainer>
   );
 }

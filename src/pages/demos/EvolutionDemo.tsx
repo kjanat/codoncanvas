@@ -1,10 +1,12 @@
 import { useCallback, useEffect, useRef, useState } from "react";
-import { CodonLexer } from "@/core/lexer";
-import { Canvas2DRenderer } from "@/core/renderer";
-import { CodonVM } from "@/core/vm";
+import { Card } from "@/components/Card";
+import { ErrorAlert } from "@/components/ErrorAlert";
+import { PageContainer } from "@/components/PageContainer";
+import { PageHeader } from "@/components/PageHeader";
 import { examples } from "@/data/examples";
 import { getMutationByType } from "@/genetics/mutations";
 import { useAchievements } from "@/hooks/useAchievements";
+import { useRenderGenome } from "@/hooks/useRenderGenome";
 import type { MutationType } from "@/types";
 
 interface Candidate {
@@ -40,28 +42,12 @@ export default function EvolutionDemo() {
   const canvasRefs = useRef<(HTMLCanvasElement | null)[]>([]);
 
   const { trackEvolutionGeneration, trackMutationApplied } = useAchievements();
-
-  const renderGenome = useCallback(
-    (genome: string, canvas: HTMLCanvasElement | null): boolean => {
-      if (!canvas) return false;
-      try {
-        const lexer = new CodonLexer();
-        const tokens = lexer.tokenize(genome);
-        const renderer = new Canvas2DRenderer(canvas);
-        const vm = new CodonVM(renderer);
-        vm.run(tokens);
-        return true;
-      } catch {
-        return false;
-      }
-    },
-    [],
-  );
+  const { render } = useRenderGenome();
 
   // Render parent genome
   useEffect(() => {
-    renderGenome(parentGenome, parentCanvasRef.current);
-  }, [parentGenome, renderGenome]);
+    render(parentGenome, parentCanvasRef.current);
+  }, [parentGenome, render]);
 
   // Generate 6 mutant candidates
   const generateCandidates = useCallback(() => {
@@ -98,9 +84,9 @@ export default function EvolutionDemo() {
   // Render all candidates
   useEffect(() => {
     candidates.forEach((candidate, i) => {
-      renderGenome(candidate.genome, canvasRefs.current[i]);
+      render(candidate.genome, canvasRefs.current[i]);
     });
-  }, [candidates, renderGenome]);
+  }, [candidates, render]);
 
   // Select a candidate as the new parent
   const selectCandidate = (candidate: Candidate) => {
@@ -131,39 +117,38 @@ export default function EvolutionDemo() {
   };
 
   return (
-    <div className="mx-auto max-w-7xl px-4 py-8">
+    <PageContainer>
       {/* Header */}
-      <div className="mb-8 text-center">
-        <h1 className="mb-2 text-3xl font-bold text-text">Evolution Lab</h1>
-        <p className="text-text-muted">
-          Practice directed evolution - select the fittest candidates to guide
-          evolution
-        </p>
-        <div className="mt-4 inline-flex items-center gap-4 rounded-full bg-primary/10 px-6 py-2">
-          <span className="font-semibold text-primary">
-            Generation {generation}
+      <PageHeader
+        badge={
+          <span className="inline-flex items-center gap-4 rounded-full bg-primary/10 px-6 py-2">
+            <span className="font-semibold text-primary">
+              Generation {generation}
+            </span>
+            <span className="text-text-muted">|</span>
+            <span className="text-text-muted">
+              {lineage.length} ancestor{lineage.length !== 1 ? "s" : ""}
+            </span>
+            {lineage.length > 0 && (
+              <>
+                <span className="text-text-muted">|</span>
+                <button
+                  className="text-sm text-danger hover:underline"
+                  onClick={resetEvolution}
+                  type="button"
+                >
+                  Reset
+                </button>
+              </>
+            )}
           </span>
-          <span className="text-text-muted">|</span>
-          <span className="text-text-muted">
-            {lineage.length} ancestor{lineage.length !== 1 ? "s" : ""}
-          </span>
-          {lineage.length > 0 && (
-            <>
-              <span className="text-text-muted">|</span>
-              <button
-                className="text-sm text-danger hover:underline"
-                onClick={resetEvolution}
-                type="button"
-              >
-                Reset
-              </button>
-            </>
-          )}
-        </div>
-      </div>
+        }
+        subtitle="Practice directed evolution - select the fittest candidates to guide evolution"
+        title="Evolution Lab"
+      />
 
       {/* Current Parent */}
-      <div className="mb-8 rounded-xl border border-border bg-white p-6 shadow-sm">
+      <Card className="mb-8">
         <div className="mb-4 flex items-center justify-between">
           <h2 className="text-lg font-semibold text-text">Current Parent</h2>
           <button
@@ -198,12 +183,8 @@ export default function EvolutionDemo() {
           </div>
         </div>
 
-        {error && (
-          <div className="mt-4 rounded-lg border border-danger/20 bg-danger/5 p-3 text-sm text-danger">
-            {error}
-          </div>
-        )}
-      </div>
+        {error && <ErrorAlert className="mt-4">{error}</ErrorAlert>}
+      </Card>
 
       {/* Candidates Grid */}
       {candidates.length > 0 && (
@@ -252,7 +233,7 @@ export default function EvolutionDemo() {
 
       {/* Lineage History */}
       {lineage.length > 0 && (
-        <div className="rounded-xl border border-border bg-white p-6 shadow-sm">
+        <Card>
           <h2 className="mb-4 text-lg font-semibold text-text">
             Evolutionary Lineage
           </h2>
@@ -306,8 +287,8 @@ export default function EvolutionDemo() {
               has evolved toward your preferred phenotype.
             </p>
           </div>
-        </div>
+        </Card>
       )}
-    </div>
+    </PageContainer>
   );
 }

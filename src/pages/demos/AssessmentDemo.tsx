@@ -1,7 +1,12 @@
 import { useCallback, useEffect, useRef, useState } from "react";
-import { CodonLexer } from "@/core/lexer";
-import { Canvas2DRenderer } from "@/core/renderer";
-import { CodonVM } from "@/core/vm";
+import { Card } from "@/components/Card";
+import { PageContainer } from "@/components/PageContainer";
+import { PageHeader } from "@/components/PageHeader";
+import {
+  getMutationTypesByDifficulty,
+  MUTATION_TYPES,
+  type MutationTypeInfo,
+} from "@/data/mutation-types";
 import {
   type AssessmentDifficulty,
   AssessmentEngine,
@@ -9,68 +14,16 @@ import {
   type AssessmentResult,
   type Challenge,
 } from "@/education/assessments/assessment-engine";
+import { useRenderGenome } from "@/hooks/useRenderGenome";
 import type { MutationType } from "@/types";
 
 // --- Constants ---
-
-const MUTATION_TYPES: {
-  value: MutationType;
-  label: string;
-  description: string;
-}[] = [
-  {
-    value: "silent",
-    label: "Silent",
-    description: "Codon changes but opcode stays same",
-  },
-  {
-    value: "missense",
-    label: "Missense",
-    description: "Codon changes to different opcode",
-  },
-  {
-    value: "nonsense",
-    label: "Nonsense",
-    description: "Introduces premature STOP codon",
-  },
-  {
-    value: "frameshift",
-    label: "Frameshift",
-    description: "Shifts reading frame (not divisible by 3)",
-  },
-  {
-    value: "insertion",
-    label: "Insertion",
-    description: "Adds bases (divisible by 3)",
-  },
-  {
-    value: "deletion",
-    label: "Deletion",
-    description: "Removes bases (divisible by 3)",
-  },
-];
 
 const DIFFICULTY_LABELS: Record<AssessmentDifficulty, string> = {
   easy: "Easy",
   medium: "Medium",
   hard: "Hard",
 };
-
-// --- Helper Functions ---
-
-function getAvailableTypes(difficulty: AssessmentDifficulty) {
-  if (difficulty === "easy") {
-    return MUTATION_TYPES.filter((t) =>
-      ["silent", "missense"].includes(t.value),
-    );
-  }
-  if (difficulty === "medium") {
-    return MUTATION_TYPES.filter((t) =>
-      ["silent", "missense", "nonsense"].includes(t.value),
-    );
-  }
-  return MUTATION_TYPES;
-}
 
 // --- Sub-Components ---
 
@@ -114,7 +67,7 @@ function ProgressPanel({
   onReset: () => void;
 }) {
   return (
-    <div className="rounded-xl border border-border bg-white p-6 shadow-sm">
+    <Card>
       <h2 className="mb-4 text-lg font-semibold text-text">Progress</h2>
       <div className="space-y-3 text-sm">
         <div className="flex justify-between">
@@ -149,7 +102,7 @@ function ProgressPanel({
       >
         Reset Progress
       </button>
-    </div>
+    </Card>
   );
 }
 
@@ -163,7 +116,7 @@ function GenomeCanvas({
   canvasRef: React.RefObject<HTMLCanvasElement | null>;
 }) {
   return (
-    <div className="rounded-xl border border-border bg-white p-6 shadow-sm">
+    <Card>
       <h3 className="mb-4 text-center font-semibold text-text">{title}</h3>
       <canvas
         className="mx-auto block rounded-lg border border-border"
@@ -174,7 +127,7 @@ function GenomeCanvas({
       <pre className="mt-4 overflow-x-auto rounded bg-surface p-2 text-xs">
         {genome}
       </pre>
-    </div>
+    </Card>
   );
 }
 
@@ -187,7 +140,7 @@ function AnswerSelection({
   showHint,
   onToggleHint,
 }: {
-  availableTypes: typeof MUTATION_TYPES;
+  availableTypes: MutationTypeInfo[];
   selectedAnswer: MutationType | null;
   onSelect: (value: MutationType) => void;
   onSubmit: () => void;
@@ -198,20 +151,20 @@ function AnswerSelection({
   return (
     <>
       <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-        {availableTypes.map((type) => (
+        {availableTypes.map((typeInfo) => (
           <button
             className={`rounded-lg border-2 p-4 text-left transition-all ${
-              selectedAnswer === type.value
+              selectedAnswer === typeInfo.type
                 ? "border-primary bg-primary/5"
                 : "border-border hover:border-primary/50"
             }`}
-            key={type.value}
-            onClick={() => onSelect(type.value)}
+            key={typeInfo.type}
+            onClick={() => onSelect(typeInfo.type)}
             type="button"
           >
-            <div className="font-medium text-text">{type.label}</div>
+            <div className="font-medium text-text">{typeInfo.label}</div>
             <div className="mt-1 text-xs text-text-muted">
-              {type.description}
+              {typeInfo.description}
             </div>
           </button>
         ))}
@@ -283,19 +236,21 @@ function ResultFeedback({
 
 function MutationReference() {
   return (
-    <div className="mt-8 rounded-xl border border-border bg-white p-6 shadow-sm">
+    <Card className="mt-8">
       <h2 className="mb-4 text-lg font-semibold text-text">
         Mutation Types Reference
       </h2>
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-        {MUTATION_TYPES.map((type) => (
-          <div className="rounded-lg bg-surface p-4" key={type.value}>
-            <h3 className="font-medium text-text">{type.label}</h3>
-            <p className="mt-1 text-sm text-text-muted">{type.description}</p>
+        {MUTATION_TYPES.map((typeInfo) => (
+          <div className="rounded-lg bg-surface p-4" key={typeInfo.type}>
+            <h3 className="font-medium text-text">{typeInfo.label}</h3>
+            <p className="mt-1 text-sm text-text-muted">
+              {typeInfo.description}
+            </p>
           </div>
         ))}
       </div>
-    </div>
+    </Card>
   );
 }
 
@@ -315,33 +270,7 @@ export default function AssessmentDemo() {
 
   const originalCanvasRef = useRef<HTMLCanvasElement>(null);
   const mutatedCanvasRef = useRef<HTMLCanvasElement>(null);
-  const lexer = useRef(new CodonLexer());
-
-  const renderGenome = useCallback(
-    (genome: string, canvas: HTMLCanvasElement | null) => {
-      if (!canvas) return;
-      const ctx = canvas.getContext("2d");
-      if (!ctx) return;
-
-      ctx.fillStyle = "white";
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-      try {
-        const tokens = lexer.current.tokenize(genome);
-        const renderer = new Canvas2DRenderer(canvas);
-        const vm = new CodonVM(renderer);
-        vm.run(tokens);
-      } catch {
-        ctx.fillStyle = "#fee2e2";
-        ctx.fillRect(0, 0, canvas.width, canvas.height);
-        ctx.fillStyle = "#dc2626";
-        ctx.font = "14px monospace";
-        ctx.textAlign = "center";
-        ctx.fillText("Parse Error", canvas.width / 2, canvas.height / 2);
-      }
-    },
-    [],
-  );
+  const { render } = useRenderGenome();
 
   const generateNewChallenge = useCallback(() => {
     const newChallenge = engine.generateChallenge(difficulty);
@@ -353,9 +282,9 @@ export default function AssessmentDemo() {
 
   useEffect(() => {
     if (!challenge) return;
-    renderGenome(challenge.original, originalCanvasRef.current);
-    renderGenome(challenge.mutated, mutatedCanvasRef.current);
-  }, [challenge, renderGenome]);
+    render(challenge.original, originalCanvasRef.current);
+    render(challenge.mutated, mutatedCanvasRef.current);
+  }, [challenge, render]);
 
   useEffect(() => {
     if (results.length > 0) {
@@ -377,21 +306,19 @@ export default function AssessmentDemo() {
     setResult(null);
   };
 
-  const availableTypes = getAvailableTypes(difficulty);
+  const availableTypes = getMutationTypesByDifficulty(difficulty);
 
   return (
-    <div className="mx-auto max-w-7xl px-4 py-8">
-      <div className="mb-8 text-center">
-        <h1 className="mb-2 text-3xl font-bold text-text">Assessment Mode</h1>
-        <p className="text-text-muted">
-          Test your understanding with mutation identification challenges
-        </p>
-      </div>
+    <PageContainer>
+      <PageHeader
+        subtitle="Test your understanding with mutation identification challenges"
+        title="Assessment Mode"
+      />
 
       <div className="grid gap-6 lg:grid-cols-4">
         {/* Settings sidebar */}
         <div className="space-y-6">
-          <div className="rounded-xl border border-border bg-white p-6 shadow-sm">
+          <Card>
             <h2 className="mb-4 text-lg font-semibold text-text">Settings</h2>
             <div className="space-y-4">
               <DifficultySelector
@@ -406,7 +333,7 @@ export default function AssessmentDemo() {
                 {challenge ? "New Challenge" : "Start Challenge"}
               </button>
             </div>
-          </div>
+          </Card>
 
           {progress && (
             <ProgressPanel onReset={resetProgress} progress={progress} />
@@ -414,7 +341,7 @@ export default function AssessmentDemo() {
         </div>
 
         {/* Challenge area */}
-        <div className="lg:col-span-3 space-y-6">
+        <div className="space-y-6 lg:col-span-3">
           {!challenge ? (
             <div className="flex h-64 items-center justify-center rounded-xl border border-border bg-white shadow-sm">
               <div className="text-center">
@@ -441,7 +368,7 @@ export default function AssessmentDemo() {
                 />
               </div>
 
-              <div className="rounded-xl border border-border bg-white p-6 shadow-sm">
+              <Card>
                 <h3 className="mb-4 font-semibold text-text">
                   What type of mutation occurred?
                 </h3>
@@ -461,13 +388,13 @@ export default function AssessmentDemo() {
                     result={result}
                   />
                 )}
-              </div>
+              </Card>
             </>
           )}
         </div>
       </div>
 
       <MutationReference />
-    </div>
+    </PageContainer>
   );
 }

@@ -47,6 +47,11 @@ export {
   usePreferences,
 } from "./usePreferences";
 export {
+  type RenderResult,
+  type UseRenderGenomeReturn,
+  useRenderGenome,
+} from "./useRenderGenome";
+export {
   type UseShareUrlOptions,
   type UseShareUrlReturn,
   useShareUrl,
