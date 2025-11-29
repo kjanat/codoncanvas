@@ -1,0 +1,47 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "lsp": {
+    "biome": {
+      "command": ["biome", "lsp-proxy"],
+      "extensions": [".js", ".jsx", ".ts", ".tsx", ".json", ".jsonc"],
+      "env": {}
+    }
+  },
+  "formatter": {
+    "dprint": {
+      "command": [
+        "bun",
+        "dprint",
+        "fmt",
+        "--config",
+        ".dprint.jsonc",
+        "--config-discovery=false",
+        "--allow-no-files",
+        "$FILE"
+      ],
+      "extensions": [
+        ".js",
+        ".jsx",
+        ".ts",
+        ".tsx",
+        ".json",
+        ".jsonc",
+        ".cjs",
+        ".mjs",
+        ".md",
+        ".dockerfile",
+        ".dockerfileignore",
+        ".yaml",
+        ".yml",
+        ".html",
+        ".xml",
+        ".toml",
+        ".svg",
+        ".scss",
+        ".sass",
+        ".css"
+      ],
+      "environment": {}
+    }
+  }
+}
