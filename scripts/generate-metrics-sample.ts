@@ -198,10 +198,11 @@ function generateSession(
     engagement.mutationsApplied,
   );
 
-  // Error count
+  // Error count (guard against invalid range when mutationsApplied is 0)
+  const maxErrors = Math.ceil(engagement.mutationsApplied * 0.3);
   const errorCount =
-    Math.random() < char.errorRate
-      ? randomInt(1, Math.ceil(engagement.mutationsApplied * 0.3))
+    Math.random() < char.errorRate && maxErrors >= 1
+      ? randomInt(1, maxErrors)
       : 0;
 
   return {

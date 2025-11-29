@@ -1,19 +1,7 @@
 {
-  "timestamp": "2025-10-12T12:28:28.827Z",
+  "timestamp": "2025-11-29T00:00:09.078Z",
   "totalGenomes": 48,
   "analysis": [
-    {
-      "filename": "honeycomb-cells.genome",
-      "instructionCount": 0,
-      "uniqueOpcodes": 0,
-      "opcodeDistribution": {},
-      "maxStackDepth": 0,
-      "complexityScore": 0,
-      "hasPush": false,
-      "hasLoop": false,
-      "hasConditional": false,
-      "hasArithmetic": false
-    },
     {
       "filename": "phyllotaxis-sunflower.genome",
       "instructionCount": 0,
@@ -23,7 +11,19 @@
       "complexityScore": 0,
       "hasPush": false,
       "hasLoop": false,
-      "hasConditional": false,
+      "hasComparison": false,
+      "hasArithmetic": false
+    },
+    {
+      "filename": "honeycomb-cells.genome",
+      "instructionCount": 0,
+      "uniqueOpcodes": 0,
+      "opcodeDistribution": {},
+      "maxStackDepth": 0,
+      "complexityScore": 0,
+      "hasPush": false,
+      "hasLoop": false,
+      "hasComparison": false,
       "hasArithmetic": false
     },
     {
@@ -41,7 +41,7 @@
       "complexityScore": 33,
       "hasPush": true,
       "hasLoop": false,
-      "hasConditional": false,
+      "hasComparison": false,
       "hasArithmetic": false
     },
     {
@@ -59,7 +59,7 @@
       "complexityScore": 33,
       "hasPush": true,
       "hasLoop": false,
-      "hasConditional": false,
+      "hasComparison": false,
       "hasArithmetic": false
     },
     {
@@ -79,7 +79,7 @@
       "complexityScore": 52,
       "hasPush": true,
       "hasLoop": false,
-      "hasConditional": false,
+      "hasComparison": false,
       "hasArithmetic": false
     },
     {
@@ -99,7 +99,7 @@
       "complexityScore": 55,
       "hasPush": true,
       "hasLoop": false,
-      "hasConditional": false,
+      "hasComparison": false,
       "hasArithmetic": false
     },
     {
@@ -120,7 +120,7 @@
       "complexityScore": 57,
       "hasPush": true,
       "hasLoop": false,
-      "hasConditional": false,
+      "hasComparison": false,
       "hasArithmetic": false
     },
     {
@@ -141,7 +141,7 @@
       "complexityScore": 58,
       "hasPush": true,
       "hasLoop": false,
-      "hasConditional": false,
+      "hasComparison": false,
       "hasArithmetic": false
     },
     {
@@ -161,7 +161,7 @@
       "complexityScore": 61,
       "hasPush": true,
       "hasLoop": false,
-      "hasConditional": false,
+      "hasComparison": false,
       "hasArithmetic": false
     },
     {
@@ -182,7 +182,7 @@
       "complexityScore": 64,
       "hasPush": true,
       "hasLoop": false,
-      "hasConditional": false,
+      "hasComparison": false,
       "hasArithmetic": false
     },
     {
@@ -204,7 +204,7 @@
       "complexityScore": 65,
       "hasPush": true,
       "hasLoop": false,
-      "hasConditional": false,
+      "hasComparison": false,
       "hasArithmetic": false
     },
     {
@@ -226,7 +226,7 @@
       "complexityScore": 71,
       "hasPush": true,
       "hasLoop": false,
-      "hasConditional": false,
+      "hasComparison": false,
       "hasArithmetic": false
     },
     {
@@ -248,7 +248,7 @@
       "complexityScore": 71,
       "hasPush": true,
       "hasLoop": false,
-      "hasConditional": false,
+      "hasComparison": false,
       "hasArithmetic": false
     },
     {
@@ -271,7 +271,7 @@
       "complexityScore": 87,
       "hasPush": true,
       "hasLoop": false,
-      "hasConditional": false,
+      "hasComparison": false,
       "hasArithmetic": false
     },
     {
@@ -293,7 +293,7 @@
       "complexityScore": 93,
       "hasPush": true,
       "hasLoop": false,
-      "hasConditional": false,
+      "hasComparison": false,
       "hasArithmetic": false
     },
     {
@@ -317,7 +317,7 @@
       "complexityScore": 98,
       "hasPush": true,
       "hasLoop": false,
-      "hasConditional": false,
+      "hasComparison": false,
       "hasArithmetic": true
     },
     {
@@ -343,7 +343,7 @@
       "complexityScore": 98,
       "hasPush": true,
       "hasLoop": false,
-      "hasConditional": false,
+      "hasComparison": false,
       "hasArithmetic": false
     },
     {
@@ -367,7 +367,7 @@
       "complexityScore": 99,
       "hasPush": true,
       "hasLoop": false,
-      "hasConditional": false,
+      "hasComparison": false,
       "hasArithmetic": false
     },
     {
@@ -389,7 +389,7 @@
       "complexityScore": 100,
       "hasPush": true,
       "hasLoop": false,
-      "hasConditional": false,
+      "hasComparison": false,
       "hasArithmetic": false
     },
     {
@@ -414,7 +414,7 @@
       "complexityScore": 102,
       "hasPush": true,
       "hasLoop": false,
-      "hasConditional": false,
+      "hasComparison": false,
       "hasArithmetic": true
     },
     {
@@ -438,32 +438,7 @@
       "complexityScore": 113,
       "hasPush": true,
       "hasLoop": false,
-      "hasConditional": false,
-      "hasArithmetic": true
-    },
-    {
-      "filename": "texturedCircle.genome",
-      "instructionCount": 34,
-      "uniqueOpcodes": 12,
-      "opcodeDistribution": {
-        "START": 1,
-        "PUSH": 13,
-        "SAVE_STATE": 1,
-        "LINE": 3,
-        "COLOR": 3,
-        "CIRCLE": 1,
-        "RECT": 4,
-        "SCALE": 3,
-        "MUL": 1,
-        "EQ": 2,
-        "DUP": 1,
-        "STOP": 1
-      },
-      "maxStackDepth": 3,
-      "complexityScore": 113,
-      "hasPush": true,
-      "hasLoop": false,
-      "hasConditional": false,
+      "hasComparison": false,
       "hasArithmetic": true
     },
     {
@@ -485,7 +460,32 @@
       "complexityScore": 114,
       "hasPush": true,
       "hasLoop": false,
-      "hasConditional": false,
+      "hasComparison": false,
+      "hasArithmetic": true
+    },
+    {
+      "filename": "texturedCircle.genome",
+      "instructionCount": 34,
+      "uniqueOpcodes": 12,
+      "opcodeDistribution": {
+        "START": 1,
+        "PUSH": 13,
+        "SAVE_STATE": 1,
+        "LINE": 3,
+        "COLOR": 3,
+        "CIRCLE": 1,
+        "RECT": 4,
+        "SCALE": 3,
+        "MUL": 1,
+        "EQ": 2,
+        "DUP": 1,
+        "STOP": 1
+      },
+      "maxStackDepth": 3,
+      "complexityScore": 118,
+      "hasPush": true,
+      "hasLoop": false,
+      "hasComparison": true,
       "hasArithmetic": true
     },
     {
@@ -509,7 +509,7 @@
       "complexityScore": 130,
       "hasPush": true,
       "hasLoop": false,
-      "hasConditional": false,
+      "hasComparison": false,
       "hasArithmetic": false
     },
     {
@@ -534,7 +534,7 @@
       "complexityScore": 130,
       "hasPush": true,
       "hasLoop": false,
-      "hasConditional": false,
+      "hasComparison": false,
       "hasArithmetic": false
     },
     {
@@ -559,33 +559,31 @@
       "complexityScore": 141,
       "hasPush": true,
       "hasLoop": true,
-      "hasConditional": false,
+      "hasComparison": false,
       "hasArithmetic": false
     },
     {
-      "filename": "prime-number-spiral.genome",
-      "instructionCount": 77,
-      "uniqueOpcodes": 13,
+      "filename": "recursiveCircles.genome",
+      "instructionCount": 92,
+      "uniqueOpcodes": 11,
       "opcodeDistribution": {
         "START": 1,
-        "PUSH": 28,
-        "COLOR": 8,
-        "LINE": 15,
-        "SAVE_STATE": 3,
-        "ROTATE": 4,
-        "TRANSLATE": 4,
-        "CIRCLE": 6,
-        "LT": 1,
-        "LOOP": 2,
-        "RECT": 3,
-        "TRIANGLE": 1,
-        "STOP": 1
+        "PUSH": 36,
+        "LINE": 4,
+        "RECT": 8,
+        "COLOR": 14,
+        "CIRCLE": 10,
+        "ROTATE": 3,
+        "SWAP": 1,
+        "TRIANGLE": 9,
+        "STOP": 2,
+        "SAVE_STATE": 4
       },
-      "maxStackDepth": 1,
-      "complexityScore": 165,
+      "maxStackDepth": 3,
+      "complexityScore": 156,
       "hasPush": true,
-      "hasLoop": true,
-      "hasConditional": false,
+      "hasLoop": false,
+      "hasComparison": false,
       "hasArithmetic": false
     },
     {
@@ -613,36 +611,34 @@
       "complexityScore": 169,
       "hasPush": true,
       "hasLoop": false,
-      "hasConditional": false,
+      "hasComparison": false,
       "hasArithmetic": true
     },
     {
-      "filename": "conditional-scaling.genome",
-      "instructionCount": 92,
-      "uniqueOpcodes": 15,
+      "filename": "prime-number-spiral.genome",
+      "instructionCount": 77,
+      "uniqueOpcodes": 13,
       "opcodeDistribution": {
-        "START": 3,
-        "PUSH": 32,
-        "TRANSLATE": 10,
-        "EQ": 4,
-        "ROTATE": 10,
-        "MUL": 6,
-        "CIRCLE": 4,
-        "LINE": 11,
-        "DUP": 2,
-        "RECT": 1,
-        "LT": 2,
-        "DIV": 1,
-        "TRIANGLE": 3,
-        "COLOR": 2,
+        "START": 1,
+        "PUSH": 28,
+        "COLOR": 8,
+        "LINE": 15,
+        "SAVE_STATE": 3,
+        "ROTATE": 4,
+        "TRANSLATE": 4,
+        "CIRCLE": 6,
+        "LT": 1,
+        "LOOP": 2,
+        "RECT": 3,
+        "TRIANGLE": 1,
         "STOP": 1
       },
-      "maxStackDepth": 3,
-      "complexityScore": 186,
+      "maxStackDepth": 1,
+      "complexityScore": 170,
       "hasPush": true,
-      "hasLoop": false,
-      "hasConditional": false,
-      "hasArithmetic": true
+      "hasLoop": true,
+      "hasComparison": true,
+      "hasArithmetic": false
     },
     {
       "filename": "dna-helix.genome",
@@ -669,7 +665,7 @@
       "complexityScore": 187,
       "hasPush": true,
       "hasLoop": false,
-      "hasConditional": false,
+      "hasComparison": false,
       "hasArithmetic": true
     },
     {
@@ -697,34 +693,35 @@
       "complexityScore": 189,
       "hasPush": true,
       "hasLoop": false,
-      "hasConditional": false,
+      "hasComparison": false,
       "hasArithmetic": false
     },
     {
-      "filename": "cell-division.genome",
-      "instructionCount": 111,
-      "uniqueOpcodes": 14,
+      "filename": "conditional-scaling.genome",
+      "instructionCount": 92,
+      "uniqueOpcodes": 15,
       "opcodeDistribution": {
-        "START": 1,
-        "PUSH": 44,
-        "SUB": 7,
-        "LINE": 13,
-        "SWAP": 1,
-        "COLOR": 5,
-        "STOP": 4,
-        "POP": 2,
-        "TRANSLATE": 7,
-        "ROTATE": 4,
-        "ELLIPSE": 7,
-        "EQ": 3,
-        "RECT": 8,
-        "SAVE_STATE": 5
+        "START": 3,
+        "PUSH": 32,
+        "TRANSLATE": 10,
+        "EQ": 4,
+        "ROTATE": 10,
+        "MUL": 6,
+        "CIRCLE": 4,
+        "LINE": 11,
+        "DUP": 2,
+        "RECT": 1,
+        "LT": 2,
+        "DIV": 1,
+        "TRIANGLE": 3,
+        "COLOR": 2,
+        "STOP": 1
       },
-      "maxStackDepth": 2,
-      "complexityScore": 197,
+      "maxStackDepth": 3,
+      "complexityScore": 191,
       "hasPush": true,
       "hasLoop": false,
-      "hasConditional": false,
+      "hasComparison": true,
       "hasArithmetic": true
     },
     {
@@ -750,11 +747,38 @@
         "STOP": 1
       },
       "maxStackDepth": 3,
-      "complexityScore": 197,
+      "complexityScore": 202,
       "hasPush": true,
       "hasLoop": true,
-      "hasConditional": false,
+      "hasComparison": true,
       "hasArithmetic": false
+    },
+    {
+      "filename": "cell-division.genome",
+      "instructionCount": 111,
+      "uniqueOpcodes": 14,
+      "opcodeDistribution": {
+        "START": 1,
+        "PUSH": 44,
+        "SUB": 7,
+        "LINE": 13,
+        "SWAP": 1,
+        "COLOR": 5,
+        "STOP": 4,
+        "POP": 2,
+        "TRANSLATE": 7,
+        "ROTATE": 4,
+        "ELLIPSE": 7,
+        "EQ": 3,
+        "RECT": 8,
+        "SAVE_STATE": 5
+      },
+      "maxStackDepth": 2,
+      "complexityScore": 202,
+      "hasPush": true,
+      "hasLoop": false,
+      "hasComparison": true,
+      "hasArithmetic": true
     },
     {
       "filename": "fibonacci-spiral.genome",
@@ -780,7 +804,7 @@
       "complexityScore": 213,
       "hasPush": true,
       "hasLoop": false,
-      "hasConditional": false,
+      "hasComparison": false,
       "hasArithmetic": true
     },
     {
@@ -807,7 +831,7 @@
       "complexityScore": 229,
       "hasPush": true,
       "hasLoop": false,
-      "hasConditional": false,
+      "hasComparison": false,
       "hasArithmetic": true
     },
     {
@@ -831,10 +855,10 @@
         "STOP": 1
       },
       "maxStackDepth": 1,
-      "complexityScore": 230,
+      "complexityScore": 235,
       "hasPush": true,
       "hasLoop": false,
-      "hasConditional": false,
+      "hasComparison": true,
       "hasArithmetic": true
     },
     {
@@ -865,8 +889,33 @@
       "complexityScore": 239,
       "hasPush": true,
       "hasLoop": true,
-      "hasConditional": false,
+      "hasComparison": false,
       "hasArithmetic": true
+    },
+    {
+      "filename": "cosmicWheel.genome",
+      "instructionCount": 189,
+      "uniqueOpcodes": 12,
+      "opcodeDistribution": {
+        "START": 1,
+        "PUSH": 75,
+        "LINE": 1,
+        "COLOR": 29,
+        "TRIANGLE": 8,
+        "SAVE_STATE": 20,
+        "RECT": 14,
+        "ELLIPSE": 12,
+        "CIRCLE": 12,
+        "ROTATE": 14,
+        "DUP": 2,
+        "STOP": 1
+      },
+      "maxStackDepth": 3,
+      "complexityScore": 258,
+      "hasPush": true,
+      "hasLoop": false,
+      "hasComparison": false,
+      "hasArithmetic": false
     },
     {
       "filename": "binary-tree-fractal.genome",
@@ -896,37 +945,8 @@
       "complexityScore": 277,
       "hasPush": true,
       "hasLoop": true,
-      "hasConditional": false,
+      "hasComparison": false,
       "hasArithmetic": true
-    },
-    {
-      "filename": "hilbert-curve-approx.genome",
-      "instructionCount": 172,
-      "uniqueOpcodes": 16,
-      "opcodeDistribution": {
-        "START": 1,
-        "PUSH": 59,
-        "CIRCLE": 5,
-        "SAVE_STATE": 11,
-        "SWAP": 1,
-        "COLOR": 6,
-        "LINE": 42,
-        "TRANSLATE": 3,
-        "ROTATE": 26,
-        "ELLIPSE": 9,
-        "RESTORE_STATE": 2,
-        "POP": 2,
-        "DUP": 2,
-        "SCALE": 1,
-        "LOOP": 1,
-        "STOP": 1
-      },
-      "maxStackDepth": 4,
-      "complexityScore": 284,
-      "hasPush": true,
-      "hasLoop": true,
-      "hasConditional": false,
-      "hasArithmetic": false
     },
     {
       "filename": "right-angle-spiral.genome",
@@ -955,8 +975,37 @@
       "complexityScore": 284,
       "hasPush": true,
       "hasLoop": true,
-      "hasConditional": false,
+      "hasComparison": false,
       "hasArithmetic": true
+    },
+    {
+      "filename": "hilbert-curve-approx.genome",
+      "instructionCount": 172,
+      "uniqueOpcodes": 16,
+      "opcodeDistribution": {
+        "START": 1,
+        "PUSH": 59,
+        "CIRCLE": 5,
+        "SAVE_STATE": 11,
+        "SWAP": 1,
+        "COLOR": 6,
+        "LINE": 42,
+        "TRANSLATE": 3,
+        "ROTATE": 26,
+        "ELLIPSE": 9,
+        "RESTORE_STATE": 2,
+        "POP": 2,
+        "DUP": 2,
+        "SCALE": 1,
+        "LOOP": 1,
+        "STOP": 1
+      },
+      "maxStackDepth": 4,
+      "complexityScore": 284,
+      "hasPush": true,
+      "hasLoop": true,
+      "hasComparison": false,
+      "hasArithmetic": false
     },
     {
       "filename": "fizzbuzz-visual.genome",
@@ -979,62 +1028,62 @@
       "complexityScore": 302,
       "hasPush": true,
       "hasLoop": false,
-      "hasConditional": false,
+      "hasComparison": false,
+      "hasArithmetic": false
+    },
+    {
+      "filename": "wavyLines.genome",
+      "instructionCount": 221,
+      "uniqueOpcodes": 14,
+      "opcodeDistribution": {
+        "START": 1,
+        "PUSH": 87,
+        "LINE": 7,
+        "COLOR": 29,
+        "TRIANGLE": 15,
+        "DUP": 16,
+        "ELLIPSE": 14,
+        "ROTATE": 22,
+        "RECT": 9,
+        "SAVE_STATE": 12,
+        "CIRCLE": 2,
+        "LT": 5,
+        "RESTORE_STATE": 1,
+        "STOP": 1
+      },
+      "maxStackDepth": 2,
+      "complexityScore": 302,
+      "hasPush": true,
+      "hasLoop": false,
+      "hasComparison": true,
       "hasArithmetic": false
     },
     {
       "filename": "starfield.genome",
-      "instructionCount": 224,
-      "uniqueOpcodes": 15,
+      "instructionCount": 222,
+      "uniqueOpcodes": 14,
       "opcodeDistribution": {
         "START": 1,
-        "PUSH": 85,
-        "LINE": 32,
-        "SAVE_STATE": 12,
-        "COLOR": 12,
-        "CIRCLE": 19,
-        "EQ": 6,
-        "DUP": 9,
-        "RECT": 9,
-        "TRANSLATE": 18,
-        "ROTATE": 5,
-        "TRIANGLE": 10,
-        "SCALE": 3,
-        "MUL": 2,
+        "PUSH": 87,
+        "COLOR": 53,
+        "SAVE_STATE": 2,
+        "DUP": 11,
+        "ELLIPSE": 14,
+        "ROTATE": 21,
+        "SWAP": 15,
+        "RECT": 3,
+        "CIRCLE": 2,
+        "LINE": 6,
+        "LT": 5,
+        "RESTORE_STATE": 1,
         "STOP": 1
       },
       "maxStackDepth": 4,
-      "complexityScore": 321,
+      "complexityScore": 309,
       "hasPush": true,
       "hasLoop": false,
-      "hasConditional": false,
-      "hasArithmetic": true
-    },
-    {
-      "filename": "geometricMosaic.genome",
-      "instructionCount": 243,
-      "uniqueOpcodes": 13,
-      "opcodeDistribution": {
-        "START": 1,
-        "PUSH": 96,
-        "SAVE_STATE": 21,
-        "LINE": 32,
-        "COLOR": 28,
-        "DUP": 23,
-        "RECT": 12,
-        "TRANSLATE": 14,
-        "SWAP": 1,
-        "ROTATE": 3,
-        "TRIANGLE": 9,
-        "MUL": 2,
-        "STOP": 1
-      },
-      "maxStackDepth": 4,
-      "complexityScore": 330,
-      "hasPush": true,
-      "hasLoop": false,
-      "hasConditional": false,
-      "hasArithmetic": true
+      "hasComparison": true,
+      "hasArithmetic": false
     },
     {
       "filename": "fractalFlower.genome",
@@ -1060,135 +1109,81 @@
         "STOP": 1
       },
       "maxStackDepth": 3,
-      "complexityScore": 347,
-      "hasPush": true,
-      "hasLoop": false,
-      "hasConditional": false,
-      "hasArithmetic": false
-    },
-    {
-      "filename": "recursiveCircles.genome",
-      "instructionCount": 252,
-      "uniqueOpcodes": 14,
-      "opcodeDistribution": {
-        "START": 1,
-        "PUSH": 92,
-        "SAVE_STATE": 5,
-        "LINE": 28,
-        "COLOR": 14,
-        "SWAP": 11,
-        "TRANSLATE": 18,
-        "DUP": 16,
-        "CIRCLE": 22,
-        "ROTATE": 25,
-        "TRIANGLE": 8,
-        "LT": 5,
-        "RECT": 6,
-        "STOP": 1
-      },
-      "maxStackDepth": 10,
       "complexityScore": 352,
       "hasPush": true,
       "hasLoop": false,
-      "hasConditional": false,
-      "hasArithmetic": false
-    },
-    {
-      "filename": "wavyLines.genome",
-      "instructionCount": 350,
-      "uniqueOpcodes": 14,
-      "opcodeDistribution": {
-        "START": 1,
-        "PUSH": 120,
-        "SAVE_STATE": 13,
-        "LINE": 99,
-        "COLOR": 13,
-        "CIRCLE": 2,
-        "TRANSLATE": 6,
-        "RECT": 49,
-        "ROTATE": 42,
-        "POP": 1,
-        "RESTORE_STATE": 1,
-        "SWAP": 1,
-        "TRIANGLE": 1,
-        "STOP": 1
-      },
-      "maxStackDepth": 2,
-      "complexityScore": 426,
-      "hasPush": true,
-      "hasLoop": false,
-      "hasConditional": false,
+      "hasComparison": true,
       "hasArithmetic": false
     },
     {
       "filename": "kaleidoscope.genome",
-      "instructionCount": 335,
+      "instructionCount": 278,
       "uniqueOpcodes": 15,
       "opcodeDistribution": {
         "START": 1,
-        "SAVE_STATE": 13,
-        "PUSH": 124,
-        "MUL": 1,
-        "LINE": 43,
-        "COLOR": 16,
-        "RECT": 14,
-        "TRANSLATE": 18,
-        "DUP": 12,
-        "ROTATE": 43,
-        "CIRCLE": 9,
-        "TRIANGLE": 19,
+        "PUSH": 110,
+        "LINE": 1,
+        "COLOR": 39,
+        "TRIANGLE": 17,
+        "SAVE_STATE": 19,
+        "RECT": 17,
+        "ELLIPSE": 18,
         "LT": 15,
-        "ELLIPSE": 6,
+        "ROTATE": 27,
+        "DUP": 9,
+        "CIRCLE": 2,
+        "RESTORE_STATE": 1,
+        "SWAP": 1,
         "STOP": 1
       },
       "maxStackDepth": 3,
-      "complexityScore": 429,
+      "complexityScore": 367,
       "hasPush": true,
       "hasLoop": false,
-      "hasConditional": false,
-      "hasArithmetic": true
+      "hasComparison": true,
+      "hasArithmetic": false
     },
     {
-      "filename": "cosmicWheel.genome",
-      "instructionCount": 411,
+      "filename": "geometricMosaic.genome",
+      "instructionCount": 278,
       "uniqueOpcodes": 16,
       "opcodeDistribution": {
         "START": 1,
-        "PUSH": 155,
-        "LINE": 52,
-        "SAVE_STATE": 19,
-        "COLOR": 17,
-        "CIRCLE": 21,
-        "DUP": 23,
-        "EQ": 16,
-        "MUL": 1,
-        "TRANSLATE": 18,
-        "ELLIPSE": 12,
-        "RECT": 22,
-        "ROTATE": 38,
-        "TRIANGLE": 10,
+        "PUSH": 110,
+        "LINE": 3,
+        "COLOR": 38,
+        "TRIANGLE": 15,
+        "SAVE_STATE": 24,
+        "RECT": 15,
+        "ELLIPSE": 18,
+        "DUP": 16,
+        "ROTATE": 24,
+        "CIRCLE": 5,
         "LT": 5,
+        "SWAP": 1,
+        "RESTORE_STATE": 1,
+        "MUL": 1,
         "STOP": 1
       },
       "maxStackDepth": 4,
-      "complexityScore": 513,
+      "complexityScore": 385,
       "hasPush": true,
       "hasLoop": false,
-      "hasConditional": false,
+      "hasComparison": true,
       "hasArithmetic": true
     }
   ],
   "summary": {
-    "avgInstructions": 97.4,
-    "avgUniqueOpcodes": 11.5,
-    "avgComplexity": 168.8,
+    "avgInstructions": 86.2,
+    "avgUniqueOpcodes": 11.4,
+    "avgComplexity": 157.2,
     "simplest": {
-      "name": "honeycomb-cells.genome",
+      "name": "phyllotaxis-sunflower.genome",
       "score": 0
     },
     "mostComplex": {
-      "name": "cosmicWheel.genome",
-      "score": 513
+      "name": "geometricMosaic.genome",
+      "score": 385
     }
   }
 }
