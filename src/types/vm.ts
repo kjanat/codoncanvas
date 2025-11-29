@@ -58,6 +58,156 @@ export enum Opcode {
   LT, // Comparison: less than
 }
 
+// ============================================================================
+// Opcode Category Types (compile-time grouping)
+// ============================================================================
+
+/** Control flow opcodes */
+export type ControlOpcode = Opcode.START | Opcode.STOP | Opcode.LOOP;
+
+/** Drawing primitive opcodes */
+export type DrawingOpcode =
+  | Opcode.CIRCLE
+  | Opcode.RECT
+  | Opcode.LINE
+  | Opcode.TRIANGLE
+  | Opcode.ELLIPSE;
+
+/** Transform/state modifier opcodes */
+export type TransformOpcode =
+  | Opcode.TRANSLATE
+  | Opcode.ROTATE
+  | Opcode.SCALE
+  | Opcode.COLOR;
+
+/** Stack manipulation opcodes */
+export type StackOpcode = Opcode.PUSH | Opcode.DUP | Opcode.POP | Opcode.SWAP;
+
+/** Arithmetic opcodes */
+export type ArithmeticOpcode =
+  | Opcode.ADD
+  | Opcode.SUB
+  | Opcode.MUL
+  | Opcode.DIV;
+
+/** Comparison opcodes */
+export type ComparisonOpcode = Opcode.EQ | Opcode.LT;
+
+/** State save/restore opcodes */
+export type StateOpcode = Opcode.SAVE_STATE | Opcode.RESTORE_STATE;
+
+/** Utility opcodes */
+export type UtilityOpcode = Opcode.NOP;
+
+// ============================================================================
+// Opcode Category Arrays (runtime checking)
+// ============================================================================
+
+/** All control flow opcodes */
+export const CONTROL_OPCODES = [
+  Opcode.START,
+  Opcode.STOP,
+  Opcode.LOOP,
+] as const satisfies readonly ControlOpcode[];
+
+/** All drawing primitive opcodes */
+export const DRAWING_OPCODES = [
+  Opcode.CIRCLE,
+  Opcode.RECT,
+  Opcode.LINE,
+  Opcode.TRIANGLE,
+  Opcode.ELLIPSE,
+] as const satisfies readonly DrawingOpcode[];
+
+/** All transform opcodes */
+export const TRANSFORM_OPCODES = [
+  Opcode.TRANSLATE,
+  Opcode.ROTATE,
+  Opcode.SCALE,
+  Opcode.COLOR,
+] as const satisfies readonly TransformOpcode[];
+
+/** All stack manipulation opcodes */
+export const STACK_OPCODES = [
+  Opcode.PUSH,
+  Opcode.DUP,
+  Opcode.POP,
+  Opcode.SWAP,
+] as const satisfies readonly StackOpcode[];
+
+/** All arithmetic opcodes */
+export const ARITHMETIC_OPCODES = [
+  Opcode.ADD,
+  Opcode.SUB,
+  Opcode.MUL,
+  Opcode.DIV,
+] as const satisfies readonly ArithmeticOpcode[];
+
+// ============================================================================
+// Type Guards for Opcode Categories
+// ============================================================================
+
+/** Type guard for control opcodes */
+export function isControlOpcode(op: Opcode): op is ControlOpcode {
+  return (CONTROL_OPCODES as readonly Opcode[]).includes(op);
+}
+
+/** Type guard for drawing opcodes */
+export function isDrawingOpcode(op: Opcode): op is DrawingOpcode {
+  return (DRAWING_OPCODES as readonly Opcode[]).includes(op);
+}
+
+/** Type guard for transform opcodes */
+export function isTransformOpcode(op: Opcode): op is TransformOpcode {
+  return (TRANSFORM_OPCODES as readonly Opcode[]).includes(op);
+}
+
+/** Type guard for stack opcodes */
+export function isStackOpcode(op: Opcode): op is StackOpcode {
+  return (STACK_OPCODES as readonly Opcode[]).includes(op);
+}
+
+/** Type guard for arithmetic opcodes */
+export function isArithmeticOpcode(op: Opcode): op is ArithmeticOpcode {
+  return (ARITHMETIC_OPCODES as readonly Opcode[]).includes(op);
+}
+
+// ============================================================================
+// Stack Requirements (for validation)
+// ============================================================================
+
+/**
+ * Number of stack values required by each opcode.
+ * Used for compile-time and runtime validation.
+ */
+export const OPCODE_STACK_REQUIREMENTS: Record<Opcode, number> = {
+  [Opcode.START]: 0,
+  [Opcode.STOP]: 0,
+  [Opcode.CIRCLE]: 1,
+  [Opcode.RECT]: 2,
+  [Opcode.LINE]: 1,
+  [Opcode.TRIANGLE]: 1,
+  [Opcode.ELLIPSE]: 2,
+  [Opcode.TRANSLATE]: 2,
+  [Opcode.ROTATE]: 1,
+  [Opcode.SCALE]: 1,
+  [Opcode.COLOR]: 3,
+  [Opcode.PUSH]: 0,
+  [Opcode.DUP]: 1,
+  [Opcode.POP]: 1,
+  [Opcode.SWAP]: 2,
+  [Opcode.NOP]: 0,
+  [Opcode.SAVE_STATE]: 0,
+  [Opcode.RESTORE_STATE]: 0,
+  [Opcode.ADD]: 2,
+  [Opcode.SUB]: 2,
+  [Opcode.MUL]: 2,
+  [Opcode.DIV]: 2,
+  [Opcode.LOOP]: 2,
+  [Opcode.EQ]: 2,
+  [Opcode.LT]: 2,
+} as const;
+
 /**
  * Virtual Machine execution state snapshot.
  *
