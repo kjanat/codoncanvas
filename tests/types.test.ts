@@ -5,7 +5,20 @@
  * that maps DNA/RNA triplets to VM opcodes.
  */
 import { describe, expect, test } from "bun:test";
-import { CODON_MAP, DNA_LETTERS, Opcode } from "@/types";
+import {
+  ALL_DNA_CODONS,
+  ALL_RNA_CODONS,
+  CODON_MAP,
+  DNA_LETTERS,
+  dnaCodonToRna,
+  isDNACodon,
+  isRNACodon,
+  lookupCodon,
+  Opcode,
+  RNA_CODON_MAP,
+  RNA_LETTERS,
+  rnaCodonToDna,
+} from "@/types";
 
 describe("Types Module", () => {
   // CODON_MAP Structure
@@ -51,74 +64,73 @@ describe("Types Module", () => {
   // Control Flow Codons
   describe("control flow codons", () => {
     test("ATG maps to Opcode.START", () => {
-      expect(CODON_MAP["ATG"]).toBe(Opcode.START);
+      expect(CODON_MAP.ATG).toBe(Opcode.START);
     });
 
     test("TAA maps to Opcode.STOP", () => {
-      expect(CODON_MAP["TAA"]).toBe(Opcode.STOP);
+      expect(CODON_MAP.TAA).toBe(Opcode.STOP);
     });
 
     test("TAG maps to Opcode.STOP", () => {
-      expect(CODON_MAP["TAG"]).toBe(Opcode.STOP);
+      expect(CODON_MAP.TAG).toBe(Opcode.STOP);
     });
 
     test("TGA maps to Opcode.STOP", () => {
-      expect(CODON_MAP["TGA"]).toBe(Opcode.STOP);
+      expect(CODON_MAP.TGA).toBe(Opcode.STOP);
     });
 
     test("three stop codons match biological stop codons", () => {
       // In biology, TAA, TAG, and TGA are the three universal stop codons
-      const stopCodons = ["TAA", "TAG", "TGA"];
-      for (const codon of stopCodons) {
-        expect(CODON_MAP[codon]).toBe(Opcode.STOP);
-      }
+      expect(CODON_MAP.TAA).toBe(Opcode.STOP);
+      expect(CODON_MAP.TAG).toBe(Opcode.STOP);
+      expect(CODON_MAP.TGA).toBe(Opcode.STOP);
     });
   });
 
   // Drawing Primitive Codons (Synonymous Families)
   describe("drawing primitive codons", () => {
     test("GGA, GGC, GGG, GGT all map to Opcode.CIRCLE", () => {
-      expect(CODON_MAP["GGA"]).toBe(Opcode.CIRCLE);
-      expect(CODON_MAP["GGC"]).toBe(Opcode.CIRCLE);
-      expect(CODON_MAP["GGG"]).toBe(Opcode.CIRCLE);
-      expect(CODON_MAP["GGT"]).toBe(Opcode.CIRCLE);
+      expect(CODON_MAP.GGA).toBe(Opcode.CIRCLE);
+      expect(CODON_MAP.GGC).toBe(Opcode.CIRCLE);
+      expect(CODON_MAP.GGG).toBe(Opcode.CIRCLE);
+      expect(CODON_MAP.GGT).toBe(Opcode.CIRCLE);
     });
 
     test("CCA, CCC, CCG, CCT all map to Opcode.RECT", () => {
-      expect(CODON_MAP["CCA"]).toBe(Opcode.RECT);
-      expect(CODON_MAP["CCC"]).toBe(Opcode.RECT);
-      expect(CODON_MAP["CCG"]).toBe(Opcode.RECT);
-      expect(CODON_MAP["CCT"]).toBe(Opcode.RECT);
+      expect(CODON_MAP.CCA).toBe(Opcode.RECT);
+      expect(CODON_MAP.CCC).toBe(Opcode.RECT);
+      expect(CODON_MAP.CCG).toBe(Opcode.RECT);
+      expect(CODON_MAP.CCT).toBe(Opcode.RECT);
     });
 
     test("AAA, AAC, AAG, AAT all map to Opcode.LINE", () => {
-      expect(CODON_MAP["AAA"]).toBe(Opcode.LINE);
-      expect(CODON_MAP["AAC"]).toBe(Opcode.LINE);
-      expect(CODON_MAP["AAG"]).toBe(Opcode.LINE);
-      expect(CODON_MAP["AAT"]).toBe(Opcode.LINE);
+      expect(CODON_MAP.AAA).toBe(Opcode.LINE);
+      expect(CODON_MAP.AAC).toBe(Opcode.LINE);
+      expect(CODON_MAP.AAG).toBe(Opcode.LINE);
+      expect(CODON_MAP.AAT).toBe(Opcode.LINE);
     });
 
     test("GCA, GCC, GCG, GCT all map to Opcode.TRIANGLE", () => {
-      expect(CODON_MAP["GCA"]).toBe(Opcode.TRIANGLE);
-      expect(CODON_MAP["GCC"]).toBe(Opcode.TRIANGLE);
-      expect(CODON_MAP["GCG"]).toBe(Opcode.TRIANGLE);
-      expect(CODON_MAP["GCT"]).toBe(Opcode.TRIANGLE);
+      expect(CODON_MAP.GCA).toBe(Opcode.TRIANGLE);
+      expect(CODON_MAP.GCC).toBe(Opcode.TRIANGLE);
+      expect(CODON_MAP.GCG).toBe(Opcode.TRIANGLE);
+      expect(CODON_MAP.GCT).toBe(Opcode.TRIANGLE);
     });
 
     test("GTA, GTC, GTG, GTT all map to Opcode.ELLIPSE", () => {
-      expect(CODON_MAP["GTA"]).toBe(Opcode.ELLIPSE);
-      expect(CODON_MAP["GTC"]).toBe(Opcode.ELLIPSE);
-      expect(CODON_MAP["GTG"]).toBe(Opcode.ELLIPSE);
-      expect(CODON_MAP["GTT"]).toBe(Opcode.ELLIPSE);
+      expect(CODON_MAP.GTA).toBe(Opcode.ELLIPSE);
+      expect(CODON_MAP.GTC).toBe(Opcode.ELLIPSE);
+      expect(CODON_MAP.GTG).toBe(Opcode.ELLIPSE);
+      expect(CODON_MAP.GTT).toBe(Opcode.ELLIPSE);
     });
 
     test("each drawing family has exactly 4 synonymous codons", () => {
       const families = {
-        CIRCLE: ["GGA", "GGC", "GGG", "GGT"],
-        RECT: ["CCA", "CCC", "CCG", "CCT"],
-        LINE: ["AAA", "AAC", "AAG", "AAT"],
-        TRIANGLE: ["GCA", "GCC", "GCG", "GCT"],
-        ELLIPSE: ["GTA", "GTC", "GTG", "GTT"],
+        CIRCLE: ["GGA", "GGC", "GGG", "GGT"] as const,
+        RECT: ["CCA", "CCC", "CCG", "CCT"] as const,
+        LINE: ["AAA", "AAC", "AAG", "AAT"] as const,
+        TRIANGLE: ["GCA", "GCC", "GCG", "GCT"] as const,
+        ELLIPSE: ["GTA", "GTC", "GTG", "GTT"] as const,
       };
       for (const [opcodeName, codons] of Object.entries(families)) {
         expect(codons).toHaveLength(4);
@@ -133,74 +145,59 @@ describe("Types Module", () => {
   // Transform Operation Codons
   describe("transform operation codons", () => {
     test("ACA, ACC, ACG, ACT all map to Opcode.TRANSLATE", () => {
-      expect(CODON_MAP["ACA"]).toBe(Opcode.TRANSLATE);
-      expect(CODON_MAP["ACC"]).toBe(Opcode.TRANSLATE);
-      expect(CODON_MAP["ACG"]).toBe(Opcode.TRANSLATE);
-      expect(CODON_MAP["ACT"]).toBe(Opcode.TRANSLATE);
+      expect(CODON_MAP.ACA).toBe(Opcode.TRANSLATE);
+      expect(CODON_MAP.ACC).toBe(Opcode.TRANSLATE);
+      expect(CODON_MAP.ACG).toBe(Opcode.TRANSLATE);
+      expect(CODON_MAP.ACT).toBe(Opcode.TRANSLATE);
     });
 
     test("AGA, AGC, AGG, AGT all map to Opcode.ROTATE", () => {
-      expect(CODON_MAP["AGA"]).toBe(Opcode.ROTATE);
-      expect(CODON_MAP["AGC"]).toBe(Opcode.ROTATE);
-      expect(CODON_MAP["AGG"]).toBe(Opcode.ROTATE);
-      expect(CODON_MAP["AGT"]).toBe(Opcode.ROTATE);
+      expect(CODON_MAP.AGA).toBe(Opcode.ROTATE);
+      expect(CODON_MAP.AGC).toBe(Opcode.ROTATE);
+      expect(CODON_MAP.AGG).toBe(Opcode.ROTATE);
+      expect(CODON_MAP.AGT).toBe(Opcode.ROTATE);
     });
 
     test("CGA, CGC, CGG, CGT all map to Opcode.SCALE", () => {
-      expect(CODON_MAP["CGA"]).toBe(Opcode.SCALE);
-      expect(CODON_MAP["CGC"]).toBe(Opcode.SCALE);
-      expect(CODON_MAP["CGG"]).toBe(Opcode.SCALE);
-      expect(CODON_MAP["CGT"]).toBe(Opcode.SCALE);
+      expect(CODON_MAP.CGA).toBe(Opcode.SCALE);
+      expect(CODON_MAP.CGC).toBe(Opcode.SCALE);
+      expect(CODON_MAP.CGG).toBe(Opcode.SCALE);
+      expect(CODON_MAP.CGT).toBe(Opcode.SCALE);
     });
 
     test("TTA, TTC, TTG, TTT all map to Opcode.COLOR", () => {
-      expect(CODON_MAP["TTA"]).toBe(Opcode.COLOR);
-      expect(CODON_MAP["TTC"]).toBe(Opcode.COLOR);
-      expect(CODON_MAP["TTG"]).toBe(Opcode.COLOR);
-      expect(CODON_MAP["TTT"]).toBe(Opcode.COLOR);
-    });
-
-    test("each transform family has exactly 4 synonymous codons", () => {
-      const families = {
-        TRANSLATE: ["ACA", "ACC", "ACG", "ACT"],
-        ROTATE: ["AGA", "AGC", "AGG", "AGT"],
-        SCALE: ["CGA", "CGC", "CGG", "CGT"],
-        COLOR: ["TTA", "TTC", "TTG", "TTT"],
-      };
-      for (const [opcodeName, codons] of Object.entries(families)) {
-        expect(codons).toHaveLength(4);
-        const opcode = Opcode[opcodeName as keyof typeof Opcode];
-        for (const codon of codons) {
-          expect(CODON_MAP[codon]).toBe(opcode);
-        }
-      }
+      expect(CODON_MAP.TTA).toBe(Opcode.COLOR);
+      expect(CODON_MAP.TTC).toBe(Opcode.COLOR);
+      expect(CODON_MAP.TTG).toBe(Opcode.COLOR);
+      expect(CODON_MAP.TTT).toBe(Opcode.COLOR);
     });
   });
 
   // Stack Operation Codons
   describe("stack operation codons", () => {
-    test("GAA, GAG, GAC, GAT all map to Opcode.PUSH", () => {
-      expect(CODON_MAP["GAA"]).toBe(Opcode.PUSH);
-      expect(CODON_MAP["GAG"]).toBe(Opcode.PUSH);
-      expect(CODON_MAP["GAC"]).toBe(Opcode.PUSH);
-      expect(CODON_MAP["GAT"]).toBe(Opcode.PUSH);
+    test("GAA, GAC, GAG, GAT all map to Opcode.PUSH", () => {
+      expect(CODON_MAP.GAA).toBe(Opcode.PUSH);
+      expect(CODON_MAP.GAC).toBe(Opcode.PUSH);
+      expect(CODON_MAP.GAG).toBe(Opcode.PUSH);
+      expect(CODON_MAP.GAT).toBe(Opcode.PUSH);
     });
 
-    test("ATA, ATC, ATT map to Opcode.DUP", () => {
-      expect(CODON_MAP["ATA"]).toBe(Opcode.DUP);
-      expect(CODON_MAP["ATC"]).toBe(Opcode.DUP);
-      expect(CODON_MAP["ATT"]).toBe(Opcode.DUP);
+    test("ATA, ATC, ATT map to Opcode.DUP (3 codons, not 4)", () => {
+      // DUP has 3 codons because ATG is reserved for START
+      expect(CODON_MAP.ATA).toBe(Opcode.DUP);
+      expect(CODON_MAP.ATC).toBe(Opcode.DUP);
+      expect(CODON_MAP.ATT).toBe(Opcode.DUP);
     });
 
     test("TAC, TAT, TGC map to Opcode.POP", () => {
-      expect(CODON_MAP["TAC"]).toBe(Opcode.POP);
-      expect(CODON_MAP["TAT"]).toBe(Opcode.POP);
-      expect(CODON_MAP["TGC"]).toBe(Opcode.POP);
+      expect(CODON_MAP.TAC).toBe(Opcode.POP);
+      expect(CODON_MAP.TAT).toBe(Opcode.POP);
+      expect(CODON_MAP.TGC).toBe(Opcode.POP);
     });
 
     test("TGG, TGT map to Opcode.SWAP", () => {
-      expect(CODON_MAP["TGG"]).toBe(Opcode.SWAP);
-      expect(CODON_MAP["TGT"]).toBe(Opcode.SWAP);
+      expect(CODON_MAP.TGG).toBe(Opcode.SWAP);
+      expect(CODON_MAP.TGT).toBe(Opcode.SWAP);
     });
   });
 
@@ -464,25 +461,25 @@ describe("Types Module", () => {
     test("synonymous codon families enable silent mutation teaching", () => {
       // Changing third position (wobble) in synonymous family doesn't change opcode
       // This is key for teaching silent mutations
-      expect(CODON_MAP["GGA"]).toBe(CODON_MAP["GGC"]); // Both CIRCLE
-      expect(CODON_MAP["GGG"]).toBe(CODON_MAP["GGT"]); // Both CIRCLE
-      expect(CODON_MAP["CCA"]).toBe(CODON_MAP["CCT"]); // Both RECT
+      expect(CODON_MAP.GGA).toBe(CODON_MAP.GGC); // Both CIRCLE
+      expect(CODON_MAP.GGG).toBe(CODON_MAP.GGT); // Both CIRCLE
+      expect(CODON_MAP.CCA).toBe(CODON_MAP.CCT); // Both RECT
     });
 
     test("codon families group by third position wobble", () => {
       // GG* family - all map to CIRCLE
-      const ggFamily = ["GGA", "GGC", "GGG", "GGT"];
+      const ggFamily = ["GGA", "GGC", "GGG", "GGT"] as const;
       const ggOpcodes = ggFamily.map((c) => CODON_MAP[c]);
       expect(new Set(ggOpcodes).size).toBe(1);
 
       // CC* family - all map to RECT
-      const ccFamily = ["CCA", "CCC", "CCG", "CCT"];
+      const ccFamily = ["CCA", "CCC", "CCG", "CCT"] as const;
       const ccOpcodes = ccFamily.map((c) => CODON_MAP[c]);
       expect(new Set(ccOpcodes).size).toBe(1);
     });
 
     test("biological accuracy: ATG is universal start codon", () => {
-      expect(CODON_MAP["ATG"]).toBe(Opcode.START);
+      expect(CODON_MAP.ATG).toBe(Opcode.START);
       // ATG is the only start codon (matches biology)
       const startCodons = Object.entries(CODON_MAP).filter(
         ([, op]) => op === Opcode.START,
@@ -492,10 +489,9 @@ describe("Types Module", () => {
     });
 
     test("biological accuracy: three stop codons match biology", () => {
-      const biologicalStopCodons = ["TAA", "TAG", "TGA"];
-      for (const codon of biologicalStopCodons) {
-        expect(CODON_MAP[codon]).toBe(Opcode.STOP);
-      }
+      expect(CODON_MAP.TAA).toBe(Opcode.STOP);
+      expect(CODON_MAP.TAG).toBe(Opcode.STOP);
+      expect(CODON_MAP.TGA).toBe(Opcode.STOP);
       // Verify these are the only stop codons
       const stopCodons = Object.entries(CODON_MAP).filter(
         ([, op]) => op === Opcode.STOP,
@@ -505,40 +501,134 @@ describe("Types Module", () => {
 
     test("drawing primitives have intuitive codon assignments", () => {
       // Verify drawing opcodes are assigned to consistent families
-      expect(CODON_MAP["GGA"]).toBe(Opcode.CIRCLE); // GG* = CIRCLE
-      expect(CODON_MAP["CCA"]).toBe(Opcode.RECT); // CC* = RECT
-      expect(CODON_MAP["AAA"]).toBe(Opcode.LINE); // AA* = LINE
-      expect(CODON_MAP["GCA"]).toBe(Opcode.TRIANGLE); // GC* = TRIANGLE
-      expect(CODON_MAP["GTA"]).toBe(Opcode.ELLIPSE); // GT* = ELLIPSE
+      expect(CODON_MAP.GGA).toBe(Opcode.CIRCLE); // GG* = CIRCLE
+      expect(CODON_MAP.CCA).toBe(Opcode.RECT); // CC* = RECT
+      expect(CODON_MAP.AAA).toBe(Opcode.LINE); // AA* = LINE
+      expect(CODON_MAP.GCA).toBe(Opcode.TRIANGLE); // GC* = TRIANGLE
+      expect(CODON_MAP.GTA).toBe(Opcode.ELLIPSE); // GT* = ELLIPSE
     });
   });
 
   // Edge Cases
   describe("edge cases", () => {
-    test("lowercase codons are not in CODON_MAP (case sensitive)", () => {
-      expect(CODON_MAP["atg"]).toBeUndefined();
-      expect(CODON_MAP["Atg"]).toBeUndefined();
-      expect(CODON_MAP["aTG"]).toBeUndefined();
+    test("lowercase codons are not recognized (case sensitive)", () => {
+      // Use lookupCodon for runtime string lookup
+      expect(lookupCodon("atg")).toBeUndefined();
+      expect(lookupCodon("Atg")).toBeUndefined();
+      expect(lookupCodon("aTG")).toBeUndefined();
     });
 
-    test("invalid codon strings return undefined from CODON_MAP", () => {
-      expect(CODON_MAP["XXX"]).toBeUndefined();
-      expect(CODON_MAP["123"]).toBeUndefined();
-      expect(CODON_MAP["ABC"]).toBeUndefined();
+    test("invalid codon strings return undefined from lookupCodon", () => {
+      expect(lookupCodon("XXX")).toBeUndefined();
+      expect(lookupCodon("123")).toBeUndefined();
+      expect(lookupCodon("ABC")).toBeUndefined();
     });
 
     test("2-character strings return undefined", () => {
-      expect(CODON_MAP["AT"]).toBeUndefined();
-      expect(CODON_MAP["GG"]).toBeUndefined();
+      expect(lookupCodon("AT")).toBeUndefined();
+      expect(lookupCodon("GG")).toBeUndefined();
     });
 
     test("4-character strings return undefined", () => {
-      expect(CODON_MAP["ATGG"]).toBeUndefined();
-      expect(CODON_MAP["GGAA"]).toBeUndefined();
+      expect(lookupCodon("ATGG")).toBeUndefined();
+      expect(lookupCodon("GGAA")).toBeUndefined();
     });
 
     test("empty string returns undefined", () => {
-      expect(CODON_MAP[""]).toBeUndefined();
+      expect(lookupCodon("")).toBeUndefined();
+    });
+
+    test("RNA codons are normalized via lookupCodon", () => {
+      // lookupCodon normalizes U to T
+      expect(lookupCodon("AUG")).toBe(Opcode.START);
+      expect(lookupCodon("UAA")).toBe(Opcode.STOP);
+      expect(lookupCodon("GGU")).toBe(Opcode.CIRCLE);
+    });
+  });
+
+  // RNA Type System
+  describe("RNA type system", () => {
+    test("ALL_RNA_CODONS has exactly 64 entries", () => {
+      expect(ALL_RNA_CODONS.length).toBe(64);
+    });
+
+    test("ALL_DNA_CODONS has exactly 64 entries", () => {
+      expect(ALL_DNA_CODONS.length).toBe(64);
+    });
+
+    test("RNA_CODON_MAP has same number of entries as DNA_CODON_MAP", () => {
+      expect(Object.keys(RNA_CODON_MAP).length).toBe(
+        Object.keys(CODON_MAP).length,
+      );
+    });
+
+    test("RNA_CODON_MAP uses U instead of T", () => {
+      // RNA start codon
+      expect(RNA_CODON_MAP["AUG"]).toBe(Opcode.START);
+      // RNA stop codons
+      expect(RNA_CODON_MAP["UAA"]).toBe(Opcode.STOP);
+      expect(RNA_CODON_MAP["UAG"]).toBe(Opcode.STOP);
+      expect(RNA_CODON_MAP["UGA"]).toBe(Opcode.STOP);
+      // RNA circle family
+      expect(RNA_CODON_MAP["GGA"]).toBe(Opcode.CIRCLE);
+      expect(RNA_CODON_MAP["GGU"]).toBe(Opcode.CIRCLE);
+    });
+
+    test("dnaCodonToRna converts T to U", () => {
+      expect(dnaCodonToRna("ATG")).toBe("AUG");
+      expect(dnaCodonToRna("TAA")).toBe("UAA");
+      expect(dnaCodonToRna("GGT")).toBe("GGU");
+      expect(dnaCodonToRna("TTT")).toBe("UUU");
+    });
+
+    test("rnaCodonToDna converts U to T", () => {
+      expect(rnaCodonToDna("AUG")).toBe("ATG");
+      expect(rnaCodonToDna("UAA")).toBe("TAA");
+      expect(rnaCodonToDna("GGU")).toBe("GGT");
+      expect(rnaCodonToDna("UUU")).toBe("TTT");
+    });
+
+    test("dnaCodonToRna and rnaCodonToDna are inverses", () => {
+      for (const dna of ALL_DNA_CODONS) {
+        const rna = dnaCodonToRna(dna);
+        const backToDna = rnaCodonToDna(rna);
+        expect(backToDna).toBe(dna);
+      }
+    });
+
+    test("isDNACodon validates DNA codons", () => {
+      expect(isDNACodon("ATG")).toBe(true);
+      expect(isDNACodon("GGT")).toBe(true);
+      expect(isDNACodon("AUG")).toBe(false); // RNA
+      expect(isDNACodon("XYZ")).toBe(false);
+      expect(isDNACodon("AT")).toBe(false);
+    });
+
+    test("isRNACodon validates RNA codons", () => {
+      expect(isRNACodon("AUG")).toBe(true);
+      expect(isRNACodon("GGU")).toBe(true);
+      expect(isRNACodon("ATG")).toBe(false); // DNA
+      expect(isRNACodon("XYZ")).toBe(false);
+      expect(isRNACodon("AU")).toBe(false);
+    });
+
+    test("RNA_LETTERS contains U but not T", () => {
+      expect(RNA_LETTERS).toContain("U");
+      expect(RNA_LETTERS).not.toContain("T");
+    });
+
+    test("DNA_LETTERS contains T but not U", () => {
+      expect(DNA_LETTERS).toContain("T");
+      expect(DNA_LETTERS).not.toContain("U");
+    });
+
+    test("ALL_RNA_CODONS only contains valid RNA bases", () => {
+      const rnaLetters = [...RNA_LETTERS] as string[];
+      for (const codon of ALL_RNA_CODONS) {
+        for (const base of codon) {
+          expect(rnaLetters).toContain(base);
+        }
+      }
     });
   });
 });

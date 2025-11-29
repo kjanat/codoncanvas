@@ -435,6 +435,48 @@ const ALL_DNA_CODONS: readonly DNACodon[] = DNA_LETTERS.flatMap((a) =>
 );
 
 /**
+ * Generates all 64 possible RNA codons.
+ * Parallel to {@link ALL_DNA_CODONS} for RNA operations.
+ */
+const ALL_RNA_CODONS: readonly RNACodon[] = RNA_LETTERS.flatMap((a) =>
+  RNA_LETTERS.flatMap((b) =>
+    RNA_LETTERS.map((c) => `${a}${b}${c}` as RNACodon),
+  ),
+);
+
+/**
+ * Converts a DNA codon to its RNA equivalent (T -> U).
+ *
+ * @param codon - DNA codon to convert
+ * @returns Equivalent RNA codon
+ *
+ * @example
+ * ```typescript
+ * dnaCodonToRna("ATG"); // => "AUG"
+ * dnaCodonToRna("TAA"); // => "UAA"
+ * ```
+ */
+function dnaCodonToRna(codon: DNACodon): RNACodon {
+  return codon.replace(/T/g, "U") as RNACodon;
+}
+
+/**
+ * Converts an RNA codon to its DNA equivalent (U -> T).
+ *
+ * @param codon - RNA codon to convert
+ * @returns Equivalent DNA codon
+ *
+ * @example
+ * ```typescript
+ * rnaCodonToDna("AUG"); // => "ATG"
+ * rnaCodonToDna("UAA"); // => "TAA"
+ * ```
+ */
+function rnaCodonToDna(codon: RNACodon): DNACodon {
+  return codon.replace(/U/g, "T") as DNACodon;
+}
+
+/**
  * Builds the complete codon-to-opcode mapping from family definitions.
  * Expands four-fold families and merges with special codons.
  *
@@ -464,6 +506,23 @@ function buildCodonMap(): Record<DNACodon, Opcode> {
  * All lookups should go through {@link lookupCodon} for RNA support.
  */
 const DNA_CODON_MAP: Record<DNACodon, Opcode> = buildCodonMap();
+
+/**
+ * RNA codon map - mirrors DNA_CODON_MAP with U instead of T.
+ * Enables direct RNA codon lookups without normalization.
+ *
+ * @example
+ * ```typescript
+ * RNA_CODON_MAP["AUG"] === Opcode.START // true
+ * RNA_CODON_MAP["UAA"] === Opcode.STOP  // true
+ * ```
+ */
+const RNA_CODON_MAP: Record<RNACodon, Opcode> = Object.fromEntries(
+  Object.entries(DNA_CODON_MAP).map(([dna, opcode]) => [
+    dnaCodonToRna(dna as DNACodon),
+    opcode,
+  ]),
+) as Record<RNACodon, Opcode>;
 
 /**
  * Validates that all 64 DNA codons are mapped.
@@ -559,10 +618,14 @@ export {
   CODON_FAMILIES,
   SPECIAL_CODONS,
   ALL_DNA_CODONS,
+  ALL_RNA_CODONS,
   DNA_CODON_MAP,
+  RNA_CODON_MAP,
   lookupCodon,
   isDNACodon,
   isRNACodon,
+  dnaCodonToRna,
+  rnaCodonToDna,
 };
 
 /**

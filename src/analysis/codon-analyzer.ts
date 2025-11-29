@@ -11,7 +11,7 @@
  * (codon usage bias, GC content, compositional analysis)
  */
 
-import { CODON_MAP, type CodonToken, Opcode } from "@/types";
+import { CODON_MAP, type CodonToken, lookupCodon, Opcode } from "@/types";
 
 /**
  * Complete codon usage analysis results
@@ -199,7 +199,7 @@ function updateOpcodeDistribution(
   codon: string,
   opcodeDistribution: Map<string, number>,
 ) {
-  const opcode = CODON_MAP[codon];
+  const opcode = lookupCodon(codon);
   if (opcode !== undefined) {
     const opcodeName = Opcode[opcode];
     opcodeDistribution.set(

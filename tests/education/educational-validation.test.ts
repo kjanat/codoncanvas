@@ -13,7 +13,14 @@ import {
   mockCanvasContext,
   restoreCanvasContext,
 } from "@/tests/test-utils/canvas-mock";
-import { CODON_MAP, DNA_LETTERS, Opcode, type VMState } from "@/types";
+import {
+  CODON_MAP,
+  DNA_LETTERS,
+  type DNACodon,
+  lookupCodon,
+  Opcode,
+  type VMState,
+} from "@/types";
 
 /**
  * Educational Validation Test Suite
@@ -51,8 +58,8 @@ describe("Educational Validation Suite", () => {
       expect(changedIndex).toBeGreaterThanOrEqual(0);
 
       // Verify same opcode
-      const originalOpcode = CODON_MAP[originalCodons[changedIndex]];
-      const mutatedOpcode = CODON_MAP[mutatedCodons[changedIndex]];
+      const originalOpcode = lookupCodon(originalCodons[changedIndex]);
+      const mutatedOpcode = lookupCodon(mutatedCodons[changedIndex]);
       expect(originalOpcode).toBe(mutatedOpcode);
     });
 
@@ -71,7 +78,7 @@ describe("Educational Validation Suite", () => {
       expect(redundantOpcodes.length).toBeGreaterThan(5); // Significant redundancy
 
       // Specific examples from spec
-      const circleFamily = ["GGA", "GGC", "GGG", "GGT"];
+      const circleFamily: DNACodon[] = ["GGA", "GGC", "GGG", "GGT"];
       const circleOpcodes = circleFamily.map((c) => CODON_MAP[c]);
       expect(new Set(circleOpcodes).size).toBe(1); // All map to same opcode
     });
@@ -93,8 +100,8 @@ describe("Educational Validation Suite", () => {
       expect(changedIndex).toBeGreaterThanOrEqual(0);
 
       // Verify different opcode
-      const originalOpcode = CODON_MAP[originalCodons[changedIndex]];
-      const mutatedOpcode = CODON_MAP[mutatedCodons[changedIndex]];
+      const originalOpcode = lookupCodon(originalCodons[changedIndex]);
+      const mutatedOpcode = lookupCodon(mutatedCodons[changedIndex]);
       expect(originalOpcode).not.toBe(mutatedOpcode);
     });
 
@@ -117,12 +124,12 @@ describe("Educational Validation Suite", () => {
 
     test("CLAIM 5: 64 codons map to instruction set completely", () => {
       // Verify all 64 possible codons have mappings
-      const allCodons: string[] = [];
+      const allCodons: DNACodon[] = [];
 
       for (const b1 of DNA_LETTERS) {
         for (const b2 of DNA_LETTERS) {
           for (const b3 of DNA_LETTERS) {
-            allCodons.push(b1 + b2 + b3);
+            allCodons.push(`${b1}${b2}${b3}` as DNACodon);
           }
         }
       }

@@ -9,7 +9,7 @@ import {
   mockCanvasContext,
   restoreCanvasContext,
 } from "@/tests/test-utils/canvas-mock";
-import { CODON_MAP, Opcode } from "@/types";
+import { CODON_MAP, type DNACodon, Opcode } from "@/types";
 
 // Mock DOM elements helper
 function createMockElement(tagName: string, id?: string): HTMLElement {
@@ -64,69 +64,71 @@ describe("Playground Main Module", () => {
     test("returns empty array when no drawing tokens", () => {
       // trackDrawingOperations is internal, but we can test the logic
       const tokens: { text: string }[] = [];
-      const circleCodons = ["GGA", "GGC", "GGG", "GGT"];
-      const hasCircle = tokens.some((t) => circleCodons.includes(t.text));
+      const circleCodons: DNACodon[] = ["GGA", "GGC", "GGG", "GGT"];
+      const hasCircle = tokens.some((t) =>
+        circleCodons.includes(t.text as DNACodon),
+      );
       expect(hasCircle).toBe(false);
     });
 
     test("tracks CIRCLE shape (GGA, GGC, GGG, GGT codons)", () => {
-      const circleCodons = ["GGA", "GGC", "GGG", "GGT"];
+      const circleCodons: DNACodon[] = ["GGA", "GGC", "GGG", "GGT"];
       for (const codon of circleCodons) {
         expect(CODON_MAP[codon]).toBe(Opcode.CIRCLE);
       }
     });
 
     test("tracks RECT shape (CCA, CCC, CCG, CCT codons)", () => {
-      const rectCodons = ["CCA", "CCC", "CCG", "CCT"];
+      const rectCodons: DNACodon[] = ["CCA", "CCC", "CCG", "CCT"];
       for (const codon of rectCodons) {
         expect(CODON_MAP[codon]).toBe(Opcode.RECT);
       }
     });
 
     test("tracks LINE shape (AAA, AAC, AAG, AAT codons)", () => {
-      const lineCodons = ["AAA", "AAC", "AAG", "AAT"];
+      const lineCodons: DNACodon[] = ["AAA", "AAC", "AAG", "AAT"];
       for (const codon of lineCodons) {
         expect(CODON_MAP[codon]).toBe(Opcode.LINE);
       }
     });
 
     test("tracks TRIANGLE shape (GCA, GCC, GCG, GCT codons)", () => {
-      const triangleCodons = ["GCA", "GCC", "GCG", "GCT"];
+      const triangleCodons: DNACodon[] = ["GCA", "GCC", "GCG", "GCT"];
       for (const codon of triangleCodons) {
         expect(CODON_MAP[codon]).toBe(Opcode.TRIANGLE);
       }
     });
 
     test("tracks ELLIPSE shape (GTA, GTC, GTG, GTT codons)", () => {
-      const ellipseCodons = ["GTA", "GTC", "GTG", "GTT"];
+      const ellipseCodons: DNACodon[] = ["GTA", "GTC", "GTG", "GTT"];
       for (const codon of ellipseCodons) {
         expect(CODON_MAP[codon]).toBe(Opcode.ELLIPSE);
       }
     });
 
     test("tracks color usage (TTA, TTC, TTG, TTT codons)", () => {
-      const colorCodons = ["TTA", "TTC", "TTG", "TTT"];
+      const colorCodons: DNACodon[] = ["TTA", "TTC", "TTG", "TTT"];
       for (const codon of colorCodons) {
         expect(CODON_MAP[codon]).toBe(Opcode.COLOR);
       }
     });
 
     test("tracks TRANSLATE transform (ACA, ACC, ACG, ACT codons)", () => {
-      const translateCodons = ["ACA", "ACC", "ACG", "ACT"];
+      const translateCodons: DNACodon[] = ["ACA", "ACC", "ACG", "ACT"];
       for (const codon of translateCodons) {
         expect(CODON_MAP[codon]).toBe(Opcode.TRANSLATE);
       }
     });
 
     test("tracks ROTATE transform (AGA, AGC, AGG, AGT codons)", () => {
-      const rotateCodons = ["AGA", "AGC", "AGG", "AGT"];
+      const rotateCodons: DNACodon[] = ["AGA", "AGC", "AGG", "AGT"];
       for (const codon of rotateCodons) {
         expect(CODON_MAP[codon]).toBe(Opcode.ROTATE);
       }
     });
 
     test("tracks SCALE transform (CGA, CGC, CGG, CGT codons)", () => {
-      const scaleCodons = ["CGA", "CGC", "CGG", "CGT"];
+      const scaleCodons: DNACodon[] = ["CGA", "CGC", "CGG", "CGT"];
       for (const codon of scaleCodons) {
         expect(CODON_MAP[codon]).toBe(Opcode.SCALE);
       }
@@ -146,7 +148,7 @@ describe("Playground Main Module", () => {
     });
 
     test("ignores non-drawing tokens", () => {
-      const controlCodons = ["ATG", "TAA", "TAG", "TGA"];
+      const controlCodons: DNACodon[] = ["ATG", "TAA", "TAG", "TGA"];
       const drawingOpcodes = [
         Opcode.CIRCLE,
         Opcode.RECT,

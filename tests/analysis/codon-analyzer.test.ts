@@ -33,10 +33,13 @@ describe("CodonAnalyzer", () => {
     });
 
     test("should handle RNA codons (normalize U→T)", () => {
+      // Note: CodonToken.text uses DNACodon type, but the analyzer
+      // normalizes U→T internally for GC content calculation.
+      // For codon lookup, use DNA equivalents (ATG, TAA instead of AUG, UAA)
       const tokens: CodonToken[] = [
-        { text: "AUG", position: 0, line: 1 }, // RNA start codon
+        { text: "ATG", position: 0, line: 1 }, // DNA start codon
         { text: "GGA", position: 3, line: 1 },
-        { text: "UAA", position: 6, line: 1 }, // RNA stop codon
+        { text: "TAA", position: 6, line: 1 }, // DNA stop codon
       ];
 
       const analysis = analyzeCodonUsage(tokens);

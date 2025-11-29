@@ -17,6 +17,7 @@ import {
   CODON_MAP,
   type Codon,
   DNA_LETTERS,
+  lookupCodon,
   type MutationType,
   Opcode,
 } from "@/types";
@@ -178,13 +179,14 @@ export function applySilentMutation(
   }
   codons[targetPos] = newCodon;
 
+  const opcode = lookupCodon(originalCodon);
   return {
     original: genome,
     mutated: codons.join(" "),
     type: "silent",
     position: targetPos,
     description: `Silent mutation: ${originalCodon} → ${newCodon} (same opcode: ${
-      Opcode[CODON_MAP[originalCodon]]
+      opcode !== undefined ? Opcode[opcode] : "UNKNOWN"
     })`,
   };
 }
@@ -249,14 +251,16 @@ export function applyMissenseMutation(
   }
   codons[targetPos] = newCodon;
 
+  const origOpcode = lookupCodon(originalCodon);
+  const newOpcode = lookupCodon(newCodon);
   return {
     original: genome,
     mutated: codons.join(" "),
     type: "missense",
     position: targetPos,
     description: `Missense mutation: ${originalCodon} → ${newCodon} (${
-      Opcode[CODON_MAP[originalCodon]]
-    } → ${Opcode[CODON_MAP[newCodon]]})`,
+      origOpcode !== undefined ? Opcode[origOpcode] : "UNKNOWN"
+    } → ${newOpcode !== undefined ? Opcode[newOpcode] : "UNKNOWN"})`,
   };
 }
 

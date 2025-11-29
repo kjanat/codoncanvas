@@ -9,7 +9,7 @@ import {
   applySilentMutation,
   compareGenomes,
 } from "@/genetics/mutations";
-import { CODON_MAP } from "@/types";
+import { CODON_MAP, lookupCodon } from "@/types";
 
 describe("Mutation Tools", () => {
   describe("applySilentMutation", () => {
@@ -34,7 +34,7 @@ describe("Mutation Tools", () => {
       const mutatedCodon = mutatedCodons[changedPos];
 
       // Should map to same opcode
-      expect(CODON_MAP[originalCodon]).toBe(CODON_MAP[mutatedCodon]);
+      expect(lookupCodon(originalCodon)).toBe(lookupCodon(mutatedCodon));
     });
 
     test("respects position parameter", () => {
@@ -89,7 +89,7 @@ describe("Mutation Tools", () => {
       const mutatedCodon = mutatedCodons[changedPos];
 
       // Should map to different opcode
-      expect(CODON_MAP[originalCodon]).not.toBe(CODON_MAP[mutatedCodon]);
+      expect(lookupCodon(originalCodon)).not.toBe(lookupCodon(mutatedCodon));
     });
 
     test("does not introduce STOP codon", () => {
@@ -112,7 +112,7 @@ describe("Mutation Tools", () => {
       const codons = result.mutated.split(" ");
       expect(codons[1]).not.toBe("GGA");
       // Should be a different opcode (not CIRCLE)
-      expect(CODON_MAP[codons[1]]).not.toBe(CODON_MAP["GGA"]);
+      expect(lookupCodon(codons[1])).not.toBe(CODON_MAP.GGA);
     });
   });
 
