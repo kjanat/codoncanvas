@@ -4,6 +4,12 @@
  * Provides reusable UI components for the application.
  */
 
+export {
+  Button,
+  type ButtonProps,
+  type ButtonSize,
+  type ButtonVariant,
+} from "./Button";
 export { CanvasPreview } from "./CanvasPreview";
 export { Card, CardHeader, type CardHeaderProps, type CardProps } from "./Card";
 export { CodonReference } from "./CodonReference";
@@ -22,3 +28,7 @@ export { PlaygroundCanvas } from "./PlaygroundCanvas";
 export { PlaygroundEditor } from "./PlaygroundEditor";
 export { PlaygroundToolbar } from "./PlaygroundToolbar";
 export { ShareQRCode } from "./ShareQRCode";
+export {
+  SimulationControls,
+  type SimulationControlsProps,
+} from "./SimulationControls";

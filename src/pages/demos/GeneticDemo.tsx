@@ -1,8 +1,11 @@
 import { useCallback, useEffect, useRef, useState } from "react";
-import { CodonLexer } from "@/core/lexer";
-import { Canvas2DRenderer } from "@/core/renderer";
-import { CodonVM } from "@/core/vm";
+import { Card } from "@/components/Card";
+import { PageContainer } from "@/components/PageContainer";
+import { PageHeader } from "@/components/PageHeader";
+import { SimulationControls } from "@/components/SimulationControls";
 import { applyPointMutation } from "@/genetics/mutations";
+import { useRenderGenome } from "@/hooks/useRenderGenome";
+import { useSimulation } from "@/hooks/useSimulation";
 
 type FitnessType = "coverage" | "symmetry" | "colorVariety" | "complexity";
 
@@ -57,7 +60,6 @@ function evaluateSymmetry(canvas: HTMLCanvasElement): number {
   let matches = 0;
   let total = 0;
 
-  // Check horizontal symmetry
   for (let y = 0; y < height; y++) {
     for (let x = 0; x < width / 2; x++) {
       const leftIdx = (y * width + x) * 4;
@@ -85,19 +87,16 @@ function evaluateColorVariety(canvas: HTMLCanvasElement): number {
   const colors = new Set<string>();
 
   for (let i = 0; i < data.length; i += 4) {
-    // Quantize colors to reduce noise
     const r = Math.floor(data[i] / 32);
     const g = Math.floor(data[i + 1] / 32);
     const b = Math.floor(data[i + 2] / 32);
     colors.add(`${r},${g},${b}`);
   }
 
-  // Normalize: expect up to ~50 distinct color buckets
   return Math.min(colors.size / 50, 1);
 }
 
 function evaluateComplexity(genome: string): number {
-  // Measure genome complexity based on length and variety
   const codons = genome.replace(/\s+/g, "").match(/.{3}/g) || [];
   const uniqueCodons = new Set(codons);
   const lengthScore = Math.min(codons.length / 20, 1);
@@ -105,63 +104,46 @@ function evaluateComplexity(genome: string): number {
   return (lengthScore + varietyScore) / 2;
 }
 
+function createInitialPopulation(size: number): Individual[] {
+  return SEED_GENOMES.flatMap((g, seedIdx) =>
+    Array.from({ length: Math.ceil(size / SEED_GENOMES.length) }, (_, i) => ({
+      id: `gen0-${seedIdx}-${i}`,
+      genome: g,
+      fitness: 0,
+      generation: 0,
+    })),
+  ).slice(0, size);
+}
+
 export default function GeneticDemo() {
   const [fitnessType, setFitnessType] = useState<FitnessType>("coverage");
   const [populationSize, setPopulationSize] = useState(12);
   const [mutationRate, setMutationRate] = useState(0.3);
-  const [isRunning, setIsRunning] = useState(false);
-  const [state, setState] = useState<GAState>(() => initState());
+  const [state, setState] = useState<GAState>(() => ({
+    generation: 0,
+    population: createInitialPopulation(12),
+    bestFitness: 0,
+    avgFitness: 0,
+    history: [],
+  }));
   const [selectedIndividual, setSelectedIndividual] =
     useState<Individual | null>(null);
 
   const canvasRefs = useRef<Map<string, HTMLCanvasElement>>(new Map());
   const offscreenCanvas = useRef<HTMLCanvasElement | null>(null);
   const chartRef = useRef<HTMLCanvasElement>(null);
-  const intervalRef = useRef<ReturnType<typeof setInterval> | undefined>(
-    undefined,
-  );
-  const lexer = useRef(new CodonLexer());
+  const { render } = useRenderGenome();
 
-  function initState(): GAState {
-    const pop = SEED_GENOMES.flatMap((g, seedIdx) =>
-      Array.from(
-        { length: Math.ceil(populationSize / SEED_GENOMES.length) },
-        (_, i) => ({
-          id: `gen0-${seedIdx}-${i}`,
-          genome: g,
-          fitness: 0,
-          generation: 0,
-        }),
-      ),
-    ).slice(0, populationSize);
-
-    return {
-      generation: 0,
-      population: pop,
-      bestFitness: 0,
-      avgFitness: 0,
-      history: [],
-    };
-  }
-
+  // Render genome to canvas with white background
   const renderGenome = useCallback(
     (genome: string, canvas: HTMLCanvasElement) => {
       const ctx = canvas.getContext("2d");
       if (!ctx) return;
-
       ctx.fillStyle = "white";
       ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-      try {
-        const tokens = lexer.current.tokenize(genome);
-        const renderer = new Canvas2DRenderer(canvas);
-        const vm = new CodonVM(renderer);
-        vm.run(tokens);
-      } catch {
-        // Invalid genome - leave canvas white
-      }
+      render(genome, canvas);
     },
-    [],
+    [render],
   );
 
   const evaluateFitness = useCallback(
@@ -192,27 +174,23 @@ export default function GeneticDemo() {
 
   const evolveGeneration = useCallback(() => {
     setState((prev) => {
-      // Evaluate fitness
       const evaluated = prev.population.map((ind) => ({
         ...ind,
         fitness: evaluateFitness(ind.genome),
       }));
 
-      // Sort by fitness
       evaluated.sort((a, b) => b.fitness - a.fitness);
 
       const bestFitness = evaluated[0]?.fitness ?? 0;
       const avgFitness =
         evaluated.reduce((s, i) => s + i.fitness, 0) / evaluated.length;
 
-      // Selection: tournament
       const select = (): Individual => {
         const a = evaluated[Math.floor(Math.random() * evaluated.length)];
         const b = evaluated[Math.floor(Math.random() * evaluated.length)];
         return a.fitness > b.fitness ? a : b;
       };
 
-      // Create next generation
       const nextGen: Individual[] = [];
 
       // Elitism: keep top 2
@@ -229,12 +207,10 @@ export default function GeneticDemo() {
         },
       );
 
-      // Fill rest with offspring
       while (nextGen.length < populationSize) {
         const parent = select();
         let childGenome = parent.genome;
 
-        // Apply mutations
         if (Math.random() < mutationRate) {
           try {
             const result = applyPointMutation(childGenome);
@@ -265,15 +241,11 @@ export default function GeneticDemo() {
     });
   }, [evaluateFitness, mutationRate, populationSize]);
 
-  // Auto-run
-  useEffect(() => {
-    if (isRunning) {
-      intervalRef.current = setInterval(evolveGeneration, 500);
-    } else {
-      clearInterval(intervalRef.current);
-    }
-    return () => clearInterval(intervalRef.current);
-  }, [isRunning, evolveGeneration]);
+  // Use simulation hook
+  const simulation = useSimulation({
+    initialSpeed: 500,
+    onStep: evolveGeneration,
+  });
 
   // Render all individuals
   useEffect(() => {
@@ -296,11 +268,9 @@ export default function GeneticDemo() {
     const { width, height } = canvas;
     ctx.clearRect(0, 0, width, height);
 
-    // Background
     ctx.fillStyle = "#f8fafc";
     ctx.fillRect(0, 0, width, height);
 
-    // Grid
     ctx.strokeStyle = "#e2e8f0";
     ctx.lineWidth = 1;
     for (let y = 0; y <= 1; y += 0.25) {
@@ -313,7 +283,7 @@ export default function GeneticDemo() {
     const history = state.history;
     const xScale = width / Math.max(history.length - 1, 1);
 
-    // Draw average line
+    // Average line
     ctx.strokeStyle = "#94a3b8";
     ctx.lineWidth = 1;
     ctx.beginPath();
@@ -325,7 +295,7 @@ export default function GeneticDemo() {
     });
     ctx.stroke();
 
-    // Draw best line
+    // Best line
     ctx.strokeStyle = "#22c55e";
     ctx.lineWidth = 2;
     ctx.beginPath();
@@ -338,24 +308,28 @@ export default function GeneticDemo() {
     ctx.stroke();
   }, [state.history]);
 
-  const reset = () => {
-    setIsRunning(false);
-    setState(initState());
+  const handleReset = () => {
+    simulation.reset();
+    setState({
+      generation: 0,
+      population: createInitialPopulation(populationSize),
+      bestFitness: 0,
+      avgFitness: 0,
+      history: [],
+    });
     setSelectedIndividual(null);
   };
 
   return (
-    <div className="mx-auto max-w-7xl px-4 py-8">
-      <div className="mb-8 text-center">
-        <h1 className="mb-2 text-3xl font-bold text-text">Genetic Algorithm</h1>
-        <p className="text-text-muted">
-          Automated evolution with fitness functions
-        </p>
-      </div>
+    <PageContainer>
+      <PageHeader
+        subtitle="Automated evolution with fitness functions"
+        title="Genetic Algorithm"
+      />
 
       <div className="grid gap-6 lg:grid-cols-4">
         {/* Controls */}
-        <div className="rounded-xl border border-border bg-white p-6 shadow-sm">
+        <Card>
           <h2 className="mb-4 text-lg font-semibold text-text">Parameters</h2>
 
           <div className="space-y-4">
@@ -368,7 +342,7 @@ export default function GeneticDemo() {
               </label>
               <select
                 className="w-full rounded-lg border border-border px-3 py-2 text-sm"
-                disabled={isRunning}
+                disabled={simulation.state.isRunning}
                 id="fitness-function"
                 onChange={(e) => setFitnessType(e.target.value as FitnessType)}
                 value={fitnessType}
@@ -389,7 +363,7 @@ export default function GeneticDemo() {
               </label>
               <input
                 className="w-full"
-                disabled={isRunning}
+                disabled={simulation.state.isRunning}
                 id="ga-population"
                 max="24"
                 min="6"
@@ -419,31 +393,13 @@ export default function GeneticDemo() {
               />
             </div>
 
-            <div className="flex gap-2">
-              <button
-                className="flex-1 rounded-lg bg-primary px-4 py-2 text-white transition-colors hover:bg-primary-dark"
-                onClick={() => setIsRunning(!isRunning)}
-                type="button"
-              >
-                {isRunning ? "Pause" : "Evolve"}
-              </button>
-              <button
-                className="rounded-lg border border-border px-4 py-2 text-text transition-colors hover:bg-surface disabled:opacity-50"
-                disabled={isRunning}
-                onClick={evolveGeneration}
-                type="button"
-              >
-                Step
-              </button>
-            </div>
-
-            <button
-              className="w-full rounded-lg border border-border px-4 py-2 text-text transition-colors hover:bg-surface"
-              onClick={reset}
-              type="button"
-            >
-              Reset
-            </button>
+            <SimulationControls
+              isRunning={simulation.state.isRunning}
+              onReset={handleReset}
+              onStep={simulation.step}
+              onToggle={simulation.toggle}
+              runLabel="Evolve"
+            />
           </div>
 
           {/* Stats */}
@@ -465,10 +421,10 @@ export default function GeneticDemo() {
               </span>
             </div>
           </div>
-        </div>
+        </Card>
 
         {/* Population grid */}
-        <div className="lg:col-span-2 rounded-xl border border-border bg-white p-6 shadow-sm">
+        <Card className="lg:col-span-2">
           <h2 className="mb-4 text-lg font-semibold text-text">Population</h2>
 
           <div className="grid grid-cols-4 gap-2">
@@ -502,11 +458,11 @@ export default function GeneticDemo() {
               </button>
             ))}
           </div>
-        </div>
+        </Card>
 
         {/* Chart + selected */}
         <div className="space-y-6">
-          <div className="rounded-xl border border-border bg-white p-6 shadow-sm">
+          <Card>
             <h2 className="mb-4 text-sm font-semibold text-text">
               Fitness Over Time
             </h2>
@@ -524,10 +480,10 @@ export default function GeneticDemo() {
                 <span className="h-2 w-4 rounded bg-slate-400" /> Avg
               </span>
             </div>
-          </div>
+          </Card>
 
           {selectedIndividual && (
-            <div className="rounded-xl border border-border bg-white p-6 shadow-sm">
+            <Card>
               <h2 className="mb-2 text-sm font-semibold text-text">
                 Selected Genome
               </h2>
@@ -537,13 +493,13 @@ export default function GeneticDemo() {
               <div className="mt-2 text-xs text-text-muted">
                 Fitness: {(selectedIndividual.fitness * 100).toFixed(1)}%
               </div>
-            </div>
+            </Card>
           )}
         </div>
       </div>
 
       {/* Educational content */}
-      <div className="mt-8 rounded-xl border border-border bg-white p-6 shadow-sm">
+      <Card className="mt-8">
         <h2 className="mb-4 text-lg font-semibold text-text">
           About Genetic Algorithms
         </h2>
@@ -572,7 +528,7 @@ export default function GeneticDemo() {
             </p>
           </div>
         </div>
-      </div>
-    </div>
+      </Card>
+    </PageContainer>
   );
 }

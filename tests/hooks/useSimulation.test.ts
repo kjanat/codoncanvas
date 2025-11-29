@@ -1,0 +1,184 @@
+/**
+ * Tests for useSimulation hook
+ */
+
+import { beforeEach, describe, expect, mock, test } from "bun:test";
+import { act, renderHook } from "@testing-library/react";
+import { useSimulation } from "@/hooks/useSimulation";
+
+describe("useSimulation", () => {
+  let stepCallback: ReturnType<typeof mock>;
+
+  beforeEach(() => {
+    stepCallback = mock(() => {});
+  });
+
+  test("initializes with correct default state", () => {
+    const { result } = renderHook(() =>
+      useSimulation({ onStep: stepCallback }),
+    );
+
+    expect(result.current.state.isRunning).toBe(false);
+    expect(result.current.state.step).toBe(0);
+    expect(result.current.state.speed).toBe(500);
+  });
+
+  test("initializes with custom speed", () => {
+    const { result } = renderHook(() =>
+      useSimulation({ onStep: stepCallback, initialSpeed: 200 }),
+    );
+
+    expect(result.current.state.speed).toBe(200);
+  });
+
+  test("toggle switches isRunning state", () => {
+    const { result } = renderHook(() =>
+      useSimulation({ onStep: stepCallback }),
+    );
+
+    expect(result.current.state.isRunning).toBe(false);
+
+    act(() => {
+      result.current.toggle();
+    });
+
+    expect(result.current.state.isRunning).toBe(true);
+
+    act(() => {
+      result.current.toggle();
+    });
+
+    expect(result.current.state.isRunning).toBe(false);
+  });
+
+  test("start sets isRunning to true", () => {
+    const { result } = renderHook(() =>
+      useSimulation({ onStep: stepCallback }),
+    );
+
+    act(() => {
+      result.current.start();
+    });
+
+    expect(result.current.state.isRunning).toBe(true);
+  });
+
+  test("pause sets isRunning to false", () => {
+    const { result } = renderHook(() =>
+      useSimulation({ onStep: stepCallback }),
+    );
+
+    act(() => {
+      result.current.start();
+    });
+
+    expect(result.current.state.isRunning).toBe(true);
+
+    act(() => {
+      result.current.pause();
+    });
+
+    expect(result.current.state.isRunning).toBe(false);
+  });
+
+  test("step calls onStep when not running", () => {
+    const { result } = renderHook(() =>
+      useSimulation({ onStep: stepCallback }),
+    );
+
+    act(() => {
+      result.current.step();
+    });
+
+    expect(stepCallback).toHaveBeenCalledTimes(1);
+  });
+
+  test("step does not call onStep when running", () => {
+    const { result } = renderHook(() =>
+      useSimulation({ onStep: stepCallback }),
+    );
+
+    act(() => {
+      result.current.start();
+    });
+
+    act(() => {
+      result.current.step();
+    });
+
+    // onStep is called by interval, not by step() when running
+    // So step() should not add extra calls
+    expect(stepCallback).toHaveBeenCalledTimes(0);
+  });
+
+  test("reset resets state to initial values", () => {
+    const { result } = renderHook(() =>
+      useSimulation({ onStep: stepCallback, initialSpeed: 300 }),
+    );
+
+    act(() => {
+      result.current.start();
+      result.current.setSpeed(100);
+      result.current.incrementStep();
+    });
+
+    act(() => {
+      result.current.reset();
+    });
+
+    expect(result.current.state.isRunning).toBe(false);
+    expect(result.current.state.step).toBe(0);
+    expect(result.current.state.speed).toBe(300);
+  });
+
+  test("setSpeed updates speed", () => {
+    const { result } = renderHook(() =>
+      useSimulation({ onStep: stepCallback }),
+    );
+
+    act(() => {
+      result.current.setSpeed(100);
+    });
+
+    expect(result.current.state.speed).toBe(100);
+  });
+
+  test("incrementStep increases step counter", () => {
+    const { result } = renderHook(() =>
+      useSimulation({ onStep: stepCallback }),
+    );
+
+    expect(result.current.state.step).toBe(0);
+
+    act(() => {
+      result.current.incrementStep();
+    });
+
+    expect(result.current.state.step).toBe(1);
+
+    act(() => {
+      result.current.incrementStep();
+      result.current.incrementStep();
+    });
+
+    expect(result.current.state.step).toBe(3);
+  });
+
+  test("returns stable function references", () => {
+    const { result, rerender } = renderHook(() =>
+      useSimulation({ onStep: stepCallback }),
+    );
+
+    const firstToggle = result.current.toggle;
+    const firstStart = result.current.start;
+    const firstPause = result.current.pause;
+    const firstReset = result.current.reset;
+
+    rerender();
+
+    expect(result.current.toggle).toBe(firstToggle);
+    expect(result.current.start).toBe(firstStart);
+    expect(result.current.pause).toBe(firstPause);
+    expect(result.current.reset).toBe(firstReset);
+  });
+});

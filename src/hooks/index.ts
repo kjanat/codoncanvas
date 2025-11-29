@@ -57,6 +57,12 @@ export {
   useShareUrl,
 } from "./useShareUrl";
 export {
+  type SimulationState,
+  type UseSimulationOptions,
+  type UseSimulationReturn,
+  useSimulation,
+} from "./useSimulation";
+export {
   type ExecutionResult,
   type PlaybackState,
   type UseVMOptions,

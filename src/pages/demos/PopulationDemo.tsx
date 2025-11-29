@@ -1,4 +1,9 @@
 import { useCallback, useEffect, useRef, useState } from "react";
+import { Card } from "@/components/Card";
+import { PageContainer } from "@/components/PageContainer";
+import { PageHeader } from "@/components/PageHeader";
+import { SimulationControls } from "@/components/SimulationControls";
+import { useSimulation } from "@/hooks/useSimulation";
 
 interface Allele {
   id: string;
@@ -21,7 +26,6 @@ const COLORS = [
 ];
 
 function sampleWithReplacement(alleles: Allele[], popSize: number): Allele[] {
-  // Create weighted array for sampling
   const total = alleles.reduce((sum, a) => sum + a.frequency, 0);
   const counts = alleles.map(() => 0);
 
@@ -36,53 +40,39 @@ function sampleWithReplacement(alleles: Allele[], popSize: number): Allele[] {
     }
   }
 
-  // Convert counts back to frequencies
   return alleles.map((a, i) => ({
     ...a,
     frequency: counts[i] / popSize,
   }));
 }
 
+function initPopulation(count: number): PopulationState {
+  const freq = 1 / count;
+  return {
+    generation: 0,
+    alleles: Array.from({ length: count }, (_, i) => ({
+      id: `allele-${i}`,
+      frequency: freq,
+      color: COLORS[i % COLORS.length],
+    })),
+    history: [{ generation: 0, frequencies: Array(count).fill(freq) }],
+  };
+}
+
 export default function PopulationDemo() {
   const [populationSize, setPopulationSize] = useState(100);
   const [numAlleles, setNumAlleles] = useState(3);
-  const [isRunning, setIsRunning] = useState(false);
   const [speed, setSpeed] = useState(200);
-  const [population, setPopulation] = useState<PopulationState>({
-    generation: 0,
-    alleles: Array.from({ length: numAlleles }, (_, i) => ({
-      id: `allele-${i}`,
-      frequency: 1 / numAlleles,
-      color: COLORS[i % COLORS.length],
-    })),
-    history: [
-      { generation: 0, frequencies: Array(numAlleles).fill(1 / numAlleles) },
-    ],
-  });
-  const canvasRef = useRef<HTMLCanvasElement>(null);
-  const intervalRef = useRef<ReturnType<typeof setInterval> | undefined>(
-    undefined,
+  const [population, setPopulation] = useState<PopulationState>(() =>
+    initPopulation(3),
   );
+  const canvasRef = useRef<HTMLCanvasElement>(null);
 
-  function initPopulation(count: number): PopulationState {
-    const freq = 1 / count;
-    return {
-      generation: 0,
-      alleles: Array.from({ length: count }, (_, i) => ({
-        id: `allele-${i}`,
-        frequency: freq,
-        color: COLORS[i % COLORS.length],
-      })),
-      history: [{ generation: 0, frequencies: Array(count).fill(freq) }],
-    };
-  }
-
-  const step = useCallback(() => {
+  // Advance one generation
+  const advanceGeneration = useCallback(() => {
     setPopulation((prev) => {
-      // Check if simulation ended (only 1 allele left)
       const activeAlleles = prev.alleles.filter((a) => a.frequency > 0);
       if (activeAlleles.length <= 1) {
-        setIsRunning(false);
         return prev;
       }
 
@@ -103,15 +93,23 @@ export default function PopulationDemo() {
     });
   }, [populationSize]);
 
-  // Auto-run simulation
+  // Check if simulation should stop (fixation)
+  const shouldStop = useCallback(() => {
+    const activeAlleles = population.alleles.filter((a) => a.frequency > 0);
+    return activeAlleles.length <= 1;
+  }, [population.alleles]);
+
+  // Use simulation hook
+  const simulation = useSimulation({
+    initialSpeed: speed,
+    onStep: advanceGeneration,
+    shouldStop,
+  });
+
+  // Sync speed with simulation
   useEffect(() => {
-    if (isRunning) {
-      intervalRef.current = setInterval(step, speed);
-    } else {
-      clearInterval(intervalRef.current);
-    }
-    return () => clearInterval(intervalRef.current);
-  }, [isRunning, speed, step]);
+    simulation.setSpeed(speed);
+  }, [speed, simulation]);
 
   // Draw frequency chart
   useEffect(() => {
@@ -156,14 +154,14 @@ export default function PopulationDemo() {
     });
   }, [population]);
 
-  const reset = () => {
-    setIsRunning(false);
+  const handleReset = () => {
+    simulation.reset();
     setPopulation(initPopulation(numAlleles));
   };
 
   const handleAllelesChange = (n: number) => {
     setNumAlleles(n);
-    setIsRunning(false);
+    simulation.pause();
     setPopulation(initPopulation(n));
   };
 
@@ -172,20 +170,15 @@ export default function PopulationDemo() {
   const lostAlleles = population.alleles.filter((a) => a.frequency < 0.001);
 
   return (
-    <div className="mx-auto max-w-7xl px-4 py-8">
-      <div className="mb-8 text-center">
-        <h1 className="mb-2 text-3xl font-bold text-text">
-          Population Genetics
-        </h1>
-        <p className="text-text-muted">
-          Observe genetic drift - random changes in allele frequencies over
-          generations
-        </p>
-      </div>
+    <PageContainer>
+      <PageHeader
+        subtitle="Observe genetic drift - random changes in allele frequencies over generations"
+        title="Population Genetics"
+      />
 
       <div className="grid gap-6 lg:grid-cols-3">
         {/* Controls */}
-        <div className="rounded-xl border border-border bg-white p-6 shadow-sm">
+        <Card>
           <h2 className="mb-4 text-lg font-semibold text-text">Parameters</h2>
 
           <div className="space-y-4">
@@ -198,7 +191,7 @@ export default function PopulationDemo() {
               </label>
               <input
                 className="w-full"
-                disabled={isRunning}
+                disabled={simulation.state.isRunning}
                 id="population-size"
                 max="500"
                 min="10"
@@ -221,7 +214,7 @@ export default function PopulationDemo() {
               </label>
               <input
                 className="w-full"
-                disabled={isRunning}
+                disabled={simulation.state.isRunning}
                 id="num-alleles"
                 max="5"
                 min="2"
@@ -250,30 +243,12 @@ export default function PopulationDemo() {
               />
             </div>
 
-            <div className="flex gap-2">
-              <button
-                className="flex-1 rounded-lg bg-primary px-4 py-2 text-white transition-colors hover:bg-primary-dark"
-                onClick={() => setIsRunning(!isRunning)}
-                type="button"
-              >
-                {isRunning ? "Pause" : "Run"}
-              </button>
-              <button
-                className="rounded-lg border border-border px-4 py-2 text-text transition-colors hover:bg-surface disabled:opacity-50"
-                disabled={isRunning}
-                onClick={step}
-                type="button"
-              >
-                Step
-              </button>
-              <button
-                className="rounded-lg border border-border px-4 py-2 text-text transition-colors hover:bg-surface"
-                onClick={reset}
-                type="button"
-              >
-                Reset
-              </button>
-            </div>
+            <SimulationControls
+              isRunning={simulation.state.isRunning}
+              onReset={handleReset}
+              onStep={simulation.step}
+              onToggle={simulation.toggle}
+            />
           </div>
 
           {/* Current frequencies */}
@@ -295,10 +270,10 @@ export default function PopulationDemo() {
               ))}
             </div>
           </div>
-        </div>
+        </Card>
 
         {/* Chart */}
-        <div className="lg:col-span-2 rounded-xl border border-border bg-white p-6 shadow-sm">
+        <Card className="lg:col-span-2">
           <h2 className="mb-4 text-lg font-semibold text-text">
             Allele Frequency Over Time
           </h2>
@@ -338,11 +313,11 @@ export default function PopulationDemo() {
               eliminated from the population.
             </div>
           )}
-        </div>
+        </Card>
       </div>
 
       {/* Educational content */}
-      <div className="mt-8 rounded-xl border border-border bg-white p-6 shadow-sm">
+      <Card className="mt-8">
         <h2 className="mb-4 text-lg font-semibold text-text">
           About Genetic Drift
         </h2>
@@ -368,7 +343,7 @@ export default function PopulationDemo() {
             </ul>
           </div>
         </div>
-      </div>
-    </div>
+      </Card>
+    </PageContainer>
   );
 }
