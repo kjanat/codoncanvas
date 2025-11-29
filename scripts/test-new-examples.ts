@@ -7,9 +7,9 @@
 
 import { readFileSync } from "node:fs";
 import { createCanvas } from "canvas";
-import { CodonLexer } from "@/lexer";
-import { Canvas2DRenderer } from "@/renderer";
-import { CodonVM } from "@/vm";
+import { CodonLexer } from "@/core/lexer";
+import { Canvas2DRenderer } from "@/core/renderer";
+import { CodonVM } from "@/core/vm";
 
 const examples = [
   "fibonacci-spiral.genome",

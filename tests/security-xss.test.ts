@@ -9,7 +9,7 @@
  */
 
 import { beforeEach, describe, expect, test } from "bun:test";
-import { CodonLexer } from "@/lexer";
+import { CodonLexer } from "@/core/lexer";
 
 describe("Security: XSS Prevention", () => {
   let lexer: CodonLexer;

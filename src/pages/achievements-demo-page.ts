@@ -1,6 +1,6 @@
-import type { Achievement } from "@/achievement-engine";
-import { AchievementEngine } from "@/achievement-engine";
-import { AchievementUI } from "@/achievement-ui";
+import type { Achievement } from "@/education/achievements/achievement-engine";
+import { AchievementEngine } from "@/education/achievements/achievement-engine";
+import { AchievementUI } from "@/education/achievements/achievement-ui";
 
 // Initialize achievement system
 const engine = new AchievementEngine();

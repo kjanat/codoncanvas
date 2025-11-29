@@ -25,41 +25,42 @@
  * ```
  */
 
-export type {
-  CrossoverStrategy,
-  FitnessFunction,
-  GAGenerationStats,
-  GAIndividual,
-  GAOptions,
-  SelectionStrategy,
-} from "@/genetic-algorithm";
-
 /**
- * Genetic Algorithm implementation for CodonCanvas
+ * Research and metrics tracking types
  *
- * Supports population-based evolution with customizable fitness functions,
- * selection strategies (roulette wheel, tournament), and crossover methods.
+ * Tracks educational events, feature usage, and learning metrics
+ * for research and telemetry purposes.
+ */
+export type {
+  ExecutionEvent,
+  FeatureEvent,
+  MutationEvent,
+  ResearchMetricsOptions,
+  ResearchSession,
+} from "@/analysis/research-metrics";
+/**
+ * Research Metrics - Tracks learning events and engagement
+ *
+ * Records user interactions including code execution, feature usage,
+ * mutations, and assessment performance for research analysis.
+ * Enables educators to understand student learning patterns.
  *
  * @example
  * ```typescript
- * const ga = new GeneticAlgorithm({
- *   populationSize: 50,
- *   fitness: (genome) => evaluateGenome(genome),
- *   selectionStrategy: 'tournament',
- *   crossoverRate: 0.7
- * });
- *
- * const population = ga.evolve();
+ * const metrics = new ResearchMetrics();
+ * metrics.recordExecution(genome);
+ * metrics.recordMutation(mutationType);
+ * const session = metrics.getSession();
  * ```
  */
-export { GeneticAlgorithm } from "@/genetic-algorithm";
+export { ResearchMetrics } from "@/analysis/research-metrics";
 /**
  * Lexer interface for tokenizing DNA-like genome strings
  *
  * Responsible for parsing raw genome text into codon tokens,
  * with support for comments and whitespace handling.
  */
-export type { Lexer } from "@/lexer";
+export type { Lexer } from "@/core/lexer";
 
 /**
  * Codon Lexer - Parses genome strings into executable codon tokens
@@ -74,7 +75,7 @@ export type { Lexer } from "@/lexer";
  * // [{ text: 'ATG', position: 0, line: 0 }, ...]
  * ```
  */
-export { CodonLexer } from "@/lexer";
+export { CodonLexer } from "@/core/lexer";
 
 /**
  * Renderer interface for graphics abstraction
@@ -83,7 +84,7 @@ export { CodonLexer } from "@/lexer";
  * Implementers handle drawing primitives (circle, rect, line, etc.)
  * and graphics state transformations (translate, rotate, scale, color).
  */
-export type { Renderer, TransformState } from "@/renderer";
+export type { Renderer, TransformState } from "@/core/renderer";
 
 /**
  * Canvas2D Renderer - Draws CodonCanvas programs to HTML5 Canvas
@@ -100,54 +101,14 @@ export type { Renderer, TransformState } from "@/renderer";
  * renderer.circle(30);
  * ```
  */
-export { Canvas2DRenderer } from "@/renderer";
-/**
- * Research and metrics tracking types
- *
- * Tracks educational events, feature usage, and learning metrics
- * for research and telemetry purposes.
- */
-export type {
-  ExecutionEvent,
-  FeatureEvent,
-  MutationEvent,
-  ResearchMetricsOptions,
-  ResearchSession,
-} from "@/research-metrics";
-
-/**
- * Research Metrics - Tracks learning events and engagement
- *
- * Records user interactions including code execution, feature usage,
- * mutations, and assessment performance for research analysis.
- * Enables educators to understand student learning patterns.
- *
- * @example
- * ```typescript
- * const metrics = new ResearchMetrics();
- * metrics.recordExecution(genome);
- * metrics.recordMutation(mutationType);
- * const session = metrics.getSession();
- * ```
- */
-export { ResearchMetrics } from "@/research-metrics";
-
-/**
- * Core type definitions for CodonCanvas
- *
- * Includes Codon, Base, Opcode, VMState, and all supporting types
- * for the genetic programming language implementation.
- */
-export * from "@/types";
-
+export { Canvas2DRenderer } from "@/core/renderer";
 /**
  * VM interface for stack-based execution
  *
  * Defines the contract for virtual machine implementations that execute
  * codon programs with drawing primitives and transform state management.
  */
-export type { VM } from "@/vm";
-
+export type { VM } from "@/core/vm";
 /**
  * Codon Virtual Machine - Stack-based program execution engine
  *
@@ -165,4 +126,42 @@ export type { VM } from "@/vm";
  * console.log(states[0]); // First execution state
  * ```
  */
-export { CodonVM } from "@/vm";
+export { CodonVM } from "@/core/vm";
+export type {
+  CrossoverStrategy,
+  FitnessFunction,
+  GAGenerationStats,
+  GAIndividual,
+  GAOptions,
+  SelectionStrategy,
+} from "@/genetics/genetic-algorithm";
+/**
+ * Genetic Algorithm implementation for CodonCanvas
+ *
+ * Supports population-based evolution with customizable fitness functions,
+ * selection strategies (roulette wheel, tournament), and crossover methods.
+ *
+ * @example
+ * ```typescript
+ * const initialGenomes = ["ATG GGA TAA", "ATG CCA TAA", "ATG AAA TAA"];
+ * const fitness: FitnessFunction = (genome) => evaluateGenome(genome);
+ *
+ * const ga = new GeneticAlgorithm(initialGenomes, fitness, {
+ *   populationSize: 50,
+ *   selectionStrategy: "tournament",
+ *   crossoverRate: 0.7,
+ *   mutationRate: 0.1,
+ * });
+ *
+ * ga.evolveGeneration();
+ * const best = ga.getBest();
+ * ```
+ */
+export { GeneticAlgorithm } from "@/genetics/genetic-algorithm";
+/**
+ * Core type definitions for CodonCanvas
+ *
+ * Includes Codon, Base, Opcode, VMState, and all supporting types
+ * for the genetic programming language implementation.
+ */
+export * from "@/types";

@@ -74,6 +74,9 @@ describe("DOM Manager", () => {
       "audio-toggle-btn",
       "timeline-toggle-btn",
       "theme-toggle-btn",
+      "nucleotide-toggle-btn",
+      "biology-comparison-btn",
+      "biology-comparison-toggle",
     ];
     const divElements = [
       "share-container",
@@ -88,6 +91,8 @@ describe("DOM Manager", () => {
       "timeline-container",
       "playground-container",
       "assessment-container",
+      "biology-comparison-panel",
+      "biology-comparison-container",
     ];
 
     const allIds = [

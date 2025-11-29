@@ -14,8 +14,11 @@
 import { readdirSync, readFileSync, writeFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
-import { analyzeComplexity, type GenomeComplexity } from "@/codon-analyzer";
-import { CodonLexer } from "@/lexer";
+import {
+  analyzeComplexity,
+  type GenomeComplexity,
+} from "@/analysis/codon-analyzer";
+import { CodonLexer } from "@/core/lexer";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);

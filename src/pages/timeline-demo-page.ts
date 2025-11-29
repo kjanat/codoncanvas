@@ -1,10 +1,13 @@
-import { examples } from "@/examples";
-import { injectShareStyles, ShareSystem } from "@/share-system";
-import { injectTimelineStyles, TimelineScrubber } from "@/timeline-scrubber";
-import { TutorialManager, timelineTutorial } from "@/tutorial";
-import { TutorialUI } from "@/tutorial-ui";
+import { examples } from "@/data/examples";
+import {
+  TutorialManager,
+  timelineTutorial,
+} from "@/education/tutorials/tutorial";
+import { TutorialUI } from "@/education/tutorials/tutorial-ui";
+import { injectShareStyles, ShareSystem } from "@/ui/share-system";
+import { injectTimelineStyles, TimelineScrubber } from "@/ui/timeline-scrubber";
 import { escapeHtml, getElementUnsafe as getElement } from "@/utils/dom";
-import "@/tutorial-ui.css";
+import "@/education/tutorials/tutorial-ui.css";
 
 // Inject styles
 injectTimelineStyles();

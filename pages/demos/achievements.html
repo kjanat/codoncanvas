@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CodonCanvas Achievements - Gamification Demo</title>
+    <link rel="stylesheet" href="/css/variables.css" />
+    <link rel="stylesheet" href="/css/achievements-demo.css" />
+  </head>
+  <body>
+    <div class="demo-container">
+      <div class="demo-header">
+        <div class="demo-title">🏆 CodonCanvas Achievements</div>
+        <div class="demo-subtitle">Gamification System Demo</div>
+        <div class="demo-description">
+          This demo showcases the achievement system that rewards students for
+          learning and practicing mutation concepts. Click the buttons below to
+          simulate activities and unlock achievements!
+        </div>
+      </div>
+
+      <div class="content-card">
+        <div class="action-section">
+          <div class="section-title">🧬 Genome Activities</div>
+          <div class="action-grid">
+            <button class="action-button" data-action="simulateGenomeCreation">
+              Create Genome
+            </button>
+            <button class="action-button" data-action="simulateGenomeExecution">
+              Execute Genome
+            </button>
+            <button class="action-button" data-action="simulateLongGenome">
+              Create Long Genome (100+)
+            </button>
+            <button class="action-button" data-action="simulateMutation">
+              Apply Mutation
+            </button>
+          </div>
+        </div>
+
+        <div class="action-section">
+          <div class="section-title">🎨 Drawing Activities</div>
+          <div class="action-grid">
+            <button
+              class="action-button secondary"
+              data-action="simulateAllShapes"
+            >
+              Use All Shapes
+            </button>
+            <button
+              class="action-button secondary"
+              data-action="simulateColorUsage"
+            >
+              Use Colors (10x)
+            </button>
+            <button
+              class="action-button secondary"
+              data-action="simulateTransforms"
+            >
+              Apply Transforms
+            </button>
+            <button
+              class="action-button secondary"
+              data-action="simulateMadScientist"
+            >
+              100 Mutations!
+            </button>
+          </div>
+        </div>
+
+        <div class="action-section">
+          <div class="section-title">🎯 Assessment Activities</div>
+          <div class="action-grid">
+            <button
+              class="action-button success"
+              data-action="simulateCorrectChallenge"
+            >
+              Complete Challenge (Correct)
+            </button>
+            <button
+              class="action-button success"
+              data-action="simulateAllMutationTypes"
+            >
+              Identify All Types
+            </button>
+            <button
+              class="action-button success"
+              data-action="simulateFlawless"
+            >
+              10 Consecutive Correct
+            </button>
+            <button
+              class="action-button success"
+              data-action="simulatePerfectScore"
+            >
+              Perfect Score
+            </button>
+          </div>
+        </div>
+
+        <div class="action-section">
+          <div class="section-title">🔬 Advanced Activities</div>
+          <div class="action-grid">
+            <button
+              class="action-button warning"
+              data-action="simulateEvolution"
+            >
+              Run Evolution (50 gen)
+            </button>
+            <button
+              class="action-button warning"
+              data-action="simulateAudioSynthesis"
+            >
+              Try Audio Synthesis
+            </button>
+            <button
+              class="action-button warning"
+              data-action="simulateTimeline"
+            >
+              Use Timeline
+            </button>
+            <button
+              class="action-button warning"
+              data-action="simulateProfessor"
+            >
+              Become Professor (50 @ 95%)
+            </button>
+          </div>
+        </div>
+
+        <div class="info-box">
+          <h4>ℹ️ How It Works</h4>
+          <p>
+            The achievement system tracks student progress across 16
+            achievements in 4 categories:
+          </p>
+          <p>
+            • <strong>Basics</strong> (🌱): Onboarding achievements for
+            first-time users
+          </p>
+          <p>
+            • <strong>Mastery</strong> (🎯): Skill development achievements for
+            learning mutation types
+          </p>
+          <p>
+            • <strong>Exploration</strong> (🔍): Discovery achievements for
+            trying different features
+          </p>
+          <p>
+            • <strong>Perfection</strong> (💎): Excellence achievements for
+            advanced users
+          </p>
+          <p style="margin-top: 15px">
+            <strong>Progress persists</strong> in localStorage - try refreshing
+            the page!
+          </p>
+        </div>
+
+        <button class="reset-button" id="reset-progress-btn">
+          🔄 Reset All Progress
+        </button>
+      </div>
+
+      <div id="achievements-container" class="content-card"></div>
+    </div>
+
+    <script type="module" src="/src/pages/achievements-demo-page.ts">
+    </script>
+  </body>
+</html>

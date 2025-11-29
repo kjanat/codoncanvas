@@ -10,6 +10,7 @@ Status: Living Document
 
 ## Table of Contents
 
+0. [Biological Accuracy & Pedagogical Scope](#0-biological-accuracy--pedagogical-scope)
 1. [Foundational Vision](#1-foundational-vision)
 2. [Theoretical Grounding](#2-theoretical-grounding)
 3. [Design Decisions Deep-Dive](#3-design-decisions-deep-dive)
@@ -17,6 +18,124 @@ Status: Living Document
 5. [Research Enablement](#5-research-enablement)
 6. [Evolution Narrative](#6-evolution-narrative)
 7. [Impact Model](#7-impact-model)
+
+---
+
+## 0. Biological Accuracy & Pedagogical Scope
+
+CodonCanvas is a **pedagogical tool**, not a molecular biology simulator. This section explicitly documents what the system models authentically, what it intentionally simplifies, and why these design decisions serve educational goals.
+
+### What CodonCanvas Models Authentically
+
+#### Genetic Code Structure
+
+| Feature        | CodonCanvas                   | Real Biology                    | Status    |
+| -------------- | ----------------------------- | ------------------------------- | --------- |
+| Codon length   | 3 bases (triplets)            | 3 bases (triplets)              | Authentic |
+| Total codons   | 64 (4^3 complete)             | 64 (4^3 complete)               | Authentic |
+| Start codon    | ATG                           | ATG (AUG in RNA)                | Authentic |
+| Stop codons    | TAA, TAG, TGA                 | TAA, TAG, TGA                   | Authentic |
+| Reading frames | Enforced (frameshift = error) | Enforced (frameshift = disease) | Authentic |
+
+#### Genetic Redundancy (Degeneracy)
+
+CodonCanvas faithfully models the **wobble position** pattern observed in real genetic code:
+
+- **Four-fold degenerate families**: GGA, GGC, GGG, GGT all produce the same output
+  - Real biology: These four codons all encode Glycine
+  - CodonCanvas: These four codons all execute CIRCLE
+- **Partial degeneracy**: Some operations have 1-3 codons (matches biological variance)
+- **Synonymous substitutions**: Changing GGA to GGC produces identical output (silent mutation)
+
+This pattern teaches **why genetic redundancy exists**: error tolerance against point mutations.
+
+#### Mutation Mechanisms
+
+| Mutation Type  | CodonCanvas Effect          | Biological Equivalent          | Pedagogical Value               |
+| -------------- | --------------------------- | ------------------------------ | ------------------------------- |
+| **Silent**     | Same opcode (GGA->GGC)      | Same amino acid                | Redundancy protects function    |
+| **Missense**   | Different opcode (GGA->CCA) | Different amino acid           | Single change alters function   |
+| **Nonsense**   | Premature STOP (GGA->TAA)   | Truncated protein              | Early termination               |
+| **Frameshift** | All downstream corrupted    | Reading frame shift            | Catastrophic downstream effects |
+| **Point**      | Single base change          | Single nucleotide polymorphism | Minimal change, variable effect |
+
+Students experience these mutation effects **immediately and visually**, building intuition that transfers to real genetics.
+
+### Intentional Pedagogical Abstractions
+
+CodonCanvas makes deliberate simplifications to focus on **genetic code logic** rather than molecular machinery.
+
+#### No Transcription/Translation Machinery
+
+**Reality**: DNA -> mRNA (transcription) -> Protein (translation via ribosome)
+
+**CodonCanvas**: DNA codons -> Direct execution
+
+**Rationale**:
+
+- Focuses on **what the genetic code means**, not **how cells read it**
+- Eliminates molecular complexity (RNA polymerase, ribosomes, tRNA)
+- Enables instant feedback (no waiting for protein synthesis)
+
+**What students still learn**: Codon structure, reading frames, mutations, redundancy
+
+**What requires follow-up study**: Transcription, translation, ribosome mechanics
+
+#### Opcodes Replace Amino Acids
+
+**Reality**: 64 codons encode 20 amino acids + STOP
+
+**CodonCanvas**: 64 codons encode 17 drawing/math operations
+
+**Rationale**:
+
+- Visual output provides **immediate, tangible feedback**
+- Aesthetic motivation sustains engagement ("Look at my mutation art!")
+- Genotype->phenotype relationship becomes **directly observable**
+
+**Trade-off accepted**: Loses protein chemistry, gains computational thinking + instant visualization
+
+#### No Gene Regulation
+
+**Reality**: Promoters, enhancers, silencers, epigenetics, alternative splicing
+
+**CodonCanvas**: Linear execution from ATG to STOP
+
+**Rationale**:
+
+- Simplifies focus to coding sequence patterns
+- Regulation is advanced topic beyond introductory genetics
+- Core mutation concepts don't require regulatory context
+
+### Scope Statement
+
+> CodonCanvas teaches **genetic code structure and mutation patterns** through executable DNA. It is a "genetic code algebra" tool, not a "cell biology chemistry" simulator.
+
+**What students learn:**
+
+- How genetic redundancy provides error tolerance
+- Why frameshift mutations are severe
+- How reading frames constrain interpretation
+- Computational thinking through biological metaphor
+
+**What requires additional study:**
+
+- Protein synthesis mechanism (transcription/translation)
+- Amino acid chemistry and protein folding
+- Gene regulation and expression control
+- Epigenetic modifications
+
+### Connecting to Real Biology
+
+For educators who want to bridge CodonCanvas to authentic molecular biology:
+
+1. **After CodonCanvas lesson**: "You discovered that GGA, GGC, GGG, GGT all produce the same output. In real cells, these four codons all encode the same amino acid: Glycine."
+
+2. **Transfer moment**: "The redundancy pattern you experienced is exactly how real DNA protects against mutations. A point mutation in the wobble position often has no effect."
+
+3. **Extension activity**: Compare CodonCanvas codon chart with standard genetic code table. Students identify: same structure, same redundancy pattern, different outputs (opcodes vs amino acids).
+
+See also: [Metaphor Limitations Guide](./METAPHOR_LIMITATIONS.md) for detailed educator resources.
 
 ---
 

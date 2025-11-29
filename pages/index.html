@@ -1,0 +1,639 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes"
+    />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta
+      name="apple-mobile-web-app-status-bar-style"
+      content="black-translucent"
+    />
+    <title>CodonCanvas - DNA-Inspired Visual Programming</title>
+    <meta
+      name="description"
+      content="Educational DNA-inspired visual programming language for learning genetic concepts through code"
+    />
+
+    <!-- Open Graph / Social Sharing -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://kjanat.github.io/codoncanvas/" />
+    <meta
+      property="og:title"
+      content="CodonCanvas - DNA-Inspired Visual Programming"
+    />
+    <meta
+      property="og:description"
+      content="Learn genetics through code! Write DNA-like triplets that execute as visual outputs. See mutations, reading frames, and evolution in action."
+    />
+    <meta
+      property="og:image"
+      content="https://kjanat.github.io/codoncanvas/screenshot_playground.png"
+    />
+
+    <!-- Twitter Card -->
+    <meta property="twitter:card" content="summary_large_image" />
+    <meta
+      property="twitter:url"
+      content="https://kjanat.github.io/codoncanvas/"
+    />
+    <meta
+      property="twitter:title"
+      content="CodonCanvas - DNA-Inspired Visual Programming"
+    />
+    <meta
+      property="twitter:description"
+      content="Learn genetics through code! Write DNA-like triplets that execute as visual outputs."
+    />
+    <meta
+      property="twitter:image"
+      content="https://kjanat.github.io/codoncanvas/screenshot_playground.png"
+    />
+    <link rel="stylesheet" href="/css/variables.css" />
+    <link rel="stylesheet" href="/css/index.css" />
+  </head>
+  <body>
+    <a href="#main-content" class="skip-link">Skip to main content</a>
+
+    <div class="container">
+      <header role="banner">
+        <div style="display: flex; justify-content: space-between; align-items: center">
+          <div>
+            <h1>🧬 CodonCanvas</h1>
+            <div class="subtitle">DNA-Inspired Visual Programming Language</div>
+          </div>
+          <div style="display: flex; gap: 1rem; align-items: center">
+            <div
+              role="group"
+              aria-label="Application mode"
+              style="display: flex; gap: 0.5rem; background: var(--color-bg-tertiary); padding: 0.25rem; border-radius: 6px"
+            >
+              <label
+                style="display: flex; align-items: center; gap: 0.25rem; padding: 0.5rem 0.75rem; border-radius: 4px; cursor: pointer; font-size: 0.875rem; transition: background 0.2s"
+              >
+                <input
+                  type="radio"
+                  name="mode"
+                  value="playground"
+                  checked
+                  style="margin: 0"
+                />
+                <span>🧪 Playground</span>
+              </label>
+              <label
+                style="display: flex; align-items: center; gap: 0.25rem; padding: 0.5rem 0.75rem; border-radius: 4px; cursor: pointer; font-size: 0.875rem; transition: background 0.2s"
+              >
+                <input
+                  type="radio"
+                  name="mode"
+                  value="assessment"
+                  style="margin: 0"
+                />
+                <span>🎓 Assessment</span>
+              </label>
+            </div>
+            <button
+              id="theme-toggle-btn"
+              class="secondary"
+              aria-label="Cycle through themes: dark, light, high contrast"
+              title="Change theme"
+            >
+              🌙 Dark
+            </button>
+          </div>
+        </div>
+      </header>
+
+      <!-- Tutorial Onboarding Banner -->
+      <div
+        id="tutorial-banner"
+        class="tutorial-banner"
+        role="region"
+        aria-label="Tutorial onboarding"
+      >
+        <div class="tutorial-banner-content">
+          <h2 class="tutorial-banner-title">🎓 New to CodonCanvas?</h2>
+          <p class="tutorial-banner-description">
+            Start with our interactive tutorial! Learn DNA-inspired programming
+            step-by-step with 10 guided lessons.
+          </p>
+        </div>
+        <div class="tutorial-banner-actions">
+          <a href="tutorial.html" class="tutorial-banner-btn primary"
+          >Start Tutorial →</a>
+          <a href="gallery.html" class="tutorial-banner-btn secondary"
+          >Browse Examples 🎨</a>
+          <button
+            id="dismiss-tutorial-banner"
+            class="tutorial-banner-dismiss"
+            aria-label="Dismiss tutorial banner"
+            title="Don't show this again"
+          >
+            ✕
+          </button>
+        </div>
+      </div>
+
+      <div id="playground-container" style="display: contents">
+        <main id="main-content" class="editor-panel">
+          <nav class="toolbar" role="toolbar" aria-label="Main controls">
+            <button id="run-btn" aria-label="Run genome program (Ctrl+Enter)">
+              ▶ Run
+            </button>
+            <button
+              id="clear-btn"
+              class="secondary"
+              aria-label="Clear canvas output"
+            >
+              Clear Canvas
+            </button>
+            <button
+              id="timeline-toggle-btn"
+              class="secondary"
+              aria-label="Toggle timeline scrubber"
+              title="Show/hide step-through execution timeline"
+            >
+              ⏱️ Timeline
+            </button>
+            <button
+              id="audio-toggle-btn"
+              class="secondary"
+              aria-label="Visual mode - click for audio"
+              title="Cycle through visual, audio, and multi-sensory modes"
+            >
+              🎨 Visual
+            </button>
+            <button
+              id="nucleotide-toggle-btn"
+              class="secondary"
+              aria-label="DNA notation - click to switch to RNA"
+              title="Toggle between DNA (T) and RNA (U) notation for educational purposes"
+            >
+              🧬 DNA
+            </button>
+            <button
+              id="biology-comparison-btn"
+              class="secondary"
+              aria-label="Show real genetic code comparison"
+              title="Compare CodonCanvas opcodes with real amino acids"
+            >
+              🔬 Biology
+            </button>
+
+            <div class="example-filters">
+              <label for="search-input" class="sr-only">Search examples</label>
+              <input
+                type="text"
+                id="search-input"
+                placeholder="🔍 Search examples..."
+                aria-label="Search examples by name or description"
+                style="width: 150px; padding: 6px 8px; border: 1px solid #3c3c3c; background: #1e1e1e; color: #d4d4d4; border-radius: 4px; font-size: 13px"
+              />
+
+              <label for="difficulty-filter" class="sr-only"
+              >Filter by difficulty</label>
+              <select
+                id="difficulty-filter"
+                aria-label="Filter examples by difficulty level"
+                style="padding: 6px 8px; border: 1px solid #3c3c3c; background: #1e1e1e; color: #d4d4d4; border-radius: 4px; font-size: 13px"
+              >
+                <option value="">All Difficulties</option>
+                <option value="beginner">🌱 Beginner</option>
+                <option value="intermediate">🌿 Intermediate</option>
+                <option value="advanced">🌳 Advanced</option>
+              </select>
+
+              <label for="concept-filter" class="sr-only"
+              >Filter by concept</label>
+              <select
+                id="concept-filter"
+                aria-label="Filter examples by programming concept"
+                style="padding: 6px 8px; border: 1px solid #3c3c3c; background: #1e1e1e; color: #d4d4d4; border-radius: 4px; font-size: 13px"
+              >
+                <option value="">All Concepts</option>
+                <option value="drawing">Drawing</option>
+                <option value="transforms">Transforms</option>
+                <option value="colors">Colors</option>
+                <option value="stack">Stack</option>
+                <option value="composition">Composition</option>
+                <option value="advanced-opcodes">Advanced Opcodes</option>
+              </select>
+            </div>
+
+            <label for="example-select" class="sr-only"
+            >Load example genome</label>
+            <select
+              id="example-select"
+              aria-label="Select example genome to load"
+            >
+              <option value="">Load Example...</option>
+            </select>
+            <button
+              id="export-btn"
+              class="secondary"
+              aria-label="Export canvas as PNG image"
+            >
+              📄 Export PNG
+            </button>
+            <button
+              id="export-audio-btn"
+              class="secondary"
+              aria-label="Export audio as WAV file"
+              style="display: none"
+            >
+              🎵 Export Audio
+            </button>
+            <button
+              id="export-midi-btn"
+              class="secondary"
+              aria-label="Export as MIDI file"
+              style="display: none"
+            >
+              🎹 Export MIDI
+            </button>
+            <button
+              id="analyze-btn"
+              class="secondary"
+              aria-label="Analyze codon usage patterns"
+            >
+              📊 Analyze
+            </button>
+            <button
+              id="save-genome-btn"
+              class="secondary"
+              aria-label="Save current genome to file"
+            >
+              💾 Save .genome
+            </button>
+            <button
+              id="load-genome-btn"
+              class="secondary"
+              aria-label="Load genome from file"
+            >
+              📂 Load .genome
+            </button>
+            <button
+              id="export-student-progress-btn"
+              class="secondary"
+              aria-label="Export student progress for teacher dashboard"
+            >
+              📊 Export Progress
+            </button>
+            <label for="genome-file-input" class="sr-only"
+            >Choose genome file</label>
+            <input
+              type="file"
+              id="genome-file-input"
+              accept=".genome,.json"
+              aria-label="Choose genome file to load"
+              style="position: absolute; left: -9999px"
+            />
+          </nav>
+          <nav
+            class="toolbar"
+            role="toolbar"
+            aria-label="Mutation tools"
+            style="border-top: 1px solid #3e3e42"
+          >
+            <span
+              style="color: #a0a0a0; align-self: center; font-size: 0.75rem"
+              aria-hidden="true"
+            >🧬 Mutations:</span>
+            <button
+              id="silent-mutation-btn"
+              class="mutation-btn silent"
+              title="Change codon to synonymous variant (same opcode)"
+              aria-label="Apply silent mutation - change codon to synonymous variant"
+            >
+              Silent
+            </button>
+            <button
+              id="missense-mutation-btn"
+              class="mutation-btn missense"
+              title="Change codon to different opcode"
+              aria-label="Apply missense mutation - change codon to different opcode"
+            >
+              Missense
+            </button>
+            <button
+              id="nonsense-mutation-btn"
+              class="mutation-btn nonsense"
+              title="Introduce STOP codon (early termination)"
+              aria-label="Apply nonsense mutation - introduce early STOP codon"
+            >
+              Nonsense
+            </button>
+            <button
+              id="frameshift-mutation-btn"
+              class="mutation-btn frameshift"
+              title="Insert/delete base (reading frame shift)"
+              aria-label="Apply frameshift mutation - insert or delete single base"
+            >
+              Frameshift
+            </button>
+            <button
+              id="point-mutation-btn"
+              class="mutation-btn point"
+              title="Random single base change"
+              aria-label="Apply point mutation - random single base change"
+            >
+              Point
+            </button>
+            <button
+              id="insertion-mutation-btn"
+              class="mutation-btn insertion"
+              title="Insert 1-3 bases"
+              aria-label="Apply insertion mutation - insert 1 to 3 bases"
+            >
+              Insertion
+            </button>
+            <button
+              id="deletion-mutation-btn"
+              class="mutation-btn deletion"
+              title="Delete 1-3 bases"
+              aria-label="Apply deletion mutation - delete 1 to 3 bases"
+            >
+              Deletion
+            </button>
+          </nav>
+          <nav
+            class="toolbar"
+            role="toolbar"
+            aria-label="Share and export tools"
+            style="border-top: 1px solid #3e3e42"
+          >
+            <div id="share-container" style="flex: 1"></div>
+          </nav>
+          <label for="editor" class="sr-only">Genome code editor</label>
+          <textarea
+            id="editor"
+            spellcheck="false"
+            aria-label="Genome code editor. Enter DNA codons using bases A, C, G, T. Press Ctrl+Enter to run."
+            aria-describedby="editor-help"
+            placeholder="Enter your genome here...
+Example:
+ATG GAA AAT GGA TAA
+
+; Draw a circle
+; ATG = START
+; GAA AAT = PUSH 3
+; GGA = CIRCLE
+; TAA = STOP"
+          >
+ATG GAA AAT GGA TAA</textarea>
+          <div id="editor-help" class="sr-only">
+            DNA codon editor. Use bases A, C, G, and T to create triplet codons.
+            Start programs with ATG (START) and end with TAA, TAG, or TGA
+            (STOP). Semicolons begin comments. Press Ctrl+Enter to run the
+            program.
+          </div>
+
+          <section
+            id="linter-panel"
+            role="region"
+            aria-labelledby="linter-heading"
+            style="margin-top: 12px; background: #2d2d30; border: 1px solid #3c3c3c; border-radius: 4px"
+          >
+            <div style="display: flex; justify-content: space-between; align-items: center; padding: 8px 12px; background: #252526; border-bottom: 1px solid #3c3c3c; border-radius: 4px 4px 0 0">
+              <h3
+                id="linter-heading"
+                style="font-size: 13px; font-weight: 600; color: #4ec9b0"
+              >
+                Linter
+              </h3>
+              <div style="display: flex; gap: 8px">
+                <button
+                  id="fix-all-btn"
+                  aria-label="Fix all auto-fixable errors"
+                  style="padding: 4px 10px; font-size: 11px; background: #4ec9b0; color: #1e1e1e; font-weight: 500; border: none; border-radius: 3px; cursor: pointer"
+                >
+                  Fix All
+                </button>
+                <button
+                  id="linter-toggle"
+                  aria-label="Toggle linter panel visibility"
+                  aria-expanded="true"
+                  style="padding: 4px 8px; font-size: 11px; background: #3e3e42"
+                >
+                  Hide
+                </button>
+              </div>
+            </div>
+            <div
+              id="linter-messages"
+              role="log"
+              aria-live="polite"
+              aria-atomic="false"
+              style="padding: 12px; font-size: 12px; line-height: 1.6; max-height: 150px; overflow-y: auto"
+            >
+              <div style="color: #a0a0a0">
+                Linter ready. Type or load an example to validate.
+              </div>
+            </div>
+          </section>
+
+          <section
+            id="diff-viewer-panel"
+            role="region"
+            aria-labelledby="diff-viewer-heading"
+            style="display: none; margin-top: 12px; background: #2d2d30; border: 1px solid #3c3c3c; border-radius: 4px"
+          >
+            <div style="display: flex; justify-content: space-between; align-items: center; padding: 8px 12px; background: #252526; border-bottom: 1px solid #3c3c3c; border-radius: 4px 4px 0 0">
+              <h3
+                id="diff-viewer-heading"
+                style="font-size: 13px; font-weight: 600; color: #4ec9b0"
+              >
+                🔬 Mutation Comparison
+              </h3>
+              <div style="display: flex; gap: 8px">
+                <button
+                  id="diff-viewer-clear-btn"
+                  aria-label="Clear comparison and hide panel"
+                  style="padding: 4px 10px; font-size: 11px; background: #3e3e42; color: #d4d4d4; border: none; border-radius: 3px; cursor: pointer"
+                >
+                  Clear
+                </button>
+                <button
+                  id="diff-viewer-toggle"
+                  aria-label="Toggle diff viewer panel visibility"
+                  aria-expanded="true"
+                  style="padding: 4px 8px; font-size: 11px; background: #3e3e42"
+                >
+                  Hide
+                </button>
+              </div>
+            </div>
+            <div
+              id="diff-viewer-container"
+              role="log"
+              aria-live="polite"
+              style="padding: 12px; font-size: 12px; line-height: 1.6; max-height: 400px; overflow-y: auto"
+            >
+              <!-- DiffViewer content will be injected here -->
+            </div>
+          </section>
+
+          <section
+            id="biology-comparison-panel"
+            role="region"
+            aria-labelledby="biology-comparison-heading"
+            style="display: none; margin-top: 12px; background: #2d2d30; border: 1px solid #3c3c3c; border-radius: 4px"
+          >
+            <div style="display: flex; justify-content: space-between; align-items: center; padding: 8px 12px; background: #252526; border-bottom: 1px solid #3c3c3c; border-radius: 4px 4px 0 0">
+              <h3
+                id="biology-comparison-heading"
+                style="font-size: 13px; font-weight: 600; color: #4ec9b0"
+              >
+                🔬 Real Genetic Code Comparison
+              </h3>
+              <div style="display: flex; gap: 8px">
+                <button
+                  id="biology-comparison-toggle"
+                  aria-label="Toggle biology comparison panel visibility"
+                  aria-expanded="true"
+                  style="padding: 4px 8px; font-size: 11px; background: #3e3e42"
+                >
+                  Hide
+                </button>
+              </div>
+            </div>
+            <div
+              id="biology-comparison-container"
+              role="region"
+              aria-live="polite"
+              style="padding: 12px; font-size: 12px; line-height: 1.6; max-height: 400px; overflow-y: auto"
+            >
+              <!-- Biology comparison content will be injected here -->
+            </div>
+          </section>
+
+          <section
+            id="analyzer-panel"
+            role="region"
+            aria-labelledby="analyzer-heading"
+            style="display: none; margin-top: 12px; background: #2d2d30; border: 1px solid #3c3c3c; border-radius: 4px"
+          >
+            <div style="display: flex; justify-content: space-between; align-items: center; padding: 8px 12px; background: #252526; border-bottom: 1px solid #3c3c3c; border-radius: 4px 4px 0 0">
+              <h3
+                id="analyzer-heading"
+                style="font-size: 13px; font-weight: 600; color: #4ec9b0"
+              >
+                📊 Codon Usage Analysis
+              </h3>
+              <div style="display: flex; gap: 8px">
+                <button
+                  id="analyzer-compare-btn"
+                  aria-label="Compare with another genome"
+                  style="padding: 4px 10px; font-size: 11px; background: #4ec9b0; color: #1e1e1e; font-weight: 500; border: none; border-radius: 3px; cursor: pointer; display: none"
+                >
+                  Compare
+                </button>
+                <button
+                  id="analyzer-toggle"
+                  aria-label="Toggle analyzer panel visibility"
+                  aria-expanded="true"
+                  style="padding: 4px 8px; font-size: 11px; background: #3e3e42"
+                >
+                  Hide
+                </button>
+              </div>
+            </div>
+            <div
+              id="analyzer-content"
+              role="log"
+              aria-live="polite"
+              style="padding: 12px; font-size: 12px; line-height: 1.6; max-height: 400px; overflow-y: auto"
+            >
+              <!-- Analyzer content will be injected here -->
+            </div>
+          </section>
+
+          <section
+            id="example-info"
+            role="region"
+            aria-labelledby="example-info-heading"
+            aria-live="polite"
+            style="display: none; margin-top: 12px; padding: 12px; background: #2d2d30; border: 1px solid #3c3c3c; border-radius: 4px; font-size: 13px; line-height: 1.6"
+          >
+            <h3 id="example-info-heading" class="sr-only">
+              Example Information
+            </h3>
+          </section>
+        </main>
+
+        <aside
+          class="canvas-panel"
+          role="complementary"
+          aria-labelledby="canvas-heading"
+        >
+          <div class="canvas-header">
+            <h2 id="canvas-heading" style="font-weight: bold; font-size: 1rem">
+              Output Canvas
+            </h2>
+          </div>
+          <div class="canvas-container">
+            <canvas
+              id="canvas"
+              width="400"
+              height="400"
+              role="img"
+              aria-label="Visual output of genome program. Canvas displays graphics generated by executing DNA codons."
+            ></canvas>
+          </div>
+          <div
+            id="timeline-panel"
+            style="display: none; border-top: 1px solid #3e3e42; padding: 1rem"
+            role="region"
+            aria-labelledby="timeline-heading"
+            aria-live="polite"
+          >
+            <h3 id="timeline-heading" class="sr-only">
+              Timeline Scrubber Controls
+            </h3>
+            <div id="timeline-container"></div>
+          </div>
+          <div
+            id="achievement-panel"
+            style="border-top: 1px solid #3e3e42; padding: 1rem; max-height: 400px; overflow-y: auto"
+            role="region"
+            aria-labelledby="achievement-heading"
+            aria-live="polite"
+          >
+            <h3 id="achievement-heading" class="sr-only">Achievement System</h3>
+            <div id="achievement-container"></div>
+          </div>
+        </aside>
+
+        <footer
+          class="status-bar info"
+          role="status"
+          aria-live="polite"
+          aria-atomic="true"
+        >
+          <span id="status-message">Ready</span>
+          <div class="stats" aria-label="Program statistics">
+            <span id="codon-count" aria-label="Number of codons"
+            >Codons: 0</span>
+            <span
+              id="instruction-count"
+              aria-label="Number of instructions executed"
+            >Instructions: 0</span>
+          </div>
+        </footer>
+      </div>
+
+      <!-- Assessment Mode Container -->
+      <div
+        id="assessment-container"
+        style="display: none; grid-column: 1 / -1; overflow-y: auto"
+      >
+      </div>
+    </div>
+
+    <script type="module" src="/src/playground.ts"></script>
+    <script type="module" src="/src/pages/tutorial-banner.ts"></script>
+  </body>
+</html>

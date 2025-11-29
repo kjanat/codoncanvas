@@ -1,7 +1,7 @@
-import { CodonLexer } from "@/lexer";
-import { Canvas2DRenderer } from "@/renderer";
+import { CodonLexer } from "@/core/lexer";
+import { Canvas2DRenderer } from "@/core/renderer";
+import { CodonVM } from "@/core/vm";
 import { getElementUnsafe as getElement } from "@/utils/dom";
-import { CodonVM } from "@/vm";
 
 // Types
 interface GalleryExample {

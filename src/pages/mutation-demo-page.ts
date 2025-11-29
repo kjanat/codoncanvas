@@ -1,18 +1,21 @@
-import { DiffViewer, injectDiffViewerStyles } from "@/diff-viewer";
-import { examples } from "@/examples";
-import { CodonLexer } from "@/lexer";
-import { getMutationByType } from "@/mutations";
-import { Canvas2DRenderer } from "@/renderer";
-import { injectShareStyles, ShareSystem } from "@/share-system";
-import { mutationTutorial, TutorialManager } from "@/tutorial";
-import { TutorialUI } from "@/tutorial-ui";
+import { CodonLexer } from "@/core/lexer";
+import { Canvas2DRenderer } from "@/core/renderer";
+import { examples } from "@/data/examples";
+import {
+  mutationTutorial,
+  TutorialManager,
+} from "@/education/tutorials/tutorial";
+import { TutorialUI } from "@/education/tutorials/tutorial-ui";
+import { getMutationByType } from "@/genetics/mutations";
 import type { MutationType } from "@/types";
+import { DiffViewer, injectDiffViewerStyles } from "@/ui/diff-viewer";
+import { injectShareStyles, ShareSystem } from "@/ui/share-system";
 import {
   getElementUnsafe as getElement,
   showStatus as showStatusBase,
 } from "@/utils/dom";
-import "@/tutorial-ui.css";
-import { CodonVM } from "@/vm";
+import "@/education/tutorials/tutorial-ui.css";
+import { CodonVM } from "@/core/vm";
 
 // Inject styles
 injectDiffViewerStyles();

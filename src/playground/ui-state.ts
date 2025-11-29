@@ -3,20 +3,20 @@
  * Manages all application state and core initialization
  */
 
-import { AchievementEngine } from "@/achievement-engine";
-import { AchievementUI } from "@/achievement-ui";
-import { AssessmentEngine } from "@/assessment-engine";
-import type { AssessmentUI } from "@/assessment-ui";
-import { AudioRenderer } from "@/audio-renderer";
-import { CodonLexer } from "@/lexer";
-import { MIDIExporter } from "@/midi-exporter";
+import { ResearchMetrics } from "@/analysis/research-metrics";
+import { CodonLexer } from "@/core/lexer";
+import { Canvas2DRenderer } from "@/core/renderer";
+import { CodonVM } from "@/core/vm";
+import { AchievementEngine } from "@/education/achievements/achievement-engine";
+import { AchievementUI } from "@/education/achievements/achievement-ui";
+import { AssessmentEngine } from "@/education/assessments/assessment-engine";
+import type { AssessmentUI } from "@/education/assessments/assessment-ui";
+import { AudioRenderer } from "@/exporters/audio-renderer";
+import { MIDIExporter } from "@/exporters/midi-exporter";
 import { canvas, timelineContainer } from "@/playground/dom-manager";
-import { Canvas2DRenderer } from "@/renderer";
-import { ResearchMetrics } from "@/research-metrics";
-import { ThemeManager } from "@/theme-manager";
-import { TimelineScrubber } from "@/timeline-scrubber";
 import type { RenderMode, VMState } from "@/types";
-import { CodonVM } from "@/vm";
+import { ThemeManager } from "@/ui/theme-manager";
+import { TimelineScrubber } from "@/ui/timeline-scrubber";
 
 // Re-export RenderMode for consumers that import from this module
 export type { RenderMode };

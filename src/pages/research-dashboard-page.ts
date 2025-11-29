@@ -2,9 +2,9 @@ import {
   formatDuration as formatDurationAnalyzer,
   MetricsAnalyzer,
   parseCSVContent,
-} from "@/metrics-analyzer-core";
-import type { ResearchSession } from "@/research-metrics";
-import { ResearchMetrics } from "@/research-metrics";
+} from "@/analysis/metrics-analyzer-core";
+import type { ResearchSession } from "@/analysis/research-metrics";
+import { ResearchMetrics } from "@/analysis/research-metrics";
 import { getElementUnsafe as getElement } from "@/utils/dom";
 
 interface AggregateStats {

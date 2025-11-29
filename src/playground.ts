@@ -14,26 +14,30 @@ export * from "@/playground/linter-handlers";
 export * from "@/playground/ui-state";
 export * from "@/playground/ui-utils";
 
-import type { Achievement } from "@/achievement-engine";
-import { DiffViewer, injectDiffViewerStyles } from "@/diff-viewer";
+import { CodonVM } from "@/core/vm";
 import {
   type Concept,
   type ExampleDifficulty,
   type ExampleKey,
   type ExampleMetadata,
   examples,
-} from "@/examples";
-import { injectShareStyles, ShareSystem } from "@/share-system";
-import { TutorialManager } from "@/tutorial";
-import { initializeTutorial } from "@/tutorial-ui";
-import { CodonVM } from "@/vm";
-import "@/tutorial-ui.css";
-import "@/achievement-ui.css";
-import { AssessmentUI } from "@/assessment-ui";
+} from "@/data/examples";
+import type { Achievement } from "@/education/achievements/achievement-engine";
+import { TutorialManager } from "@/education/tutorials/tutorial";
+import { initializeTutorial } from "@/education/tutorials/tutorial-ui";
+import { DiffViewer, injectDiffViewerStyles } from "@/ui/diff-viewer";
+import { injectShareStyles, ShareSystem } from "@/ui/share-system";
+import "@/education/tutorials/tutorial-ui.css";
+import "@/education/achievements/achievement-ui.css";
+import { AssessmentUI } from "@/education/assessments/assessment-ui";
 // Import DOM elements
 import {
   assessmentContainer,
   audioToggleBtn,
+  biologyComparisonBtn,
+  biologyComparisonContainer,
+  biologyComparisonPanel,
+  biologyComparisonToggle,
   clearBtn,
   conceptFilter,
   deletionMutationBtn,
@@ -53,6 +57,7 @@ import {
   missenseMutationBtn,
   modeToggleBtns,
   nonsenseMutationBtn,
+  nucleotideToggleBtn,
   playgroundContainer,
   pointMutationBtn,
   runBtn,
@@ -77,6 +82,14 @@ import {
   toggleLinter,
 } from "@/playground/linter-handlers";
 import { applyMutation } from "@/playground/mutation-handlers";
+import {
+  getModeButtonLabel,
+  getModeButtonTooltip,
+  getModeStatusMessage,
+  onNucleotideDisplayModeChange,
+  toggleNucleotideDisplayMode,
+  transformFromDisplay,
+} from "@/playground/nucleotide-display";
 // Import state managers
 import {
   achievementEngine,
@@ -104,7 +117,11 @@ import {
   updateStats,
   updateThemeButton,
 } from "@/playground/ui-utils";
-import { injectTimelineStyles } from "@/timeline-scrubber";
+import {
+  refreshBiologyComparison,
+  toggleBiologyComparisonPanel,
+} from "@/ui/biology-comparison";
+import { injectTimelineStyles } from "@/ui/timeline-scrubber";
 
 // Initialize UI button state
 updateThemeButton();
@@ -198,7 +215,8 @@ function trackExecutionComplete(
  */
 async function runProgram() {
   try {
-    const source = editor.value;
+    // Normalize to DNA (U -> T) for execution regardless of display mode
+    const source = transformFromDisplay(editor.value);
 
     const unlocked1 = achievementEngine.trackGenomeCreated(
       source.replace(/\s+/g, "").length,
@@ -550,11 +568,69 @@ function switchMode(mode: "playground" | "assessment") {
   }
 }
 
+// ============ NUCLEOTIDE DISPLAY TOGGLE ============
+
+/**
+ * Toggle between DNA and RNA notation display.
+ * This is for educational purposes - internal execution always uses DNA.
+ */
+function toggleNucleotideDisplay(): void {
+  const newMode = toggleNucleotideDisplayMode();
+
+  // Update button
+  nucleotideToggleBtn.textContent = getModeButtonLabel(newMode);
+  nucleotideToggleBtn.title = getModeButtonTooltip(newMode);
+  nucleotideToggleBtn.setAttribute("aria-label", getModeButtonTooltip(newMode));
+
+  // Transform editor content for display
+  const currentContent = editor.value;
+  if (newMode === "RNA") {
+    editor.value = currentContent.replace(/T/g, "U");
+  } else {
+    editor.value = currentContent.replace(/U/g, "T");
+  }
+
+  setStatus(getModeStatusMessage(newMode), "info");
+}
+
+// Subscribe to mode changes for any external updates
+onNucleotideDisplayModeChange((mode) => {
+  nucleotideToggleBtn.textContent = getModeButtonLabel(mode);
+  nucleotideToggleBtn.title = getModeButtonTooltip(mode);
+});
+
+// ============ BIOLOGY COMPARISON TOGGLE ============
+
+/**
+ * Toggle the biology comparison panel.
+ * Shows real genetic code mapping vs CodonCanvas opcodes.
+ */
+function toggleBiologyComparison(): void {
+  const genome = transformFromDisplay(editor.value);
+  toggleBiologyComparisonPanel(
+    biologyComparisonPanel,
+    biologyComparisonContainer,
+    biologyComparisonBtn,
+    genome,
+  );
+}
+
+/**
+ * Refresh biology comparison when editor content changes (if panel visible).
+ */
+function updateBiologyComparison(): void {
+  const genome = transformFromDisplay(editor.value);
+  refreshBiologyComparison(biologyComparisonContainer, genome);
+}
+
 // Event listeners
 runBtn.addEventListener("click", runProgram);
 clearBtn.addEventListener("click", clearCanvas);
 audioToggleBtn.addEventListener("click", toggleAudio);
 timelineToggleBtn.addEventListener("click", toggleTimeline);
+nucleotideToggleBtn.addEventListener("click", toggleNucleotideDisplay);
+biologyComparisonBtn.addEventListener("click", toggleBiologyComparison);
+biologyComparisonToggle.addEventListener("click", toggleBiologyComparison);
 themeToggleBtn.addEventListener("click", () => {
   themeManager.cycleTheme();
   updateThemeButton();
@@ -598,9 +674,10 @@ modeToggleBtns.forEach((btn) => {
 // Initialize example dropdown
 updateExampleDropdown();
 
-// Run linter on editor input
+// Run linter on editor input + refresh biology comparison
 editor.addEventListener("input", () => {
   runLinter(editor.value);
+  updateBiologyComparison();
 });
 
 // Keyboard shortcuts

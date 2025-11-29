@@ -1,17 +1,20 @@
-import { AchievementEngine } from "@/achievement-engine";
-import { AchievementUI } from "@/achievement-ui";
-import "@/achievement-ui.css";
-import { renderGenomeToCanvas } from "@/demos-core";
-import { EvolutionEngine } from "@/evolution-engine";
-import { examples } from "@/examples";
-import { injectShareStyles, ShareSystem } from "@/share-system";
-import { evolutionTutorial, TutorialManager } from "@/tutorial";
-import { TutorialUI } from "@/tutorial-ui";
+import { AchievementEngine } from "@/education/achievements/achievement-engine";
+import { AchievementUI } from "@/education/achievements/achievement-ui";
+import "@/education/achievements/achievement-ui.css";
+import { examples } from "@/data/examples";
+import { renderGenomeToCanvas } from "@/demos/demos-core";
+import {
+  evolutionTutorial,
+  TutorialManager,
+} from "@/education/tutorials/tutorial";
+import { TutorialUI } from "@/education/tutorials/tutorial-ui";
+import { EvolutionEngine } from "@/genetics/evolution-engine";
+import { injectShareStyles, ShareSystem } from "@/ui/share-system";
 import {
   getElementUnsafe as getElement,
   showStatus as showStatusBase,
 } from "@/utils/dom";
-import "@/tutorial-ui.css";
+import "@/education/tutorials/tutorial-ui.css";
 
 injectShareStyles();
 

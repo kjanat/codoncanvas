@@ -1,13 +1,13 @@
 import { afterEach, beforeEach, describe, expect, test } from "bun:test";
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
-import { CodonLexer } from "@/lexer";
-import { Canvas2DRenderer } from "@/renderer";
+import { CodonLexer } from "@/core/lexer";
+import { Canvas2DRenderer } from "@/core/renderer";
+import { CodonVM } from "@/core/vm";
 import {
   mockCanvasContext,
   restoreCanvasContext,
 } from "@/tests/test-utils/canvas-mock";
-import { CodonVM } from "@/vm";
 
 /**
  * Performance Benchmark Test Suite

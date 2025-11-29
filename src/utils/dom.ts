@@ -1,8 +1,21 @@
 /**
- * Type-safe DOM utilities
+ * @fileoverview Type-safe DOM utilities with XSS protection
  *
  * Provides compile-time AND runtime type safety for DOM element access,
- * replacing unsafe `as HTMLElement` assertions with validated accessors.
+ * replacing unsafe `as HTMLElement` casts with validated accessors.
+ *
+ * **Security:** All user-facing strings MUST use {@link escapeHtml} to prevent XSS.
+ *
+ * **Type-Safe Accessors (recommended):**
+ * - {@link getElement} - Throws if element missing or wrong type
+ * - {@link getElementOrNull} - Returns null if missing/wrong type
+ * - {@link querySelector} - Type-safe querySelector with validation
+ * - {@link querySelectorAll} - Type-safe querySelectorAll with filtering
+ *
+ * **Legacy API (deprecated):**
+ * - `*Unsafe()` variants for backward compatibility (no runtime type validation)
+ *
+ * @module utils/dom
  */
 
 // =============================================================================
@@ -10,8 +23,22 @@
 // =============================================================================
 
 /**
- * SECURITY: Escape HTML special characters to prevent XSS attacks
- * Use this when building HTML strings from user input
+ * Escape HTML special characters to prevent XSS attacks.
+ *
+ * Use this when building HTML strings from any user-provided or external input.
+ * Escapes: & < > " ' /
+ *
+ * @param str - Untrusted string to escape
+ * @returns Safe string with HTML entities escaped
+ *
+ * @example
+ * ```typescript
+ * const userInput = '<script>alert("xss")</script>';
+ * element.innerHTML = escapeHtml(userInput);
+ * // Renders as text, not executed
+ * ```
+ *
+ * @security Always use this for user input in innerHTML contexts
  */
 export function escapeHtml(str: string): string {
   return str
@@ -51,17 +78,21 @@ export function showStatus(
 // =============================================================================
 
 /**
- * Type-safe element getter by ID with runtime validation
+ * Type-safe element getter by ID with runtime validation.
  *
- * @param id - Element ID (without #)
- * @param elementType - Constructor for expected element type
- * @returns Typed element instance
- * @throws Error if element not found or wrong type
+ * @param id - Element ID (without # prefix)
+ * @param elementType - Constructor for expected element type (e.g., HTMLButtonElement)
+ * @returns Typed element instance, guaranteed to match elementType
+ * @throws {Error} If element with given ID not found in document
+ * @throws {Error} If element exists but is not an instance of elementType
  *
  * @example
- * ```ts
+ * ```typescript
  * const btn = getElement("runBtn", HTMLButtonElement);
- * // btn is HTMLButtonElement, guaranteed
+ * btn.disabled = true; // TypeScript knows btn is HTMLButtonElement
+ *
+ * const canvas = getElement("mainCanvas", HTMLCanvasElement);
+ * const ctx = canvas.getContext("2d"); // Works, canvas is HTMLCanvasElement
  * ```
  */
 export function getElement<T extends HTMLElement>(
@@ -81,16 +112,23 @@ export function getElement<T extends HTMLElement>(
 }
 
 /**
- * Type-safe element getter that returns null instead of throwing
+ * Type-safe element getter that returns null instead of throwing.
  *
- * @param id - Element ID (without #)
+ * Use this for optional elements that may not exist in all page states.
+ *
+ * @param id - Element ID (without # prefix)
  * @param elementType - Constructor for expected element type
- * @returns Typed element instance or null
+ * @returns Typed element instance, or null if not found or wrong type
  *
  * @example
- * ```ts
+ * ```typescript
  * const btn = getElementOrNull("optionalBtn", HTMLButtonElement);
- * if (btn) btn.addEventListener("click", handler);
+ * if (btn) {
+ *   btn.addEventListener("click", handler);
+ * }
+ *
+ * // Or with optional chaining
+ * getElementOrNull("tooltip", HTMLDivElement)?.classList.add("visible");
  * ```
  */
 export function getElementOrNull<T extends HTMLElement>(
@@ -105,16 +143,21 @@ export function getElementOrNull<T extends HTMLElement>(
 }
 
 /**
- * Type-safe querySelector with runtime validation
+ * Type-safe querySelector with runtime validation.
  *
- * @param selector - CSS selector
+ * @param selector - CSS selector (any valid CSS selector string)
  * @param elementType - Constructor for expected element type
- * @returns Typed element instance
- * @throws Error if element not found or wrong type
+ * @returns Typed element instance, guaranteed to match elementType
+ * @throws {Error} If no element matches the selector
+ * @throws {Error} If matched element is not an instance of elementType
  *
  * @example
- * ```ts
+ * ```typescript
  * const bar = querySelector(".status-bar", HTMLDivElement);
+ * bar.textContent = "Ready";
+ *
+ * const input = querySelector('input[name="genome"]', HTMLTextAreaElement);
+ * const code = input.value;
  * ```
  */
 export function querySelector<T extends HTMLElement>(
@@ -134,15 +177,22 @@ export function querySelector<T extends HTMLElement>(
 }
 
 /**
- * Type-safe querySelectorAll with runtime validation
+ * Type-safe querySelectorAll with runtime validation.
  *
- * @param selector - CSS selector
+ * Returns only elements matching both the selector AND the expected type.
+ * Non-matching element types are silently filtered out.
+ *
+ * @param selector - CSS selector (any valid CSS selector string)
  * @param elementType - Constructor for expected element type
- * @returns Array of typed element instances (filters out non-matching)
+ * @returns Array of typed element instances (may be empty if none match)
  *
  * @example
- * ```ts
+ * ```typescript
  * const inputs = querySelectorAll('input[name="mode"]', HTMLInputElement);
+ * inputs.forEach(input => input.disabled = false);
+ *
+ * const buttons = querySelectorAll(".toolbar button", HTMLButtonElement);
+ * buttons.forEach(btn => btn.addEventListener("click", handler));
  * ```
  */
 export function querySelectorAll<T extends HTMLElement>(
