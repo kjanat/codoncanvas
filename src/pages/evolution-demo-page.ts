@@ -40,6 +40,7 @@ const candidatesGrid = getElement("candidates-grid");
 const lineageContainer = getElement("lineage-container");
 const shareContainer = getElement("share-container");
 const generateBtn = getElement<HTMLButtonElement>("generate-btn");
+const resetBtn = getElement<HTMLButtonElement>("reset-btn");
 
 // Initialize share system
 new ShareSystem({
@@ -231,20 +232,29 @@ function resetEvolution(): void {
   }
 }
 
-// Expose functions to window
+// Wire up event listeners for buttons
+document
+  .querySelectorAll<HTMLButtonElement>("[data-example]")
+  .forEach((btn) => {
+    btn.addEventListener("click", () => {
+      const example = btn.dataset.example;
+      if (example) {
+        startEvolution(example);
+      }
+    });
+  });
+
+generateBtn.addEventListener("click", generateGeneration);
+resetBtn.addEventListener("click", resetEvolution);
+
+// Expose selectCandidate to window (used by dynamically rendered candidate cards)
 declare global {
   interface Window {
-    startEvolution: (exampleKey: string) => void;
-    generateGeneration: () => void;
     selectCandidate: (candidateId: string) => void;
-    resetEvolution: () => void;
     resetEvolutionTutorial: () => void;
   }
 }
-window.startEvolution = startEvolution;
-window.generateGeneration = generateGeneration;
 window.selectCandidate = selectCandidate;
-window.resetEvolution = resetEvolution;
 
 // Load from URL if present
 const urlGenome = ShareSystem.loadFromURL();

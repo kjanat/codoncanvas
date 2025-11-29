@@ -38,15 +38,11 @@
           <div id="start-container">
             <h2>Choose Starting Genome</h2>
             <div class="example-buttons">
-              <button onclick="startEvolution('helloCircle')">
-                Hello Circle
-              </button>
-              <button onclick="startEvolution('twoShapes')">Two Shapes</button>
-              <button onclick="startEvolution('colorfulPattern')">
-                Colorful Pattern
-              </button>
-              <button onclick="startEvolution('mandala')">Mandala</button>
-              <button onclick="startEvolution('spiral')">Spiral</button>
+              <button data-example="helloCircle">Hello Circle</button>
+              <button data-example="twoShapes">Two Shapes</button>
+              <button data-example="colorfulPattern">Colorful Pattern</button>
+              <button data-example="mandala">Mandala</button>
+              <button data-example="spiral">Spiral</button>
             </div>
           </div>
         </div>
@@ -57,16 +53,10 @@
         <div class="panel-header">
           <span>Generation <span id="generation-number">0</span></span>
           <div class="controls">
-            <button
-              class="primary"
-              id="generate-btn"
-              onclick="generateGeneration()"
-            >
+            <button class="primary" id="generate-btn">
               🧬 Generate Candidates
             </button>
-            <button class="secondary" onclick="resetEvolution()">
-              ↻ Reset
-            </button>
+            <button class="secondary" id="reset-btn">↻ Reset</button>
           </div>
         </div>
         <div class="panel-content">
