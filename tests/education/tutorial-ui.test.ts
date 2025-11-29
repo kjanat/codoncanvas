@@ -807,7 +807,7 @@ describe("TutorialUI", () => {
       const ui = new TutorialUI(container, managerWithTarget);
       ui.show();
 
-      expect(target.dataset["originalClasses"]).toBe(
+      expect(target.dataset.originalClasses).toBe(
         "original-class another-class",
       );
     });

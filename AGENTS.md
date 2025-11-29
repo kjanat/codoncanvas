@@ -26,4 +26,4 @@
 
 - Max cognitive complexity: 15 | Keep files <300 lines
 - Always use `const`, strict equality (`===`), curly braces for all blocks
-- No `console.log` (use `console.warn`/`error` only)
+- No `console.log` (use `console.info`/`warn`/`error` only)

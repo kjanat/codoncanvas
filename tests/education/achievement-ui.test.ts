@@ -306,7 +306,7 @@ describe("AchievementUI", () => {
       // a2 is not unlocked
       const badges = container.querySelectorAll(".achievement-badge");
       const lockedBadge = Array.from(badges).find(
-        (b) => (b as HTMLElement).dataset["achievementId"] === "a2",
+        (b) => (b as HTMLElement).dataset.achievementId === "a2",
       );
       expect(lockedBadge?.classList.contains("locked")).toBe(true);
     });

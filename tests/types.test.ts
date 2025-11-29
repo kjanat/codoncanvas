@@ -204,57 +204,57 @@ describe("Types Module", () => {
   // State Management Codons
   describe("state management codons", () => {
     test("TCA, TCC map to Opcode.SAVE_STATE", () => {
-      expect(CODON_MAP["TCA"]).toBe(Opcode.SAVE_STATE);
-      expect(CODON_MAP["TCC"]).toBe(Opcode.SAVE_STATE);
+      expect(CODON_MAP.TCA).toBe(Opcode.SAVE_STATE);
+      expect(CODON_MAP.TCC).toBe(Opcode.SAVE_STATE);
     });
 
     test("TCG, TCT map to Opcode.RESTORE_STATE", () => {
-      expect(CODON_MAP["TCG"]).toBe(Opcode.RESTORE_STATE);
-      expect(CODON_MAP["TCT"]).toBe(Opcode.RESTORE_STATE);
+      expect(CODON_MAP.TCG).toBe(Opcode.RESTORE_STATE);
+      expect(CODON_MAP.TCT).toBe(Opcode.RESTORE_STATE);
     });
   });
 
   // Arithmetic Operation Codons
   describe("arithmetic operation codons", () => {
     test("CTG maps to Opcode.ADD", () => {
-      expect(CODON_MAP["CTG"]).toBe(Opcode.ADD);
+      expect(CODON_MAP.CTG).toBe(Opcode.ADD);
     });
 
     test("CAG maps to Opcode.SUB", () => {
-      expect(CODON_MAP["CAG"]).toBe(Opcode.SUB);
+      expect(CODON_MAP.CAG).toBe(Opcode.SUB);
     });
 
     test("CTT maps to Opcode.MUL", () => {
-      expect(CODON_MAP["CTT"]).toBe(Opcode.MUL);
+      expect(CODON_MAP.CTT).toBe(Opcode.MUL);
     });
 
     test("CAT maps to Opcode.DIV", () => {
-      expect(CODON_MAP["CAT"]).toBe(Opcode.DIV);
+      expect(CODON_MAP.CAT).toBe(Opcode.DIV);
     });
   });
 
   // Comparison Operation Codons
   describe("comparison operation codons", () => {
     test("CTA maps to Opcode.EQ", () => {
-      expect(CODON_MAP["CTA"]).toBe(Opcode.EQ);
+      expect(CODON_MAP.CTA).toBe(Opcode.EQ);
     });
 
     test("CTC maps to Opcode.LT", () => {
-      expect(CODON_MAP["CTC"]).toBe(Opcode.LT);
+      expect(CODON_MAP.CTC).toBe(Opcode.LT);
     });
   });
 
   // Control Flow Operation Codons
   describe("control flow operation codons", () => {
     test("CAA maps to Opcode.LOOP", () => {
-      expect(CODON_MAP["CAA"]).toBe(Opcode.LOOP);
+      expect(CODON_MAP.CAA).toBe(Opcode.LOOP);
     });
   });
 
   // Utility Codons
   describe("utility codons", () => {
     test("CAC maps to Opcode.NOP", () => {
-      expect(CODON_MAP["CAC"]).toBe(Opcode.NOP);
+      expect(CODON_MAP.CAC).toBe(Opcode.NOP);
     });
   });
 
@@ -439,20 +439,20 @@ describe("Types Module", () => {
     test("RNA codons (with U) map correctly when normalized", () => {
       // The system should normalize U to T for lookup
       // The CODON_MAP itself uses T, so normalization happens at parse time
-      expect(CODON_MAP["ATG"]).toBe(Opcode.START); // DNA version
+      expect(CODON_MAP.ATG).toBe(Opcode.START); // DNA version
     });
 
     test("AUG is recognized as START equivalent to ATG", () => {
       // AUG (RNA) normalizes to ATG (DNA) which is START
       // Testing the DNA equivalent since CODON_MAP uses DNA notation
-      expect(CODON_MAP["ATG"]).toBe(Opcode.START);
+      expect(CODON_MAP.ATG).toBe(Opcode.START);
     });
 
     test("UAA, UAG, UGA are recognized as STOP equivalents", () => {
       // RNA stop codons normalize to DNA stop codons
-      expect(CODON_MAP["TAA"]).toBe(Opcode.STOP); // UAA -> TAA
-      expect(CODON_MAP["TAG"]).toBe(Opcode.STOP); // UAG -> TAG
-      expect(CODON_MAP["TGA"]).toBe(Opcode.STOP); // UGA -> TGA
+      expect(CODON_MAP.TAA).toBe(Opcode.STOP); // UAA -> TAA
+      expect(CODON_MAP.TAG).toBe(Opcode.STOP); // UAG -> TAG
+      expect(CODON_MAP.TGA).toBe(Opcode.STOP); // UGA -> TGA
     });
   });
 
@@ -564,14 +564,14 @@ describe("Types Module", () => {
 
     test("RNA_CODON_MAP uses U instead of T", () => {
       // RNA start codon
-      expect(RNA_CODON_MAP["AUG"]).toBe(Opcode.START);
+      expect(RNA_CODON_MAP.AUG).toBe(Opcode.START);
       // RNA stop codons
-      expect(RNA_CODON_MAP["UAA"]).toBe(Opcode.STOP);
-      expect(RNA_CODON_MAP["UAG"]).toBe(Opcode.STOP);
-      expect(RNA_CODON_MAP["UGA"]).toBe(Opcode.STOP);
+      expect(RNA_CODON_MAP.UAA).toBe(Opcode.STOP);
+      expect(RNA_CODON_MAP.UAG).toBe(Opcode.STOP);
+      expect(RNA_CODON_MAP.UGA).toBe(Opcode.STOP);
       // RNA circle family
-      expect(RNA_CODON_MAP["GGA"]).toBe(Opcode.CIRCLE);
-      expect(RNA_CODON_MAP["GGU"]).toBe(Opcode.CIRCLE);
+      expect(RNA_CODON_MAP.GGA).toBe(Opcode.CIRCLE);
+      expect(RNA_CODON_MAP.GGU).toBe(Opcode.CIRCLE);
     });
 
     test("dnaCodonToRna converts T to U", () => {

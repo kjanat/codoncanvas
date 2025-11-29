@@ -47,7 +47,7 @@ export function useAchievements() {
       // In a real app, we might use a toast notification system here
       // For now, we'll just log to console as the UI component handles its own display
       // if mounted.
-      console.log(
+      console.info(
         "Achievements unlocked:",
         unlocked.map((a) => a.name).join(", "),
       );

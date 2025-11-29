@@ -259,7 +259,7 @@ describe("AssessmentUI", () => {
       const buttons = container.querySelectorAll(".answer-btn");
       expect(buttons.length).toBe(6);
       const types = Array.from(buttons).map(
-        (btn) => (btn as HTMLElement).dataset["type"],
+        (btn) => (btn as HTMLElement).dataset.type,
       );
       expect(types).toContain("silent");
       expect(types).toContain("missense");
