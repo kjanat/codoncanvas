@@ -6,7 +6,12 @@
  */
 
 import { MUTATION_TYPES } from "@/genetics/mutations";
-import type { MutationType, RenderMode, VMState } from "@/types";
+import {
+  type MutationType,
+  RENDER_MODES,
+  type RenderMode,
+  type VMState,
+} from "@/types";
 
 // ============================================================================
 // Validation Helpers
@@ -270,15 +275,16 @@ export function extractTitle(genome: string): string {
 // ============================================================================
 
 /**
- * Valid render modes for CodonCanvas
+ * Valid render modes for CodonCanvas.
+ * Re-exported from @/types for test convenience.
  */
-export const VALID_RENDER_MODES: RenderMode[] = ["visual", "audio", "both"];
+export const VALID_RENDER_MODES = RENDER_MODES;
 
 /**
  * Check if a string is a valid render mode
  */
 export function isValidRenderMode(mode: string): mode is RenderMode {
-  return VALID_RENDER_MODES.includes(mode as RenderMode);
+  return RENDER_MODES.includes(mode as RenderMode);
 }
 
 // ============================================================================

@@ -724,6 +724,16 @@ export type MutationType =
 export type RenderMode = "visual" | "audio" | "both";
 
 /**
+ * Array of all valid render modes.
+ * Runtime counterpart to RenderMode union for iteration/validation.
+ */
+export const RENDER_MODES: readonly RenderMode[] = [
+  "visual",
+  "audio",
+  "both",
+] as const;
+
+/**
  * Tokenized codon with source location metadata.
  * Used for error reporting and debugging.
  */
