@@ -1,13 +1,18 @@
 import type { Severity } from "@/types/common";
 import { Opcode } from "@/types/vm";
 
+/** DNA base characters */
+type DNABase = "A" | "C" | "G" | "T";
+/** RNA base characters */
+type RNABase = "A" | "C" | "G" | "U";
+
 /**
  * Valid DNA/RNA base character.
  * - DNA: Adenine, Cytosine, Guanine, Thymine
  * - RNA: Adenine, Cytosine, Guanine, Uracil
  * Note: U and T are treated as synonyms (both map to same codons).
  */
-export type Base = "A" | "C" | "G" | "T" | "U";
+export type Base = DNABase | RNABase;
 
 /**
  * Types of genetic mutations supported by the mutation engine.

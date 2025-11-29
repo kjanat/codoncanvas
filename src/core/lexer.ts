@@ -1,7 +1,22 @@
+/**
+ * @fileoverview CodonCanvas genome lexer
+ *
+ * Tokenizes DNA/RNA-like triplet syntax into executable codon tokens.
+ * Supports both DNA (T) and RNA (U) notation with automatic normalization.
+ *
+ * **Parsing Rules:**
+ * - Valid bases: A, C, G, T, U (U is normalized to T)
+ * - Whitespace is ignored (used for formatting)
+ * - Comments start with `;` and extend to end of line
+ * - Source length must be divisible by 3 (complete codons only)
+ *
+ * @module core/lexer
+ */
+
 import type { Codon, CodonToken, ParseError } from "@/types";
 
 /**
- * Strip comment from a line (everything after `;`)
+ * Strip comment from a line (everything after `;`).
  * @internal
  */
 function getCodeContent(line: string): string {
@@ -11,30 +26,44 @@ function getCodeContent(line: string): string {
 
 /**
  * Lexer interface for CodonCanvas genome parsing.
+ *
  * Responsible for tokenizing DNA/RNA triplets and validating genome structure.
+ * Implementations should normalize RNA (U) to DNA (T) notation.
  */
 export interface Lexer {
   /**
    * Tokenize source genome into codons.
-   * @param source - Raw genome string containing DNA/RNA bases (A/C/G/T/U) with optional whitespace and comments
+   *
+   * @param source - Raw genome string containing DNA/RNA bases (A/C/G/T/U)
+   *   with optional whitespace and comments (`;` to end of line)
    * @returns Array of codon tokens with position and line information
-   * @throws Error if invalid characters found or source length not divisible by 3
+   * @throws {Error} If invalid characters found (non-ACGTU after stripping whitespace)
+   * @throws {Error} If source length not divisible by 3 (incomplete codon)
    */
   tokenize(source: string): CodonToken[];
 
   /**
    * Validate reading frame alignment.
+   *
    * Checks for whitespace breaks within triplets that would disrupt the reading frame.
+   * Does NOT throw; returns warnings for formatting issues.
+   *
    * @param source - Raw genome string to validate
-   * @returns Array of validation errors/warnings
+   * @returns Array of frame alignment warnings (never errors)
    */
   validateFrame(source: string): ParseError[];
 
   /**
    * Validate structural integrity of tokenized genome.
-   * Checks for proper START/STOP codon placement and unknown opcodes.
+   *
+   * Checks for:
+   * - START codon (ATG) at beginning
+   * - STOP codon (TAA/TAG/TGA) at end
+   * - Unknown/unmapped codons
+   * - Code after STOP (unreachable)
+   *
    * @param tokens - Array of codon tokens to validate
-   * @returns Array of structural errors/warnings
+   * @returns Array of structural errors and warnings
    */
   validateStructure(tokens: CodonToken[]): ParseError[];
 }
@@ -67,7 +96,8 @@ export class CodonLexer implements Lexer {
    *
    * @param source - Raw genome string (supports A/C/G/T/U, whitespace, `;` comments)
    * @returns Array of codon tokens with position metadata
-   * @throws Error if invalid characters found or length not divisible by 3
+   * @throws {Error} If invalid characters found (message includes line/column)
+   * @throws {Error} If cleaned source length not divisible by 3
    *
    * @example
    * ```typescript

@@ -1,11 +1,32 @@
+/**
+ * @fileoverview Canvas rendering implementation for CodonCanvas
+ *
+ * Provides the {@link Renderer} interface and {@link Canvas2DRenderer} implementation
+ * for drawing CodonCanvas programs to HTML5 Canvas.
+ *
+ * **Coordinate System:**
+ * - Origin (0,0) is top-left of canvas
+ * - Positive X goes right, positive Y goes down
+ * - Initial position is canvas center (width/2, height/2)
+ *
+ * **Rendering Behavior:**
+ * - All shapes are both filled AND stroked with current color
+ * - Shape anchor point is always CENTER (not top-left corner)
+ * - Drawing operations DO NOT modify position (use translate)
+ *
+ * @module core/renderer
+ */
+
 import type { Point2D } from "@/types";
 
 /**
  * Transform state for VM tracking.
- * Extends Point2D with rotation and scale.
+ * Extends Point2D with rotation and scale for complete transform info.
  */
 export interface TransformState extends Point2D {
+  /** Current rotation in degrees */
   rotation: number;
+  /** Current scale multiplier */
   scale: number;
 }
 
@@ -33,60 +54,130 @@ class SeededRandom {
 
 /**
  * Renderer interface for CodonCanvas drawing operations.
+ *
  * Abstraction layer for graphics output (Canvas2D, SVG, WebGL, etc.).
+ * All shapes are drawn at current position with current transform state
+ * (rotation, scale, color).
+ *
+ * **Key Behaviors:**
+ * - All shapes are both filled AND stroked with current color
+ * - Shape anchor point is always CENTER (not top-left)
+ * - Drawing operations DO NOT modify position
+ * - Transforms (rotate, scale) affect subsequent draws
+ *
+ * @example
+ * ```typescript
+ * const renderer = new Canvas2DRenderer(canvas);
+ * renderer.setColor(200, 80, 50);  // Blue (HSL)
+ * renderer.circle(50);              // Circle at center
+ * renderer.translate(100, 0);       // Move right
+ * renderer.rotate(45);              // Rotate 45 degrees
+ * renderer.rect(60, 40);            // Rotated rectangle
+ * ```
  */
 export interface Renderer {
-  /** Canvas width in pixels */
+  /** Canvas width in pixels (read-only) */
   readonly width: number;
-  /** Canvas height in pixels */
+  /** Canvas height in pixels (read-only) */
   readonly height: number;
 
-  /** Clear entire canvas to background color */
+  /** Clear canvas, reset position to center, reset all transforms */
   clear(): void;
 
-  /** Draw circle at current position with given radius */
+  /**
+   * Draw filled+stroked circle at current position.
+   * @param radius - Circle radius in pixels (scaled by current scale factor)
+   */
   circle(radius: number): void;
 
-  /** Draw rectangle at current position with given width and height */
+  /**
+   * Draw filled+stroked rectangle at current position.
+   * @param width - Rectangle width in pixels
+   * @param height - Rectangle height in pixels
+   * @remarks Anchor point is rectangle CENTER (not top-left)
+   */
   rect(width: number, height: number): void;
 
-  /** Draw line from current position extending by length at current rotation */
+  /**
+   * Draw line from current position in current rotation direction.
+   * @param length - Line length in pixels
+   * @remarks Does NOT modify position; use translate() to move
+   */
   line(length: number): void;
 
-  /** Draw equilateral triangle at current position with given size */
+  /**
+   * Draw filled+stroked equilateral triangle at current position.
+   * @param size - Triangle side length in pixels
+   */
   triangle(size: number): void;
 
-  /** Draw ellipse at current position with given radii */
+  /**
+   * Draw filled+stroked ellipse at current position.
+   * @param rx - Horizontal radius in pixels
+   * @param ry - Vertical radius in pixels
+   */
   ellipse(rx: number, ry: number): void;
 
-  /** Add visual noise/texture at current position (for artistic effects) */
+  /**
+   * Add visual noise/texture at current position.
+   * @param seed - Random seed for reproducible noise pattern
+   * @param intensity - Noise intensity (0-63, affects radius and dot count)
+   */
   noise(seed: number, intensity: number): void;
 
-  /** Move drawing position by (dx, dy) */
+  /**
+   * Move drawing position by relative offset.
+   * @param dx - Horizontal offset in pixels (positive = right)
+   * @param dy - Vertical offset in pixels (positive = down)
+   */
   translate(dx: number, dy: number): void;
 
-  /** Set absolute drawing position */
+  /**
+   * Set absolute drawing position.
+   * @param x - X coordinate in pixels (0 = left edge)
+   * @param y - Y coordinate in pixels (0 = top edge)
+   */
   setPosition(x: number, y: number): void;
 
-  /** Rotate drawing direction by degrees */
+  /**
+   * Rotate drawing direction by relative degrees.
+   * @param degrees - Rotation to add (positive = clockwise)
+   */
   rotate(degrees: number): void;
 
-  /** Set absolute rotation */
+  /**
+   * Set absolute rotation angle.
+   * @param degrees - Rotation in degrees (0 = right, 90 = down)
+   */
   setRotation(degrees: number): void;
 
-  /** Scale subsequent drawing operations by factor */
+  /**
+   * Scale subsequent drawing operations by relative factor.
+   * @param factor - Scale multiplier (compounds with current scale)
+   */
   scale(factor: number): void;
 
-  /** Set absolute scale factor */
+  /**
+   * Set absolute scale factor.
+   * @param scale - Scale multiplier (1.0 = normal, 2.0 = double size)
+   */
   setScale(scale: number): void;
 
-  /** Set drawing color (hue: 0-360, saturation: 0-100, lightness: 0-100) */
+  /**
+   * Set drawing color for fill and stroke.
+   * @param h - Hue in degrees (0-360, 0=red, 120=green, 240=blue)
+   * @param s - Saturation percentage (0-100, 0=gray, 100=vivid)
+   * @param l - Lightness percentage (0-100, 0=black, 50=normal, 100=white)
+   */
   setColor(h: number, s: number, l: number): void;
 
-  /** Get current transform state for VM tracking */
+  /** Get current transform state for VM state tracking */
   getCurrentTransform(): TransformState;
 
-  /** Export canvas as data URL (for image download) */
+  /**
+   * Export canvas as data URL for image download.
+   * @returns Base64-encoded PNG data URL
+   */
   toDataURL(): string;
 }
 

@@ -1,6 +1,30 @@
 /**
- * Genetic Algorithm Engine for CodonCanvas
- * Implements automated fitness-driven evolution with selection, crossover, mutation
+ * @fileoverview Genetic Algorithm Engine for CodonCanvas
+ *
+ * Implements automated fitness-driven evolution with selection, crossover, and mutation.
+ * Supports multiple selection strategies (tournament, roulette, elitism) and crossover
+ * methods (single-point, uniform) for evolving genome programs toward a fitness goal.
+ *
+ * **Usage:**
+ * 1. Create fitness function that evaluates rendered output
+ * 2. Initialize GA with seed genomes and options
+ * 3. Call evolve() repeatedly to run generations
+ * 4. Retrieve best individual from population
+ *
+ * @module genetics/genetic-algorithm
+ *
+ * @example
+ * ```typescript
+ * const ga = new GeneticAlgorithm(
+ *   ['ATG GGA TAA'],
+ *   (genome, canvas) => evaluateSymmetry(canvas),
+ *   { populationSize: 30, mutationRate: 0.15 }
+ * );
+ * for (let i = 0; i < 100; i++) {
+ *   ga.evolve();
+ * }
+ * const best = ga.getBestIndividual();
+ * ```
  */
 
 import { CodonLexer } from "@/core/lexer";
@@ -13,45 +37,111 @@ import {
   type MutationResult,
 } from "@/genetics/mutations";
 
+/**
+ * Individual in the genetic algorithm population.
+ */
 export interface GAIndividual {
-  /** Genome string */
+  /** Genome string (codon program) */
   genome: string;
   /** Fitness score (0-1, higher = better) */
   fitness: number;
-  /** Generation number */
+  /** Generation when this individual was created */
   generation: number;
-  /** Unique identifier */
+  /** Unique identifier (format: "gen{N}-{index}") */
   id: string;
 }
 
+/**
+ * Statistics for a single generation of evolution.
+ */
 export interface GAGenerationStats {
+  /** Generation number (0-indexed) */
   generation: number;
+  /** Highest fitness in population */
   bestFitness: number;
+  /** Mean fitness across population */
   avgFitness: number;
+  /** Lowest fitness in population */
   worstFitness: number;
-  diversity: number; // unique genomes / population size
+  /** Genetic diversity (unique genomes / population size, 0-1) */
+  diversity: number;
 }
 
+/**
+ * Parent selection strategy for reproduction.
+ * - `tournament`: Select best of N random individuals (fast, tunable pressure)
+ * - `roulette`: Fitness-proportional probability (higher variance)
+ * - `elitism`: Always select top performers
+ */
 export type SelectionStrategy = "tournament" | "roulette" | "elitism";
+
+/**
+ * Crossover strategy for combining parent genomes.
+ * - `single-point`: Split at random codon, swap tails
+ * - `uniform`: Each codon randomly from either parent
+ * - `none`: No crossover (clone with mutation only)
+ */
 export type CrossoverStrategy = "single-point" | "uniform" | "none";
 
+/**
+ * Configuration options for the genetic algorithm.
+ */
 export interface GAOptions {
-  /** Population size (default: 20) */
+  /**
+   * Number of individuals per generation.
+   * Larger = more exploration but slower.
+   * @default 20
+   */
   populationSize?: number;
-  /** Mutation rate 0-1 (default: 0.1) */
+
+  /**
+   * Probability of mutation per genome per generation (0-1).
+   * Higher = more exploration, lower = faster convergence.
+   * @default 0.1
+   */
   mutationRate?: number;
-  /** Crossover rate 0-1 (default: 0.7) */
+
+  /**
+   * Probability of crossover vs cloning (0-1).
+   * Higher = more recombination of successful traits.
+   * @default 0.7
+   */
   crossoverRate?: number;
-  /** Selection strategy */
+
+  /**
+   * Strategy for selecting parents.
+   * @default "tournament"
+   */
   selectionStrategy?: SelectionStrategy;
-  /** Crossover strategy */
+
+  /**
+   * Strategy for combining parent genomes.
+   * @default "single-point"
+   */
   crossoverStrategy?: CrossoverStrategy;
-  /** Elite individuals to preserve (default: 2) */
+
+  /**
+   * Number of top individuals to preserve unchanged (elitism).
+   * Prevents loss of best solutions.
+   * @default 2
+   */
   eliteCount?: number;
-  /** Tournament size for tournament selection (default: 3) */
+
+  /**
+   * Number of individuals in tournament selection.
+   * Higher = stronger selection pressure.
+   * @default 3
+   */
   tournamentSize?: number;
 }
 
+/**
+ * Fitness function type for evaluating genome quality.
+ *
+ * @param genome - Genome string to evaluate
+ * @param canvas - Canvas with rendered genome output
+ * @returns Fitness score (0-1, higher = better)
+ */
 export type FitnessFunction = (
   genome: string,
   canvas: HTMLCanvasElement,

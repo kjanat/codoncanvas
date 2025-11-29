@@ -116,13 +116,16 @@ function parseGenome(genome: string): string[] {
 
 /**
  * Apply silent mutation - change codon to synonymous variant.
- * Substitutes a codon with another that maps to the same opcode.
- * Demonstrates genetic redundancy (multiple codons → same function).
  *
- * @param genome - Source genome string
- * @param position - Optional codon index (random if not specified)
+ * Substitutes a codon with another that maps to the same opcode.
+ * Demonstrates genetic redundancy (multiple codons = same function).
+ *
+ * @param genome - Source genome string (with or without formatting)
+ * @param position - Optional codon index (0-based); random if not specified
  * @returns Mutation result with original/mutated genomes and metadata
- * @throws Error if no synonymous codons available
+ * @throws {Error} If no synonymous codons available in genome
+ * @throws {Error} If specified position is out of range
+ * @throws {Error} If codon at position has no synonyms
  *
  * @example
  * ```typescript
@@ -186,13 +189,15 @@ export function applySilentMutation(
 
 /**
  * Apply missense mutation - change codon to different opcode.
+ *
  * Substitutes a codon with one that changes the instruction (but not to STOP).
  * Demonstrates functional changes from point mutations.
  *
- * @param genome - Source genome string
- * @param position - Optional codon index (random if not specified)
+ * @param genome - Source genome string (with or without formatting)
+ * @param position - Optional codon index (0-based); random if not specified
  * @returns Mutation result showing opcode change
- * @throws Error if no missense codons available
+ * @throws {Error} If no missense codons available in genome
+ * @throws {Error} If specified position is out of range
  *
  * @example
  * ```typescript
@@ -255,13 +260,15 @@ export function applyMissenseMutation(
 
 /**
  * Apply nonsense mutation - introduce STOP codon.
+ *
  * Substitutes a codon with TAA (STOP), causing early termination.
  * Demonstrates truncation effects from premature stop codons.
  *
- * @param genome - Source genome string
- * @param position - Optional codon index (random if not specified, avoids START)
+ * @param genome - Source genome string (with or without formatting)
+ * @param position - Optional codon index (0-based); random if not specified (avoids START/existing STOP)
  * @returns Mutation result showing truncation point
- * @throws Error if no valid mutation positions available
+ * @throws {Error} If no valid mutation positions available (e.g., genome is just START+STOP)
+ * @throws {Error} If specified position is out of range
  *
  * @example
  * ```typescript
@@ -317,12 +324,14 @@ export function applyNonsenseMutation(
 
 /**
  * Apply point mutation - random single base change.
+ *
  * Substitutes one base (A/C/G/T) with another at character level.
  * Can result in silent, missense, or nonsense effects depending on position.
  *
- * @param genome - Source genome string
- * @param position - Optional character index (random if not specified)
+ * @param genome - Source genome string (with or without formatting)
+ * @param position - Optional character index (0-based, in cleaned genome); random if not specified
  * @returns Mutation result with base-level change description
+ * @throws {Error} If specified position is out of range
  *
  * @example
  * ```typescript
@@ -361,12 +370,14 @@ export function applyPointMutation(
 
 /**
  * Apply insertion - insert 1-3 random bases.
+ *
  * Inserts new bases at character level. If length not divisible by 3, causes frameshift.
  *
- * @param genome - Source genome string
- * @param position - Optional character index (random if not specified)
- * @param length - Number of bases to insert (1-3, default: 1)
+ * @param genome - Source genome string (with or without formatting)
+ * @param position - Optional character index (0-based); random if not specified
+ * @param length - Number of bases to insert (default: 1)
  * @returns Mutation result with inserted sequence
+ * @throws {Error} If specified position is out of range (beyond genome length)
  *
  * @example
  * ```typescript
@@ -410,13 +421,14 @@ export function applyInsertion(
 
 /**
  * Apply deletion - remove 1-3 bases.
+ *
  * Deletes bases at character level. If length not divisible by 3, causes frameshift.
  *
- * @param genome - Source genome string
- * @param position - Optional character index (random if not specified)
- * @param length - Number of bases to delete (1-3, default: 1)
+ * @param genome - Source genome string (with or without formatting)
+ * @param position - Optional character index (0-based); random if not specified
+ * @param length - Number of bases to delete (default: 1)
  * @returns Mutation result with deleted sequence
- * @throws Error if deletion exceeds genome length
+ * @throws {Error} If deletion at position+length exceeds genome length
  *
  * @example
  * ```typescript
