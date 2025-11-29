@@ -7,6 +7,7 @@
 import { CodonLexer } from "@/core/lexer";
 import { Canvas2DRenderer } from "@/core/renderer";
 import { CodonVM } from "@/core/vm";
+import { isStopCodon } from "@/data/amino-acids";
 
 // Demo genome examples
 export const DEMO_GENOMES = {
@@ -34,7 +35,7 @@ export function highlightGenome(
     // Special highlighting for START/STOP
     if (codon === "ATG") {
       className += " start";
-    } else if (codon === "TAA" || codon === "TAG" || codon === "TGA") {
+    } else if (isStopCodon(codon)) {
       className += " stop";
     }
 

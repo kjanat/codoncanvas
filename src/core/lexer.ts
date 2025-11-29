@@ -13,6 +13,7 @@
  * @module core/lexer
  */
 
+import { STOP_CODONS } from "@/data/amino-acids";
 import { BASES, type Codon, type CodonToken, type ParseError } from "@/types";
 
 /** Valid base letters for lexer validation, derived from BASES */
@@ -279,14 +280,13 @@ export class CodonLexer implements Lexer {
   }
 
   private checkStopCodons(tokens: CodonToken[], errors: ParseError[]) {
-    const stopCodons = new Set(["TAA", "TAG", "TGA"]);
     let firstStopIdx = -1;
 
     for (let i = 0; i < tokens.length; i++) {
       const token = tokens[i];
       if (!token) continue;
 
-      if (stopCodons.has(token.text)) {
+      if (STOP_CODONS.has(token.text)) {
         if (firstStopIdx === -1) {
           firstStopIdx = i;
         }
@@ -303,7 +303,7 @@ export class CodonLexer implements Lexer {
 
     // Check if program ends with STOP
     const lastToken = tokens[tokens.length - 1];
-    if (lastToken && !stopCodons.has(lastToken.text)) {
+    if (lastToken && !STOP_CODONS.has(lastToken.text)) {
       errors.push({
         message: "Program should end with STOP codon (TAA, TAG, or TGA)",
         position: lastToken.position,

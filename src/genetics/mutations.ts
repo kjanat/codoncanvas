@@ -12,6 +12,7 @@
  * - **Frameshift**: Insert/delete 1-2 bases (scrambles downstream codons)
  */
 
+import { STOP_CODONS } from "@/data/amino-acids";
 import {
   type BaseLetter,
   CODON_MAP,
@@ -42,11 +43,6 @@ export interface MutationResult {
 
 /** DNA bases used for mutation operations (excludes U since we normalize to T) */
 const BASES: readonly BaseLetter[] = DNA_LETTERS;
-const STOP_CODONS: Set<Codon> = new Set([
-  "TAA" as Codon,
-  "TAG" as Codon,
-  "TGA" as Codon,
-]);
 
 /**
  * Get synonymous codons (same opcode) for a given codon.

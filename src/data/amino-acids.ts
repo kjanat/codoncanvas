@@ -485,6 +485,23 @@ export function getCodonsForAminoAcid(aminoAcid: AminoAcidCode): DNACodon[] {
     .map(([codon]) => codon);
 }
 
+/**
+ * Set of STOP codons for efficient lookup.
+ * Derived from STANDARD_GENETIC_CODE - single source of truth.
+ */
+export const STOP_CODONS: ReadonlySet<DNACodon> = new Set(
+  getCodonsForAminoAcid("STOP"),
+);
+
+/**
+ * Check if a codon is a STOP codon.
+ * @param codon - DNA codon to check
+ * @returns True if codon is TAA, TAG, or TGA
+ */
+export function isStopCodon(codon: string): boolean {
+  return STOP_CODONS.has(codon as DNACodon);
+}
+
 // ============ COMPARISON UTILITIES ============
 
 /**
