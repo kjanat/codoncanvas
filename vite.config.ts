@@ -12,7 +12,35 @@ export default defineConfig({
   publicDir: "public",
 
   // Plugins
-  plugins: [react(), tailwindcss()],
+  plugins: [
+    react(),
+    tailwindcss(),
+    {
+      name: "html-csp-injection",
+      transformIndexHtml(html, ctx) {
+        // Only inject CSP during build (when server is not defined)
+        if (ctx.server) return html;
+
+        // Production CSP - stricter than dev (no unsafe-eval)
+        const csp = [
+          "default-src 'self'",
+          "script-src 'self' 'unsafe-inline'", // unsafe-inline might be needed for some inline scripts, but unsafe-eval is removed
+          "style-src 'self' 'unsafe-inline'", // unsafe-inline needed for dynamic styles
+          "img-src 'self' data: https:",
+          "font-src 'self' data:",
+          "connect-src 'self' https://api.qrserver.com",
+          "frame-ancestors 'none'",
+          "base-uri 'self'",
+          "form-action 'self'",
+        ].join("; ");
+
+        return html.replace(
+          "</head>",
+          `<meta http-equiv="Content-Security-Policy" content="${csp}">\n  </head>`,
+        );
+      },
+    },
+  ],
 
   // Path aliases matching tsconfig.json
   resolve: {
@@ -35,7 +63,7 @@ export default defineConfig({
     },
   },
 
-  // SECURITY: Content Security Policy headers
+  // SECURITY: Content Security Policy headers (Dev Server only)
   server: {
     headers: {
       "Content-Security-Policy":
