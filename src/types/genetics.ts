@@ -1,18 +1,136 @@
 import type { Severity } from "@/types/common";
 import { Opcode } from "@/types/vm";
 
-/** DNA base characters */
-type DNABase = "A" | "C" | "G" | "T";
-/** RNA base characters */
-type RNABase = "A" | "C" | "G" | "U";
+// ============ SINGLE SOURCE OF TRUTH ============
+
+/**
+ * All nucleotide bases with their full names.
+ * Single source of truth - all types derive from this.
+ */
+const BASES = {
+  A: "Adenine",
+  C: "Cytosine",
+  G: "Guanine",
+  T: "Thymine",
+  U: "Uracil",
+} as const;
+
+/** DNA base letters */
+const DNA_LETTERS = ["A", "C", "G", "T"] as const;
+/** RNA base letters */
+const RNA_LETTERS = ["A", "C", "G", "U"] as const;
+
+// ============ DERIVED TYPES ============
+
+/**
+ * Single-letter base code.
+ * Backward compatible with existing code that expects string literals.
+ */
+type BaseLetter = keyof typeof BASES;
+
+/** DNA base letters only */
+type DNABaseLetter = (typeof DNA_LETTERS)[number];
+/** RNA base letters only */
+type RNABaseLetter = (typeof RNA_LETTERS)[number];
+
+/** Full nucleotide base names */
+type BaseName = (typeof BASES)[BaseLetter];
+
+/** Map from letter to its full name */
+type BaseNameFor<L extends BaseLetter> = (typeof BASES)[L];
+
+/**
+ * Generic nucleotide base with letter and derived name.
+ */
+type NucleotideBase<L extends BaseLetter> = {
+  readonly letter: L;
+  readonly name: BaseNameFor<L>;
+};
+
+/** Nucleic acid type discriminator */
+type NucleicAcidType = "DNA" | "RNA";
+
+/** Map nucleic acid type to its valid letters */
+type LettersFor<T extends NucleicAcidType> = T extends "DNA"
+  ? DNABaseLetter
+  : RNABaseLetter;
+
+/**
+ * Discriminated union for nucleotide bases.
+ * Full object representation with type, letter, and name.
+ */
+type BaseObject<T extends NucleicAcidType = NucleicAcidType> = {
+  readonly type: T;
+  readonly letter: LettersFor<T>;
+  readonly name: BaseNameFor<LettersFor<T>>;
+};
+
+/** DNA base object */
+type DNABase = BaseObject<"DNA">;
+/** RNA base object */
+type RNABase = BaseObject<"RNA">;
+
+// ============ RUNTIME HELPERS ============
+
+/**
+ * Create a base object with proper typing.
+ */
+function createBase<T extends NucleicAcidType, L extends LettersFor<T>>(
+  type: T,
+  letter: L,
+): BaseObject<T> {
+  return {
+    type,
+    letter,
+    name: BASES[letter],
+  } as BaseObject<T>;
+}
+
+/** Type guard for DNA bases */
+const isDNA = (base: BaseObject): base is DNABase => base.type === "DNA";
+/** Type guard for RNA bases */
+const isRNA = (base: BaseObject): base is RNABase => base.type === "RNA";
+
+// ============ EXPORTS ============
+
+export type {
+  BaseLetter,
+  BaseName,
+  DNABaseLetter,
+  RNABaseLetter,
+  NucleotideBase,
+  NucleicAcidType,
+  BaseObject,
+  DNABase,
+  RNABase,
+};
+
+export { BASES, DNA_LETTERS, RNA_LETTERS, createBase, isDNA, isRNA };
 
 /**
  * Valid DNA/RNA base character.
- * - DNA: Adenine, Cytosine, Guanine, Thymine
- * - RNA: Adenine, Cytosine, Guanine, Uracil
- * Note: U and T are treated as synonyms (both map to same codons).
+ *
+ * @deprecated Use {@link BaseLetter} for string literals or {@link BaseObject} for full type safety.
+ *
+ * **Migration Guide:**
+ * - For simple string usage: Replace `Base` with `BaseLetter`
+ * - For type-safe objects: Use `createBase("DNA", "A")` returning `BaseObject<"DNA">`
+ * - For type guards: Use `isDNA(base)` or `isRNA(base)`
+ *
+ * @example
+ * ```typescript
+ * // OLD (deprecated):
+ * const base: Base = "A";
+ *
+ * // NEW (string literal):
+ * const base: BaseLetter = "A";
+ *
+ * // NEW (full type safety):
+ * const base = createBase("DNA", "A");
+ * // base.type === "DNA", base.letter === "A", base.name === "Adenine"
+ * ```
  */
-export type Base = DNABase | RNABase;
+export type Base = BaseLetter;
 
 /**
  * Types of genetic mutations supported by the mutation engine.
