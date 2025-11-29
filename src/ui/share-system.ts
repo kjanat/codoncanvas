@@ -50,45 +50,45 @@ export class ShareSystem {
    */
   private render(): void {
     const html = `
-      <div class="share-system">
-        <div class="share-header">
+      <div class="bg-surface border border-border rounded-lg p-4">
+        <div class="font-bold text-sm text-primary mb-3">
           <span class="share-title">Share & Export</span>
         </div>
-        <div class="share-actions">
-          <button class="share-btn" id="share-copy" title="Copy genome to clipboard">
+        <div class="flex gap-2 flex-wrap mb-3">
+          <button class="flex-1 min-w-[90px] bg-primary text-white border-none py-2 px-3 rounded cursor-pointer text-sm hover:bg-primary-hover active:translate-y-px transition-colors" id="share-copy" title="Copy genome to clipboard">
             📋 Copy
           </button>
-          <button class="share-btn" id="share-permalink" title="Generate shareable link">
+          <button class="flex-1 min-w-[90px] bg-primary text-white border-none py-2 px-3 rounded cursor-pointer text-sm hover:bg-primary-hover active:translate-y-px transition-colors" id="share-permalink" title="Generate shareable link">
             🔗 Link
           </button>
-          <button class="share-btn" id="share-download" title="Download as .genome file">
+          <button class="flex-1 min-w-[90px] bg-primary text-white border-none py-2 px-3 rounded cursor-pointer text-sm hover:bg-primary-hover active:translate-y-px transition-colors" id="share-download" title="Download as .genome file">
             💾 Download
           </button>
           ${
             this.showQRCode
-              ? '<button class="share-btn" id="share-qr" title="Generate QR code">📱 QR Code</button>'
+              ? '<button class="flex-1 min-w-[90px] bg-primary text-white border-none py-2 px-3 rounded cursor-pointer text-sm hover:bg-primary-hover active:translate-y-px transition-colors" id="share-qr" title="Generate QR code">📱 QR Code</button>'
               : ""
           }
         </div>
-        <div class="share-social">
+        <div class="flex gap-2 flex-wrap">
           ${
             this.socialPlatforms.includes("twitter")
-              ? '<button class="social-btn twitter" id="share-twitter" title="Share on Twitter">🐦 Twitter</button>'
+              ? '<button class="flex-1 min-w-[90px] bg-surface-alt text-text-muted border-none py-2 px-3 rounded cursor-pointer text-sm hover:bg-[#1da1f2] hover:text-white transition-colors" id="share-twitter" title="Share on Twitter">🐦 Twitter</button>'
               : ""
           }
           ${
             this.socialPlatforms.includes("reddit")
-              ? '<button class="social-btn reddit" id="share-reddit" title="Share on Reddit">🔴 Reddit</button>'
+              ? '<button class="flex-1 min-w-[90px] bg-surface-alt text-text-muted border-none py-2 px-3 rounded cursor-pointer text-sm hover:bg-[#ff4500] hover:text-white transition-colors" id="share-reddit" title="Share on Reddit">🔴 Reddit</button>'
               : ""
           }
           ${
             this.socialPlatforms.includes("email")
-              ? '<button class="social-btn email" id="share-email" title="Share via email">📧 Email</button>'
+              ? '<button class="flex-1 min-w-[90px] bg-surface-alt text-text-muted border-none py-2 px-3 rounded cursor-pointer text-sm hover:bg-gray-500 hover:text-white transition-colors" id="share-email" title="Share via email">📧 Email</button>'
               : ""
           }
         </div>
-        <div id="share-feedback" class="share-feedback"></div>
-        <div id="share-modal" class="share-modal hidden"></div>
+        <div id="share-feedback" class="mt-3 p-2 rounded text-sm text-center min-h-6"></div>
+        <div id="share-modal" class="hidden fixed inset-0 z-50"></div>
       </div>
     `;
 
@@ -296,11 +296,18 @@ export class ShareSystem {
       return;
     }
 
-    feedback.className = `share-feedback ${type}`;
+    let colorClasses = "bg-blue-500/20 text-blue-500 border border-blue-500";
+    if (type === "success") {
+      colorClasses = "bg-green-500/20 text-green-500 border border-green-500";
+    } else if (type === "error") {
+      colorClasses = "bg-red-500/20 text-red-500 border border-red-500";
+    }
+
+    feedback.className = `mt-3 p-2 rounded text-sm text-center min-h-6 ${colorClasses}`;
     feedback.textContent = message;
 
     setTimeout(() => {
-      feedback.className = "share-feedback";
+      feedback.className = "mt-3 p-2 rounded text-sm text-center min-h-6";
       feedback.textContent = "";
     }, 3000);
   }
@@ -318,21 +325,26 @@ export class ShareSystem {
     modal.textContent = ""; // Clear safely
 
     const overlay = document.createElement("div");
-    overlay.className = "modal-overlay";
+    overlay.className =
+      "absolute inset-0 bg-black/70 flex items-center justify-center p-4";
     overlay.addEventListener("click", () => modal.classList.add("hidden"));
 
     const modalContent = document.createElement("div");
-    modalContent.className = "modal-content";
+    modalContent.className =
+      "bg-surface border border-border rounded-lg max-w-[500px] w-full max-h-[80vh] overflow-auto shadow-xl";
     modalContent.addEventListener("click", (e) => e.stopPropagation());
 
     const header = document.createElement("div");
-    header.className = "modal-header";
+    header.className =
+      "flex justify-between items-center p-4 border-b border-border";
 
     const h3 = document.createElement("h3");
+    h3.className = "m-0 text-primary text-lg font-bold";
     h3.textContent = title; // SAFE: textContent escapes
 
     const closeBtn = document.createElement("button");
-    closeBtn.className = "modal-close";
+    closeBtn.className =
+      "text-text-muted hover:text-red-500 text-2xl cursor-pointer w-8 h-8 flex items-center justify-center bg-transparent border-none transition-colors";
     closeBtn.textContent = "×";
     closeBtn.addEventListener("click", () => modal.classList.add("hidden"));
 
@@ -340,7 +352,7 @@ export class ShareSystem {
     header.appendChild(closeBtn);
 
     const body = document.createElement("div");
-    body.className = "modal-body";
+    body.className = "p-4";
     // Build modal body safely - content is pre-escaped HTML from callers
     const tempDiv = document.createElement("div");
     tempDiv.insertAdjacentHTML("afterbegin", content);
@@ -421,206 +433,4 @@ export class ShareSystem {
 
     return validPattern.test(genome);
   }
-}
-
-/**
- * Inject share system styles
- */
-export function injectShareStyles(): void {
-  if (document.getElementById("share-system-styles")) {
-    return;
-  }
-
-  const style = document.createElement("style");
-  style.id = "share-system-styles";
-  style.textContent = `
-    .share-system {
-      background: #2d2d30;
-      border: 1px solid #3e3e42;
-      border-radius: 4px;
-      padding: 1rem;
-    }
-
-    .share-header {
-      font-weight: bold;
-      font-size: 0.875rem;
-      color: #4ec9b0;
-      margin-bottom: 0.75rem;
-    }
-
-    .share-actions {
-      display: flex;
-      gap: 0.5rem;
-      flex-wrap: wrap;
-      margin-bottom: 0.75rem;
-    }
-
-    .share-btn {
-      flex: 1;
-      min-width: 90px;
-      background: #0e639c;
-      color: white;
-      border: none;
-      padding: 0.5rem 0.75rem;
-      border-radius: 3px;
-      cursor: pointer;
-      font-size: 0.875rem;
-      transition: background 0.2s;
-    }
-
-    .share-btn:hover {
-      background: #1177bb;
-    }
-
-    .share-btn:active {
-      transform: translateY(1px);
-    }
-
-    .share-social {
-      display: flex;
-      gap: 0.5rem;
-      flex-wrap: wrap;
-    }
-
-    .social-btn {
-      flex: 1;
-      min-width: 90px;
-      background: #3e3e42;
-      color: #d4d4d4;
-      border: none;
-      padding: 0.5rem 0.75rem;
-      border-radius: 3px;
-      cursor: pointer;
-      font-size: 0.875rem;
-      transition: background 0.2s;
-    }
-
-    .social-btn.twitter:hover {
-      background: #1da1f2;
-      color: white;
-    }
-
-    .social-btn.reddit:hover {
-      background: #ff4500;
-      color: white;
-    }
-
-    .social-btn.email:hover {
-      background: #888;
-      color: white;
-    }
-
-    .share-feedback {
-      margin-top: 0.75rem;
-      padding: 0.5rem;
-      border-radius: 3px;
-      font-size: 0.875rem;
-      text-align: center;
-      min-height: 1.5rem;
-    }
-
-    .share-feedback.success {
-      background: rgba(78, 201, 176, 0.2);
-      color: #4ec9b0;
-      border: 1px solid #4ec9b0;
-    }
-
-    .share-feedback.error {
-      background: rgba(241, 95, 95, 0.2);
-      color: #f15f5f;
-      border: 1px solid #f15f5f;
-    }
-
-    .share-feedback.info {
-      background: rgba(14, 99, 156, 0.2);
-      color: #569cd6;
-      border: 1px solid #569cd6;
-    }
-
-    .share-modal {
-      position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      z-index: 1000;
-    }
-
-    .share-modal.hidden {
-      display: none;
-    }
-
-    .modal-overlay {
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background: rgba(0, 0, 0, 0.7);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 1rem;
-    }
-
-    .modal-content {
-      background: #2d2d30;
-      border: 1px solid #3e3e42;
-      border-radius: 4px;
-      max-width: 500px;
-      width: 100%;
-      max-height: 80vh;
-      overflow: auto;
-    }
-
-    .modal-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 1rem;
-      border-bottom: 1px solid #3e3e42;
-    }
-
-    .modal-header h3 {
-      margin: 0;
-      color: #4ec9b0;
-      font-size: 1.125rem;
-    }
-
-    .modal-close {
-      background: none;
-      border: none;
-      color: #d4d4d4;
-      font-size: 1.5rem;
-      cursor: pointer;
-      padding: 0;
-      width: 2rem;
-      height: 2rem;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .modal-close:hover {
-      color: #f15f5f;
-    }
-
-    .modal-body {
-      padding: 1rem;
-    }
-
-    @media (max-width: 768px) {
-      .share-actions,
-      .share-social {
-        flex-direction: column;
-      }
-
-      .share-btn,
-      .social-btn {
-        min-width: auto;
-      }
-    }
-  `;
-
-  document.head.appendChild(style);
 }

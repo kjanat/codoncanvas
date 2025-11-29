@@ -5,7 +5,7 @@
  * Enables viral sharing, teacher workflows, and cross-device collaboration.
  */
 import { afterEach, beforeEach, describe, expect, mock, test } from "bun:test";
-import { injectShareStyles, ShareSystem } from "@/ui/share-system";
+import { ShareSystem } from "@/ui/share-system";
 
 // Mock clipboard API
 const mockClipboard = {
@@ -44,12 +44,6 @@ describe("ShareSystem", () => {
     // Setup window.open mock
     mockWindowOpen = mock(() => null);
     window.open = mockWindowOpen;
-
-    // Clear any existing share styles
-    const existingStyle = document.getElementById("share-system-styles");
-    if (existingStyle) {
-      existingStyle.remove();
-    }
   });
 
   afterEach(() => {
@@ -108,7 +102,8 @@ describe("ShareSystem", () => {
         containerElement: container,
         getGenome,
       });
-      expect(container.querySelector(".share-system")).not.toBeNull();
+      // Check for the main container's border class instead of .share-system
+      expect(container.querySelector(".border-border")).not.toBeNull();
     });
 
     test("accepts custom appTitle option", () => {
@@ -147,14 +142,16 @@ describe("ShareSystem", () => {
   describe("render", () => {
     test("creates share-system container div", () => {
       new ShareSystem({ containerElement: container, getGenome });
-      expect(container.querySelector(".share-system")).not.toBeNull();
+      // Check for the main container's border class instead of .share-system
+      expect(container.querySelector(".border-border")).not.toBeNull();
     });
 
     test("creates share-header with title 'Share & Export'", () => {
       new ShareSystem({ containerElement: container, getGenome });
-      const header = container.querySelector(".share-header");
-      expect(header).not.toBeNull();
-      expect(header?.textContent).toContain("Share & Export");
+      // Check for the title span directly
+      const title = container.querySelector(".share-title");
+      expect(title).not.toBeNull();
+      expect(title?.textContent).toContain("Share & Export");
     });
 
     test("creates Copy, Link, Download buttons", () => {
@@ -207,7 +204,7 @@ describe("ShareSystem", () => {
       container.innerHTML = "<p>Old content</p>";
       new ShareSystem({ containerElement: container, getGenome });
       expect(container.querySelector("p")).toBeNull();
-      expect(container.querySelector(".share-system")).not.toBeNull();
+      expect(container.querySelector(".border-border")).not.toBeNull();
     });
 
     test("calls attachEventListeners after rendering", () => {
@@ -570,47 +567,37 @@ describe("ShareSystem", () => {
 
   // generateQRCode
   describe("generateQRCode", () => {
-    test("generates permalink URL for QR content", () => {
+    test("generates permalink URL for QR content", async () => {
       new ShareSystem({ containerElement: container, getGenome });
       const qrBtn = container.querySelector("#share-qr") as HTMLButtonElement;
       qrBtn.click();
+
+      // Wait for dynamic import
+      await new Promise((r) => setTimeout(r, 50));
 
       const modal = container.querySelector("#share-modal");
       expect(modal?.classList.contains("hidden")).toBe(false);
     });
 
-    test("uses qrserver.com API for QR code generation", () => {
+    test("renders QR code container in modal", async () => {
       new ShareSystem({ containerElement: container, getGenome });
       const qrBtn = container.querySelector("#share-qr") as HTMLButtonElement;
       qrBtn.click();
 
-      const img = container.querySelector("#share-modal img");
-      expect(img?.getAttribute("src")).toContain("api.qrserver.com");
+      // Wait for dynamic import
+      await new Promise((r) => setTimeout(r, 50));
+
+      const qrContainer = container.querySelector("#qr-code-container");
+      expect(qrContainer).not.toBeNull();
     });
 
-    test("shows modal with QR code image", () => {
+    test("modal includes instruction text about scanning", async () => {
       new ShareSystem({ containerElement: container, getGenome });
       const qrBtn = container.querySelector("#share-qr") as HTMLButtonElement;
       qrBtn.click();
 
-      const modal = container.querySelector("#share-modal");
-      expect(modal?.classList.contains("hidden")).toBe(false);
-      expect(modal?.querySelector("img")).not.toBeNull();
-    });
-
-    test("QR code is 300x300 pixels", () => {
-      new ShareSystem({ containerElement: container, getGenome });
-      const qrBtn = container.querySelector("#share-qr") as HTMLButtonElement;
-      qrBtn.click();
-
-      const img = container.querySelector("#share-modal img");
-      expect(img?.getAttribute("src")).toContain("300x300");
-    });
-
-    test("modal includes instruction text about scanning", () => {
-      new ShareSystem({ containerElement: container, getGenome });
-      const qrBtn = container.querySelector("#share-qr") as HTMLButtonElement;
-      qrBtn.click();
+      // Wait for dynamic import and rendering
+      await new Promise((r) => setTimeout(r, 100));
 
       const modal = container.querySelector("#share-modal");
       expect(modal?.textContent).toContain("Scan");
@@ -917,7 +904,7 @@ describe("ShareSystem", () => {
       await new Promise((r) => setTimeout(r, 100));
 
       const feedback = container.querySelector("#share-feedback");
-      expect(feedback?.classList.contains("success")).toBe(true);
+      expect(feedback?.classList.contains("text-green-500")).toBe(true);
     });
 
     test("adds error class for error type", async () => {
@@ -932,7 +919,7 @@ describe("ShareSystem", () => {
       await new Promise((r) => setTimeout(r, 50));
 
       const feedback = container.querySelector("#share-feedback");
-      expect(feedback?.classList.contains("error")).toBe(true);
+      expect(feedback?.classList.contains("text-red-500")).toBe(true);
     });
 
     // Note: This test verifies the 3-second feedback timeout behavior.
@@ -973,64 +960,79 @@ describe("ShareSystem", () => {
       expect(container.querySelector("#share-modal")).not.toBeNull();
     });
 
-    test("builds modal DOM structure programmatically", () => {
+    test("builds modal DOM structure programmatically", async () => {
       new ShareSystem({ containerElement: container, getGenome });
       const qrBtn = container.querySelector("#share-qr") as HTMLButtonElement;
       qrBtn.click();
+
+      await new Promise((r) => setTimeout(r, 100));
 
       const modal = container.querySelector("#share-modal");
-      expect(modal?.querySelector(".modal-overlay")).not.toBeNull();
-      expect(modal?.querySelector(".modal-content")).not.toBeNull();
+      // Check for overlay and content using partial class matches or specific unique classes
+      expect(modal?.querySelector(".bg-black\\/70")).not.toBeNull();
+      expect(modal?.querySelector(".bg-surface")).not.toBeNull();
     });
 
-    test("sets title via textContent (XSS-safe)", () => {
+    test("sets title via textContent (XSS-safe)", async () => {
       new ShareSystem({ containerElement: container, getGenome });
       const qrBtn = container.querySelector("#share-qr") as HTMLButtonElement;
       qrBtn.click();
+
+      await new Promise((r) => setTimeout(r, 100));
 
       const h3 = container.querySelector("#share-modal h3");
       expect(h3?.textContent).toBe("QR Code");
     });
 
-    test("creates close button with event listener", () => {
+    test("creates close button with event listener", async () => {
       new ShareSystem({ containerElement: container, getGenome });
       const qrBtn = container.querySelector("#share-qr") as HTMLButtonElement;
       qrBtn.click();
 
-      const closeBtn = container.querySelector(".modal-close");
-      expect(closeBtn).not.toBeNull();
-    });
-
-    test("adds overlay click handler to close modal", () => {
-      new ShareSystem({ containerElement: container, getGenome });
-      const qrBtn = container.querySelector("#share-qr") as HTMLButtonElement;
-      qrBtn.click();
+      await new Promise((r) => setTimeout(r, 100));
 
       const modal = container.querySelector("#share-modal");
-      expect(modal?.classList.contains("hidden")).toBe(false);
+      // Select button that contains "×"
+      const closeBtn = Array.from(modal?.querySelectorAll("button") || []).find(
+        (b) => b.textContent === "×",
+      );
+      expect(closeBtn).toBeDefined();
+    });
 
-      const overlay = modal?.querySelector(".modal-overlay") as HTMLElement;
+    test("adds overlay click handler to close modal", async () => {
+      new ShareSystem({ containerElement: container, getGenome });
+      const qrBtn = container.querySelector("#share-qr") as HTMLButtonElement;
+      qrBtn.click();
+
+      await new Promise((r) => setTimeout(r, 100));
+
+      const modal = container.querySelector("#share-modal");
+      const overlay = modal?.querySelector(".bg-black\\/70") as HTMLElement;
       overlay?.click();
 
       expect(modal?.classList.contains("hidden")).toBe(true);
     });
 
-    test("removes hidden class to show modal", () => {
+    test("removes hidden class to show modal", async () => {
       new ShareSystem({ containerElement: container, getGenome });
       const qrBtn = container.querySelector("#share-qr") as HTMLButtonElement;
       qrBtn.click();
+
+      await new Promise((r) => setTimeout(r, 100));
 
       const modal = container.querySelector("#share-modal");
       expect(modal?.classList.contains("hidden")).toBe(false);
     });
 
-    test("stops event propagation on modal content click", () => {
+    test("stops event propagation on modal content click", async () => {
       new ShareSystem({ containerElement: container, getGenome });
       const qrBtn = container.querySelector("#share-qr") as HTMLButtonElement;
       qrBtn.click();
 
+      await new Promise((r) => setTimeout(r, 100));
+
       const modal = container.querySelector("#share-modal");
-      const content = modal?.querySelector(".modal-content") as HTMLElement;
+      const content = modal?.querySelector(".bg-surface") as HTMLElement;
       content?.click();
 
       // Modal should still be visible
@@ -1393,75 +1395,6 @@ describe("ShareSystem", () => {
   });
 });
 
-describe("injectShareStyles", () => {
-  beforeEach(() => {
-    const existing = document.getElementById("share-system-styles");
-    if (existing) existing.remove();
-  });
-
-  test("creates style element with id 'share-system-styles'", () => {
-    injectShareStyles();
-    const style = document.getElementById("share-system-styles");
-    expect(style).not.toBeNull();
-    expect(style?.tagName).toBe("STYLE");
-  });
-
-  test("appends style to document.head", () => {
-    injectShareStyles();
-    const style = document.getElementById("share-system-styles");
-    expect(style?.parentNode).toBe(document.head);
-  });
-
-  test("does nothing if styles already injected (idempotent)", () => {
-    injectShareStyles();
-    injectShareStyles();
-    const styles = document.querySelectorAll("#share-system-styles");
-    expect(styles.length).toBe(1);
-  });
-
-  test("includes CSS for share-system container", () => {
-    injectShareStyles();
-    const style = document.getElementById("share-system-styles");
-    expect(style?.textContent).toContain(".share-system");
-  });
-
-  test("includes CSS for share buttons", () => {
-    injectShareStyles();
-    const style = document.getElementById("share-system-styles");
-    expect(style?.textContent).toContain(".share-btn");
-  });
-
-  test("includes CSS for social buttons with hover states", () => {
-    injectShareStyles();
-    const style = document.getElementById("share-system-styles");
-    expect(style?.textContent).toContain(".social-btn");
-    expect(style?.textContent).toContain(":hover");
-  });
-
-  test("includes CSS for feedback messages (success, error, info)", () => {
-    injectShareStyles();
-    const style = document.getElementById("share-system-styles");
-    expect(style?.textContent).toContain(".share-feedback.success");
-    expect(style?.textContent).toContain(".share-feedback.error");
-    expect(style?.textContent).toContain(".share-feedback.info");
-  });
-
-  test("includes CSS for modal overlay and content", () => {
-    injectShareStyles();
-    const style = document.getElementById("share-system-styles");
-    expect(style?.textContent).toContain(".share-modal");
-    expect(style?.textContent).toContain(".modal-overlay");
-    expect(style?.textContent).toContain(".modal-content");
-  });
-
-  test("includes responsive CSS for mobile (max-width 768px)", () => {
-    injectShareStyles();
-    const style = document.getElementById("share-system-styles");
-    expect(style?.textContent).toContain("@media");
-    expect(style?.textContent).toContain("768px");
-  });
-});
-
 describe("escapeHtml", () => {
   // escapeHtml is private, test through modal content
   test("escapes & as &amp;", async () => {
@@ -1539,7 +1472,8 @@ describe("Integration", () => {
       appTitle: "CodonCanvas Playground",
     });
     expect(system).toBeDefined();
-    expect(container.querySelector(".share-system")).not.toBeNull();
+    // Check for the main container's border class instead of .share-system
+    expect(container.querySelector(".border-border")).not.toBeNull();
   });
 
   test("share system integrates with mutation demos page", () => {
@@ -1637,7 +1571,7 @@ describe("Edge Cases", () => {
     container.remove();
 
     // Should not throw when container is removed
-    expect(container.querySelector(".share-system")).not.toBeNull();
+    expect(container.querySelector(".border-border")).not.toBeNull();
   });
 
   test("handles window.open being blocked by popup blocker", () => {
@@ -1703,40 +1637,6 @@ describe("Edge Cases", () => {
 
     const copyBtn = container.querySelector("#share-copy") as HTMLButtonElement;
     expect(() => copyBtn.click()).not.toThrow();
-
-    container.remove();
-  });
-
-  test("handles qrserver.com API being unavailable", () => {
-    const container = document.createElement("div");
-    document.body.appendChild(container);
-
-    new ShareSystem({
-      containerElement: container,
-      getGenome: () => "ATG TAA",
-    });
-
-    const qrBtn = container.querySelector("#share-qr") as HTMLButtonElement;
-    qrBtn.click();
-
-    // Modal should be shown with QR code
-    const modal = container.querySelector("#share-modal");
-    expect(modal?.classList.contains("hidden")).toBe(false);
-
-    const img = modal?.querySelector("img");
-    expect(img).not.toBeNull();
-
-    // Simulate image load error - verify graceful degradation
-    if (img) {
-      expect(() => img.dispatchEvent(new Event("error"))).not.toThrow();
-    }
-
-    // Modal should still be visible after error (graceful degradation)
-    expect(modal?.classList.contains("hidden")).toBe(false);
-
-    // No error feedback should be displayed
-    const feedback = container.querySelector("#share-feedback");
-    expect(feedback?.classList.contains("error")).toBe(false);
 
     container.remove();
   });

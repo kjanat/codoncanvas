@@ -12,7 +12,7 @@ import {
 } from "@/demos/demos-core";
 import { getMutationByType } from "@/genetics/mutations";
 import type { MutationType } from "@/types";
-import { injectShareStyles, ShareSystem } from "@/ui/share-system";
+import { ShareSystem } from "@/ui/share-system";
 
 /**
  * Render a genome to a canvas by ID
@@ -177,8 +177,6 @@ function initializeShareSystem(): void {
   if (!shareContainer) {
     return;
   }
-
-  injectShareStyles();
 
   // Create a simple genome getter that returns all demo genomes as a formatted string
   const getAllDemoGenomes = (): string => {
