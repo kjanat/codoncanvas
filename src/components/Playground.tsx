@@ -130,7 +130,11 @@ function ErrorDisplay({ validation }: { validation: GenomeValidation }) {
   if (validation.errors.length === 0 && !validation.tokenizeError) return null;
 
   return (
-    <div className="border-t border-danger/20 bg-danger/5 px-4 py-3">
+    <div
+      aria-live="polite"
+      className="border-t border-danger/20 bg-danger/5 px-4 py-3"
+      role="alert"
+    >
       <ul className="space-y-1 text-sm text-danger">
         {validation.tokenizeError && <li>{validation.tokenizeError}</li>}
         {validation.errors.map((err) => (
@@ -148,7 +152,10 @@ function WarningDisplay({ validation }: { validation: GenomeValidation }) {
   if (validation.warnings.length === 0) return null;
 
   return (
-    <div className="border-t border-warning/20 bg-warning/5 px-4 py-2">
+    <output
+      aria-live="polite"
+      className="block border-t border-warning/20 bg-warning/5 px-4 py-2"
+    >
       <ul className="space-y-1 text-sm text-warning">
         {validation.warnings.map((warn) => (
           <li key={`${warn.position ?? "no-pos"}-${warn.message}`}>
@@ -157,7 +164,7 @@ function WarningDisplay({ validation }: { validation: GenomeValidation }) {
           </li>
         ))}
       </ul>
-    </div>
+    </output>
   );
 }
 

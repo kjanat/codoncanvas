@@ -5,7 +5,7 @@
  * Supports search, filtering by category, and click-to-insert.
  */
 
-import { useCallback, useMemo, useState } from "react";
+import { memo, useCallback, useMemo, useState } from "react";
 import { CODON_MAP, Opcode } from "@/types";
 
 /** Opcode categories for filtering */
@@ -183,7 +183,7 @@ interface CodonReferenceProps {
   onToggleCollapse?: () => void;
 }
 
-export function CodonReference({
+export const CodonReference = memo(function CodonReference({
   onInsert,
   collapsed = false,
   onToggleCollapse,
@@ -379,6 +379,6 @@ export function CodonReference({
       </div>
     </div>
   );
-}
+});
 
 export default CodonReference;

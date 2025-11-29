@@ -1,12 +1,14 @@
 // Page imports (lazy load for code splitting)
 import { lazy, Suspense } from "react";
 import { Route, Routes } from "react-router-dom";
+import { ErrorBoundary } from "@/components/ErrorBoundary";
 import { Layout } from "@/components/Layout";
 
 const Home = lazy(() => import("@/pages/Home"));
 const Gallery = lazy(() => import("@/pages/Gallery"));
 const Tutorial = lazy(() => import("@/pages/Tutorial"));
 const Demos = lazy(() => import("@/pages/Demos"));
+const NotFound = lazy(() => import("@/pages/NotFound"));
 
 // Demo pages
 const MutationDemo = lazy(() => import("@/pages/demos/MutationDemo"));
@@ -40,29 +42,37 @@ function LoadingFallback() {
 export default function App() {
   return (
     <Layout>
-      <Suspense fallback={<LoadingFallback />}>
-        <Routes>
-          {/* Main pages */}
-          <Route element={<Home />} path="/" />
-          <Route element={<Gallery />} path="/gallery" />
-          <Route element={<Tutorial />} path="/tutorial" />
-          <Route element={<Demos />} path="/demos" />
+      <ErrorBoundary>
+        <Suspense fallback={<LoadingFallback />}>
+          <Routes>
+            {/* Main pages */}
+            <Route element={<Home />} path="/" />
+            <Route element={<Gallery />} path="/gallery" />
+            <Route element={<Tutorial />} path="/tutorial" />
+            <Route element={<Demos />} path="/demos" />
 
-          {/* Demo pages */}
-          <Route element={<MutationDemo />} path="/demos/mutation" />
-          <Route element={<TimelineDemo />} path="/demos/timeline" />
-          <Route element={<EvolutionDemo />} path="/demos/evolution" />
-          <Route element={<PopulationDemo />} path="/demos/population" />
-          <Route element={<GeneticDemo />} path="/demos/genetic" />
-          <Route element={<AchievementsDemo />} path="/demos/achievements" />
-          <Route element={<AssessmentDemo />} path="/demos/assessment" />
+            {/* Demo pages */}
+            <Route element={<MutationDemo />} path="/demos/mutation" />
+            <Route element={<TimelineDemo />} path="/demos/timeline" />
+            <Route element={<EvolutionDemo />} path="/demos/evolution" />
+            <Route element={<PopulationDemo />} path="/demos/population" />
+            <Route element={<GeneticDemo />} path="/demos/genetic" />
+            <Route element={<AchievementsDemo />} path="/demos/achievements" />
+            <Route element={<AssessmentDemo />} path="/demos/assessment" />
 
-          {/* Dashboard pages */}
-          <Route element={<ResearchDashboard />} path="/dashboards/research" />
-          <Route element={<TeacherDashboard />} path="/dashboards/teacher" />
-          <Route element={<LearningPaths />} path="/dashboards/learning" />
-        </Routes>
-      </Suspense>
+            {/* Dashboard pages */}
+            <Route
+              element={<ResearchDashboard />}
+              path="/dashboards/research"
+            />
+            <Route element={<TeacherDashboard />} path="/dashboards/teacher" />
+            <Route element={<LearningPaths />} path="/dashboards/learning" />
+
+            {/* 404 catch-all */}
+            <Route element={<NotFound />} path="*" />
+          </Routes>
+        </Suspense>
+      </ErrorBoundary>
     </Layout>
   );
 }

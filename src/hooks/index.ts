@@ -2,7 +2,7 @@
  * React Hooks for CodonCanvas
  *
  * Provides hooks for genome management, VM execution, canvas rendering,
- * and example browsing.
+ * example browsing, user preferences, and history management.
  */
 
 export {
@@ -24,6 +24,17 @@ export {
   type UseGenomeReturn,
   useGenome,
 } from "./useGenome";
+export {
+  type UseHistoryOptions,
+  type UseHistoryReturn,
+  useHistory,
+} from "./useHistory";
+export { useLocalStorage } from "./useLocalStorage";
+export {
+  type UsePreferencesReturn,
+  type UserPreferences,
+  usePreferences,
+} from "./usePreferences";
 export {
   type ExecutionResult,
   type PlaybackState,
