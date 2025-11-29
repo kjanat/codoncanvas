@@ -273,104 +273,20 @@ describe("ShareSystem", () => {
       expect(feedback?.textContent).toContain("No genome");
     });
 
-    test("falls back to textarea/execCommand when navigator.clipboard fails", async () => {
+    test("shows error when clipboard API fails", async () => {
       mockClipboard.writeText.mockImplementation(() =>
         Promise.reject(new Error("Not supported")),
       );
 
-      // Mock execCommand
-      const originalExecCommand = document.execCommand;
-      document.execCommand = mock(() => true);
+      new ShareSystem({ containerElement: container, getGenome });
+      const copyBtn = container.querySelector(
+        "#share-copy",
+      ) as HTMLButtonElement;
+      copyBtn.click();
+      await new Promise((r) => setTimeout(r, 50));
 
-      try {
-        new ShareSystem({ containerElement: container, getGenome });
-        const copyBtn = container.querySelector(
-          "#share-copy",
-        ) as HTMLButtonElement;
-        copyBtn.click();
-        await new Promise((r) => setTimeout(r, 50));
-
-        expect(document.execCommand).toHaveBeenCalledWith("copy");
-      } finally {
-        document.execCommand = originalExecCommand;
-      }
-    });
-
-    test("fallback creates hidden textarea with genome content", async () => {
-      mockClipboard.writeText.mockImplementation(() =>
-        Promise.reject(new Error("Not supported")),
-      );
-
-      let textareaValue = "";
-      const originalExecCommand = document.execCommand;
-      document.execCommand = mock(() => {
-        const textarea = document.querySelector("textarea");
-        if (textarea) textareaValue = textarea.value;
-        return true;
-      });
-
-      try {
-        new ShareSystem({ containerElement: container, getGenome });
-        const copyBtn = container.querySelector(
-          "#share-copy",
-        ) as HTMLButtonElement;
-        copyBtn.click();
-        await new Promise((r) => setTimeout(r, 50));
-
-        expect(textareaValue).toBe("ATG GGA TAA");
-      } finally {
-        document.execCommand = originalExecCommand;
-      }
-    });
-
-    test("fallback removes textarea after copy", async () => {
-      mockClipboard.writeText.mockImplementation(() =>
-        Promise.reject(new Error("Not supported")),
-      );
-
-      const originalExecCommand = document.execCommand;
-      document.execCommand = mock(() => true);
-
-      try {
-        new ShareSystem({ containerElement: container, getGenome });
-        const copyBtn = container.querySelector(
-          "#share-copy",
-        ) as HTMLButtonElement;
-        copyBtn.click();
-        await new Promise((r) => setTimeout(r, 50));
-
-        // Textarea should be removed after copy
-        expect(
-          document.body.querySelector("textarea[style*='opacity: 0']"),
-        ).toBeNull();
-      } finally {
-        document.execCommand = originalExecCommand;
-      }
-    });
-
-    test("shows error when both clipboard methods fail", async () => {
-      mockClipboard.writeText.mockImplementation(() =>
-        Promise.reject(new Error("Not supported")),
-      );
-
-      const originalExecCommand = document.execCommand;
-      document.execCommand = mock(() => {
-        throw new Error("Not supported");
-      });
-
-      try {
-        new ShareSystem({ containerElement: container, getGenome });
-        const copyBtn = container.querySelector(
-          "#share-copy",
-        ) as HTMLButtonElement;
-        copyBtn.click();
-        await new Promise((r) => setTimeout(r, 50));
-
-        const feedback = container.querySelector("#share-feedback");
-        expect(feedback?.textContent).toContain("Failed to copy");
-      } finally {
-        document.execCommand = originalExecCommand;
-      }
+      const feedback = container.querySelector("#share-feedback");
+      expect(feedback?.textContent).toContain("Failed to copy");
     });
   });
 
@@ -1744,7 +1660,7 @@ describe("Edge Cases", () => {
     container.remove();
   });
 
-  test("handles navigator.clipboard not available (old browsers)", async () => {
+  test("handles navigator.clipboard not available", async () => {
     const container = document.createElement("div");
     document.body.appendChild(container);
 
@@ -1753,9 +1669,6 @@ describe("Edge Cases", () => {
       value: undefined,
       configurable: true,
     });
-
-    const originalExecCommand = document.execCommand;
-    document.execCommand = mock(() => true);
 
     try {
       new ShareSystem({
@@ -1768,25 +1681,19 @@ describe("Edge Cases", () => {
       ) as HTMLButtonElement;
       expect(() => copyBtn.click()).not.toThrow();
     } finally {
-      document.execCommand = originalExecCommand;
       container.remove();
     }
   });
 
-  test("handles document.execCommand deprecated (future browsers)", async () => {
+  test("handles clipboard API rejection gracefully", async () => {
     const container = document.createElement("div");
     document.body.appendChild(container);
 
-    // Mock both to fail
     Object.defineProperty(navigator, "clipboard", {
       value: {
         writeText: mock(() => Promise.reject(new Error("fail"))),
       },
       configurable: true,
-    });
-
-    document.execCommand = mock(() => {
-      throw new Error("deprecated");
     });
 
     new ShareSystem({

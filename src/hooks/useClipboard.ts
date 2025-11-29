@@ -56,36 +56,14 @@ export function useClipboard(
       setError(null);
 
       try {
-        // Modern Clipboard API
-        if (navigator.clipboard?.writeText) {
-          await navigator.clipboard.writeText(text);
-          setCopied(true);
-
-          // Reset after duration
-          setTimeout(() => setCopied(false), copiedDuration);
-          return true;
+        if (!navigator.clipboard?.writeText) {
+          throw new Error("Clipboard API not supported");
         }
 
-        // Fallback for older browsers
-        const textArea = document.createElement("textarea");
-        textArea.value = text;
-        textArea.style.position = "fixed";
-        textArea.style.left = "-9999px";
-        textArea.style.top = "-9999px";
-        document.body.appendChild(textArea);
-        textArea.focus();
-        textArea.select();
-
-        const success = document.execCommand("copy");
-        document.body.removeChild(textArea);
-
-        if (success) {
-          setCopied(true);
-          setTimeout(() => setCopied(false), copiedDuration);
-          return true;
-        }
-
-        throw new Error("execCommand copy failed");
+        await navigator.clipboard.writeText(text);
+        setCopied(true);
+        setTimeout(() => setCopied(false), copiedDuration);
+        return true;
       } catch (err) {
         const message = err instanceof Error ? err.message : "Copy failed";
         setError(message);

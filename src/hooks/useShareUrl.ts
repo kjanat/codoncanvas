@@ -131,20 +131,7 @@ export function useShareUrl(
         await navigator.clipboard.writeText(url);
         return true;
       } catch {
-        // Fallback for older browsers
-        try {
-          const textArea = document.createElement("textarea");
-          textArea.value = url;
-          textArea.style.position = "fixed";
-          textArea.style.left = "-9999px";
-          document.body.appendChild(textArea);
-          textArea.select();
-          document.execCommand("copy");
-          document.body.removeChild(textArea);
-          return true;
-        } catch {
-          return false;
-        }
+        return false;
       }
     },
     [getShareUrl],

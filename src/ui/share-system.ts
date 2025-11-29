@@ -133,24 +133,9 @@ export class ShareSystem {
 
     try {
       await navigator.clipboard.writeText(genome);
-      this.showFeedback("✅ Copied to clipboard!", "success");
-    } catch (_error) {
-      // Fallback for older browsers
-      const textarea = document.createElement("textarea");
-      textarea.value = genome;
-      textarea.style.position = "fixed";
-      textarea.style.opacity = "0";
-      document.body.appendChild(textarea);
-      textarea.select();
-
-      try {
-        document.execCommand("copy");
-        this.showFeedback("✅ Copied to clipboard!", "success");
-      } catch (_err) {
-        this.showFeedback("❌ Failed to copy", "error");
-      }
-
-      document.body.removeChild(textarea);
+      this.showFeedback("Copied to clipboard!", "success");
+    } catch {
+      this.showFeedback("Failed to copy", "error");
     }
   }
 
