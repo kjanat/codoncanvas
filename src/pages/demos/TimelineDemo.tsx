@@ -3,6 +3,7 @@ import { CodonLexer } from "@/core/lexer";
 import { Canvas2DRenderer } from "@/core/renderer";
 import { CodonVM } from "@/core/vm";
 import { examples } from "@/data/examples";
+import { GifExporter } from "@/exporters/gif-exporter";
 import type { VMState } from "@/types";
 
 export default function TimelineDemo() {
@@ -14,6 +15,8 @@ export default function TimelineDemo() {
   const [isPlaying, setIsPlaying] = useState(false);
   const [playbackSpeed, setPlaybackSpeed] = useState(500);
   const [error, setError] = useState<string | null>(null);
+  const [isExporting, setIsExporting] = useState(false);
+  const [exportProgress, setExportProgress] = useState(0);
 
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const intervalRef = useRef<number | null>(null);
@@ -103,6 +106,51 @@ export default function TimelineDemo() {
       setIsPlaying(!isPlaying);
     }
   };
+
+  // Export timeline as GIF
+  const handleExportGif = useCallback(async () => {
+    if (!canvasRef.current || snapshots.length === 0) return;
+
+    setIsExporting(true);
+    setExportProgress(0);
+
+    try {
+      const exporter = new GifExporter({
+        width: canvasRef.current.width,
+        height: canvasRef.current.height,
+        fps: 4,
+        quality: 10,
+        repeat: 0,
+      });
+
+      // Capture frames by rendering each step
+      const frames: HTMLCanvasElement[] = [];
+      const lexer = new CodonLexer();
+      const tokens = lexer.tokenize(genome);
+
+      for (let i = 0; i < snapshots.length; i++) {
+        // Re-render canvas at this step
+        const canvas = document.createElement("canvas");
+        canvas.width = canvasRef.current.width;
+        canvas.height = canvasRef.current.height;
+        const renderer = new Canvas2DRenderer(canvas);
+        const vm = new CodonVM(renderer);
+        vm.run(tokens.slice(0, i + 1));
+        frames.push(canvas);
+      }
+
+      const blob = await exporter.exportFrames(frames, (progress) => {
+        setExportProgress(progress.percent);
+      });
+
+      exporter.downloadGif(blob, "codoncanvas-timeline.gif");
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "GIF export failed");
+    } finally {
+      setIsExporting(false);
+      setExportProgress(0);
+    }
+  }, [genome, snapshots]);
 
   return (
     <div className="mx-auto max-w-7xl px-4 py-8">
@@ -325,6 +373,17 @@ export default function TimelineDemo() {
               <option value={250}>2x</option>
               <option value={100}>5x</option>
             </select>
+
+            {/* Export GIF button */}
+            <button
+              className="ml-auto rounded-lg border border-border px-4 py-2 text-sm font-medium transition-colors hover:bg-bg-light disabled:opacity-50"
+              disabled={isExporting || snapshots.length === 0}
+              onClick={handleExportGif}
+              title="Export animation as GIF"
+              type="button"
+            >
+              {isExporting ? `Exporting ${exportProgress}%` : "Export GIF"}
+            </button>
           </div>
         </div>
       )}
