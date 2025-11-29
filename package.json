@@ -27,6 +27,7 @@
     "research:analyze": "bun --bun scripts/research-data-analyzer.ts",
     "research:generate-data": "bun --bun scripts/generate-sample-data.ts",
     "test": "bun test",
+    "test:agent": "bunx cross-env AGENT=1 bun test --coverage",
     "test:coverage": "bun test --coverage",
     "test:watch": "bun test --watch",
     "typecheck": "tsgo --noEmit",
@@ -88,7 +89,10 @@
       "markdown"
     ],
     "ignore": [
-      "**/.serena/**"
+      "**/.serena/**",
+      "**/dist/**",
+      "**/node_modules/**",
+      "**/report/**"
     ],
     "absolute": false,
     "gitignore": true

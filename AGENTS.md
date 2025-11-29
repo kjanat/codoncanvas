@@ -21,6 +21,7 @@
 - Use `bun:test` with `describe`/`test`/`expect` (vitest-compatible API)
 - Tests in `tests/` mirror src structure, suffix `.test.ts`
 - Unused vars: prefix with `_` (e.g., `_unusedParam`)
+- Run `bun test:agent` to get output relevant only to failing tests (as agent)
 
 ## Key Rules
 
