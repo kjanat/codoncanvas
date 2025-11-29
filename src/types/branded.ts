@@ -54,38 +54,61 @@ export const STACK_VALUE_MAX = 63;
 
 /**
  * Creates a validated StackValue (0-63).
+ * Floats are rounded. Use for parser/lexer where out-of-range is a bug.
  *
- * @param value - Number to convert (must be integer 0-63)
+ * @param value - Number to convert (rounded, must be 0-63 after rounding)
  * @returns Branded StackValue
- * @throws {RangeError} If value is outside 0-63 range
- *
- * TODO: Implement validation logic
- * Consider: Should this clamp, wrap, or throw?
+ * @throws {RangeError} If rounded value is outside 0-63 range
  */
 export function stackValue(value: number): StackValue {
-  // YOUR IMPLEMENTATION HERE:
-  // - Check if value is an integer
-  // - Check if value is in range [0, 63]
-  // - Decide error handling: throw RangeError or clamp?
-  if (
-    !Number.isInteger(value) ||
-    value < STACK_VALUE_MIN ||
-    value > STACK_VALUE_MAX
-  ) {
+  const rounded = Math.round(value);
+  if (rounded < STACK_VALUE_MIN || rounded > STACK_VALUE_MAX) {
     throw new RangeError(
-      `StackValue must be integer in [${STACK_VALUE_MIN}, ${STACK_VALUE_MAX}], got: ${value}`,
+      `StackValue must be 0-63, got: ${value} (rounded: ${rounded})`,
     );
   }
-  return value as StackValue;
+  return rounded as StackValue;
+}
+
+/**
+ * Creates a StackValue with wrapping semantics.
+ * Floats are rounded, then wrapped modulo 64. Use for arithmetic operations
+ * where overflow is meaningful (like DNA mutations).
+ *
+ * @example
+ * ```typescript
+ * stackValueWrapped(64)  // 0
+ * stackValueWrapped(-1)  // 63
+ * stackValueWrapped(65)  // 1
+ * ```
+ */
+export function stackValueWrapped(value: number): StackValue {
+  const wrapped = ((Math.round(value) % 64) + 64) % 64;
+  return wrapped as StackValue;
+}
+
+/**
+ * Creates a StackValue with clamping semantics.
+ * Floats are rounded, then clamped to [0, 63]. Use for UI input
+ * where the canvas should never crash.
+ *
+ * @example
+ * ```typescript
+ * stackValueClamped(-100)  // 0
+ * stackValueClamped(100)   // 63
+ * ```
+ */
+export function stackValueClamped(value: number): StackValue {
+  return Math.max(
+    STACK_VALUE_MIN,
+    Math.min(STACK_VALUE_MAX, Math.round(value)),
+  ) as StackValue;
 }
 
 /** Type guard for StackValue range */
 export function isValidStackValue(value: number): value is StackValue {
-  return (
-    Number.isInteger(value) &&
-    value >= STACK_VALUE_MIN &&
-    value <= STACK_VALUE_MAX
-  );
+  const rounded = Math.round(value);
+  return rounded >= STACK_VALUE_MIN && rounded <= STACK_VALUE_MAX;
 }
 
 // ============================================================================
@@ -231,6 +254,76 @@ export function hslColor(h: number, s: number, l: number): BrandedHSLColor {
     s: clampPercent(s),
     l: clampPercent(l),
   };
+}
+
+// ============================================================================
+// Stack Arithmetic Result Type
+// ============================================================================
+
+/** Error types for failable arithmetic operations */
+export type ArithmeticError = "DIVISION_BY_ZERO" | "MODULO_BY_ZERO";
+
+/**
+ * Result type for arithmetic operations that can fail.
+ * Use discriminated union instead of null for self-documenting error handling.
+ */
+export type ArithmeticResult =
+  | { ok: true; value: StackValue }
+  | { ok: false; error: ArithmeticError };
+
+// ============================================================================
+// Stack Arithmetic Helpers
+// ============================================================================
+
+/**
+ * Adds two stack values with wrapping overflow.
+ * @example stackAdd(stackValue(60), stackValue(10)) // 6 (wrapped)
+ */
+export function stackAdd(a: StackValue, b: StackValue): StackValue {
+  return stackValueWrapped(a + b);
+}
+
+/**
+ * Subtracts two stack values with wrapping underflow.
+ * @example stackSub(stackValue(5), stackValue(10)) // 59 (wrapped)
+ */
+export function stackSub(a: StackValue, b: StackValue): StackValue {
+  return stackValueWrapped(a - b);
+}
+
+/**
+ * Multiplies two stack values with wrapping overflow.
+ * @example stackMul(stackValue(10), stackValue(10)) // 36 (100 % 64)
+ */
+export function stackMul(a: StackValue, b: StackValue): StackValue {
+  return stackValueWrapped(a * b);
+}
+
+/**
+ * Divides two stack values. Returns Result type (division by zero is runtime error).
+ * @example
+ * ```typescript
+ * const result = stackDiv(stackValue(10), stackValue(3));
+ * if (result.ok) console.log(result.value); // 3
+ * else console.error(result.error); // "DIVISION_BY_ZERO"
+ * ```
+ */
+export function stackDiv(a: StackValue, b: StackValue): ArithmeticResult {
+  if (b === 0) return { ok: false, error: "DIVISION_BY_ZERO" };
+  return { ok: true, value: stackValueWrapped(Math.floor(a / b)) };
+}
+
+/**
+ * Modulo of two stack values. Returns Result type (modulo by zero is runtime error).
+ * @example
+ * ```typescript
+ * const result = stackMod(stackValue(10), stackValue(3));
+ * if (result.ok) console.log(result.value); // 1
+ * ```
+ */
+export function stackMod(a: StackValue, b: StackValue): ArithmeticResult {
+  if (b === 0) return { ok: false, error: "MODULO_BY_ZERO" };
+  return { ok: true, value: stackValueWrapped(a % b) };
 }
 
 // ============================================================================
