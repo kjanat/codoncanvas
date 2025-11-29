@@ -217,32 +217,14 @@ export class ShareSystem {
 
     const { permalink } = result;
 
-    // Use react-qr-code
-    import("react-dom/client").then(({ createRoot }) => {
-      import("react-qr-code").then(({ default: QRCode }) => {
-        import("react").then(({ createElement }) => {
-          this.showModal(
-            "QR Code",
-            `<div id="qr-code-container" style="display: flex; justify-content: center; padding: 1rem;"></div>
-             <p style="text-align: center; margin-top: 1rem; font-size: 0.875rem; color: #888;">
-               Scan with mobile device to open genome
-             </p>`,
-          );
+    // Use extracted QR code component
+    import("@/components/ShareQRCode").then(({ renderQRCodeToContainer }) => {
+      this.showModal("QR Code", `<div id="qr-code-container"></div>`);
 
-          const container = document.getElementById("qr-code-container");
-          if (container) {
-            const root = createRoot(container);
-            root.render(
-              createElement(QRCode, {
-                value: permalink,
-                size: 256,
-                style: { height: "auto", maxWidth: "100%", width: "100%" },
-                viewBox: `0 0 256 256`,
-              }),
-            );
-          }
-        });
-      });
+      const container = document.getElementById("qr-code-container");
+      if (container) {
+        renderQRCodeToContainer(container, permalink);
+      }
     });
   }
 
