@@ -359,6 +359,143 @@ export function compareAnalyses(a: CodonAnalysis, b: CodonAnalysis): number {
 }
 
 /**
+ * Genome complexity analysis result
+ */
+export interface GenomeComplexity {
+  filename: string;
+  instructionCount: number;
+  uniqueOpcodes: number;
+  opcodeDistribution: Record<string, number>;
+  maxStackDepth: number;
+  complexityScore: number;
+  hasPush: boolean;
+  hasLoop: boolean;
+  hasComparison: boolean;
+  hasArithmetic: boolean;
+}
+
+// Stack effect mapping: opcode -> items consumed from stack
+const STACK_CONSUMERS_1 = new Set([
+  Opcode.CIRCLE,
+  Opcode.LINE,
+  Opcode.TRIANGLE,
+  Opcode.ROTATE,
+  Opcode.SCALE,
+  Opcode.POP,
+]);
+const STACK_CONSUMERS_2 = new Set([
+  Opcode.RECT,
+  Opcode.ELLIPSE,
+  Opcode.TRANSLATE,
+]);
+const STACK_CONSUMERS_3 = new Set([Opcode.COLOR]);
+const STACK_PRODUCERS = new Set([Opcode.PUSH, Opcode.DUP]);
+
+/** Calculate stack effect for an opcode (-N = consumes, +1 = produces) */
+function getStackEffect(opcode: Opcode | undefined): number {
+  if (opcode === undefined) return 0;
+  if (STACK_PRODUCERS.has(opcode)) return 1;
+  if (STACK_CONSUMERS_1.has(opcode)) return -1;
+  if (STACK_CONSUMERS_2.has(opcode)) return -2;
+  if (STACK_CONSUMERS_3.has(opcode)) return -3;
+  return 0;
+}
+
+/** Build opcode distribution and collect unique opcodes */
+function buildOpcodeStats(tokens: CodonToken[]): {
+  distribution: Record<string, number>;
+  unique: Set<Opcode>;
+} {
+  const distribution: Record<string, number> = {};
+  const unique = new Set<Opcode>();
+
+  for (const token of tokens) {
+    const opcode = CODON_MAP[token.text];
+    if (opcode !== undefined) {
+      unique.add(opcode);
+      const name = Opcode[opcode];
+      distribution[name] = (distribution[name] || 0) + 1;
+    }
+  }
+  return { distribution, unique };
+}
+
+/** Calculate maximum stack depth from token sequence */
+function calculateMaxStackDepth(tokens: CodonToken[]): number {
+  let current = 0;
+  let max = 0;
+  for (const token of tokens) {
+    const effect = getStackEffect(CODON_MAP[token.text]);
+    current = Math.max(0, current + effect);
+    max = Math.max(max, current);
+  }
+  return max;
+}
+
+/** Detect advanced feature usage */
+function detectFeatures(unique: Set<Opcode>) {
+  return {
+    hasPush: unique.has(Opcode.PUSH),
+    hasLoop: unique.has(Opcode.LOOP),
+    hasComparison: unique.has(Opcode.EQ) || unique.has(Opcode.LT),
+    hasArithmetic:
+      unique.has(Opcode.ADD) ||
+      unique.has(Opcode.SUB) ||
+      unique.has(Opcode.MUL) ||
+      unique.has(Opcode.DIV),
+  };
+}
+
+/** Calculate weighted complexity score */
+function calculateComplexityScore(
+  instructionCount: number,
+  uniqueCount: number,
+  maxStackDepth: number,
+  features: ReturnType<typeof detectFeatures>,
+): number {
+  let score = instructionCount;
+  score += uniqueCount * 5; // Variety of opcodes
+  score += maxStackDepth * 3; // Stack management complexity
+  if (features.hasLoop) score += 20;
+  if (features.hasComparison) score += 5;
+  if (features.hasArithmetic) score += 10;
+  return score;
+}
+
+/**
+ * Analyze genome complexity from tokenized codons
+ * Provides metrics for educational progression and difficulty assessment
+ *
+ * @param filename - Name of the genome file
+ * @param tokens - Tokenized codon sequence
+ * @returns Complexity analysis with score and feature flags
+ */
+export function analyzeComplexity(
+  filename: string,
+  tokens: CodonToken[],
+): GenomeComplexity {
+  const { distribution, unique } = buildOpcodeStats(tokens);
+  const maxStackDepth = calculateMaxStackDepth(tokens);
+  const features = detectFeatures(unique);
+  const complexityScore = calculateComplexityScore(
+    tokens.length,
+    unique.size,
+    maxStackDepth,
+    features,
+  );
+
+  return {
+    filename,
+    instructionCount: tokens.length,
+    uniqueOpcodes: unique.size,
+    opcodeDistribution: distribution,
+    maxStackDepth,
+    complexityScore,
+    ...features,
+  };
+}
+
+/**
  * Format analysis results as human-readable text
  */
 export function formatAnalysis(analysis: CodonAnalysis): string {

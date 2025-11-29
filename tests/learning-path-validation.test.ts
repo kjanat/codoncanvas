@@ -1,6 +1,8 @@
 import { describe, expect, test } from "bun:test";
-import { readFileSync } from "node:fs";
+import { readdirSync, readFileSync } from "node:fs";
 import { join } from "node:path";
+import { analyzeComplexity, type GenomeComplexity } from "@/codon-analyzer";
+import { CodonLexer } from "@/lexer";
 
 /**
  * Learning Path Validation Test Suite
@@ -10,6 +12,9 @@ import { join } from "node:path";
  * - Reference existing genome files
  * - Show appropriate complexity progression
  * - Have complete pedagogical metadata
+ *
+ * Complexity data is generated at runtime from actual genome files,
+ * ensuring tests always reflect the current state of the codebase.
  */
 
 interface LearningPathStep {
@@ -36,27 +41,48 @@ interface LearningPathsData {
   paths: LearningPath[];
 }
 
+/**
+ * Generate complexity analysis for all genome files at runtime
+ */
+function generateComplexityAnalysis(): GenomeComplexity[] {
+  const examplesDir = join(__dirname, "..", "examples");
+  const lexer = new CodonLexer();
+
+  try {
+    const files = readdirSync(examplesDir).filter((f) => f.endsWith(".genome"));
+    return files.map((filename) => {
+      const content = readFileSync(join(examplesDir, filename), "utf-8");
+      try {
+        const tokens = lexer.tokenize(content);
+        return analyzeComplexity(filename, tokens);
+      } catch {
+        // Return zero complexity for files that fail to parse
+        return analyzeComplexity(filename, []);
+      }
+    });
+  } catch {
+    return [];
+  }
+}
+
 describe("Learning Path Validation", () => {
   let pathsData: LearningPathsData;
-  // biome-ignore lint/suspicious/noExplicitAny: External JSON data with unknown structure
-  let complexityData: any;
+  let complexityAnalysis: GenomeComplexity[];
 
+  // Load learning paths JSON
   try {
     const pathsJson = readFileSync(
       join(__dirname, "..", "examples", "learning-paths.json"),
       "utf-8",
     );
     pathsData = JSON.parse(pathsJson);
-
-    const complexityJson = readFileSync(
-      join(__dirname, "..", "claudedocs", "complexity-analysis.json"),
-      "utf-8",
-    );
-    complexityData = JSON.parse(complexityJson);
-  } catch (_e) {
+  } catch (e) {
+    console.error("Failed to load learning-paths.json:", e);
     pathsData = { version: "", paths: [] };
-    complexityData = { analysis: [] };
   }
+
+  // Generate complexity analysis at runtime
+  complexityAnalysis = generateComplexityAnalysis();
 
   describe("Data Structure Validation", () => {
     test("learning-paths.json exists and is valid JSON", () => {
@@ -176,10 +202,7 @@ describe("Learning Path Validation", () => {
 
   describe("Complexity Progression", () => {
     function getComplexityScore(genome: string): number {
-      const analysis = complexityData.analysis.find(
-        // biome-ignore lint/suspicious/noExplicitAny: External JSON analysis data
-        (a: any) => a.filename === genome,
-      );
+      const analysis = complexityAnalysis.find((a) => a.filename === genome);
       return analysis ? analysis.complexityScore : 0;
     }
 
@@ -243,10 +266,8 @@ describe("Learning Path Validation", () => {
 
       beginnerPaths.forEach((path) => {
         const firstStepComplexity =
-          complexityData.analysis.find(
-            // biome-ignore lint/suspicious/noExplicitAny: External JSON analysis data
-            (a: any) => a.filename === path.steps[0].genome,
-          )?.complexityScore || 0;
+          complexityAnalysis.find((a) => a.filename === path.steps[0].genome)
+            ?.complexityScore || 0;
 
         // Beginner first steps should be relatively simple
         expect(firstStepComplexity).toBeLessThan(150);
@@ -263,10 +284,8 @@ describe("Learning Path Validation", () => {
       // At least one advanced path should have non-trivial complexity
       const hasComplexStart = advancedPaths.some((path) => {
         const firstStepComplexity =
-          complexityData.analysis.find(
-            // biome-ignore lint/suspicious/noExplicitAny: External JSON analysis data
-            (a: any) => a.filename === path.steps[0].genome,
-          )?.complexityScore || 0;
+          complexityAnalysis.find((a) => a.filename === path.steps[0].genome)
+            ?.complexityScore || 0;
         return firstStepComplexity > 80;
       });
 

@@ -1,36 +1,24 @@
 /**
  * Genome Complexity Analysis Script
  *
- * Analyzes all 48 example genomes to provide empirical data on:
+ * Analyzes all example genomes to provide empirical data on:
  * - Instruction counts
  * - Opcode distribution
  * - Stack depth requirements
  * - Complexity metrics
  *
+ * Uses the centralized analyzeComplexity function from codon-analyzer.ts
  * Output: JSON report with complexity scores for each genome
  */
 
 import { readdirSync, readFileSync, writeFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
-import { CodonLexer } from "../src/lexer";
-import { CODON_MAP, Opcode } from "../src/types";
+import { analyzeComplexity, type GenomeComplexity } from "@/codon-analyzer";
+import { CodonLexer } from "@/lexer";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
-
-interface GenomeComplexity {
-  filename: string;
-  instructionCount: number;
-  uniqueOpcodes: number;
-  opcodeDistribution: Record<string, number>;
-  maxStackDepth: number;
-  complexityScore: number;
-  hasPush: boolean;
-  hasLoop: boolean;
-  hasComparison: boolean;
-  hasArithmetic: boolean;
-}
 
 interface ComplexityReport {
   timestamp: string;
@@ -46,115 +34,17 @@ interface ComplexityReport {
 }
 
 /**
- * Analyze a single genome file
+ * Analyze a single genome file using the centralized complexity analyzer
  */
 function analyzeGenome(filename: string, content: string): GenomeComplexity {
   const lexer = new CodonLexer();
 
   try {
     const tokens = lexer.tokenize(content);
-    const instructionCount = tokens.length;
-
-    // Count opcode usage
-    const opcodeDistribution: Record<string, number> = {};
-    const uniqueOpcodes = new Set<Opcode>();
-
-    tokens.forEach((token) => {
-      const opcode = CODON_MAP[token.text];
-      if (opcode !== undefined) {
-        uniqueOpcodes.add(opcode);
-        const opcodeName = Opcode[opcode];
-        opcodeDistribution[opcodeName] =
-          (opcodeDistribution[opcodeName] || 0) + 1;
-      }
-    });
-
-    // Simulate stack depth (simple approximation)
-    let currentDepth = 0;
-    let maxStackDepth = 0;
-
-    tokens.forEach((token) => {
-      const opcode = CODON_MAP[token.text];
-
-      // Stack producers
-      if (opcode === Opcode.PUSH || opcode === Opcode.DUP) {
-        currentDepth++;
-        maxStackDepth = Math.max(maxStackDepth, currentDepth);
-      }
-
-      // Stack consumers
-      if (
-        opcode === Opcode.CIRCLE ||
-        opcode === Opcode.LINE ||
-        opcode === Opcode.TRIANGLE ||
-        opcode === Opcode.ROTATE ||
-        opcode === Opcode.SCALE ||
-        opcode === Opcode.POP
-      ) {
-        currentDepth = Math.max(0, currentDepth - 1);
-      }
-
-      if (
-        opcode === Opcode.RECT ||
-        opcode === Opcode.ELLIPSE ||
-        opcode === Opcode.TRANSLATE
-      ) {
-        currentDepth = Math.max(0, currentDepth - 2);
-      }
-
-      if (opcode === Opcode.COLOR) {
-        currentDepth = Math.max(0, currentDepth - 3);
-      }
-    });
-
-    // Detect advanced features
-    const hasPush = uniqueOpcodes.has(Opcode.PUSH);
-    const hasLoop = uniqueOpcodes.has(Opcode.LOOP);
-    // Comparison operators (EQ, LT) push boolean results onto the stack.
-    // Note: Actual conditional branching (IF, IFELSE) is not yet implemented.
-    // When IF/IFELSE are added, add a separate hasConditional check with +15 bonus.
-    const hasComparison =
-      uniqueOpcodes.has(Opcode.EQ) || uniqueOpcodes.has(Opcode.LT);
-    const hasArithmetic =
-      uniqueOpcodes.has(Opcode.ADD) ||
-      uniqueOpcodes.has(Opcode.SUB) ||
-      uniqueOpcodes.has(Opcode.MUL) ||
-      uniqueOpcodes.has(Opcode.DIV);
-
-    // Calculate complexity score
-    let complexityScore = instructionCount;
-    complexityScore += uniqueOpcodes.size * 5; // Variety of opcodes
-    complexityScore += maxStackDepth * 3; // Stack management complexity
-    if (hasLoop) complexityScore += 20;
-    if (hasComparison) complexityScore += 5; // Comparison ops (reserve +15 for actual branching)
-    if (hasArithmetic) complexityScore += 10;
-
-    return {
-      filename,
-      instructionCount,
-      uniqueOpcodes: uniqueOpcodes.size,
-      opcodeDistribution,
-      maxStackDepth,
-      complexityScore,
-      hasPush,
-      hasLoop,
-      hasComparison,
-      hasArithmetic,
-    };
+    return analyzeComplexity(filename, tokens);
   } catch (_error) {
     // Return minimal analysis for invalid genomes
-    return {
-      filename,
-      instructionCount: 0,
-      uniqueOpcodes: 0,
-      opcodeDistribution: {},
-      maxStackDepth: 0,
-      complexityScore: 0,
-      hasPush: false,
-      hasLoop: false,
-      hasComparison: false,
-      hasArithmetic: false,
-    };
+    return analyzeComplexity(filename, []);
   }
 }
 
