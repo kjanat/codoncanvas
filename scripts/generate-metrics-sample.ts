@@ -12,6 +12,26 @@
 
 import * as fs from "node:fs";
 
+/** Module-level map from mutation type keys to MetricsSession property names */
+const MUTATION_TYPE_MAP: Record<
+  string,
+  | "silentMutations"
+  | "missenseMutations"
+  | "nonsenseMutations"
+  | "frameshiftMutations"
+  | "pointMutations"
+  | "insertions"
+  | "deletions"
+> = {
+  silent: "silentMutations",
+  missense: "missenseMutations",
+  nonsense: "nonsenseMutations",
+  frameshift: "frameshiftMutations",
+  point: "pointMutations",
+  insertion: "insertions",
+  deletion: "deletions",
+};
+
 function randomNormal(mean: number = 0, sd: number = 1): number {
   const u1 = Math.random();
   const u2 = Math.random();
@@ -301,7 +321,7 @@ function calculateRenderModeDistribution(
         (total - bothMode) * randomBoundedNormal(0.5, 0.2, 0, 0.7),
       );
     }
-    bothMode = total - visualMode - audioMode;
+    bothMode = Math.max(0, total - visualMode - audioMode);
   }
 
   return { visualMode, audioMode, bothMode };
@@ -323,15 +343,6 @@ function calculateMutationDistribution(
 
   if (mutationsApplied > 0) {
     const focusSet = new Set(char.mutationFocus);
-    const typeMap: Record<string, keyof typeof mutationTypes> = {
-      silent: "silentMutations",
-      missense: "missenseMutations",
-      nonsense: "nonsenseMutations",
-      frameshift: "frameshiftMutations",
-      point: "pointMutations",
-      insertion: "insertions",
-      deletion: "deletions",
-    };
 
     for (let i = 0; i < mutationsApplied; i++) {
       let typeKey: string;
@@ -348,7 +359,7 @@ function calculateMutationDistribution(
           "deletion",
         ]);
       }
-      const mappedKey = typeMap[typeKey];
+      const mappedKey = MUTATION_TYPE_MAP[typeKey];
       if (mappedKey) {
         mutationTypes[mappedKey]++;
       }

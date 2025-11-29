@@ -452,24 +452,34 @@ function parseArguments(args: string[]) {
   let reportType = "full";
   let outputDir = ".";
 
+  const ensureValue = (flag: string, index: number): void => {
+    if (index + 1 >= args.length || args[index + 1].startsWith("--")) {
+      throw new Error(`Missing value for option: ${flag}`);
+    }
+  };
+
   for (let i = 0; i < args.length; i++) {
     const arg = args[i];
-    if (i + 1 >= args.length) break;
 
     switch (arg) {
       case "--data":
+        ensureValue(arg, i);
         dataFile = args[++i];
         break;
       case "--group":
+        ensureValue(arg, i);
         groupName = args[++i];
         break;
       case "--baseline":
+        ensureValue(arg, i);
         baselineFile = args[++i];
         break;
       case "--report":
+        ensureValue(arg, i);
         reportType = args[++i];
         break;
       case "--output":
+        ensureValue(arg, i);
         outputDir = args[++i];
         break;
     }
@@ -492,6 +502,13 @@ function runAnalysis(options: {
 
   // Create analyzer
   const analyzer = new MetricsAnalyzer(sessions);
+
+  // Warn if non-default reportType is provided (not yet implemented)
+  if (options.reportType !== "full") {
+    console.warn(
+      `Warning: --report "${options.reportType}" is not yet implemented. Using "full" report.`,
+    );
+  }
 
   // Generate main report
   const timestamp = new Date().toISOString().slice(0, 10);

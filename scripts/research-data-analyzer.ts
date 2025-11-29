@@ -145,25 +145,34 @@ function validateStudentData(
   if (row.group === "treatment" || row.group === "control") {
     data.group = row.group;
   }
-  if (typeof row.delayed_total === "number") {
+  if (
+    typeof row.delayed_total === "number" &&
+    Number.isFinite(row.delayed_total)
+  ) {
     data.delayed_total = row.delayed_total;
   }
-  if (typeof row.mtt_score === "number") {
+  if (typeof row.mtt_score === "number" && Number.isFinite(row.mtt_score)) {
     data.mtt_score = row.mtt_score;
   }
-  if (typeof row.imi_interest === "number") {
+  if (
+    typeof row.imi_interest === "number" &&
+    Number.isFinite(row.imi_interest)
+  ) {
     data.imi_interest = row.imi_interest;
   }
-  if (typeof row.imi_competence === "number") {
+  if (
+    typeof row.imi_competence === "number" &&
+    Number.isFinite(row.imi_competence)
+  ) {
     data.imi_competence = row.imi_competence;
   }
-  if (typeof row.imi_effort === "number") {
+  if (typeof row.imi_effort === "number" && Number.isFinite(row.imi_effort)) {
     data.imi_effort = row.imi_effort;
   }
-  if (typeof row.imi_value === "number") {
+  if (typeof row.imi_value === "number" && Number.isFinite(row.imi_value)) {
     data.imi_value = row.imi_value;
   }
-  if (typeof row.gpa === "number") {
+  if (typeof row.gpa === "number" && Number.isFinite(row.gpa)) {
     data.gpa = row.gpa;
   }
   if (
@@ -808,8 +817,7 @@ function parseCSV(filepath: string): StudentData[] {
   }
 
   if (results.length === 0) {
-    console.error("Error: No valid data rows found in CSV");
-    process.exit(1);
+    throw new Error("No valid data rows found in CSV");
   }
 
   return results;
@@ -946,6 +954,24 @@ function handlePowerAnalysis(args: string[]) {
   const alpha = getNumericFlag(args, "--alpha", 0.05);
   const power = getNumericFlag(args, "--power", 0.8);
 
+  // Validate supported alpha values
+  const SUPPORTED_ALPHA = [0.05, 0.01];
+  if (!SUPPORTED_ALPHA.includes(alpha)) {
+    console.error(
+      `Error: --alpha must be one of [${SUPPORTED_ALPHA.join(", ")}], got: ${alpha}`,
+    );
+    process.exit(1);
+  }
+
+  // Validate supported power values
+  const SUPPORTED_POWER = [0.8, 0.9];
+  if (!SUPPORTED_POWER.includes(power)) {
+    console.error(
+      `Error: --power must be one of [${SUPPORTED_POWER.join(", ")}], got: ${power}`,
+    );
+    process.exit(1);
+  }
+
   console.log(
     "\n╔══════════════════════════════════════════════════════════════╗",
   );
@@ -985,7 +1011,15 @@ function handleDataAnalysis(args: string[]) {
     process.exit(1);
   }
 
-  const data = parseCSV(dataFile);
+  let data: StudentData[];
+  try {
+    data = parseCSV(dataFile);
+  } catch (error) {
+    console.error(
+      `Error: ${error instanceof Error ? error.message : "Failed to parse CSV"}`,
+    );
+    process.exit(1);
+  }
 
   if (design === "prepost") {
     ResearchAnalyzer.analyzePrePost(data);
@@ -996,6 +1030,21 @@ function handleDataAnalysis(args: string[]) {
     handleRCTAnalysis(data, controlFile);
   } else {
     console.error(`Error: Unknown design: ${design}. Use "prepost" or "rct"`);
+    process.exit(1);
+  }
+}
+
+/**
+ * Validate that both groups have sufficient sample size for statistical analysis
+ */
+function validateGroupSizes(
+  treatment: StudentData[],
+  control: StudentData[],
+): void {
+  if (treatment.length < 2 || control.length < 2) {
+    console.error(
+      `Error: Each group must have at least 2 participants for statistical analysis (treatment: ${treatment.length}, control: ${control.length})`,
+    );
     process.exit(1);
   }
 }
@@ -1016,13 +1065,24 @@ function handleRCTAnalysis(
       process.exit(1);
     }
 
+    validateGroupSizes(treatment, control);
     ResearchAnalyzer.analyzeRCT(treatment, control);
   } else {
     if (!fs.existsSync(controlFile)) {
       console.error(`Error: Control file not found: ${controlFile}`);
       process.exit(1);
     }
-    const controlData = parseCSV(controlFile);
+    let controlData: StudentData[];
+    try {
+      controlData = parseCSV(controlFile);
+    } catch (error) {
+      console.error(
+        `Error: ${error instanceof Error ? error.message : "Failed to parse control CSV"}`,
+      );
+      process.exit(1);
+    }
+
+    validateGroupSizes(data, controlData);
     ResearchAnalyzer.analyzeRCT(data, controlData);
   }
 }
