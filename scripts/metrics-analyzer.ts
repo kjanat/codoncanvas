@@ -33,6 +33,35 @@ import {
   Stats,
 } from "../src/metrics-analyzer-core";
 
+/** Required fields for a valid MetricsSession */
+const REQUIRED_SESSION_FIELDS = [
+  "sessionId",
+  "startTime",
+  "endTime",
+  "duration",
+  "genomesCreated",
+  "genomesExecuted",
+  "mutationsApplied",
+  "errorCount",
+  "errorTypes",
+] as const;
+
+/** Validates that a parsed session object contains all required fields */
+function validateSession(
+  session: Record<string, string | number | null>,
+  lineNumber: number,
+): void {
+  const missingFields = REQUIRED_SESSION_FIELDS.filter(
+    (field) => !(field in session),
+  );
+
+  if (missingFields.length > 0) {
+    throw new Error(
+      `Invalid session data at line ${lineNumber}: missing required fields: ${missingFields.join(", ")}`,
+    );
+  }
+}
+
 function parseCSV(filepath: string): MetricsSession[] {
   const content = fs.readFileSync(filepath, "utf-8");
   const lines = content.trim().split("\n");
@@ -74,6 +103,8 @@ function parseCSV(filepath: string): MetricsSession[] {
       }
     });
 
+    validateSession(session, i + 1);
+    // Cast is safe after validation confirms required fields exist
     sessions.push(session as unknown as MetricsSession);
   }
 
@@ -494,8 +525,7 @@ function runComparison(
   timestamp: string,
 ) {
   if (!fs.existsSync(baselineFile)) {
-    console.error(`Error: Baseline file not found: ${baselineFile}\n`);
-    process.exit(1);
+    throw new Error(`Baseline file not found: ${baselineFile}`);
   }
 
   console.log(`Baseline file: ${baselineFile}`);
