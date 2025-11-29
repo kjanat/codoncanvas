@@ -8,9 +8,9 @@ import {
   linterMessages,
   linterPanel,
   linterToggle,
-} from "./dom-manager";
-import { lexer } from "./ui-state";
-import { setStatus } from "./ui-utils";
+} from "@/playground/dom-manager";
+import { lexer } from "@/playground/ui-state";
+import { setStatus } from "@/playground/ui-utils";
 
 /**
  * Run linter on source code

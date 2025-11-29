@@ -14,15 +14,15 @@
  * ```
  */
 
-import type { AchievementEngine } from "./achievement-engine";
-import type { AchievementUI } from "./achievement-ui";
+import type { AchievementEngine } from "@/achievement-engine";
+import type { AchievementUI } from "@/achievement-ui";
 import type {
   AssessmentDifficulty,
   AssessmentEngine,
   AssessmentResult,
   Challenge,
-} from "./assessment-engine";
-import type { MutationType } from "./types";
+} from "@/assessment-engine";
+import type { MutationType } from "@/types";
 
 /**
  * UI manager for assessment mode.

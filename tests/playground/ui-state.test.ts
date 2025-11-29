@@ -9,14 +9,14 @@
  * pattern here using shared test utilities.
  */
 import { describe, expect, test } from "bun:test";
-import type { RenderMode, VMState } from "@/types";
 import {
   createVMState,
   createVMStateWithPosition,
   isValidRenderMode,
   TestState,
   VALID_RENDER_MODES,
-} from "../test-utils";
+} from "@/tests/test-utils";
+import type { RenderMode, VMState } from "@/types";
 
 describe("UI State Management", () => {
   // State Management Functions - testing the pattern used in ui-state.ts

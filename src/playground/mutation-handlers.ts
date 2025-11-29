@@ -5,10 +5,14 @@
 
 import { predictMutationImpact } from "@/mutation-predictor";
 import { getMutationByType } from "@/mutations";
+import {
+  diffViewerContainer,
+  diffViewerPanel,
+  editor,
+} from "@/playground/dom-manager";
+import { achievementEngine, achievementUI } from "@/playground/ui-state";
+import { setStatus } from "@/playground/ui-utils";
 import type { MutationType } from "@/types";
-import { diffViewerContainer, diffViewerPanel, editor } from "./dom-manager";
-import { achievementEngine, achievementUI } from "./ui-state";
-import { setStatus } from "./ui-utils";
 
 let originalGenomeBeforeMutation = "";
 let diffViewerInstance: import("@/diff-viewer").DiffViewer | null = null; // Cached DiffViewer instance

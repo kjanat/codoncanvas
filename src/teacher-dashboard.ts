@@ -17,8 +17,8 @@
  * - Supports formative assessment and early intervention
  */
 
-import type { ResearchSession } from "./research-metrics";
-import type { RiskLevel } from "./types";
+import type { ResearchSession } from "@/research-metrics";
+import type { RiskLevel } from "@/types";
 
 /**
  * Student progress data exported for teacher dashboard analysis

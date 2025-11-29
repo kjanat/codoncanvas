@@ -9,11 +9,11 @@ import {
   statusBar,
   statusMessage,
   themeToggleBtn,
-} from "./dom-manager";
-import { themeManager } from "./ui-state";
+} from "@/playground/dom-manager";
+import { themeManager } from "@/playground/ui-state";
 
 // Re-export escapeHtml from DOM-free module for backwards compatibility
-export { escapeHtml } from "./escape-html";
+export { escapeHtml } from "@/playground/escape-html";
 
 /**
  * Set status message and bar styling

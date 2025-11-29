@@ -18,7 +18,7 @@ import {
   type Codon,
   type MutationType,
   Opcode,
-} from "./types";
+} from "@/types";
 
 /**
  * Result of applying a mutation to a genome.

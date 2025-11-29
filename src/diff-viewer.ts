@@ -3,11 +3,11 @@
  * Provides side-by-side visualization with highlighting
  */
 
-import { escapeHtml } from "./dom-utils";
-import { CodonLexer } from "./lexer";
-import { compareGenomes, type MutationResult } from "./mutations";
-import { Canvas2DRenderer } from "./renderer";
-import { CodonVM } from "./vm";
+import { escapeHtml } from "@/dom-utils";
+import { CodonLexer } from "@/lexer";
+import { compareGenomes, type MutationResult } from "@/mutations";
+import { Canvas2DRenderer } from "@/renderer";
+import { CodonVM } from "@/vm";
 
 export interface DiffViewOptions {
   containerElement: HTMLElement;

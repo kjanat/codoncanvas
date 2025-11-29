@@ -1,11 +1,11 @@
-import { getElement } from "../dom-utils";
+import { getElement } from "@/dom-utils";
 import {
   formatDuration as formatDurationAnalyzer,
   MetricsAnalyzer,
   parseCSVContent,
-} from "../metrics-analyzer-core";
-import type { ResearchSession } from "../research-metrics";
-import { ResearchMetrics } from "../research-metrics";
+} from "@/metrics-analyzer-core";
+import type { ResearchSession } from "@/research-metrics";
+import { ResearchMetrics } from "@/research-metrics";
 
 interface AggregateStats {
   totalSessions: number;

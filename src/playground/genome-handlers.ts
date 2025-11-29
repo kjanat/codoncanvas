@@ -4,9 +4,9 @@
  */
 
 import { readGenomeFile } from "@/genome-io";
-import { editor, genomeFileInput } from "./dom-manager";
-import { runLinter } from "./linter-handlers";
-import { setStatus, updateStats } from "./ui-utils";
+import { editor, genomeFileInput } from "@/playground/dom-manager";
+import { runLinter } from "@/playground/linter-handlers";
+import { setStatus, updateStats } from "@/playground/ui-utils";
 
 /**
  * Trigger genome file load dialog

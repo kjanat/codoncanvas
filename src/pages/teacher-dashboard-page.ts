@@ -1,5 +1,5 @@
-import { getElement } from "../dom-utils";
-import { generateStudentExport, TeacherDashboard } from "../teacher-dashboard";
+import { getElement } from "@/dom-utils";
+import { generateStudentExport, TeacherDashboard } from "@/teacher-dashboard";
 
 interface StudentData {
   studentId: string;

@@ -7,29 +7,29 @@
  */
 
 // Re-export all public modules for backward compatibility
-export * from "./playground/dom-manager";
-export * from "./playground/export-handlers";
-export * from "./playground/genome-handlers";
-export * from "./playground/linter-handlers";
-export * from "./playground/ui-state";
-export * from "./playground/ui-utils";
+export * from "@/playground/dom-manager";
+export * from "@/playground/export-handlers";
+export * from "@/playground/genome-handlers";
+export * from "@/playground/linter-handlers";
+export * from "@/playground/ui-state";
+export * from "@/playground/ui-utils";
 
-import type { Achievement } from "./achievement-engine";
-import { DiffViewer, injectDiffViewerStyles } from "./diff-viewer";
+import type { Achievement } from "@/achievement-engine";
+import { DiffViewer, injectDiffViewerStyles } from "@/diff-viewer";
 import {
   type Concept,
   type ExampleDifficulty,
   type ExampleKey,
   type ExampleMetadata,
   examples,
-} from "./examples";
-import { injectShareStyles, ShareSystem } from "./share-system";
-import { TutorialManager } from "./tutorial";
-import { initializeTutorial } from "./tutorial-ui";
-import { CodonVM } from "./vm";
-import "./tutorial-ui.css";
-import "./achievement-ui.css";
-import { AssessmentUI } from "./assessment-ui";
+} from "@/examples";
+import { injectShareStyles, ShareSystem } from "@/share-system";
+import { TutorialManager } from "@/tutorial";
+import { initializeTutorial } from "@/tutorial-ui";
+import { CodonVM } from "@/vm";
+import "@/tutorial-ui.css";
+import "@/achievement-ui.css";
+import { AssessmentUI } from "@/assessment-ui";
 // Import DOM elements
 import {
   assessmentContainer,
@@ -63,20 +63,20 @@ import {
   themeToggleBtn,
   timelinePanel,
   timelineToggleBtn,
-} from "./playground/dom-manager";
+} from "@/playground/dom-manager";
 // Import handlers
 import {
   exportImage,
   exportStudentProgress,
   saveGenome,
-} from "./playground/export-handlers";
-import { handleFileLoad, loadGenome } from "./playground/genome-handlers";
+} from "@/playground/export-handlers";
+import { handleFileLoad, loadGenome } from "@/playground/genome-handlers";
 import {
   fixAllErrors,
   runLinter,
   toggleLinter,
-} from "./playground/linter-handlers";
-import { applyMutation } from "./playground/mutation-handlers";
+} from "@/playground/linter-handlers";
+import { applyMutation } from "@/playground/mutation-handlers";
 // Import state managers
 import {
   achievementEngine,
@@ -97,14 +97,14 @@ import {
   timelineScrubber,
   timelineVisible,
   vm,
-} from "./playground/ui-state";
+} from "@/playground/ui-state";
 // Import UI utilities
 import {
   setStatus,
   updateStats,
   updateThemeButton,
-} from "./playground/ui-utils";
-import { injectTimelineStyles } from "./timeline-scrubber";
+} from "@/playground/ui-utils";
+import { injectTimelineStyles } from "@/timeline-scrubber";
 
 // Initialize UI button state
 updateThemeButton();

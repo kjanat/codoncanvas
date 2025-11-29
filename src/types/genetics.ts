@@ -1,5 +1,5 @@
-import type { Severity } from "./common";
-import { Opcode } from "./vm";
+import type { Severity } from "@/types/common";
+import { Opcode } from "@/types/vm";
 
 /**
  * Valid DNA/RNA base character.

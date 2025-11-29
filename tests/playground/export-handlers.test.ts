@@ -16,7 +16,7 @@ import {
   generateMidiFilename,
   generateProgressFilename,
   isEmptyGenome,
-} from "../test-utils";
+} from "@/tests/test-utils";
 
 describe("Export Handlers", () => {
   // exportImage

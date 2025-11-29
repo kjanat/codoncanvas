@@ -3,7 +3,7 @@
  * Renders and manages the interactive tutorial interface
  */
 
-import type { TutorialManager, TutorialStep } from "./tutorial";
+import type { TutorialManager, TutorialStep } from "@/tutorial";
 
 export class TutorialUI {
   private manager: TutorialManager;

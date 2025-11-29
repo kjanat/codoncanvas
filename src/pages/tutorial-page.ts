@@ -1,7 +1,7 @@
-import { escapeHtml, getElement } from "../dom-utils";
-import { CodonLexer } from "../lexer";
-import { Canvas2DRenderer } from "../renderer";
-import { CodonVM } from "../vm";
+import { escapeHtml, getElement } from "@/dom-utils";
+import { CodonLexer } from "@/lexer";
+import { Canvas2DRenderer } from "@/renderer";
+import { CodonVM } from "@/vm";
 
 // Types
 interface TutorialLesson {

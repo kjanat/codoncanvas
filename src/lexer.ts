@@ -1,4 +1,4 @@
-import type { Codon, CodonToken, ParseError } from "./types";
+import type { Codon, CodonToken, ParseError } from "@/types";
 
 /**
  * Strip comment from a line (everything after `;`)

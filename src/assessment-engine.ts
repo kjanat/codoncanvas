@@ -23,8 +23,8 @@ import {
   applyPointMutation,
   applySilentMutation,
   type MutationResult,
-} from "./mutations";
-import { CODON_MAP, type Codon, type MutationType, Opcode } from "./types";
+} from "@/mutations";
+import { CODON_MAP, type Codon, type MutationType, Opcode } from "@/types";
 
 /**
  * Difficulty level for generated assessment challenges.

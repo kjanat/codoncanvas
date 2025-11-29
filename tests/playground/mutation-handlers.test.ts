@@ -15,7 +15,7 @@ import {
   isValidMutationType,
   MutationState,
   VALID_MUTATION_TYPES,
-} from "../test-utils";
+} from "@/tests/test-utils";
 
 describe("Mutation Handlers", () => {
   // Mutation Type Validation

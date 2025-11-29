@@ -4,9 +4,9 @@
  * This module is DOM-free to allow easy testing.
  */
 
-import { CodonLexer } from "./lexer";
-import { Canvas2DRenderer } from "./renderer";
-import { CodonVM } from "./vm";
+import { CodonLexer } from "@/lexer";
+import { Canvas2DRenderer } from "@/renderer";
+import { CodonVM } from "@/vm";
 
 // Demo genome examples
 export const DEMO_GENOMES = {

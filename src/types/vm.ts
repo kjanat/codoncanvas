@@ -1,4 +1,4 @@
-import type { HSLColor, Point2D } from "./geometric";
+import type { HSLColor, Point2D } from "@/types/geometric";
 
 /**
  * VM instruction opcodes.
