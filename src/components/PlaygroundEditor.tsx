@@ -6,8 +6,8 @@
 
 import { forwardRef, memo } from "react";
 import type { GenomeValidation } from "@/hooks/useGenome";
-import type { NucleotideDisplayMode } from "@/playground/nucleotide-display";
 import { CheckIcon, ErrorIcon } from "@/ui";
+import type { NucleotideDisplayMode } from "@/utils/nucleotide-display";
 
 // --- Sub-components ---
 

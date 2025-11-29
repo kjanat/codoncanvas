@@ -12,7 +12,7 @@ import {
   getModeButtonTooltip,
   getNucleotideModeInfo,
   type NucleotideDisplayMode,
-} from "@/playground/nucleotide-display";
+} from "@/utils/nucleotide-display";
 
 // --- Sub-component: Nucleotide Mode Toggle ---
 

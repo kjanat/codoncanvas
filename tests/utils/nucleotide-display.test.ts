@@ -4,6 +4,7 @@
  * Tests for DNA/RNA notation toggle functionality.
  */
 import { beforeEach, describe, expect, test } from "bun:test";
+import type { NucleotideDisplayMode } from "@/utils/nucleotide-display";
 import {
   getModeButtonLabel,
   getModeButtonTooltip,
@@ -16,7 +17,7 @@ import {
   transformCodonForDisplay,
   transformForDisplay,
   transformFromDisplay,
-} from "@/playground/nucleotide-display";
+} from "@/utils/nucleotide-display";
 
 describe("Nucleotide Display Module", () => {
   // Reset to DNA mode before each test
@@ -89,10 +90,12 @@ describe("Nucleotide Display Module", () => {
 
   describe("listener management", () => {
     test("onNucleotideDisplayModeChange notifies on mode change", () => {
-      const notifications: string[] = [];
-      const unsubscribe = onNucleotideDisplayModeChange((mode) => {
-        notifications.push(mode);
-      });
+      const notifications: NucleotideDisplayMode[] = [];
+      const unsubscribe = onNucleotideDisplayModeChange(
+        (mode: NucleotideDisplayMode) => {
+          notifications.push(mode);
+        },
+      );
 
       toggleNucleotideDisplayMode(); // DNA -> RNA
       toggleNucleotideDisplayMode(); // RNA -> DNA
@@ -103,10 +106,12 @@ describe("Nucleotide Display Module", () => {
     });
 
     test("unsubscribe stops notifications", () => {
-      const notifications: string[] = [];
-      const unsubscribe = onNucleotideDisplayModeChange((mode) => {
-        notifications.push(mode);
-      });
+      const notifications: NucleotideDisplayMode[] = [];
+      const unsubscribe = onNucleotideDisplayModeChange(
+        (mode: NucleotideDisplayMode) => {
+          notifications.push(mode);
+        },
+      );
 
       toggleNucleotideDisplayMode();
       unsubscribe();
@@ -116,15 +121,19 @@ describe("Nucleotide Display Module", () => {
     });
 
     test("multiple listeners receive notifications", () => {
-      const notifications1: string[] = [];
-      const notifications2: string[] = [];
+      const notifications1: NucleotideDisplayMode[] = [];
+      const notifications2: NucleotideDisplayMode[] = [];
 
-      const unsub1 = onNucleotideDisplayModeChange((mode) => {
-        notifications1.push(mode);
-      });
-      const unsub2 = onNucleotideDisplayModeChange((mode) => {
-        notifications2.push(mode);
-      });
+      const unsub1 = onNucleotideDisplayModeChange(
+        (mode: NucleotideDisplayMode) => {
+          notifications1.push(mode);
+        },
+      );
+      const unsub2 = onNucleotideDisplayModeChange(
+        (mode: NucleotideDisplayMode) => {
+          notifications2.push(mode);
+        },
+      );
 
       toggleNucleotideDisplayMode();
 
@@ -136,10 +145,12 @@ describe("Nucleotide Display Module", () => {
     });
 
     test("setNucleotideDisplayMode only notifies on actual change", () => {
-      const notifications: string[] = [];
-      const unsubscribe = onNucleotideDisplayModeChange((mode) => {
-        notifications.push(mode);
-      });
+      const notifications: NucleotideDisplayMode[] = [];
+      const unsubscribe = onNucleotideDisplayModeChange(
+        (mode: NucleotideDisplayMode) => {
+          notifications.push(mode);
+        },
+      );
 
       setNucleotideDisplayMode("DNA"); // No change (already DNA)
       setNucleotideDisplayMode("RNA"); // Change

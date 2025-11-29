@@ -6,7 +6,7 @@
  */
 
 import { useCallback, useMemo } from "react";
-import type { NucleotideDisplayMode } from "@/playground/nucleotide-display";
+import type { NucleotideDisplayMode } from "@/utils/nucleotide-display";
 import { useLocalStorage } from "./useLocalStorage";
 
 /** User preferences structure */

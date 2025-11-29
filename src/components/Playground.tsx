@@ -30,7 +30,7 @@ import {
   toggleNucleotideDisplayMode,
   transformForDisplay,
   transformFromDisplay,
-} from "@/playground/nucleotide-display";
+} from "@/utils/nucleotide-display";
 
 const DRAFT_STORAGE_KEY = "codoncanvas-draft-genome";
 const DEFAULT_GENOME = "ATG GAA AAT GGA TAA";
