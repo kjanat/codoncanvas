@@ -40,6 +40,7 @@ export {
   type UseKeyboardShortcutsOptions,
   useKeyboardShortcuts,
 } from "./useKeyboardShortcuts";
+export { useLineChart } from "./useLineChart";
 export { useLocalStorage } from "./useLocalStorage";
 export {
   type UsePreferencesReturn,

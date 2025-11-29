@@ -1,9 +1,10 @@
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { Card } from "@/components/Card";
 import { Label } from "@/components/Label";
 import { PageContainer } from "@/components/PageContainer";
 import { PageHeader } from "@/components/PageHeader";
 import { SimulationControls } from "@/components/SimulationControls";
+import { useLineChart } from "@/hooks/useLineChart";
 import { useSimulation } from "@/hooks/useSimulation";
 
 interface Allele {
@@ -67,7 +68,6 @@ export default function PopulationDemo() {
   const [population, setPopulation] = useState<PopulationState>(() =>
     initPopulation(3),
   );
-  const canvasRef = useRef<HTMLCanvasElement>(null);
 
   // Advance one generation
   const advanceGeneration = useCallback(() => {
@@ -112,48 +112,17 @@ export default function PopulationDemo() {
     simulation.setSpeed(speed);
   }, [speed, simulation]);
 
-  // Draw frequency chart
-  useEffect(() => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
+  // Build chart series from population history
+  const chartSeries = useMemo(
+    () =>
+      population.alleles.map((allele, idx) => ({
+        data: population.history.map((h) => h.frequencies[idx]),
+        color: allele.color,
+      })),
+    [population],
+  );
 
-    const ctx = canvas.getContext("2d");
-    if (!ctx) return;
-
-    const { width, height } = canvas;
-    ctx.clearRect(0, 0, width, height);
-
-    // Draw background grid
-    ctx.strokeStyle = "#e5e7eb";
-    ctx.lineWidth = 1;
-    for (let y = 0; y <= 1; y += 0.25) {
-      ctx.beginPath();
-      ctx.moveTo(0, height * (1 - y));
-      ctx.lineTo(width, height * (1 - y));
-      ctx.stroke();
-    }
-
-    // Draw frequency lines
-    const history = population.history;
-    if (history.length < 2) return;
-
-    const xScale = width / Math.max(history.length - 1, 1);
-
-    population.alleles.forEach((allele, alleleIdx) => {
-      ctx.strokeStyle = allele.color;
-      ctx.lineWidth = 2;
-      ctx.beginPath();
-
-      history.forEach((h, i) => {
-        const x = i * xScale;
-        const y = height * (1 - h.frequencies[alleleIdx]);
-        if (i === 0) ctx.moveTo(x, y);
-        else ctx.lineTo(x, y);
-      });
-
-      ctx.stroke();
-    });
-  }, [population]);
+  const chartRef = useLineChart({ series: chartSeries });
 
   const handleReset = () => {
     simulation.reset();
@@ -272,7 +241,7 @@ export default function PopulationDemo() {
             <canvas
               className="w-full rounded-lg border border-border bg-surface"
               height={300}
-              ref={canvasRef}
+              ref={chartRef}
               width={600}
             />
             {/* Y-axis labels */}

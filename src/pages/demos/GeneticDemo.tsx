@@ -1,10 +1,11 @@
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Card } from "@/components/Card";
 import { Label } from "@/components/Label";
 import { PageContainer } from "@/components/PageContainer";
 import { PageHeader } from "@/components/PageHeader";
 import { SimulationControls } from "@/components/SimulationControls";
 import { applyPointMutation } from "@/genetics/mutations";
+import { useLineChart } from "@/hooks/useLineChart";
 import { useRenderGenome } from "@/hooks/useRenderGenome";
 import { useSimulation } from "@/hooks/useSimulation";
 
@@ -132,7 +133,6 @@ export default function GeneticDemo() {
 
   const canvasRefs = useRef<Map<string, HTMLCanvasElement>>(new Map());
   const offscreenCanvas = useRef<HTMLCanvasElement | null>(null);
-  const chartRef = useRef<HTMLCanvasElement>(null);
   const { render } = useRenderGenome();
 
   // Render genome to canvas with white background
@@ -258,56 +258,20 @@ export default function GeneticDemo() {
     });
   }, [state.population, renderGenome]);
 
-  // Draw fitness chart
-  useEffect(() => {
-    const canvas = chartRef.current;
-    if (!canvas || state.history.length < 1) return;
+  // Build chart series from history
+  const chartSeries = useMemo(
+    () => [
+      { data: state.history.map((h) => h.best), color: "#22c55e", width: 2 },
+      { data: state.history.map((h) => h.avg), color: "#94a3b8", width: 1 },
+    ],
+    [state.history],
+  );
 
-    const ctx = canvas.getContext("2d");
-    if (!ctx) return;
-
-    const { width, height } = canvas;
-    ctx.clearRect(0, 0, width, height);
-
-    ctx.fillStyle = "#f8fafc";
-    ctx.fillRect(0, 0, width, height);
-
-    ctx.strokeStyle = "#e2e8f0";
-    ctx.lineWidth = 1;
-    for (let y = 0; y <= 1; y += 0.25) {
-      ctx.beginPath();
-      ctx.moveTo(0, height * (1 - y));
-      ctx.lineTo(width, height * (1 - y));
-      ctx.stroke();
-    }
-
-    const history = state.history;
-    const xScale = width / Math.max(history.length - 1, 1);
-
-    // Average line
-    ctx.strokeStyle = "#94a3b8";
-    ctx.lineWidth = 1;
-    ctx.beginPath();
-    history.forEach((h, i) => {
-      const x = i * xScale;
-      const y = height * (1 - h.avg);
-      if (i === 0) ctx.moveTo(x, y);
-      else ctx.lineTo(x, y);
-    });
-    ctx.stroke();
-
-    // Best line
-    ctx.strokeStyle = "#22c55e";
-    ctx.lineWidth = 2;
-    ctx.beginPath();
-    history.forEach((h, i) => {
-      const x = i * xScale;
-      const y = height * (1 - h.best);
-      if (i === 0) ctx.moveTo(x, y);
-      else ctx.lineTo(x, y);
-    });
-    ctx.stroke();
-  }, [state.history]);
+  const chartRef = useLineChart({
+    series: chartSeries,
+    bgColor: "#f8fafc",
+    gridColor: "#e2e8f0",
+  });
 
   const handleReset = () => {
     simulation.reset();
