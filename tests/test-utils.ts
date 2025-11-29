@@ -5,6 +5,7 @@
  * to reduce duplication and ensure consistent test patterns.
  */
 
+import { MUTATION_TYPES } from "@/genetics/mutations";
 import type { MutationType, RenderMode, VMState } from "@/types";
 
 // ============================================================================
@@ -12,23 +13,16 @@ import type { MutationType, RenderMode, VMState } from "@/types";
 // ============================================================================
 
 /**
- * Valid mutation types for CodonCanvas
+ * Valid mutation types for CodonCanvas.
+ * Re-exported from @/genetics/mutations for test convenience.
  */
-export const VALID_MUTATION_TYPES: MutationType[] = [
-  "silent",
-  "missense",
-  "nonsense",
-  "point",
-  "insertion",
-  "deletion",
-  "frameshift",
-];
+export const VALID_MUTATION_TYPES = MUTATION_TYPES;
 
 /**
  * Check if a string is a valid mutation type
  */
 export function isValidMutationType(type: string): type is MutationType {
-  return VALID_MUTATION_TYPES.includes(type as MutationType);
+  return MUTATION_TYPES.includes(type as MutationType);
 }
 
 /**

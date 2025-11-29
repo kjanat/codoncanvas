@@ -13,3 +13,5 @@ export {
   querySelectorUnsafe,
   showStatus,
 } from "./dom";
+
+export { cleanGenome, formatAsCodons, parseGenome } from "./genome-utils";

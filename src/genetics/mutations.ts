@@ -21,6 +21,7 @@ import {
   type MutationType,
   Opcode,
 } from "@/types";
+import { cleanGenome, formatAsCodons, parseGenome } from "@/utils/genome-utils";
 
 /**
  * Result of applying a mutation to a genome.
@@ -46,16 +47,6 @@ const STOP_CODONS: Set<Codon> = new Set([
   "TAG" as Codon,
   "TGA" as Codon,
 ]);
-
-/**
- * Clean genome string by removing whitespace and comments.
- * @param genome - Raw genome string with optional formatting
- * @returns Continuous base string without whitespace or comments
- * @internal
- */
-function cleanGenome(genome: string): string {
-  return genome.replace(/\s+/g, "").replace(/;.*/g, "");
-}
 
 /**
  * Get synonymous codons (same opcode) for a given codon.
@@ -93,28 +84,6 @@ function getMissenseCodons(codon: Codon): Codon[] {
       ([c, op]) => op !== opcode && !STOP_CODONS.has(c as Codon) && c !== codon,
     )
     .map(([c]) => c as Codon);
-}
-
-/**
- * Parse genome string into array of codons.
- * Strips comments and whitespace, chunks into triplets.
- * @param genome - Raw genome string with optional formatting
- * @returns Array of three-character codon strings
- * @internal
- */
-function parseGenome(genome: string): string[] {
-  // Strip comments and whitespace
-  const cleaned = genome
-    .split("\n")
-    .map((line) => line.split(";")[0])
-    .join("")
-    .replace(/\s+/g, "");
-
-  const codons: string[] = [];
-  for (let i = 0; i < cleaned.length; i += 3) {
-    codons.push(cleaned.slice(i, i + 3));
-  }
-  return codons;
 }
 
 /**
@@ -514,20 +483,6 @@ export function applyFrameshiftMutation(
 }
 
 /**
- * Format a continuous base string as space-separated codons.
- * @param bases - Continuous string of bases (e.g., "ATGGGATAA")
- * @returns Space-separated codon string (e.g., "ATG GGA TAA")
- * @internal
- */
-function formatAsCodons(bases: string): string {
-  const codons: string[] = [];
-  for (let i = 0; i < bases.length; i += 3) {
-    codons.push(bases.slice(i, i + 3));
-  }
-  return codons.join(" ");
-}
-
-/**
  * Mutation function lookup table for type-safe dispatch.
  * Maps mutation type strings to their implementation functions.
  */
@@ -540,6 +495,14 @@ const MUTATION_FUNCTIONS = {
   deletion: applyDeletion,
   frameshift: applyFrameshiftMutation,
 } as const;
+
+/**
+ * Array of all valid mutation types.
+ * Derived from MUTATION_FUNCTIONS keys - single source of truth.
+ */
+export const MUTATION_TYPES = Object.keys(
+  MUTATION_FUNCTIONS,
+) as readonly MutationType[];
 
 /**
  * Apply a mutation by type name.
