@@ -300,7 +300,7 @@ Students need additional instruction for:
 
 For classroom comparison activities, here is the standard genetic code:
 
-```
+```text
 Second Position
         U       C       A       G
     +-------+-------+-------+-------+

@@ -11,7 +11,7 @@
  * (codon usage bias, GC content, compositional analysis)
  */
 
-import { CODON_MAP, type CodonToken, lookupCodon, Opcode } from "@/types";
+import { type CodonToken, lookupCodon, Opcode } from "@/types";
 
 /**
  * Complete codon usage analysis results
@@ -410,7 +410,7 @@ function buildOpcodeStats(tokens: CodonToken[]): {
   const unique = new Set<Opcode>();
 
   for (const token of tokens) {
-    const opcode = CODON_MAP[token.text];
+    const opcode = lookupCodon(token.text);
     if (opcode !== undefined) {
       unique.add(opcode);
       const name = Opcode[opcode];
@@ -425,7 +425,8 @@ function calculateMaxStackDepth(tokens: CodonToken[]): number {
   let current = 0;
   let max = 0;
   for (const token of tokens) {
-    const effect = getStackEffect(CODON_MAP[token.text]);
+    const opcode = lookupCodon(token.text);
+    const effect = getStackEffect(opcode);
     current = Math.max(0, current + effect);
     max = Math.max(max, current);
   }
