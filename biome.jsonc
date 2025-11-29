@@ -1,9 +1,10 @@
 {
-  "$schema": "https://biomejs.dev/schemas/2.3.5/schema.json",
+  "$schema": "./node_modules/@biomejs/biome/configuration_schema.json",
   "vcs": {
     "enabled": true,
     "clientKind": "git",
-    "useIgnoreFile": true
+    "useIgnoreFile": true,
+    "defaultBranch": "master"
   },
   "files": {
     "includes": ["**", "!!**/dist"]
@@ -38,7 +39,11 @@
         "recommended": true
       }
     },
-    "domains": {}
+    "domains": {
+      "project": "recommended",
+      "react": "recommended",
+      "test": "recommended"
+    }
   },
   "javascript": {
     "formatter": {
@@ -57,6 +62,7 @@
       "tailwindDirectives": true
     }
   },
+  "html": {},
   "assist": {
     "enabled": true,
     "actions": {
@@ -72,11 +78,6 @@
       "includes": ["tests/**"],
       "linter": {
         "rules": {
-          "complexity": {
-            // Allow bracket notation for dataset properties - required by TypeScript's noPropertyAccessFromIndexSignature
-            // DOMStringMap (dataset) has index signature, TypeScript requires bracket notation
-            "useLiteralKeys": "off"
-          },
           "style": {
             "noNonNullAssertion": "off"
           }
