@@ -43,5 +43,13 @@
       ],
       "environment": {}
     }
+  },
+  "tools": {
+    "morphllm_write_file": {
+      "enabled": false
+    },
+    "morphllm_edit_file": {
+      "enabled": false
+    }
   }
 }

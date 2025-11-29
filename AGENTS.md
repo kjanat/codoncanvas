@@ -27,3 +27,4 @@
 - Max cognitive complexity: 15 | Keep files <300 lines
 - Always use `const`, strict equality (`===`), curly braces for all blocks
 - No `console.log` (use `console.info`/`warn`/`error` only)
+- Do not use `morphllm_write_file` or `morphllm_edit_file`
