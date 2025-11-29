@@ -1,0 +1,43 @@
+{
+  // See https://go.microsoft.com/fwlink/?LinkId=733558
+  // for the documentation about the tasks.json format
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Test (watch)",
+      "type": "shell",
+      "command": "bun test --watch",
+      "group": "test"
+    },
+    {
+      "label": "Build",
+      "type": "shell",
+      "command": "bun run build",
+      "group": "build"
+    },
+    {
+      "label": "Dev",
+      "type": "shell",
+      "command": "bun run dev",
+      "group": "none"
+    },
+    {
+      "label": "Typecheck",
+      "type": "shell",
+      "command": "bun run typecheck",
+      "group": "none"
+    },
+    {
+      "label": "Format",
+      "type": "shell",
+      "command": "bun run fmt",
+      "group": "none"
+    },
+    {
+      "label": "Lint (fix)",
+      "type": "shell",
+      "command": "bun run lint:fix",
+      "group": "none"
+    }
+  ]
+}

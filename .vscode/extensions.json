@@ -1,3 +1,10 @@
 {
-  "recommendations": ["bradlc.vscode-tailwindcss", "biomejs.biome"]
+  "recommendations": [
+    "biomejs.biome",
+    "bradlc.vscode-tailwindcss",
+    "dprint.dprint",
+    "oven.bun-vscode",
+    "sst-dev.opencode",
+    "tombi-toml.tombi"
+  ]
 }
