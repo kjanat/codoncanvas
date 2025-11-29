@@ -242,6 +242,40 @@ export function Playground() {
     },
     { key: "y", ctrl: true, handler: handleRedo, description: "Redo" },
     {
+      key: "e",
+      ctrl: true,
+      handler: handleExportPNG,
+      description: "Export PNG",
+    },
+    {
+      key: "l",
+      ctrl: true,
+      handler: handleShare,
+      description: "Copy share link",
+    },
+    {
+      key: "r",
+      ctrl: true,
+      shift: true,
+      handler: () => setShowReference((s) => !s),
+      description: "Toggle reference",
+    },
+    {
+      key: "m",
+      ctrl: true,
+      handler: handleToggleNucleotideMode,
+      description: "Toggle display mode",
+    },
+    {
+      key: "Escape",
+      handler: () => {
+        setShowReference(false);
+        setShowShortcutsHelp(false);
+        setShowModeInfo(false);
+      },
+      description: "Close panels",
+    },
+    {
       key: "?",
       handler: () => setShowShortcutsHelp((s) => !s),
       description: "Show shortcuts",
