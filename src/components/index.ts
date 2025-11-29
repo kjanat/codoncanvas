@@ -16,7 +16,9 @@ export { CodonReference } from "./CodonReference";
 export { DiffViewer } from "./DiffViewer";
 export { ErrorAlert, type ErrorAlertProps } from "./ErrorAlert";
 export { ErrorBoundary } from "./ErrorBoundary";
+export { FilterToggle } from "./FilterToggle";
 export { KeyboardShortcutsHelp } from "./KeyboardShortcutsHelp";
+export { Label } from "./Label";
 export { Layout } from "./Layout";
 export {
   PageContainer,

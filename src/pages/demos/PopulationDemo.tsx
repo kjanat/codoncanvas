@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { Card } from "@/components/Card";
+import { Label } from "@/components/Label";
 import { PageContainer } from "@/components/PageContainer";
 import { PageHeader } from "@/components/PageHeader";
 import { SimulationControls } from "@/components/SimulationControls";
@@ -183,12 +184,9 @@ export default function PopulationDemo() {
 
           <div className="space-y-4">
             <div>
-              <label
-                className="mb-1 block text-sm font-medium text-text"
-                htmlFor="population-size"
-              >
+              <Label htmlFor="population-size">
                 Population Size: {populationSize}
-              </label>
+              </Label>
               <input
                 className="w-full"
                 disabled={simulation.state.isRunning}
@@ -206,12 +204,9 @@ export default function PopulationDemo() {
             </div>
 
             <div>
-              <label
-                className="mb-1 block text-sm font-medium text-text"
-                htmlFor="num-alleles"
-              >
+              <Label htmlFor="num-alleles">
                 Number of Alleles: {numAlleles}
-              </label>
+              </Label>
               <input
                 className="w-full"
                 disabled={simulation.state.isRunning}
@@ -225,12 +220,7 @@ export default function PopulationDemo() {
             </div>
 
             <div>
-              <label
-                className="mb-1 block text-sm font-medium text-text"
-                htmlFor="simulation-speed"
-              >
-                Speed: {speed}ms
-              </label>
+              <Label htmlFor="simulation-speed">Speed: {speed}ms</Label>
               <input
                 className="w-full"
                 id="simulation-speed"

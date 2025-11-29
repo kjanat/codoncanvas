@@ -1,6 +1,9 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { CanvasPreview } from "@/components/CanvasPreview";
+import { FilterToggle } from "@/components/FilterToggle";
+import { PageContainer } from "@/components/PageContainer";
+import { PageHeader } from "@/components/PageHeader";
 import { type ExampleMetadata, examples } from "@/data/examples";
 
 // --- Types & Constants ---
@@ -64,33 +67,6 @@ function matchesCategory(
 }
 
 // --- Sub-Components ---
-
-function CategoryFilter({
-  selected,
-  onSelect,
-}: {
-  selected: Category;
-  onSelect: (cat: Category) => void;
-}) {
-  return (
-    <div className="flex flex-wrap gap-2">
-      {categories.map((cat) => (
-        <button
-          className={`rounded-full px-4 py-2 text-sm font-medium transition-colors ${
-            selected === cat.value
-              ? "bg-primary text-white"
-              : "bg-surface text-text hover:bg-bg-light"
-          }`}
-          key={cat.value}
-          onClick={() => onSelect(cat.value)}
-          type="button"
-        >
-          {cat.label}
-        </button>
-      ))}
-    </div>
-  );
-}
 
 function SearchInput({
   value,
@@ -320,19 +296,20 @@ export default function Gallery() {
   }, [selectedExample, navigate]);
 
   return (
-    <div className="mx-auto max-w-7xl px-4 py-8">
-      {/* Header */}
-      <div className="mb-8 text-center">
-        <h1 className="mb-2 text-3xl font-bold text-text">Example Gallery</h1>
-        <p className="text-text-muted">
-          Browse {examplesList.length} examples demonstrating CodonCanvas
-          features
-        </p>
-      </div>
+    <PageContainer>
+      <PageHeader
+        subtitle={`Browse ${examplesList.length} examples demonstrating CodonCanvas features`}
+        title="Example Gallery"
+      />
 
       {/* Filters */}
       <div className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-        <CategoryFilter onSelect={setFilter} selected={filter} />
+        <FilterToggle
+          onSelect={setFilter}
+          options={categories}
+          selected={filter}
+          variant="pill"
+        />
         <div className="flex gap-2">
           <SearchInput onChange={setSearch} value={search} />
           <SortSelect onChange={setSortBy} value={sortBy} />
@@ -360,6 +337,6 @@ export default function Gallery() {
           onOpenInPlayground={handleOpenInPlayground}
         />
       )}
-    </div>
+    </PageContainer>
   );
 }

@@ -1,6 +1,7 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { Button } from "@/components/Button";
 import { Card } from "@/components/Card";
+import { FilterToggle } from "@/components/FilterToggle";
 import { PageContainer } from "@/components/PageContainer";
 import { PageHeader } from "@/components/PageHeader";
 import {
@@ -34,6 +35,8 @@ function StatCard({ label, value }: { label: string; value: number }) {
   );
 }
 
+type CategoryFilter = AchievementCategory | "all";
+
 export default function AchievementsDemo() {
   const [engine] = useState(() => new AchievementEngine());
   const [stats, setStats] = useState<PlayerStats>(() => engine.getStats());
@@ -43,10 +46,20 @@ export default function AchievementsDemo() {
   const [unlocked, setUnlocked] = useState<UnlockedAchievement[]>(() =>
     engine.getUnlockedAchievements(),
   );
-  const [selectedCategory, setSelectedCategory] = useState<
-    AchievementCategory | "all"
-  >("all");
+  const [selectedCategory, setSelectedCategory] =
+    useState<CategoryFilter>("all");
   const [recentUnlock, setRecentUnlock] = useState<Achievement | null>(null);
+
+  const categoryOptions = useMemo(
+    () => [
+      { value: "all" as CategoryFilter, label: "All" },
+      ...Object.entries(CATEGORY_LABELS).map(([value, label]) => ({
+        value: value as CategoryFilter,
+        label,
+      })),
+    ],
+    [],
+  );
 
   const refreshState = useCallback(() => {
     setStats(engine.getStats());
@@ -231,35 +244,12 @@ export default function AchievementsDemo() {
         {/* Achievements grid */}
         <Card className="lg:col-span-3">
           {/* Category filter */}
-          <div className="mb-6 flex flex-wrap gap-2">
-            <button
-              className={`rounded-lg px-3 py-1.5 text-sm font-medium transition-colors ${
-                selectedCategory === "all"
-                  ? "bg-primary text-white"
-                  : "bg-surface text-text hover:bg-primary/10"
-              }`}
-              onClick={() => setSelectedCategory("all")}
-              type="button"
-            >
-              All
-            </button>
-            {(Object.keys(CATEGORY_LABELS) as AchievementCategory[]).map(
-              (cat) => (
-                <button
-                  className={`rounded-lg px-3 py-1.5 text-sm font-medium transition-colors ${
-                    selectedCategory === cat
-                      ? "bg-primary text-white"
-                      : "bg-surface text-text hover:bg-primary/10"
-                  }`}
-                  key={cat}
-                  onClick={() => setSelectedCategory(cat)}
-                  type="button"
-                >
-                  {CATEGORY_LABELS[cat]}
-                </button>
-              ),
-            )}
-          </div>
+          <FilterToggle
+            className="mb-6"
+            onSelect={setSelectedCategory}
+            options={categoryOptions}
+            selected={selectedCategory}
+          />
 
           {/* Achievements */}
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">

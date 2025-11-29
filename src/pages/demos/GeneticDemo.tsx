@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { Card } from "@/components/Card";
+import { Label } from "@/components/Label";
 import { PageContainer } from "@/components/PageContainer";
 import { PageHeader } from "@/components/PageHeader";
 import { SimulationControls } from "@/components/SimulationControls";
@@ -334,12 +335,7 @@ export default function GeneticDemo() {
 
           <div className="space-y-4">
             <div>
-              <label
-                className="mb-1 block text-sm font-medium text-text"
-                htmlFor="fitness-function"
-              >
-                Fitness Function
-              </label>
+              <Label htmlFor="fitness-function">Fitness Function</Label>
               <select
                 className="w-full rounded-lg border border-border px-3 py-2 text-sm"
                 disabled={simulation.state.isRunning}
@@ -355,12 +351,9 @@ export default function GeneticDemo() {
             </div>
 
             <div>
-              <label
-                className="mb-1 block text-sm font-medium text-text"
-                htmlFor="ga-population"
-              >
+              <Label htmlFor="ga-population">
                 Population: {populationSize}
-              </label>
+              </Label>
               <input
                 className="w-full"
                 disabled={simulation.state.isRunning}
@@ -375,12 +368,9 @@ export default function GeneticDemo() {
             </div>
 
             <div>
-              <label
-                className="mb-1 block text-sm font-medium text-text"
-                htmlFor="mutation-rate"
-              >
+              <Label htmlFor="mutation-rate">
                 Mutation Rate: {(mutationRate * 100).toFixed(0)}%
-              </label>
+              </Label>
               <input
                 className="w-full"
                 id="mutation-rate"
