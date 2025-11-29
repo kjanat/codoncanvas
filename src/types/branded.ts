@@ -325,9 +325,3 @@ export function stackMod(a: StackValue, b: StackValue): ArithmeticResult {
   if (b === 0) return { ok: false, error: "MODULO_BY_ZERO" };
   return { ok: true, value: stackValueWrapped(a % b) };
 }
-
-// ============================================================================
-// Export convenience re-exports
-// ============================================================================
-
-export type { Brand };
