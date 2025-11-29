@@ -4,9 +4,9 @@ import react from "@vitejs/plugin-react";
 import { defineConfig } from "vite";
 
 export default defineConfig({
-  // GitHub Pages base path (will be /codoncanvas/ when deployed)
-  // When running build with --base flag, this config is overridden
-  base: "/",
+  // GitHub Pages base path - controlled by VITE_BASE_PATH env var
+  // Set by deploy.yml from actions/configure-pages output
+  base: process.env.VITE_BASE_PATH ? `${process.env.VITE_BASE_PATH}/` : "/",
 
   // Public directory for static assets
   publicDir: "public",
