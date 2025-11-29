@@ -1,5 +1,4 @@
 import { DiffViewer, injectDiffViewerStyles } from "@/diff-viewer";
-import { getElement, showStatus as showStatusBase } from "@/dom-utils";
 import { examples } from "@/examples";
 import { CodonLexer } from "@/lexer";
 import { getMutationByType } from "@/mutations";
@@ -8,6 +7,10 @@ import { injectShareStyles, ShareSystem } from "@/share-system";
 import { mutationTutorial, TutorialManager } from "@/tutorial";
 import { TutorialUI } from "@/tutorial-ui";
 import type { MutationType } from "@/types";
+import {
+  getElementUnsafe as getElement,
+  showStatus as showStatusBase,
+} from "@/utils/dom";
 import "@/tutorial-ui.css";
 import { CodonVM } from "@/vm";
 

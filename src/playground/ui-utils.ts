@@ -12,8 +12,8 @@ import {
 } from "@/playground/dom-manager";
 import { themeManager } from "@/playground/ui-state";
 
-// Re-export escapeHtml from DOM-free module for backwards compatibility
-export { escapeHtml } from "@/playground/escape-html";
+// Re-export escapeHtml from consolidated DOM utilities
+export { escapeHtml } from "@/utils/dom";
 
 /**
  * Set status message and bar styling

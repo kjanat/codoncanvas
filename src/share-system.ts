@@ -4,17 +4,7 @@
  * Enables viral sharing, teacher workflows, and cross-device collaboration
  */
 
-/**
- * SECURITY: Escape HTML to prevent XSS attacks
- */
-function escapeHtml(unsafe: string): string {
-  return unsafe
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;")
-    .replace(/"/g, "&quot;")
-    .replace(/'/g, "&#039;");
-}
+import { escapeHtml } from "@/utils/dom";
 
 export interface ShareOptions {
   genome: string;

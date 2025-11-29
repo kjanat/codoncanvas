@@ -5,7 +5,7 @@
  * status management, and security utilities.
  */
 import { describe, expect, test } from "bun:test";
-import { escapeHtml } from "@/playground/escape-html";
+import { escapeHtml } from "@/utils/dom";
 
 describe("UI Utilities", () => {
   // escapeHtml (pure function - no DOM needed)
@@ -30,14 +30,14 @@ describe("UI Utilities", () => {
       expect(escapeHtml('say "hi"')).toBe("say &quot;hi&quot;");
     });
 
-    test("escapes single quote (') to &#039;", () => {
-      expect(escapeHtml("it's")).toBe("it&#039;s");
-      expect(escapeHtml("'quoted'")).toBe("&#039;quoted&#039;");
+    test("escapes single quote (') to &#39;", () => {
+      expect(escapeHtml("it's")).toBe("it&#39;s");
+      expect(escapeHtml("'quoted'")).toBe("&#39;quoted&#39;");
     });
 
     test("escapes multiple special characters in one string", () => {
       expect(escapeHtml("<script>alert('xss')</script>")).toBe(
-        "&lt;script&gt;alert(&#039;xss&#039;)&lt;/script&gt;",
+        "&lt;script&gt;alert(&#39;xss&#39;)&lt;&#x2F;script&gt;",
       );
       expect(escapeHtml("a & b < c > d")).toBe("a &amp; b &lt; c &gt; d");
     });
@@ -53,13 +53,13 @@ describe("UI Utilities", () => {
     });
 
     test("handles strings with only special characters", () => {
-      expect(escapeHtml("<>&\"'")).toBe("&lt;&gt;&amp;&quot;&#039;");
+      expect(escapeHtml("<>&\"'")).toBe("&lt;&gt;&amp;&quot;&#39;");
     });
 
     test("prevents XSS attack vectors", () => {
       // Script injection
       expect(escapeHtml("<script>alert(1)</script>")).toBe(
-        "&lt;script&gt;alert(1)&lt;/script&gt;",
+        "&lt;script&gt;alert(1)&lt;&#x2F;script&gt;",
       );
       // Event handler injection
       expect(escapeHtml('<img onerror="alert(1)">')).toBe(

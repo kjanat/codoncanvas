@@ -1,9 +1,9 @@
-import { escapeHtml, getElement } from "@/dom-utils";
 import { examples } from "@/examples";
 import { injectShareStyles, ShareSystem } from "@/share-system";
 import { injectTimelineStyles, TimelineScrubber } from "@/timeline-scrubber";
 import { TutorialManager, timelineTutorial } from "@/tutorial";
 import { TutorialUI } from "@/tutorial-ui";
+import { escapeHtml, getElementUnsafe as getElement } from "@/utils/dom";
 import "@/tutorial-ui.css";
 
 // Inject styles

@@ -1,5 +1,5 @@
-import { getElement } from "@/dom-utils";
 import { generateStudentExport, TeacherDashboard } from "@/teacher-dashboard";
+import { getElementUnsafe as getElement } from "@/utils/dom";
 
 interface StudentData {
   studentId: string;

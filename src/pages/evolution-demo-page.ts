@@ -2,12 +2,15 @@ import { AchievementEngine } from "@/achievement-engine";
 import { AchievementUI } from "@/achievement-ui";
 import "@/achievement-ui.css";
 import { renderGenomeToCanvas } from "@/demos-core";
-import { getElement, showStatus as showStatusBase } from "@/dom-utils";
 import { EvolutionEngine } from "@/evolution-engine";
 import { examples } from "@/examples";
 import { injectShareStyles, ShareSystem } from "@/share-system";
 import { evolutionTutorial, TutorialManager } from "@/tutorial";
 import { TutorialUI } from "@/tutorial-ui";
+import {
+  getElementUnsafe as getElement,
+  showStatus as showStatusBase,
+} from "@/utils/dom";
 import "@/tutorial-ui.css";
 
 injectShareStyles();

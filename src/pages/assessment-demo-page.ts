@@ -1,6 +1,6 @@
 import { AssessmentEngine } from "@/assessment-engine";
 import { AssessmentUI } from "@/assessment-ui";
-import { getElement } from "@/dom-utils";
+import { getElementUnsafe as getElement } from "@/utils/dom";
 
 // Initialize assessment system
 const engine = new AssessmentEngine();

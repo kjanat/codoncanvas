@@ -1,6 +1,6 @@
-import { getElement } from "@/dom-utils";
 import { CodonLexer } from "@/lexer";
 import { Canvas2DRenderer } from "@/renderer";
+import { getElementUnsafe as getElement } from "@/utils/dom";
 import { CodonVM } from "@/vm";
 
 // Types
