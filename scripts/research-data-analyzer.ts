@@ -709,6 +709,68 @@ CSV FORMAT:
 `);
 }
 
+/**
+ * Safely get a numeric flag value from CLI args
+ * Returns fallback if flag not present, exits with error if value invalid
+ */
+function getNumericFlag(
+  args: string[],
+  flag: string,
+  fallback: number,
+): number {
+  const idx = args.indexOf(flag);
+  if (idx === -1) return fallback;
+
+  if (idx + 1 >= args.length) {
+    console.error(`Error: ${flag} requires a numeric value`);
+    process.exit(1);
+  }
+
+  const value = Number(args[idx + 1]);
+  if (!Number.isFinite(value)) {
+    console.error(`Error: Invalid value for ${flag}: "${args[idx + 1]}"`);
+    process.exit(1);
+  }
+
+  return value;
+}
+
+/**
+ * Safely get a required string flag value from CLI args
+ * Exits with error if flag not present or value missing
+ */
+function getRequiredFlag(args: string[], flag: string): string {
+  const idx = args.indexOf(flag);
+  if (idx === -1) {
+    console.error(`Error: ${flag} is required`);
+    printUsage();
+    process.exit(1);
+  }
+
+  if (idx + 1 >= args.length || args[idx + 1].startsWith("--")) {
+    console.error(`Error: ${flag} requires a value`);
+    process.exit(1);
+  }
+
+  return args[idx + 1];
+}
+
+/**
+ * Safely get an optional string flag value from CLI args
+ * Returns undefined if flag not present, exits with error if value missing
+ */
+function getOptionalFlag(args: string[], flag: string): string | undefined {
+  const idx = args.indexOf(flag);
+  if (idx === -1) return undefined;
+
+  if (idx + 1 >= args.length || args[idx + 1].startsWith("--")) {
+    console.error(`Error: ${flag} requires a value`);
+    process.exit(1);
+  }
+
+  return args[idx + 1];
+}
+
 function main(): void {
   const args = process.argv.slice(2);
 
@@ -728,13 +790,9 @@ function main(): void {
 }
 
 function handlePowerAnalysis(args: string[]) {
-  const effectIdx = args.indexOf("--effect");
-  const alphaIdx = args.indexOf("--alpha");
-  const powerIdx = args.indexOf("--power");
-
-  const effect = effectIdx !== -1 ? parseFloat(args[effectIdx + 1]) : 0.5;
-  const alpha = alphaIdx !== -1 ? parseFloat(args[alphaIdx + 1]) : 0.05;
-  const power = powerIdx !== -1 ? parseFloat(args[powerIdx + 1]) : 0.8;
+  const effect = getNumericFlag(args, "--effect", 0.5);
+  const alpha = getNumericFlag(args, "--alpha", 0.05);
+  const power = getNumericFlag(args, "--power", 0.8);
 
   console.log(
     "\n╔══════════════════════════════════════════════════════════════╗",
@@ -765,19 +823,10 @@ function handlePowerAnalysis(args: string[]) {
 }
 
 function handleDataAnalysis(args: string[]) {
-  const designIdx = args.indexOf("--design");
-  const dataIdx = args.indexOf("--data");
-  const controlIdx = args.indexOf("--control");
+  const design = getRequiredFlag(args, "--design");
+  const dataFile = getRequiredFlag(args, "--data");
+  const controlFile = getOptionalFlag(args, "--control");
   const generateTable = args.includes("--table");
-
-  if (designIdx === -1 || dataIdx === -1) {
-    console.error("Error: --design and --data are required");
-    printUsage();
-    process.exit(1);
-  }
-
-  const design = args[designIdx + 1];
-  const dataFile = args[dataIdx + 1];
 
   if (!fs.existsSync(dataFile)) {
     console.error(`Error: Data file not found: ${dataFile}`);
@@ -792,7 +841,7 @@ function handleDataAnalysis(args: string[]) {
       ResearchAnalyzer.generateTable(data, "all");
     }
   } else if (design === "rct") {
-    handleRCTAnalysis(data, args, controlIdx);
+    handleRCTAnalysis(data, controlFile);
   } else {
     console.error(`Error: Unknown design: ${design}. Use "prepost" or "rct"`);
     process.exit(1);
@@ -801,10 +850,9 @@ function handleDataAnalysis(args: string[]) {
 
 function handleRCTAnalysis(
   data: StudentData[],
-  args: string[],
-  controlIdx: number,
+  controlFile: string | undefined,
 ) {
-  if (controlIdx === -1) {
+  if (controlFile === undefined) {
     // Assume data file has 'group' column
     const treatment = data.filter((d) => d.group === "treatment");
     const control = data.filter((d) => d.group === "control");
@@ -818,7 +866,6 @@ function handleRCTAnalysis(
 
     ResearchAnalyzer.analyzeRCT(treatment, control);
   } else {
-    const controlFile = args[controlIdx + 1];
     if (!fs.existsSync(controlFile)) {
       console.error(`Error: Control file not found: ${controlFile}`);
       process.exit(1);
