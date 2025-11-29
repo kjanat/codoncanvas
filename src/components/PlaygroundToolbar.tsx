@@ -1,0 +1,243 @@
+/**
+ * PlaygroundToolbar - Toolbar controls for the Playground editor
+ *
+ * Contains example selector, file I/O, undo/redo, nucleotide mode toggle,
+ * and reference panel toggle.
+ */
+
+import { memo } from "react";
+import type { ExampleWithKey } from "@/hooks/useExamples";
+import {
+  getModeButtonLabel,
+  getModeButtonTooltip,
+  getNucleotideModeInfo,
+  type NucleotideDisplayMode,
+} from "@/playground/nucleotide-display";
+
+// --- Sub-component: Nucleotide Mode Toggle ---
+
+interface NucleotideModeToggleProps {
+  mode: NucleotideDisplayMode;
+  showInfo: boolean;
+  onToggle: () => void;
+  onShowInfo: (show: boolean) => void;
+}
+
+function NucleotideModeToggle({
+  mode,
+  showInfo,
+  onToggle,
+  onShowInfo,
+}: NucleotideModeToggleProps) {
+  const info = getNucleotideModeInfo();
+
+  return (
+    <div className="relative">
+      <button
+        className={`rounded-md px-3 py-1.5 text-sm transition-colors ${
+          mode === "RNA"
+            ? "bg-accent/10 text-accent"
+            : "text-text hover:bg-bg-light"
+        }`}
+        onClick={onToggle}
+        onMouseEnter={() => onShowInfo(true)}
+        onMouseLeave={() => onShowInfo(false)}
+        title={getModeButtonTooltip(mode)}
+        type="button"
+      >
+        {getModeButtonLabel(mode)}
+      </button>
+
+      {showInfo && (
+        <div className="absolute left-0 top-full z-50 mt-1 w-64 rounded-lg border border-border bg-white p-3 shadow-lg">
+          <div className="mb-2 font-medium text-text">
+            {info.nucleicAcid} Mode
+          </div>
+          <p className="text-xs text-text-muted">{info.description}</p>
+          <p className="mt-2 text-xs text-text-muted">
+            {info.biologicalContext}
+          </p>
+        </div>
+      )}
+    </div>
+  );
+}
+
+// --- Main Component ---
+
+export interface PlaygroundToolbarProps {
+  /** All available examples */
+  examples: ExampleWithKey[];
+  /** Currently selected example key */
+  selectedExampleKey: string | null;
+  /** Callback when example is selected */
+  onExampleChange: (key: string) => void;
+  /** Callback to load genome from file */
+  onLoad: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  /** Callback to save genome to file */
+  onSave: () => void;
+  /** Callback to copy genome code */
+  onCopy: () => void;
+  /** Whether copy was recently triggered */
+  copied: boolean;
+  /** Callback to share genome URL */
+  onShare: () => void;
+  /** Callback to undo */
+  onUndo: () => void;
+  /** Callback to redo */
+  onRedo: () => void;
+  /** Whether undo is available */
+  canUndo: boolean;
+  /** Whether redo is available */
+  canRedo: boolean;
+  /** Current nucleotide display mode */
+  nucleotideMode: NucleotideDisplayMode;
+  /** Whether nucleotide mode info is shown */
+  showModeInfo: boolean;
+  /** Callback to toggle nucleotide mode */
+  onToggleNucleotideMode: () => void;
+  /** Callback to show/hide mode info */
+  onShowModeInfo: (show: boolean) => void;
+  /** Whether reference panel is shown */
+  showReference: boolean;
+  /** Callback to toggle reference panel */
+  onToggleReference: () => void;
+  /** Callback to run genome */
+  onRun: () => void;
+  /** Whether genome is valid for running */
+  canRun: boolean;
+}
+
+export const PlaygroundToolbar = memo(function PlaygroundToolbar({
+  examples,
+  selectedExampleKey,
+  onExampleChange,
+  onLoad,
+  onSave,
+  onCopy,
+  copied,
+  onShare,
+  onUndo,
+  onRedo,
+  canUndo,
+  canRedo,
+  nucleotideMode,
+  showModeInfo,
+  onToggleNucleotideMode,
+  onShowModeInfo,
+  showReference,
+  onToggleReference,
+  onRun,
+  canRun,
+}: PlaygroundToolbarProps) {
+  return (
+    <div className="flex flex-wrap items-center gap-2 border-b border-border px-4 py-2">
+      {/* Example selector */}
+      <select
+        className="rounded-md border border-border px-3 py-1.5 text-sm focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20"
+        onChange={(e) => onExampleChange(e.target.value)}
+        value={selectedExampleKey ?? ""}
+      >
+        <option value="">Select example...</option>
+        {examples.map((ex) => (
+          <option key={ex.key} value={ex.key}>
+            {ex.title}
+          </option>
+        ))}
+      </select>
+
+      {/* File I/O buttons */}
+      <div className="flex items-center gap-1">
+        <label className="cursor-pointer rounded-md px-3 py-1.5 text-sm text-text hover:bg-bg-light">
+          Load
+          <input
+            accept=".genome,.txt"
+            className="hidden"
+            onChange={onLoad}
+            type="file"
+          />
+        </label>
+        <button
+          className="rounded-md px-3 py-1.5 text-sm text-text hover:bg-bg-light"
+          onClick={onSave}
+          title="Save (Ctrl+S)"
+          type="button"
+        >
+          Save
+        </button>
+        <button
+          className="rounded-md px-3 py-1.5 text-sm text-text hover:bg-bg-light"
+          onClick={onCopy}
+          title="Copy genome code"
+          type="button"
+        >
+          {copied ? "Copied!" : "Copy"}
+        </button>
+        <button
+          className="rounded-md px-3 py-1.5 text-sm text-text hover:bg-bg-light"
+          onClick={onShare}
+          title="Copy shareable link"
+          type="button"
+        >
+          Share
+        </button>
+      </div>
+
+      {/* Undo/Redo */}
+      <div className="flex items-center gap-1">
+        <button
+          className="rounded-md px-2 py-1.5 text-sm text-text hover:bg-bg-light disabled:opacity-40"
+          disabled={!canUndo}
+          onClick={onUndo}
+          title="Undo (Ctrl+Z)"
+          type="button"
+        >
+          Undo
+        </button>
+        <button
+          className="rounded-md px-2 py-1.5 text-sm text-text hover:bg-bg-light disabled:opacity-40"
+          disabled={!canRedo}
+          onClick={onRedo}
+          title="Redo (Ctrl+Shift+Z)"
+          type="button"
+        >
+          Redo
+        </button>
+      </div>
+
+      {/* Nucleotide mode toggle */}
+      <NucleotideModeToggle
+        mode={nucleotideMode}
+        onShowInfo={onShowModeInfo}
+        onToggle={onToggleNucleotideMode}
+        showInfo={showModeInfo}
+      />
+
+      {/* Reference toggle */}
+      <button
+        className={`rounded-md px-3 py-1.5 text-sm transition-colors ${
+          showReference
+            ? "bg-primary/10 text-primary"
+            : "text-text hover:bg-bg-light"
+        }`}
+        onClick={onToggleReference}
+        title="Toggle codon reference"
+        type="button"
+      >
+        Reference
+      </button>
+
+      {/* Run button */}
+      <button
+        className="ml-auto rounded-md bg-primary px-4 py-1.5 text-sm font-medium text-white transition-colors hover:bg-primary-hover disabled:opacity-50"
+        disabled={!canRun}
+        onClick={onRun}
+        type="button"
+      >
+        Run
+      </button>
+    </div>
+  );
+});
+
+export default PlaygroundToolbar;

@@ -1,13 +1,16 @@
 /**
  * Playground - Main CodonCanvas editor and execution environment
  *
- * Full-featured genome editor with live preview, example browser,
- * validation feedback, and export capabilities.
+ * Orchestrates the editor, canvas, and toolbar components with shared state.
+ * Handles genome execution, history, keyboard shortcuts, and URL sharing.
  */
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import { CodonReference } from "@/components/CodonReference";
+import { PlaygroundCanvas } from "@/components/PlaygroundCanvas";
+import { PlaygroundEditor } from "@/components/PlaygroundEditor";
+import { PlaygroundToolbar } from "@/components/PlaygroundToolbar";
 import { CodonVM } from "@/core/vm";
 import { downloadGenomeFile, readGenomeFile } from "@/genetics/genome-io";
 import {
@@ -19,198 +22,25 @@ import {
   useKeyboardShortcuts,
   useShareUrl,
 } from "@/hooks";
-import type { ExampleWithKey } from "@/hooks/useExamples";
-import type { GenomeValidation } from "@/hooks/useGenome";
 import {
-  getModeButtonLabel,
-  getModeButtonTooltip,
   getNucleotideDisplayMode,
-  getNucleotideModeInfo,
   type NucleotideDisplayMode,
   toggleNucleotideDisplayMode,
   transformForDisplay,
   transformFromDisplay,
 } from "@/playground/nucleotide-display";
 
-// --- Sub-Components ---
-
-function NucleotideModeToggle({
-  mode,
-  showInfo,
-  onToggle,
-  onShowInfo,
-}: {
-  mode: NucleotideDisplayMode;
-  showInfo: boolean;
-  onToggle: () => void;
-  onShowInfo: (show: boolean) => void;
-}) {
-  const info = getNucleotideModeInfo();
-
-  return (
-    <div className="relative">
-      <button
-        className={`rounded-md px-3 py-1.5 text-sm transition-colors ${
-          mode === "RNA"
-            ? "bg-accent/10 text-accent"
-            : "text-text hover:bg-bg-light"
-        }`}
-        onClick={onToggle}
-        onMouseEnter={() => onShowInfo(true)}
-        onMouseLeave={() => onShowInfo(false)}
-        title={getModeButtonTooltip(mode)}
-        type="button"
-      >
-        {getModeButtonLabel(mode)}
-      </button>
-
-      {showInfo && (
-        <div className="absolute left-0 top-full z-50 mt-1 w-64 rounded-lg border border-border bg-white p-3 shadow-lg">
-          <div className="mb-2 font-medium text-text">
-            {info.nucleicAcid} Mode
-          </div>
-          <p className="text-xs text-text-muted">{info.description}</p>
-          <p className="mt-2 text-xs text-text-muted">
-            {info.biologicalContext}
-          </p>
-        </div>
-      )}
-    </div>
-  );
-}
-
-function ValidationStatus({
-  isPending,
-  validation,
-  stats,
-}: {
-  isPending: boolean;
-  validation: GenomeValidation;
-  stats: { codons: number; instructions: number };
-}) {
-  return (
-    <div className="mt-2 flex items-center justify-between text-sm">
-      <div className="flex items-center gap-2">
-        {isPending ? (
-          <span className="text-text-muted">Validating...</span>
-        ) : validation.isValid ? (
-          <span className="flex items-center gap-1 text-success">
-            <svg
-              aria-hidden="true"
-              className="h-4 w-4"
-              fill="currentColor"
-              viewBox="0 0 20 20"
-            >
-              <path
-                clipRule="evenodd"
-                d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                fillRule="evenodd"
-              />
-            </svg>
-            Valid
-          </span>
-        ) : (
-          <span className="flex items-center gap-1 text-danger">
-            <svg
-              aria-hidden="true"
-              className="h-4 w-4"
-              fill="currentColor"
-              viewBox="0 0 20 20"
-            >
-              <path
-                clipRule="evenodd"
-                d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z"
-                fillRule="evenodd"
-              />
-            </svg>
-            {validation.errors.length} error(s)
-          </span>
-        )}
-      </div>
-      <span className="text-text-muted">
-        {stats.codons} codons, {stats.instructions} instructions
-      </span>
-    </div>
-  );
-}
-
-function ErrorDisplay({ validation }: { validation: GenomeValidation }) {
-  if (validation.errors.length === 0 && !validation.tokenizeError) return null;
-
-  return (
-    <div
-      aria-live="polite"
-      className="border-t border-danger/20 bg-danger/5 px-4 py-3"
-      role="alert"
-    >
-      <ul className="space-y-1 text-sm text-danger">
-        {validation.tokenizeError && <li>{validation.tokenizeError}</li>}
-        {validation.errors.map((err) => (
-          <li key={`${err.position ?? "no-pos"}-${err.message}`}>
-            {err.position !== undefined && `Position ${err.position}: `}
-            {err.message}
-          </li>
-        ))}
-      </ul>
-    </div>
-  );
-}
-
-function WarningDisplay({ validation }: { validation: GenomeValidation }) {
-  if (validation.warnings.length === 0) return null;
-
-  return (
-    <output
-      aria-live="polite"
-      className="block border-t border-warning/20 bg-warning/5 px-4 py-2"
-    >
-      <ul className="space-y-1 text-sm text-warning">
-        {validation.warnings.map((warn) => (
-          <li key={`${warn.position ?? "no-pos"}-${warn.message}`}>
-            {warn.position !== undefined && `Position ${warn.position}: `}
-            {warn.message}
-          </li>
-        ))}
-      </ul>
-    </output>
-  );
-}
-
-function ExampleInfo({ example }: { example: ExampleWithKey }) {
-  return (
-    <div className="border-t border-dark-border px-4 py-3">
-      <h3 className="font-medium text-dark-text">{example.title}</h3>
-      <p className="mt-1 text-sm text-dark-text/70">{example.description}</p>
-      <div className="mt-2 flex flex-wrap gap-1">
-        <span className="rounded-full bg-primary/20 px-2 py-0.5 text-xs text-primary">
-          {example.difficulty}
-        </span>
-        {example.concepts.map((concept) => (
-          <span
-            className="rounded-full bg-dark-surface px-2 py-0.5 text-xs text-dark-text"
-            key={concept}
-          >
-            {concept}
-          </span>
-        ))}
-      </div>
-    </div>
-  );
-}
-
-// --- Main Component ---
-
 export function Playground() {
   const [searchParams, setSearchParams] = useSearchParams();
   const exampleFromUrl = searchParams.get("example");
 
-  // Hooks
+  // --- Hooks ---
+
   const { allExamples, selectedExample, selectExample, getExample } =
     useExamples({
       initialSelection: exampleFromUrl ?? undefined,
     });
 
-  // Share URL hook for encoding/decoding genome
   const { sharedGenome, copyShareUrl } = useShareUrl();
 
   const { genome, setGenome, validation, isPending } = useGenome({
@@ -218,7 +48,6 @@ export function Playground() {
       sharedGenome ?? selectedExample?.genome ?? "ATG GAA AAT GGA TAA",
   });
 
-  // History for undo/redo
   const {
     state: historyState,
     setState: setHistoryState,
@@ -233,13 +62,11 @@ export function Playground() {
     height: 400,
   });
 
-  // Clipboard for copy button
   const { copy, copied } = useClipboard({ copiedDuration: 2000 });
 
-  // Stats
-  const [stats, setStats] = useState({ codons: 0, instructions: 0 });
+  // --- Local State ---
 
-  // UI state
+  const [stats, setStats] = useState({ codons: 0, instructions: 0 });
   const [showReference, setShowReference] = useState(false);
   const [nucleotideMode, setNucleotideMode] = useState<NucleotideDisplayMode>(
     getNucleotideDisplayMode,
@@ -265,7 +92,6 @@ export function Playground() {
     [setGenome, setHistoryState],
   );
 
-  // Handle undo/redo from history
   const handleUndo = useCallback(() => {
     if (canUndo) {
       undo();
@@ -413,165 +239,51 @@ export function Playground() {
   return (
     <div className="flex h-full flex-col lg:flex-row">
       {/* Editor Panel */}
-      <div className="flex flex-1 flex-col border-r border-border bg-white">
-        {/* Toolbar */}
-        <div className="flex flex-wrap items-center gap-2 border-b border-border px-4 py-2">
-          <select
-            className="rounded-md border border-border px-3 py-1.5 text-sm focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20"
-            onChange={(e) => handleExampleChange(e.target.value)}
-            value={selectedExample?.key ?? ""}
-          >
-            <option value="">Select example...</option>
-            {allExamples.map((ex) => (
-              <option key={ex.key} value={ex.key}>
-                {ex.title}
-              </option>
-            ))}
-          </select>
-
-          <div className="flex items-center gap-1">
-            <label className="cursor-pointer rounded-md px-3 py-1.5 text-sm text-text hover:bg-bg-light">
-              Load
-              <input
-                accept=".genome,.txt"
-                className="hidden"
-                onChange={handleLoad}
-                type="file"
-              />
-            </label>
-            <button
-              className="rounded-md px-3 py-1.5 text-sm text-text hover:bg-bg-light"
-              onClick={handleSave}
-              title="Save (Ctrl+S)"
-              type="button"
-            >
-              Save
-            </button>
-            <button
-              className="rounded-md px-3 py-1.5 text-sm text-text hover:bg-bg-light"
-              onClick={handleCopyCode}
-              title="Copy genome code"
-              type="button"
-            >
-              {copied ? "Copied!" : "Copy"}
-            </button>
-            <button
-              className="rounded-md px-3 py-1.5 text-sm text-text hover:bg-bg-light"
-              onClick={handleShare}
-              title="Copy shareable link"
-              type="button"
-            >
-              Share
-            </button>
-          </div>
-
-          {/* Undo/Redo */}
-          <div className="flex items-center gap-1">
-            <button
-              className="rounded-md px-2 py-1.5 text-sm text-text hover:bg-bg-light disabled:opacity-40"
-              disabled={!canUndo}
-              onClick={handleUndo}
-              title="Undo (Ctrl+Z)"
-              type="button"
-            >
-              Undo
-            </button>
-            <button
-              className="rounded-md px-2 py-1.5 text-sm text-text hover:bg-bg-light disabled:opacity-40"
-              disabled={!canRedo}
-              onClick={handleRedo}
-              title="Redo (Ctrl+Shift+Z)"
-              type="button"
-            >
-              Redo
-            </button>
-          </div>
-
-          <NucleotideModeToggle
-            mode={nucleotideMode}
-            onShowInfo={setShowModeInfo}
-            onToggle={handleToggleNucleotideMode}
-            showInfo={showModeInfo}
-          />
-
-          <button
-            className={`rounded-md px-3 py-1.5 text-sm transition-colors ${
-              showReference
-                ? "bg-primary/10 text-primary"
-                : "text-text hover:bg-bg-light"
-            }`}
-            onClick={() => setShowReference(!showReference)}
-            title="Toggle codon reference"
-            type="button"
-          >
-            Reference
-          </button>
-
-          <button
-            className="ml-auto rounded-md bg-primary px-4 py-1.5 text-sm font-medium text-white transition-colors hover:bg-primary-hover disabled:opacity-50"
-            disabled={!validation.isValid}
-            onClick={runGenome}
-            type="button"
-          >
-            Run
-          </button>
-        </div>
-
-        {/* Editor */}
-        <div className="flex flex-1 flex-col p-4">
-          <textarea
-            className="flex-1 resize-none rounded-lg border border-border bg-dark-bg p-4 font-mono text-sm leading-relaxed text-dark-text focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20"
-            onChange={handleGenomeChange}
-            placeholder={`Enter your genome here...\n\nExample:\n${nucleotideMode === "RNA" ? "AUG GAA AAU GGA UAA" : "ATG GAA AAT GGA TAA"}`}
-            ref={editorRef}
-            spellCheck={false}
-            value={displayedGenome}
-          />
-          <ValidationStatus
-            isPending={isPending}
-            stats={stats}
-            validation={validation}
-          />
-        </div>
-
-        <ErrorDisplay validation={validation} />
-        <WarningDisplay validation={validation} />
+      <div className="flex flex-1 flex-col">
+        <PlaygroundToolbar
+          canRedo={canRedo}
+          canRun={validation.isValid}
+          canUndo={canUndo}
+          copied={copied}
+          examples={allExamples}
+          nucleotideMode={nucleotideMode}
+          onCopy={handleCopyCode}
+          onExampleChange={handleExampleChange}
+          onLoad={handleLoad}
+          onRedo={handleRedo}
+          onRun={runGenome}
+          onSave={handleSave}
+          onShare={handleShare}
+          onShowModeInfo={setShowModeInfo}
+          onToggleNucleotideMode={handleToggleNucleotideMode}
+          onToggleReference={() => setShowReference(!showReference)}
+          onUndo={handleUndo}
+          selectedExampleKey={selectedExample?.key ?? null}
+          showModeInfo={showModeInfo}
+          showReference={showReference}
+        />
+        <PlaygroundEditor
+          displayedGenome={displayedGenome}
+          isPending={isPending}
+          nucleotideMode={nucleotideMode}
+          onGenomeChange={handleGenomeChange}
+          ref={editorRef}
+          stats={stats}
+          validation={validation}
+        />
       </div>
 
       {/* Canvas Panel */}
-      <div className="flex flex-1 flex-col bg-dark-bg">
-        <div className="flex items-center justify-between border-b border-dark-border px-4 py-2">
-          <span className="text-sm text-dark-text">Output</span>
-          <div className="flex gap-2">
-            <button
-              className="rounded-md px-3 py-1 text-sm text-dark-text hover:bg-dark-surface"
-              onClick={clear}
-              type="button"
-            >
-              Clear
-            </button>
-            <button
-              className="rounded-md px-3 py-1 text-sm text-dark-text hover:bg-dark-surface"
-              onClick={handleExportPNG}
-              type="button"
-            >
-              Export PNG
-            </button>
-          </div>
-        </div>
+      <PlaygroundCanvas
+        height={400}
+        onClear={clear}
+        onExportPNG={handleExportPNG}
+        ref={canvasRef}
+        selectedExample={selectedExample}
+        width={400}
+      />
 
-        <div className="flex flex-1 items-center justify-center p-4">
-          <canvas
-            className="rounded-lg border border-dark-border bg-white shadow-lg"
-            height={400}
-            ref={canvasRef}
-            width={400}
-          />
-        </div>
-
-        {selectedExample && <ExampleInfo example={selectedExample} />}
-      </div>
-
+      {/* Reference Panel */}
       {showReference && (
         <CodonReference
           onInsert={handleInsertCodon}
