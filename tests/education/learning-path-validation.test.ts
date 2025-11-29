@@ -48,7 +48,7 @@ interface LearningPathsData {
  * Generate complexity analysis for all genome files at runtime
  */
 function generateComplexityAnalysis(): GenomeComplexity[] {
-  const examplesDir = join(__dirname, "..", "examples");
+  const examplesDir = join(import.meta.dir, "../..", "examples");
   const lexer = new CodonLexer();
 
   try {
@@ -75,7 +75,7 @@ describe("Learning Path Validation", () => {
   // Load learning paths JSON
   try {
     const pathsJson = readFileSync(
-      join(__dirname, "..", "examples", "learning-paths.json"),
+      join(import.meta.dir, "../..", "examples", "learning-paths.json"),
       "utf-8",
     );
     pathsData = JSON.parse(pathsJson);
@@ -146,7 +146,12 @@ describe("Learning Path Validation", () => {
     test("all referenced genome files exist", () => {
       pathsData.paths.forEach((path) => {
         path.steps.forEach((step) => {
-          const genomePath = join(__dirname, "..", "examples", step.genome);
+          const genomePath = join(
+            import.meta.dir,
+            "../..",
+            "examples",
+            step.genome,
+          );
           expect(
             () => readFileSync(genomePath, "utf-8"),
             `Genome not found: ${step.genome}`,

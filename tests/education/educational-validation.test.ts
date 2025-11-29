@@ -155,7 +155,7 @@ describe("Educational Validation Suite", () => {
     });
 
     function loadGenome(filename: string): string {
-      const path = join(__dirname, "..", "examples", filename);
+      const path = join(import.meta.dir, "../..", "examples", filename);
       return readFileSync(path, "utf-8");
     }
 
