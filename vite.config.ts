@@ -48,33 +48,24 @@ export default defineConfig({
     rollupOptions: {
       input: {
         // Main pages
-        main: resolve(__dirname, "public/pages/index.html"),
-        gallery: resolve(__dirname, "public/pages/gallery.html"),
-        tutorial: resolve(__dirname, "public/pages/tutorial.html"),
-        demos: resolve(__dirname, "public/pages/demos.html"),
+        main: resolve(__dirname, "pages/index.html"),
+        gallery: resolve(__dirname, "pages/gallery.html"),
+        tutorial: resolve(__dirname, "pages/tutorial.html"),
+        demos: resolve(__dirname, "pages/demos.html"),
         // Demo pages
-        mutation: resolve(__dirname, "public/pages/demos/mutation.html"),
-        timeline: resolve(__dirname, "public/pages/demos/timeline.html"),
-        evolution: resolve(__dirname, "public/pages/demos/evolution.html"),
-        population: resolve(
-          __dirname,
-          "public/pages/demos/population-genetics.html",
-        ),
-        genetic: resolve(
-          __dirname,
-          "public/pages/demos/genetic-algorithm.html",
-        ),
-        achievements: resolve(
-          __dirname,
-          "public/pages/demos/achievements.html",
-        ),
-        assessment: resolve(__dirname, "public/pages/demos/assessment.html"),
+        mutation: resolve(__dirname, "pages/demos/mutation.html"),
+        timeline: resolve(__dirname, "pages/demos/timeline.html"),
+        evolution: resolve(__dirname, "pages/demos/evolution.html"),
+        population: resolve(__dirname, "pages/demos/population-genetics.html"),
+        genetic: resolve(__dirname, "pages/demos/genetic-algorithm.html"),
+        achievements: resolve(__dirname, "pages/demos/achievements.html"),
+        assessment: resolve(__dirname, "pages/demos/assessment.html"),
         // Dashboard pages
-        research: resolve(__dirname, "public/pages/dashboards/research.html"),
-        teacher: resolve(__dirname, "public/pages/dashboards/teacher.html"),
+        research: resolve(__dirname, "pages/dashboards/research.html"),
+        teacher: resolve(__dirname, "pages/dashboards/teacher.html"),
         learningPaths: resolve(
           __dirname,
-          "public/pages/dashboards/learning-paths.html",
+          "pages/dashboards/learning-paths.html",
         ),
       },
     },
