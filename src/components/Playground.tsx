@@ -10,7 +10,15 @@ import { useSearchParams } from "react-router-dom";
 import { CodonReference } from "@/components/CodonReference";
 import { CodonVM } from "@/core/vm";
 import { downloadGenomeFile, readGenomeFile } from "@/genetics/genome-io";
-import { useCanvas, useExamples, useGenome } from "@/hooks";
+import {
+  useCanvas,
+  useClipboard,
+  useExamples,
+  useGenome,
+  useHistory,
+  useKeyboardShortcuts,
+  useShareUrl,
+} from "@/hooks";
 import type { ExampleWithKey } from "@/hooks/useExamples";
 import type { GenomeValidation } from "@/hooks/useGenome";
 import {
@@ -202,14 +210,31 @@ export function Playground() {
       initialSelection: exampleFromUrl ?? undefined,
     });
 
+  // Share URL hook for encoding/decoding genome
+  const { sharedGenome, copyShareUrl } = useShareUrl();
+
   const { genome, setGenome, validation, isPending } = useGenome({
-    initialGenome: selectedExample?.genome ?? "ATG GAA AAT GGA TAA",
+    initialGenome:
+      sharedGenome ?? selectedExample?.genome ?? "ATG GAA AAT GGA TAA",
   });
+
+  // History for undo/redo
+  const {
+    state: historyState,
+    setState: setHistoryState,
+    undo,
+    redo,
+    canUndo,
+    canRedo,
+  } = useHistory<string>(genome);
 
   const { canvasRef, renderer, isReady, clear, toDataURL } = useCanvas({
     width: 400,
     height: 400,
   });
+
+  // Clipboard for copy button
+  const { copy, copied } = useClipboard({ copiedDuration: 2000 });
 
   // Stats
   const [stats, setStats] = useState({ codons: 0, instructions: 0 });
@@ -233,10 +258,35 @@ export function Playground() {
 
   const handleGenomeChange = useCallback(
     (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-      setGenome(transformFromDisplay(e.target.value));
+      const newGenome = transformFromDisplay(e.target.value);
+      setGenome(newGenome);
+      setHistoryState(newGenome);
     },
-    [setGenome],
+    [setGenome, setHistoryState],
   );
+
+  // Handle undo/redo from history
+  const handleUndo = useCallback(() => {
+    if (canUndo) {
+      undo();
+      setGenome(historyState);
+    }
+  }, [canUndo, undo, historyState, setGenome]);
+
+  const handleRedo = useCallback(() => {
+    if (canRedo) {
+      redo();
+      setGenome(historyState);
+    }
+  }, [canRedo, redo, historyState, setGenome]);
+
+  const handleShare = useCallback(() => {
+    copyShareUrl(genome);
+  }, [copyShareUrl, genome]);
+
+  const handleCopyCode = useCallback(() => {
+    copy(genome);
+  }, [copy, genome]);
 
   const runGenome = useCallback(() => {
     if (!isReady || !renderer) return;
@@ -338,6 +388,26 @@ export function Playground() {
     }
   }, [exampleFromUrl, getExample, selectExample, setGenome]);
 
+  // Keyboard shortcuts
+  useKeyboardShortcuts([
+    { key: "s", ctrl: true, handler: handleSave, description: "Save genome" },
+    {
+      key: "Enter",
+      ctrl: true,
+      handler: runGenome,
+      description: "Run genome",
+    },
+    { key: "z", ctrl: true, handler: handleUndo, description: "Undo" },
+    {
+      key: "z",
+      ctrl: true,
+      shift: true,
+      handler: handleRedo,
+      description: "Redo",
+    },
+    { key: "y", ctrl: true, handler: handleRedo, description: "Redo" },
+  ]);
+
   // --- Render ---
 
   return (
@@ -372,9 +442,48 @@ export function Playground() {
             <button
               className="rounded-md px-3 py-1.5 text-sm text-text hover:bg-bg-light"
               onClick={handleSave}
+              title="Save (Ctrl+S)"
               type="button"
             >
               Save
+            </button>
+            <button
+              className="rounded-md px-3 py-1.5 text-sm text-text hover:bg-bg-light"
+              onClick={handleCopyCode}
+              title="Copy genome code"
+              type="button"
+            >
+              {copied ? "Copied!" : "Copy"}
+            </button>
+            <button
+              className="rounded-md px-3 py-1.5 text-sm text-text hover:bg-bg-light"
+              onClick={handleShare}
+              title="Copy shareable link"
+              type="button"
+            >
+              Share
+            </button>
+          </div>
+
+          {/* Undo/Redo */}
+          <div className="flex items-center gap-1">
+            <button
+              className="rounded-md px-2 py-1.5 text-sm text-text hover:bg-bg-light disabled:opacity-40"
+              disabled={!canUndo}
+              onClick={handleUndo}
+              title="Undo (Ctrl+Z)"
+              type="button"
+            >
+              Undo
+            </button>
+            <button
+              className="rounded-md px-2 py-1.5 text-sm text-text hover:bg-bg-light disabled:opacity-40"
+              disabled={!canRedo}
+              onClick={handleRedo}
+              title="Redo (Ctrl+Shift+Z)"
+              type="button"
+            >
+              Redo
             </button>
           </div>
 
