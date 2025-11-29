@@ -365,8 +365,10 @@ function calculateFeatureUsage(
   genomesExecuted: number,
   mutationsApplied: number,
 ) {
-  const featureUsageProbability =
-    char.featureAdoption * (duration / (30 * 60 * 1000));
+  const featureUsageProbability = Math.min(
+    1,
+    char.featureAdoption * (duration / (30 * 60 * 1000)),
+  );
 
   const diffViewerUsage =
     mutationsApplied > 5 && Math.random() < featureUsageProbability
