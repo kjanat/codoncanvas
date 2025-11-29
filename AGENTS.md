@@ -27,4 +27,9 @@
 - Max cognitive complexity: 15 | Keep files <300 lines
 - Always use `const`, strict equality (`===`), curly braces for all blocks
 - No `console.log` (use `console.info`/`warn`/`error` only)
-- Do not use `morphllm_write_file` or `morphllm_edit_file`
+
+## Sidenotes
+
+If you are unsure how to do something, use `gh_grep` to search code examples from github.
+When you need to search docs, use `context7` tools.
+Or, when specifically searching for bun docs, use `bun_docs`.
