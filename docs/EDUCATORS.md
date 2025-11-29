@@ -65,6 +65,8 @@ CodonCanvas is an educational programming language that uses **DNA-like triplets
 ✅ **Mutation Tools**: One-click demonstration of 7 mutation types
 ✅ **Save/Load**: Students can save work and submit .genome files
 ✅ **Offline-capable**: Can run locally without internet after initial setup
+✅ **DNA/RNA Toggle**: Switch between DNA (T) and RNA (U) notation for teaching transcription concepts
+✅ **Biology Comparison Panel**: Side-by-side view of CodonCanvas opcodes vs real amino acids
 ✅ **📊 Teacher Dashboard**: Classroom analytics with student progress tracking and at-risk detection ⭐ **NEW!**
 ✅ **📈 Research Metrics**: Detailed engagement analytics for assessment and pedagogical research ⭐ **NEW!**
 
@@ -658,6 +660,53 @@ ATG GAA AAT ACA TAA  ; TRANSLATE needs 2 values
    - Tay-Sachs (nonsense mutation → truncated protein)
 
 **Differentiation:** Advanced students research their own cases
+
+---
+
+### Activity 6: DNA vs RNA Exploration (15 min)
+
+**Goal:** Understand DNA/RNA notation and transcription concept
+
+**Process:**
+
+1. **Load Example**: Have students load the "Hello Circle" example
+2. **Toggle View**: Click the DNA/RNA toggle button (shows "DNA" or "RNA")
+3. **Observe**: Watch all T nucleotides become U nucleotides
+4. **Run Program**: Execute in both modes - output is identical!
+5. **Discuss**: Why does biology use different bases for DNA vs RNA?
+
+**Key Teaching Point:**
+
+> "The information is the same - just written differently. DNA uses Thymine (T), RNA uses Uracil (U). CodonCanvas shows you this transformation visually."
+
+**Extension Questions:**
+
+- Why might having a display toggle be useful for learning?
+- In real cells, where does this T to U conversion happen? (Transcription)
+- What stays the same between DNA and RNA views? (Codon families, output)
+
+---
+
+### Activity 7: Real Genetics Comparison (20 min)
+
+**Goal:** Compare CodonCanvas with real genetic code
+
+**Process:**
+
+1. **Open Comparison Panel**: Click "Biology" button in toolbar
+2. **Write Test Genome**: `ATG GAA CCC GGA TAA`
+3. **View Table**: See CodonCanvas opcode vs real amino acid for each codon
+4. **Spot Patterns**: Notice GGA/GGC/GGG/GGT all have same behavior in BOTH systems
+
+**Discussion Topics:**
+
+- What patterns are the same? (4-fold degeneracy families)
+- What's different? (Output: shapes vs amino acids)
+- Why is the redundancy pattern biologically important? (Error tolerance)
+
+**Worksheet Connection:** Students complete comparison table from Lesson Extension
+
+**See Also:** `docs/METAPHOR_LIMITATIONS.md` for detailed accuracy analysis
 
 ---
 

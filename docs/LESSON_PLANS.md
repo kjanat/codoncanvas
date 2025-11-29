@@ -520,6 +520,90 @@ See `ASSESSMENTS.md` for:
 
 ---
 
+## Lesson Extension: Comparing to Real Genetics
+
+**Duration:** 30-45 minutes (can be added to Lesson 1 or 3, or standalone)
+**Learning Objectives:**
+
+- Compare CodonCanvas redundancy patterns with real genetic code
+- Understand DNA vs RNA notation (T vs U)
+- Recognize which aspects of CodonCanvas are biologically authentic
+
+### Extension Structure
+
+#### Part 1: DNA vs RNA Toggle (10 min)
+
+**Instructor Script:**
+
+> "In real biology, DNA uses Thymine (T), but when it's transcribed to RNA, Thymine becomes Uracil (U). CodonCanvas lets you see this transformation."
+
+**Activity:** "Toggle the Nucleotide Display"
+
+1. Open CodonCanvas with any genome
+2. Click the DNA/RNA toggle button in the toolbar
+3. Watch all T's become U's (and vice versa)
+
+**Key Point:** This is purely visual - the program runs the same way. Just like how DNA and RNA encode the same information differently.
+
+**Discussion Questions:**
+
+- Why might cells use different bases for DNA vs RNA?
+- What stays the same when you toggle? (The pattern, the output)
+
+---
+
+#### Part 2: Biology Comparison Panel (15 min)
+
+**Activity:** "Real Code vs CodonCanvas Code"
+
+1. Click the "Biology" button to open the comparison panel
+2. Write a simple genome: `ATG GAA CCC GGA TAA`
+3. View the comparison table showing:
+   - CodonCanvas opcode (e.g., CIRCLE for GGA)
+   - Real amino acid (e.g., Glycine for GGA)
+   - Property (e.g., nonpolar)
+
+**Key Insight:**
+
+> "Notice how GGA, GGC, GGG, and GGT all map to the same thing in BOTH systems! CodonCanvas intentionally mimics this 'wobble position' redundancy from real biology."
+
+**Worksheet Exercise (optional):** Complete the comparison table for a genome
+
+| Codon | CodonCanvas Opcode | Real Amino Acid | Same Family? |
+| ----- | ------------------ | --------------- | ------------ |
+| GGA   | CIRCLE             | Glycine         | Yes          |
+| GGC   | CIRCLE             | Glycine         | Yes          |
+| ...   | ...                | ...             | ...          |
+
+---
+
+#### Part 3: What's Real vs What's Simplified (10 min)
+
+**Discussion:** "Authentic Patterns, Different Outputs"
+
+**What CodonCanvas Gets Right:**
+
+- 64 possible codons (4^3)
+- Codon families sharing first two letters
+- Silent mutations within families
+- Reading frame importance
+- Start/stop codon boundaries
+
+**What CodonCanvas Simplifies:**
+
+- Outputs drawing commands instead of amino acids
+- No transcription step (DNA runs directly)
+- No protein folding or 3D structure
+- No ribosome or translation machinery
+
+**Analogy:**
+
+> "CodonCanvas is like learning to drive using a simulator - the steering and pedals work the same way, but you're not actually on a road. The PATTERNS are real; the OUTPUT is educational."
+
+**See Also:** For detailed comparison, use the built-in Biology Comparison panel or refer to `docs/METAPHOR_LIMITATIONS.md`.
+
+---
+
 ## Materials Checklist
 
 ### Required

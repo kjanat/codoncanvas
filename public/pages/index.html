@@ -166,6 +166,22 @@
             >
               🎨 Visual
             </button>
+            <button
+              id="nucleotide-toggle-btn"
+              class="secondary"
+              aria-label="DNA notation - click to switch to RNA"
+              title="Toggle between DNA (T) and RNA (U) notation for educational purposes"
+            >
+              🧬 DNA
+            </button>
+            <button
+              id="biology-comparison-btn"
+              class="secondary"
+              aria-label="Show real genetic code comparison"
+              title="Compare CodonCanvas opcodes with real amino acids"
+            >
+              🔬 Biology
+            </button>
 
             <div class="example-filters">
               <label for="search-input" class="sr-only">Search examples</label>
@@ -457,6 +473,40 @@ ATG GAA AAT GGA TAA</textarea>
               style="padding: 12px; font-size: 12px; line-height: 1.6; max-height: 400px; overflow-y: auto"
             >
               <!-- DiffViewer content will be injected here -->
+            </div>
+          </section>
+
+          <section
+            id="biology-comparison-panel"
+            role="region"
+            aria-labelledby="biology-comparison-heading"
+            style="display: none; margin-top: 12px; background: #2d2d30; border: 1px solid #3c3c3c; border-radius: 4px"
+          >
+            <div style="display: flex; justify-content: space-between; align-items: center; padding: 8px 12px; background: #252526; border-bottom: 1px solid #3c3c3c; border-radius: 4px 4px 0 0">
+              <h3
+                id="biology-comparison-heading"
+                style="font-size: 13px; font-weight: 600; color: #4ec9b0"
+              >
+                🔬 Real Genetic Code Comparison
+              </h3>
+              <div style="display: flex; gap: 8px">
+                <button
+                  id="biology-comparison-toggle"
+                  aria-label="Toggle biology comparison panel visibility"
+                  aria-expanded="true"
+                  style="padding: 4px 8px; font-size: 11px; background: #3e3e42"
+                >
+                  Hide
+                </button>
+              </div>
+            </div>
+            <div
+              id="biology-comparison-container"
+              role="region"
+              aria-live="polite"
+              style="padding: 12px; font-size: 12px; line-height: 1.6; max-height: 400px; overflow-y: auto"
+            >
+              <!-- Biology comparison content will be injected here -->
             </div>
           </section>
 

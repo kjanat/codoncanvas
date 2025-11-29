@@ -107,6 +107,12 @@ export let compareBtn: HTMLButtonElement;
 // Audio elements
 export const audioToggleBtn = getElement("audio-toggle-btn", HTMLButtonElement);
 
+// Nucleotide display toggle
+export const nucleotideToggleBtn = getElement(
+  "nucleotide-toggle-btn",
+  HTMLButtonElement,
+);
+
 // Timeline elements
 export const timelineToggleBtn = getElement(
   "timeline-toggle-btn",
@@ -115,6 +121,24 @@ export const timelineToggleBtn = getElement(
 export const timelinePanel = getElement("timeline-panel", HTMLDivElement);
 export const timelineContainer = getElement(
   "timeline-container",
+  HTMLDivElement,
+);
+
+// Biology comparison elements
+export const biologyComparisonBtn = getElement(
+  "biology-comparison-btn",
+  HTMLButtonElement,
+);
+export const biologyComparisonPanel = getElement(
+  "biology-comparison-panel",
+  HTMLDivElement,
+);
+export const biologyComparisonToggle = getElement(
+  "biology-comparison-toggle",
+  HTMLButtonElement,
+);
+export const biologyComparisonContainer = getElement(
+  "biology-comparison-container",
   HTMLDivElement,
 );
 
