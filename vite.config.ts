@@ -5,7 +5,7 @@ import { defineConfig } from "vite";
 
 export default defineConfig({
   // GitHub Pages base path (will be /codoncanvas/ when deployed)
-  base: process.env.NODE_ENV === "production" ? "/codoncanvas/" : "/",
+  base: `${process.env.VITE_BASE_PATH || ""}/`,
 
   // Public directory for static assets
   publicDir: "public",
