@@ -1,5 +1,28 @@
 /* Demo Base Styles - Shared across all demo pages */
 
+/*
+ * ============================================================================
+ * RESPONSIVE BREAKPOINTS (Standard Reference)
+ * ============================================================================
+ * Use these breakpoints consistently across all demo CSS files.
+ * CSS custom properties cannot be used in media queries, so reference by value.
+ *
+ * --bp-mobile:      480px   Small mobile devices
+ * --bp-tablet:      768px   Tablets and large phones (most common breakpoint)
+ * --bp-tablet-lg:   1024px  Tablet landscape / small desktop
+ * --bp-desktop:     1200px  Standard desktop
+ * --bp-desktop-lg:  1440px  Large desktop / wide screens
+ *
+ * Usage pattern:
+ *   @media (width <= 768px)  { ... }   Mobile-first: styles for tablet and below
+ *   @media (width <= 1200px) { ... }   Desktop breakpoint for multi-column layouts
+ *
+ * Preferred breakpoints for demos:
+ *   - 768px:  Primary mobile/tablet breakpoint (use for most responsive needs)
+ *   - 1200px: Secondary breakpoint for complex layouts (grids, sidebars)
+ * ============================================================================
+ */
+
 * {
   box-sizing: border-box;
   padding: 0;
@@ -177,4 +200,37 @@ canvas {
   font-size: 1.25rem;
   font-weight: bold;
   color: #4ec9b0;
+}
+
+/* ============================================================================
+ * COMMON RESPONSIVE STYLES
+ * ============================================================================
+ * Shared responsive adjustments for demo pages.
+ * Individual demo CSS files can override or extend these.
+ */
+
+@media (width <= 768px) {
+  body {
+    padding: 0.5rem;
+  }
+
+  header {
+    padding: 1rem;
+  }
+
+  h1 {
+    font-size: 1.25rem;
+  }
+
+  .panel-content {
+    padding: 0.75rem;
+  }
+
+  .example-buttons {
+    flex-direction: column;
+  }
+
+  .example-buttons button {
+    width: 100%;
+  }
 }
