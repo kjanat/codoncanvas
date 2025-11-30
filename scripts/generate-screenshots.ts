@@ -1,4 +1,4 @@
-#!/usr/bin/env tsx
+#!/usr/bin/env bun
 
 /**
  * Screenshot generation utility for CodonCanvas showcase genomes.
@@ -24,7 +24,7 @@ const __dirname = dirname(__filename);
  * Node-canvas renderer adapter for server-side rendering.
  * Implements Renderer interface using node-canvas API.
  */
-class NodeCanvasRenderer implements Renderer {
+export class NodeCanvasRenderer implements Renderer {
   private canvas: Canvas;
   private ctx: ReturnType<Canvas["getContext"]>;
   private _x = 200;
@@ -219,7 +219,7 @@ const SHOWCASE_GENOMES = [
 /**
  * Render a genome file to PNG.
  */
-function renderGenome(genomePath: string, outputPath: string): void {
+export function renderGenome(genomePath: string, outputPath: string): void {
   console.log(`Rendering ${genomePath}...`);
 
   // Read genome source
@@ -275,5 +275,7 @@ function main(): void {
   process.exit(errorCount > 0 ? 1 : 0);
 }
 
-// Run main
-main();
+// Only run when executed directly
+if (import.meta.main) {
+  main();
+}

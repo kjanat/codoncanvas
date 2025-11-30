@@ -1,4 +1,4 @@
-#!/usr/bin/env tsx
+#!/usr/bin/env bun
 /**
  * Documentation Audit Script - Session 91
  * Comprehensive validation of documentation consistency

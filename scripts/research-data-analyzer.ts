@@ -1,4 +1,4 @@
-#!/usr/bin/env tsx
+#!/usr/bin/env bun
 /**
  * CodonCanvas Research Data Analyzer
  *
@@ -20,6 +20,7 @@
  */
 
 import * as fs from "node:fs";
+import { csv2json } from "csv42";
 
 interface StudentData {
   id: string;
@@ -778,28 +779,48 @@ class ResearchAnalyzer {
   }
 }
 
+/**
+ * Custom value parser for StudentData CSV
+ * Handles numeric fields based on NUMERIC_STUDENT_FIELDS set
+ */
+function parseStudentValue(value: string, fieldName: string): unknown {
+  if (NUMERIC_STUDENT_FIELDS.has(fieldName)) {
+    return value ? parseFloat(value) : undefined;
+  }
+  return value;
+}
+
 function parseCSV(filepath: string): StudentData[] {
   const content = fs.readFileSync(filepath, "utf-8");
-  const lines = content.trim().split("\n");
-  const headers = lines[0].split(",").map((h) => h.trim());
+  const trimmed = content.trim();
 
+  if (!trimmed || !trimmed.includes("\n")) {
+    throw new Error("CSV file is empty or missing header");
+  }
+
+  // Parse CSV with csv42
+  const rawData = csv2json<Record<string, string>>(trimmed, {
+    header: true,
+    nested: false,
+  });
+
+  if (rawData.length === 0) {
+    throw new Error("No valid data rows found in CSV");
+  }
+
+  // Transform and validate each row
   const results: StudentData[] = [];
   let hasErrors = false;
 
-  for (let rowIndex = 0; rowIndex < lines.length - 1; rowIndex++) {
-    const line = lines[rowIndex + 1];
-    const values = line.split(",").map((v) => v.trim());
+  rawData.forEach((rawRow, rowIndex) => {
     const row: Record<string, string | number | undefined> = {};
 
-    headers.forEach((header, i) => {
-      const value = values[i];
-      // Convert numeric fields using the defined set
-      if (NUMERIC_STUDENT_FIELDS.has(header)) {
-        row[header] = value ? parseFloat(value) : undefined;
-      } else {
-        row[header] = value;
-      }
-    });
+    for (const [key, value] of Object.entries(rawRow)) {
+      row[key] = parseStudentValue(String(value), key) as
+        | string
+        | number
+        | undefined;
+    }
 
     // Validate row before adding to results
     const validated = validateStudentData(row, rowIndex);
@@ -808,7 +829,7 @@ function parseCSV(filepath: string): StudentData[] {
     } else {
       hasErrors = true;
     }
-  }
+  });
 
   if (hasErrors) {
     console.error(

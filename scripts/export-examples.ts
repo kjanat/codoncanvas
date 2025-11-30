@@ -1,4 +1,4 @@
-#!/usr/bin/env tsx
+#!/usr/bin/env bun
 /**
  * Export built-in examples as individual .genome files
  * Creates examples/ directory with all 18 examples

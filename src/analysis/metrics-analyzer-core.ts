@@ -3,6 +3,8 @@
  * Extracts Stats and MetricsAnalyzer classes from CLI script for dashboard integration
  */
 
+import { csv2json } from "csv42";
+
 // Data Structures
 
 export interface MetricsSession {
@@ -678,76 +680,69 @@ export class MetricsAnalyzer {
 
 // CSV Parsing (Browser-compatible)
 
+/** Fields that should be parsed as numbers */
+const NUMERIC_FIELDS = new Set([
+  "duration",
+  "startTime",
+  "endTime",
+  "mutationsApplied",
+  "errorCount",
+]);
+
+/** Field prefixes that indicate numeric values */
+const NUMERIC_PREFIXES = ["genomes", "mutation", "renderMode", "feature"];
+
+/**
+ * Custom value parser for MetricsSession CSV data
+ * Handles numeric fields, null values, and string fields appropriately
+ */
+function parseMetricsValue(value: string, fieldName: string): unknown {
+  // Handle timeToFirstArtifact specially (can be null)
+  if (fieldName === "timeToFirstArtifact") {
+    return value === "null" || value === "" ? null : parseFloat(value) || 0;
+  }
+
+  // Check if field should be numeric
+  const isNumeric =
+    NUMERIC_FIELDS.has(fieldName) ||
+    NUMERIC_PREFIXES.some((prefix) => fieldName.startsWith(prefix));
+
+  if (isNumeric) {
+    return parseFloat(value) || 0;
+  }
+
+  // Default: return as string
+  return value;
+}
+
 /**
  * Parse CSV string into MetricsSession objects
+ * Uses csv42 for RFC 4180 compliant parsing with custom value transformation
  */
 export function parseCSVContent(content: string): MetricsSession[] {
-  const lines = content.trim().split("\n");
-
-  if (lines.length < 2) {
+  const trimmed = content.trim();
+  if (!trimmed || !trimmed.includes("\n")) {
     throw new Error("CSV file is empty or missing header");
   }
 
-  const header = lines[0]
-    .split(",")
-    .map((h) => h.trim().replace(/^"(.*)"$/, "$1"));
-  const sessions: MetricsSession[] = [];
+  // Parse CSV with csv42, then transform values
+  const rawData = csv2json<Record<string, string>>(trimmed, {
+    header: true,
+    nested: false,
+  });
 
-  for (let i = 1; i < lines.length; i++) {
-    const values = parseCSVLine(lines[i]);
-    // biome-ignore lint/suspicious/noExplicitAny: Dynamic CSV parsing builds object incrementally
-    const session: any = {};
-
-    header.forEach((key, idx) => {
-      const value = values[idx];
-
-      // Parse numbers
-      if (
-        key === "duration" ||
-        key === "startTime" ||
-        key === "endTime" ||
-        key.startsWith("genomes") ||
-        key.startsWith("mutation") ||
-        key.startsWith("renderMode") ||
-        key.startsWith("feature") ||
-        key === "mutationsApplied" ||
-        key === "errorCount"
-      ) {
-        session[key] = parseFloat(value) || 0;
-      } else if (key === "timeToFirstArtifact") {
-        session[key] =
-          value === "null" || value === "" ? null : parseFloat(value);
-      } else {
-        session[key] = value;
-      }
-    });
-
-    sessions.push(session as MetricsSession);
+  if (rawData.length === 0) {
+    throw new Error("CSV file is empty or missing header");
   }
 
-  return sessions;
-}
-
-function parseCSVLine(line: string): string[] {
-  const result: string[] = [];
-  let current = "";
-  let inQuotes = false;
-
-  for (let i = 0; i < line.length; i++) {
-    const char = line[i];
-
-    if (char === '"') {
-      inQuotes = !inQuotes;
-    } else if (char === "," && !inQuotes) {
-      result.push(current.trim());
-      current = "";
-    } else {
-      current += char;
+  // Transform string values to appropriate types
+  return rawData.map((row) => {
+    const session: Record<string, unknown> = {};
+    for (const [key, value] of Object.entries(row)) {
+      session[key] = parseMetricsValue(String(value), key);
     }
-  }
-
-  result.push(current.trim());
-  return result.map((v) => v.replace(/^"(.*)"$/, "$1"));
+    return session as unknown as MetricsSession;
+  });
 }
 
 // Formatting Utilities
