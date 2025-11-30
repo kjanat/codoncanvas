@@ -9,7 +9,7 @@
  */
 
 import { mkdir, readdir } from "node:fs/promises";
-import { basename, join } from "node:path";
+import { basename, join, resolve } from "node:path";
 import { parseArgs } from "node:util";
 import { type Canvas, createCanvas } from "canvas";
 import type { Renderer } from "@/core";
@@ -253,21 +253,41 @@ async function main(): Promise<void> {
     options: {
       all: { type: "boolean", short: "a" },
       file: { type: "string", short: "f" },
+      help: { type: "boolean", short: "h" },
     },
     strict: true,
     allowPositionals: true,
   });
+
+  if (values.help) {
+    console.log(`
+Usage: bun scripts/generate-screenshots.ts [options]
+
+Options:
+  -a, --all      Render all .genome files in examples/ directory
+  -f, --file     Render a specific .genome file
+  -h, --help     Show this help message
+
+Examples:
+  bun scripts/generate-screenshots.ts              # Render showcase genomes
+  bun scripts/generate-screenshots.ts --all        # Render all examples
+  bun scripts/generate-screenshots.ts -f examples/fractalFlower.genome
+`);
+    process.exit(0);
+  }
 
   let genomesToRender: string[] = [];
 
   if (values.file) {
     // Render specific file
     // We need to handle full paths or relative paths
-    const fullPath = Bun.file(Bun.resolveSync(values.file, process.cwd()));
-    const name = basename(values.file, ".genome");
-    const outputPath = Bun.file(join(__screenshotsDir, `${name}.png`));
-
     try {
+      const fullPath = Bun.file(
+        Bun.resolveSync(resolve(values.file), process.cwd()),
+      );
+      const name = basename(values.file, ".genome");
+      const outputPath = Bun.file(join(__screenshotsDir, `${name}.png`));
+
       await renderGenome(fullPath, outputPath);
       console.log(`\n📊 Summary: 1 successful, 0 failed`);
       console.log(`📁 Screenshot saved to: examples/screenshots/${name}.png\n`);
@@ -294,7 +314,7 @@ async function main(): Promise<void> {
   for (const genomeName of genomesToRender) {
     try {
       const genomePath = Bun.file(
-        Bun.resolveSync(`${genomeName}.genome`, __examplesDir),
+        Bun.resolveSync(`./${genomeName}.genome`, __examplesDir),
       );
       const outputPath = Bun.file(join(__screenshotsDir, `${genomeName}.png`));
       await renderGenome(genomePath, outputPath);
