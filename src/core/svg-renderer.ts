@@ -10,6 +10,11 @@
 import type { Renderer, TransformState } from "./renderer";
 import { SeededRandom } from "./renderer";
 
+/** Sanitize numeric value for SVG attributes (NaN/Infinity -> 0) */
+function safeNum(n: number): number {
+  return Number.isFinite(n) ? n : 0;
+}
+
 /**
  * SVG rendering implementation.
  * Renders CodonCanvas programs to SVG vector graphics.
@@ -69,36 +74,41 @@ export class SVGRenderer implements Renderer {
   }
 
   circle(radius: number): void {
+    const r = safeNum(radius);
     const transform = this.getTransformAttr();
     this.addElement(
-      `<circle cx="0" cy="0" r="${radius}" ` +
+      `<circle cx="0" cy="0" r="${r}" ` +
         `fill="${this.currentColor}" stroke="${this.currentColor}" ` +
         `transform="${transform}"/>`,
     );
   }
 
   rect(width: number, height: number): void {
+    const w = safeNum(width);
+    const h = safeNum(height);
     const transform = this.getTransformAttr();
     this.addElement(
-      `<rect x="${-width / 2}" y="${-height / 2}" ` +
-        `width="${width}" height="${height}" ` +
+      `<rect x="${-w / 2}" y="${-h / 2}" ` +
+        `width="${w}" height="${h}" ` +
         `fill="${this.currentColor}" stroke="${this.currentColor}" ` +
         `transform="${transform}"/>`,
     );
   }
 
   line(length: number): void {
+    const len = safeNum(length);
     const transform = this.getTransformAttr();
     this.addElement(
-      `<line x1="0" y1="0" x2="${length}" y2="0" ` +
+      `<line x1="0" y1="0" x2="${len}" y2="0" ` +
         `stroke="${this.currentColor}" ` +
         `transform="${transform}"/>`,
     );
   }
 
   triangle(size: number): void {
-    const h = (size * Math.sqrt(3)) / 2;
-    const points = `0,${-h / 2} ${-size / 2},${h / 2} ${size / 2},${h / 2}`;
+    const s = safeNum(size);
+    const h = (s * Math.sqrt(3)) / 2;
+    const points = `0,${-h / 2} ${-s / 2},${h / 2} ${s / 2},${h / 2}`;
     const transform = this.getTransformAttr();
     this.addElement(
       `<polygon points="${points}" ` +
@@ -108,18 +118,22 @@ export class SVGRenderer implements Renderer {
   }
 
   ellipse(rx: number, ry: number): void {
+    const safeRx = safeNum(rx);
+    const safeRy = safeNum(ry);
     const transform = this.getTransformAttr();
     this.addElement(
-      `<ellipse cx="0" cy="0" rx="${rx}" ry="${ry}" ` +
+      `<ellipse cx="0" cy="0" rx="${safeRx}" ry="${safeRy}" ` +
         `fill="${this.currentColor}" stroke="${this.currentColor}" ` +
         `transform="${transform}"/>`,
     );
   }
 
   noise(seed: number, intensity: number): void {
-    const radius = (intensity / 64) * this.width;
-    const dotCount = Math.floor(intensity * 5) + 10;
-    const rng = new SeededRandom(seed);
+    const safeSeed = safeNum(seed);
+    const safeIntensity = safeNum(intensity);
+    const radius = (safeIntensity / 64) * this.width;
+    const dotCount = Math.floor(safeIntensity * 5) + 10;
+    const rng = new SeededRandom(safeSeed);
     const transform = this.getTransformAttr();
 
     const dots: string[] = [];
@@ -166,7 +180,10 @@ export class SVGRenderer implements Renderer {
   }
 
   setColor(h: number, s: number, l: number): void {
-    this.currentColor = `hsl(${h}, ${s}%, ${l}%)`;
+    const safeH = ((h % 360) + 360) % 360; // Normalize hue to 0-359
+    const safeS = Math.max(0, Math.min(100, s));
+    const safeL = Math.max(0, Math.min(100, l));
+    this.currentColor = `hsl(${safeH}, ${safeS}%, ${safeL}%)`;
   }
 
   getCurrentTransform(): TransformState {

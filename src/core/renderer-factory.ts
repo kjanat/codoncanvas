@@ -17,9 +17,9 @@ export type RendererType = "canvas" | "svg";
 export interface RendererOptions {
   /** Renderer type */
   type: RendererType;
-  /** Width in pixels */
+  /** Width in pixels (used for SVG; canvas derives dimensions from element) */
   width: number;
-  /** Height in pixels */
+  /** Height in pixels (used for SVG; canvas derives dimensions from element) */
   height: number;
   /** Canvas element (required for canvas type) */
   canvas?: HTMLCanvasElement;

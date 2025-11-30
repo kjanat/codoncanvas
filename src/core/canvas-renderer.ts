@@ -10,6 +10,14 @@
 import type { Renderer, TransformState } from "./renderer";
 import { SeededRandom } from "./renderer";
 
+/** Error thrown when canvas 2D context cannot be obtained */
+export class CanvasContextError extends Error {
+  constructor(message: string) {
+    super(message);
+    this.name = "CanvasContextError";
+  }
+}
+
 /**
  * Canvas 2D rendering implementation.
  * Renders CodonCanvas programs to HTML5 Canvas with full transform support.
@@ -46,7 +54,7 @@ export class Canvas2DRenderer implements Renderer {
   constructor(canvas: HTMLCanvasElement) {
     const context = canvas.getContext("2d");
     if (!context) {
-      throw new Error("Could not get 2D context from canvas");
+      throw new CanvasContextError("Could not get 2D context from canvas");
     }
     this.ctx = context;
     this.width = canvas.width;

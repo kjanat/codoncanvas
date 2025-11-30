@@ -48,6 +48,10 @@ export function useTutorialProgress(): UseTutorialProgressReturn {
         );
 
   const selectLesson = (id: string) => {
+    if (!getLessonById(id)) {
+      console.warn(`Invalid lesson ID: ${id}`);
+      return;
+    }
     setProgress((prev) => ({ ...prev, currentLesson: id }));
   };
 

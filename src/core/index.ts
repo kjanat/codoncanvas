@@ -3,7 +3,7 @@
  * Provides the fundamental building blocks for CodonCanvas
  */
 
-export { Canvas2DRenderer } from "./canvas-renderer";
+export { Canvas2DRenderer, CanvasContextError } from "./canvas-renderer";
 export type { Lexer } from "./lexer";
 export { CodonLexer } from "./lexer";
 // Renderer interface and implementations
