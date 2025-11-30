@@ -7,6 +7,7 @@
  * Usage: bun scripts/get-colours.ts <path-to-genome>
  */
 
+import { resolve } from "node:path";
 import { CodonLexer } from "@/core/lexer";
 import type { Renderer, TransformState } from "@/core/renderer";
 import { CodonVM } from "@/core/vm";
@@ -29,7 +30,10 @@ class MockRenderer implements Renderer {
     scale: 1,
   };
 
-  constructor(private tokens: CodonToken[]) {}
+  constructor(
+    private tokens: CodonToken[],
+    private absoluteFilePath: string,
+  ) {}
 
   resize(width?: number, height?: number): void {
     if (width) this.width = width;
@@ -80,8 +84,14 @@ class MockRenderer implements Renderer {
       .map((t) => t.text)
       .join(" ");
 
+    // Create hyperlink: OSC 8 ;; URL ST Text OSC 8 ;; ST
+    // VS Code supports file:///path/to/file#line
+    const lineText = `Line ${lineNum.toString().padStart(2)}`;
+    const url = `file://${this.absoluteFilePath}#${lineNum}`;
+    const hyperlink = `\x1b]8;;${url}\x1b\\${lineText}\x1b]8;;\x1b\\`;
+
     console.log(
-      `${ansi}■\x1b[0m Line ${lineNum.toString().padStart(2)}: Color(H:${fmtRawH}, S:${fmtRawS}, L:${fmtRawL}) -> hsl(${fmtH},${fmtS}%,${fmtL}%) -> ${hex}  [${lineTokens}]`,
+      `${ansi}■\x1b[0m ${hyperlink}: Color(H:${fmtRawH}, S:${fmtRawS}, L:${fmtRawL}) -> hsl(${fmtH},${fmtS}%,${fmtL}%) -> ${hex}  [${lineTokens}]`,
     );
   }
 
@@ -102,7 +112,8 @@ async function main() {
   }
 
   try {
-    const file = Bun.file(filePath);
+    const absolutePath = resolve(process.cwd(), filePath);
+    const file = Bun.file(absolutePath);
     const source = await file.text();
 
     console.log(`Analyzing colors in ${filePath}...\n`);
@@ -110,7 +121,7 @@ async function main() {
     const lexer = new CodonLexer();
     const tokens = lexer.tokenize(source);
 
-    const renderer = new MockRenderer(tokens);
+    const renderer = new MockRenderer(tokens, absolutePath);
     const vm = new CodonVM(renderer);
     renderer.vm = vm;
 
