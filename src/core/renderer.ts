@@ -134,10 +134,18 @@ export function generateNoisePoints(
  * ```
  */
 export interface Renderer {
-  /** Canvas width in pixels (read-only) */
+  /** Canvas width in pixels */
   readonly width: number;
-  /** Canvas height in pixels (read-only) */
+  /** Canvas height in pixels */
   readonly height: number;
+
+  /**
+   * Update renderer dimensions after resize.
+   * Recenters position and resets rotation/scale.
+   * @param width - New width (Canvas2DRenderer reads from canvas, SVGRenderer uses this param)
+   * @param height - New height (Canvas2DRenderer reads from canvas, SVGRenderer uses this param)
+   */
+  resize(width?: number, height?: number): void;
 
   /** Clear canvas, reset position to center, reset all transforms */
   clear(): void;

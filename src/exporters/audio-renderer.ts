@@ -180,6 +180,11 @@ export class AudioRenderer implements Renderer {
     this.currentTime += duration + 0.02; // Small gap between notes
   }
 
+  resize(): void {
+    // Audio renderer has no concept of dimensions - just clear state
+    this.clear();
+  }
+
   clear(): void {
     // Reset audio timeline to beginning
     this.currentTime = 0;

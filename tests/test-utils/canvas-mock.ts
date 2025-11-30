@@ -155,8 +155,11 @@ export function createMockRenderer() {
     width: 400,
     height: 400,
 
-    // Drawing methods
+    // Lifecycle methods
+    resize: () => {},
     clear: () => {},
+
+    // Drawing methods
     circle: (_radius: number) => {},
     rect: (_width: number, _height: number) => {},
     line: (_length: number) => {},

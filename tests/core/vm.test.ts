@@ -9,8 +9,12 @@ class MockRenderer implements Renderer {
   readonly width = 400;
   readonly height = 400;
 
-  private transform = { x: 200, y: 200, rotation: 0, scale: 1 };
+  transform = { x: 200, y: 200, rotation: 0, scale: 1 };
   public operations: string[] = [];
+
+  resize(): void {
+    this.clear();
+  }
 
   clear(): void {
     this.operations = [];

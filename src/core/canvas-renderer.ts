@@ -48,8 +48,16 @@ export class Canvas2DRenderer implements Renderer {
   private currentRotation: number = 0;
   private currentScale: number = 1;
 
-  readonly width: number;
-  readonly height: number;
+  private _width: number;
+  private _height: number;
+
+  get width(): number {
+    return this._width;
+  }
+
+  get height(): number {
+    return this._height;
+  }
 
   constructor(canvas: HTMLCanvasElement) {
     const context = canvas.getContext("2d");
@@ -57,18 +65,34 @@ export class Canvas2DRenderer implements Renderer {
       throw new CanvasContextError("Could not get 2D context from canvas");
     }
     this.ctx = context;
-    this.width = canvas.width;
-    this.height = canvas.height;
+    this._width = canvas.width;
+    this._height = canvas.height;
 
     // Initialize at center
-    this.currentX = this.width / 2;
-    this.currentY = this.height / 2;
+    this.currentX = this._width / 2;
+    this.currentY = this._height / 2;
+  }
+
+  /**
+   * Update renderer dimensions to match canvas size.
+   * Call this after the canvas element has been resized.
+   * Recenters position and resets rotation/scale.
+   * @param _width - Ignored (reads from canvas element)
+   * @param _height - Ignored (reads from canvas element)
+   */
+  resize(_width?: number, _height?: number): void {
+    this._width = this.ctx.canvas.width;
+    this._height = this.ctx.canvas.height;
+    this.currentX = this._width / 2;
+    this.currentY = this._height / 2;
+    this.currentRotation = 0;
+    this.currentScale = 1;
   }
 
   clear(): void {
-    this.ctx.clearRect(0, 0, this.width, this.height);
-    this.currentX = this.width / 2;
-    this.currentY = this.height / 2;
+    this.ctx.clearRect(0, 0, this._width, this._height);
+    this.currentX = this._width / 2;
+    this.currentY = this._height / 2;
     this.currentRotation = 0;
     this.currentScale = 1;
   }
@@ -105,8 +129,8 @@ export class Canvas2DRenderer implements Renderer {
   line(length: number): void {
     this.applyTransform();
     this.ctx.beginPath();
-    this.ctx.moveTo(0, 0);
-    this.ctx.lineTo(length, 0);
+    this.ctx.moveTo(-length / 2, 0);
+    this.ctx.lineTo(length / 2, 0);
     this.ctx.stroke();
     this.restoreTransform();
   }

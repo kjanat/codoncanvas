@@ -89,6 +89,7 @@ describe("CodonCanvas Library Exports", () => {
       const mockRenderer: Renderer = {
         width: 500,
         height: 500,
+        resize: () => {},
         clear: () => {},
         circle: () => {},
         rect: () => {},

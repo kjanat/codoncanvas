@@ -47,6 +47,14 @@ class NodeCanvasRenderer implements Renderer {
     return this.canvas.height;
   }
 
+  resize(): void {
+    // Re-read dimensions from canvas and reset state
+    this._x = this.width / 2;
+    this._y = this.height / 2;
+    this._rotation = 0;
+    this._scale = 1;
+  }
+
   clear(): void {
     this.ctx.fillStyle = "#ffffff";
     this.ctx.fillRect(0, 0, this.width, this.height);

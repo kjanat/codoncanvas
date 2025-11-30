@@ -53,7 +53,9 @@ describe("SVGRenderer", () => {
 
       const svg = renderer.toSVG();
       expect(svg).toContain("<line");
-      expect(svg).toContain('x2="100"');
+      // Line is center-anchored: x1="-50", x2="50" for length 100
+      expect(svg).toContain('x1="-50"');
+      expect(svg).toContain('x2="50"');
     });
 
     test("triangle creates SVG polygon element", () => {

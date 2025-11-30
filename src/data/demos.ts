@@ -1,9 +1,11 @@
+import type { DemoGradient } from "@/components/DemoCard";
+
 export interface Demo {
   path: string;
   title: string;
   description: string;
   icon: string;
-  color: string;
+  color: DemoGradient;
 }
 
 export const demos: Demo[] = [

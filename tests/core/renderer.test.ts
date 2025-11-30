@@ -266,14 +266,15 @@ describe("Canvas2DRenderer", () => {
   });
 
   describe("line()", () => {
-    test("draws line with correct length", () => {
+    test("draws line with correct length (center-anchored)", () => {
       renderer.line(100);
 
       const moveCall = ctx.operations.find((op) => op.startsWith("moveTo("));
       const lineCall = ctx.operations.find((op) => op.startsWith("lineTo("));
 
-      expect(moveCall).toBe("moveTo(0,0)");
-      expect(lineCall).toBe("lineTo(100,0)");
+      // Line is center-anchored: from -length/2 to +length/2
+      expect(moveCall).toBe("moveTo(-50,0)");
+      expect(lineCall).toBe("lineTo(50,0)");
     });
 
     test("strokes the line", () => {

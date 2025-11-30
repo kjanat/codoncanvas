@@ -34,20 +34,45 @@ export class SVGRenderer implements Renderer {
   private currentScale: number = 1;
   private currentColor: string = "hsl(0, 0%, 0%)";
 
-  readonly width: number;
-  readonly height: number;
+  private _width: number;
+  private _height: number;
+
+  get width(): number {
+    return this._width;
+  }
+
+  get height(): number {
+    return this._height;
+  }
 
   constructor(width: number, height: number) {
-    this.width = width;
-    this.height = height;
+    this._width = width;
+    this._height = height;
     this.currentX = width / 2;
     this.currentY = height / 2;
   }
 
+  /**
+   * Update renderer dimensions.
+   * Recenters position and resets rotation/scale.
+   * Clears existing elements.
+   * @param width - New width (optional, keeps current if omitted)
+   * @param height - New height (optional, keeps current if omitted)
+   */
+  resize(width?: number, height?: number): void {
+    if (width !== undefined) this._width = width;
+    if (height !== undefined) this._height = height;
+    this.elements = [];
+    this.currentX = this._width / 2;
+    this.currentY = this._height / 2;
+    this.currentRotation = 0;
+    this.currentScale = 1;
+  }
+
   clear(): void {
     this.elements = [];
-    this.currentX = this.width / 2;
-    this.currentY = this.height / 2;
+    this.currentX = this._width / 2;
+    this.currentY = this._height / 2;
     this.currentRotation = 0;
     this.currentScale = 1;
   }
@@ -94,7 +119,7 @@ export class SVGRenderer implements Renderer {
     const len = safeNum(length);
     const transform = this.getTransformAttr();
     this.addElement(
-      `<line x1="0" y1="0" x2="${len}" y2="0" ` +
+      `<line x1="${-len / 2}" y1="0" x2="${len / 2}" y2="0" ` +
         `stroke="${this.currentColor}" ` +
         `transform="${transform}"/>`,
     );

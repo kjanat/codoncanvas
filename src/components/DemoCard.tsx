@@ -9,6 +9,16 @@ import type { ReactElement } from "react";
 import { Link } from "react-router-dom";
 import { ChevronRightIcon } from "@/ui/icons";
 
+/** Allowed gradient color combinations for demo cards */
+export type DemoGradient =
+  | "from-purple-500 to-pink-500"
+  | "from-blue-500 to-cyan-500"
+  | "from-green-500 to-emerald-500"
+  | "from-orange-500 to-amber-500"
+  | "from-indigo-500 to-violet-500"
+  | "from-yellow-500 to-orange-500"
+  | "from-teal-500 to-cyan-500";
+
 export interface DemoCardProps {
   /** Route path for the demo */
   path: string;
@@ -18,8 +28,8 @@ export interface DemoCardProps {
   description: string;
   /** SVG path data for the icon */
   icon: string;
-  /** Tailwind gradient class (e.g., "from-purple-500 to-pink-500") */
-  color: string;
+  /** Tailwind gradient class */
+  color: DemoGradient;
 }
 
 /**
