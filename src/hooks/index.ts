@@ -5,6 +5,7 @@
  * example browsing, user preferences, history, clipboard, and keyboard shortcuts.
  */
 
+export { useAchievements } from "./useAchievements";
 export {
   type CanvasDimensions,
   type UseCanvasOptions,
@@ -63,6 +64,12 @@ export {
   type UseSimulationReturn,
   useSimulation,
 } from "./useSimulation";
+export {
+  type ResolvedTheme,
+  type Theme,
+  type UseThemeReturn,
+  useTheme,
+} from "./useTheme";
 export {
   type ExecutionResult,
   type PlaybackState,
