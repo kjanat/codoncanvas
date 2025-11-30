@@ -21,6 +21,32 @@ interface CanvasPreviewProps {
   className?: string;
 }
 
+function renderGenome(
+  canvas: HTMLCanvasElement,
+  genome: string,
+  width: number,
+  height: number,
+): void {
+  try {
+    const lexer = new CodonLexer();
+    const tokens = lexer.tokenize(genome);
+    const renderer = new Canvas2DRenderer(canvas);
+    const vm = new CodonVM(renderer);
+    vm.run(tokens);
+  } catch {
+    // Clear canvas on error
+    const ctx = canvas.getContext("2d");
+    if (ctx) {
+      ctx.fillStyle = "#f8f9fa";
+      ctx.fillRect(0, 0, width, height);
+      ctx.fillStyle = "#6c757d";
+      ctx.font = "10px sans-serif";
+      ctx.textAlign = "center";
+      ctx.fillText("Preview unavailable", width / 2, height / 2);
+    }
+  }
+}
+
 /**
  * Memoized canvas preview component.
  * Only re-renders when genome changes.
@@ -33,27 +59,11 @@ export const CanvasPreview = memo(function CanvasPreview({
 }: CanvasPreviewProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
+  // Re-render when genome/dimensions change
   useEffect(() => {
     const canvas = canvasRef.current;
-    if (!canvas) return;
-
-    try {
-      const lexer = new CodonLexer();
-      const tokens = lexer.tokenize(genome);
-      const renderer = new Canvas2DRenderer(canvas);
-      const vm = new CodonVM(renderer);
-      vm.run(tokens);
-    } catch {
-      // Clear canvas on error
-      const ctx = canvas.getContext("2d");
-      if (ctx) {
-        ctx.fillStyle = "#f8f9fa";
-        ctx.fillRect(0, 0, width, height);
-        ctx.fillStyle = "#6c757d";
-        ctx.font = "10px sans-serif";
-        ctx.textAlign = "center";
-        ctx.fillText("Preview unavailable", width / 2, height / 2);
-      }
+    if (canvas) {
+      renderGenome(canvas, genome, width, height);
     }
   }, [genome, width, height]);
 

@@ -5,94 +5,24 @@
  * Supports search, filtering by category, and click-to-insert.
  */
 
-import { memo, useCallback, useMemo, useState } from "react";
-import {
-  CATEGORIES,
-  CATEGORY_COLORS,
-  OPCODE_INFO,
-  type OpcodeCategory,
-  type OpcodeInfo,
-} from "@/data";
-import { CODON_MAP, type Opcode } from "@/types";
+import { memo } from "react";
+import { CATEGORIES, CATEGORY_COLORS } from "@/data";
 import { ChevronRightIcon, CloseIcon } from "@/ui";
-
-interface CodonReferenceProps {
-  /** Callback when a codon is clicked */
-  onInsert?: (codon: string) => void;
-  /** Whether panel is collapsed */
-  collapsed?: boolean;
-  /** Toggle collapse callback */
-  onToggleCollapse?: () => void;
-}
+import { type CodonReferenceProps, useCodonReference } from "./codon-reference";
 
 export const CodonReference = memo(function CodonReference({
   onInsert,
   collapsed = false,
   onToggleCollapse,
 }: CodonReferenceProps) {
-  const [search, setSearch] = useState("");
-  const [category, setCategory] = useState<OpcodeCategory>("all");
-
-  // Build opcode info with codons
-  const opcodeData = useMemo(() => {
-    const data: OpcodeInfo[] = [];
-
-    // Group codons by opcode
-    const codonsByOpcode = new Map<Opcode, string[]>();
-    for (const [codon, opcode] of Object.entries(CODON_MAP)) {
-      const existing = codonsByOpcode.get(opcode);
-      if (existing) {
-        existing.push(codon);
-      } else {
-        codonsByOpcode.set(opcode, [codon]);
-      }
-    }
-
-    // Build info array
-    for (const [opcode, info] of Object.entries(OPCODE_INFO)) {
-      const opcodeNum = Number(opcode) as Opcode;
-      data.push({
-        ...info,
-        codons: codonsByOpcode.get(opcodeNum) ?? [],
-      });
-    }
-
-    return data;
-  }, []);
-
-  // Filter opcodes
-  const filteredOpcodes = useMemo(() => {
-    return opcodeData.filter((info) => {
-      // Category filter
-      if (category !== "all" && info.category !== category) {
-        return false;
-      }
-
-      // Search filter
-      if (search) {
-        const searchLower = search.toLowerCase();
-        const matchesName = info.name.toLowerCase().includes(searchLower);
-        const matchesDesc = info.description
-          .toLowerCase()
-          .includes(searchLower);
-        const matchesCodon = info.codons.some((c) =>
-          c.toLowerCase().includes(searchLower),
-        );
-        if (!matchesName && !matchesDesc && !matchesCodon) {
-          return false;
-        }
-      }
-
-      return true;
-    });
-  }, [opcodeData, category, search]);
-
-  const handleCodonClick = useCallback(
-    (codon: string) => {
-      onInsert?.(codon);
-    },
-    [onInsert],
-  );
+  const {
+    search,
+    setSearch,
+    category,
+    setCategory,
+    filteredOpcodes,
+    handleCodonClick,
+  } = useCodonReference(onInsert);
 
   if (collapsed) {
     return (
