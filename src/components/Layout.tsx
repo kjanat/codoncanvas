@@ -25,9 +25,9 @@ export function Layout({ children }: LayoutProps) {
   const { ToastContainer: AchievementToastContainer } = useAchievements();
 
   return (
-    <div className="flex min-h-screen flex-col bg-bg-light">
+    <div className="flex h-screen flex-col bg-bg-light">
       <Header />
-      <main className="flex-1">{children}</main>
+      <main className="flex-1 overflow-hidden">{children}</main>
       <Footer
         authorName={siteConfig.author.name}
         githubUrl={getAuthorSocialUrl(siteConfig.author, "github")}

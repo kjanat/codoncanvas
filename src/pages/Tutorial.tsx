@@ -24,7 +24,7 @@ export default function Tutorial() {
   };
 
   return (
-    <div className="flex h-[calc(100vh-4rem)] bg-bg">
+    <div className="flex h-full bg-bg">
       <ModuleSidebar
         completedLessons={progress.completedLessons}
         currentLessonId={progress.currentLesson}
