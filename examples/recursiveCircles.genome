@@ -7,22 +7,22 @@
 
 ATG
   ; Outermost circle - very dark
-  GAA AAA GAA AAA GAA CCC TTA ; Color(0, 0, 21) very dark
+  GAA AAA GAA CCC GAA CCC TTA ; Color(0, 0, 21) very dark
   GAA TTT GGA                 ; Circle 63 (largest)
 
   ; Large circles - dark gradient
   GAA AAA GAA AGG GAA CCC TTA ; Color(0, 10, 21) dark blue-gray
-  GAA TGG GGA                 ; Circle 45
+  GAA GTC GGA                 ; Circle 45
 
   GAA AGG GAA CCC GAA CCC TTA ; Color(10, 21, 21) dark cyan
   GAA GCC GGA                 ; Circle 37
 
   ; Medium circles - transitional
-  GAA CCC GAA CCC GAA GCC TTA ; Color(21, 21, 37) medium gray
-  GAA GGC GGA                 ; Circle 30
+  GAA CCC GAA GCC GAA GCC TTA ; Color(21, 21, 37) medium gray
+  GAA CTG GGA                 ; Circle 30
 
   GAA CCC GAA GCC GAA GCC TTA ; Color(21, 37, 37) medium teal
-  GAA TGA GGA                 ; Circle 25
+  GAA CGC GGA                 ; Circle 25
 
   GAA GCC GAA GCC GAA GCC TTA ; Color(37, 37, 37) medium gray
   GAA CCC GGA                 ; Circle 21
@@ -32,7 +32,7 @@ ATG
   GAA AGG GGA                 ; Circle 10
 
   GAA TCC GAA TCC GAA TCC TTA ; Color(53, 53, 53) light gray
-  GAA TTT GGA                 ; Circle 5
+  GAA ACC GGA                 ; Circle 5
 
   ; Center - brightest
   GAA TTT GAA TTT GAA TTT TTA ; Color(63, 63, 63) white

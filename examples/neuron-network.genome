@@ -7,62 +7,62 @@
 
 ATG
   ; Cell body (soma) - gray
-  GAA AAA GAA AAA GAA TGC TTA  ; COLOR (0, 0, 60)
-  GAA CAG GGA                  ; PUSH 26, CIRCLE (soma)
+  GAA AAA GAA TTA GAA TGC TTA  ; COLOR (0, 0, 60)
+  GAA CGG GGA                  ; PUSH 26, CIRCLE (soma)
 
   ; Dendrites (input branches) - purple
-  GAA TCA GAA TGT GAA TGC TTA  ; COLOR (52, 85, 60)
+  GAA TCA GAA TTA GAA TGC TTA  ; COLOR (52, 85, 60)
 
   ; Left dendrite tree (4 branches)
-  GAA AAG TCA                  ; PUSH 5, LOOP
+  GAA ACC TCA                  ; PUSH 5, LOOP
     TGG                        ; SAVE_STATE
-    GAA TTA AGA                ; PUSH 30, ROTATE (-30° to -150°)
-    GAA CAG CGA                ; PUSH 26, SCALE (0.4)
-    GAA AGT AAA                ; PUSH 9, LINE (dendrite)
-    GAA AAA GAA AGT ACA        ; PUSH 0, PUSH 9, TRANSLATE (move along)
+    GAA CTG AGA                ; PUSH 30, ROTATE (-30° to -150°)
+    GAA CGG CGA                ; PUSH 26, SCALE (0.4)
+    GAA AGC AAA                ; PUSH 9, LINE (dendrite)
+    GAA AAA GAA AGC ACA        ; PUSH 0, PUSH 9, TRANSLATE (move along)
     ; Sub-branches
     TGG                        ; SAVE_STATE
-    GAA TGC AGA                ; PUSH 60(-4), ROTATE (-20°)
-    GAA AAG AAA                ; PUSH 5, LINE (sub-dendrite)
+    GAA TTA AGA                ; PUSH 60(-4), ROTATE (-20°)
+    GAA ACC AAA                ; PUSH 5, LINE (sub-dendrite)
     TGT                        ; RESTORE
     TGG
-    GAA AGT AGA                ; PUSH 9, ROTATE (20°)
-    GAA AAG AAA                ; PUSH 5, LINE
+    GAA AGC AGA                ; PUSH 9, ROTATE (20°)
+    GAA ACC AAA                ; PUSH 5, LINE
     TGT
     TGT                        ; RESTORE main
   TCT
 
   ; Right dendrite tree
-  GAA AAG TCA                  ; PUSH 5, LOOP
+  GAA ACC TCA                  ; PUSH 5, LOOP
     TGG
-    GAA TTC AGA                ; PUSH 60(-4), ROTATE (60° to 180°)
-    GAA CAG CGA                ; PUSH 26, SCALE (0.4)
-    GAA AGT AAA                ; PUSH 9, LINE
-    GAA AAA GAA AGT ACA        ; PUSH 0, PUSH 9, TRANSLATE
+    GAA TTA AGA                ; PUSH 60(-4), ROTATE (60° to 180°)
+    GAA CGG CGA                ; PUSH 26, SCALE (0.4)
+    GAA AGC AAA                ; PUSH 9, LINE
+    GAA AAA GAA AGC ACA        ; PUSH 0, PUSH 9, TRANSLATE
     TGG
-    GAA TGC AGA                ; PUSH 60(-4), ROTATE
-    GAA AAG AAA                ; PUSH 5, LINE
+    GAA TTA AGA                ; PUSH 60(-4), ROTATE
+    GAA ACC AAA                ; PUSH 5, LINE
     TGT
     TGG
-    GAA AGT AGA                ; PUSH 9, ROTATE
-    GAA AAG AAA                ; PUSH 5, LINE
+    GAA AGC AGA                ; PUSH 9, ROTATE
+    GAA ACC AAA                ; PUSH 5, LINE
     TGT
     TGT
   TCT
 
   ; Axon (output) - blue
-  GAA CAG GAA AAA GAA TGC TTA  ; COLOR (26, 0, 60) blue
+  GAA CGG GAA AAA GAA TTA TTA  ; COLOR (26, 0, 60) blue
   GAA AAA GAA AAA ACA          ; PUSH 0, PUSH 0, TRANSLATE (back to soma)
   GAA TTT AGA                  ; PUSH 63, ROTATE (270° = down)
-  GAA TGC AAA                  ; PUSH 60(-4), LINE (long axon)
+  GAA TTA AAA                  ; PUSH 60(-4), LINE (long axon)
 
   ; Axon terminals (synapses)
-  GAA AAA GAA TGC ACA          ; PUSH 0, PUSH 60(-4), TRANSLATE (to axon end)
-  GAA AAA GAA TGT GAA TGG TTA  ; COLOR (0, 85, 63) red (active synapse)
-  GAA AAC GGA                  ; PUSH 3, CIRCLE (synapse 1)
-  GAA AAG GAA AAA ACA          ; PUSH 5, PUSH 0, TRANSLATE (spread)
-  GAA AAC GGA                  ; PUSH 3, CIRCLE (synapse 2)
-  GAA TAG GAA AAA ACA          ; PUSH 45(-19), PUSH 0, TRANSLATE
-  GAA AAC GGA                  ; PUSH 3, CIRCLE (synapse 3)
+  GAA AAA GAA TTA ACA          ; PUSH 0, PUSH 60(-4), TRANSLATE (to axon end)
+  GAA AAA GAA TTT GAA TGG TTA  ; COLOR (0, 85, 63) red (active synapse)
+  GAA AAT GGA                  ; PUSH 3, CIRCLE (synapse 1)
+  GAA ACC GAA AAA ACA          ; PUSH 5, PUSH 0, TRANSLATE (spread)
+  GAA AAT GGA                  ; PUSH 3, CIRCLE (synapse 2)
+  GAA GTC GAA AAA ACA          ; PUSH 45(-19), PUSH 0, TRANSLATE
+  GAA AAT GGA                  ; PUSH 3, CIRCLE (synapse 3)
 
 TAA

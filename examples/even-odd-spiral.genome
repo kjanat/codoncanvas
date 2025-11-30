@@ -28,14 +28,14 @@ ATG
   GAA AAT CAT                  ; PUSH 3, ADD -> 4
   GGA                          ; CIRCLE(4) small circle
 
-  GAA AGC GAA AAA ACA          ; Translate(8, 0)
-  GAA CCG AGA                  ; Rotate(23) ~90°
+  GAA AGA GAA AAA ACA          ; Translate(8, 0)
+  GAA CCT AGA                  ; Rotate(23) ~90°
 
   ; Circle 2: Even (should be large)
-  GAA AAG GAA AAG CAT          ; PUSH 2, PUSH 2, DIV -> 1
+  GAA AAG GAA AAC CAT          ; PUSH 2, PUSH 2, DIV -> 1
   GAA AAG CTT                  ; PUSH 2, MUL -> 2
   GAA AAG CTA                  ; PUSH 2, EQ -> 1 (2 == 2, even!)
-  GAA AGC CTT                  ; PUSH 8, MUL -> 8 * 1 = 8
+  GAA AGA CTT                  ; PUSH 8, MUL -> 8 * 1 = 8
   GAA AAT CAT                  ; PUSH 3, ADD -> 11
   GGA                          ; CIRCLE(11) large circle
 
@@ -51,8 +51,8 @@ ATG
   GAA CCG AGA
 
   ; Circle 4: Even (large)
-  GAA AGG                      ; PUSH 4
-  GAA ACT CAT                  ; PUSH 5, ADD -> 9
+  GAA ACA                      ; PUSH 4
+  GAA ACC CAT                  ; PUSH 5, ADD -> 9
   GGA
 
   GAA AGC GAA AAA ACA
@@ -65,7 +65,7 @@ ATG
   GAA CCG AGA
 
   ; Circle 6: Even (large)
-  GAA AGA GGA                  ; PUSH 10, CIRCLE
+  GAA AGG GGA                  ; PUSH 10, CIRCLE
 
   GAA AGC GAA AAA ACA
   GAA CCG AGA

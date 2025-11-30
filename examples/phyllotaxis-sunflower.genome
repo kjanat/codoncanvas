@@ -7,10 +7,10 @@
 
 ATG
   ; Yellow-green color for seeds
-  GAA TGG GAA TGT GAA TTC TTA  ; COLOR (55, 85, 60)
+  GAA TCT GAA TTA GAA TTC TTA  ; COLOR (55, 85, 60)
 
   ; Draw 50 seeds in phyllotaxis pattern
-  GAA TGC TCA                   ; PUSH 60, LOOP (60 iterations)
+  GAA TTA TCA                   ; PUSH 60, LOOP (60 iterations)
     TGG                         ; SAVE_STATE
 
     ; Calculate distance from center (grows with each seed)
@@ -20,19 +20,19 @@ ATG
     ACA                         ; TRANSLATE (move outward)
 
     ; Draw seed
-    GAA AAC GGA                 ; PUSH 2, CIRCLE (small seed)
+    GAA AAG GGA                 ; PUSH 2, CIRCLE (small seed)
 
     TGT                         ; RESTORE_STATE
 
     ; Rotate by golden angle (~137.5°)
     ; 137.5 ≈ 2.14 * 64 = encoded as value ~35
-    GAA CGA AGA                 ; PUSH 33, ROTATE (137.5° approximation)
+    GAA GAC AGA                 ; PUSH 33, ROTATE (137.5° approximation)
 
   TCT                           ; End loop
 
   ; Center disk
   GAA AAA GAA AAA ACA          ; PUSH 0, PUSH 0, TRANSLATE (back to center)
-  GAA TTA GAA TGT GAA TCC TTA  ; COLOR (30, 85, 50) darker center
-  GAA AAG GGA                  ; PUSH 5, CIRCLE (center disk)
+  GAA CTG GAA TAG GAA TCC TTA  ; COLOR (30, 85, 50) darker center
+  GAA ACC GGA                  ; PUSH 5, CIRCLE (center disk)
 
 TAA

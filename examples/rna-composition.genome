@@ -8,7 +8,7 @@
 AUG
 
 ; Draw first circle
-GAA AAU GGA        ; Push 3, draw small circle
+GAA AAU AAT        ; Push 3, draw small circle
 
 ; Move right
 GAA CCC            ; Push 21 (dx)

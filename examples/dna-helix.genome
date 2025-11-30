@@ -7,47 +7,47 @@
 
 ATG
   ; Blue strand color
-  GAA CAG GAA TGT GAA TGG TTA  ; COLOR (26, 85, 63)
+  GAA CGG GAA TTT GAA TGG TTA  ; COLOR (26, 85, 63)
 
   ; Left strand (backbone - vertical with wave)
-  GAA TGC TCA                  ; PUSH 60(-4), LOOP (15 backbone segments)
+  GAA TTA TCA                  ; PUSH 60(-4), LOOP (15 backbone segments)
     TGG                        ; SAVE_STATE
     ; Calculate sine wave offset (approximate with rotation)
-    GAA TAG GAA AAA ACA        ; PUSH 45(-19), PUSH 0, TRANSLATE (wave left)
+    GAA GTC GAA AAA ACA        ; PUSH 45(-19), PUSH 0, TRANSLATE (wave left)
     GAA AAT GGA                ; PUSH 3, CIRCLE (backbone phosphate)
     TGT                        ; RESTORE_STATE
-    GAA AAA GAA AAG ACA        ; PUSH 0, PUSH 5, TRANSLATE (0, 5) move down
+    GAA AAA GAA ACC ACA        ; PUSH 0, PUSH 5, TRANSLATE (0, 5) move down
   TCT
 
   ; Reset position for right strand
-  GAA AAA GAA TAG ACA          ; PUSH 0, PUSH 45(-19), TRANSLATE (0, -300)
+  GAA AAA GAA GTC ACA          ; PUSH 0, PUSH 45(-19), TRANSLATE (0, -300)
 
   ; Red strand color
-  GAA AAA GAA TGT GAA TGG TTA  ; COLOR (0, 85, 63) red
+  GAA AAA GAA TTT GAA TGG TTA  ; COLOR (0, 85, 63) red
 
   ; Right strand (backbone - vertical with opposite wave)
-  GAA TGC TCA                  ; PUSH 60(-4), LOOP
+  GAA TTA TCA                  ; PUSH 60(-4), LOOP
     TGG                        ; SAVE_STATE
     GAA CCC GAA AAA ACA        ; PUSH 21, PUSH 0, TRANSLATE (wave right)
     GAA AAT GGA                ; PUSH 3, CIRCLE (backbone phosphate)
     TGT                        ; RESTORE_STATE
-    GAA AAA GAA AAG ACA        ; PUSH 0, PUSH 5, TRANSLATE move down
+    GAA AAA GAA ACC ACA        ; PUSH 0, PUSH 5, TRANSLATE move down
   TCT
 
   ; Reset for base pairs
-  GAA AAA GAA TAG ACA          ; PUSH 0, PUSH 45(-19), TRANSLATE back to top
+  GAA AAA GAA GTC ACA          ; PUSH 0, PUSH 45(-19), TRANSLATE back to top
 
   ; Yellow base pairs (connecting rungs)
-  GAA TGG GAA TGT GAA TGG TTA  ; COLOR (63, 85, 63) yellow
+  GAA TTT GAA TGT GAA TGG TTA  ; COLOR (63, 85, 63) yellow
 
   ; Draw base pairs (horizontal connectors)
-  GAA CAG TCA                  ; PUSH 26, LOOP (10 base pairs)
+  GAA CGG TCA                  ; PUSH 26, LOOP (10 base pairs)
     TGG                        ; SAVE_STATE
-    GAA TAG GAA AAA ACA        ; PUSH 45(-19), PUSH 0, TRANSLATE left edge
-    GAA CGA AGA                ; PUSH 33, ROTATE (horizontal)
-    GAA TTC AAA                ; PUSH 60(-4), LINE (connect bases)
+    GAA GTC GAA AAA ACA        ; PUSH 45(-19), PUSH 0, TRANSLATE left edge
+    GAA GAC AGA                ; PUSH 33, ROTATE (horizontal)
+    GAA TTA AAA                ; PUSH 60(-4), LINE (connect bases)
     TGT                        ; RESTORE_STATE
-    GAA AAA GAA CAG ACA        ; PUSH 0, PUSH 26, TRANSLATE (0, down)
+    GAA AAA GAA CGG ACA        ; PUSH 0, PUSH 26, TRANSLATE (0, down)
   TCT
 
 TAA

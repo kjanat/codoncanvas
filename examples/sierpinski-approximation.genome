@@ -14,15 +14,15 @@ ATG
 
   ; Level 1: Three medium triangles (size = 31 ≈ 63/2)
   TCA                          ; SAVE_STATE
-  GAA GGC GAA AAA ACA          ; Translate(30, 0) - move right
-  GAA GGC AGA                  ; Rotate(30)
-  GAA TGT GCA                  ; PUSH 31, TRIANGLE
-  GAA CTC AGA                  ; Rotate(60)
-  GAA GGC GAA AAA ACA          ; Translate(30, 0)
-  GAA TGT GCA                  ; PUSH 31, TRIANGLE
-  GAA CTC AGA                  ; Rotate(60)
-  GAA GGC GAA AAA ACA          ; Translate(30, 0)
-  GAA TGT GCA                  ; PUSH 31, TRIANGLE
+  GAA CTG GAA AAA ACA          ; Translate(30, 0) - move right
+  GAA CTG AGA                  ; Rotate(30)
+  GAA CTT GCA                  ; PUSH 31, TRIANGLE
+  GAA TTA AGA                  ; Rotate(60)
+  GAA CTG GAA AAA ACA          ; Translate(30, 0)
+  GAA CTT GCA                  ; PUSH 31, TRIANGLE
+  GAA TTA AGA                  ; Rotate(60)
+  GAA CTG GAA AAA ACA          ; Translate(30, 0)
+  GAA CTT GCA                  ; PUSH 31, TRIANGLE
 
   ; Level 2: Nine small triangles (size = 15 ≈ 31/2)
   ; Use LOOP to create pattern
@@ -35,7 +35,7 @@ ATG
 
   ; Create pattern with LOOP
   ; Instructions: ROTATE 40°, TRANSLATE 15, TRIANGLE
-  GAA GTC                      ; PUSH 40 (rotation)
+  GAA GGA                      ; PUSH 40 (rotation)
   AGA                          ; ROTATE
   GAA ATT                      ; PUSH 15 (translation)
   GAA AAA                      ; PUSH 0
@@ -44,12 +44,12 @@ ATG
   GCA                          ; TRIANGLE
 
   ; LOOP: repeat 5 instructions, 8 more times (9 total)
-  GAA ACT                      ; PUSH 5 (instruction count)
-  GAA AGC                      ; PUSH 8 (repeat count)
+  GAA ACC                      ; PUSH 5 (instruction count)
+  GAA AGA                      ; PUSH 8 (repeat count)
   CAA                          ; LOOP
 
   ; Add accent circles at vertices
-  GAA TTT GAA TTT GAA CCC TTA ; Color(63, 63, 21) yellow accents
+  GAA TTT GAA CCC GAA CCC TTA ; Color(63, 63, 21) yellow accents
   GAA AAC GGA                  ; PUSH 1, CIRCLE (tiny dots)
 
 TAA

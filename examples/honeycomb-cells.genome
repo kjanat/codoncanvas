@@ -7,36 +7,36 @@
 
 ATG
   ; Golden honey color
-  GAA TTA GAA TGT GAA TCC TTA  ; COLOR (30, 85, 50)
+  GAA CTG GAA TAG GAA TCC TTA  ; COLOR (30, 85, 50)
 
   ; Draw honeycomb grid (3x3 hexagons)
   ; Row 1
-  GAA TAG GAA TGC ACA          ; PUSH 45(-19), PUSH 60(-4), TRANSLATE (-80, -80)
+  GAA GTC GAA TTA ACA          ; PUSH 45(-19), PUSH 60(-4), TRANSLATE (-80, -80)
   TGG                          ; SAVE_STATE
-  GAA AAC TCA                  ; PUSH 3, LOOP (3 hexagons across)
+  GAA AAT TCA                  ; PUSH 3, LOOP (3 hexagons across)
     ; Draw hexagon (6-sided polygon using lines)
     TGG                        ; SAVE_STATE
-    GAA AAG                    ; PUSH 5, (side length)
+    GAA ACC                    ; PUSH 5, (side length)
     ATA ATA ATA ATA ATA        ; DUP x5: 6 copies for 6 sides
     GAA AAA TCA                ; PUSH 0, LOOP (draw 6 sides)
       AAA                      ; LINE (one side)
       GAA TGA AGA              ; PUSH 56(-8), ROTATE (60°)
     TCT
     TGT                        ; RESTORE_STATE
-    GAA CAG GAA AAA ACA        ; PUSH 26, PUSH 0, TRANSLATE (move right)
+    GAA CGG GAA AAA ACA        ; PUSH 26, PUSH 0, TRANSLATE (move right)
   TCT
   TGT                          ; RESTORE_STATE
 
   ; Row 2 (offset for honeycomb pattern)
-  GAA TGT GAA TGC ACA          ; PUSH 61(-3), PUSH 60(-4), TRANSLATE (-60, -40)
+  GAA TTC GAA TTA ACA          ; PUSH 61(-3), PUSH 60(-4), TRANSLATE (-60, -40)
   TGG                          ; SAVE_STATE
-  GAA AAC TCA                  ; PUSH 3, LOOP
+  GAA AAT TCA                  ; PUSH 3, LOOP
     TGG                        ; SAVE_STATE
-    GAA AAG                    ; PUSH 5
+    GAA ACC                    ; PUSH 5
     ATA ATA ATA ATA ATA        ; DUP x5
     GAA AAA TCA                ; LOOP hexagon
       AAA                      ; LINE
-      GAA TGA AGA              ; ROTATE 60°
+      GAA TTA AGA              ; ROTATE 60°
     TCT
     TGT
     GAA CAG GAA AAA ACA        ; TRANSLATE right
@@ -44,9 +44,9 @@ ATG
   TGT
 
   ; Row 3
-  GAA TAG GAA AAA ACA          ; PUSH 45(-19), PUSH 0, TRANSLATE (-80, 0)
+  GAA GTC GAA AAA ACA          ; PUSH 45(-19), PUSH 0, TRANSLATE (-80, 0)
   TGG
-  GAA AAC TCA                  ; PUSH 3, LOOP
+  GAA AAT TCA                  ; PUSH 3, LOOP
     TGG
     GAA AAG
     ATA ATA ATA ATA ATA        ; DUP x5

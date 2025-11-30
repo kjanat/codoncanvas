@@ -7,7 +7,7 @@
 
 ATG
   ; Purple gradient for mathematical elegance
-  GAA GGC GAA TCA GAA TGG TTA ; Color(38, 52, 50) deep purple
+  GAA GCG GAA TCA GAA TAG TTA ; Color(38, 52, 50) deep purple
 
   ; Hilbert curve order 3 approximation
   ; Pattern uses connected LINE segments in U-shaped recursion
@@ -17,57 +17,57 @@ ATG
   GAA AAA GAA AAA ACA          ; Translate(0, 0) center
 
   ; First U-shape (bottom-left quadrant)
-  GAA AAC AAA                  ; PUSH 5, LINE up
+  GAA ACC AAA                  ; PUSH 5, LINE up
   GAA TCA AGA                  ; PUSH 90, ROTATE right
-  GAA AAC AAA                  ; PUSH 5, LINE right
+  GAA ACC AAA                  ; PUSH 5, LINE right
   GAA GTC AGA                  ; PUSH 90, ROTATE right (now down)
-  GAA AAC AAA                  ; PUSH 5, LINE down
+  GAA ACC AAA                  ; PUSH 5, LINE down
 
   ; Connect to next quadrant
   GAA GTC AGA                  ; PUSH 90, ROTATE left
-  GAA AAC AAA                  ; PUSH 5, LINE right
+  GAA ACC AAA                  ; PUSH 5, LINE right
 
   ; Second section (bottom-right)
   GAA GTC AGA                  ; PUSH 90, ROTATE
-  GAA AAC AAA                  ; PUSH 5, LINE up
+  GAA ACC AAA                  ; PUSH 5, LINE up
   GAA GTC AGA                  ; PUSH 90, ROTATE
-  GAA AAC AAA                  ; PUSH 5, LINE left
+  GAA ACC AAA                  ; PUSH 5, LINE left
   GAA TCA AGA                  ; PUSH 90, ROTATE
-  GAA AAC AAA                  ; PUSH 5, LINE up
+  GAA ACC AAA                  ; PUSH 5, LINE up
 
   ; Connect to top-right
-  GAA AAC AAA                  ; PUSH 5, LINE up
+  GAA ACC AAA                  ; PUSH 5, LINE up
 
   ; Third section (top-right quadrant)
   GAA TCA AGA                  ; PUSH 90, ROTATE right
-  GAA AAC AAA                  ; PUSH 5, LINE right
+  GAA ACC AAA                  ; PUSH 5, LINE right
   GAA TCA AGA                  ; PUSH 90, ROTATE down
-  GAA AAC AAA                  ; PUSH 5, LINE down
+  GAA ACC AAA                  ; PUSH 5, LINE down
   GAA GTC AGA                  ; PUSH 90, ROTATE left
-  GAA AAC AAA                  ; PUSH 5, LINE left
+  GAA ACC AAA                  ; PUSH 5, LINE left
 
   ; Connect to top-left
   GAA GTC AGA                  ; PUSH 90, ROTATE
-  GAA AAC AAA                  ; PUSH 5, LINE up
+  GAA ACC AAA                  ; PUSH 5, LINE up
   GAA GTC AGA                  ; PUSH 90, ROTATE
-  GAA AAC AAA                  ; PUSH 5, LINE left
+  GAA ACC AAA                  ; PUSH 5, LINE left
 
   ; Fourth section (top-left quadrant - final U)
   GAA GTC AGA                  ; PUSH 90, ROTATE down
-  GAA AAC AAA                  ; PUSH 5, LINE down
+  GAA ACC AAA                  ; PUSH 5, LINE down
   GAA GTC AGA                  ; PUSH 90, ROTATE right
-  GAA AAC AAA                  ; PUSH 5, LINE right
+  GAA ACC AAA                  ; PUSH 5, LINE right
   GAA TCA AGA                  ; PUSH 90, ROTATE down
-  GAA AAC AAA                  ; PUSH 5, LINE down
+  GAA ACC AAA                  ; PUSH 5, LINE down
 
   TCT                          ; RESTORE_STATE
 
   ; Second layer: larger scale Hilbert curve outline
   ; Lighter color for contrast
-  GAA TTA GAA TGC GAA TGC TTA ; Color(61, 59, 59) lavender
+  GAA TTC GAA TGT GAA TGC TTA ; Color(61, 59, 59) lavender
 
   ; Scale up and draw coarser Hilbert pattern
-  GAA ATT GAA ATT CGA           ; SCALE(1.8)
+  GAA AAC GAA ATT CGA           ; SCALE(1.8)
 
   ; Simplified Hilbert order 2 pattern
   GAA AGG AAA                  ; PUSH 10, LINE
@@ -82,22 +82,22 @@ ATG
   GAA TCA AGA                  ; PUSH 90, ROTATE
 
   ; LOOP: repeat 2 instructions, 5 more times
-  GAA AAC                      ; PUSH 2 (instruction count)
-  GAA AAC                      ; PUSH 5 (repeat)
+  GAA AAG                      ; PUSH 2 (instruction count)
+  GAA ACC                      ; PUSH 5 (repeat)
   CAA                          ; LOOP
 
   ; Accent circles at curve vertices for emphasis
-  GAA TTT GAA TTT GAA GGT TTA ; Color(63, 63, 37) white-yellow
+  GAA TTT GAA GCC GAA GGT TTA ; Color(63, 63, 37) white-yellow
 
   ; Place dots at key points
   TCA                          ; SAVE_STATE
-  GAA AGA GGA                  ; PUSH 1, CIRCLE (tiny)
+  GAA AAC GGA                  ; PUSH 1, CIRCLE (tiny)
 
   GAA AGG GAA AAA ACA          ; Translate(10, 0)
-  GAA AGA GGA                  ; PUSH 1, CIRCLE
+  GAA AAC GGA                  ; PUSH 1, CIRCLE
 
   GAA AAA GAA AGG ACA          ; Translate(0, 10)
-  GAA AGA GGA                  ; PUSH 1, CIRCLE
+  GAA AAC GGA                  ; PUSH 1, CIRCLE
 
   TCT                          ; RESTORE_STATE
 

@@ -14,4 +14,17 @@ export {
   showStatus,
 } from "./dom";
 
-export { cleanGenome, formatAsCodons, parseGenome } from "./genome-utils";
+export type {
+  CleanGenomeOptions,
+  GenomeLine,
+  NumericLiteral,
+} from "./genome-utils";
+export {
+  cleanGenome,
+  extractCommentValues,
+  findNumericLiterals,
+  formatAsCodons,
+  isPushCodon,
+  parseGenome,
+  parseGenomeLines,
+} from "./genome-utils";

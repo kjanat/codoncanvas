@@ -9,40 +9,40 @@ ATG
   ; Outer layer - 6 large ellipse petals (red to yellow)
   GAA AAA GAA TTT GAA GCC TTA ; Color(0, 63, 37) red
   GAA TCC GAA CCC GTA          ; Ellipse 53×21 (elongated)
-  GAA CTC AGA                 ; Rotate 60
+  GAA TTA AGA                 ; Rotate 60
   GAA ATT GAA TTT GAA GCC TTA ; Color(15, 63, 37) orange
   GAA TCC GAA CCC GTA          ; Ellipse 53×21
-  GAA CTC AGA                 ; Rotate 60
+  GAA TTA AGA                 ; Rotate 60
   GAA CCC GAA TTT GAA GCC TTA ; Color(21, 63, 37) yellow-orange
   GAA TCC GAA CCC GTA          ; Ellipse 53×21
-  GAA CTC AGA                 ; Rotate 60
-  GAA TTT GAA TTT GAA GCC TTA ; Color(63, 63, 37) yellow
+  GAA TTA AGA                 ; Rotate 60
+  GAA TTT GAA GCC GAA GCC TTA ; Color(63, 63, 37) yellow
   GAA TCC GAA CCC GTA          ; Ellipse 53×21
-  GAA CTC AGA                 ; Rotate 60
+  GAA TTA AGA                 ; Rotate 60
   GAA TTT GAA TCC GAA GCC TTA ; Color(63, 53, 37) yellow-green
   GAA TCC GAA CCC GTA          ; Ellipse 53×21
-  GAA CTC AGA                 ; Rotate 60
+  GAA TTA AGA                 ; Rotate 60
   GAA TTT GAA AGG GAA GCC TTA ; Color(63, 10, 37) lime
   GAA TCC GAA CCC GTA          ; Ellipse 53×21
 
   ; Middle layer - 6 medium ellipses (green to cyan)
   GAA TCC GAA AGG GAA GCC TTA ; Color(53, 10, 37) green
   TCA                         ; SAVE
-  GAA GGC AGA                 ; Rotate 30 (offset from outer)
+  GAA CTG AGA                 ; Rotate 30 (offset from outer)
   GAA GCC GAA ATT GTA          ; Ellipse 37×15
-  GAA CTC AGA                 ; Rotate 60
+  GAA TTA AGA                 ; Rotate 60
   GAA CCC GAA AGG GAA GCC TTA ; Color(21, 10, 37) dark green
   GAA GCC GAA ATT GTA          ; Ellipse 37×15
-  GAA CTC AGA                 ; Rotate 60
+  GAA TTA AGA                 ; Rotate 60
   GAA AGG GAA CCC GAA GCC TTA ; Color(10, 21, 37) teal
   GAA GCC GAA ATT GTA          ; Ellipse 37×15
-  GAA CTC AGA                 ; Rotate 60
+  GAA TTA AGA                 ; Rotate 60
   GAA AGG GAA TTT GAA TCC TTA ; Color(10, 63, 53) cyan
   GAA GCC GAA ATT GTA          ; Ellipse 37×15
-  GAA CTC AGA                 ; Rotate 60
+  GAA TTA AGA                 ; Rotate 60
   GAA ATT GAA TTT GAA TCC TTA ; Color(15, 63, 53) light blue
   GAA GCC GAA ATT GTA          ; Ellipse 37×15
-  GAA CTC AGA                 ; Rotate 60
+  GAA TTA AGA                 ; Rotate 60
   GAA CCC GAA TTT GAA TCC TTA ; Color(21, 63, 53) sky blue
   GAA GCC GAA ATT GTA          ; Ellipse 37×15
   TCG                         ; RESTORE
@@ -50,19 +50,19 @@ ATG
   ; Inner layer - 6 small ellipses (blue to purple)
   GAA GCC GAA TTT GAA TCC TTA ; Color(37, 63, 53) blue
   GAA CCC GAA AGG GTA          ; Ellipse 21×10
-  GAA CTC AGA                 ; Rotate 60
-  GAA TGG GAA TTT GAA TCC TTA ; Color(45, 63, 53) blue-purple
+  GAA TTA AGA                 ; Rotate 60
+  GAA GTC GAA TTT GAA TCC TTA ; Color(45, 63, 53) blue-purple
   GAA CCC GAA AGG GTA          ; Ellipse 21×10
-  GAA CTC AGA                 ; Rotate 60
-  GAA TTT GAA TTT GAA TCC TTA ; Color(63, 63, 53) purple
+  GAA TTA AGA                 ; Rotate 60
+  GAA TTT GAA TCC GAA TCC TTA ; Color(63, 63, 53) purple
   GAA CCC GAA AGG GTA          ; Ellipse 21×10
-  GAA CTC AGA                 ; Rotate 60
+  GAA TTA AGA                 ; Rotate 60
   GAA TTT GAA TCC GAA TCC TTA ; Color(63, 53, 53) magenta
   GAA CCC GAA AGG GTA          ; Ellipse 21×10
-  GAA CTC AGA                 ; Rotate 60
+  GAA TTA AGA                 ; Rotate 60
   GAA TTT GAA GCC GAA TCC TTA ; Color(63, 37, 53) pink
   GAA CCC GAA AGG GTA          ; Ellipse 21×10
-  GAA CTC AGA                 ; Rotate 60
+  GAA TTA AGA                 ; Rotate 60
   GAA TTT GAA CCC GAA TCC TTA ; Color(63, 21, 53) hot pink
   GAA CCC GAA AGG GTA          ; Ellipse 21×10
 

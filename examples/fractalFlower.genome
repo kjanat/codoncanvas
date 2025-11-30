@@ -14,62 +14,62 @@ ATG
   TCA                         ; SAVE_STATE
   GAA TCC GAA CCC GTA          ; Push 53, push 21, draw ellipse (53x21)
   GAA CGC GAA AAA ACA          ; Translate(25, 0)
-  GAA ATT AGA                 ; Rotate 45 degrees
+  GAA GTC AGA                 ; Rotate 45 degrees
   TCA                         ; SAVE_STATE
   GAA TCC GAA CCC GTA          ; Push 53, push 21, draw ellipse (53x21)
-  GAA ATT AGA                 ; Rotate 45
+  GAA GTC AGA                 ; Rotate 45
   GAA TCC GAA CCC GTA          ; Ellipse
-  GAA ATT AGA                 ; Rotate 45
+  GAA GTC AGA                 ; Rotate 45
   GAA TCC GAA CCC GTA          ; Ellipse
-  GAA ATT AGA                 ; Rotate 45
+  GAA GTC AGA                 ; Rotate 45
   GAA TCC GAA CCC GTA          ; Ellipse
-  GAA ATT AGA                 ; Rotate 45
+  GAA GTC AGA                 ; Rotate 45
   GAA TCC GAA CCC GTA          ; Ellipse
-  GAA ATT AGA                 ; Rotate 45
+  GAA GTC AGA                 ; Rotate 45
   GAA TCC GAA CCC GTA          ; Ellipse
-  GAA ATT AGA                 ; Rotate 45
+  GAA GTC AGA                 ; Rotate 45
   GAA TCC GAA CCC GTA          ; Ellipse
 
   ; Layer 2 - Middle petals (6 petals, medium, pink-red)
-  GAA TGT GAA TCC GAA TCC TTA ; Color(58, 53, 53) bright pink
+  GAA TGG GAA TCC GAA TCC TTA ; Color(58, 53, 53) bright pink
   TCA                         ; SAVE_STATE
   GAA GCC GAA AGG GTA          ; Push 37, push 10, ellipse (37x10)
-  GAA CTC AGA                 ; Rotate 60 degrees (360/6)
+  GAA TTA AGA                 ; Rotate 60 degrees (360/6)
   GAA GCC GAA AGG GTA          ; Ellipse
-  GAA CTC AGA                 ; Rotate 60
+  GAA TTA AGA                 ; Rotate 60
   GAA GCC GAA AGG GTA          ; Ellipse
-  GAA CTC AGA                 ; Rotate 60
+  GAA TTA AGA                 ; Rotate 60
   GAA GCC GAA AGG GTA          ; Ellipse
-  GAA CTC AGA                 ; Rotate 60
+  GAA TTA AGA                 ; Rotate 60
   GAA GCC GAA AGG GTA          ; Ellipse
-  GAA CTC AGA                 ; Rotate 60
+  GAA TTA AGA                 ; Rotate 60
   GAA GCC GAA AGG GTA          ; Ellipse
 
   ; Layer 3 - Inner petals (12 petals, small, yellow)
-  GAA TTT GAA TTT GAA CCC TTA ; Color(63, 63, 21) bright yellow
+  GAA TTT GAA CCC GAA CCC TTA ; Color(63, 63, 21) bright yellow
   TCA                         ; SAVE_STATE
   GAA CCC GAA AAT GTA          ; Push 21, push 3, ellipse (21x3)
-  GAA GGC AGA                 ; Rotate 30 degrees (360/12)
+  GAA CTG AGA                 ; Rotate 30 degrees (360/12)
   GAA CCC GAA AAT GTA          ; Ellipse
-  GAA GGC AGA                 ; Rotate 30
+  GAA CTG AGA                 ; Rotate 30
   GAA CCC GAA AAT GTA          ; Ellipse
-  GAA GGC AGA                 ; Rotate 30
+  GAA CTG AGA                 ; Rotate 30
   GAA CCC GAA AAT GTA          ; Ellipse
-  GAA GGC AGA                 ; Rotate 30
+  GAA CTG AGA                 ; Rotate 30
   GAA CCC GAA AAT GTA          ; Ellipse
-  GAA GGC AGA                 ; Rotate 30
+  GAA CTG AGA                 ; Rotate 30
   GAA CCC GAA AAT GTA          ; Ellipse
-  GAA GGC AGA                 ; Rotate 30
+  GAA CTG AGA                 ; Rotate 30
   GAA CCC GAA AAT GTA          ; Ellipse
-  GAA GGC AGA                 ; Rotate 30
+  GAA CTG AGA                 ; Rotate 30
   GAA CCC GAA AAT GTA          ; Ellipse
-  GAA GGC AGA                 ; Rotate 30
+  GAA CTG AGA                 ; Rotate 30
   GAA CCC GAA AAT GTA          ; Ellipse
-  GAA GGC AGA                 ; Rotate 30
+  GAA CTG AGA                 ; Rotate 30
   GAA CCC GAA AAT GTA          ; Ellipse
-  GAA GGC AGA                 ; Rotate 30
+  GAA CTG AGA                 ; Rotate 30
   GAA CCC GAA AAT GTA          ; Ellipse
-  GAA GGC AGA                 ; Rotate 30
+  GAA CTG AGA                 ; Rotate 30
   GAA CCC GAA AAT GTA          ; Ellipse
 
   ; Core - Central circle with texture
