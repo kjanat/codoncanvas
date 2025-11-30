@@ -438,21 +438,21 @@ export class CodonVM implements VM {
       );
     }
 
-    if (instructionCount > this.instructionHistory.length) {
+    // Compute max replayable instructions (exclude LOOP parameter PUSHes)
+    const maxReplayable = this.instructionHistory.length - LOOP_PARAMETER_COUNT;
+    if (instructionCount > maxReplayable) {
       throw new Error(
-        `LOOP instruction count (${instructionCount}) exceeds history length (${this.instructionHistory.length})`,
+        `LOOP instruction count (${instructionCount}) exceeds available history (${maxReplayable})`,
       );
     }
 
     // Get the instructions to replay
     // Note: The last LOOP_PARAMETER_COUNT instructions in history are the PUSH operations for loop parameters
     // We want to replay instructions BEFORE those parameter PUSHes
-    const historyBeforeParams =
-      this.instructionHistory.length - LOOP_PARAMETER_COUNT;
-    const startIdx = historyBeforeParams - instructionCount;
+    const startIdx = maxReplayable - instructionCount;
     const instructionsToRepeat = this.instructionHistory.slice(
       startIdx,
-      historyBeforeParams,
+      maxReplayable,
     );
 
     // Execute the loop body loopCount times
@@ -462,9 +462,8 @@ export class CodonVM implements VM {
         codon: loopCodon,
         pushValue,
       } of instructionsToRepeat) {
-        // Check instruction limit
-        this.state.instructionCount++;
-        if (this.state.instructionCount > this.maxInstructions) {
+        // Check instruction limit before executing
+        if (this.state.instructionCount >= this.maxInstructions) {
           throw new Error(
             `Instruction limit exceeded (${this.maxInstructions})`,
           );
@@ -472,9 +471,11 @@ export class CodonVM implements VM {
 
         // Handle PUSH specially - use stored value instead of executing
         if (loopOpcode === Opcode.PUSH && pushValue !== undefined) {
+          // Manual increment for PUSH since we bypass execute()
+          this.state.instructionCount++;
           this.push(pushValue);
         } else {
-          // Execute other instructions normally (don't add to history - avoid infinite growth)
+          // execute() is single source of truth for counting
           this.execute(loopOpcode, loopCodon);
         }
       }

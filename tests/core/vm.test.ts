@@ -664,7 +664,7 @@ describe("CodonVM", () => {
       // PUSH 5, PUSH 100, LOOP (tries to loop 100 instructions)
       const genome = "ATG GAA ACT GAA TTT CAA TAA";
       const tokens = lexer.tokenize(genome);
-      expect(() => vm.run(tokens)).toThrow("exceeds history length");
+      expect(() => vm.run(tokens)).toThrow("exceeds available history");
     });
   });
 

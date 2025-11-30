@@ -8,7 +8,7 @@ export type { Lexer } from "./lexer";
 export { CodonLexer } from "./lexer";
 // Renderer interface and implementations
 export type { Renderer, TransformState } from "./renderer";
-export { SeededRandom } from "./renderer";
+export { generateNoisePoints, SeededRandom } from "./renderer";
 // Renderer factory
 export type { RendererOptions, RendererType } from "./renderer-factory";
 export { createRenderer } from "./renderer-factory";

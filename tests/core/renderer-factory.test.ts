@@ -44,8 +44,6 @@ describe("createRenderer", () => {
       const canvas = createMockCanvas();
       const renderer = createRenderer({
         type: "canvas",
-        width: 400,
-        height: 300,
         canvas,
       });
 
@@ -56,8 +54,6 @@ describe("createRenderer", () => {
       const canvas = createMockCanvas(500, 400);
       const renderer = createRenderer({
         type: "canvas",
-        width: 100, // ignored for canvas type
-        height: 100, // ignored for canvas type
         canvas,
       });
 
@@ -65,26 +61,8 @@ describe("createRenderer", () => {
       expect(renderer.height).toBe(400);
     });
 
-    test("throws error when canvas element is missing", () => {
-      expect(() =>
-        createRenderer({
-          type: "canvas",
-          width: 400,
-          height: 300,
-        }),
-      ).toThrow("Canvas renderer requires canvas element");
-    });
-
-    test("throws error when canvas is undefined", () => {
-      expect(() =>
-        createRenderer({
-          type: "canvas",
-          width: 400,
-          height: 300,
-          canvas: undefined,
-        }),
-      ).toThrow("Canvas renderer requires canvas element");
-    });
+    // Note: Tests for missing/undefined canvas removed - now caught at compile time
+    // by discriminated union (CanvasRendererOptions requires canvas property)
   });
 
   describe("svg type", () => {
@@ -109,26 +87,17 @@ describe("createRenderer", () => {
       expect(renderer.height).toBe(600);
     });
 
-    test("ignores canvas element for svg type", () => {
-      const canvas = createMockCanvas();
-      const renderer = createRenderer({
-        type: "svg",
-        width: 400,
-        height: 300,
-        canvas, // should be ignored
-      });
-
-      expect(renderer).toBeInstanceOf(SVGRenderer);
-    });
+    // Note: Test for "ignores canvas element for svg type" removed -
+    // discriminated union now prevents passing canvas with svg type at compile time
   });
 
   describe("unknown type", () => {
     test("throws error for unknown renderer type", () => {
+      const canvas = createMockCanvas();
       expect(() =>
         createRenderer({
           type: "webgl" as "canvas",
-          width: 400,
-          height: 300,
+          canvas,
         }),
       ).toThrow("Unknown renderer type: webgl");
     });
@@ -139,8 +108,6 @@ describe("createRenderer", () => {
       const canvas = createMockCanvas();
       const renderer = createRenderer({
         type: "canvas",
-        width: 400,
-        height: 300,
         canvas,
       });
 

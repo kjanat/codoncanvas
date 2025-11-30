@@ -14,9 +14,12 @@ export function validateCode(
 
     // Check required codons
     if (lesson.validation.requiredCodons) {
-      const codeUpper = code.toUpperCase();
       for (const required of lesson.validation.requiredCodons) {
-        if (!codeUpper.includes(required.toUpperCase())) {
+        const requiredUpper = required.toUpperCase();
+        const found = tokens.some(
+          (token) => token.text.toUpperCase() === requiredUpper,
+        );
+        if (!found) {
           errors.push(`Missing required codon: ${required}`);
         }
       }

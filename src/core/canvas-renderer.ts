@@ -8,7 +8,7 @@
  */
 
 import type { Renderer, TransformState } from "./renderer";
-import { SeededRandom } from "./renderer";
+import { generateNoisePoints } from "./renderer";
 
 /** Error thrown when canvas 2D context cannot be obtained */
 export class CanvasContextError extends Error {
@@ -134,31 +134,12 @@ export class Canvas2DRenderer implements Renderer {
   }
 
   noise(seed: number, intensity: number): void {
-    // Convert intensity to pixel radius (0-63 -> 0-canvas_width)
-    const radius = (intensity / 64) * this.width;
-
-    // Number of dots scales with intensity (more intense = more dots)
-    const dotCount = Math.floor(intensity * 5) + 10; // 10-325 dots
-
-    // Create seeded random generator for reproducibility
-    const rng = new SeededRandom(seed);
+    const points = generateNoisePoints(seed, intensity, this.width);
 
     this.applyTransform();
-
-    // Draw random dots within circular region
-    for (let i = 0; i < dotCount; i++) {
-      // Random point in circle using rejection sampling
-      let px: number;
-      let py: number;
-      do {
-        px = (rng.next() * 2 - 1) * radius;
-        py = (rng.next() * 2 - 1) * radius;
-      } while (px * px + py * py > radius * radius);
-
-      // Draw small dot
-      this.ctx.fillRect(px, py, 1, 1);
+    for (const { x, y } of points) {
+      this.ctx.fillRect(x, y, 1, 1);
     }
-
     this.restoreTransform();
   }
 

@@ -9,6 +9,8 @@
 
 import type { Point2D } from "@/types";
 
+export type { Point2D };
+
 /**
  * Transform state for VM tracking.
  * Extends Point2D with rotation and scale for complete transform info.
@@ -39,6 +41,73 @@ export class SeededRandom {
     this.state = (this.state * 48271) % 2147483647;
     return (this.state - 1) / 2147483646;
   }
+}
+
+/** Clamp value to [min, max] range */
+export function clamp(value: number, min: number, max: number): number {
+  return Math.max(min, Math.min(max, value));
+}
+
+/** Sanitize numeric value (NaN/Infinity -> 0) */
+export function safeNum(n: number): number {
+  return Number.isFinite(n) ? n : 0;
+}
+
+/** Max intensity value for noise operations */
+export const MAX_NOISE_INTENSITY = 64;
+
+/** Minimum dot count for noise (ensures visibility) */
+const MIN_NOISE_DOTS = 10;
+
+/** Dots per intensity unit */
+const DOTS_PER_INTENSITY = 5;
+
+/**
+ * Compute noise parameters from intensity.
+ * Clamps intensity to [0, 64] to prevent invalid geometry.
+ */
+export function computeNoiseParams(
+  intensity: number,
+  canvasWidth: number,
+): { radius: number; dotCount: number } {
+  const safeIntensity = clamp(safeNum(intensity), 0, MAX_NOISE_INTENSITY);
+  return {
+    radius: (safeIntensity / MAX_NOISE_INTENSITY) * canvasWidth,
+    dotCount: Math.floor(safeIntensity * DOTS_PER_INTENSITY) + MIN_NOISE_DOTS,
+  };
+}
+
+/**
+ * Generate noise points using rejection sampling within a circle.
+ * Returns deterministic points based on seed for reproducibility.
+ *
+ * @param seed - RNG seed for reproducibility
+ * @param intensity - Noise intensity (0-64, clamped internally)
+ * @param canvasWidth - Canvas width for radius scaling
+ * @returns Array of (x, y) points within the noise circle
+ */
+export function generateNoisePoints(
+  seed: number,
+  intensity: number,
+  canvasWidth: number,
+): Point2D[] {
+  const safeSeed = safeNum(seed);
+  const { radius, dotCount } = computeNoiseParams(intensity, canvasWidth);
+  const rng = new SeededRandom(safeSeed);
+  const points: Point2D[] = [];
+
+  for (let i = 0; i < dotCount; i++) {
+    let px: number;
+    let py: number;
+    do {
+      px = (rng.next() * 2 - 1) * radius;
+      py = (rng.next() * 2 - 1) * radius;
+    } while (px * px + py * py > radius * radius);
+
+    points.push({ x: px, y: py });
+  }
+
+  return points;
 }
 
 /**

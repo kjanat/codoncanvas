@@ -8,12 +8,7 @@
  */
 
 import type { Renderer, TransformState } from "./renderer";
-import { SeededRandom } from "./renderer";
-
-/** Sanitize numeric value for SVG attributes (NaN/Infinity -> 0) */
-function safeNum(n: number): number {
-  return Number.isFinite(n) ? n : 0;
-}
+import { generateNoisePoints, safeNum } from "./renderer";
 
 /**
  * SVG rendering implementation.
@@ -129,26 +124,13 @@ export class SVGRenderer implements Renderer {
   }
 
   noise(seed: number, intensity: number): void {
-    const safeSeed = safeNum(seed);
-    const safeIntensity = safeNum(intensity);
-    const radius = (safeIntensity / 64) * this.width;
-    const dotCount = Math.floor(safeIntensity * 5) + 10;
-    const rng = new SeededRandom(safeSeed);
+    const points = generateNoisePoints(seed, intensity, this.width);
     const transform = this.getTransformAttr();
 
-    const dots: string[] = [];
-    for (let i = 0; i < dotCount; i++) {
-      let px: number;
-      let py: number;
-      do {
-        px = (rng.next() * 2 - 1) * radius;
-        py = (rng.next() * 2 - 1) * radius;
-      } while (px * px + py * py > radius * radius);
-
-      dots.push(
-        `<rect x="${px}" y="${py}" width="1" height="1" fill="${this.currentColor}"/>`,
-      );
-    }
+    const dots = points.map(
+      ({ x, y }) =>
+        `<rect x="${x}" y="${y}" width="1" height="1" fill="${this.currentColor}"/>`,
+    );
 
     this.addElement(`<g transform="${transform}">${dots.join("")}</g>`);
   }
