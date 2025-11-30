@@ -7,7 +7,7 @@
 
 ATG
   ; Setup: Purple color for fractal
-  GAA GCC GAA AAA GAA TCC TTA ; Color(37, 0, 53) deep purple
+  GAA GCC GAA AAA GAA TCC TTA ; Color(37, 0, 53) #d3d3d3 gray
 
   ; Level 0: Large central triangle (size = 63)
   GAA TTT GCA                  ; PUSH 63, TRIANGLE
@@ -26,7 +26,7 @@ ATG
 
   ; Level 2: Nine small triangles (size = 15 ≈ 31/2)
   ; Use LOOP to create pattern
-  GAA TTT GAA CCC GAA TCC TTA ; Color(63, 21, 53) lighter purple
+  GAA TTT GAA CCC GAA TCC TTA ; Color(63, 21, 53) #e2c5c7 pale pink
 
   ; Position for first small triangle
   TCA                          ; SAVE_STATE
@@ -49,7 +49,7 @@ ATG
   CAA                          ; LOOP
 
   ; Add accent circles at vertices
-  GAA TTT GAA CCC GAA CCC TTA ; Color(63, 63, 21) yellow accents
+  GAA TTT GAA CCC GAA CCC TTA ; Color(63, 21, 21) #6f383d dark red
   GAA AAC GGA                  ; PUSH 1, CIRCLE (tiny dots)
 
 TAA

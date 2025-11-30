@@ -7,7 +7,7 @@
 
 ATG
   ; Setup: Grid starting position, clean white background
-  GAA TTT GAA AAA GAA TTT TTA ; Color(63, 0, 63) white
+  GAA TTT GAA AAA GAA TTT TTA ; Color(63, 0, 63) #fbfbfb white
 
   ; Number 1: Not divisible by 3 or 5 -> small dot
   GAA AAC GGA                  ; PUSH 1, CIRCLE (tiny dot)
@@ -19,7 +19,7 @@ ATG
 
   ; Number 3: Divisible by 3 -> Circle (Fizz)
   ; Color it blue
-  GAA TTG GAA GCC GAA GCC TTA  ; Color(62, 37, 37) blue
+  GAA TTG GAA GCC GAA GCC TTA  ; Color(62, 37, 37) #d2556c pink
   GAA ACG GGA                  ; PUSH 6, CIRCLE (medium)
   GAA TTT GAA AAA GAA TTT TTA  ; Color(63, 0, 63) back to white
   GAA ACT GAA AAA ACA          ; Translate(7, 0)
@@ -30,13 +30,13 @@ ATG
 
   ; Number 5: Divisible by 5 -> Square (Buzz)
   ; Color it green
-  GAA CCC GAA GCC GAA GCC TTA  ; Color(21, 37, 37) green
+  GAA CCC GAA GCC GAA GCC TTA  ; Color(21, 37, 37) #59d255 green
   GAA AAT GAA AAT CCA          ; PUSH 3, PUSH 3, RECT (small square)
   GAA TTT GAA AAA GAA TTT TTA  ; Color(63, 0, 63) back to white
   GAA ACT GAA AAA ACA          ; Translate(7, 0)
 
   ; Number 6: Divisible by 3 -> Circle (Fizz)
-  GAA TTG GAA GCC GAA GCC TTA  ; Color(62, 37, 37) blue
+  GAA TTG GAA GCC GAA GCC TTA  ; Color(62, 37, 37) #d2556c pink
   GAA ACG GGA                  ; PUSH 6, CIRCLE
   GAA TTT GAA AAA GAA TTT TTA  ; Color(63, 0, 63) white
   GAA ACT GAA AAA ACA          ; Translate(7, 0)

@@ -7,7 +7,7 @@
 
 ATG
   ; Fiery dragon colors: orange to red gradient
-  GAA TAA GAA TTT GAA TAG TTA ; Color(48, 63, 50) bright orange
+  GAA TAA GAA TTT GAA TAG TTA ; Color(48, 63, 50) #c790fe purple
 
   ; Level 0: Outermost spiral (large scale)
   TCA                          ; SAVE_STATE
@@ -26,7 +26,7 @@ ATG
   GAA AGC GAA AAA CGA           ; SCALE(0.7) via PUSH 9, PUSH 9, SCALE
 
   ; Warmer color for depth
-  GAA TAG GAA TTT GAA GTG TTA ; Color(50, 63, 46) red-orange
+  GAA TAG GAA TTT GAA GTG TTA ; Color(50, 63, 46) #d271fe purple
 
   ; Medium square spiral
   GAA ATT AAA                  ; PUSH 15, LINE
@@ -42,7 +42,7 @@ ATG
   GAA AAA GAA AGA CGA           ; SCALE down more (0.6)
 
   ; Deep red for inner detail
-  GAA TTA GAA TTT GAA GCA TTA ; Color(60, 63, 36) deep red
+  GAA TTA GAA TTT GAA GCA TTA ; Color(60, 63, 36) #fd2274 magenta
 
   ; Small angular pattern
   GAA AGG AAA                  ; PUSH 10, LINE
@@ -72,7 +72,7 @@ ATG
   TCT                          ; RESTORE_STATE
 
   ; Accent circles at key vertices for visual interest
-  GAA TTT GAA TCA GAA TCA TTA ; Color(63, 52, 52) gold accents
+  GAA TTT GAA TCA GAA TCA TTA ; Color(63, 52, 52) #f6a9b0 pink
   TCA                          ; SAVE_STATE
 
   ; Place circles at corners

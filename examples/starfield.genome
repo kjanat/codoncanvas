@@ -8,12 +8,12 @@
 ATG
   ; Deep navy/purple background
   ; H=42 (blue-purple ~240deg), S=50, L=3 (very dark)
-  GAA GTC GAA CTT GAA AAC TTA ; Color(45, 31, 1) deep navy-purple
+  GAA GTC GAA CTT GAA AAC TTA ; Color(45, 31, 1) #030206 near black
   GAA TTT GGA                 ; Circle 63 (fills canvas)
 
   ; Warm nebula glow in center-right area (Milky Way hint)
   ; H=5 (orange ~30deg), S=40, L=15
-  GAA ACT GAA CGC GAA AGG TTA ; Color(5, 25, 10) warm brown/orange
+  GAA ACT GAA CGC GAA AGG TTA ; Color(7, 25, 10) #372d18 dark brown
   TCA
   GAA CCC GAA AAA ACA         ; Translate(21, 0)
   GAA AAA GAA AGG ACA         ; Translate(0, 10)
@@ -21,7 +21,7 @@ ATG
   TCG
 
   ; Secondary warm glow
-  GAA AAG GAA CCC GAA AGG TTA ; Color(3, 21, 10) darker orange-brown
+  GAA AAG GAA CCC GAA AGG TTA ; Color(2, 21, 10) #35201b dark brown
   TCA
   GAA AGG GAA AAA ACA         ; Translate(10, 0)
   GAA AAA GAA CCC ACA         ; Translate(0, 21)
@@ -29,7 +29,7 @@ ATG
   TCG
 
   ; Bright white stars
-  GAA AAA GAA AAA GAA TTT TTA ; Color(0, 0, 63) white
+  GAA AAA GAA AAA GAA TTT TTA ; Color(0, 0, 63) #fbfbfb white
   
   ; Top left region
   TCA
@@ -46,7 +46,7 @@ ATG
 
   ; Top right - pale warm star (like Betelgeuse)
   ; H=3 (orange-red ~20deg), S=30, L=60
-  GAA AAG GAA CTT GAA TTA TTA ; Color(3, 31, 60) warm orange-white
+  GAA AAG GAA CTT GAA TTA TTA ; Color(2, 31, 60) #f7eae8 pale warm
   TCA
   GAA GCC GAA AAA ACA         ; Translate(37, 0)
   GAA AAA GAA CGC ACA         ; Translate(0, 25)
@@ -55,7 +55,7 @@ ATG
 
   ; Upper left - pale blue star (like Rigel)
   ; H=38 (blue ~215deg), S=25, L=62
-  GAA GCA GAA CCC GAA TTT TTA ; Color(36, 21, 63) pale blue
+  GAA GCA GAA CCC GAA TTT TTA ; Color(36, 21, 63) #fafbfc near white
   TCA
   GAA CCA GAA AAA ACA         ; Translate(20, 0)
   GAA AAA GAA ATT ACA         ; Translate(0, 15)
@@ -63,7 +63,7 @@ ATG
   TCG
 
   ; Upper right - white
-  GAA AAA GAA AAA GAA TTT TTA ; Color(0, 0, 63) white
+  GAA AAA GAA AAA GAA TTT TTA ; Color(0, 0, 63) #fbfbfb white
   TCA
   GAA CCC GAA AAA ACA         ; Translate(21, 0)
   GAA AAA GAA CCA ACA         ; Translate(0, 20)
@@ -71,7 +71,7 @@ ATG
   TCG
 
   ; Middle left - pale cyan star
-  GAA GGG GAA CCC GAA TTT TTA ; Color(42, 21, 63) pale cyan
+  GAA GGG GAA CCC GAA TTT TTA ; Color(42, 21, 63) #fafafc near white
   TCA
   GAA GCC GAA AAA ACA         ; Translate(37, 0)
   GAA AAA GAA ACC ACA         ; Translate(0, 5)
@@ -79,7 +79,7 @@ ATG
   TCG
 
   ; Middle right - warm orange star
-  GAA ACT GAA CTT GAA TTT TTA ; Color(5, 31, 63) warm pale orange
+  GAA ACT GAA CTT GAA TTT TTA ; Color(7, 31, 63) #fdfcf9 near white
   TCA
   GAA CGC GAA AAA ACA         ; Translate(25, 0)
   GAA AAA GAA AAA ACA         ; Translate(0, 0)
@@ -87,7 +87,7 @@ ATG
   TCG
 
   ; Lower left - white
-  GAA AAA GAA AAA GAA TTT TTA ; Color(0, 0, 63) white
+  GAA AAA GAA AAA GAA TTT TTA ; Color(0, 0, 63) #fbfbfb white
   TCA
   GAA CGC GAA AAA ACA         ; Translate(25, 0)
   GAA AAA GAA CCC ACA         ; Translate(0, 21)
@@ -95,7 +95,7 @@ ATG
   TCG
 
   ; Lower center - pale yellow (like our Sun type)
-  GAA AGG GAA CCC GAA TTT TTA ; Color(10, 21, 63) pale yellow
+  GAA AGG GAA CCC GAA TTT TTA ; Color(10, 21, 63) #fcfcfa near white
   TCA
   GAA AGG GAA AAA ACA         ; Translate(10, 0)
   GAA AAA GAA CTG ACA         ; Translate(0, 30)
@@ -103,7 +103,7 @@ ATG
   TCG
 
   ; Lower right - pale blue
-  GAA GCA GAA CCC GAA TTT TTA ; Color(36, 21, 63) pale blue
+  GAA GCA GAA CCC GAA TTT TTA ; Color(36, 21, 63) #fafbfc near white
   TCA
   GAA GCC GAA AAA ACA         ; Translate(37, 0)
   GAA AAA GAA GCC ACA         ; Translate(0, 37)
@@ -111,7 +111,7 @@ ATG
   TCG
 
   ; Bright center star - pure white with slight blue tint
-  GAA GGC GAA AGG GAA TTT TTA ; Color(41, 10, 63) blue-white
+  GAA GGC GAA AGG GAA TTT TTA ; Color(41, 10, 63) #fafafc near white
   GAA ACC GGA                 ; Circle 5
 
 TAA

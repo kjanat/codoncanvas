@@ -7,7 +7,7 @@
 
 ATG
   ; Wave 1 - blue, top
-  GAA GCA GAA TTT GAA GCC TTA ; Color(36, 63, 37) blue
+  GAA GCA GAA TTT GAA GCC TTA ; Color(36, 63, 37) #2aaefd blue
   TCA
   GAA AAA GAA GCC ACA         ; Translate(0, -37)
   GAA AGG AGA                 ; Rotate 10
@@ -21,7 +21,7 @@ ATG
   TCG
 
   ; Wave 2 - cyan
-  GAA GCA GAA TCC GAA GTC TTA ; Color(36, 53, 45) cyan
+  GAA GCA GAA TCC GAA GTC TTA ; Color(36, 53, 45) #75c3f2 light blue
   TCA
   GAA AAA GAA CCC ACA         ; Translate(0, -21)
   GAA AGG AGA                 ; Rotate 10
@@ -35,7 +35,7 @@ ATG
   TCG
 
   ; Wave 3 - teal, center
-  GAA CCC GAA TCC GAA GTC TTA ; Color(21, 53, 45) teal
+  GAA CCC GAA TCC GAA GTC TTA ; Color(21, 53, 45) #79f275 green
   TCA
   GAA AAA GAA ACC ACA         ; Translate(0, -5)
   GAA AGG AGA                 ; Rotate 10
@@ -46,7 +46,7 @@ ATG
   GAA TCC GAA AGG GTA         ; Ellipse 53×10
 
   ; Wave 4 - green
-  GAA AGG GAA TCC GAA GTC TTA ; Color(10, 53, 45) green
+  GAA AGG GAA TCC GAA GTC TTA ; Color(10, 53, 45) #f2ea75 yellow
   TCA
   GAA AAA GAA AGG ACA         ; Translate(0, 10)
   GAA AGG AGA                 ; Rotate 10
@@ -60,7 +60,7 @@ ATG
   TCG
 
   ; Wave 5 - yellow-green
-  GAA ACC GAA TCC GAA GTC TTA ; Color(5, 53, 45) lime
+  GAA ACC GAA TCC GAA GTC TTA ; Color(5, 53, 45) #f2af75 orange
   TCA
   GAA AAA GAA CCC ACA         ; Translate(0, 21)
   GAA AGG AGA                 ; Rotate 10
@@ -74,7 +74,7 @@ ATG
   TCG
 
   ; Wave 6 - yellow, bottom
-  GAA AAA GAA TCC GAA GTC TTA ; Color(0, 53, 45) yellow
+  GAA AAA GAA TCC GAA GTC TTA ; Color(0, 53, 45) #f27575 red
   TCA
   GAA AAA GAA GCC ACA         ; Translate(0, 37)
   GAA AGG AGA                 ; Rotate 10

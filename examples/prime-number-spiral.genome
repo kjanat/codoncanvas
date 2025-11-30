@@ -7,7 +7,7 @@
 
 ATG
   ; Setup colors
-  GAA TTT GAA AAA GAA TTT TTA ; Color(63, 0, 63) magenta
+  GAA TTT GAA AAA GAA TTT TTA ; Color(63, 0, 63) #fbfbfb white
 
   ; Center point
   TCA                          ; SAVE_STATE
@@ -34,7 +34,7 @@ ATG
 
   ; Second ring - larger distance, different color
   TCA                          ; RESTORE to center
-  GAA TTT GAA AAA GAA AAA TTA ; Color(63, 63, 0) gold
+  GAA TTT GAA AAA GAA AAA TTA ; Color(63, 0, 0) #000000 black
   GAA CCC GAA AAA ACA          ; Translate(21, 0)
   GAA AAG GGA                  ; PUSH 2, CIRCLE
 
@@ -50,7 +50,7 @@ ATG
 
   ; Center accent
   TCA                          ; RESTORE
-  GAA TTT GAA CCC GAA GCC TTA ; Color(63, 21, 37) pink
+  GAA TTT GAA CCC GAA GCC TTA ; Color(63, 21, 37) #b77077 dusty pink
   GAA AAC GGA                  ; PUSH 1, center dot
 
 TAA

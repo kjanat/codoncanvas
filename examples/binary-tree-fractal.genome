@@ -7,7 +7,7 @@
 
 ATG
   ; Earthy brown to green gradient (tree colors)
-  GAA GGA GAA GCC GAA GTC TTA ; Color(40, 37, 40) brown trunk
+  GAA GGA GAA GCC GAA GTC TTA ; Color(40, 37, 45) #879ddf light blue
 
   ; Start at bottom center, facing up
   TCA                          ; SAVE_STATE
@@ -59,7 +59,7 @@ ATG
 
   ; Level 2: Smaller branches using LOOP for efficiency
   ; Transition to green for leaves
-  GAA GCC GAA TTC GAA GCC TTA ; Color(37, 61, 37) green foliage
+  GAA GCC GAA TTC GAA GCC TTA ; Color(37, 61, 37) #2d9afa blue
 
   ; Create burst of small branches at various angles
   ; Pattern: LINE(8), ROTATE(varied angles)
@@ -77,7 +77,7 @@ ATG
   CAA                          ; LOOP
 
   ; Level 3: Leaf accent circles
-  GAA GAG GAA TTT GAA GAG TTA ; Color(34, 63, 34) bright green
+  GAA GAG GAA TTT GAA GAG TTA ; Color(34, 63, 34) #12d1fd cyan
 
   ; Tiny circles for leaves at branch ends
   TCA                          ; SAVE_STATE

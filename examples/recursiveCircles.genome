@@ -7,35 +7,35 @@
 
 ATG
   ; Outermost circle - very dark
-  GAA AAA GAA CCC GAA CCC TTA ; Color(0, 0, 21) very dark
+  GAA AAA GAA CCC GAA CCC TTA ; Color(0, 21, 21) #6f3838 dark red
   GAA TTT GGA                 ; Circle 63 (largest)
 
   ; Large circles - dark gradient
-  GAA AAA GAA AGG GAA CCC TTA ; Color(0, 10, 21) dark blue-gray
+  GAA AAA GAA AGG GAA CCC TTA ; Color(0, 10, 21) #614747 dark mauve
   GAA GTC GGA                 ; Circle 45
 
-  GAA AGG GAA CCC GAA CCC TTA ; Color(10, 21, 21) dark cyan
+  GAA AGG GAA CCC GAA CCC TTA ; Color(10, 21, 21) #6f6c38 olive
   GAA GCC GGA                 ; Circle 37
 
   ; Medium circles - transitional
-  GAA CCC GAA GCC GAA GCC TTA ; Color(21, 21, 37) medium gray
+  GAA CCC GAA GCC GAA GCC TTA ; Color(21, 37, 37) #59d255 green
   GAA CTG GGA                 ; Circle 30
 
-  GAA CCC GAA GCC GAA GCC TTA ; Color(21, 37, 37) medium teal
+  GAA CCC GAA GCC GAA GCC TTA ; Color(21, 37, 37) #59d255 green
   GAA CGC GGA                 ; Circle 25
 
-  GAA GCC GAA GCC GAA GCC TTA ; Color(37, 37, 37) medium gray
+  GAA GCC GAA GCC GAA GCC TTA ; Color(37, 37, 37) #5597d2 blue
   GAA CCC GGA                 ; Circle 21
 
   ; Smaller circles - lighter
-  GAA GCC GAA TCC GAA GCC TTA ; Color(37, 53, 37) light gray-green
+  GAA GCC GAA TCC GAA GCC TTA ; Color(37, 53, 37) #3a99ec blue
   GAA AGG GGA                 ; Circle 10
 
-  GAA TCC GAA TCC GAA TCC TTA ; Color(53, 53, 53) light gray
+  GAA TCC GAA TCC GAA TCC TTA ; Color(53, 53, 53) #f5aff7 pink
   GAA ACC GGA                 ; Circle 5
 
   ; Center - brightest
-  GAA TTT GAA TTT GAA TTT TTA ; Color(63, 63, 63) white
+  GAA TTT GAA TTT GAA TTT TTA ; Color(63, 63, 63) #fff7f8 pale pink
   GAA AAT GGA                 ; Circle 3
 
 TAA

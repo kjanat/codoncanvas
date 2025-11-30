@@ -6,15 +6,15 @@
 
 ATG
   GAA AGG            ; Push 10 (radius)
-  GAA CTT GAA AAA GAA AAA TTA  ; Color(31, 0, 0) red
+  GAA CTT GAA AAA GAA AAA TTA  ; Color(31, 0, 0) #000000 black
   GAA AGG GGA        ; Draw circle
   GAA CGG AGA        ; Rotate 26 degrees
-  GAA AAA GAA CCC GAA CCC TTA  ; Color(0, 21, 21) cyan
+  GAA AAA GAA CCC GAA CCC TTA  ; Color(0, 21, 21) #6f3838 dark red
   GAA AGG GGA        ; Draw circle
   GAA CGG AGA        ; Rotate 26 degrees
-  GAA CCC GAA AAA GAA CCC TTA  ; Color(21, 0, 21) magenta
+  GAA CCC GAA AAA GAA CCC TTA  ; Color(21, 0, 21) #545454 gray
   GAA AGG GGA        ; Draw circle
   GAA CGG AGA        ; Rotate 26 degrees
-  GAA CCC GAA AAA GAA AAA TTA  ; Color(21, 21, 0) yellow
+  GAA CCC GAA AAA GAA AAA TTA  ; Color(21, 0, 0) #000000 black
   GAA AGG GGA        ; Draw circle
 TAA

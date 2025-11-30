@@ -13,19 +13,19 @@ ATG
   GAA GAG GAA CCC CCA          ; PUSH 34, PUSH 21, RECT
 
   ; Subdivide: Draw 21×21 square inside (left portion)
-  GAA TTT GAA AGG GAA AGG TTA ; Color(63, 63, 10) bright yellow
+  GAA TTT GAA AGG GAA AGG TTA ; Color(63, 10, 10) #2e2223 dark mauve
   TCA                          ; SAVE_STATE
   GAA ATT GAA AAA ACA          ; Translate(-15, 0) - move left
   GAA CCC GAA TGA CCA          ; PUSH 21, PUSH 21, RECT (square)
 
   ; Remaining rectangle: 13×21 (again ≈ φ ratio)
-  GAA GCC GAA CCC GAA TCC TTA ; Color(37, 21, 53) purple
+  GAA GCC GAA CCC GAA TCC TTA ; Color(37, 21, 53) #c5d4e2 pale blue
   TCA                          ; SAVE_STATE
   GAA AGG GAA AAA ACA          ; Translate(10, 0) - move right
   GAA ATC GAA CCC CCA          ; PUSH 13, PUSH 21, RECT
 
   ; Rectangle 3: 13×8 (φ ratio continues)
-  GAA AAA GAA TTT GAA GCC TTA ; Color(0, 63, 37) teal
+  GAA AAA GAA TTT GAA GCC TTA ; Color(0, 63, 37) #fd2a2a red
   GAA AGA GAA ATC CCA          ; PUSH 8, PUSH 13, RECT (rotated orientation)
 
   ; Spiral overlay using circles at golden ratio spacing
@@ -48,7 +48,7 @@ ATG
   ; Result on stack (not visualized, but computed)
 
   ; Add decorative accent
-  GAA TTT GAA TTT GAA TTT TTA ; Color(63, 63, 63) white
+  GAA TTT GAA TTT GAA TTT TTA ; Color(63, 63, 63) #fff7f8 pale pink
   GAA AAC GGA                  ; PUSH 1, CIRCLE (center dot)
 
 TAA

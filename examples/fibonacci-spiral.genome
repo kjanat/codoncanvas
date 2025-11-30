@@ -56,7 +56,7 @@ ATG
   CCA                          ; RECT
 
   ; Add decorative circles at key points
-  GAA TTT GAA GCC GAA GCC TTA ; Color(63, 63, 37) bright yellow
+  GAA TTT GAA GCC GAA GCC TTA ; Color(63, 37, 37) #d25561 red-pink
   GAA AAT GGA                 ; PUSH 3, CIRCLE (small accent)
 
 TAA

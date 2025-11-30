@@ -55,6 +55,6 @@ ATG
   GCA                          ; TRIANGLE(7) -> visible!
 
   ; Add color to highlight the successful conditional tests
-  GAA TTT GAA GCC GAA GCC TTA  ; Color(63, 37, 37) bright
+  GAA TTT GAA GCC GAA GCC TTA  ; Color(63, 37, 37) #d25561 red-pink
 
 TAA

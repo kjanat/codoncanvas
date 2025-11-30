@@ -7,7 +7,7 @@
 
 ATG
   ; Setup: Center position with colorful palette
-  GAA TTG GAA GCC GAA GCC TTA  ; Color(62, 37, 37) blue
+  GAA TTG GAA GCC GAA GCC TTA  ; Color(62, 37, 37) #d2556c pink
 
   ; Pattern: Draw 8 circles in spiral, with size based on parity
   ; Use modulo to check even/odd: n % 2 == 0 means even
@@ -80,6 +80,6 @@ ATG
   GAA AGA GGA
 
   ; Color accent
-  GAA CCC GAA GCC GAA GCC TTA  ; Color(21, 37, 37) green
+  GAA CCC GAA GCC GAA GCC TTA  ; Color(21, 37, 37) #59d255 green
 
 TAA

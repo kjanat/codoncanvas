@@ -7,7 +7,7 @@
 
 ATG
   ; Purple gradient for mathematical elegance
-  GAA GCG GAA TCA GAA TAG TTA ; Color(38, 52, 50) deep purple
+  GAA GCG GAA TCA GAA TAG TTA ; Color(38, 52, 50) #9ac1f5 light blue
 
   ; Hilbert curve order 3 approximation
   ; Pattern uses connected LINE segments in U-shaped recursion
@@ -64,7 +64,7 @@ ATG
 
   ; Second layer: larger scale Hilbert curve outline
   ; Lighter color for contrast
-  GAA TTC GAA TGT GAA TGC TTA ; Color(61, 59, 59) lavender
+  GAA TTC GAA TGT GAA TGC TTA ; Color(61, 59, 57) #fdcad8 pink
 
   ; Scale up and draw coarser Hilbert pattern
   GAA AAC GAA ATT CGA           ; SCALE(1.8)
@@ -87,7 +87,7 @@ ATG
   CAA                          ; LOOP
 
   ; Accent circles at curve vertices for emphasis
-  GAA TTT GAA GCC GAA GGT TTA ; Color(63, 63, 37) white-yellow
+  GAA TTT GAA GCC GAA GGT TTA ; Color(63, 37, 43) #dc7b84 pink
 
   ; Place dots at key points
   TCA                          ; SAVE_STATE
