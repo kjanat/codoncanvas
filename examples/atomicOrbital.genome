@@ -1,0 +1,61 @@
+; Atomic Orbital - Showcase
+; Radial ellipses creating an atomic/molecular orbital pattern
+; Difficulty: showcase
+; Concepts: positioning, ellipses, composition, radial symmetry
+; Visual: Atomic model with electron orbital paths
+; Good for mutations: silent (safe), missense (color shifts)
+
+ATG
+  ; Cluster pattern - small ellipses at different radii creating scatter effect
+  GAA TTT GAA TTT GAA TTT TTA ; Color(63, 63, 63) white
+  TCA                         ; SAVE
+  GAA ATT GAA ACC GTA          ; Ellipse 15×5 (star shape)
+  GAA GTC AGA                 ; Rotate 45
+  GAA TTT GAA GTC GAA TTT TTA ; Color(63, 45, 63) pale purple
+  GAA CCC GAA ACC GTA          ; Ellipse 21×5
+  GAA GTC AGA                 ; Rotate 45
+  GAA GTC GAA TTT GAA TTT TTA ; Color(45, 63, 63) pale cyan
+  GAA AGG GAA ACC GTA          ; Ellipse 10×5
+  GAA GTC AGA                 ; Rotate 45
+  GAA TTT GAA GTC GAA TGG TTA ; Color(63, 63, 45) pale yellow
+  GAA ATT GAA ACC GTA          ; Ellipse 15×5
+  GAA GTC AGA                 ; Rotate 45
+  GAA TTT GAA GTC GAA TGG TTA ; Color(63, 45, 45) warm white
+  GAA CCC GAA ACC GTA          ; Ellipse 21×5
+  GAA GTC AGA                 ; Rotate 45
+  GAA GTC GAA GTC GAA TTT TTA ; Color(45, 45, 63) cool white
+  GAA AGG GAA ACC GTA          ; Ellipse 10×5
+  GAA GTC AGA                 ; Rotate 45
+  GAA TTT GAA TTT GAA TTT TTA ; Color(63, 63, 63) white
+  GAA ATT GAA ACC GTA          ; Ellipse 15×5
+  GAA GTC AGA                 ; Rotate 45
+  GAA GTC GAA TTT GAA TGG TTA ; Color(45, 63, 45) greenish
+  GAA CCC GAA ACC GTA          ; Ellipse 21×5
+
+  ; Inner ring - smaller star shapes
+  TCA                         ; SAVE
+  GAA CTG AGA                 ; Rotate 30 (offset)
+  GAA TTT GAA TTT GAA TTT TTA ; Color(63, 63, 63) white
+  GAA AGG GAA AAT GTA          ; Ellipse 10×3
+  GAA TTA AGA                 ; Rotate 60
+  GAA TTT GAA GTC GAA TGG TTA ; Color(63, 45, 45) reddish
+  GAA AGG GAA AAT GTA          ; Ellipse 10×3
+  GAA TTA AGA                 ; Rotate 60
+  GAA GTC GAA TTT GAA TTT TTA ; Color(45, 63, 63) bluish
+  GAA AGG GAA AAT GTA          ; Ellipse 10×3
+  GAA TTA AGA                 ; Rotate 60
+  GAA TTT GAA GTC GAA TGG TTA ; Color(63, 63, 45) warm
+  GAA AGG GAA AAT GTA          ; Ellipse 10×3
+  GAA TTA AGA                 ; Rotate 60
+  GAA GTC GAA GTC GAA TTT TTA ; Color(45, 45, 63) cool
+  GAA AGG GAA AAT GTA          ; Ellipse 10×3
+  GAA TTA AGA                 ; Rotate 60
+  GAA TTT GAA TTT GAA TTT TTA ; Color(63, 63, 63) white
+  GAA AGG GAA AAT GTA          ; Ellipse 10×3
+  TCG                         ; RESTORE
+
+  ; Center bright star
+  GAA TTT GAA TTT GAA TTT TTA ; Color(63, 63, 63) white
+  GAA ATT GGA                 ; Circle 15
+
+TAA
