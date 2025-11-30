@@ -33,7 +33,17 @@ import {
   type MetricsSession,
   parseCSVContent,
   Stats,
-} from "../src/analysis/metrics-analyzer-core";
+} from "@/analysis/metrics-analyzer-core";
+
+/** CLI options for the metrics analyzer */
+export interface MetricsAnalyzerCliOptions {
+  dataFile: string;
+  groupName: string;
+  baselineFile: string;
+  reportType: string;
+  outputDir: string;
+  help: boolean;
+}
 
 /** Required fields for a valid MetricsSession */
 const REQUIRED_SESSION_FIELDS = [
@@ -252,7 +262,7 @@ function generateReport(analyzer: MetricsAnalyzer, outputPath: string): void {
     "===============================================================================\n";
 
   fs.writeFileSync(outputPath, report);
-  console.log(`\n Report generated: ${outputPath}\n`);
+  console.info(`\nReport generated: ${outputPath}\n`);
 }
 
 export function formatToolRow(
@@ -314,11 +324,11 @@ function generateComparisonReport(
     "===============================================================================\n";
 
   fs.writeFileSync(outputPath, report);
-  console.log(`\n Comparison report generated: ${outputPath}\n`);
+  console.info(`\nComparison report generated: ${outputPath}\n`);
 }
 
-function printUsage() {
-  console.log(`
+function printUsage(): void {
+  console.info(`
 CodonCanvas Metrics Analyzer
 
 USAGE:
@@ -356,8 +366,8 @@ STATISTICAL METHODS:
   `);
 }
 
-function main() {
-  const args = process.argv.slice(2);
+function main(): void {
+  const args = Bun.argv.slice(2);
   const options = parseArguments(args);
 
   if (args.length === 0 || options.help) {
@@ -394,7 +404,7 @@ function main() {
   }
 }
 
-export function parseArguments(args: string[]) {
+export function parseArguments(args: string[]): MetricsAnalyzerCliOptions {
   const { values } = parseArgs({
     args,
     options: {
@@ -419,17 +429,11 @@ export function parseArguments(args: string[]) {
   };
 }
 
-function runAnalysis(options: {
-  dataFile: string;
-  groupName: string;
-  baselineFile: string;
-  reportType: string;
-  outputDir: string;
-}) {
+function runAnalysis(options: MetricsAnalyzerCliOptions): void {
   // Parse CSV
-  console.log("Parsing CSV...");
+  console.info("Parsing CSV...");
   const sessions = loadCSV(options.dataFile);
-  console.log(`Loaded ${sessions.length} sessions\n`);
+  console.info(`Loaded ${sessions.length} sessions\n`);
 
   // Create analyzer
   const analyzer = new MetricsAnalyzer(sessions);
@@ -461,7 +465,7 @@ function runAnalysis(options: {
     );
   }
 
-  console.log("Analysis complete!\n");
+  console.info("Analysis complete!\n");
 }
 
 function runComparison(
@@ -471,14 +475,14 @@ function runComparison(
   groupName: string,
   outputDir: string,
   timestamp: string,
-) {
+): void {
   if (!fs.existsSync(baselineFile)) {
     throw new Error(`Baseline file not found: ${baselineFile}`);
   }
 
-  console.log(`Baseline file: ${baselineFile}`);
+  console.info(`Baseline file: ${baselineFile}`);
   const baselineSessions = loadCSV(baselineFile);
-  console.log(`Loaded ${baselineSessions.length} baseline sessions\n`);
+  console.info(`Loaded ${baselineSessions.length} baseline sessions\n`);
 
   const comparisons = analyzer.compareGroups(
     sessions,
