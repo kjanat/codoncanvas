@@ -10,7 +10,7 @@ ATG
   ; Key insight: EQ produces 0 or 1, which we can use as a multiplier
 
   ; Test 1: Draw circle only if 5 == 5 (should appear)
-  GAA ACC GAA ACT CTA          ; PUSH 5, PUSH 5, EQ -> pushes 1
+  GAA ACC GAA ACC CTA          ; PUSH 5, PUSH 5, EQ -> pushes 1
   GAA AGA CTT                  ; PUSH 8, MUL -> 8 * 1 = 8
   GGA                          ; CIRCLE(8) -> visible!
 
@@ -24,7 +24,7 @@ ATG
   GAA AGA GAA AAA ACA          ; Translate(8, 0)
 
   ; Test 3: Draw square only if 7 == 7 (should appear)
-  GAA ACT GAA ATG CTA          ; PUSH 7, PUSH 7, EQ -> pushes 1
+  GAA ACT GAA ACT CTA          ; PUSH 7, PUSH 7, EQ -> pushes 1
   GAA AAT CTT                  ; PUSH 3, MUL -> 3 * 1 = 3
   ATA                          ; DUP for width and height
   CCA                          ; RECT(3, 3) -> visible!

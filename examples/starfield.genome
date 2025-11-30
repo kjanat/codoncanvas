@@ -23,7 +23,7 @@ ATG
   GAA TTT GAA GTC GAA TGG TTA ; Color(63, 45, 45) warm white
   GAA CCC GAA ACC GTA          ; Ellipse 21×5
   GAA GTC AGA                 ; Rotate 45
-  GAA GTC GAA TGG GAA TTT TTA ; Color(45, 45, 63) cool white
+  GAA GTC GAA GTC GAA TTT TTA ; Color(45, 45, 63) cool white
   GAA AGG GAA ACC GTA          ; Ellipse 10×5
   GAA GTC AGA                 ; Rotate 45
   GAA TTT GAA TTT GAA TTT TTA ; Color(63, 63, 63) white
@@ -47,7 +47,7 @@ ATG
   GAA TTT GAA GTC GAA TGG TTA ; Color(63, 63, 45) warm
   GAA AGG GAA AAT GTA          ; Ellipse 10×3
   GAA TTA AGA                 ; Rotate 60
-  GAA GTC GAA TGG GAA TTT TTA ; Color(45, 45, 63) cool
+  GAA GTC GAA GTC GAA TTT TTA ; Color(45, 45, 63) cool
   GAA AGG GAA AAT GTA          ; Ellipse 10×3
   GAA TTA AGA                 ; Rotate 60
   GAA TTT GAA TTT GAA TTT TTA ; Color(63, 63, 63) white

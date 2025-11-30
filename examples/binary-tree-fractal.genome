@@ -77,7 +77,7 @@ ATG
   CAA                          ; LOOP
 
   ; Level 3: Leaf accent circles
-  GAA GAG GAA TTT GAA GGA TTA ; Color(34, 63, 34) bright green
+  GAA GAG GAA TTT GAA GAG TTA ; Color(34, 63, 34) bright green
 
   ; Tiny circles for leaves at branch ends
   TCA                          ; SAVE_STATE

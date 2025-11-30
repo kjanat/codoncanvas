@@ -26,7 +26,7 @@ ATG
 
   ; Rectangle 3: 13×8 (φ ratio continues)
   GAA AAA GAA TTT GAA GCC TTA ; Color(0, 63, 37) teal
-  GAA AGA GAA AGC CCA          ; PUSH 8, PUSH 13, RECT (rotated orientation)
+  GAA AGA GAA ATC CCA          ; PUSH 8, PUSH 13, RECT (rotated orientation)
 
   ; Spiral overlay using circles at golden ratio spacing
   GAA TTT GAA AAA GAA AAA TTA ; Color(63, 0, 0) red spiral
