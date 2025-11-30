@@ -414,4 +414,125 @@ describe("useVM", () => {
       }).not.toThrow();
     });
   });
+
+  describe("playback interval behavior", () => {
+    test("play starts from step 0 when at last step", async () => {
+      const { result } = renderHook(() => useVM({ defaultPlaybackSpeed: 50 }));
+      const renderer = createMockRenderer();
+      const tokens = lexer.tokenize(MULTI_STEP_GENOME);
+
+      act(() => {
+        result.current.run(tokens, renderer);
+      });
+
+      // Should be at last step after run
+      const lastStep = (result.current.result?.snapshots.length ?? 1) - 1;
+      expect(result.current.playback.currentStep).toBe(lastStep);
+
+      // Play should reset to 0 since we're at the end
+      act(() => {
+        result.current.play();
+      });
+
+      expect(result.current.playback.isPlaying).toBe(true);
+      expect(result.current.playback.currentStep).toBe(0);
+    });
+
+    test("togglePlayback starts from step 0 when at last step", async () => {
+      const { result } = renderHook(() => useVM({ defaultPlaybackSpeed: 50 }));
+      const renderer = createMockRenderer();
+      const tokens = lexer.tokenize(MULTI_STEP_GENOME);
+
+      act(() => {
+        result.current.run(tokens, renderer);
+      });
+
+      // Should be at last step
+      const lastStep = (result.current.result?.snapshots.length ?? 1) - 1;
+      expect(result.current.playback.currentStep).toBe(lastStep);
+
+      // Toggle should start from 0
+      act(() => {
+        result.current.togglePlayback();
+      });
+
+      expect(result.current.playback.isPlaying).toBe(true);
+      expect(result.current.playback.currentStep).toBe(0);
+    });
+
+    test("setSpeed updates interval while playing", async () => {
+      const { result } = renderHook(() => useVM({ defaultPlaybackSpeed: 100 }));
+      const renderer = createMockRenderer();
+      const tokens = lexer.tokenize(MULTI_STEP_GENOME);
+
+      act(() => {
+        result.current.run(tokens, renderer);
+        result.current.resetPlayback();
+      });
+
+      act(() => {
+        result.current.play();
+      });
+
+      expect(result.current.playback.isPlaying).toBe(true);
+
+      // Change speed while playing
+      act(() => {
+        result.current.setSpeed(50);
+      });
+
+      expect(result.current.playback.speed).toBe(50);
+      expect(result.current.playback.isPlaying).toBe(true);
+    });
+
+    test("playback advances and stops at end", async () => {
+      const { result } = renderHook(() => useVM({ defaultPlaybackSpeed: 10 }));
+      const renderer = createMockRenderer();
+      const tokens = lexer.tokenize(MULTI_STEP_GENOME);
+
+      act(() => {
+        result.current.run(tokens, renderer);
+      });
+
+      const totalSteps = result.current.result?.snapshots.length ?? 0;
+      expect(totalSteps).toBeGreaterThan(0);
+
+      act(() => {
+        result.current.resetPlayback();
+      });
+
+      act(() => {
+        result.current.play();
+      });
+
+      // Wait for playback to complete
+      await new Promise((resolve) =>
+        setTimeout(resolve, totalSteps * 15 + 100),
+      );
+
+      // Should have stopped at the end
+      expect(result.current.playback.isPlaying).toBe(false);
+    });
+
+    test("play does nothing without result", () => {
+      const { result } = renderHook(() => useVM());
+
+      act(() => {
+        result.current.play();
+      });
+
+      // Should not crash and isPlaying should remain false
+      expect(result.current.playback.isPlaying).toBe(false);
+    });
+
+    test("togglePlayback does nothing without result", () => {
+      const { result } = renderHook(() => useVM());
+
+      act(() => {
+        result.current.togglePlayback();
+      });
+
+      expect(result.current.playback.isPlaying).toBe(false);
+    });
+  });
 });

@@ -196,4 +196,86 @@ describe("useSimulation", () => {
     expect(result.current.state.isRunning).toBe(false);
     expect(result.current.state.step).toBe(0);
   });
+
+  describe("shouldStop and onComplete callbacks", () => {
+    test("stops when shouldStop returns true", async () => {
+      let stepCount = 0;
+      const shouldStop = mock(() => stepCount >= 2);
+      const onComplete = mock(() => {});
+
+      const { result } = renderHook(() =>
+        useSimulation({
+          onStep: () => {
+            stepCount++;
+          },
+          shouldStop,
+          onComplete,
+          initialSpeed: 10,
+        }),
+      );
+
+      act(() => {
+        result.current.start();
+      });
+
+      // Wait for interval to trigger and check condition
+      await new Promise((resolve) => setTimeout(resolve, 50));
+
+      // shouldStop should have been called
+      expect(shouldStop).toHaveBeenCalled();
+    });
+
+    test("calls onComplete when simulation stops via shouldStop", async () => {
+      let stepCount = 0;
+      const shouldStop = () => stepCount >= 1;
+      const onComplete = mock(() => {});
+
+      const { result } = renderHook(() =>
+        useSimulation({
+          onStep: () => {
+            stepCount++;
+          },
+          shouldStop,
+          onComplete,
+          initialSpeed: 10,
+        }),
+      );
+
+      act(() => {
+        result.current.start();
+      });
+
+      // Wait for condition to be met
+      await new Promise((resolve) => setTimeout(resolve, 50));
+
+      expect(onComplete).toHaveBeenCalled();
+    });
+
+    test("interval continues calling onStep while shouldStop is false", async () => {
+      const shouldStop = () => false;
+      let callCount = 0;
+
+      const { result } = renderHook(() =>
+        useSimulation({
+          onStep: () => {
+            callCount++;
+          },
+          shouldStop,
+          initialSpeed: 10,
+        }),
+      );
+
+      act(() => {
+        result.current.start();
+      });
+
+      await new Promise((resolve) => setTimeout(resolve, 40));
+
+      act(() => {
+        result.current.pause();
+      });
+
+      expect(callCount).toBeGreaterThan(0);
+    });
+  });
 });

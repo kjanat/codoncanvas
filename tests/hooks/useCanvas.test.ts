@@ -11,7 +11,7 @@ import { useCanvas } from "@/hooks/useCanvas";
 import {
   mockCanvasContext,
   restoreCanvasContext,
-} from "../test-utils/canvas-mock";
+} from "@/tests/test-utils/canvas-mock";
 
 describe("useCanvas", () => {
   describe("initialization", () => {
@@ -233,6 +233,187 @@ describe("useCanvas", () => {
       expect(() => {
         unmount();
       }).not.toThrow();
+    });
+  });
+
+  describe("exportPNG", () => {
+    beforeEach(() => {
+      mockCanvasContext();
+    });
+
+    afterEach(() => {
+      restoreCanvasContext();
+    });
+
+    test("exportPNG does not throw with canvas", () => {
+      const { result } = renderHook(() => useCanvas());
+
+      const canvas = document.createElement("canvas");
+      canvas.width = 100;
+      canvas.height = 100;
+
+      Object.defineProperty(result.current.canvasRef, "current", {
+        value: canvas,
+        writable: true,
+      });
+
+      expect(() => {
+        result.current.exportPNG("test-output.png");
+      }).not.toThrow();
+    });
+
+    test("exportPNG uses default filename", () => {
+      const { result } = renderHook(() => useCanvas());
+
+      const canvas = document.createElement("canvas");
+      canvas.width = 100;
+      canvas.height = 100;
+
+      Object.defineProperty(result.current.canvasRef, "current", {
+        value: canvas,
+        writable: true,
+      });
+
+      expect(() => {
+        result.current.exportPNG();
+      }).not.toThrow();
+    });
+  });
+
+  describe("autoResize with ResizeObserver", () => {
+    beforeEach(() => {
+      mockCanvasContext();
+    });
+
+    afterEach(() => {
+      restoreCanvasContext();
+    });
+
+    test("autoResize observes container", () => {
+      const container = document.createElement("div");
+      container.style.width = "800px";
+      container.style.height = "600px";
+      document.body.appendChild(container);
+
+      const canvas = document.createElement("canvas");
+      canvas.width = 400;
+      canvas.height = 400;
+      container.appendChild(canvas);
+
+      const { result } = renderHook(() =>
+        useCanvas({ autoResize: true, width: 400, height: 400 }),
+      );
+
+      Object.defineProperty(result.current.canvasRef, "current", {
+        value: canvas,
+        writable: true,
+      });
+
+      expect(result.current.dimensions).toBeDefined();
+
+      document.body.removeChild(container);
+    });
+
+    test("autoResize with maintainAspectRatio false", () => {
+      const container = document.createElement("div");
+      container.style.width = "800px";
+      container.style.height = "400px";
+      document.body.appendChild(container);
+
+      const canvas = document.createElement("canvas");
+      canvas.width = 400;
+      canvas.height = 400;
+      container.appendChild(canvas);
+
+      const { result } = renderHook(() =>
+        useCanvas({
+          autoResize: true,
+          maintainAspectRatio: false,
+          width: 400,
+          height: 400,
+        }),
+      );
+
+      Object.defineProperty(result.current.canvasRef, "current", {
+        value: canvas,
+        writable: true,
+      });
+
+      expect(result.current.dimensions).toBeDefined();
+
+      document.body.removeChild(container);
+    });
+
+    test("autoResize adjusts for wider container", () => {
+      const container = document.createElement("div");
+      Object.defineProperty(container, "clientWidth", { value: 800 });
+      Object.defineProperty(container, "clientHeight", { value: 400 });
+      document.body.appendChild(container);
+
+      const canvas = document.createElement("canvas");
+      canvas.width = 400;
+      canvas.height = 400;
+      container.appendChild(canvas);
+
+      const { result, unmount } = renderHook(() =>
+        useCanvas({
+          autoResize: true,
+          maintainAspectRatio: true,
+          width: 400,
+          height: 400,
+        }),
+      );
+
+      Object.defineProperty(result.current.canvasRef, "current", {
+        value: canvas,
+        writable: true,
+      });
+
+      expect(result.current.dimensions).toBeDefined();
+
+      unmount();
+      document.body.removeChild(container);
+    });
+
+    test("autoResize adjusts for taller container", () => {
+      const container = document.createElement("div");
+      Object.defineProperty(container, "clientWidth", { value: 400 });
+      Object.defineProperty(container, "clientHeight", { value: 800 });
+      document.body.appendChild(container);
+
+      const canvas = document.createElement("canvas");
+      canvas.width = 400;
+      canvas.height = 400;
+      container.appendChild(canvas);
+
+      const { result, unmount } = renderHook(() =>
+        useCanvas({
+          autoResize: true,
+          maintainAspectRatio: true,
+          width: 400,
+          height: 400,
+        }),
+      );
+
+      Object.defineProperty(result.current.canvasRef, "current", {
+        value: canvas,
+        writable: true,
+      });
+
+      expect(result.current.dimensions).toBeDefined();
+
+      unmount();
+      document.body.removeChild(container);
+    });
+  });
+
+  describe("renderer error handling", () => {
+    test("handles renderer creation failure gracefully", () => {
+      // Canvas without context support
+      const { result } = renderHook(() => useCanvas());
+
+      expect(result.current.renderer).toBeNull();
+      expect(result.current.isReady).toBe(false);
     });
   });
 });

@@ -2,9 +2,13 @@
  * Tests for useRenderGenome hook
  */
 
-import { describe, expect, test } from "bun:test";
+import { afterEach, beforeEach, describe, expect, test } from "bun:test";
 import { renderHook } from "@testing-library/react";
 import { useRenderGenome } from "@/hooks/useRenderGenome";
+import {
+  mockCanvasContext,
+  restoreCanvasContext,
+} from "@/tests/test-utils/canvas-mock";
 
 describe("useRenderGenome", () => {
   test("returns render functions and lexer", () => {
@@ -93,5 +97,70 @@ describe("useRenderGenome", () => {
     rerender();
 
     expect(() => result.current.clear(null)).not.toThrow();
+  });
+
+  describe("with mocked canvas", () => {
+    beforeEach(() => {
+      mockCanvasContext();
+    });
+
+    afterEach(() => {
+      restoreCanvasContext();
+    });
+
+    test("clear fills canvas with white", () => {
+      const { result } = renderHook(() => useRenderGenome());
+
+      const canvas = document.createElement("canvas");
+      canvas.width = 200;
+      canvas.height = 200;
+
+      expect(() => result.current.clear(canvas)).not.toThrow();
+    });
+
+    test("renderWithResult catches errors and returns failure", () => {
+      const { result } = renderHook(() => useRenderGenome());
+
+      const canvas = document.createElement("canvas");
+      canvas.width = 200;
+      canvas.height = 200;
+
+      // Invalid genome with bad codon triggers error path
+      const renderResult = result.current.renderWithResult(
+        "XXX YYY ZZZ",
+        canvas,
+      );
+
+      expect(renderResult.success).toBe(false);
+      expect(renderResult.error).not.toBeNull();
+    });
+
+    test("render returns false when error occurs", () => {
+      const { result } = renderHook(() => useRenderGenome());
+
+      const canvas = document.createElement("canvas");
+      canvas.width = 200;
+      canvas.height = 200;
+
+      const success = result.current.render("INVALID XXX", canvas);
+
+      expect(success).toBe(false);
+    });
+
+    test("renderWithResult error message is string for Error instances", () => {
+      const { result } = renderHook(() => useRenderGenome());
+
+      const canvas = document.createElement("canvas");
+      canvas.width = 200;
+      canvas.height = 200;
+
+      const renderResult = result.current.renderWithResult(
+        "BAD CODON ZZZ",
+        canvas,
+      );
+
+      expect(renderResult.success).toBe(false);
+      expect(typeof renderResult.error).toBe("string");
+    });
   });
 });

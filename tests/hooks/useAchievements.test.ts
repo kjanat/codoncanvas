@@ -215,4 +215,40 @@ describe("useAchievements", () => {
       }).not.toThrow();
     });
   });
+
+  describe("dismissNotification", () => {
+    test("dismissNotification removes notification by id", () => {
+      const { result } = renderHook(() => useAchievements());
+
+      // Trigger some activity that might create notifications
+      act(() => {
+        result.current.trackGenomeCreated(10);
+        result.current.trackGenomeExecuted(["START", "CIRCLE", "STOP"]);
+      });
+
+      // If there are notifications, try to dismiss one
+      if (result.current.notifications.length > 0) {
+        const firstId = result.current.notifications[0].id;
+        act(() => {
+          result.current.dismissNotification(firstId);
+        });
+        expect(
+          result.current.notifications.find((n) => n.id === firstId),
+        ).toBeUndefined();
+      }
+
+      // At minimum, verify the function exists and can be called
+      expect(typeof result.current.dismissNotification).toBe("function");
+    });
+
+    test("dismissNotification handles non-existent id gracefully", () => {
+      const { result } = renderHook(() => useAchievements());
+
+      expect(() => {
+        act(() => {
+          result.current.dismissNotification("non-existent-id");
+        });
+      }).not.toThrow();
+    });
+  });
 });

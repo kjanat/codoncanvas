@@ -140,4 +140,105 @@ describe("useClipboard", () => {
       expect(result.current.error).toBeNull();
     });
   });
+
+  describe("clipboard not supported", () => {
+    test("copy returns false when clipboard API not supported", async () => {
+      // Mock missing clipboard API
+      Object.defineProperty(navigator, "clipboard", {
+        value: { writeText: undefined },
+        writable: true,
+        configurable: true,
+      });
+
+      const { result } = renderHook(() => useClipboard());
+
+      let success: boolean | undefined;
+      await act(async () => {
+        success = await result.current.copy("test text");
+      });
+
+      expect(success).toBe(false);
+      expect(result.current.error).toBe("Clipboard API not supported");
+    });
+
+    test("paste returns null when readText not supported", async () => {
+      // Mock missing readText
+      Object.defineProperty(navigator, "clipboard", {
+        value: { readText: undefined },
+        writable: true,
+        configurable: true,
+      });
+
+      const { result } = renderHook(() => useClipboard());
+
+      let text: string | null | undefined;
+      await act(async () => {
+        text = await result.current.paste();
+      });
+
+      expect(text).toBeNull();
+      expect(result.current.error).toBe("Clipboard read not supported");
+    });
+
+    test("copy handles non-Error thrown value", async () => {
+      // Mock throwing non-Error
+      Object.defineProperty(navigator, "clipboard", {
+        value: {
+          writeText: mock(() => Promise.reject("string error")),
+        },
+        writable: true,
+        configurable: true,
+      });
+
+      const { result } = renderHook(() => useClipboard());
+
+      let success: boolean | undefined;
+      await act(async () => {
+        success = await result.current.copy("test");
+      });
+
+      expect(success).toBe(false);
+      expect(result.current.error).toBe("Copy failed");
+    });
+
+    test("paste handles non-Error thrown value", async () => {
+      // Mock throwing non-Error
+      Object.defineProperty(navigator, "clipboard", {
+        value: {
+          readText: mock(() => Promise.reject("string error")),
+        },
+        writable: true,
+        configurable: true,
+      });
+
+      const { result } = renderHook(() => useClipboard());
+
+      let text: string | null | undefined;
+      await act(async () => {
+        text = await result.current.paste();
+      });
+
+      expect(text).toBeNull();
+      expect(result.current.error).toBe("Paste failed");
+    });
+  });
+
+  describe("copiedDuration option", () => {
+    test("uses custom copiedDuration", async () => {
+      const { result } = renderHook(() =>
+        useClipboard({ copiedDuration: 100 }),
+      );
+
+      await act(async () => {
+        await result.current.copy("test");
+      });
+
+      expect(result.current.copied).toBe(true);
+
+      // Wait for duration to pass
+      await new Promise((resolve) => setTimeout(resolve, 150));
+
+      expect(result.current.copied).toBe(false);
+    });
+  });
 });
