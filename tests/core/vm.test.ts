@@ -1,6 +1,6 @@
 import { beforeEach, describe, expect, test } from "bun:test";
+import type { Renderer } from "@/core";
 import { CodonLexer } from "@/core/lexer";
-import type { Renderer } from "@/core/renderer";
 import { CodonVM } from "@/core/vm";
 import { type Codon, DNA_LETTERS } from "@/types";
 

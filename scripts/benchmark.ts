@@ -7,8 +7,8 @@
  */
 
 import { createCanvas } from "canvas";
+import { Canvas2DRenderer } from "../src/core";
 import { CodonLexer } from "../src/core/lexer";
-import { Canvas2DRenderer } from "../src/core/renderer";
 import { CodonVM } from "../src/core/vm";
 
 // Node canvas type imported but cast needed for Canvas2DRenderer compatibility

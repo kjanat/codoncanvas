@@ -12,8 +12,8 @@ import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { type Canvas, createCanvas } from "canvas";
+import type { Renderer } from "../src/core";
 import { CodonLexer } from "../src/core/lexer";
-import type { Renderer } from "../src/core/renderer";
 import { CodonVM } from "../src/core/vm";
 
 // ES module equivalents for __dirname

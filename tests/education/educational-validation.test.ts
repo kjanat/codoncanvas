@@ -1,8 +1,8 @@
 import { afterEach, beforeEach, describe, expect, test } from "bun:test";
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
+import { Canvas2DRenderer } from "@/core";
 import { CodonLexer } from "@/core/lexer";
-import { Canvas2DRenderer } from "@/core/renderer";
 import { CodonVM } from "@/core/vm";
 import {
   applyMissenseMutation,

@@ -1,5 +1,5 @@
 import { beforeEach, describe, expect, test } from "bun:test";
-import { Canvas2DRenderer } from "@/core/renderer";
+import { Canvas2DRenderer } from "@/core";
 
 /**
  * Mock Canvas 2D Context for testing rendering operations.

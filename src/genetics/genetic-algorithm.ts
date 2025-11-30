@@ -27,8 +27,8 @@
  * ```
  */
 
+import { Canvas2DRenderer } from "@/core";
 import { CodonLexer } from "@/core/lexer";
-import { Canvas2DRenderer } from "@/core/renderer";
 import { CodonVM } from "@/core/vm";
 import {
   applyDeletion,

@@ -6,7 +6,7 @@
  */
 
 import { useEffect, useRef, useState } from "react";
-import type { Renderer } from "@/core/renderer";
+import type { Renderer } from "@/core";
 import { CodonVM } from "@/core/vm";
 import type { CodonToken, VMState } from "@/types";
 

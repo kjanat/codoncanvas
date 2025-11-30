@@ -1,4 +1,4 @@
-import type { Renderer } from "@/core/renderer";
+import type { Renderer } from "@/core";
 import {
   CODON_MAP,
   type Codon,

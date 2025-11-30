@@ -5,6 +5,9 @@
  * No React dependencies - can be used anywhere.
  */
 
+import { CodonVM, SVGRenderer } from "@/core";
+import type { CodonLexer } from "@/core/lexer";
+
 /**
  * Get canvas content as data URL.
  *
@@ -84,4 +87,54 @@ export function clearCanvas(canvas: HTMLCanvasElement | null): void {
     ctx.fillStyle = "white";
     ctx.fillRect(0, 0, canvas.width, canvas.height);
   }
+}
+
+/**
+ * Render genome to SVG string.
+ *
+ * Re-executes the genome using SVGRenderer to produce vector output.
+ *
+ * @param genome - The genome string to render
+ * @param width - SVG width in pixels
+ * @param height - SVG height in pixels
+ * @param lexer - CodonLexer instance to tokenize genome
+ * @returns SVG string
+ */
+export function genomeToSVG(
+  genome: string,
+  width: number,
+  height: number,
+  lexer: CodonLexer,
+): string {
+  const renderer = new SVGRenderer(width, height);
+  const tokens = lexer.tokenize(genome);
+  const vm = new CodonVM(renderer);
+  vm.run(tokens);
+  return renderer.toSVG();
+}
+
+/**
+ * Download genome as SVG file.
+ *
+ * @param genome - The genome string to render
+ * @param width - SVG width in pixels
+ * @param height - SVG height in pixels
+ * @param lexer - CodonLexer instance to tokenize genome
+ * @param filename - Download filename (default: "codoncanvas-output.svg")
+ */
+export function downloadGenomeSVG(
+  genome: string,
+  width: number,
+  height: number,
+  lexer: CodonLexer,
+  filename: string = "codoncanvas-output.svg",
+): void {
+  const svg = genomeToSVG(genome, width, height, lexer);
+  const blob = new Blob([svg], { type: "image/svg+xml" });
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement("a");
+  link.download = filename;
+  link.href = url;
+  link.click();
+  URL.revokeObjectURL(url);
 }

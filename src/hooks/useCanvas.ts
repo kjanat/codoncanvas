@@ -6,7 +6,7 @@
  */
 
 import { useEffect, useRef, useState } from "react";
-import { Canvas2DRenderer, type Renderer } from "@/core/renderer";
+import { Canvas2DRenderer, type Renderer } from "@/core";
 import {
   canvasToBlob,
   canvasToDataURL,

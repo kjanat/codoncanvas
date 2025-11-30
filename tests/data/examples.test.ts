@@ -322,7 +322,7 @@ describe("Examples Library", () => {
     test("all genomes execute without error", async () => {
       // Import VM and renderer dynamically to avoid circular deps
       const { CodonVM } = await import("@/core/vm");
-      const { Canvas2DRenderer } = await import("@/core/renderer");
+      const { Canvas2DRenderer } = await import("@/core");
 
       const canvas = document.createElement("canvas");
       canvas.width = 400;
