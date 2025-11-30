@@ -670,6 +670,46 @@ describe("CodonVM", () => {
       const tokens = lexer.tokenize(genome);
       expect(() => vm.run(tokens)).toThrow("exceeds available history");
     });
+
+    test("loop enforces instruction limit during replay", () => {
+      // Create VM with low instruction limit
+      const limitedVm = new CodonVM(renderer, 10);
+
+      // ATG GAA AAA GGA GAA AAG GAA ACT CAA TAA
+      // START, PUSH 0, CIRCLE, PUSH 2 (instr count), PUSH 4 (loop count), LOOP, STOP
+      // Initial: 1 PUSH + 1 CIRCLE + 1 PUSH + 1 PUSH = 4 instructions
+      // Loop replays 2 instructions (PUSH + CIRCLE) x 4 times = 8 more
+      // Total: 4 + 8 = 12 instructions, but limit is 10
+      const genome = "ATG GAA AAA GGA GAA AAG GAA ACG CAA TAA";
+      const tokens = lexer.tokenize(genome);
+      expect(() => limitedVm.run(tokens)).toThrow("Instruction limit exceeded");
+    });
+
+    test("loop enforces instruction limit on PUSH replay", () => {
+      // Create VM with very low instruction limit
+      const limitedVm = new CodonVM(renderer, 6);
+
+      // ATG GAA AAA GAA AAC GAA AAG GAA AAG CAA TAA
+      // START, PUSH 0, PUSH 1, PUSH 2 (instr count), PUSH 2 (loop count), LOOP, STOP
+      // Initial: 4 PUSHes = 4 instructions
+      // Loop replays 2 PUSHes x 2 times = 4 more
+      // Total: 4 + 4 = 8 instructions, but limit is 6
+      const genome = "ATG GAA AAA GAA AAC GAA AAG GAA AAG CAA TAA";
+      const tokens = lexer.tokenize(genome);
+      expect(() => limitedVm.run(tokens)).toThrow("Instruction limit exceeded");
+    });
+
+    test("instruction count is correct after successful loop", () => {
+      // ATG GAA AAA GGA GAA AAG GAA AAC CAA TAA
+      // START, PUSH 0, CIRCLE, PUSH 2 (instr count), PUSH 1 (loop 1 more time), LOOP, STOP
+      // Initial: START + PUSH + CIRCLE + PUSH + PUSH + LOOP = 6 instructions
+      // Loop replays 2 instructions (PUSH + CIRCLE) x 1 time = 2 more
+      // Total: 6 + 2 = 8 instructions
+      const genome = "ATG GAA AAA GGA GAA AAG GAA AAC CAA TAA";
+      const tokens = lexer.tokenize(genome);
+      vm.run(tokens);
+      expect(vm.state.instructionCount).toBe(8);
+    });
   });
 
   describe("Comparison opcodes", () => {

@@ -503,6 +503,42 @@ export class CodonVM implements VM {
     }
   }
 
+  /**
+   * Execute a PUSH instruction, reading the next token as a numeric literal.
+   * @returns The new token index after consuming the literal
+   */
+  private executePush(
+    tokens: CodonToken[],
+    tokenIndex: number,
+    codon: Codon,
+  ): number {
+    // Count instruction and check limit (PUSH bypasses execute())
+    this.state.instructionCount++;
+    if (this.state.instructionCount > this.maxInstructions) {
+      throw new Error(
+        `Instruction limit exceeded (max ${this.maxInstructions})`,
+      );
+    }
+
+    const nextIndex = tokenIndex + 1;
+    if (nextIndex >= tokens.length) {
+      throw new Error(
+        "PUSH instruction at end of program (missing numeric literal)",
+      );
+    }
+
+    const literalCodon = tokens[nextIndex].text;
+    const value = this.decodeNumericLiteral(literalCodon);
+    this.push(value);
+    this.instructionHistory.push({
+      opcode: Opcode.PUSH,
+      codon,
+      pushValue: value,
+    });
+
+    return nextIndex;
+  }
+
   run(tokens: CodonToken[]): VMState[] {
     const snapshots: VMState[] = [];
     this.reset();
@@ -520,25 +556,10 @@ export class CodonVM implements VM {
 
       this.state.instructionPointer = i;
 
-      // Handle PUSH specially - reads next codon as numeric literal
       if (opcode === Opcode.PUSH) {
-        i++;
-        if (i >= tokens.length) {
-          throw new Error(
-            "PUSH instruction at end of program (missing numeric literal)",
-          );
-        }
-        const literalCodon = tokens[i].text;
-        const value = this.decodeNumericLiteral(literalCodon);
-        this.push(value);
-        this.instructionHistory.push({
-          opcode: Opcode.PUSH,
-          codon: token.text,
-          pushValue: value,
-        });
+        i = this.executePush(tokens, i, token.text as Codon);
         snapshots.push(this.snapshot());
       } else if (opcode === Opcode.STOP) {
-        // Stop execution
         snapshots.push(this.snapshot());
         break;
       } else {

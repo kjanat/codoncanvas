@@ -8,7 +8,7 @@
  */
 
 import type { Renderer, TransformState } from "./renderer";
-import { generateNoisePoints } from "./renderer";
+import { generateNoisePoints, safeNum } from "./renderer";
 
 /** Error thrown when canvas 2D context cannot be obtained */
 export class CanvasContextError extends Error {
@@ -168,29 +168,29 @@ export class Canvas2DRenderer implements Renderer {
   }
 
   setPosition(x: number, y: number): void {
-    this.currentX = x;
-    this.currentY = y;
+    this.currentX = safeNum(x);
+    this.currentY = safeNum(y);
   }
 
   translate(dx: number, dy: number): void {
-    this.currentX += dx;
-    this.currentY += dy;
+    this.currentX += safeNum(dx);
+    this.currentY += safeNum(dy);
   }
 
   setRotation(degrees: number): void {
-    this.currentRotation = degrees;
+    this.currentRotation = safeNum(degrees);
   }
 
   rotate(degrees: number): void {
-    this.currentRotation += degrees;
+    this.currentRotation += safeNum(degrees);
   }
 
   setScale(scale: number): void {
-    this.currentScale = scale;
+    this.currentScale = safeNum(scale);
   }
 
   scale(factor: number): void {
-    this.currentScale *= factor;
+    this.currentScale *= safeNum(factor);
   }
 
   setColor(h: number, s: number, l: number): void {

@@ -600,4 +600,57 @@ describe("Canvas2DRenderer", () => {
       expect(ctx.savedStates).toBe(0);
     });
   });
+
+  describe("numeric validation for transforms", () => {
+    test("translate handles NaN by using 0", () => {
+      renderer.translate(Number.NaN, Number.POSITIVE_INFINITY);
+
+      const transform = renderer.getCurrentTransform();
+      // Center (200,200) + safeNum(NaN,Infinity) = (200,200)
+      expect(transform.x).toBe(200);
+      expect(transform.y).toBe(200);
+    });
+
+    test("setPosition handles NaN/Infinity by using 0", () => {
+      renderer.setPosition(Number.NaN, Number.NEGATIVE_INFINITY);
+
+      const transform = renderer.getCurrentTransform();
+      expect(transform.x).toBe(0);
+      expect(transform.y).toBe(0);
+    });
+
+    test("rotate handles NaN by using 0", () => {
+      renderer.rotate(45);
+      renderer.rotate(Number.NaN);
+
+      const transform = renderer.getCurrentTransform();
+      // 45 + safeNum(NaN) = 45 + 0 = 45
+      expect(transform.rotation).toBe(45);
+    });
+
+    test("setRotation handles Infinity by using 0", () => {
+      renderer.rotate(90);
+      renderer.setRotation(Number.POSITIVE_INFINITY);
+
+      const transform = renderer.getCurrentTransform();
+      expect(transform.rotation).toBe(0);
+    });
+
+    test("scale handles NaN by using 0 (multiplies to 0)", () => {
+      renderer.scale(2);
+      renderer.scale(Number.NaN);
+
+      const transform = renderer.getCurrentTransform();
+      // 2 * safeNum(NaN) = 2 * 0 = 0
+      expect(transform.scale).toBe(0);
+    });
+
+    test("setScale handles Infinity by using 0", () => {
+      renderer.scale(5);
+      renderer.setScale(Number.NEGATIVE_INFINITY);
+
+      const transform = renderer.getCurrentTransform();
+      expect(transform.scale).toBe(0);
+    });
+  });
 });

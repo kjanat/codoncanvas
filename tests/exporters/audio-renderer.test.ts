@@ -268,6 +268,33 @@ describe("AudioRenderer", () => {
     });
   });
 
+  // Resize
+  describe("resize", () => {
+    test("accepts width/height params but ignores them (audio has no dimensions)", () => {
+      const renderer = new AudioRenderer();
+      renderer.translate(30, 20);
+      renderer.rotate(45);
+
+      // Should not throw, and should reset state (calls clear internally)
+      expect(() => renderer.resize(800, 600)).not.toThrow();
+
+      // Verify state was reset (pan resets to 0)
+      const transform = renderer.getCurrentTransform();
+      expect(transform.x).toBeCloseTo(0);
+    });
+
+    test("works with no params (matches Renderer interface)", () => {
+      const renderer = new AudioRenderer();
+      renderer.translate(50, 0); // Pan right
+
+      expect(() => renderer.resize()).not.toThrow();
+
+      // Pan should reset to 0
+      const transform = renderer.getCurrentTransform();
+      expect(transform.x).toBeCloseTo(0);
+    });
+  });
+
   // Drawing Opcodes -> Sound Synthesis
   describe("circle", () => {
     test("maps radius 0-64 to frequency 220-880 Hz", async () => {
