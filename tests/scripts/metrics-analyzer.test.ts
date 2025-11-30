@@ -11,7 +11,7 @@ import {
   formatToolRow,
   parseArguments,
   validateSession,
-} from "../../scripts/metrics-analyzer";
+} from "@/scripts/metrics-analyzer";
 
 describe("metrics-analyzer script", () => {
   describe("validateSession", () => {

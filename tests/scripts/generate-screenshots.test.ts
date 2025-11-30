@@ -5,7 +5,7 @@
  */
 
 import { describe, expect, test } from "bun:test";
-import { NodeCanvasRenderer } from "../../scripts/generate-screenshots";
+import { NodeCanvasRenderer } from "@/scripts/generate-screenshots";
 
 describe("generate-screenshots script", () => {
   describe("NodeCanvasRenderer", () => {

@@ -8,7 +8,7 @@ import { describe, expect, test } from "bun:test";
 import { act, renderHook } from "@testing-library/react";
 import { CodonLexer } from "@/core/lexer";
 import { useVM } from "@/hooks/useVM";
-import { createMockRenderer } from "../test-utils/canvas-mock";
+import { createMockRenderer } from "@/tests/test-utils/canvas-mock";
 
 // Valid genome: ATG=START, GAA=PUSH(1), AAT=PUSH(2), GGA=CIRCLE, TAA=STOP
 const SIMPLE_GENOME = "ATG GAA AAT GGA TAA";

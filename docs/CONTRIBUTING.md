@@ -177,7 +177,7 @@ export function tokenize(source: string): CodonToken[] {
 
 ```typescript
 import { describe, expect, test } from "vitest";
-import { CodonLexer } from "../src/lexer/codon-lexer";
+import { CodonLexer } from "@/core/lexer";
 
 describe("CodonLexer", () => {
   describe("tokenize", () => {
@@ -252,11 +252,13 @@ diff before.txt after.txt
 
 1. **Update from upstream**: `git fetch upstream && git rebase upstream/master`
 2. **Run all checks**:
+
    ```bash
    npm run typecheck
    npm run test
    npm run benchmark  # If making performance-related changes
    ```
+
 3. **Update documentation**: Update README, JSDoc, or other docs as needed
 4. **Write clear commit messages**: Follow format below
 

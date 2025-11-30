@@ -10,7 +10,7 @@ import {
   calculateStats,
   generateComplexGenome,
   generateSimpleGenome,
-} from "../../scripts/benchmark";
+} from "@/scripts/benchmark";
 
 describe("benchmark script", () => {
   describe("generateSimpleGenome", () => {
