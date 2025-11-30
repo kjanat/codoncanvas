@@ -5,7 +5,6 @@
  * Includes theme, nucleotide display mode, and editor settings.
  */
 
-import { useCallback, useMemo } from "react";
 import type { NucleotideDisplayMode } from "@/utils/nucleotide-display";
 import { useLocalStorage } from "./useLocalStorage";
 
@@ -84,40 +83,34 @@ export function usePreferences(): UsePreferencesReturn {
   );
 
   // Ensure preferences has all keys (handles upgrades)
-  const mergedPreferences = useMemo(
-    () => ({
-      ...DEFAULT_PREFERENCES,
-      ...preferences,
-    }),
-    [preferences],
-  );
+  const mergedPreferences: UserPreferences = {
+    ...DEFAULT_PREFERENCES,
+    ...preferences,
+  };
 
   // Set a single preference
-  const setPreference = useCallback(
-    <K extends keyof UserPreferences>(key: K, value: UserPreferences[K]) => {
-      setPreferences((prev) => ({
-        ...prev,
-        [key]: value,
-      }));
-    },
-    [setPreferences],
-  );
+  const setPreference = <K extends keyof UserPreferences>(
+    key: K,
+    value: UserPreferences[K],
+  ) => {
+    setPreferences((prev) => ({
+      ...prev,
+      [key]: value,
+    }));
+  };
 
   // Update multiple preferences
-  const updatePreferences = useCallback(
-    (updates: Partial<UserPreferences>) => {
-      setPreferences((prev) => ({
-        ...prev,
-        ...updates,
-      }));
-    },
-    [setPreferences],
-  );
+  const updatePreferences = (updates: Partial<UserPreferences>) => {
+    setPreferences((prev) => ({
+      ...prev,
+      ...updates,
+    }));
+  };
 
   // Reset to defaults
-  const resetPreferences = useCallback(() => {
+  const resetPreferences = () => {
     setPreferences(DEFAULT_PREFERENCES);
-  }, [setPreferences]);
+  };
 
   return {
     preferences: mergedPreferences,

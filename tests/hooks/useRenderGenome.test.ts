@@ -59,33 +59,39 @@ describe("useRenderGenome", () => {
     expect(tokens.length).toBeGreaterThan(0);
   });
 
-  test("render function is stable across renders", () => {
+  test("render function works correctly after rerender", () => {
     const { result, rerender } = renderHook(() => useRenderGenome());
 
-    const firstRender = result.current.render;
-    rerender();
-    const secondRender = result.current.render;
+    // Function should work before rerender
+    expect(result.current.render("ATG TAA", null)).toBe(false);
 
-    expect(firstRender).toBe(secondRender);
+    rerender();
+
+    // Function should still work after rerender
+    expect(result.current.render("ATG TAA", null)).toBe(false);
   });
 
-  test("renderWithResult function is stable across renders", () => {
+  test("renderWithResult function works correctly after rerender", () => {
     const { result, rerender } = renderHook(() => useRenderGenome());
 
-    const firstRender = result.current.renderWithResult;
-    rerender();
-    const secondRender = result.current.renderWithResult;
+    expect(result.current.renderWithResult("ATG TAA", null).success).toBe(
+      false,
+    );
 
-    expect(firstRender).toBe(secondRender);
+    rerender();
+
+    expect(result.current.renderWithResult("ATG TAA", null).success).toBe(
+      false,
+    );
   });
 
-  test("clear function is stable across renders", () => {
+  test("clear function works correctly after rerender", () => {
     const { result, rerender } = renderHook(() => useRenderGenome());
 
-    const firstClear = result.current.clear;
-    rerender();
-    const secondClear = result.current.clear;
+    expect(() => result.current.clear(null)).not.toThrow();
 
-    expect(firstClear).toBe(secondClear);
+    rerender();
+
+    expect(() => result.current.clear(null)).not.toThrow();
   });
 });

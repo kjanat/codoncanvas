@@ -5,7 +5,7 @@
  * Works with useCanvas to render output.
  */
 
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import type { Renderer } from "@/core/renderer";
 import { CodonVM } from "@/core/vm";
 import type { CodonToken, VMState } from "@/types";
@@ -107,7 +107,7 @@ const DEFAULT_PLAYBACK_SPEED = 500;
  */
 export function useVM(options: UseVMOptions = {}): UseVMReturn {
   const {
-    maxInstructions: _maxInstructions = DEFAULT_MAX_INSTRUCTIONS,
+    maxInstructions = DEFAULT_MAX_INSTRUCTIONS,
     defaultPlaybackSpeed = DEFAULT_PLAYBACK_SPEED,
   } = options;
 
@@ -121,194 +121,237 @@ export function useVM(options: UseVMOptions = {}): UseVMReturn {
     speed: defaultPlaybackSpeed,
   });
 
-  // Playback interval ref
+  // Refs for interval and result access in callbacks
   const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
+  const resultRef = useRef<ExecutionResult | null>(null);
 
-  // Clear any active playback interval
-  const clearPlaybackInterval = useCallback(() => {
+  // Clear any active playback interval - stored in ref for stable reference
+  const clearPlaybackIntervalRef = useRef(() => {
     if (intervalRef.current) {
       clearInterval(intervalRef.current);
       intervalRef.current = null;
     }
+  });
+
+  // Cleanup interval on unmount
+  useEffect(() => {
+    const clearFn = clearPlaybackIntervalRef.current;
+    return () => {
+      clearFn();
+    };
   }, []);
 
-  // Cleanup interval on unmount to prevent memory leaks
-  useEffect(() => {
-    return () => {
-      clearPlaybackInterval();
-    };
-  }, [clearPlaybackInterval]);
-
-  const resultRef = useRef<ExecutionResult | null>(null);
+  // Helper to access the clear function
+  const clearPlaybackInterval = () => clearPlaybackIntervalRef.current();
 
   // Run tokens and capture snapshots
-  const run = useCallback(
-    (tokens: CodonToken[], renderer: Renderer): ExecutionResult => {
-      clearPlaybackInterval();
+  const run = (tokens: CodonToken[], renderer: Renderer): ExecutionResult => {
+    clearPlaybackInterval();
 
-      try {
-        const vm = new CodonVM(renderer, _maxInstructions);
-        const snapshots = vm.run(tokens);
+    try {
+      const vm = new CodonVM(renderer, maxInstructions);
+      const snapshots = vm.run(tokens);
 
-        const executionResult: ExecutionResult = {
-          success: true,
-          snapshots,
-          error: null,
-          instructionCount: snapshots.length,
-        };
+      const executionResult: ExecutionResult = {
+        success: true,
+        snapshots,
+        error: null,
+        instructionCount: snapshots.length,
+      };
 
-        setResult(executionResult);
-        resultRef.current = executionResult;
-        setPlayback((prev) => ({
-          ...prev,
-          currentStep: snapshots.length - 1,
-          isPlaying: false,
-        }));
-
-        return executionResult;
-      } catch (err) {
-        const executionResult: ExecutionResult = {
-          success: false,
-          snapshots: [],
-          error: err instanceof Error ? err.message : "Execution failed",
-          instructionCount: 0,
-        };
-
-        setResult(executionResult);
-        setPlayback((prev) => ({
-          ...prev,
-          currentStep: 0,
-          isPlaying: false,
-        }));
-
-        return executionResult;
-      }
-    },
-    [clearPlaybackInterval, _maxInstructions],
-  );
-
-  // Render at specific step (re-executes up to that point)
-  const renderAtStep = useCallback(
-    (step: number, tokens: CodonToken[], renderer: Renderer) => {
-      try {
-        const tokensToRun = tokens.slice(0, step + 1);
-        const vm = new CodonVM(renderer, _maxInstructions);
-        vm.run(tokensToRun);
-      } catch {
-        // Ignore render errors during stepping for UX
-        console.warn(`Failed to render at step ${step}`);
-      }
-    },
-    [_maxInstructions],
-  );
-
-  // Go to specific step
-  const goToStep = useCallback(
-    (step: number) => {
-      if (!result) return;
-
-      const clampedStep = Math.max(
-        0,
-        Math.min(step, result.snapshots.length - 1),
-      );
-
+      setResult(executionResult);
+      resultRef.current = executionResult;
       setPlayback((prev) => ({
         ...prev,
-        currentStep: clampedStep,
+        currentStep: snapshots.length - 1,
+        isPlaying: false,
       }));
-    },
-    [result],
-  );
+
+      return executionResult;
+    } catch (err) {
+      const executionResult: ExecutionResult = {
+        success: false,
+        snapshots: [],
+        error: err instanceof Error ? err.message : "Execution failed",
+        instructionCount: 0,
+      };
+
+      setResult(executionResult);
+      resultRef.current = executionResult;
+      setPlayback((prev) => ({
+        ...prev,
+        currentStep: 0,
+        isPlaying: false,
+      }));
+
+      return executionResult;
+    }
+  };
+
+  // Render at specific step (re-executes up to that point)
+  const renderAtStep = (
+    step: number,
+    tokens: CodonToken[],
+    renderer: Renderer,
+  ) => {
+    try {
+      const tokensToRun = tokens.slice(0, step + 1);
+      const vm = new CodonVM(renderer, maxInstructions);
+      vm.run(tokensToRun);
+    } catch {
+      // Ignore render errors during stepping for UX
+      console.warn(`Failed to render at step ${step}`);
+    }
+  };
+
+  // Go to specific step
+  const goToStep = (step: number) => {
+    const currentResult = resultRef.current;
+    if (!currentResult) return;
+
+    const clampedStep = Math.max(
+      0,
+      Math.min(step, currentResult.snapshots.length - 1),
+    );
+
+    setPlayback((prev) => ({
+      ...prev,
+      currentStep: clampedStep,
+    }));
+  };
 
   // Step forward
-  const stepForward = useCallback(() => {
-    if (!result) return;
-    goToStep(playback.currentStep + 1);
-  }, [result, playback.currentStep, goToStep]);
+  const stepForward = () => {
+    setPlayback((prev) => {
+      const currentResult = resultRef.current;
+      if (!currentResult) return prev;
+      const nextStep = Math.min(
+        prev.currentStep + 1,
+        currentResult.snapshots.length - 1,
+      );
+      return { ...prev, currentStep: nextStep };
+    });
+  };
 
   // Step backward
-  const stepBackward = useCallback(() => {
-    goToStep(playback.currentStep - 1);
-  }, [playback.currentStep, goToStep]);
+  const stepBackward = () => {
+    setPlayback((prev) => ({
+      ...prev,
+      currentStep: Math.max(0, prev.currentStep - 1),
+    }));
+  };
 
   // Start playback
-  const play = useCallback(() => {
-    if (!result || result.snapshots.length === 0) return;
+  const play = () => {
+    const currentResult = resultRef.current;
+    if (!currentResult || currentResult.snapshots.length === 0) return;
 
     clearPlaybackInterval();
 
-    // If at end, restart from beginning
-    let startStep = playback.currentStep;
-    if (startStep >= result.snapshots.length - 1) {
-      startStep = 0;
-      setPlayback((prev) => ({ ...prev, currentStep: 0 }));
-    }
+    setPlayback((prev) => {
+      // If at end, restart from beginning
+      const startStep =
+        prev.currentStep >= currentResult.snapshots.length - 1
+          ? 0
+          : prev.currentStep;
 
-    setPlayback((prev) => ({ ...prev, isPlaying: true }));
+      intervalRef.current = setInterval(() => {
+        setPlayback((p) => {
+          const nextStep = p.currentStep + 1;
 
-    intervalRef.current = setInterval(() => {
-      setPlayback((prev) => {
-        const nextStep = prev.currentStep + 1;
+          if (nextStep >= (resultRef.current?.snapshots.length ?? 0)) {
+            clearPlaybackInterval();
+            return { ...p, isPlaying: false };
+          }
 
-        if (nextStep >= (resultRef.current?.snapshots.length ?? 0)) {
-          clearPlaybackInterval();
-          return { ...prev, isPlaying: false };
-        }
+          return { ...p, currentStep: nextStep };
+        });
+      }, prev.speed);
 
-        return { ...prev, currentStep: nextStep };
-      });
-    }, playback.speed);
-  }, [result, playback.currentStep, playback.speed, clearPlaybackInterval]);
+      return { ...prev, currentStep: startStep, isPlaying: true };
+    });
+  };
 
   // Pause playback
-  const pause = useCallback(() => {
+  const pause = () => {
     clearPlaybackInterval();
     setPlayback((prev) => ({ ...prev, isPlaying: false }));
-  }, [clearPlaybackInterval]);
+  };
 
   // Toggle play/pause
-  const togglePlayback = useCallback(() => {
-    if (playback.isPlaying) {
-      pause();
-    } else {
-      play();
-    }
-  }, [playback.isPlaying, play, pause]);
+  const togglePlayback = () => {
+    setPlayback((prev) => {
+      if (prev.isPlaying) {
+        clearPlaybackInterval();
+        return { ...prev, isPlaying: false };
+      } else {
+        // Delegate to play logic
+        const currentResult = resultRef.current;
+        if (!currentResult || currentResult.snapshots.length === 0) return prev;
+
+        const startStep =
+          prev.currentStep >= currentResult.snapshots.length - 1
+            ? 0
+            : prev.currentStep;
+
+        intervalRef.current = setInterval(() => {
+          setPlayback((p) => {
+            const nextStep = p.currentStep + 1;
+            if (nextStep >= (resultRef.current?.snapshots.length ?? 0)) {
+              clearPlaybackInterval();
+              return { ...p, isPlaying: false };
+            }
+            return { ...p, currentStep: nextStep };
+          });
+        }, prev.speed);
+
+        return { ...prev, currentStep: startStep, isPlaying: true };
+      }
+    });
+  };
 
   // Reset to first step
-  const resetPlayback = useCallback(() => {
+  const resetPlayback = () => {
     clearPlaybackInterval();
     setPlayback((prev) => ({
       ...prev,
       currentStep: 0,
       isPlaying: false,
     }));
-  }, [clearPlaybackInterval]);
+  };
 
   // Set playback speed
-  const setSpeed = useCallback(
-    (speed: number) => {
-      setPlayback((prev) => ({ ...prev, speed }));
-
-      // If playing, restart with new speed
-      if (playback.isPlaying) {
+  const setSpeed = (speed: number) => {
+    setPlayback((prev) => {
+      // If playing, restart interval with new speed
+      if (prev.isPlaying) {
         clearPlaybackInterval();
-        play();
+        intervalRef.current = setInterval(() => {
+          setPlayback((p) => {
+            const nextStep = p.currentStep + 1;
+            if (nextStep >= (resultRef.current?.snapshots.length ?? 0)) {
+              clearPlaybackInterval();
+              return { ...p, isPlaying: false };
+            }
+            return { ...p, currentStep: nextStep };
+          });
+        }, speed);
       }
-    },
-    [playback.isPlaying, clearPlaybackInterval, play],
-  );
+      return { ...prev, speed };
+    });
+  };
 
   // Clear execution state
-  const clear = useCallback(() => {
+  const clear = () => {
     clearPlaybackInterval();
     setResult(null);
+    resultRef.current = null;
     setPlayback({
       currentStep: 0,
       isPlaying: false,
       speed: defaultPlaybackSpeed,
     });
-  }, [clearPlaybackInterval, defaultPlaybackSpeed]);
+  };
 
   return {
     run,

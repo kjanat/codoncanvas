@@ -5,7 +5,7 @@
  * Wraps usePreferences to provide theme-specific functionality.
  */
 
-import { useCallback, useEffect, useMemo } from "react";
+import { useEffect } from "react";
 
 import { MoonIcon, SunIcon, SystemIcon } from "@/ui/icons";
 
@@ -76,12 +76,8 @@ export function useTheme(): UseThemeReturn {
   const theme = preferences.theme;
 
   // Resolve system theme
-  const resolvedTheme = useMemo<ResolvedTheme>(() => {
-    if (theme === "system") {
-      return getSystemTheme();
-    }
-    return theme;
-  }, [theme]);
+  const resolvedTheme: ResolvedTheme =
+    theme === "system" ? getSystemTheme() : theme;
 
   // Apply theme to DOM when it changes
   useEffect(() => {
@@ -101,30 +97,19 @@ export function useTheme(): UseThemeReturn {
     return () => mediaQuery.removeEventListener("change", handleChange);
   }, [theme]);
 
-  const setTheme = useCallback(
-    (newTheme: Theme) => {
-      setPreference("theme", newTheme);
-    },
-    [setPreference],
-  );
+  const setTheme = (newTheme: Theme) => {
+    setPreference("theme", newTheme);
+  };
 
-  const cycleTheme = useCallback(() => {
+  const cycleTheme = () => {
     const currentIndex = THEME_ORDER.indexOf(theme);
     const nextIndex = (currentIndex + 1) % THEME_ORDER.length;
-    setTheme(THEME_ORDER[nextIndex]);
-  }, [theme, setTheme]);
+    setPreference("theme", THEME_ORDER[nextIndex]);
+  };
 
   // Select appropriate icon
-  const ThemeIcon = useMemo(() => {
-    switch (theme) {
-      case "dark":
-        return MoonIcon;
-      case "light":
-        return SunIcon;
-      default:
-        return SystemIcon;
-    }
-  }, [theme]);
+  const ThemeIcon =
+    theme === "dark" ? MoonIcon : theme === "light" ? SunIcon : SystemIcon;
 
   return {
     theme,

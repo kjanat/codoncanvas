@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import {
   type AchievementNotification,
@@ -37,12 +37,12 @@ export function useAchievements() {
     };
   }, []);
 
-  const dismissNotification = useCallback((id: string) => {
+  const dismissNotification = (id: string) => {
     if (!mountedRef.current) return;
     setNotifications((prev) => prev.filter((n) => n.id !== id));
-  }, []);
+  };
 
-  const handleUnlocks = useCallback((unlocked: Achievement[]) => {
+  const handleUnlocks = (unlocked: Achievement[]) => {
     if (!mountedRef.current || unlocked.length === 0) return;
 
     const newNotifications: AchievementNotification[] = unlocked.map(
@@ -60,47 +60,38 @@ export function useAchievements() {
       "Achievements unlocked:",
       unlocked.map((a) => a.name).join(", "),
     );
-  }, []);
+  };
 
-  const trackGenomeCreated = useCallback(
-    (length: number) => {
-      if (!engineInstance) return;
-      const unlocked = engineInstance.trackGenomeCreated(length);
-      handleUnlocks(unlocked);
-    },
-    [handleUnlocks],
-  );
+  const trackGenomeCreated = (length: number) => {
+    if (!engineInstance) return;
+    const unlocked = engineInstance.trackGenomeCreated(length);
+    handleUnlocks(unlocked);
+  };
 
-  const trackGenomeExecuted = useCallback(
-    (opcodes: string[]) => {
-      if (!engineInstance) return;
-      const unlocked = engineInstance.trackGenomeExecuted(opcodes);
-      handleUnlocks(unlocked);
-    },
-    [handleUnlocks],
-  );
+  const trackGenomeExecuted = (opcodes: string[]) => {
+    if (!engineInstance) return;
+    const unlocked = engineInstance.trackGenomeExecuted(opcodes);
+    handleUnlocks(unlocked);
+  };
 
-  const trackMutationApplied = useCallback(() => {
+  const trackMutationApplied = () => {
     if (!engineInstance) return;
     const unlocked = engineInstance.trackMutationApplied();
     handleUnlocks(unlocked);
-  }, [handleUnlocks]);
+  };
 
-  const trackEvolutionGeneration = useCallback(() => {
+  const trackEvolutionGeneration = () => {
     if (!engineInstance) return;
     const unlocked = engineInstance.trackEvolutionGeneration();
     handleUnlocks(unlocked);
-  }, [handleUnlocks]);
+  };
 
   // Component to render - consumers should include this in their JSX
-  const ToastContainer = useCallback(
-    () =>
-      AchievementToastContainer({
-        notifications,
-        onDismiss: dismissNotification,
-      }),
-    [notifications, dismissNotification],
-  );
+  const ToastContainer = () =>
+    AchievementToastContainer({
+      notifications,
+      onDismiss: dismissNotification,
+    });
 
   return {
     engine,

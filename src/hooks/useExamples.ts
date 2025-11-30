@@ -5,7 +5,7 @@
  * from the built-in examples library.
  */
 
-import { useCallback, useMemo, useState } from "react";
+import { useState } from "react";
 import {
   type Concept,
   type ExampleDifficulty,
@@ -111,6 +111,22 @@ function matchesMutation(
   );
 }
 
+// Pre-compute static data outside hook
+const ALL_EXAMPLES: ExampleWithKey[] = Object.entries(examples).map(
+  ([key, data]) => ({
+    key,
+    ...data,
+  }),
+);
+
+const ALL_DIFFICULTIES: ExampleDifficulty[] = Array.from(
+  new Set(ALL_EXAMPLES.map((ex) => ex.difficulty)),
+).sort();
+
+const ALL_CONCEPTS: Concept[] = Array.from(
+  new Set(ALL_EXAMPLES.flatMap((ex) => ex.concepts)),
+).sort();
+
 /**
  * React hook for managing example genomes.
  *
@@ -158,25 +174,6 @@ export function useExamples(
 ): UseExamplesReturn {
   const { initialFilters = {}, initialSelection } = options;
 
-  // All examples with keys
-  const allExamples = useMemo<ExampleWithKey[]>(() => {
-    return Object.entries(examples).map(([key, data]) => ({
-      key,
-      ...data,
-    }));
-  }, []);
-
-  // Available difficulties and concepts
-  const difficulties = useMemo<ExampleDifficulty[]>(() => {
-    const set = new Set(allExamples.map((ex) => ex.difficulty));
-    return Array.from(set).sort();
-  }, [allExamples]);
-
-  const concepts = useMemo<Concept[]>(() => {
-    const set = new Set(allExamples.flatMap((ex) => ex.concepts));
-    return Array.from(set).sort();
-  }, [allExamples]);
-
   // Filter state
   const [filters, setFilters] = useState<ExampleFilters>({
     ...DEFAULT_FILTERS,
@@ -188,49 +185,42 @@ export function useExamples(
     initialSelection ?? null,
   );
 
-  // Filtered examples - uses extracted filter functions
-  const filteredExamples = useMemo(() => {
-    return allExamples
-      .filter((ex) => matchesSearch(ex, filters.search))
-      .filter((ex) => matchesDifficulty(ex, filters.difficulty))
-      .filter((ex) => matchesConcept(ex, filters.concept))
-      .filter((ex) => matchesMutation(ex, filters.goodForMutation));
-  }, [allExamples, filters]);
+  // Filtered examples - computed inline
+  const filteredExamples = ALL_EXAMPLES.filter((ex) =>
+    matchesSearch(ex, filters.search),
+  )
+    .filter((ex) => matchesDifficulty(ex, filters.difficulty))
+    .filter((ex) => matchesConcept(ex, filters.concept))
+    .filter((ex) => matchesMutation(ex, filters.goodForMutation));
 
   // Set a single filter
-  const setFilter = useCallback(
-    <K extends keyof ExampleFilters>(key: K, value: ExampleFilters[K]) => {
-      setFilters((prev) => ({ ...prev, [key]: value }));
-    },
-    [],
-  );
+  const setFilter = <K extends keyof ExampleFilters>(
+    key: K,
+    value: ExampleFilters[K],
+  ) => {
+    setFilters((prev) => ({ ...prev, [key]: value }));
+  };
 
   // Reset all filters
-  const resetFilters = useCallback(() => {
+  const resetFilters = () => {
     setFilters(DEFAULT_FILTERS);
-  }, []);
+  };
 
   // Select example
-  const selectExample = useCallback((key: string | null) => {
+  const selectExample = (key: string | null) => {
     setSelectedKey(key);
-  }, []);
+  };
 
   // Get example by key
-  const getExample = useCallback(
-    (key: string): ExampleWithKey | null => {
-      return allExamples.find((ex) => ex.key === key) ?? null;
-    },
-    [allExamples],
-  );
+  const getExample = (key: string): ExampleWithKey | null => {
+    return ALL_EXAMPLES.find((ex) => ex.key === key) ?? null;
+  };
 
   // Selected example
-  const selectedExample = useMemo(() => {
-    if (!selectedKey) return null;
-    return getExample(selectedKey);
-  }, [selectedKey, getExample]);
+  const selectedExample = selectedKey ? getExample(selectedKey) : null;
 
   return {
-    allExamples,
+    allExamples: ALL_EXAMPLES,
     filteredExamples,
     filters,
     setFilter,
@@ -238,8 +228,8 @@ export function useExamples(
     selectedExample,
     selectExample,
     getExample,
-    difficulties,
-    concepts,
+    difficulties: ALL_DIFFICULTIES,
+    concepts: ALL_CONCEPTS,
     resultCount: filteredExamples.length,
   };
 }

@@ -5,7 +5,7 @@
  * error checking. Central hook for genome manipulation across the app.
  */
 
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { CodonLexer } from "@/core/lexer";
 import type { CodonToken, ParseError } from "@/types";
 
@@ -56,6 +56,17 @@ export interface UseGenomeReturn {
 const DEFAULT_GENOME = "ATG GAA AAT GGA TAA";
 const DEFAULT_DEBOUNCE_MS = 150;
 
+/** Create empty validation state */
+function createEmptyValidation(): GenomeValidation {
+  return {
+    isValid: false,
+    tokens: [],
+    errors: [],
+    warnings: [],
+    tokenizeError: null,
+  };
+}
+
 /**
  * React hook for genome state management with validation.
  *
@@ -86,95 +97,96 @@ export function useGenome(options: UseGenomeOptions = {}): UseGenomeReturn {
     autoValidate = true,
   } = options;
 
-  // Memoize lexer instance
-  const lexer = useMemo(() => new CodonLexer(), []);
+  // Create lexer once and store in ref
+  const lexerRef = useRef<CodonLexer | null>(null);
+  if (!lexerRef.current) {
+    lexerRef.current = new CodonLexer();
+  }
+  const lexer = lexerRef.current;
 
   // Core state
   const [genome, setGenomeState] = useState(initialGenome);
   const [isPending, setIsPending] = useState(false);
-  const [validation, setValidation] = useState<GenomeValidation>(() =>
-    createEmptyValidation(),
+  const [validation, setValidation] = useState<GenomeValidation>(
+    createEmptyValidation,
   );
 
   // Ref for debounce timer
   const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  // Validate genome and return result
-  const validate = useCallback((): GenomeValidation => {
-    try {
-      const tokens = lexer.tokenize(genome);
-      const structureErrors = lexer.validateStructure(tokens);
-      const frameWarnings = lexer.validateFrame(genome);
+  // Store initialGenome in ref to avoid stale closure in initial validation
+  const initialGenomeRef = useRef(initialGenome);
 
-      const errors = structureErrors.filter((e) => e.severity === "error");
-      const warnings = [
-        ...structureErrors.filter((e) => e.severity === "warning"),
-        ...frameWarnings,
-      ];
+  // Validate genome helper - stored in ref for stable reference
+  const validateGenomeRef = useRef(
+    (genomeToValidate: string): GenomeValidation => {
+      try {
+        const tokens = lexer.tokenize(genomeToValidate);
+        const structureErrors = lexer.validateStructure(tokens);
+        const frameWarnings = lexer.validateFrame(genomeToValidate);
 
-      const result: GenomeValidation = {
-        isValid: errors.length === 0,
-        tokens,
-        errors,
-        warnings,
-        tokenizeError: null,
-      };
+        const errors = structureErrors.filter((e) => e.severity === "error");
+        const warnings = [
+          ...structureErrors.filter((e) => e.severity === "warning"),
+          ...frameWarnings,
+        ];
 
-      setValidation(result);
-      return result;
-    } catch (err) {
-      const result: GenomeValidation = {
-        isValid: false,
-        tokens: [],
-        errors: [],
-        warnings: [],
-        tokenizeError: err instanceof Error ? err.message : "Unknown error",
-      };
-
-      setValidation(result);
-      return result;
-    }
-  }, [genome, lexer]);
-
-  // Set genome with optional immediate validation
-  const setGenome = useCallback(
-    (newGenome: string) => {
-      setGenomeState(newGenome);
-
-      if (autoValidate) {
-        setIsPending(true);
-
-        // Clear existing debounce
-        if (debounceRef.current) {
-          clearTimeout(debounceRef.current);
-        }
-
-        // Schedule validation
-        debounceRef.current = setTimeout(() => {
-          setIsPending(false);
-          // Validation will run via useEffect
-        }, debounceMs);
+        return {
+          isValid: errors.length === 0,
+          tokens,
+          errors,
+          warnings,
+          tokenizeError: null,
+        };
+      } catch (err) {
+        return {
+          isValid: false,
+          tokens: [],
+          errors: [],
+          warnings: [],
+          tokenizeError: err instanceof Error ? err.message : "Unknown error",
+        };
       }
     },
-    [autoValidate, debounceMs],
   );
 
+  // Public validate function
+  const validate = (): GenomeValidation => {
+    const result = validateGenomeRef.current(genome);
+    setValidation(result);
+    return result;
+  };
+
+  // Set genome with optional immediate validation
+  const setGenome = (newGenome: string) => {
+    setGenomeState(newGenome);
+
+    if (autoValidate) {
+      setIsPending(true);
+
+      // Clear existing debounce
+      if (debounceRef.current) {
+        clearTimeout(debounceRef.current);
+      }
+
+      // Schedule validation
+      debounceRef.current = setTimeout(() => {
+        setIsPending(false);
+        const result = validateGenomeRef.current(newGenome);
+        setValidation(result);
+      }, debounceMs);
+    }
+  };
+
   // Clear genome
-  const clear = useCallback(() => {
+  const clear = () => {
     setGenome("");
-  }, [setGenome]);
+  };
 
   // Reset to initial
-  const reset = useCallback(() => {
+  const reset = () => {
     setGenome(initialGenome);
-  }, [setGenome, initialGenome]);
-
-  // Auto-validate on genome change (debounced)
-  // biome-ignore lint/correctness/useExhaustiveDependencies: validate is intentionally excluded to prevent infinite loops
-  useEffect(() => {
-    if (!autoValidate || isPending) return;
-    validate();
-  }, [genome, autoValidate, isPending]);
+  };
 
   // Cleanup debounce on unmount
   useEffect(() => {
@@ -185,10 +197,10 @@ export function useGenome(options: UseGenomeOptions = {}): UseGenomeReturn {
     };
   }, []);
 
-  // Initial validation
-  // biome-ignore lint/correctness/useExhaustiveDependencies: intentionally run only once on mount
+  // Initial validation on mount
   useEffect(() => {
-    validate();
+    const result = validateGenomeRef.current(initialGenomeRef.current);
+    setValidation(result);
   }, []);
 
   return {
@@ -200,17 +212,6 @@ export function useGenome(options: UseGenomeOptions = {}): UseGenomeReturn {
     reset,
     isPending,
     lexer,
-  };
-}
-
-/** Create empty validation state */
-function createEmptyValidation(): GenomeValidation {
-  return {
-    isValid: false,
-    tokens: [],
-    errors: [],
-    warnings: [],
-    tokenizeError: null,
   };
 }
 

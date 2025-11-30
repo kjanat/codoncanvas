@@ -5,7 +5,7 @@
  * Uses base64 encoding for compact representation.
  */
 
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 
 /** URL parameter key for encoded genome */
@@ -103,47 +103,41 @@ export function useShareUrl(
   }, [autoLoad, searchParams]);
 
   // Generate shareable URL for a genome
-  const getShareUrl = useCallback((genome: string): string => {
+  const getShareUrl = (genome: string): string => {
     const encoded = encodeGenome(genome);
     if (!encoded) return window.location.href;
 
     const url = new URL(window.location.href);
     url.searchParams.set(GENOME_PARAM, encoded);
     return url.toString();
-  }, []);
+  };
 
   // Update URL with genome
-  const shareGenome = useCallback(
-    (genome: string) => {
-      const encoded = encodeGenome(genome);
-      if (encoded) {
-        setSearchParams({ [GENOME_PARAM]: encoded });
-      }
-    },
-    [setSearchParams],
-  );
+  const shareGenome = (genome: string) => {
+    const encoded = encodeGenome(genome);
+    if (encoded) {
+      setSearchParams({ [GENOME_PARAM]: encoded });
+    }
+  };
 
   // Copy share URL to clipboard
-  const copyShareUrl = useCallback(
-    async (genome: string): Promise<boolean> => {
-      const url = getShareUrl(genome);
-      try {
-        await navigator.clipboard.writeText(url);
-        return true;
-      } catch {
-        return false;
-      }
-    },
-    [getShareUrl],
-  );
+  const copyShareUrl = async (genome: string): Promise<boolean> => {
+    const url = getShareUrl(genome);
+    try {
+      await navigator.clipboard.writeText(url);
+      return true;
+    } catch {
+      return false;
+    }
+  };
 
   // Clear genome from URL
-  const clearShareUrl = useCallback(() => {
+  const clearShareUrl = () => {
     const newParams = new URLSearchParams(searchParams);
     newParams.delete(GENOME_PARAM);
     setSearchParams(newParams);
     setSharedGenome(null);
-  }, [searchParams, setSearchParams]);
+  };
 
   return {
     sharedGenome,

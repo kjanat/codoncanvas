@@ -5,7 +5,7 @@
  * Useful for implementing undo/redo in editors.
  */
 
-import { useCallback, useRef, useState } from "react";
+import { useRef, useState } from "react";
 
 /** History state structure */
 interface HistoryState<T> {
@@ -95,31 +95,28 @@ export function useHistory<T>(
   const state = historyRef.current.present;
 
   // Set new state (adds to history)
-  const setState = useCallback(
-    (newState: T | ((prev: T) => T)) => {
-      const history = historyRef.current;
-      const valueToStore =
-        newState instanceof Function ? newState(history.present) : newState;
+  const setState = (newState: T | ((prev: T) => T)) => {
+    const history = historyRef.current;
+    const valueToStore =
+      newState instanceof Function ? newState(history.present) : newState;
 
-      // Don't add to history if value hasn't changed
-      if (valueToStore === history.present) return;
+    // Don't add to history if value hasn't changed
+    if (valueToStore === history.present) return;
 
-      // Add current state to past, limit history size
-      const newPast = [...history.past, history.present].slice(-maxHistory);
+    // Add current state to past, limit history size
+    const newPast = [...history.past, history.present].slice(-maxHistory);
 
-      historyRef.current = {
-        past: newPast,
-        present: valueToStore,
-        future: [], // Clear future on new change
-      };
+    historyRef.current = {
+      past: newPast,
+      present: valueToStore,
+      future: [], // Clear future on new change
+    };
 
-      forceUpdate({});
-    },
-    [maxHistory],
-  );
+    forceUpdate({});
+  };
 
   // Undo to previous state
-  const undo = useCallback(() => {
+  const undo = (): T => {
     const history = historyRef.current;
 
     if (history.past.length === 0) return history.present;
@@ -135,10 +132,10 @@ export function useHistory<T>(
 
     forceUpdate({});
     return previous;
-  }, []);
+  };
 
   // Redo to next state
-  const redo = useCallback(() => {
+  const redo = (): T => {
     const history = historyRef.current;
 
     if (history.future.length === 0) return history.present;
@@ -154,10 +151,10 @@ export function useHistory<T>(
 
     forceUpdate({});
     return next;
-  }, []);
+  };
 
   // Clear all history
-  const clearHistory = useCallback(() => {
+  const clearHistory = () => {
     historyRef.current = {
       past: [],
       present: historyRef.current.present,
@@ -165,7 +162,7 @@ export function useHistory<T>(
     };
 
     forceUpdate({});
-  }, []);
+  };
 
   return {
     state,

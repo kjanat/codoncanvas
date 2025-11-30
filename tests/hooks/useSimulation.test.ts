@@ -164,21 +164,36 @@ describe("useSimulation", () => {
     expect(result.current.state.step).toBe(3);
   });
 
-  test("returns stable function references", () => {
+  test("functions work correctly after rerender", () => {
     const { result, rerender } = renderHook(() =>
       useSimulation({ onStep: stepCallback }),
     );
 
-    const firstToggle = result.current.toggle;
-    const firstStart = result.current.start;
-    const firstPause = result.current.pause;
-    const firstReset = result.current.reset;
+    // Functions should work before rerender
+    expect(result.current.state.isRunning).toBe(false);
+
+    act(() => {
+      result.current.toggle();
+    });
+    expect(result.current.state.isRunning).toBe(true);
+
+    act(() => {
+      result.current.pause();
+    });
+    expect(result.current.state.isRunning).toBe(false);
 
     rerender();
 
-    expect(result.current.toggle).toBe(firstToggle);
-    expect(result.current.start).toBe(firstStart);
-    expect(result.current.pause).toBe(firstPause);
-    expect(result.current.reset).toBe(firstReset);
+    // Functions should still work after rerender
+    act(() => {
+      result.current.start();
+    });
+    expect(result.current.state.isRunning).toBe(true);
+
+    act(() => {
+      result.current.reset();
+    });
+    expect(result.current.state.isRunning).toBe(false);
+    expect(result.current.state.step).toBe(0);
   });
 });

@@ -5,7 +5,7 @@
  * and provides convenient methods for canvas operations.
  */
 
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Canvas2DRenderer, type Renderer } from "@/core/renderer";
 
 /** Canvas dimensions */
@@ -102,8 +102,12 @@ export function useCanvas(options: UseCanvasOptions = {}): UseCanvasReturn {
   });
   const [isReady, setIsReady] = useState(false);
 
-  // Initialize renderer when canvas is available
-  const initRenderer = useCallback(() => {
+  // Store pixelRatio in ref to avoid stale closures
+  const pixelRatioRef = useRef(pixelRatio);
+  pixelRatioRef.current = pixelRatio;
+
+  // Initialize renderer - stored in ref for stable reference
+  const initRendererRef = useRef(() => {
     const canvas = canvasRef.current;
     if (!canvas) {
       setRenderer(null);
@@ -120,15 +124,15 @@ export function useCanvas(options: UseCanvasOptions = {}): UseCanvasReturn {
       setRenderer(null);
       setIsReady(false);
     }
-  }, []);
+  });
 
   // Refresh renderer (e.g., after resize)
-  const refreshRenderer = useCallback(() => {
-    initRenderer();
-  }, [initRenderer]);
+  const refreshRenderer = () => {
+    initRendererRef.current();
+  };
 
   // Clear canvas
-  const clear = useCallback(() => {
+  const clear = () => {
     const canvas = canvasRef.current;
     if (!canvas) return;
 
@@ -138,101 +142,103 @@ export function useCanvas(options: UseCanvasOptions = {}): UseCanvasReturn {
       ctx.fillStyle = "white";
       ctx.fillRect(0, 0, canvas.width, canvas.height);
     }
-  }, []);
+  };
 
-  // Resize canvas
-  const resize = useCallback(
-    (width: number, height: number) => {
-      const canvas = canvasRef.current;
-      if (!canvas) return;
+  // Resize canvas - stored in ref for stable reference in ResizeObserver
+  const resizeRef = useRef((width: number, height: number) => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
 
-      // Apply pixel ratio for high-DPI displays
-      canvas.width = width * pixelRatio;
-      canvas.height = height * pixelRatio;
-      canvas.style.width = `${width}px`;
-      canvas.style.height = `${height}px`;
+    const ratio = pixelRatioRef.current;
 
-      // Scale context for pixel ratio
-      const ctx = canvas.getContext("2d");
-      if (ctx) {
-        ctx.scale(pixelRatio, pixelRatio);
-      }
+    // Apply pixel ratio for high-DPI displays
+    canvas.width = width * ratio;
+    canvas.height = height * ratio;
+    canvas.style.width = `${width}px`;
+    canvas.style.height = `${height}px`;
 
-      setDimensions({ width, height });
+    // Scale context for pixel ratio
+    const ctx = canvas.getContext("2d");
+    if (ctx) {
+      ctx.scale(ratio, ratio);
+    }
 
-      // Refresh renderer after resize
-      refreshRenderer();
-    },
-    [pixelRatio, refreshRenderer],
-  );
+    setDimensions({ width, height });
+
+    // Refresh renderer after resize
+    initRendererRef.current();
+  });
+
+  // Public resize function
+  const resize = (width: number, height: number) => {
+    resizeRef.current(width, height);
+  };
 
   // Get canvas as data URL
-  const toDataURL = useCallback(
-    (type: string = "image/png", quality?: number): string | null => {
-      const canvas = canvasRef.current;
-      if (!canvas) return null;
+  const toDataURL = (
+    type: string = "image/png",
+    quality?: number,
+  ): string | null => {
+    const canvas = canvasRef.current;
+    if (!canvas) return null;
 
-      return canvas.toDataURL(type, quality);
-    },
-    [],
-  );
+    return canvas.toDataURL(type, quality);
+  };
 
   // Get canvas as Blob
-  const toBlob = useCallback(
-    (type: string = "image/png", quality?: number): Promise<Blob | null> => {
-      return new Promise((resolve) => {
-        const canvas = canvasRef.current;
-        if (!canvas) {
-          resolve(null);
-          return;
-        }
+  const toBlob = (
+    type: string = "image/png",
+    quality?: number,
+  ): Promise<Blob | null> => {
+    return new Promise((resolve) => {
+      const canvas = canvasRef.current;
+      if (!canvas) {
+        resolve(null);
+        return;
+      }
 
-        canvas.toBlob(
-          (blob) => {
-            resolve(blob);
-          },
-          type,
-          quality,
-        );
-      });
-    },
-    [],
-  );
+      canvas.toBlob(
+        (blob) => {
+          resolve(blob);
+        },
+        type,
+        quality,
+      );
+    });
+  };
 
   // Export canvas as PNG file download
-  const exportPNG = useCallback(
-    (filename: string = "codoncanvas-output.png") => {
-      const canvas = canvasRef.current;
-      if (!canvas) return;
+  const exportPNG = (filename: string = "codoncanvas-output.png") => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
 
-      const dataUrl = canvas.toDataURL("image/png");
-      const link = document.createElement("a");
-      link.download = filename;
-      link.href = dataUrl;
-      link.click();
-    },
-    [],
-  );
+    const dataUrl = canvas.toDataURL("image/png");
+    const link = document.createElement("a");
+    link.download = filename;
+    link.href = dataUrl;
+    link.click();
+  };
 
   // Initialize renderer on mount and when ref changes
   useEffect(() => {
-    // Use MutationObserver to detect when canvas is added to DOM
-    const checkCanvas = () => {
+    const initRenderer = initRendererRef.current;
+
+    // Check immediately
+    if (canvasRef.current) {
+      initRenderer();
+    }
+
+    // Also check on next frame (for cases where ref is set after render)
+    const frameId = requestAnimationFrame(() => {
       if (canvasRef.current) {
         initRenderer();
       }
-    };
-
-    // Check immediately
-    checkCanvas();
-
-    // Also check on next frame (for cases where ref is set after render)
-    const frameId = requestAnimationFrame(checkCanvas);
+    });
 
     return () => {
       cancelAnimationFrame(frameId);
     };
-  }, [initRenderer]);
+  }, []);
 
   // Auto-resize handling
   useEffect(() => {
@@ -243,6 +249,8 @@ export function useCanvas(options: UseCanvasOptions = {}): UseCanvasReturn {
 
     const container = canvas.parentElement;
     if (!container) return;
+
+    const resizeFn = resizeRef.current;
 
     const resizeObserver = new ResizeObserver((entries) => {
       for (const entry of entries) {
@@ -263,7 +271,7 @@ export function useCanvas(options: UseCanvasOptions = {}): UseCanvasReturn {
           }
         }
 
-        resize(newWidth, newHeight);
+        resizeFn(newWidth, newHeight);
       }
     });
 
@@ -272,7 +280,7 @@ export function useCanvas(options: UseCanvasOptions = {}): UseCanvasReturn {
     return () => {
       resizeObserver.disconnect();
     };
-  }, [autoResize, maintainAspectRatio, initialWidth, initialHeight, resize]);
+  }, [autoResize, maintainAspectRatio, initialWidth, initialHeight]);
 
   return {
     canvasRef,

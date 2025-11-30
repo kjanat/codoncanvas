@@ -5,7 +5,7 @@
  * Used by GeneticDemo, PopulationDemo, and similar simulation UIs.
  */
 
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 /** Simulation state */
 export interface SimulationState {
@@ -111,16 +111,16 @@ export function useSimulation(
     onCompleteRef.current = onComplete;
   }, [onStep, shouldStop, onComplete]);
 
-  // Clear interval helper
-  const clearIntervalRef = useCallback(() => {
-    if (intervalRef.current !== undefined) {
-      clearInterval(intervalRef.current);
-      intervalRef.current = undefined;
-    }
-  }, []);
-
   // Manage interval based on running state
   useEffect(() => {
+    // Clear interval helper - defined inside effect to avoid dependency issues
+    const clearCurrentInterval = () => {
+      if (intervalRef.current !== undefined) {
+        clearInterval(intervalRef.current);
+        intervalRef.current = undefined;
+      }
+    };
+
     if (state.isRunning) {
       intervalRef.current = setInterval(() => {
         // Check stop condition
@@ -132,53 +132,61 @@ export function useSimulation(
         onStepRef.current();
       }, state.speed);
     } else {
-      clearIntervalRef();
+      clearCurrentInterval();
     }
 
-    return clearIntervalRef;
-  }, [state.isRunning, state.speed, clearIntervalRef]);
+    return clearCurrentInterval;
+  }, [state.isRunning, state.speed]);
 
   // Start simulation
-  const start = useCallback(() => {
+  const start = () => {
     setState((prev) => ({ ...prev, isRunning: true }));
-  }, []);
+  };
 
   // Pause simulation
-  const pause = useCallback(() => {
+  const pause = () => {
     setState((prev) => ({ ...prev, isRunning: false }));
-  }, []);
+  };
 
   // Toggle running state
-  const toggle = useCallback(() => {
+  const toggle = () => {
     setState((prev) => ({ ...prev, isRunning: !prev.isRunning }));
-  }, []);
+  };
 
   // Execute single step
-  const step = useCallback(() => {
-    if (!state.isRunning) {
-      onStepRef.current();
-    }
-  }, [state.isRunning]);
+  const step = () => {
+    // Only step when not running
+    setState((prev) => {
+      if (!prev.isRunning) {
+        onStepRef.current();
+      }
+      return prev;
+    });
+  };
 
   // Reset to initial state
-  const reset = useCallback(() => {
-    clearIntervalRef();
+  const reset = () => {
+    // Clear interval directly using ref
+    if (intervalRef.current !== undefined) {
+      clearInterval(intervalRef.current);
+      intervalRef.current = undefined;
+    }
     setState({
       isRunning: false,
       step: 0,
       speed: initialSpeed,
     });
-  }, [clearIntervalRef, initialSpeed]);
+  };
 
   // Set speed
-  const setSpeed = useCallback((speed: number) => {
+  const setSpeed = (speed: number) => {
     setState((prev) => ({ ...prev, speed }));
-  }, []);
+  };
 
   // Increment step counter
-  const incrementStep = useCallback(() => {
+  const incrementStep = () => {
     setState((prev) => ({ ...prev, step: prev.step + 1 }));
-  }, []);
+  };
 
   return {
     state,
