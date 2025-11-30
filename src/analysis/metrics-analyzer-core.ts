@@ -692,6 +692,32 @@ const NUMERIC_FIELDS = new Set([
 /** Field prefixes that indicate numeric values */
 const NUMERIC_PREFIXES = ["genomes", "mutation", "renderMode", "feature"];
 
+/** Required fields for a valid MetricsSession */
+const REQUIRED_NUMERIC_SESSION_FIELDS = [
+  "startTime",
+  "endTime",
+  "duration",
+  "genomesCreated",
+  "genomesExecuted",
+  "mutationsApplied",
+  "renderMode_visual",
+  "renderMode_audio",
+  "renderMode_both",
+  "mutation_silent",
+  "mutation_missense",
+  "mutation_nonsense",
+  "mutation_frameshift",
+  "mutation_point",
+  "mutation_insertion",
+  "mutation_deletion",
+  "feature_diffViewer",
+  "feature_timeline",
+  "feature_evolution",
+  "feature_assessment",
+  "feature_export",
+  "errorCount",
+] as const;
+
 /**
  * Custom value parser for MetricsSession CSV data
  * Handles numeric fields, null values, and string fields appropriately
@@ -708,7 +734,13 @@ function parseMetricsValue(value: string, fieldName: string): unknown {
     NUMERIC_PREFIXES.some((prefix) => fieldName.startsWith(prefix));
 
   if (isNumeric) {
-    return parseFloat(value) || 0;
+    const parsed = parseFloat(value);
+    if (Number.isNaN(parsed) && value !== "") {
+      console.warn(
+        `Invalid numeric value for field "${fieldName}": "${value}"`,
+      );
+    }
+    return Number.isNaN(parsed) ? 0 : parsed;
   }
 
   // Default: return as string
@@ -716,8 +748,47 @@ function parseMetricsValue(value: string, fieldName: string): unknown {
 }
 
 /**
+ * Validate a parsed row has all required MetricsSession fields
+ * @param row - Parsed row with transformed values
+ * @param rowIndex - Row index for error reporting
+ * @returns Valid MetricsSession or null if invalid
+ */
+function validateMetricsSession(
+  row: Record<string, unknown>,
+  rowIndex: number,
+): MetricsSession | null {
+  // Validate sessionId is a non-empty string
+  if (typeof row.sessionId !== "string" || !row.sessionId.trim()) {
+    console.error(`Row ${rowIndex + 1}: sessionId must be a non-empty string`);
+    return null;
+  }
+
+  // Validate required numeric fields
+  for (const field of REQUIRED_NUMERIC_SESSION_FIELDS) {
+    const value = row[field];
+    if (typeof value !== "number" || !Number.isFinite(value)) {
+      console.error(
+        `Row ${rowIndex + 1}: field "${field}" must be a valid number, got: ${value}`,
+      );
+      return null;
+    }
+  }
+
+  // Validate errorTypes is a string (JSON array)
+  if (typeof row.errorTypes !== "string") {
+    console.error(
+      `Row ${rowIndex + 1}: errorTypes must be a string, got: ${typeof row.errorTypes}`,
+    );
+    return null;
+  }
+
+  return row as unknown as MetricsSession;
+}
+
+/**
  * Parse CSV string into MetricsSession objects
  * Uses csv42 for RFC 4180 compliant parsing with custom value transformation
+ * and validation of required fields
  */
 export function parseCSVContent(content: string): MetricsSession[] {
   const trimmed = content.trim();
@@ -735,14 +806,35 @@ export function parseCSVContent(content: string): MetricsSession[] {
     throw new Error("CSV file is empty or missing header");
   }
 
-  // Transform string values to appropriate types
-  return rawData.map((row) => {
+  // Transform string values to appropriate types and validate
+  const sessions: MetricsSession[] = [];
+  const errors: number[] = [];
+
+  rawData.forEach((row, index) => {
     const session: Record<string, unknown> = {};
     for (const [key, value] of Object.entries(row)) {
       session[key] = parseMetricsValue(String(value), key);
     }
-    return session as unknown as MetricsSession;
+
+    const validated = validateMetricsSession(session, index);
+    if (validated) {
+      sessions.push(validated);
+    } else {
+      errors.push(index + 1);
+    }
   });
+
+  if (errors.length > 0) {
+    console.warn(
+      `Skipped ${errors.length} invalid row(s): ${errors.slice(0, 5).join(", ")}${errors.length > 5 ? "..." : ""}`,
+    );
+  }
+
+  if (sessions.length === 0) {
+    throw new Error("No valid sessions found in CSV");
+  }
+
+  return sessions;
 }
 
 // Formatting Utilities
