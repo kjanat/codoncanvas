@@ -11,6 +11,8 @@ import { CodonLexer } from "@/core/lexer";
 import type { Renderer, TransformState } from "@/core/renderer";
 import { CodonVM } from "@/core/vm";
 
+import type { CodonToken } from "@/types";
+
 // Constants from VM for reverse calculation
 const STACK_VALUE_RANGE = 64;
 const HUE_DEGREES = 360;
@@ -19,12 +21,15 @@ const PERCENT_SCALE = 100;
 class MockRenderer implements Renderer {
   width = 400;
   height = 400;
+  vm!: CodonVM;
   private _transform: TransformState = {
     x: 200,
     y: 200,
     rotation: 0,
     scale: 1,
   };
+
+  constructor(private tokens: CodonToken[]) {}
 
   resize(width?: number, height?: number): void {
     if (width) this.width = width;
@@ -64,8 +69,19 @@ class MockRenderer implements Renderer {
     const fmtS = s.toFixed(1).padStart(5);
     const fmtL = l.toFixed(1).padStart(5);
 
+    // Get context
+    const currentIdx = this.vm.state.instructionPointer;
+    const currentToken = this.tokens[currentIdx];
+    const lineNum = currentToken?.line ?? 0;
+
+    // Get all tokens on this line
+    const lineTokens = this.tokens
+      .filter((t) => t.line === lineNum)
+      .map((t) => t.text)
+      .join(" ");
+
     console.log(
-      `${ansi}■\x1b[0m Color(H:${fmtRawH}, S:${fmtRawS}, L:${fmtRawL}) -> hsl(${fmtH},${fmtS}%,${fmtL}%) -> ${hex}`,
+      `${ansi}■\x1b[0m Line ${lineNum.toString().padStart(2)}: Color(H:${fmtRawH}, S:${fmtRawS}, L:${fmtRawL}) -> hsl(${fmtH},${fmtS}%,${fmtL}%) -> ${hex}  [${lineTokens}]`,
     );
   }
 
@@ -94,8 +110,9 @@ async function main() {
     const lexer = new CodonLexer();
     const tokens = lexer.tokenize(source);
 
-    const renderer = new MockRenderer();
+    const renderer = new MockRenderer(tokens);
     const vm = new CodonVM(renderer);
+    renderer.vm = vm;
 
     vm.run(tokens);
   } catch (error) {
