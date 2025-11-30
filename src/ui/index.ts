@@ -13,5 +13,3 @@ export {
   SunIcon,
   SystemIcon,
 } from "./Icons";
-export type { ShareOptions, ShareSystemConfig } from "./share-system";
-export { ShareSystem } from "./share-system";

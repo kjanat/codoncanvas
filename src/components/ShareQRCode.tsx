@@ -1,5 +1,4 @@
 import type React from "react";
-import { createRoot } from "react-dom/client";
 import QRCode from "react-qr-code";
 
 interface ShareQRCodeProps {
@@ -9,7 +8,7 @@ interface ShareQRCodeProps {
 export const ShareQRCode: React.FC<ShareQRCodeProps> = ({ value }) => {
   return (
     <div className="flex flex-col items-center justify-center p-4">
-      <div className="bg-white p-4 rounded-lg">
+      <div className="rounded-lg bg-white p-4">
         <QRCode
           size={256}
           style={{ height: "auto", maxWidth: "100%", width: "100%" }}
@@ -23,11 +22,3 @@ export const ShareQRCode: React.FC<ShareQRCodeProps> = ({ value }) => {
     </div>
   );
 };
-
-export function renderQRCodeToContainer(
-  container: HTMLElement,
-  value: string,
-): void {
-  const root = createRoot(container);
-  root.render(<ShareQRCode value={value} />);
-}
