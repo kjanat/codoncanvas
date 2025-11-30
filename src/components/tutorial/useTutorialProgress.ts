@@ -47,7 +47,7 @@ export function useTutorialProgress(): UseTutorialProgressReturn {
           (progress.completedLessons.length / tutorialLessons.length) * 100,
         );
 
-  const selectLesson = (id: string) => {
+  const selectLesson = (id: string): void => {
     if (!getLessonById(id)) {
       console.warn(`Invalid lesson ID: ${id}`);
       return;
@@ -55,7 +55,7 @@ export function useTutorialProgress(): UseTutorialProgressReturn {
     setProgress((prev) => ({ ...prev, currentLesson: id }));
   };
 
-  const completeLesson = (id: string) => {
+  const completeLesson = (id: string): void => {
     setProgress((prev) => {
       if (prev.completedLessons.includes(id)) {
         return prev;
@@ -67,7 +67,7 @@ export function useTutorialProgress(): UseTutorialProgressReturn {
     });
   };
 
-  const recordHintUsed = (lessonId: string, count: number) => {
+  const recordHintUsed = (lessonId: string, count: number): void => {
     setProgress((prev) => ({
       ...prev,
       hintsUsed: { ...prev.hintsUsed, [lessonId]: count },

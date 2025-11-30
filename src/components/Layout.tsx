@@ -5,7 +5,7 @@
  * Provides global notification containers for toasts and achievements.
  */
 
-import type { ReactNode } from "react";
+import type { ReactElement, ReactNode } from "react";
 
 import { AchievementToastContainer } from "@/components/AchievementToast";
 import { ToastContainer } from "@/components/Toast";
@@ -22,7 +22,7 @@ interface LayoutProps {
  * Main layout wrapper for the application.
  * Renders header, main content area, footer, and notification containers.
  */
-export function Layout({ children }: LayoutProps): React.JSX.Element {
+export function Layout({ children }: LayoutProps): ReactElement {
   const { notifications, dismissNotification } = useAchievements();
 
   return (
