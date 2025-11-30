@@ -304,3 +304,53 @@ export const DnaIcon = memo(function DnaIcon({
     </svg>
   );
 });
+
+/**
+ * Rewind icon for timeline controls.
+ * @param props - Icon props with optional className
+ */
+export const RewindIcon = memo(function RewindIcon({
+  className = "h-5 w-5",
+}: IconProps) {
+  return (
+    <svg
+      aria-hidden="true"
+      className={className}
+      fill="none"
+      stroke="currentColor"
+      viewBox="0 0 24 24"
+    >
+      <path
+        d="M11 19l-7-7 7-7m8 14l-7-7 7-7"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth={2}
+      />
+    </svg>
+  );
+});
+
+/**
+ * Chevron left icon for step back.
+ * @param props - Icon props with optional className
+ */
+export const ChevronLeftIcon = memo(function ChevronLeftIcon({
+  className = "h-5 w-5",
+}: IconProps) {
+  return (
+    <svg
+      aria-hidden="true"
+      className={className}
+      fill="none"
+      stroke="currentColor"
+      viewBox="0 0 24 24"
+    >
+      <path
+        d="M15 19l-7-7 7-7"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth={2}
+      />
+    </svg>
+  );
+});

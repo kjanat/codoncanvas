@@ -1,144 +1,33 @@
-import { useCallback, useEffect, useRef, useState } from "react";
-import { Card } from "@/components/Card";
 import { PageContainer } from "@/components/PageContainer";
 import { PageHeader } from "@/components/PageHeader";
-import { examples } from "@/data/examples";
-import { getMutationByType } from "@/genetics/mutations";
-import { useAchievements } from "@/hooks/useAchievements";
-import { useRenderGenome } from "@/hooks/useRenderGenome";
-import type { MutationType } from "@/types";
-
-interface Candidate {
-  genome: string;
-  id: number;
-  mutationType: MutationType;
-  description: string;
-}
-
-interface LineageEntry {
-  id: string;
-  genome: string;
-  generation: number;
-  mutationType?: MutationType;
-}
-
-const EVOLUTION_MUTATION_TYPES: MutationType[] = [
-  "silent",
-  "missense",
-  "point",
-  "insertion",
-];
+import {
+  CandidateGrid,
+  LineageHistory,
+  ParentPanel,
+  useEvolutionLab,
+} from "./evolution";
 
 export default function EvolutionDemo() {
-  const [parentGenome, setParentGenome] = useState(
-    examples.helloCircle?.genome || "ATG GAA AAT GGA TAA",
-  );
-  const [candidates, setCandidates] = useState<Candidate[]>([]);
-  const [generation, setGeneration] = useState(1);
-  const [lineage, setLineage] = useState<LineageEntry[]>([]);
-
-  const parentCanvasRef = useRef<HTMLCanvasElement>(null);
-  const canvasRefs = useRef<(HTMLCanvasElement | null)[]>([]);
-
-  const { trackEvolutionGeneration, trackMutationApplied } = useAchievements();
-  const { render } = useRenderGenome();
-
-  // Render parent genome
-  useEffect(() => {
-    render(parentGenome, parentCanvasRef.current);
-  }, [parentGenome, render]);
-
-  // Generate 6 mutant candidates
-  const generateCandidates = useCallback(() => {
-    const newCandidates: Candidate[] = [];
-    let successCount = 0;
-
-    for (let i = 0; i < 6; i++) {
-      const mutationType =
-        EVOLUTION_MUTATION_TYPES[i % EVOLUTION_MUTATION_TYPES.length];
-
-      try {
-        const result = getMutationByType(mutationType, parentGenome);
-        newCandidates.push({
-          genome: result.mutated,
-          id: i,
-          mutationType: result.type,
-          description: result.description,
-        });
-        successCount++;
-      } catch (err) {
-        // If mutation fails, use parent with a note
-        newCandidates.push({
-          genome: parentGenome,
-          id: i,
-          mutationType: mutationType,
-          description: `Mutation failed: ${err instanceof Error ? err.message : "Unknown error"}`,
-        });
-      }
-    }
-
-    // Track mutations once after generation (batched for performance)
-    for (let i = 0; i < successCount; i++) {
-      trackMutationApplied();
-    }
-
-    setCandidates(newCandidates);
-  }, [parentGenome, trackMutationApplied]);
-
-  // Render all candidates
-  useEffect(() => {
-    candidates.forEach((candidate, i) => {
-      render(candidate.genome, canvasRefs.current[i]);
-    });
-  }, [candidates, render]);
-
-  // Select a candidate as the new parent
-  const selectCandidate = (candidate: Candidate): void => {
-    // Save current parent to lineage
-    setLineage((prev) => [
-      ...prev,
-      {
-        id: `gen-${generation}-${Date.now()}`,
-        genome: parentGenome,
-        generation,
-        mutationType: candidate.mutationType,
-      },
-    ]);
-
-    // Update parent and generation
-    setParentGenome(candidate.genome);
-    setCandidates([]);
-    setGeneration((g) => g + 1);
-    trackEvolutionGeneration();
-  };
-
-  // Reset to initial state
-  const resetEvolution = (): void => {
-    setParentGenome(examples.helloCircle?.genome || "ATG GAA AAT GGA TAA");
-    setCandidates([]);
-    setGeneration(1);
-    setLineage([]);
-  };
+  const lab = useEvolutionLab();
 
   return (
     <PageContainer>
-      {/* Header */}
       <PageHeader
         badge={
           <span className="inline-flex items-center gap-4 rounded-full bg-primary/10 px-6 py-2">
             <span className="font-semibold text-primary">
-              Generation {generation}
+              Generation {lab.generation}
             </span>
             <span className="text-text-muted">|</span>
             <span className="text-text-muted">
-              {lineage.length} ancestor{lineage.length !== 1 ? "s" : ""}
+              {lab.lineage.length} ancestor{lab.lineage.length !== 1 ? "s" : ""}
             </span>
-            {lineage.length > 0 && (
+            {lab.lineage.length > 0 && (
               <>
                 <span className="text-text-muted">|</span>
                 <button
                   className="text-sm text-danger hover:underline"
-                  onClick={resetEvolution}
+                  onClick={lab.reset}
                   type="button"
                 >
                   Reset
@@ -151,142 +40,24 @@ export default function EvolutionDemo() {
         title="Evolution Lab"
       />
 
-      {/* Current Parent */}
-      <Card className="mb-8">
-        <div className="mb-4 flex items-center justify-between">
-          <h2 className="text-lg font-semibold text-text">Current Parent</h2>
-          <button
-            className="rounded-lg bg-primary px-6 py-2 text-white transition-colors hover:bg-primary-hover"
-            onClick={generateCandidates}
-            type="button"
-          >
-            Generate Offspring
-          </button>
-        </div>
+      <ParentPanel
+        genome={lab.parentGenome}
+        onGenerateCandidates={lab.generateCandidates}
+        onGenomeChange={lab.setParentGenome}
+      />
 
-        <div className="grid gap-6 lg:grid-cols-2">
-          {/* Genome editor */}
-          <div>
-            <textarea
-              className="w-full rounded-lg border border-border bg-dark-bg p-3 font-mono text-sm text-dark-text"
-              onChange={(e) => setParentGenome(e.target.value)}
-              rows={4}
-              spellCheck={false}
-              value={parentGenome}
-            />
-          </div>
-
-          {/* Parent canvas */}
-          <div className="flex justify-center">
-            <canvas
-              className="rounded-lg border border-border bg-white"
-              height={200}
-              ref={parentCanvasRef}
-              width={200}
-            />
-          </div>
-        </div>
-      </Card>
-
-      {/* Candidates Grid */}
-      {candidates.length > 0 && (
-        <div className="mb-8">
-          <h2 className="mb-4 text-lg font-semibold text-text">
-            Select the Fittest Candidate
-          </h2>
-          <p className="mb-4 text-sm text-text-muted">
-            Click on the candidate that best matches your target phenotype. It
-            will become the parent for the next generation.
-          </p>
-          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {candidates.map((candidate, i) => (
-              <button
-                className="group rounded-xl border border-border bg-white p-4 text-left shadow-sm transition-all hover:border-primary hover:shadow-md"
-                key={candidate.id}
-                onClick={() => selectCandidate(candidate)}
-                type="button"
-              >
-                <canvas
-                  className="mx-auto rounded-lg border border-border bg-white"
-                  height={180}
-                  ref={(el) => {
-                    canvasRefs.current[i] = el;
-                  }}
-                  width={180}
-                />
-                <div className="mt-3">
-                  <div className="flex items-center gap-2">
-                    <span className="rounded-full bg-primary/10 px-2 py-0.5 text-xs font-medium text-primary">
-                      {candidate.mutationType}
-                    </span>
-                    <span className="text-sm font-medium text-text group-hover:text-primary">
-                      Candidate {i + 1}
-                    </span>
-                  </div>
-                  <p className="mt-1 line-clamp-2 text-xs text-text-muted">
-                    {candidate.description}
-                  </p>
-                </div>
-              </button>
-            ))}
-          </div>
-        </div>
+      {lab.candidates.length > 0 && (
+        <CandidateGrid
+          candidates={lab.candidates}
+          onSelect={lab.selectCandidate}
+        />
       )}
 
-      {/* Lineage History */}
-      {lineage.length > 0 && (
-        <Card>
-          <h2 className="mb-4 text-lg font-semibold text-text">
-            Evolutionary Lineage
-          </h2>
-          <div className="flex flex-wrap items-center gap-2">
-            {lineage.map((entry) => (
-              <div className="flex items-center" key={entry.id}>
-                <div
-                  className="rounded-md bg-bg-light px-3 py-1.5 text-xs"
-                  title={entry.genome}
-                >
-                  <span className="font-medium text-text">
-                    Gen {entry.generation}
-                  </span>
-                  {entry.mutationType && (
-                    <span className="ml-2 text-text-muted">
-                      ({entry.mutationType})
-                    </span>
-                  )}
-                </div>
-                <svg
-                  aria-hidden="true"
-                  className="h-4 w-4 text-text-muted"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    d="M9 5l7 7-7 7"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                  />
-                </svg>
-              </div>
-            ))}
-            <div className="rounded-md bg-primary/10 px-3 py-1.5 text-xs font-medium text-primary">
-              Gen {generation} (Current)
-            </div>
-          </div>
-
-          <div className="mt-4 border-t border-border pt-4">
-            <p className="text-sm text-text-muted">
-              <strong>Total mutations accumulated:</strong> {lineage.length}
-            </p>
-            <p className="mt-1 text-sm text-text-muted">
-              Each generation shows cumulative changes from the original
-              ancestor. Through selection pressure (your choices), the genome
-              has evolved toward your preferred phenotype.
-            </p>
-          </div>
-        </Card>
+      {lab.lineage.length > 0 && (
+        <LineageHistory
+          currentGeneration={lab.generation}
+          lineage={lab.lineage}
+        />
       )}
     </PageContainer>
   );
