@@ -2,7 +2,7 @@
 ; Demonstrates: Complex branching, LOOP, SAVE/RESTORE state, biological structure
 ; Biological concept: Neuron morphology, dendritic trees, synaptic connections
 ; Difficulty: Advanced
-; Instructions: 68 codons
+; Instructions: 140 codons
 ; Author: CodonCanvas Autonomous Session 85
 
 ATG

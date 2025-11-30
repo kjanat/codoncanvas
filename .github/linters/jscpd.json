@@ -1,5 +1,13 @@
 {
-  "threshold": 5,
+  "threshold": 1.5,
   "reporters": ["console"],
-  "ignore": ["**/*.lock", "**/node_modules/**", "**/dist/**", "**/*.min.js"]
+  "ignore": [
+    "**/.serena/**",
+    "**/*.lock",
+    "**/*.min.js",
+    "**/coverage/**",
+    "**/dist/**",
+    "**/node_modules/**",
+    "**/report/**"
+  ]
 }

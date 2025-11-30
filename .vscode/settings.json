@@ -3,6 +3,11 @@
   "editor.defaultFormatter": "dprint.dprint",
   "editor.formatOnSave": true,
 
+  /** Other formatter settings */
+  "[markdown]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+
   /** Task settings */
   "typescript.tsc.autoDetect": "on",
   "npm.autoDetect": "on",
