@@ -7,54 +7,54 @@
 
 ATG
   ; Wave pattern - 8 ellipses with 45° spacing (full circle)
-  GAA AAA GAA TTT GAA GCC TTA ; Color(0, 63, 37) red
+  GAA AAA GAA TTT GAA GCC TTA  ; Color(0, 63, 37) #fd2a2a red
   GAA GCC GAA ATT GTA          ; Ellipse 37×15
-  GAA GTC AGA                 ; Rotate 45
-  GAA CCC GAA TTT GAA GCC TTA ; Color(21, 63, 37) orange
+  GAA GTC AGA                  ; Rotate 45
+  GAA CCC GAA TTT GAA GCC TTA  ; Color(21, 63, 37) #30fd2a green
   GAA GCC GAA ATT GTA          ; Ellipse 37×15
-  GAA GTC AGA                 ; Rotate 45
-  GAA TTT GAA GCC GAA GCC TTA ; Color(63, 63, 37) yellow
+  GAA GTC AGA                  ; Rotate 45
+  GAA TTT GAA GCC GAA GCC TTA  ; Color(63, 37, 37) #d25561 red
   GAA GCC GAA ATT GTA          ; Ellipse 37×15
-  GAA GTC AGA                 ; Rotate 45
-  GAA TTT GAA AGG GAA GCC TTA ; Color(63, 10, 37) lime
+  GAA GTC AGA                  ; Rotate 45
+  GAA TTT GAA AGG GAA GCC TTA  ; Color(63, 10, 37) #a48386 mauve
   GAA GCC GAA ATT GTA          ; Ellipse 37×15
-  GAA GTC AGA                 ; Rotate 45
-  GAA AGG GAA TTT GAA TCC TTA ; Color(10, 63, 53) cyan
+  GAA GTC AGA                  ; Rotate 45
+  GAA AGG GAA TTT GAA TCC TTA  ; Color(10, 63, 53) #fef9a8 yellow
   GAA GCC GAA ATT GTA          ; Ellipse 37×15
-  GAA GTC AGA                 ; Rotate 45
-  GAA GCC GAA TTT GAA TCC TTA ; Color(37, 63, 53) blue
+  GAA GTC AGA                  ; Rotate 45
+  GAA GCC GAA TTT GAA TCC TTA  ; Color(37, 63, 53) #a8d6fe light blue
   GAA GCC GAA ATT GTA          ; Ellipse 37×15
-  GAA GTC AGA                 ; Rotate 45
-  GAA TTT GAA TCC GAA TCC TTA ; Color(63, 63, 53) purple
+  GAA GTC AGA                  ; Rotate 45
+  GAA TTT GAA TCC GAA TCC TTA  ; Color(63, 53, 53) #f7afb6 pink
   GAA GCC GAA ATT GTA          ; Ellipse 37×15
-  GAA GTC AGA                 ; Rotate 45
-  GAA TTT GAA GCC GAA TCC TTA ; Color(63, 37, 53) pink
+  GAA GTC AGA                  ; Rotate 45
+  GAA TTT GAA GCC GAA TCC TTA  ; Color(63, 37, 53) #ecbabf pale pink
   GAA GCC GAA ATT GTA          ; Ellipse 37×15
 
   ; Inner layer - 6 smaller ellipses offset
-  TCA                         ; SAVE
-  GAA CTG AGA                 ; Rotate 30 (offset)
-  GAA TTT GAA CCC GAA TCC TTA ; Color(63, 21, 53) hot pink
+  TCA                          ; SAVE
+  GAA CTG AGA                  ; Rotate 30 (offset)
+  GAA TTT GAA CCC GAA TCC TTA  ; Color(63, 21, 53) #e2c5c7 pale pink
   GAA CCC GAA AGG GTA          ; Ellipse 21×10
-  GAA TTA AGA                 ; Rotate 60
-  GAA TCC GAA AAA GAA TCC TTA ; Color(53, 0, 53) deep magenta
+  GAA TTA AGA                  ; Rotate 60
+  GAA TCC GAA AAA GAA TCC TTA  ; Color(53, 0, 53) #d3d3d3 grey
   GAA CCC GAA AGG GTA          ; Ellipse 21×10
-  GAA TTA AGA                 ; Rotate 60
-  GAA GCC GAA AAA GAA TCC TTA ; Color(37, 0, 53) purple-magenta
+  GAA TTA AGA                  ; Rotate 60
+  GAA GCC GAA AAA GAA TCC TTA  ; Color(37, 0, 53) #d3d3d3 grey
   GAA CCC GAA AGG GTA          ; Ellipse 21×10
-  GAA TTA AGA                 ; Rotate 60
-  GAA CCC GAA AAA GAA TCC TTA ; Color(21, 0, 53) dark purple
+  GAA TTA AGA                  ; Rotate 60
+  GAA CCC GAA AAA GAA TCC TTA  ; Color(21, 0, 53) #d3d3d3 grey
   GAA CCC GAA AGG GTA          ; Ellipse 21×10
-  GAA TTA AGA                 ; Rotate 60
-  GAA AGG GAA AAA GAA TCC TTA ; Color(10, 0, 53) very dark purple
+  GAA TTA AGA                  ; Rotate 60
+  GAA AGG GAA AAA GAA TCC TTA  ; Color(10, 0, 53) #d3d3d3 grey
   GAA CCC GAA AGG GTA          ; Ellipse 21×10
-  GAA TTA AGA                 ; Rotate 60
-  GAA AAA GAA TCC GAA TCC TTA ; Color(0, 0, 53) blackish purple
+  GAA TTA AGA                  ; Rotate 60
+  GAA AAA GAA TCC GAA TCC TTA  ; Color(0, 53, 53) #f7afaf pink
   GAA CCC GAA AGG GTA          ; Ellipse 21×10
-  TCG                         ; RESTORE
+  TCG                          ; RESTORE
 
   ; Center - white focal point
-  GAA TTT GAA TTT GAA TTT TTA ; Color(63, 63, 63) white
-  GAA ATT GGA                 ; Circle 15
+  GAA TTT GAA TTT GAA TTT TTA  ; Color(63, 63, 63) #fff7f8 white
+  GAA ATT GGA                  ; Circle 15
 
 TAA
