@@ -60,7 +60,9 @@
       "@/components/*": ["./src/components/*"],
       "@/hooks": ["./src/hooks"],
       "@/hooks/*": ["./src/hooks/*"],
-      "@/tests/*": ["./tests/*"]
+      "@/tests/*": ["./tests/*"],
+      "@/tools/*": ["./tools/*"],
+      "@/scripts/*": ["./scripts/*"]
     }
   },
   "exclude": ["node_modules", "dist"]

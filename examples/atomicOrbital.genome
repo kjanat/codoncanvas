@@ -6,10 +6,7 @@
 ; Good for mutations: silent (safe), missense (color shifts)
 
 ATG
-  ; Save initial state at center with 0 rotation
-  TCA
-
-  ; Orbital 1 - horizontal (blue) 
+  ; Orbital 1 - horizontal (blue)
   GAA CTG GAA TTT GAA GTC TTA ; Color blue (hue=30)
   GAA CCC GAA AAC GTA         ; Ellipse 21x2
 
@@ -19,44 +16,36 @@ ATG
   GAA CCC GAA AAC GTA         ; Ellipse 21x2
 
   ; Orbital 3 - tilted 120 degrees (purple)
-  GAA TTA AGA                 ; Rotate 60 more
+  GAA TTA AGA                 ; Rotate 60 more (total 120)
   GAA GTA GAA TTT GAA GTC TTA ; Color purple (hue=44)
   GAA CCC GAA AAC GTA         ; Ellipse 21x2
 
-  ; Restore to center with 0 rotation
-  TCG
-
   ; Nucleus - orange outer
-  GAA AGG GAA TTT GAA GTC TTA ; Color orange
+  GAA AGG GAA TTT GAA GTC TTA ; Color orange (hue=10)
   GAA AAT GGA                 ; Circle 3
 
   ; Nucleus - red inner  
-  GAA AAA GAA TTT GAA GTC TTA ; Color red
+  GAA AAA GAA TTT GAA GTC TTA ; Color red (hue=0)
   GAA AAC GGA                 ; Circle 2
 
-  ; Electrons - white/light cyan
-  GAA CCC GAA AAA GAA TTT TTA ; Color (hue=21, sat=0, light=63) white
+  ; Electrons - white
+  GAA AAA GAA AAA GAA TTT TTA ; Color white (sat=0, light=63)
   
-  ; Electron 1 - at tip of horizontal orbital (0 degrees)
-  ; From center, translate right along x-axis
+  ; Electron 1 - at 0 degrees (right side, on horizontal orbital)
   TCA
-  GAA CCC GAA AAA ACA         ; Translate 21, 0 
+  GAA CCC GAA AAA ACA         ; Translate 21, 0 (from codon-calc)
   GAA AAC GGA                 ; Circle 2
   TCG
 
-  ; Electron 2 - at tip of 60-degree orbital
-  ; Rotate 60 first, then translate in that direction
+  ; Electron 2 - at 60 degrees (on cyan orbital tip)
   TCA
-  GAA TTA AGA                 ; Rotate 60
-  GAA CCC GAA AAA ACA         ; Translate 21, 0 (now goes at 60 deg direction)
+  GAA AGT GAA CAG ACA         ; Translate 11, 18 (from codon-calc: position 21 60)
   GAA AAC GGA                 ; Circle 2
   TCG
 
-  ; Electron 3 - at tip of 120-degree orbital
+  ; Electron 3 - at 90 degrees (bottom, between orbitals)
   TCA
-  GAA TTA AGA                 ; Rotate 60
-  GAA TTA AGA                 ; Rotate 60 more (120 total)
-  GAA CCC GAA AAA ACA         ; Translate 21, 0 (now goes at 120 deg direction)
+  GAA AAA GAA CCC ACA         ; Translate 0, 21 (from codon-calc: position 21 90)
   GAA AAC GGA                 ; Circle 2
   TCG
 

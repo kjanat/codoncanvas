@@ -3,7 +3,7 @@
  * Auto-fix genome files by updating codons to match comment-intended values.
  * Uses the same parsing logic as audit-genome-comments.ts.
  *
- * Usage: bun scripts/fix-genome-codons.ts [--dry-run]
+ * Usage: bun tools/fix-genome-codons.ts [--dry-run]
  */
 
 import { encodeCodonValue } from "@/types/genetics";

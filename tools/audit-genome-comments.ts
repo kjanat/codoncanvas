@@ -3,7 +3,7 @@
  * Audit genome file comments for accuracy.
  * Compares commented values against actual codon-decoded values.
  *
- * Usage: bun scripts/audit-genome-comments.ts
+ * Usage: bun tools/audit-genome-comments.ts
  */
 
 import { encodeCodonValue } from "@/types/genetics";

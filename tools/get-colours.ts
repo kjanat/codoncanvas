@@ -4,7 +4,7 @@
  * Utility to extract and print colors from a genome file.
  * Useful for verifying color comments in genome files.
  *
- * Usage: bun scripts/get-colours.ts <path-to-genome>
+ * Usage: bun tools/get-colours.ts <path-to-genome>
  */
 
 import { resolve } from "node:path";
@@ -107,7 +107,7 @@ class MockRenderer implements Renderer {
 async function main() {
   const filePath = Bun.argv[2];
   if (!filePath) {
-    console.error("Usage: bun scripts/get-colours.ts <path-to-genome>");
+    console.error("Usage: bun tools/get-colours.ts <path-to-genome>");
     process.exit(1);
   }
 
