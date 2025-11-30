@@ -6,7 +6,7 @@ coverage
 .idea
 *.tsbuildinfo
 package-lock.json
-report/
+.report/
 *report*.txt
 sample_data.csv
 sample-metrics.csv

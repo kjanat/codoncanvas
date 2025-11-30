@@ -1,0 +1,25 @@
+{
+  "absolute": false,
+  "blame": true,
+  "gitignore": true,
+  "ignore": [
+    "**/.report/**",
+    "**/.serena/**",
+    "**/*.lock",
+    "**/*.min.js",
+    "**/coverage/**",
+    "**/dist/**",
+    "**/node_modules/**"
+  ],
+  "mode": "mild",
+  "output": "./.report/",
+  "reporters": ["consoleFull", "markdown", "html", "badge"],
+  "noSymlinks": true,
+  "verbose": false,
+  "reportersOptions": {
+    "badge": {
+      "style": "flat"
+    }
+  },
+  "threshold": 1.5
+}

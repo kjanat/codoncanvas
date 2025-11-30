@@ -89,6 +89,9 @@ jobs:
         with:
           persist-credentials: false
 
+      - name: Setup Bun
+        uses: ./.github/actions/setup-bun
+
       - name: Check duplication
         uses: ./.github/actions/check-duplication
         continue-on-error: true

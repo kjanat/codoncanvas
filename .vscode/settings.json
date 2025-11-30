@@ -43,5 +43,13 @@
   "editor.quickSuggestions": { "strings": "on" },
 
   /** TypeScript settings */
-  "typescript.tsdk": "node_modules/typescript/lib"
+  "typescript.tsdk": "node_modules/typescript/lib",
+
+  /** JSON Schemas */
+  "json.schemas": [
+    {
+      "fileMatch": ["**/jscpd.json", "**/.jscpd.json"],
+      "url": "https://www.schemastore.org/jscpd.json"
+    }
+  ]
 }
