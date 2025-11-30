@@ -1,0 +1,5 @@
+{
+  "threshold": 5,
+  "reporters": ["console"],
+  "ignore": ["**/*.lock", "**/node_modules/**", "**/dist/**", "**/*.min.js"]
+}

@@ -40,7 +40,7 @@ jobs:
           # To report GitHub Actions status checks
           GITHUB_TOKEN: ${{ github.token }}
           IGNORE_GITIGNORED_FILES: true
-          JSCPD_CONFIG_FILE: package.json
+          JSCPD_CONFIG_FILE: jscpd.json
           CHECKOV_FILE_NAME: checkov.yaml
           VALIDATE_BIOME_FORMAT: false
           VALIDATE_BIOME_LINT: false
