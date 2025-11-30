@@ -7,6 +7,7 @@
 
 import type { ReactNode } from "react";
 
+import { AchievementToastContainer } from "@/components/AchievementToast";
 import { ToastContainer } from "@/components/Toast";
 import { getAuthorSocialUrl, siteConfig } from "@/config";
 import { useAchievements } from "@/hooks";
@@ -21,8 +22,8 @@ interface LayoutProps {
  * Main layout wrapper for the application.
  * Renders header, main content area, footer, and notification containers.
  */
-export function Layout({ children }: LayoutProps) {
-  const { ToastContainer: AchievementToastContainer } = useAchievements();
+export function Layout({ children }: LayoutProps): React.JSX.Element {
+  const { notifications, dismissNotification } = useAchievements();
 
   return (
     <div className="flex h-screen flex-col bg-bg-light">
@@ -35,7 +36,10 @@ export function Layout({ children }: LayoutProps) {
 
       {/* Global notifications */}
       <ToastContainer />
-      <AchievementToastContainer />
+      <AchievementToastContainer
+        notifications={notifications}
+        onDismiss={dismissNotification}
+      />
     </div>
   );
 }

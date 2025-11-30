@@ -148,7 +148,15 @@ export class CodonVM implements VM {
 
   constructor(renderer: Renderer, maxInstructions?: number) {
     this.renderer = renderer;
-    this.maxInstructions = maxInstructions ?? DEFAULT_MAX_INSTRUCTIONS;
+
+    const limit = maxInstructions ?? DEFAULT_MAX_INSTRUCTIONS;
+    if (!Number.isFinite(limit) || limit < 1 || !Number.isInteger(limit)) {
+      throw new Error(
+        `maxInstructions must be a positive integer, got: ${maxInstructions}`,
+      );
+    }
+    this.maxInstructions = limit;
+
     this.state = this.createInitialState();
   }
 

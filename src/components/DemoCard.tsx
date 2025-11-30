@@ -30,7 +30,7 @@ export function DemoCard({
   description,
   icon,
   color,
-}: DemoCardProps) {
+}: DemoCardProps): React.JSX.Element {
   return (
     <Link
       className="group relative overflow-hidden rounded-xl border border-border bg-white p-6 shadow-sm transition-all hover:shadow-lg"

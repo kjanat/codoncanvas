@@ -1,9 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 
-import {
-  type AchievementNotification,
-  AchievementToastContainer,
-} from "@/components/AchievementToast";
+import type { AchievementNotification } from "@/components/AchievementToast";
 import {
   type Achievement,
   AchievementEngine,
@@ -86,22 +83,13 @@ export function useAchievements() {
     handleUnlocks(unlocked);
   };
 
-  // Component to render - consumers should include this in their JSX
-  const ToastContainer = () =>
-    AchievementToastContainer({
-      notifications,
-      onDismiss: dismissNotification,
-    });
-
   return {
     engine,
     trackGenomeCreated,
     trackGenomeExecuted,
     trackMutationApplied,
     trackEvolutionGeneration,
-    // Expose ToastContainer for rendering
-    ToastContainer,
-    // Expose notifications for custom UI if needed
+    // Consumers render AchievementToastContainer directly with these props
     notifications,
     dismissNotification,
   };

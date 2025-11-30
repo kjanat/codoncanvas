@@ -85,6 +85,60 @@ describe("CodonVM", () => {
     lexer = new CodonLexer();
   });
 
+  describe("constructor validation", () => {
+    test("accepts valid positive integer maxInstructions", () => {
+      expect(() => new CodonVM(renderer, 1)).not.toThrow();
+      expect(() => new CodonVM(renderer, 100)).not.toThrow();
+      expect(() => new CodonVM(renderer, 10000)).not.toThrow();
+    });
+
+    test("rejects zero maxInstructions", () => {
+      expect(() => new CodonVM(renderer, 0)).toThrow(
+        /maxInstructions must be a positive integer/,
+      );
+    });
+
+    test("rejects negative maxInstructions", () => {
+      expect(() => new CodonVM(renderer, -1)).toThrow(
+        /maxInstructions must be a positive integer/,
+      );
+      expect(() => new CodonVM(renderer, -100)).toThrow(
+        /maxInstructions must be a positive integer/,
+      );
+    });
+
+    test("rejects NaN maxInstructions", () => {
+      expect(() => new CodonVM(renderer, NaN)).toThrow(
+        /maxInstructions must be a positive integer/,
+      );
+    });
+
+    test("rejects Infinity maxInstructions", () => {
+      expect(() => new CodonVM(renderer, Infinity)).toThrow(
+        /maxInstructions must be a positive integer/,
+      );
+      expect(() => new CodonVM(renderer, -Infinity)).toThrow(
+        /maxInstructions must be a positive integer/,
+      );
+    });
+
+    test("rejects non-integer maxInstructions", () => {
+      expect(() => new CodonVM(renderer, 1.5)).toThrow(
+        /maxInstructions must be a positive integer/,
+      );
+      expect(() => new CodonVM(renderer, 99.9)).toThrow(
+        /maxInstructions must be a positive integer/,
+      );
+    });
+
+    test("uses default when maxInstructions is undefined", () => {
+      const vmDefault = new CodonVM(renderer);
+      // Should not throw - uses DEFAULT_MAX_INSTRUCTIONS
+      const tokens = lexer.tokenize("ATG TAA");
+      expect(() => vmDefault.run(tokens)).not.toThrow();
+    });
+  });
+
   describe("Basic execution", () => {
     test("executes hello circle program", () => {
       const genome = "ATG GAA AAT GGA TAA";
