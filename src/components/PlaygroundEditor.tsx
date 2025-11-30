@@ -6,10 +6,8 @@
 
 import { forwardRef, memo } from "react";
 import type { GenomeValidation } from "@/hooks/useGenome";
-import { CheckIcon, ErrorIcon } from "@/ui";
+import { CheckIcon, ErrorIcon } from "@/ui/icons";
 import type { NucleotideDisplayMode } from "@/utils/nucleotide-display";
-
-// --- Sub-components ---
 
 interface ValidationStatusProps {
   isPending: boolean;
@@ -87,8 +85,6 @@ function WarningDisplay({ validation }: { validation: GenomeValidation }) {
     </output>
   );
 }
-
-// --- Main Component ---
 
 export interface PlaygroundEditorProps {
   /** Displayed genome text (may be transformed for display) */

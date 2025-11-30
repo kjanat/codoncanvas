@@ -63,7 +63,7 @@ describe("DemoCard", () => {
     const { container } = renderDemoCard({
       color: "from-blue-500 to-cyan-500",
     });
-    const accentBar = container.querySelector(".bg-gradient-to-r");
+    const accentBar = container.querySelector(".bg-linear-to-r");
     expect(accentBar).toBeDefined();
     expect(accentBar?.className).toContain("from-blue-500");
     expect(accentBar?.className).toContain("to-cyan-500");
@@ -89,7 +89,7 @@ describe("DemoCard", () => {
       color: "from-green-500 to-emerald-500",
     });
     const iconContainer = container.querySelector(".inline-flex.rounded-lg");
-    expect(iconContainer?.className).toContain("bg-gradient-to-r");
+    expect(iconContainer?.className).toContain("bg-linear-to-r");
     expect(iconContainer?.className).toContain("from-green-500");
   });
 

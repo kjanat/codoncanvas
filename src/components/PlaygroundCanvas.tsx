@@ -7,8 +7,6 @@
 import { forwardRef, memo } from "react";
 import type { ExampleWithKey } from "@/hooks/useExamples";
 
-// --- Sub-component: Example Info ---
-
 function ExampleInfo({ example }: { example: ExampleWithKey }) {
   return (
     <div className="border-t border-dark-border px-4 py-3">
@@ -30,8 +28,6 @@ function ExampleInfo({ example }: { example: ExampleWithKey }) {
     </div>
   );
 }
-
-// --- Main Component ---
 
 export interface PlaygroundCanvasProps {
   /** Canvas width */

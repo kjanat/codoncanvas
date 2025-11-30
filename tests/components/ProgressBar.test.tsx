@@ -45,7 +45,7 @@ describe("ProgressBar", () => {
   test("applies gradient variant", () => {
     const { container } = render(<ProgressBar value={50} variant="gradient" />);
     const { inner } = getElements(container);
-    expect(inner?.className).toContain("bg-gradient-to-r");
+    expect(inner?.className).toContain("bg-linear-to-r");
   });
 
   test("applies custom gradient class", () => {

@@ -2,11 +2,12 @@
  * KeyboardShortcutsHelp - Modal overlay showing available keyboard shortcuts
  */
 
-import { memo, useEffect } from "react";
+import { useEffect } from "react";
 import {
   formatShortcut,
   type KeyboardShortcut,
 } from "@/hooks/useKeyboardShortcuts";
+import { CloseIcon } from "@/ui/icons";
 
 interface KeyboardShortcutsHelpProps {
   shortcuts: KeyboardShortcut[];
@@ -14,37 +15,53 @@ interface KeyboardShortcutsHelpProps {
   onClose: () => void;
 }
 
-export const KeyboardShortcutsHelp = memo(function KeyboardShortcutsHelp({
+export function KeyboardShortcutsHelp({
   shortcuts,
   isOpen,
   onClose,
 }: KeyboardShortcutsHelpProps) {
-  // Close on Escape
+  // Close on Escape or ?
   useEffect(() => {
-    if (!isOpen) return;
+    if (!isOpen) {
+      return;
+    }
 
-    const handleKeyDown = (e: KeyboardEvent) => {
+    function handleKeyDown(e: KeyboardEvent): void {
       if (e.key === "Escape" || e.key === "?") {
         e.preventDefault();
         onClose();
       }
-    };
+    }
 
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [isOpen, onClose]);
 
-  if (!isOpen) return null;
+  if (!isOpen) {
+    return null;
+  }
 
   const shortcutsWithDescriptions = shortcuts.filter((s) => s.description);
+
+  function handleBackdropClick(e: React.MouseEvent<HTMLDivElement>): void {
+    if (e.target === e.currentTarget) {
+      onClose();
+    }
+  }
+
+  function handleBackdropKeyDown(e: React.KeyboardEvent<HTMLDivElement>): void {
+    if (e.key === "Escape") {
+      onClose();
+    }
+  }
 
   return (
     <div
       aria-labelledby="shortcuts-title"
       aria-modal="true"
       className="fixed inset-0 z-50 flex items-center justify-center bg-black/50"
-      onClick={onClose}
-      onKeyDown={(e) => e.key === "Escape" && onClose()}
+      onClick={handleBackdropClick}
+      onKeyDown={handleBackdropKeyDown}
       role="dialog"
     >
       <div className="mx-4 w-full max-w-md rounded-lg bg-white p-6 shadow-xl">
@@ -58,20 +75,7 @@ export const KeyboardShortcutsHelp = memo(function KeyboardShortcutsHelp({
             onClick={onClose}
             type="button"
           >
-            <svg
-              aria-hidden="true"
-              className="h-5 w-5"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                d="M6 18L18 6M6 6l12 12"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-              />
-            </svg>
+            <CloseIcon className="h-5 w-5" />
           </button>
         </div>
 
@@ -101,6 +105,6 @@ export const KeyboardShortcutsHelp = memo(function KeyboardShortcutsHelp({
       </div>
     </div>
   );
-});
+}
 
 export default KeyboardShortcutsHelp;

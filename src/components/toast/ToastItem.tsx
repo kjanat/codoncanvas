@@ -4,6 +4,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import type { Toast } from "@/contexts/ToastContext";
+import { CloseIcon } from "@/ui/icons";
 import {
   EXIT_ANIMATION_DURATION,
   VARIANT_ICONS,
@@ -76,7 +77,7 @@ export function ToastItem({ toast, onDismiss }: ToastItemProps) {
       <div className="flex items-start gap-3">
         <svg
           aria-hidden="true"
-          className={`h-5 w-5 flex-shrink-0 ${styles.icon}`}
+          className={`h-5 w-5 shrink-0 ${styles.icon}`}
           fill="none"
           stroke="currentColor"
           strokeWidth={2}
@@ -96,24 +97,11 @@ export function ToastItem({ toast, onDismiss }: ToastItemProps) {
         </div>
         <button
           aria-label="Dismiss notification"
-          className="flex-shrink-0 rounded p-1 text-text-muted transition-colors hover:bg-border-light hover:text-text"
+          className="shrink-0 rounded p-1 text-text-muted transition-colors hover:bg-border-light hover:text-text"
           onClick={handleDismissClick}
           type="button"
         >
-          <svg
-            aria-hidden="true"
-            className="h-4 w-4"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-          >
-            <path
-              d="M6 18L18 6M6 6l12 12"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-            />
-          </svg>
+          <CloseIcon />
         </button>
       </div>
     </div>

@@ -33,7 +33,7 @@ export function ProgressBar({
   const variantClasses = {
     primary: "bg-primary",
     success: "bg-success",
-    gradient: `bg-gradient-to-r ${gradientClass ?? "from-primary to-success"}`,
+    gradient: `bg-linear-to-r ${gradientClass ?? "from-primary to-success"}`,
   };
 
   const clampedValue = Math.min(100, Math.max(0, value));

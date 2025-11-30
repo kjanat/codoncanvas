@@ -14,8 +14,6 @@ import {
   type NucleotideDisplayMode,
 } from "@/utils/nucleotide-display";
 
-// --- Sub-component: Nucleotide Mode Toggle ---
-
 interface NucleotideModeToggleProps {
   mode: NucleotideDisplayMode;
   showInfo: boolean;
@@ -65,8 +63,6 @@ function NucleotideModeToggle({
     </div>
   );
 }
-
-// --- Main Component ---
 
 export interface PlaygroundToolbarProps {
   /** All available examples */

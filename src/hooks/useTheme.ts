@@ -7,7 +7,7 @@
 
 import { useCallback, useEffect, useMemo } from "react";
 
-import { MoonIcon, SunIcon, SystemIcon } from "@/ui";
+import { MoonIcon, SunIcon, SystemIcon } from "@/ui/icons";
 
 import { usePreferences } from "./usePreferences";
 

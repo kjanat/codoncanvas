@@ -6,7 +6,7 @@
 
 import { Link } from "react-router-dom";
 
-import { ChevronDownIcon } from "@/ui";
+import { ChevronDownIcon } from "@/ui/icons";
 
 export interface NavLink {
   path: string;

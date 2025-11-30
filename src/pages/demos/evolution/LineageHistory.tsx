@@ -1,5 +1,5 @@
 import { Card } from "@/components/Card";
-import { ChevronRightIcon } from "@/ui/Icons";
+import { ChevronRightIcon } from "@/ui/icons";
 import type { LineageEntry } from "./types";
 
 interface LineageHistoryProps {

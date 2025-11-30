@@ -1,15 +1,5 @@
 /**
  * UI components and systems
+ *
+ * Icons are in @/ui/icons - import directly from there
  */
-
-export {
-  CheckIcon,
-  ChevronDownIcon,
-  ChevronRightIcon,
-  CloseIcon,
-  ErrorIcon,
-  GitHubIcon,
-  MoonIcon,
-  SunIcon,
-  SystemIcon,
-} from "./Icons";

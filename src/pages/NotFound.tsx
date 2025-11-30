@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { DnaIcon, GalleryIcon, HomeIcon } from "@/ui/Icons";
+import { DnaIcon, GalleryIcon, HomeIcon } from "@/ui/icons";
 
 export default function NotFound() {
   return (

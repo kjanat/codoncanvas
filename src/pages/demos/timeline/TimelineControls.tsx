@@ -1,7 +1,7 @@
 import { Card } from "@/components/Card";
 import { RangeSlider } from "@/components/RangeSlider";
 import { Select } from "@/components/Select";
-import { ChevronLeftIcon, ChevronRightIcon, RewindIcon } from "@/ui/Icons";
+import { ChevronLeftIcon, ChevronRightIcon, RewindIcon } from "@/ui/icons";
 import { SPEED_OPTIONS } from "./constants";
 
 interface TimelineControlsProps {

@@ -3,6 +3,7 @@
  */
 
 import { useEffect, useRef, useState } from "react";
+import { CloseIcon } from "@/ui/icons";
 import { DEFAULT_TOAST_DURATION, EXIT_ANIMATION_DURATION } from "./constants";
 import type { AchievementToastItemProps } from "./types";
 
@@ -83,20 +84,7 @@ export function AchievementToastItem({
           onClick={handleDismissClick}
           type="button"
         >
-          <svg
-            aria-hidden="true"
-            className="h-4 w-4"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-          >
-            <path
-              d="M6 18L18 6M6 6l12 12"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-            />
-          </svg>
+          <CloseIcon />
         </button>
       </div>
     </div>

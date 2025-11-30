@@ -6,13 +6,11 @@
  */
 
 import { Component, type ErrorInfo, type ReactNode } from "react";
+import { WarningIcon } from "@/ui/icons";
 
 interface ErrorBoundaryProps {
-  /** Child components to wrap */
   children: ReactNode;
-  /** Optional fallback UI (default: built-in error display) */
   fallback?: ReactNode;
-  /** Called when error is caught */
   onError?: (error: Error, errorInfo: ErrorInfo) => void;
 }
 
@@ -23,18 +21,7 @@ interface ErrorBoundaryState {
 
 /**
  * Error boundary component for catching React errors.
- *
- * @example
- * ```tsx
- * <ErrorBoundary>
- *   <SomeComponent />
- * </ErrorBoundary>
- *
- * // With custom fallback
- * <ErrorBoundary fallback={<div>Something went wrong</div>}>
- *   <SomeComponent />
- * </ErrorBoundary>
- * ```
+ * Must be a class component - React doesn't support error boundaries with hooks.
  */
 export class ErrorBoundary extends Component<
   ErrorBoundaryProps,
@@ -50,10 +37,7 @@ export class ErrorBoundary extends Component<
   }
 
   componentDidCatch(error: Error, errorInfo: ErrorInfo): void {
-    // Log error for debugging
     console.error("ErrorBoundary caught an error:", error, errorInfo);
-
-    // Call optional error handler
     this.props.onError?.(error, errorInfo);
   }
 
@@ -63,30 +47,15 @@ export class ErrorBoundary extends Component<
 
   render(): ReactNode {
     if (this.state.hasError) {
-      // Custom fallback provided
       if (this.props.fallback) {
         return this.props.fallback;
       }
 
-      // Default error UI
       return (
         <div className="flex min-h-[50vh] items-center justify-center p-8">
           <div className="max-w-md text-center">
             <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-danger/10">
-              <svg
-                aria-hidden="true"
-                className="h-8 w-8 text-danger"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                />
-              </svg>
+              <WarningIcon className="h-8 w-8 text-danger" />
             </div>
 
             <h2 className="mb-2 text-xl font-semibold text-text">

@@ -7,7 +7,7 @@
 import { Link } from "react-router-dom";
 
 import { siteConfig } from "@/config";
-import { GitHubIcon } from "@/ui";
+import { GitHubIcon } from "@/ui/icons";
 
 import { Navigation } from "./Navigation";
 import { ThemeToggle } from "./ThemeToggle";

@@ -7,7 +7,7 @@
 
 import { memo } from "react";
 import { CATEGORIES, CATEGORY_COLORS } from "@/data";
-import { ChevronRightIcon, CloseIcon } from "@/ui";
+import { ChevronRightIcon, CloseIcon } from "@/ui/icons";
 import { type CodonReferenceProps, useCodonReference } from "./codon-reference";
 
 export const CodonReference = memo(function CodonReference({

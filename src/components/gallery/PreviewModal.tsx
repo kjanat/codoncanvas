@@ -1,6 +1,7 @@
 import type { ReactNode } from "react";
 import { useEffect } from "react";
 import { CanvasPreview } from "@/components/CanvasPreview";
+import { CloseIcon } from "@/ui/icons";
 import type { ExampleWithName } from "./types";
 
 interface PreviewModalProps {
@@ -47,25 +48,12 @@ export function PreviewModal({
             <p className="text-sm text-text-muted">{example.description}</p>
           </div>
           <button
+            aria-label="Close"
             className="rounded-lg p-2 text-text-muted hover:bg-bg-light hover:text-text"
             onClick={onClose}
             type="button"
           >
-            <svg
-              aria-hidden="true"
-              className="h-6 w-6"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <title>Close</title>
-              <path
-                d="M6 18L18 6M6 6l12 12"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-              />
-            </svg>
+            <CloseIcon className="h-6 w-6" />
           </button>
         </div>
 

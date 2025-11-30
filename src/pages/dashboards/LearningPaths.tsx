@@ -105,13 +105,13 @@ export default function LearningPaths() {
               key={path.id}
             >
               {/* Gradient header */}
-              <div className={`h-2 bg-gradient-to-r ${path.color}`} />
+              <div className={`h-2 bg-linear-to-r ${path.color}`} />
 
               <div className="p-6">
                 {/* Icon and badges */}
                 <div className="mb-4 flex items-start justify-between">
                   <div
-                    className={`rounded-lg bg-gradient-to-r p-3 ${path.color}`}
+                    className={`rounded-lg bg-linear-to-r p-3 ${path.color}`}
                   >
                     <svg
                       aria-hidden="true"
@@ -196,7 +196,7 @@ export default function LearningPaths() {
 
                 {/* Action button */}
                 <Link
-                  className={`block w-full rounded-lg bg-gradient-to-r py-2 text-center font-medium text-white transition-opacity hover:opacity-90 ${path.color}`}
+                  className={`block w-full rounded-lg bg-linear-to-r py-2 text-center font-medium text-white transition-opacity hover:opacity-90 ${path.color}`}
                   to={`/?path=${path.id}`}
                 >
                   {pathProgress > 0 ? "Continue Learning" : "Start Path"}
