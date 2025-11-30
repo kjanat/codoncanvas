@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState } from "react";
+import { type JSX, useCallback, useEffect, useRef, useState } from "react";
 import { Card } from "@/components/Card";
 import { PageContainer } from "@/components/PageContainer";
 import { PageHeader } from "@/components/PageHeader";
@@ -33,7 +33,7 @@ function DifficultySelector({
 }: {
   difficulty: AssessmentDifficulty;
   onSelect: (d: AssessmentDifficulty) => void;
-}) {
+}): JSX.Element {
   return (
     <div>
       <span className="mb-2 block text-sm font-medium text-text">
@@ -65,7 +65,7 @@ function ProgressPanel({
 }: {
   progress: AssessmentProgress;
   onReset: () => void;
-}) {
+}): JSX.Element {
   return (
     <Card>
       <h2 className="mb-4 text-lg font-semibold text-text">Progress</h2>
@@ -114,7 +114,7 @@ function GenomeCanvas({
   title: string;
   genome: string;
   canvasRef: React.RefObject<HTMLCanvasElement | null>;
-}) {
+}): JSX.Element {
   return (
     <Card>
       <h3 className="mb-4 text-center font-semibold text-text">{title}</h3>

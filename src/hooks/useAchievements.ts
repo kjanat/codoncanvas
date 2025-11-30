@@ -1,4 +1,9 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
+
+import {
+  type AchievementNotification,
+  AchievementToastContainer,
+} from "@/components/AchievementToast";
 import {
   type Achievement,
   AchievementEngine,
@@ -7,79 +12,95 @@ import {
 // Singleton instance
 let engineInstance: AchievementEngine | null = null;
 
+// Generate unique IDs for notifications
+let notificationId = 0;
+function generateId(): string {
+  return `achievement-${Date.now()}-${++notificationId}`;
+}
+
 export function useAchievements() {
   const [engine, setEngine] = useState<AchievementEngine | null>(null);
+  const [notifications, setNotifications] = useState<AchievementNotification[]>(
+    [],
+  );
+  const mountedRef = useRef(true);
 
   useEffect(() => {
+    mountedRef.current = true;
     if (!engineInstance) {
       engineInstance = new AchievementEngine();
     }
     setEngine(engineInstance);
+
+    return () => {
+      mountedRef.current = false;
+    };
   }, []);
 
-  const trackGenomeCreated = (length: number) => {
-    if (!engineInstance) return;
-    const unlocked = engineInstance.trackGenomeCreated(length);
-    handleUnlocks(unlocked);
-  };
+  const dismissNotification = useCallback((id: string) => {
+    if (!mountedRef.current) return;
+    setNotifications((prev) => prev.filter((n) => n.id !== id));
+  }, []);
 
-  const trackGenomeExecuted = (opcodes: string[]) => {
-    if (!engineInstance) return;
-    const unlocked = engineInstance.trackGenomeExecuted(opcodes);
-    handleUnlocks(unlocked);
-  };
+  const handleUnlocks = useCallback((unlocked: Achievement[]) => {
+    if (!mountedRef.current || unlocked.length === 0) return;
 
-  const trackMutationApplied = () => {
+    const newNotifications: AchievementNotification[] = unlocked.map(
+      (achievement) => ({
+        id: generateId(),
+        achievement,
+        createdAt: Date.now(),
+      }),
+    );
+
+    setNotifications((prev) => [...prev, ...newNotifications]);
+
+    // Also log for debugging
+    console.info(
+      "Achievements unlocked:",
+      unlocked.map((a) => a.name).join(", "),
+    );
+  }, []);
+
+  const trackGenomeCreated = useCallback(
+    (length: number) => {
+      if (!engineInstance) return;
+      const unlocked = engineInstance.trackGenomeCreated(length);
+      handleUnlocks(unlocked);
+    },
+    [handleUnlocks],
+  );
+
+  const trackGenomeExecuted = useCallback(
+    (opcodes: string[]) => {
+      if (!engineInstance) return;
+      const unlocked = engineInstance.trackGenomeExecuted(opcodes);
+      handleUnlocks(unlocked);
+    },
+    [handleUnlocks],
+  );
+
+  const trackMutationApplied = useCallback(() => {
     if (!engineInstance) return;
     const unlocked = engineInstance.trackMutationApplied();
     handleUnlocks(unlocked);
-  };
+  }, [handleUnlocks]);
 
-  const trackEvolutionGeneration = () => {
+  const trackEvolutionGeneration = useCallback(() => {
     if (!engineInstance) return;
     const unlocked = engineInstance.trackEvolutionGeneration();
     handleUnlocks(unlocked);
-  };
+  }, [handleUnlocks]);
 
-  // Simple notification handler (could be improved with a proper UI component)
-  const handleUnlocks = (unlocked: Achievement[]) => {
-    if (unlocked.length > 0) {
-      // In a real app, we might use a toast notification system here
-      // For now, we'll just log to console as the UI component handles its own display
-      // if mounted.
-      console.info(
-        "Achievements unlocked:",
-        unlocked.map((a) => a.name).join(", "),
-      );
-
-      // If we had a global UI instance, we could trigger it here.
-      // Since AchievementUI is designed to attach to a container,
-      // we might need a different approach for global notifications
-      // if the UI isn't always present.
-
-      // For this demo, we'll create a temporary notification
-      unlocked.forEach((achievement) => {
-        const notification = document.createElement("div");
-        notification.className =
-          "fixed top-4 right-4 bg-white p-4 rounded-xl shadow-lg border border-primary/20 z-50 animate-in slide-in-from-right duration-300";
-        notification.innerHTML = `
-          <div class="flex items-center gap-3">
-            <div class="text-2xl">${achievement.icon}</div>
-            <div>
-              <div class="font-bold text-primary">Achievement Unlocked!</div>
-              <div class="font-medium text-text">${achievement.name}</div>
-              <div class="text-xs text-text-muted">${achievement.description}</div>
-            </div>
-          </div>
-        `;
-        document.body.appendChild(notification);
-        setTimeout(() => {
-          notification.classList.add("animate-out", "fade-out", "duration-300");
-          setTimeout(() => notification.remove(), 300);
-        }, 5000);
-      });
-    }
-  };
+  // Component to render - consumers should include this in their JSX
+  const ToastContainer = useCallback(
+    () =>
+      AchievementToastContainer({
+        notifications,
+        onDismiss: dismissNotification,
+      }),
+    [notifications, dismissNotification],
+  );
 
   return {
     engine,
@@ -87,5 +108,10 @@ export function useAchievements() {
     trackGenomeExecuted,
     trackMutationApplied,
     trackEvolutionGeneration,
+    // Expose ToastContainer for rendering
+    ToastContainer,
+    // Expose notifications for custom UI if needed
+    notifications,
+    dismissNotification,
   };
 }

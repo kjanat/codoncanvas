@@ -60,23 +60,24 @@ export const MUTATION_TYPES: MutationTypeInfo[] = [
 ];
 
 /**
+ * Difficulty-based mutation type filters.
+ * Centralizes which mutation types are available at each difficulty level.
+ */
+const DIFFICULTY_FILTERS: Record<"easy" | "medium" | "hard", MutationType[]> = {
+  easy: ["silent", "missense"],
+  medium: ["silent", "missense", "nonsense"],
+  hard: MUTATION_TYPES.map((m) => m.type),
+};
+
+/**
  * Get mutation types filtered by difficulty level.
  * Used for progressive disclosure in assessments.
  */
 export function getMutationTypesByDifficulty(
   difficulty: "easy" | "medium" | "hard",
 ): MutationTypeInfo[] {
-  if (difficulty === "easy") {
-    return MUTATION_TYPES.filter((t) =>
-      (["silent", "missense"] as MutationType[]).includes(t.type),
-    );
-  }
-  if (difficulty === "medium") {
-    return MUTATION_TYPES.filter((t) =>
-      (["silent", "missense", "nonsense"] as MutationType[]).includes(t.type),
-    );
-  }
-  return MUTATION_TYPES;
+  const allowed = DIFFICULTY_FILTERS[difficulty];
+  return MUTATION_TYPES.filter((t) => allowed.includes(t.type));
 }
 
 /**

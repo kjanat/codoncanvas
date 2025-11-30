@@ -1,3 +1,4 @@
+import type React from "react";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { Card } from "@/components/Card";
 import { Label } from "@/components/Label";
@@ -62,7 +63,7 @@ function initPopulation(count: number): PopulationState {
   };
 }
 
-export default function PopulationDemo() {
+export default function PopulationDemo(): React.JSX.Element {
   const [populationSize, setPopulationSize] = useState(100);
   const [numAlleles, setNumAlleles] = useState(3);
   const [speed, setSpeed] = useState(200);
@@ -102,7 +103,14 @@ export default function PopulationDemo() {
   }, [population.alleles]);
 
   // Use simulation hook
-  const simulation = useSimulation({
+  const {
+    state: simState,
+    setSpeed: setSimSpeed,
+    step,
+    toggle,
+    reset,
+    pause,
+  } = useSimulation({
     initialSpeed: speed,
     onStep: advanceGeneration,
     shouldStop,
@@ -110,8 +118,8 @@ export default function PopulationDemo() {
 
   // Sync speed with simulation
   useEffect(() => {
-    simulation.setSpeed(speed);
-  }, [speed, simulation]);
+    setSimSpeed(speed);
+  }, [speed, setSimSpeed]);
 
   // Build chart series from population history
   const chartSeries = useMemo(
@@ -125,14 +133,14 @@ export default function PopulationDemo() {
 
   const chartRef = useLineChart({ series: chartSeries });
 
-  const handleReset = () => {
-    simulation.reset();
+  const handleReset = (): void => {
+    reset();
     setPopulation(initPopulation(numAlleles));
   };
 
-  const handleAllelesChange = (n: number) => {
+  const handleAllelesChange = (n: number): void => {
     setNumAlleles(n);
-    simulation.pause();
+    pause();
     setPopulation(initPopulation(n));
   };
 
@@ -158,7 +166,7 @@ export default function PopulationDemo() {
                 Population Size: {populationSize}
               </Label>
               <RangeSlider
-                disabled={simulation.state.isRunning}
+                disabled={simState.isRunning}
                 id="population-size"
                 max={500}
                 min={10}
@@ -176,7 +184,7 @@ export default function PopulationDemo() {
                 Number of Alleles: {numAlleles}
               </Label>
               <RangeSlider
-                disabled={simulation.state.isRunning}
+                disabled={simState.isRunning}
                 id="num-alleles"
                 max={5}
                 min={2}
@@ -198,10 +206,10 @@ export default function PopulationDemo() {
             </div>
 
             <SimulationControls
-              isRunning={simulation.state.isRunning}
+              isRunning={simState.isRunning}
               onReset={handleReset}
-              onStep={simulation.step}
-              onToggle={simulation.toggle}
+              onStep={step}
+              onToggle={toggle}
             />
           </div>
 

@@ -1,6 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { Card } from "@/components/Card";
-import { ErrorAlert } from "@/components/ErrorAlert";
 import { PageContainer } from "@/components/PageContainer";
 import { PageHeader } from "@/components/PageHeader";
 import { examples } from "@/data/examples";
@@ -17,12 +16,13 @@ interface Candidate {
 }
 
 interface LineageEntry {
+  id: string;
   genome: string;
   generation: number;
   mutationType?: MutationType;
 }
 
-const MUTATION_TYPES: MutationType[] = [
+const EVOLUTION_MUTATION_TYPES: MutationType[] = [
   "silent",
   "missense",
   "point",
@@ -36,7 +36,6 @@ export default function EvolutionDemo() {
   const [candidates, setCandidates] = useState<Candidate[]>([]);
   const [generation, setGeneration] = useState(1);
   const [lineage, setLineage] = useState<LineageEntry[]>([]);
-  const [error, setError] = useState<string | null>(null);
 
   const parentCanvasRef = useRef<HTMLCanvasElement>(null);
   const canvasRefs = useRef<(HTMLCanvasElement | null)[]>([]);
@@ -52,11 +51,11 @@ export default function EvolutionDemo() {
   // Generate 6 mutant candidates
   const generateCandidates = useCallback(() => {
     const newCandidates: Candidate[] = [];
-    setError(null);
+    let successCount = 0;
 
     for (let i = 0; i < 6; i++) {
-      const mutationType = MUTATION_TYPES[i % MUTATION_TYPES.length];
-      if (!mutationType) continue;
+      const mutationType =
+        EVOLUTION_MUTATION_TYPES[i % EVOLUTION_MUTATION_TYPES.length];
 
       try {
         const result = getMutationByType(mutationType, parentGenome);
@@ -66,7 +65,7 @@ export default function EvolutionDemo() {
           mutationType: result.type,
           description: result.description,
         });
-        trackMutationApplied();
+        successCount++;
       } catch (err) {
         // If mutation fails, use parent with a note
         newCandidates.push({
@@ -76,6 +75,11 @@ export default function EvolutionDemo() {
           description: `Mutation failed: ${err instanceof Error ? err.message : "Unknown error"}`,
         });
       }
+    }
+
+    // Track mutations once after generation (batched for performance)
+    for (let i = 0; i < successCount; i++) {
+      trackMutationApplied();
     }
 
     setCandidates(newCandidates);
@@ -89,11 +93,12 @@ export default function EvolutionDemo() {
   }, [candidates, render]);
 
   // Select a candidate as the new parent
-  const selectCandidate = (candidate: Candidate) => {
+  const selectCandidate = (candidate: Candidate): void => {
     // Save current parent to lineage
     setLineage((prev) => [
       ...prev,
       {
+        id: `gen-${generation}-${Date.now()}`,
         genome: parentGenome,
         generation,
         mutationType: candidate.mutationType,
@@ -108,12 +113,11 @@ export default function EvolutionDemo() {
   };
 
   // Reset to initial state
-  const resetEvolution = () => {
+  const resetEvolution = (): void => {
     setParentGenome(examples.helloCircle?.genome || "ATG GAA AAT GGA TAA");
     setCandidates([]);
     setGeneration(1);
     setLineage([]);
-    setError(null);
   };
 
   return (
@@ -182,8 +186,6 @@ export default function EvolutionDemo() {
             />
           </div>
         </div>
-
-        {error && <ErrorAlert className="mt-4">{error}</ErrorAlert>}
       </Card>
 
       {/* Candidates Grid */}
@@ -239,10 +241,7 @@ export default function EvolutionDemo() {
           </h2>
           <div className="flex flex-wrap items-center gap-2">
             {lineage.map((entry) => (
-              <div
-                className="flex items-center"
-                key={`${entry.generation}-${entry.mutationType ?? "orig"}`}
-              >
+              <div className="flex items-center" key={entry.id}>
                 <div
                   className="rounded-md bg-bg-light px-3 py-1.5 text-xs"
                   title={entry.genome}

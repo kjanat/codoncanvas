@@ -115,6 +115,8 @@ function evaluateComplexity(genome: string): number {
   return (lengthScore + varietyScore) / 2;
 }
 
+const DEFAULT_POPULATION_SIZE = 12;
+
 function createInitialPopulation(size: number): Individual[] {
   return SEED_GENOMES.flatMap((g, seedIdx) =>
     Array.from({ length: Math.ceil(size / SEED_GENOMES.length) }, (_, i) => ({
@@ -126,13 +128,62 @@ function createInitialPopulation(size: number): Individual[] {
   ).slice(0, size);
 }
 
+function tournamentSelect(evaluated: Individual[]): Individual {
+  const a = evaluated[Math.floor(Math.random() * evaluated.length)];
+  const b = evaluated[Math.floor(Math.random() * evaluated.length)];
+  return a.fitness > b.fitness ? a : b;
+}
+
+function mutateGenome(genome: string, rate: number): string {
+  if (Math.random() >= rate) return genome;
+  try {
+    return applyPointMutation(genome).mutated;
+  } catch (error) {
+    console.warn("Mutation failed, keeping parent genome:", error);
+    return genome;
+  }
+}
+
+function buildNextGeneration(
+  evaluated: Individual[],
+  currentGen: number,
+  targetSize: number,
+  mutationRate: number,
+): Individual[] {
+  const nextGen: Individual[] = [];
+  const newGen = currentGen + 1;
+
+  // Elitism: keep top performers
+  const eliteCount = Math.min(2, evaluated.length);
+  for (let i = 0; i < eliteCount; i++) {
+    nextGen.push({
+      ...evaluated[i],
+      generation: newGen,
+      id: `gen${newGen}-elite${i}`,
+    });
+  }
+
+  // Fill rest with mutated offspring
+  while (nextGen.length < targetSize) {
+    const parent = tournamentSelect(evaluated);
+    nextGen.push({
+      id: `gen${newGen}-${nextGen.length}`,
+      genome: mutateGenome(parent.genome, mutationRate),
+      fitness: 0,
+      generation: newGen,
+    });
+  }
+
+  return nextGen;
+}
+
 export default function GeneticDemo() {
   const [fitnessType, setFitnessType] = useState<FitnessType>("coverage");
-  const [populationSize, setPopulationSize] = useState(12);
+  const [populationSize, setPopulationSize] = useState(DEFAULT_POPULATION_SIZE);
   const [mutationRate, setMutationRate] = useState(0.3);
   const [state, setState] = useState<GAState>(() => ({
     generation: 0,
-    population: createInitialPopulation(12),
+    population: createInitialPopulation(DEFAULT_POPULATION_SIZE),
     bestFitness: 0,
     avgFitness: 0,
     history: [],
@@ -184,59 +235,20 @@ export default function GeneticDemo() {
 
   const evolveGeneration = useCallback(() => {
     setState((prev) => {
-      const evaluated = prev.population.map((ind) => ({
-        ...ind,
-        fitness: evaluateFitness(ind.genome),
-      }));
-
-      evaluated.sort((a, b) => b.fitness - a.fitness);
+      const evaluated = prev.population
+        .map((ind) => ({ ...ind, fitness: evaluateFitness(ind.genome) }))
+        .sort((a, b) => b.fitness - a.fitness);
 
       const bestFitness = evaluated[0]?.fitness ?? 0;
       const avgFitness =
         evaluated.reduce((s, i) => s + i.fitness, 0) / evaluated.length;
 
-      const select = (): Individual => {
-        const a = evaluated[Math.floor(Math.random() * evaluated.length)];
-        const b = evaluated[Math.floor(Math.random() * evaluated.length)];
-        return a.fitness > b.fitness ? a : b;
-      };
-
-      const nextGen: Individual[] = [];
-
-      // Elitism: keep top 2
-      nextGen.push(
-        {
-          ...evaluated[0],
-          generation: prev.generation + 1,
-          id: `gen${prev.generation + 1}-elite0`,
-        },
-        {
-          ...evaluated[1],
-          generation: prev.generation + 1,
-          id: `gen${prev.generation + 1}-elite1`,
-        },
+      const nextGen = buildNextGeneration(
+        evaluated,
+        prev.generation,
+        populationSize,
+        mutationRate,
       );
-
-      while (nextGen.length < populationSize) {
-        const parent = select();
-        let childGenome = parent.genome;
-
-        if (Math.random() < mutationRate) {
-          try {
-            const result = applyPointMutation(childGenome);
-            childGenome = result.mutated;
-          } catch {
-            // Keep original if mutation fails
-          }
-        }
-
-        nextGen.push({
-          id: `gen${prev.generation + 1}-${nextGen.length}`,
-          genome: childGenome,
-          fitness: 0,
-          generation: prev.generation + 1,
-        });
-      }
 
       return {
         generation: prev.generation + 1,
@@ -252,7 +264,12 @@ export default function GeneticDemo() {
   }, [evaluateFitness, mutationRate, populationSize]);
 
   // Use simulation hook
-  const simulation = useSimulation({
+  const {
+    state: simState,
+    step,
+    toggle,
+    reset: resetSim,
+  } = useSimulation({
     initialSpeed: 500,
     onStep: evolveGeneration,
   });
@@ -283,7 +300,7 @@ export default function GeneticDemo() {
   });
 
   const handleReset = () => {
-    simulation.reset();
+    resetSim();
     setState({
       generation: 0,
       population: createInitialPopulation(populationSize),
@@ -311,7 +328,7 @@ export default function GeneticDemo() {
               <Label htmlFor="fitness-function">Fitness Function</Label>
               <Select
                 className="w-full"
-                disabled={simulation.state.isRunning}
+                disabled={simState.isRunning}
                 id="fitness-function"
                 onChange={setFitnessType}
                 options={FITNESS_OPTIONS}
@@ -324,7 +341,7 @@ export default function GeneticDemo() {
                 Population: {populationSize}
               </Label>
               <RangeSlider
-                disabled={simulation.state.isRunning}
+                disabled={simState.isRunning}
                 id="ga-population"
                 max={24}
                 min={6}
@@ -349,10 +366,10 @@ export default function GeneticDemo() {
             </div>
 
             <SimulationControls
-              isRunning={simulation.state.isRunning}
+              isRunning={simState.isRunning}
               onReset={handleReset}
-              onStep={simulation.step}
-              onToggle={simulation.toggle}
+              onStep={step}
+              onToggle={toggle}
               runLabel="Evolve"
             />
           </div>

@@ -69,7 +69,8 @@ export default function TimelineDemo() {
         const vm = new CodonVM(renderer);
         vm.run(tokensToRun);
       } catch {
-        // Ignore render errors during stepping
+        // Ignore render errors during stepping for UX
+        console.warn(`Failed to render at step ${step}`);
       }
     },
     [genome, snapshots.length],
@@ -82,31 +83,24 @@ export default function TimelineDemo() {
 
   // Playback control
   useEffect(() => {
-    if (isPlaying && currentStep < snapshots.length - 1) {
-      intervalRef.current = window.setInterval(() => {
-        setCurrentStep((s) => {
-          if (s >= snapshots.length - 1) {
-            setIsPlaying(false);
-            return s;
-          }
-          return s + 1;
-        });
-      }, playbackSpeed);
-    }
+    if (!isPlaying) return;
+
+    intervalRef.current = window.setInterval(() => {
+      setCurrentStep((s) => {
+        if (s >= snapshots.length - 1) {
+          setIsPlaying(false);
+          return s;
+        }
+        return s + 1;
+      });
+    }, playbackSpeed);
 
     return () => {
       if (intervalRef.current) {
         clearInterval(intervalRef.current);
       }
     };
-  }, [isPlaying, snapshots.length, playbackSpeed, currentStep]);
-
-  // Stop playing when reaching the end
-  useEffect(() => {
-    if (currentStep >= snapshots.length - 1 && isPlaying) {
-      setIsPlaying(false);
-    }
-  }, [currentStep, snapshots.length, isPlaying]);
+  }, [isPlaying, snapshots.length, playbackSpeed]);
 
   const currentSnapshot = snapshots[currentStep];
 
