@@ -9,7 +9,12 @@ export type {
   MutationType,
   ToolFeature,
 } from "./events";
-export type { MetricsSession, ResearchSession } from "./metrics-session";
+export type {
+  AggregateStats,
+  MetricsSession,
+  ResearchSession,
+  SessionError,
+} from "./metrics-session";
 export type {
   AnalysisReport,
   EngagementMetrics,

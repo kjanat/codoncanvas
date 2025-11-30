@@ -4,18 +4,36 @@
 
 import type { DescriptiveStats } from "@/analysis/types/statistics";
 
-/** Sum all values in an array */
+/**
+ * Sum all values in an array.
+ *
+ * @param values - The array of values to sum.
+ * @returns The sum of all values, or 0 if the array is empty.
+ */
 export function sum(values: readonly number[]): number {
   return values.reduce((acc, val) => acc + val, 0);
 }
 
-/** Calculate arithmetic mean */
+/**
+ * Calculate arithmetic mean.
+ *
+ * @param values - The array of values to calculate the mean for.
+ * @returns The arithmetic mean, or 0 if the array is empty.
+ */
 export function mean(values: readonly number[]): number {
   if (values.length === 0) return 0;
   return sum(values) / values.length;
 }
 
-/** Calculate standard deviation */
+/**
+ * Calculate standard deviation.
+ *
+ * Uses Bessel's correction `(n-1)` for sample SD by default.
+ *
+ * @param values - The array of values to calculate the standard deviation for.
+ * @param sample - Whether to use Bessel's correction (n-1) for sample SD.
+ * @returns The standard deviation value, or 0 if the array is empty.
+ */
 export function sd(values: readonly number[], sample = true): number {
   if (values.length === 0) return 0;
   const m = mean(values);
@@ -24,7 +42,14 @@ export function sd(values: readonly number[], sample = true): number {
   return Math.sqrt(sum(squaredDiffs) / divisor);
 }
 
-/** Calculate median (50th percentile) */
+/**
+ * Calculate median (50th percentile).
+ *
+ * Averages two middle values for even-length arrays.
+ *
+ * @param values - The array of values to calculate the median for.
+ * @returns The median value, or 0 if the array is empty.
+ */
 export function median(values: readonly number[]): number {
   if (values.length === 0) return 0;
   const sorted = [...values].sort((a, b) => a - b);
@@ -34,7 +59,13 @@ export function median(values: readonly number[]): number {
     : sorted[mid];
 }
 
-/** Calculate quartile (Q1 or Q3) */
+/**
+ * Calculate quartile using linear interpolation.
+ *
+ * @param values - The array of values to calculate the quartile for.
+ * @param q - The quartile to calculate (1 for Q1, 3 for Q3).
+ * @returns The quartile value, or 0 if the array is empty.
+ */
 export function quartile(values: readonly number[], q: 1 | 3): number {
   if (values.length === 0) return 0;
   const sorted = [...values].sort((a, b) => a - b);
@@ -46,12 +77,20 @@ export function quartile(values: readonly number[], q: 1 | 3): number {
   return sorted[lower] * (1 - weight) + sorted[upper] * weight;
 }
 
-/** Calculate minimum value */
+/**
+ * Calculate minimum value.
+ *
+ * @returns The minimum value in the array, or 0 if the array is empty.
+ */
 export function min(values: readonly number[]): number {
   return values.length > 0 ? Math.min(...values) : 0;
 }
 
-/** Calculate maximum value */
+/**
+ * Calculate maximum value.
+ *
+ * @returns The maximum value in the array, or 0 if the array is empty.
+ */
 export function max(values: readonly number[]): number {
   return values.length > 0 ? Math.max(...values) : 0;
 }

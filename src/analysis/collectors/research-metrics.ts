@@ -12,28 +12,33 @@
  * - Transparent data collection (user can see what's tracked)
  */
 
+import {
+  createFeatureCounts,
+  createMutationCounts,
+  createRenderModeCounts,
+} from "@/analysis/constants";
 import type {
   ExecutionEvent,
   FeatureEvent,
   MutationEvent,
 } from "@/analysis/types/events";
-import type { ResearchSession } from "@/analysis/types/metrics-session";
+import type {
+  AggregateStats,
+  ResearchSession,
+} from "@/analysis/types/metrics-session";
 
 // Re-export types for backward compatibility
 export type { ExecutionEvent, FeatureEvent, MutationEvent, ResearchSession };
 
 /**
  * Research metrics configuration options
- *
- * Controls data collection behavior including whether tracking is enabled,
- * storage limits, and auto-save frequency.
  */
 export interface ResearchMetricsOptions {
   /** Whether to enable automatic session tracking (default: false) */
   enabled: boolean;
   /** Maximum number of sessions to store locally (default: 100) */
   maxSessions: number;
-  /** Auto-save interval in milliseconds (default: 60000 = 1 minute) */
+  /** Auto-save interval in milliseconds (default: 30000) */
   autoSaveInterval: number;
 }
 
@@ -49,46 +54,31 @@ export class ResearchMetrics {
 
   constructor(options: Partial<ResearchMetricsOptions> = {}) {
     this.options = {
-      enabled: false, // Disabled by default (opt-in)
-      maxSessions: 100, // Store up to 100 sessions
-      autoSaveInterval: 30000, // Auto-save every 30 seconds
+      enabled: false,
+      maxSessions: 100,
+      autoSaveInterval: 30000,
       ...options,
     };
 
-    // Load existing data if enabled
     if (this.options.enabled) {
       this.startSession();
     }
   }
 
-  /**
-   * Enable research metrics collection.
-   * User must explicitly opt-in.
-   */
   enable(): void {
     this.options.enabled = true;
     this.startSession();
   }
 
-  /**
-   * Disable research metrics collection.
-   * Stops current session but preserves historical data.
-   */
   disable(): void {
     this.options.enabled = false;
     this.endSession();
   }
 
-  /**
-   * Check if metrics collection is currently enabled.
-   */
   isEnabled(): boolean {
     return this.options.enabled && this.currentSession !== null;
   }
 
-  /**
-   * Start a new research session.
-   */
   private startSession(): void {
     if (!this.options.enabled) return;
 
@@ -100,34 +90,16 @@ export class ResearchMetrics {
       genomesCreated: 0,
       genomesExecuted: 0,
       mutationsApplied: 0,
-      renderModeUsage: { visual: 0, audio: 0, both: 0 },
-      features: {
-        diffViewer: 0,
-        timeline: 0,
-        evolution: 0,
-        assessment: 0,
-        export: 0,
-      },
+      renderModeUsage: createRenderModeCounts(),
+      features: createFeatureCounts(),
       timeToFirstArtifact: null,
       errors: [],
-      mutationTypes: {
-        silent: 0,
-        missense: 0,
-        nonsense: 0,
-        frameshift: 0,
-        point: 0,
-        insertion: 0,
-        deletion: 0,
-      },
+      mutationTypes: createMutationCounts(),
     };
 
-    // Start auto-save timer
     this.startAutoSave();
   }
 
-  /**
-   * End the current research session.
-   */
   endSession(): void {
     if (!this.currentSession) return;
 
@@ -135,40 +107,27 @@ export class ResearchMetrics {
     this.currentSession.duration =
       this.currentSession.endTime - this.currentSession.startTime;
 
-    // Save final session
     this.saveSession();
-
-    // Stop auto-save timer
     this.stopAutoSave();
-
     this.currentSession = null;
   }
 
-  /**
-   * Track genome creation event.
-   */
   trackGenomeCreated(_genomeLength: number): void {
     if (!this.currentSession) return;
-
     this.currentSession.genomesCreated++;
   }
 
-  /**
-   * Track genome execution event.
-   */
   trackGenomeExecuted(event: ExecutionEvent): void {
     if (!this.currentSession) return;
 
     this.currentSession.genomesExecuted++;
     this.currentSession.renderModeUsage[event.renderMode]++;
 
-    // Track time to first artifact
     if (event.success && this.currentSession.timeToFirstArtifact === null) {
       this.currentSession.timeToFirstArtifact =
         Date.now() - this.currentSession.startTime;
     }
 
-    // Track errors
     if (!event.success && event.errorMessage) {
       this.currentSession.errors.push({
         timestamp: Date.now(),
@@ -178,33 +137,21 @@ export class ResearchMetrics {
     }
   }
 
-  /**
-   * Track mutation application event.
-   */
   trackMutation(event: MutationEvent): void {
     if (!this.currentSession) return;
-
     this.currentSession.mutationsApplied++;
     this.currentSession.mutationTypes[event.type]++;
   }
 
-  /**
-   * Track feature usage event.
-   */
   trackFeatureUsage(event: FeatureEvent): void {
     if (!this.currentSession) return;
-
     if (event.action === "open" || event.action === "interact") {
       this.currentSession.features[event.feature]++;
     }
   }
 
-  /**
-   * Track error event.
-   */
   trackError(type: string, message: string): void {
     if (!this.isEnabled()) return;
-
     this.currentSession?.errors.push({
       timestamp: Date.now(),
       type,
@@ -212,16 +159,10 @@ export class ResearchMetrics {
     });
   }
 
-  /**
-   * Get current session statistics.
-   */
   getCurrentSession(): ResearchSession | null {
     return this.currentSession;
   }
 
-  /**
-   * Get all stored sessions.
-   */
   getAllSessions(): ResearchSession[] {
     try {
       const stored = localStorage.getItem(this.STORAGE_KEY);
@@ -231,19 +172,14 @@ export class ResearchMetrics {
     }
   }
 
-  /**
-   * Export all sessions as JSON.
-   */
   exportData(): string {
     const sessions = this.getAllSessions();
 
-    // Add current session if active
     if (this.currentSession) {
-      const currentSnapshot = {
+      sessions.push({
         ...this.currentSession,
         duration: Date.now() - this.currentSession.startTime,
-      };
-      sessions.push(currentSnapshot);
+      });
     }
 
     return JSON.stringify(
@@ -258,21 +194,16 @@ export class ResearchMetrics {
     );
   }
 
-  /**
-   * Export sessions as CSV.
-   */
   exportCSV(): string {
     const sessions = this.getAllSessions();
 
     if (this.currentSession) {
-      const currentSnapshot = {
+      sessions.push({
         ...this.currentSession,
         duration: Date.now() - this.currentSession.startTime,
-      };
-      sessions.push(currentSnapshot);
+      });
     }
 
-    // CSV header
     const headers = [
       "sessionId",
       "startTime",
@@ -299,7 +230,6 @@ export class ResearchMetrics {
       "errorCount",
     ];
 
-    // CSV rows
     const rows = sessions.map((s) => [
       s.sessionId,
       new Date(s.startTime).toISOString(),
@@ -329,40 +259,7 @@ export class ResearchMetrics {
     return [headers.join(","), ...rows.map((r) => r.join(","))].join("\n");
   }
 
-  /**
-   * Get aggregate statistics across all sessions.
-   */
-  getAggregateStats(): {
-    totalSessions: number;
-    totalDuration: number;
-    avgDuration: number;
-    totalGenomesCreated: number;
-    totalGenomesExecuted: number;
-    totalMutations: number;
-    avgTimeToFirstArtifact: number;
-    mutationTypeDistribution: {
-      silent: number;
-      missense: number;
-      nonsense: number;
-      frameshift: number;
-      point: number;
-      insertion: number;
-      deletion: number;
-    };
-    renderModePreferences: {
-      visual: number;
-      audio: number;
-      both: number;
-    };
-    featureUsage: {
-      diffViewer: number;
-      timeline: number;
-      evolution: number;
-      assessment: number;
-      export: number;
-    };
-    totalErrors: number;
-  } {
+  getAggregateStats(): AggregateStats {
     const sessions = this.getAllSessions();
 
     const totalDuration = sessions.reduce(
@@ -373,24 +270,9 @@ export class ResearchMetrics {
       .map((s) => s.timeToFirstArtifact)
       .filter((t): t is number => t !== null);
 
-    const mutationTypeDistribution = {
-      silent: 0,
-      missense: 0,
-      nonsense: 0,
-      frameshift: 0,
-      point: 0,
-      insertion: 0,
-      deletion: 0,
-    };
-
-    const renderModePreferences = { visual: 0, audio: 0, both: 0 };
-    const featureUsage = {
-      diffViewer: 0,
-      timeline: 0,
-      evolution: 0,
-      assessment: 0,
-      export: 0,
-    };
+    const mutationTypeDistribution = createMutationCounts();
+    const renderModePreferences = createRenderModeCounts();
+    const featureUsage = createFeatureCounts();
 
     for (const s of sessions) {
       mutationTypeDistribution.silent += s.mutationTypes.silent;
@@ -437,34 +319,26 @@ export class ResearchMetrics {
     };
   }
 
-  /**
-   * Clear all stored research data.
-   */
   clearAllData(): void {
     localStorage.removeItem(this.STORAGE_KEY);
     this.currentSession = null;
   }
 
-  /**
-   * Save current session to localStorage.
-   */
   private saveSession(): void {
     if (!this.currentSession) return;
 
     try {
       const sessions = this.getAllSessions();
-
-      // Add or update current session
       const existingIndex = sessions.findIndex(
         (s) => s.sessionId === this.currentSession?.sessionId,
       );
+
       if (existingIndex >= 0) {
         sessions[existingIndex] = this.currentSession;
       } else {
         sessions.push(this.currentSession);
       }
 
-      // Enforce max sessions limit
       if (sessions.length > this.options.maxSessions) {
         sessions.splice(0, sessions.length - this.options.maxSessions);
       }
@@ -475,20 +349,13 @@ export class ResearchMetrics {
     }
   }
 
-  /**
-   * Start auto-save timer.
-   */
   private startAutoSave(): void {
-    this.stopAutoSave(); // Clear any existing timer
-
+    this.stopAutoSave();
     this.autoSaveTimer = window.setInterval(() => {
       this.saveSession();
     }, this.options.autoSaveInterval);
   }
 
-  /**
-   * Stop auto-save timer.
-   */
   private stopAutoSave(): void {
     if (this.autoSaveTimer !== null) {
       clearInterval(this.autoSaveTimer);
@@ -496,9 +363,6 @@ export class ResearchMetrics {
     }
   }
 
-  /**
-   * Generate unique session ID.
-   */
   private generateSessionId(): string {
     return `session_${Date.now()}_${Math.random().toString(36).slice(2, 11)}`;
   }

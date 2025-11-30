@@ -2,9 +2,13 @@
  * Event types for research metrics tracking
  */
 
-import type { MutationType, ToolFeature } from "@/analysis/constants";
+import type {
+  MutationType,
+  RenderMode,
+  ToolFeature,
+} from "@/analysis/constants";
 
-export type { MutationType, ToolFeature };
+export type { MutationType, RenderMode, ToolFeature };
 
 /**
  * Mutation event for tracking genome modifications
@@ -23,7 +27,7 @@ export interface ExecutionEvent {
   /** Unix timestamp of execution */
   timestamp: number;
   /** Render mode: visual drawing, audio synthesis, or both */
-  renderMode: "visual" | "audio" | "both";
+  renderMode: RenderMode;
   /** Length of executed genome (codon count) */
   genomeLength: number;
   /** Number of VM instructions executed */

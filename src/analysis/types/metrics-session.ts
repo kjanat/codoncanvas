@@ -2,9 +2,18 @@
  * Session data types for metrics collection and analysis
  */
 
+import type {
+  FeatureCounts,
+  MutationCounts,
+  RenderModeCounts,
+} from "@/analysis/constants";
+
 /**
  * Flattened session data for CSV export/import and analysis.
  * Used by MetricsAnalyzer for classroom-level analytics.
+ *
+ * Note: Uses flattened field names (renderMode_visual, mutation_silent, etc.)
+ * for CSV compatibility. See ResearchSession for nested structure.
  */
 export interface MetricsSession {
   sessionId: string;
@@ -15,9 +24,11 @@ export interface MetricsSession {
   genomesExecuted: number;
   timeToFirstArtifact: number | null;
   mutationsApplied: number;
+  // Flattened render mode counts
   renderMode_visual: number;
   renderMode_audio: number;
   renderMode_both: number;
+  // Flattened mutation counts
   mutation_silent: number;
   mutation_missense: number;
   mutation_nonsense: number;
@@ -25,6 +36,7 @@ export interface MetricsSession {
   mutation_point: number;
   mutation_insertion: number;
   mutation_deletion: number;
+  // Flattened feature counts
   feature_diffViewer: number;
   feature_timeline: number;
   feature_evolution: number;
@@ -34,9 +46,19 @@ export interface MetricsSession {
   errorTypes: string;
 }
 
+/** Error event stored in session */
+export interface SessionError {
+  timestamp: number;
+  type: string;
+  message: string;
+}
+
 /**
  * Rich session data for real-time tracking.
  * Used by ResearchMetrics collector for localStorage persistence.
+ *
+ * Note: Uses nested objects for cleaner runtime API.
+ * See MetricsSession for flattened CSV-compatible structure.
  */
 export interface ResearchSession {
   /** Unique session ID (UUID) */
@@ -54,27 +76,31 @@ export interface ResearchSession {
   /** Total mutations applied during session */
   mutationsApplied: number;
   /** Render mode usage counts */
-  renderModeUsage: { visual: number; audio: number; both: number };
+  renderModeUsage: RenderModeCounts;
   /** Feature usage tracking */
-  features: {
-    diffViewer: number;
-    timeline: number;
-    evolution: number;
-    assessment: number;
-    export: number;
-  };
+  features: FeatureCounts;
   /** Time to first successful execution (null if not yet achieved) */
   timeToFirstArtifact: number | null;
   /** Error events */
-  errors: Array<{ timestamp: number; type: string; message: string }>;
+  errors: SessionError[];
   /** Mutation type distribution */
-  mutationTypes: {
-    silent: number;
-    missense: number;
-    nonsense: number;
-    frameshift: number;
-    point: number;
-    insertion: number;
-    deletion: number;
-  };
+  mutationTypes: MutationCounts;
+}
+
+/**
+ * Aggregate statistics across multiple sessions.
+ * Returned by ResearchMetrics.getAggregateStats()
+ */
+export interface AggregateStats {
+  totalSessions: number;
+  totalDuration: number;
+  avgDuration: number;
+  totalGenomesCreated: number;
+  totalGenomesExecuted: number;
+  totalMutations: number;
+  avgTimeToFirstArtifact: number;
+  mutationTypeDistribution: MutationCounts;
+  renderModePreferences: RenderModeCounts;
+  featureUsage: FeatureCounts;
+  totalErrors: number;
 }

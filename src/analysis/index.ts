@@ -27,13 +27,21 @@ export {
   type ResearchMetricsOptions,
 } from "./collectors/research-metrics";
 
-// Constants
+// Constants and shared types
 export {
+  createFeatureCounts,
+  createMutationCounts,
+  createRenderModeCounts,
+  type FeatureCounts,
   LEARNING_VELOCITY,
   MS_PER_MINUTE,
   MS_PER_SECOND,
   MUTATION_TYPES,
+  type MutationCounts,
   type MutationType,
+  RENDER_MODES,
+  type RenderMode,
+  type RenderModeCounts,
   TOOL_FEATURES,
   type ToolFeature,
 } from "./constants";
@@ -73,6 +81,7 @@ export { Stats } from "./statistics/stats-class";
 
 // Types (re-exported from types/)
 export type {
+  AggregateStats,
   AnalysisReport,
   ComparisonResult,
   DescriptiveStats,
@@ -85,5 +94,6 @@ export type {
   MutationPatterns,
   RenderModePreferences,
   ResearchSession,
+  SessionError,
   ToolAdoption,
 } from "./types";
