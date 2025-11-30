@@ -8,18 +8,21 @@
  * Output: examples/screenshots/*.png (full size 400x400)
  */
 
-import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
-import { dirname, join } from "node:path";
-import { fileURLToPath } from "node:url";
+import { mkdir, readdir } from "node:fs/promises";
+import { basename, join } from "node:path";
+import { parseArgs } from "node:util";
 import { type Canvas, createCanvas } from "canvas";
 import type { Renderer } from "@/core";
 import { CodonLexer } from "@/core/lexer";
 import { generateNoisePoints } from "@/core/renderer";
 import { CodonVM } from "@/core/vm";
 
-// ES module equivalents for __dirname
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
+/** Directory of the script */
+const __dirname = import.meta.dir;
+/** Directory of the examples */
+const __examplesDir = join(__dirname, "../examples");
+/** Directory of the screenshots */
+const __screenshotsDir = join(__examplesDir, "screenshots");
 
 /**
  * Node-canvas renderer adapter for server-side rendering.
@@ -209,11 +212,14 @@ const SHOWCASE_GENOMES = [
 /**
  * Render a genome file to PNG.
  */
-export function renderGenome(genomePath: string, outputPath: string): void {
-  console.log(`Rendering ${genomePath}...`);
+export async function renderGenome(
+  genomePath: Bun.BunFile,
+  outputPath: Bun.BunFile,
+): Promise<void> {
+  console.log(`Rendering ${genomePath.name}...`);
 
   // Read genome source
-  const source = readFileSync(genomePath, "utf-8");
+  const source = await genomePath.text();
 
   // Tokenize
   const lexer = new CodonLexer();
@@ -228,30 +234,70 @@ export function renderGenome(genomePath: string, outputPath: string): void {
 
   // Export PNG
   const png = renderer.toPNG();
-  writeFileSync(outputPath, png);
+  await Bun.write(outputPath, png);
 
-  console.log(`✓ Generated ${outputPath}`);
+  console.log(`✓ Generated ${outputPath.name}`);
 }
 
 /**
  * Main execution.
  */
-function main(): void {
+async function main(): Promise<void> {
   console.log("🎨 CodonCanvas Screenshot Generator\n");
 
   // Ensure output directory exists
-  const screenshotsDir = join(__dirname, "../examples/screenshots");
-  mkdirSync(screenshotsDir, { recursive: true });
+  await mkdir(__screenshotsDir, { recursive: true });
 
-  // Render each showcase genome
+  const { values } = parseArgs({
+    args: Bun.argv,
+    options: {
+      all: { type: "boolean", short: "a" },
+      file: { type: "string", short: "f" },
+    },
+    strict: true,
+    allowPositionals: true,
+  });
+
+  let genomesToRender: string[] = [];
+
+  if (values.file) {
+    // Render specific file
+    // We need to handle full paths or relative paths
+    const fullPath = Bun.file(Bun.resolveSync(values.file, process.cwd()));
+    const name = basename(values.file, ".genome");
+    const outputPath = Bun.file(join(__screenshotsDir, `${name}.png`));
+
+    try {
+      await renderGenome(fullPath, outputPath);
+      console.log(`\n📊 Summary: 1 successful, 0 failed`);
+      console.log(`📁 Screenshot saved to: examples/screenshots/${name}.png\n`);
+      process.exit(0);
+    } catch (error) {
+      console.error(`✗ Failed to render ${values.file}:`, error);
+      process.exit(1);
+    }
+  } else if (values.all) {
+    // Render all .genome files in examples directory
+    const files = await readdir(__examplesDir);
+    genomesToRender = files
+      .filter((file) => file.endsWith(".genome"))
+      .map((file) => file.replace(".genome", ""));
+  } else {
+    // Default: Render showcase genomes
+    genomesToRender = SHOWCASE_GENOMES;
+  }
+
+  // Render the selected genomes
   let successCount = 0;
   let errorCount = 0;
 
-  for (const genomeName of SHOWCASE_GENOMES) {
+  for (const genomeName of genomesToRender) {
     try {
-      const genomePath = join(__dirname, `../examples/${genomeName}.genome`);
-      const outputPath = join(screenshotsDir, `${genomeName}.png`);
-      renderGenome(genomePath, outputPath);
+      const genomePath = Bun.file(
+        Bun.resolveSync(`${genomeName}.genome`, __examplesDir),
+      );
+      const outputPath = Bun.file(join(__screenshotsDir, `${genomeName}.png`));
+      await renderGenome(genomePath, outputPath);
       successCount++;
     } catch (error) {
       console.error(`✗ Failed to render ${genomeName}:`, error);
