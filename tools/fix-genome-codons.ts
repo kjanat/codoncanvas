@@ -106,6 +106,45 @@ function applyFixes(
 
 // ============ Main ============
 
+interface ProcessResult {
+  fixCount: number;
+  modified: boolean;
+}
+
+/** Process a single genome file and return fix count */
+async function processGenomeFile(
+  path: string,
+  file: string,
+  dryRun: boolean,
+): Promise<ProcessResult> {
+  const content = await Bun.file(path).text();
+  const lines = parseGenomeLines(content);
+
+  const fixes: Fix[] = [];
+  for (const line of lines) {
+    fixes.push(...findLineFixes(line));
+  }
+
+  if (fixes.length === 0) {
+    return { fixCount: 0, modified: false };
+  }
+
+  if (dryRun) {
+    console.info(`Would fix ${fixes.length} codons in ${file}`);
+    for (const fix of fixes) {
+      console.info(
+        `  Line ${fix.lineNumber}: ${fix.oldCodon} -> ${fix.newCodon}`,
+      );
+    }
+  } else {
+    const newContent = applyFixes(content, lines, fixes);
+    await Bun.write(path, newContent);
+    console.info(`Fixed ${fixes.length} codons in ${file}`);
+  }
+
+  return { fixCount: fixes.length, modified: true };
+}
+
 async function main(): Promise<void> {
   const dryRun = process.argv.includes("--dry-run");
 
@@ -115,39 +154,27 @@ async function main(): Promise<void> {
   const glob = new Bun.Glob("*.genome");
   let totalFixes = 0;
   let filesModified = 0;
+  let filesErrored = 0;
 
   for await (const file of glob.scan({ cwd: "examples", onlyFiles: true })) {
     const path = `examples/${file}`;
-    const content = await Bun.file(path).text();
-    const lines = parseGenomeLines(content);
-
-    const fixes: Fix[] = [];
-    for (const line of lines) {
-      fixes.push(...findLineFixes(line));
-    }
-
-    if (fixes.length > 0) {
-      filesModified++;
-      totalFixes += fixes.length;
-
-      if (dryRun) {
-        console.info(`Would fix ${fixes.length} codons in ${file}`);
-        for (const fix of fixes) {
-          console.info(
-            `  Line ${fix.lineNumber}: ${fix.oldCodon} -> ${fix.newCodon}`,
-          );
-        }
-      } else {
-        const newContent = applyFixes(content, lines, fixes);
-        await Bun.write(path, newContent);
-        console.info(`Fixed ${fixes.length} codons in ${file}`);
+    try {
+      const result = await processGenomeFile(path, file, dryRun);
+      totalFixes += result.fixCount;
+      if (result.modified) {
+        filesModified++;
       }
+    } catch (error) {
+      const message = error instanceof Error ? error.message : String(error);
+      console.error(`Error processing ${path}: ${message}`);
+      filesErrored++;
     }
   }
 
-  console.info(
-    `\n${dryRun ? "Would fix" : "Fixed"} ${totalFixes} codons in ${filesModified} files`,
-  );
+  const summary = `\n${dryRun ? "Would fix" : "Fixed"} ${totalFixes} codons in ${filesModified} files`;
+  const errorSuffix =
+    filesErrored > 0 ? ` (${filesErrored} files had errors)` : "";
+  console.info(summary + errorSuffix);
 }
 
 await main();
