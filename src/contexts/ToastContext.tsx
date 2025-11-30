@@ -3,6 +3,9 @@
  *
  * Provides a context-based toast notification API with support for
  * success, error, warning, and info variants.
+ *
+ * NOTE: useCallback is intentionally retained here because context
+ * consumers need stable function references to avoid unnecessary re-renders.
  */
 
 import {
@@ -10,7 +13,6 @@ import {
   type ReactNode,
   useCallback,
   useContext,
-  useMemo,
   useState,
 } from "react";
 
@@ -60,11 +62,9 @@ interface ToastProviderProps {
 
 /**
  * Provides toast notification functionality to the app.
- * Wrap your app with this provider to enable useToast().
  *
  * @example
  * ```tsx
- * // In main.tsx or App.tsx
  * <ToastProvider>
  *   <App />
  * </ToastProvider>
@@ -73,6 +73,7 @@ interface ToastProviderProps {
 export function ToastProvider({ children }: ToastProviderProps) {
   const [toasts, setToasts] = useState<Toast[]>([]);
 
+  // Stable callback for context consumers
   const addToast = useCallback((options: ToastOptions): string => {
     const id = generateToastId();
     const variant = options.variant ?? "info";
@@ -89,23 +90,23 @@ export function ToastProvider({ children }: ToastProviderProps) {
     return id;
   }, []);
 
+  // Stable callback for context consumers
   const dismissToast = useCallback((id: string) => {
     setToasts((prev) => prev.filter((t) => t.id !== id));
   }, []);
 
+  // Stable callback for context consumers
   const clearAllToasts = useCallback(() => {
     setToasts([]);
   }, []);
 
-  const value = useMemo(
-    () => ({
-      toasts,
-      addToast,
-      dismissToast,
-      clearAllToasts,
-    }),
-    [toasts, addToast, dismissToast, clearAllToasts],
-  );
+  // Value object - React 19 compiler handles this
+  const value: ToastContextValue = {
+    toasts,
+    addToast,
+    dismissToast,
+    clearAllToasts,
+  };
 
   return (
     <ToastContext.Provider value={value}>{children}</ToastContext.Provider>
@@ -118,22 +119,9 @@ export function ToastProvider({ children }: ToastProviderProps) {
  * @example
  * ```tsx
  * function MyComponent() {
- *   const { success, error, warning, info, toast } = useToast();
- *
- *   // Simple usage
+ *   const { success, error } = useToast();
  *   success("File saved!");
  *   error("Upload failed");
- *
- *   // With title
- *   warning("Large file", "This may take a while");
- *
- *   // Full control
- *   toast({
- *     variant: 'info',
- *     title: 'Update',
- *     message: 'New version available',
- *     duration: 10000
- *   });
  * }
  * ```
  */
@@ -146,7 +134,7 @@ export function useToast() {
 
   const { addToast, dismissToast, clearAllToasts, toasts } = context;
 
-  // Convenience methods for each variant
+  // Convenience methods - stable because addToast is stable
   const success = useCallback(
     (message: string, title?: string) =>
       addToast({ variant: "success", message, title }),
