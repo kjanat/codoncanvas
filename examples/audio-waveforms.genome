@@ -1,4 +1,5 @@
 ; Waveform Comparison Demo
+; @mode: forward-only
 ; Demonstrates different waveforms at same pitch
 ; Shows how shape mutations change timbre
 

@@ -1,4 +1,5 @@
 ; Audio Scale Demo
+; @mode: forward-only
 ; Plays ascending musical scale using CIRCLE (sine wave)
 ; Each CIRCLE generates a tone at increasing frequency
 

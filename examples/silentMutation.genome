@@ -1,4 +1,5 @@
 ; Silent Mutation Demo
+; @mode: forward-only
 ; Pedagogical: GGA vs GGC (synonymous CIRCLE codons)
 ; Difficulty: beginner
 ; Concepts: drawing, colors

@@ -1,4 +1,5 @@
 ; Branching Tree - Recursive tree structure mimicking biological branching
+; @mode: forward-only
 ; Demonstrates: LOOP, recursive branching, ROTATE, SCALE, LINE
 ; Biological concept: Fractal branching in trees, blood vessels, neurons
 ; Difficulty: Advanced

@@ -1,4 +1,5 @@
 ; Line Art
+; @mode: forward-only
 ; Demonstrates LINE primitive with rotation
 ; Difficulty: beginner
 ; Concepts: drawing, transforms

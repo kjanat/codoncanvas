@@ -1,4 +1,5 @@
 ; Phyllotaxis Pattern - Sunflower seed arrangement using golden angle
+; @mode: forward-only
 ; Demonstrates: LOOP, golden angle rotation (137.5°), radial growth
 ; Biological concept: Phyllotaxis, Fibonacci spirals in nature
 ; Difficulty: Advanced

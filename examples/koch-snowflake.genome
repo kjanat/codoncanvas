@@ -1,4 +1,5 @@
 ; Koch Snowflake Fractal
+; @mode: forward-only
 ; Classic fractal pattern using 6-fold rotational symmetry
 ; Difficulty: advanced-algorithmic
 ; Concepts: LOOP, rotational symmetry, multi-scale fractals, iteration

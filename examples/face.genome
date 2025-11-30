@@ -1,4 +1,5 @@
 ; Simple Face
+; @mode: forward-only
 ; Combines primitives to draw a smiley face
 ; Difficulty: intermediate
 ; Concepts: composition, drawing, transforms

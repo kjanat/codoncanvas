@@ -1,4 +1,5 @@
 ; Rosette Pattern
+; @mode: forward-only
 ; Complex composition with rotation and color
 ; Difficulty: advanced
 ; Concepts: composition, colors, transforms

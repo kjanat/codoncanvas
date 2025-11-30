@@ -1,4 +1,5 @@
 ; Two Shapes
+; @mode: forward-only
 ; Circle and rectangle side by side
 ; Difficulty: beginner
 ; Concepts: drawing, transforms

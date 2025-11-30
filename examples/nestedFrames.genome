@@ -1,4 +1,5 @@
 ; Nested Frames with State
+; @mode: forward-only
 ; SAVE_STATE for complex layered compositions
 ; Difficulty: advanced
 ; Concepts: advanced-opcodes, composition, colors

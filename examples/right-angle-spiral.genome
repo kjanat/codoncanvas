@@ -1,4 +1,5 @@
 ; Right-Angle Spiral Fractal
+; @mode: forward-only
 ; Angular fractal pattern using 90° rotations and decreasing scales
 ; Difficulty: advanced-algorithmic
 ; Concepts: LOOP, recursive patterns, angular geometry, scale iteration

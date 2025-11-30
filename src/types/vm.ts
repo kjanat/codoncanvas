@@ -56,6 +56,8 @@ export enum Opcode {
   LOOP,
   EQ, // Comparison: equal
   LT, // Comparison: less than
+  NOISE, // Visual texture: random dots in circular area
+  SETPOS, // Absolute positioning: set position directly
 }
 
 /**

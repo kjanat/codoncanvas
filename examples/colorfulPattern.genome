@@ -1,4 +1,5 @@
 ; Colorful Pattern
+; @mode: forward-only
 ; Multiple colored shapes with rotation
 ; Difficulty: intermediate
 ; Concepts: drawing, colors, transforms, composition

@@ -1,4 +1,5 @@
 ; Fibonacci Spiral - Mathematical Showcase
+; @mode: forward-only
 ; Approximates golden ratio spiral using Fibonacci sequence
 ; Difficulty: advanced-algorithmic
 ; Concepts: arithmetic, LOOP, mathematical patterns, golden ratio

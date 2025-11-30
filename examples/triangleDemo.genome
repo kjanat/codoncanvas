@@ -1,4 +1,5 @@
 ; Triangle Demo
+; @mode: forward-only
 ; Uses TRIANGLE primitive with different sizes
 ; Difficulty: beginner
 ; Concepts: drawing, transforms

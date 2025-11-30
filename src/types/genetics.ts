@@ -395,10 +395,14 @@ const SPECIAL_CODONS = {
   ATT: Opcode.DUP,
 
   // Utility Operations
-  CAC: Opcode.NOP,
   TAC: Opcode.POP,
   TAT: Opcode.POP,
-  TGC: Opcode.POP,
+
+  // Visual Effects
+  TGC: Opcode.NOISE, // Generate visual noise/texture at current position
+
+  // Positioning
+  CAC: Opcode.SETPOS, // Set absolute position (x, y from stack)
 
   // Advanced Operations (partial degeneracy)
   TGG: Opcode.SWAP,
@@ -734,6 +738,56 @@ export interface CodonToken {
   position: number;
   /** Source line number (1-indexed, for error messages) */
   line: number;
+}
+
+/**
+ * Value interpretation mode for genome execution.
+ *
+ * - **centered**: Value 32 is the "center" (no movement), enabling bidirectional positioning.
+ *   Values 0-31 move backward/left/up, values 33-63 move forward/right/down.
+ *   This is the default mode for new genomes.
+ *
+ * - **forward**: Legacy mode where value 0 means "no movement" and all values
+ *   produce positive/forward movement only. Use `; @mode: forward` for older genomes.
+ *
+ * @example
+ * ```typescript
+ * // centered mode (default):
+ * //   PUSH 0  → move backward (negative offset)
+ * //   PUSH 32 → no movement (center)
+ * //   PUSH 63 → move forward (positive offset)
+ *
+ * // forward mode (legacy):
+ * //   PUSH 0  → no movement
+ * //   PUSH 63 → full forward movement
+ * ```
+ */
+export type ValueMode = "centered" | "forward";
+
+/**
+ * Genome metadata extracted from directive comments.
+ *
+ * Directives are special comments in genome files that configure execution:
+ * - `; @mode: centered` - Bidirectional movement, value 32 = no movement (default)
+ * - `; @mode: forward` - Forward-only movement, value 0 = no movement (legacy)
+ *
+ * @example
+ * ```genome
+ * ; @mode: centered
+ * ; This genome uses centered coordinates for bidirectional movement
+ * ATG GAA GGG ACA TAA  ; PUSH 32 (no offset in centered mode)
+ * ```
+ *
+ * @example
+ * ```genome
+ * ; @mode: forward
+ * ; Legacy genome using forward-only positioning
+ * ATG GAA AAA ACA TAA  ; PUSH 0 (no offset in forward mode)
+ * ```
+ */
+export interface GenomeMetadata {
+  /** Value interpretation mode (default: "centered") */
+  mode: ValueMode;
 }
 
 /**

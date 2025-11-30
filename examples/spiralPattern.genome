@@ -1,4 +1,5 @@
 ; Spiral Pattern
+; @mode: forward-only
 ; Geometric spiral using iterative rotation and translation
 ; Difficulty: advanced
 ; Concepts: composition, transforms, drawing

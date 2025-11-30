@@ -1,4 +1,5 @@
 ; RNA Hello Circle
+; @mode: forward-only
 ; RNA notation example using U (Uracil) instead of T (Thymine)
 ; Demonstrates biological accuracy: RNA uses U in transcription
 ; Difficulty: beginner

@@ -1,4 +1,5 @@
 ; Textured Circle with Noise
+; @mode: forward-only
 ; Demonstrates NOISE opcode for artistic texture effects
 ; Difficulty: advanced
 ; Concepts: advanced-opcodes, colors, drawing

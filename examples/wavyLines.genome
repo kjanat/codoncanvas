@@ -1,4 +1,5 @@
 ; Wavy Lines - Showcase
+; @mode: forward-only
 ; Flowing wave pattern using medium ellipses with spacing
 ; Difficulty: showcase
 ; Concepts: ellipses, rotation, gradients

@@ -1,4 +1,5 @@
 ; Fractal Flower - Advanced Showcase
+; @mode: forward-only
 ; Complex recursive-like pattern using SAVE_STATE and systematic transforms
 ; Difficulty: advanced-showcase
 ; Concepts: advanced-opcodes, composition, colors, transforms, state-management

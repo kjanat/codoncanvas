@@ -1,4 +1,5 @@
 ; Prime Number Spiral (Ulam Spiral Approximation)
+; @mode: forward-only
 ; Visualizes numbers in spiral pattern
 ; Difficulty: advanced-algorithmic
 ; Concepts: LOOP, rotation, circles in spiral

@@ -1,4 +1,5 @@
 ; RNA Composition
+; @mode: forward-only
 ; More complex RNA example with multiple shapes
 ; RNA notation (U instead of T) demonstrating biological transcription
 ; Difficulty: intermediate

@@ -1,4 +1,5 @@
 ; Color Gradient
+; @mode: forward-only
 ; Systematic color manipulation for gradient effect
 ; Difficulty: intermediate
 ; Concepts: colors, drawing, transforms, composition

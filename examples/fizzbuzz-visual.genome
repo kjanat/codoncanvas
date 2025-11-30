@@ -1,4 +1,5 @@
 ; FizzBuzz Visual - Conditional Logic Showcase
+; @mode: forward-only
 ; Classic programming challenge visualized using arithmetic + comparisons
 ; Difficulty: advanced-showcase
 ; Concepts: LOOP, arithmetic, conditionals, modulo, computational-thinking

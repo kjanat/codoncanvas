@@ -1,4 +1,5 @@
 ; Stack Cleanup with POP
+; @mode: forward-only
 ; Demonstrates POP for stack management and cleanup
 ; Difficulty: intermediate
 ; Concepts: stack, drawing

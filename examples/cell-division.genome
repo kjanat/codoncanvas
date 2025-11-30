@@ -1,4 +1,5 @@
 ; Cell Division Pattern - Mitotic cell division visualization
+; @mode: forward-only
 ; Demonstrates: Multiple cells, ELLIPSE for cell shapes, NOISE for membrane texture
 ; Biological concept: Mitosis, cell differentiation, colony growth
 ; Difficulty: Intermediate

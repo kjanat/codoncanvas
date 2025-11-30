@@ -1,4 +1,5 @@
 ; Scale Transform
+; @mode: forward-only
 ; Demonstrates SCALE opcode for sizing
 ; Difficulty: intermediate
 ; Concepts: transforms, drawing

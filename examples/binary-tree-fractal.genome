@@ -1,4 +1,5 @@
 ; Binary Tree Fractal
+; @mode: forward-only
 ; Recursive branching tree structure with decreasing scale
 ; Difficulty: advanced-algorithmic
 ; Concepts: LOOP, recursive branching, geometric progression, natural patterns

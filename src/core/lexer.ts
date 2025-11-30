@@ -13,7 +13,14 @@
  * @module core/lexer
  */
 
-import { BASES, type Codon, type CodonToken, type ParseError } from "@/types";
+import {
+  BASES,
+  type Codon,
+  type CodonToken,
+  type GenomeMetadata,
+  type ParseError,
+  type ValueMode,
+} from "@/types";
 
 /** Valid base letters for lexer validation, derived from BASES */
 const VALID_BASES = new Set<string>(Object.keys(BASES));
@@ -26,6 +33,42 @@ function getCodeContent(line: string): string {
   const commentIdx = line.indexOf(";");
   return commentIdx >= 0 ? line.slice(0, commentIdx) : line;
 }
+
+/**
+ * Result of parsing a genome source, including tokens and metadata.
+ */
+export interface ParseResult {
+  /** Parsed codon tokens */
+  tokens: CodonToken[];
+  /** Extracted genome metadata from directives */
+  metadata: GenomeMetadata;
+}
+
+/**
+ * Default genome metadata when no directives are specified.
+ *
+ * Default is "centered" mode for bidirectional positioning.
+ * Use `; @mode: forward-only` for legacy compatibility with older genomes.
+ */
+export const DEFAULT_GENOME_METADATA: GenomeMetadata = {
+  mode: "centered",
+};
+
+/**
+ * Maps user-friendly mode names (used in genome files) to internal ValueMode.
+ *
+ * User-facing names in genome files:
+ * - `bidirectional` → "centered" (can move in any direction)
+ * - `forward-only` → "forward" (legacy, positive movement only)
+ */
+const MODE_ALIASES: Record<string, ValueMode> = {
+  // User-friendly names
+  bidirectional: "centered",
+  "forward-only": "forward",
+  // Also accept internal names for advanced users
+  centered: "centered",
+  forward: "forward",
+};
 
 /**
  * Lexer interface for CodonCanvas genome parsing.
@@ -44,6 +87,29 @@ export interface Lexer {
    * @throws {Error} If source length not divisible by 3 (incomplete codon)
    */
   tokenize(source: string): CodonToken[];
+
+  /**
+   * Parse source genome into tokens and extract metadata directives.
+   *
+   * Directives are special comments that configure genome execution:
+   * - `; @mode: signed` - Enable signed value interpretation
+   * - `; @mode: unsigned` - Unsigned values (default)
+   *
+   * @param source - Raw genome string with optional directives
+   * @returns Parsed tokens and extracted metadata
+   * @throws {Error} If invalid characters or incomplete codons
+   *
+   * @example
+   * ```typescript
+   * const lexer = new CodonLexer();
+   * const { tokens, metadata } = lexer.parse(`
+   *   ; @mode: signed
+   *   ATG GAA GGG ACA TAA
+   * `);
+   * // metadata.mode === "signed"
+   * ```
+   */
+  parse(source: string): ParseResult;
 
   /**
    * Validate reading frame alignment.
@@ -235,6 +301,51 @@ export class CodonLexer implements Lexer {
         );
       }
     }
+  }
+
+  /**
+   * Parse source genome into tokens and extract metadata directives.
+   *
+   * @param source - Raw genome string with optional directives
+   * @returns Parsed tokens and extracted metadata
+   */
+  parse(source: string): ParseResult {
+    const tokens = this.tokenize(source);
+    const metadata = this.extractDirectives(source);
+    return { tokens, metadata };
+  }
+
+  /**
+   * Extract metadata directives from genome source comments.
+   *
+   * Supported directives:
+   * - `; @mode: bidirectional` - Centered mode, value 32 = no movement (default)
+   * - `; @mode: forward-only` - Legacy mode, value 0 = no movement
+   *
+   * @param source - Raw genome string
+   * @returns Extracted metadata with defaults for unspecified values
+   */
+  private extractDirectives(source: string): GenomeMetadata {
+    const metadata: GenomeMetadata = { ...DEFAULT_GENOME_METADATA };
+    const lines = source.split("\n");
+
+    for (const line of lines) {
+      const commentIdx = line.indexOf(";");
+      if (commentIdx < 0) continue;
+
+      const comment = line.slice(commentIdx + 1).trim();
+
+      // Parse @mode directive - accepts user-friendly and internal names
+      const modeMatch = comment.match(
+        /^@mode:\s*(bidirectional|forward-only|centered|forward)$/i,
+      );
+      if (modeMatch) {
+        const userMode = modeMatch[1].toLowerCase();
+        metadata.mode = MODE_ALIASES[userMode] ?? "centered";
+      }
+    }
+
+    return metadata;
   }
 
   private validateLineFrame(

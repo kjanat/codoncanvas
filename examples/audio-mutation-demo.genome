@@ -1,4 +1,5 @@
 ; Audio Mutation Pedagogy Demo
+; @mode: forward-only
 ; Base melody that students can mutate to hear effects
 ; Try: Silent (GGA→GGC = same sound)
 ;      Missense (GGA→GCA = sine→triangle timbre change)

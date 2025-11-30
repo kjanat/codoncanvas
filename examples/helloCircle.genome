@@ -1,4 +1,5 @@
 ; Hello Circle
+; @mode: forward-only
 ; Minimal example - draws a single circle
 ; Difficulty: beginner
 ; Concepts: drawing

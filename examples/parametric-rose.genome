@@ -1,4 +1,5 @@
 ; Parametric Rose Curve - Mathematical Art
+; @mode: forward-only
 ; Creates rose pattern using LOOP with parametric equations
 ; Difficulty: advanced-algorithmic
 ; Concepts: LOOP, arithmetic, rotation, mathematical curves

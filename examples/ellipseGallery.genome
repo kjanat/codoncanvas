@@ -1,4 +1,5 @@
 ; Ellipse Gallery
+; @mode: forward-only
 ; ELLIPSE primitive with various aspect ratios
 ; Difficulty: intermediate
 ; Concepts: drawing, transforms

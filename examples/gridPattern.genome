@@ -1,4 +1,5 @@
 ; Grid Pattern
+; @mode: forward-only
 ; Systematic positioning with TRANSLATE for grid layout
 ; Difficulty: advanced
 ; Concepts: composition, transforms, stack

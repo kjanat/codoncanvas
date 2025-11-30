@@ -1,4 +1,5 @@
 ; Recursive Circles - Showcase
+; @mode: forward-only
 ; Nested circles with proper size progression and gradient
 ; Difficulty: showcase
 ; Concepts: layering, size progression, depth illusion

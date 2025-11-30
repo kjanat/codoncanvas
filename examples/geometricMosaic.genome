@@ -1,4 +1,5 @@
 ; Geometric Mosaic - Advanced Showcase
+; @mode: forward-only
 ; Varied ellipse sizes and rotations creating mosaic-like pattern
 ; Difficulty: advanced-showcase
 ; Concepts: ellipses, rotation, size variation, composition

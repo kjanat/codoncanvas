@@ -5,7 +5,9 @@ import {
   type CodonToken,
   DNA_BASE_TO_INDEX,
   type DNABaseLetter,
+  type GenomeMetadata,
   Opcode,
+  type ValueMode,
   type VMState,
 } from "@/types";
 
@@ -89,10 +91,11 @@ export interface VM {
   /**
    * Run entire genome program.
    * @param tokens - Array of codon tokens to execute
+   * @param metadata - Optional genome metadata (mode, etc.)
    * @returns Array of VM state snapshots (one per instruction) for timeline playback
    * @throws Error on instruction limit exceeded or execution errors
    */
-  run(tokens: CodonToken[]): VMState[];
+  run(tokens: CodonToken[], metadata?: GenomeMetadata): VMState[];
 
   /**
    * Reset VM to initial state.
@@ -124,6 +127,7 @@ export interface VM {
  * - Base-4 numeric literal encoding (0-63 range)
  * - Sandboxing with instruction limit (default: 10,000)
  * - State snapshot/restore for timeline scrubbing
+ * - Signed/unsigned value modes for positioning
  *
  * @example
  * ```typescript
@@ -132,8 +136,8 @@ export interface VM {
  * const vm = new CodonVM(renderer);
  *
  * const lexer = new CodonLexer();
- * const tokens = lexer.tokenize('ATG GAA CCC GGA TAA'); // PUSH 21, CIRCLE
- * const states = vm.run(tokens); // Execute and get state history
+ * const { tokens, metadata } = lexer.parse('ATG GAA CCC GGA TAA');
+ * const states = vm.run(tokens, metadata); // Execute with signed mode (default)
  * ```
  */
 export class CodonVM implements VM {
@@ -145,6 +149,8 @@ export class CodonVM implements VM {
     codon: Codon;
     pushValue?: number;
   }[] = [];
+  /** Current value interpretation mode */
+  private valueMode: ValueMode = "centered";
 
   constructor(renderer: Renderer) {
     this.renderer = renderer;
@@ -204,9 +210,28 @@ export class CodonVM implements VM {
   }
 
   /**
-   * Scale value from 0-63 range to canvas coordinates
+   * Scale value from stack range to canvas coordinates.
+   *
+   * **Centered mode (default):**
+   * - Value 0 → -0.5 × canvas width (full left/up)
+   * - Value 32 → 0 (no movement)
+   * - Value 63 → +0.484 × canvas width (nearly full right/down)
+   *
+   * **Forward mode (legacy compatibility):**
+   * - Value 0 → 0 (no movement)
+   * - Value 63 → canvas width (full right/down)
+   *
+   * @param value - Stack value (0-63)
+   * @returns Scaled coordinate offset in pixels
    */
   private scaleValue(value: number): number {
+    if (this.valueMode === "centered") {
+      // Centered: map 0-63 to -0.5..+0.5 of canvas width
+      // Value 32 = center (no movement)
+      const normalized = (value - SCALE_DIVISOR) / SCALE_DIVISOR; // -1 to ~+0.97
+      return normalized * (this.renderer.width / 2);
+    }
+    // Forward (legacy): map 0-63 to 0..1 of canvas width
     return (value / STACK_VALUE_RANGE) * this.renderer.width;
   }
 
@@ -263,6 +288,14 @@ export class CodonVM implements VM {
       case Opcode.EQ:
       case Opcode.LT:
         this.executeCompareOp(opcode);
+        break;
+
+      case Opcode.NOISE:
+        this.executeNoiseOp();
+        break;
+
+      case Opcode.SETPOS:
+        this.executeSetPosOp();
         break;
 
       case Opcode.START:
@@ -482,9 +515,45 @@ export class CodonVM implements VM {
     }
   }
 
-  run(tokens: CodonToken[]): VMState[] {
+  /**
+   * Execute NOISE opcode - generate visual noise/texture.
+   * Stack: [..., intensity] → [...]
+   * Uses VM seed for deterministic rendering.
+   */
+  private executeNoiseOp(): void {
+    const intensity = this.pop();
+    this.renderer.noise(this.state.seed, intensity);
+    // Update seed for next noise call to ensure variety
+    this.state.seed = (this.state.seed * 1103515245 + 12345) & 0x7fffffff;
+  }
+
+  /**
+   * Execute SETPOS opcode - set absolute position.
+   * Stack: [..., x, y] → [...]
+   * Sets the drawing position to absolute canvas coordinates.
+   */
+  private executeSetPosOp(): void {
+    const y = this.scaleValue(this.pop());
+    const x = this.scaleValue(this.pop());
+    // In centered mode, values are relative to center; add center offset for absolute position
+    const centerX = this.renderer.width / 2;
+    const centerY = this.renderer.height / 2;
+    const absX = this.valueMode === "centered" ? centerX + x : x;
+    const absY = this.valueMode === "centered" ? centerY + y : y;
+    this.renderer.setPosition(absX, absY);
+    this.state.position = { x: absX, y: absY };
+  }
+
+  run(tokens: CodonToken[], metadata?: GenomeMetadata): VMState[] {
     const snapshots: VMState[] = [];
     this.reset();
+
+    // Apply metadata settings
+    if (metadata) {
+      this.valueMode = metadata.mode;
+    } else {
+      this.valueMode = "centered"; // Default to centered mode (bidirectional)
+    }
 
     let i = 0;
     while (i < tokens.length) {

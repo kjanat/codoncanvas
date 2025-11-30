@@ -1,4 +1,5 @@
 ; Starfield - Showcase
+; @mode: forward-only
 ; Scattered stars using radial clusters with varied ellipses
 ; Difficulty: showcase
 ; Concepts: positioning, ellipses, composition

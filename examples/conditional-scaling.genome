@@ -1,4 +1,5 @@
 ; Conditional Scaling - Comparison Opcode Showcase
+; @mode: forward-only
 ; Demonstrates EQ opcode for conditional behavior via scaling
 ; Difficulty: advanced-showcase
 ; Concepts: EQ, arithmetic, conditional-logic, creative-workarounds

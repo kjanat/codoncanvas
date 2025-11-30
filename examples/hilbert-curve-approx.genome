@@ -1,4 +1,5 @@
 ; Hilbert Curve Approximation
+; @mode: forward-only
 ; Space-filling curve using recursive square subdivision pattern
 ; Difficulty: advanced-algorithmic
 ; Concepts: LOOP, space-filling curves, recursive patterns, continuous path

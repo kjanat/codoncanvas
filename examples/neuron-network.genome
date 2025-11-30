@@ -1,4 +1,5 @@
 ; Neuron Network - Neural dendrite and axon branching visualization
+; @mode: forward-only
 ; Demonstrates: Complex branching, LOOP, SAVE/RESTORE state, biological structure
 ; Biological concept: Neuron morphology, dendritic trees, synaptic connections
 ; Difficulty: Advanced

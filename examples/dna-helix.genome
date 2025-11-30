@@ -1,4 +1,5 @@
 ; DNA Double Helix - Visualization of DNA structure
+; @mode: forward-only
 ; Demonstrates: LOOP, sinusoidal patterns, paired structures
 ; Biological concept: DNA structure, base pairing, helical geometry
 ; Difficulty: Advanced

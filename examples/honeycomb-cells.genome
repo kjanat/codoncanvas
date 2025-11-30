@@ -1,4 +1,5 @@
 ; Honeycomb Pattern - Hexagonal cellular structure
+; @mode: forward-only
 ; Demonstrates: LOOP, hexagon drawing, tessellation
 ; Biological concept: Cellular packing, optimal space filling
 ; Difficulty: Advanced

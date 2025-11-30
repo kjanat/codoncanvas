@@ -1,4 +1,5 @@
 ; Even-Odd Spiral - LOOP + Modulo + Conditional Pattern
+; @mode: forward-only
 ; Demonstrates computational pattern using arithmetic and iteration
 ; Difficulty: advanced-showcase
 ; Concepts: LOOP, DIV, SUB, conditional-patterns, modulo-arithmetic

@@ -1,4 +1,5 @@
 ; Stack Operations
+; @mode: forward-only
 ; DUP and SWAP for efficient stack management
 ; Difficulty: intermediate
 ; Concepts: stack, drawing

@@ -2,7 +2,13 @@ import { beforeEach, describe, expect, test } from "bun:test";
 import { CodonLexer } from "@/core/lexer";
 import type { Renderer } from "@/core/renderer";
 import { CodonVM } from "@/core/vm";
-import { type Codon, DNA_LETTERS } from "@/types";
+import { type Codon, DNA_LETTERS, type GenomeMetadata } from "@/types";
+
+/**
+ * Legacy forward mode metadata for backward-compatible tests.
+ * Most existing tests were written assuming forward mode (0-63 positive only).
+ */
+const FORWARD_MODE: GenomeMetadata = { mode: "forward" };
 
 // Mock renderer for testing
 class MockRenderer implements Renderer {
@@ -89,7 +95,7 @@ describe("CodonVM", () => {
     test("executes hello circle program", () => {
       const genome = "ATG GAA AAT GGA TAA";
       const tokens = lexer.tokenize(genome);
-      vm.run(tokens);
+      vm.run(tokens, FORWARD_MODE);
 
       expect(renderer.operations).toContain("circle(18.75)"); // 3/64 * 400
     });
@@ -180,7 +186,7 @@ describe("CodonVM", () => {
     test("draws rectangle with two values", () => {
       const genome = "ATG GAA AGG GAA AGG CCA TAA"; // PUSH 10, PUSH 10, RECT
       const tokens = lexer.tokenize(genome);
-      vm.run(tokens);
+      vm.run(tokens, FORWARD_MODE);
 
       expect(renderer.operations).toContain("rect(62.5, 62.5)"); // 10/64 * 400
     });
@@ -188,7 +194,7 @@ describe("CodonVM", () => {
     test("draws line", () => {
       const genome = "ATG GAA CCC AAA TAA"; // PUSH 21, LINE
       const tokens = lexer.tokenize(genome);
-      vm.run(tokens);
+      vm.run(tokens, FORWARD_MODE);
 
       expect(renderer.operations).toContain("line(131.25)"); // 21/64 * 400
     });
@@ -198,7 +204,7 @@ describe("CodonVM", () => {
     test("translates position", () => {
       const genome = "ATG GAA CCC GAA AAA ACA TAA"; // PUSH 21, PUSH 0, TRANSLATE
       const tokens = lexer.tokenize(genome);
-      vm.run(tokens);
+      vm.run(tokens, FORWARD_MODE);
 
       expect(renderer.operations).toContain("translate(131.25, 0)");
     });
@@ -422,7 +428,7 @@ describe("CodonVM", () => {
     test("computed circle radius with ADD", () => {
       const genome = "ATG GAA AAC GAA AAT CTG GGA TAA"; // PUSH 1, PUSH 3, ADD (=4), CIRCLE
       const tokens = lexer.tokenize(genome);
-      vm.run(tokens);
+      vm.run(tokens, FORWARD_MODE);
 
       expect(renderer.operations).toHaveLength(1);
       expect(renderer.operations[0]).toContain("circle(");

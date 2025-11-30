@@ -1,4 +1,5 @@
 ; Mandala Pattern
+; @mode: forward-only
 ; Complex radial symmetry with multiple transforms
 ; Difficulty: advanced
 ; Concepts: composition, colors, transforms
