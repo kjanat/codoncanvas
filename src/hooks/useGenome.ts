@@ -7,21 +7,14 @@
 
 import { useEffect, useRef, useState } from "react";
 import { CodonLexer } from "@/core/lexer";
-import type { CodonToken, ParseError } from "@/types";
+import {
+  createEmptyValidation,
+  type GenomeValidation,
+  validateGenome,
+} from "@/utils/genome-validation";
 
-/** Validation result from genome analysis */
-export interface GenomeValidation {
-  /** Whether the genome is structurally valid */
-  isValid: boolean;
-  /** Tokenized codons (empty if tokenization failed) */
-  tokens: CodonToken[];
-  /** Parse/structure errors */
-  errors: ParseError[];
-  /** Frame alignment warnings */
-  warnings: ParseError[];
-  /** Error message if tokenization itself failed */
-  tokenizeError: string | null;
-}
+// Re-export for consumers
+export type { GenomeValidation } from "@/utils/genome-validation";
 
 /** Options for useGenome hook */
 export interface UseGenomeOptions {
@@ -55,17 +48,6 @@ export interface UseGenomeReturn {
 
 const DEFAULT_GENOME = "ATG GAA AAT GGA TAA";
 const DEFAULT_DEBOUNCE_MS = 150;
-
-/** Create empty validation state */
-function createEmptyValidation(): GenomeValidation {
-  return {
-    isValid: false,
-    tokens: [],
-    errors: [],
-    warnings: [],
-    tokenizeError: null,
-  };
-}
 
 /**
  * React hook for genome state management with validation.
@@ -117,42 +99,9 @@ export function useGenome(options: UseGenomeOptions = {}): UseGenomeReturn {
   // Store initialGenome in ref to avoid stale closure in initial validation
   const initialGenomeRef = useRef(initialGenome);
 
-  // Validate genome helper - stored in ref for stable reference
-  const validateGenomeRef = useRef(
-    (genomeToValidate: string): GenomeValidation => {
-      try {
-        const tokens = lexer.tokenize(genomeToValidate);
-        const structureErrors = lexer.validateStructure(tokens);
-        const frameWarnings = lexer.validateFrame(genomeToValidate);
-
-        const errors = structureErrors.filter((e) => e.severity === "error");
-        const warnings = [
-          ...structureErrors.filter((e) => e.severity === "warning"),
-          ...frameWarnings,
-        ];
-
-        return {
-          isValid: errors.length === 0,
-          tokens,
-          errors,
-          warnings,
-          tokenizeError: null,
-        };
-      } catch (err) {
-        return {
-          isValid: false,
-          tokens: [],
-          errors: [],
-          warnings: [],
-          tokenizeError: err instanceof Error ? err.message : "Unknown error",
-        };
-      }
-    },
-  );
-
   // Public validate function
   const validate = (): GenomeValidation => {
-    const result = validateGenomeRef.current(genome);
+    const result = validateGenome(genome, lexer);
     setValidation(result);
     return result;
   };
@@ -172,7 +121,7 @@ export function useGenome(options: UseGenomeOptions = {}): UseGenomeReturn {
       // Schedule validation
       debounceRef.current = setTimeout(() => {
         setIsPending(false);
-        const result = validateGenomeRef.current(newGenome);
+        const result = validateGenome(newGenome, lexer);
         setValidation(result);
       }, debounceMs);
     }
@@ -199,9 +148,9 @@ export function useGenome(options: UseGenomeOptions = {}): UseGenomeReturn {
 
   // Initial validation on mount
   useEffect(() => {
-    const result = validateGenomeRef.current(initialGenomeRef.current);
+    const result = validateGenome(initialGenomeRef.current, lexer);
     setValidation(result);
-  }, []);
+  }, [lexer]);
 
   return {
     genome,

@@ -125,7 +125,7 @@ export function useVM(options: UseVMOptions = {}): UseVMReturn {
   const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const resultRef = useRef<ExecutionResult | null>(null);
 
-  // Clear any active playback interval - stored in ref for stable reference
+  // Clear interval helper - stored in ref for stable reference
   const clearPlaybackIntervalRef = useRef(() => {
     if (intervalRef.current) {
       clearInterval(intervalRef.current);
@@ -136,9 +136,7 @@ export function useVM(options: UseVMOptions = {}): UseVMReturn {
   // Cleanup interval on unmount
   useEffect(() => {
     const clearFn = clearPlaybackIntervalRef.current;
-    return () => {
-      clearFn();
-    };
+    return () => clearFn();
   }, []);
 
   // Helper to access the clear function
@@ -199,7 +197,6 @@ export function useVM(options: UseVMOptions = {}): UseVMReturn {
       const vm = new CodonVM(renderer, maxInstructions);
       vm.run(tokensToRun);
     } catch {
-      // Ignore render errors during stepping for UX
       console.warn(`Failed to render at step ${step}`);
     }
   };
@@ -249,7 +246,6 @@ export function useVM(options: UseVMOptions = {}): UseVMReturn {
     clearPlaybackInterval();
 
     setPlayback((prev) => {
-      // If at end, restart from beginning
       const startStep =
         prev.currentStep >= currentResult.snapshots.length - 1
           ? 0
@@ -258,12 +254,10 @@ export function useVM(options: UseVMOptions = {}): UseVMReturn {
       intervalRef.current = setInterval(() => {
         setPlayback((p) => {
           const nextStep = p.currentStep + 1;
-
           if (nextStep >= (resultRef.current?.snapshots.length ?? 0)) {
             clearPlaybackInterval();
             return { ...p, isPlaying: false };
           }
-
           return { ...p, currentStep: nextStep };
         });
       }, prev.speed);
@@ -284,29 +278,28 @@ export function useVM(options: UseVMOptions = {}): UseVMReturn {
       if (prev.isPlaying) {
         clearPlaybackInterval();
         return { ...prev, isPlaying: false };
-      } else {
-        // Delegate to play logic
-        const currentResult = resultRef.current;
-        if (!currentResult || currentResult.snapshots.length === 0) return prev;
-
-        const startStep =
-          prev.currentStep >= currentResult.snapshots.length - 1
-            ? 0
-            : prev.currentStep;
-
-        intervalRef.current = setInterval(() => {
-          setPlayback((p) => {
-            const nextStep = p.currentStep + 1;
-            if (nextStep >= (resultRef.current?.snapshots.length ?? 0)) {
-              clearPlaybackInterval();
-              return { ...p, isPlaying: false };
-            }
-            return { ...p, currentStep: nextStep };
-          });
-        }, prev.speed);
-
-        return { ...prev, currentStep: startStep, isPlaying: true };
       }
+
+      const currentResult = resultRef.current;
+      if (!currentResult || currentResult.snapshots.length === 0) return prev;
+
+      const startStep =
+        prev.currentStep >= currentResult.snapshots.length - 1
+          ? 0
+          : prev.currentStep;
+
+      intervalRef.current = setInterval(() => {
+        setPlayback((p) => {
+          const nextStep = p.currentStep + 1;
+          if (nextStep >= (resultRef.current?.snapshots.length ?? 0)) {
+            clearPlaybackInterval();
+            return { ...p, isPlaying: false };
+          }
+          return { ...p, currentStep: nextStep };
+        });
+      }, prev.speed);
+
+      return { ...prev, currentStep: startStep, isPlaying: true };
     });
   };
 
@@ -323,7 +316,6 @@ export function useVM(options: UseVMOptions = {}): UseVMReturn {
   // Set playback speed
   const setSpeed = (speed: number) => {
     setPlayback((prev) => {
-      // If playing, restart interval with new speed
       if (prev.isPlaying) {
         clearPlaybackInterval();
         intervalRef.current = setInterval(() => {

@@ -7,6 +7,12 @@
 
 import { useEffect, useRef, useState } from "react";
 import { Canvas2DRenderer, type Renderer } from "@/core/renderer";
+import {
+  canvasToBlob,
+  canvasToDataURL,
+  clearCanvas,
+  downloadCanvasPNG,
+} from "@/utils/canvas-export";
 
 /** Canvas dimensions */
 export interface CanvasDimensions {
@@ -131,17 +137,9 @@ export function useCanvas(options: UseCanvasOptions = {}): UseCanvasReturn {
     initRendererRef.current();
   };
 
-  // Clear canvas
+  // Clear canvas - delegate to utility
   const clear = () => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-
-    const ctx = canvas.getContext("2d");
-    if (ctx) {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      ctx.fillStyle = "white";
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
-    }
+    clearCanvas(canvasRef.current);
   };
 
   // Resize canvas - stored in ref for stable reference in ResizeObserver
@@ -174,50 +172,15 @@ export function useCanvas(options: UseCanvasOptions = {}): UseCanvasReturn {
     resizeRef.current(width, height);
   };
 
-  // Get canvas as data URL
-  const toDataURL = (
-    type: string = "image/png",
-    quality?: number,
-  ): string | null => {
-    const canvas = canvasRef.current;
-    if (!canvas) return null;
+  // Export utilities - delegate to pure functions
+  const toDataURL = (type?: string, quality?: number) =>
+    canvasToDataURL(canvasRef.current, type, quality);
 
-    return canvas.toDataURL(type, quality);
-  };
+  const toBlob = (type?: string, quality?: number) =>
+    canvasToBlob(canvasRef.current, type, quality);
 
-  // Get canvas as Blob
-  const toBlob = (
-    type: string = "image/png",
-    quality?: number,
-  ): Promise<Blob | null> => {
-    return new Promise((resolve) => {
-      const canvas = canvasRef.current;
-      if (!canvas) {
-        resolve(null);
-        return;
-      }
-
-      canvas.toBlob(
-        (blob) => {
-          resolve(blob);
-        },
-        type,
-        quality,
-      );
-    });
-  };
-
-  // Export canvas as PNG file download
-  const exportPNG = (filename: string = "codoncanvas-output.png") => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-
-    const dataUrl = canvas.toDataURL("image/png");
-    const link = document.createElement("a");
-    link.download = filename;
-    link.href = dataUrl;
-    link.click();
-  };
+  const exportPNG = (filename?: string) =>
+    downloadCanvasPNG(canvasRef.current, filename ?? "codoncanvas-output.png");
 
   // Initialize renderer on mount and when ref changes
   useEffect(() => {
