@@ -30,6 +30,16 @@
 - Always use `const`, strict equality (`===`), curly braces for all blocks
 - No `console.log` (use `console.info`/`warn`/`error` only)
 
+## Genome Tools
+
+See [tools/README.md](tools/README.md) for CLI utilities:
+
+- `codon-calc.ts` - convert values, codons, colors
+- `get-colours.ts` - extract colors from genome (runs VM)
+- `audit-genome-comments.ts` - check comment/codon mismatches
+- `fix-genome-codons.ts` - auto-fix codon discrepancies
+- `genome-validator.ts` - validate genome structure
+
 ## Sidenotes
 
 - If you are unsure how to do something, use `gh_grep` to search code examples from GitHub.
