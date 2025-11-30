@@ -465,28 +465,29 @@ export class CodonVM implements VM {
 
     // Execute the loop body loopCount times
     for (let iteration = 0; iteration < loopCount; iteration++) {
-      for (const {
-        opcode: loopOpcode,
-        codon: loopCodon,
-        pushValue,
-      } of instructionsToRepeat) {
-        // Check instruction limit before executing
-        if (this.state.instructionCount >= this.maxInstructions) {
-          throw new Error(
-            `Instruction limit exceeded (${this.maxInstructions})`,
-          );
-        }
-
-        // Handle PUSH specially - use stored value instead of executing
-        if (loopOpcode === Opcode.PUSH && pushValue !== undefined) {
-          // Manual increment for PUSH since we bypass execute()
-          this.state.instructionCount++;
-          this.push(pushValue);
-        } else {
-          // execute() is single source of truth for counting
-          this.execute(loopOpcode, loopCodon);
-        }
+      for (const { opcode, codon, pushValue } of instructionsToRepeat) {
+        this.replayInstruction(opcode, codon, pushValue);
       }
+    }
+  }
+
+  /** Replay a single instruction from history (used by LOOP) */
+  private replayInstruction(
+    opcode: Opcode,
+    codon: string,
+    pushValue: number | undefined,
+  ): void {
+    // Handle PUSH specially - use stored value instead of executing
+    if (opcode === Opcode.PUSH && pushValue !== undefined) {
+      // Check limit before PUSH since we bypass execute()
+      if (this.state.instructionCount >= this.maxInstructions) {
+        throw new Error(`Instruction limit exceeded (${this.maxInstructions})`);
+      }
+      this.state.instructionCount++;
+      this.push(pushValue);
+    } else {
+      // execute() is single source of truth for counting and limit enforcement
+      this.execute(opcode, codon);
     }
   }
 

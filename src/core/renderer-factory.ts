@@ -39,7 +39,7 @@ export type RendererOptions = SVGRendererOptions | CanvasRendererOptions;
  *
  * @param options - Renderer creation options
  * @returns Renderer instance
- * @throws Error if canvas type is requested without canvas element
+ * @throws Error if an unknown renderer type is provided (exhaustive check)
  *
  * @example
  * ```typescript

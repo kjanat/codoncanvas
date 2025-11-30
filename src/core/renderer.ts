@@ -187,7 +187,7 @@ export interface Renderer {
   /**
    * Add visual noise/texture at current position.
    * @param seed - Random seed for reproducible noise pattern
-   * @param intensity - Noise intensity (0-63, affects radius and dot count)
+   * @param intensity - Noise intensity (0-64, clamped internally)
    */
   noise(seed: number, intensity: number): void;
 
