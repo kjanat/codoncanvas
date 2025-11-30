@@ -30,7 +30,7 @@
         ".mjs",
         ".md",
         ".dockerfile",
-        ".dockerfileignore",
+        ".dockerignore",
         ".yaml",
         ".yml",
         ".html",

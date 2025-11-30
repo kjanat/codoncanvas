@@ -35,5 +35,8 @@
   "tailwindCSS.validate": true,
   "tailwindCSS.codeActions": true,
   "files.associations": { "*.css": "tailwindcss" },
-  "editor.quickSuggestions": { "strings": "on" }
+  "editor.quickSuggestions": { "strings": "on" },
+
+  /** TypeScript settings */
+  "typescript.tsdk": "node_modules/typescript/lib"
 }

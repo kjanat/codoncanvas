@@ -11,7 +11,8 @@
 ## Code Style
 
 - **TypeScript strict mode**, target ES2022, double quotes, 2-space indent
-- **Naming**: files=`kebab-case.ts`, classes=`PascalCase`, functions=`camelCase`, constants=`UPPER_SNAKE_CASE`
+- **Naming**: files=`kebab-case.ts` except for components which use `PascalCase`,
+  classes=`PascalCase`, functions=`camelCase`, constants=`UPPER_SNAKE_CASE`
 - **Imports**: use path aliases `@/*` for src/, organize imports via biome
 - **Types**: prefer interfaces over types, avoid `any`, use explicit return types
 - **Errors**: throw typed errors, handle with try/catch, no silent failures
@@ -31,7 +32,7 @@
 
 ## Sidenotes
 
-- If you are unsure how to do something, use `gh_grep` to search code examples from github.
+- If you are unsure how to do something, use `gh_grep` to search code examples from GitHub.
 - When you need to search docs, use `context7` tools.
   - Or, when specifically searching for `bun` or `bun:test` docs, use `bun_docs` mcp.
 - Running git commands: append `git` with `--no-pager`, e.g. `git --no-pager log`

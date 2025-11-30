@@ -8,7 +8,7 @@
   },
   "scripts": {
     "benchmark": "bun --bun scripts/benchmark.ts",
-    "build": "bun typecheck&& vite build",
+    "build": "bun typecheck && vite build",
     "cli": "bun --bun cli.ts",
     "dev": "bun --bun run vite",
     "export-examples": "bun --bun scripts/export-examples.ts",
