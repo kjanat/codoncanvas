@@ -15,6 +15,9 @@
 
 import { STOP_CODONS } from "@/data/amino-acids";
 import { BASES, type Codon, type CodonToken, type ParseError } from "@/types";
+import type { Lexer } from "@/types/core";
+
+export type { Lexer };
 
 /** Valid base letters for lexer validation, derived from BASES */
 const VALID_BASES = new Set<string>(Object.keys(BASES));
@@ -26,50 +29,6 @@ const VALID_BASES = new Set<string>(Object.keys(BASES));
 function getCodeContent(line: string): string {
   const commentIdx = line.indexOf(";");
   return commentIdx >= 0 ? line.slice(0, commentIdx) : line;
-}
-
-/**
- * Lexer interface for CodonCanvas genome parsing.
- *
- * Responsible for tokenizing DNA/RNA triplets and validating genome structure.
- * Implementations should normalize RNA (U) to DNA (T) notation.
- */
-export interface Lexer {
-  /**
-   * Tokenize source genome into codons.
-   *
-   * @param source - Raw genome string containing DNA/RNA bases (A/C/G/T/U)
-   *   with optional whitespace and comments (`;` to end of line)
-   * @returns Array of codon tokens with position and line information
-   * @throws {Error} If invalid characters found (non-ACGTU after stripping whitespace)
-   * @throws {Error} If source length not divisible by 3 (incomplete codon)
-   */
-  tokenize(source: string): CodonToken[];
-
-  /**
-   * Validate reading frame alignment.
-   *
-   * Checks for whitespace breaks within triplets that would disrupt the reading frame.
-   * Does NOT throw; returns warnings for formatting issues.
-   *
-   * @param source - Raw genome string to validate
-   * @returns Array of frame alignment warnings (never errors)
-   */
-  validateFrame(source: string): ParseError[];
-
-  /**
-   * Validate structural integrity of tokenized genome.
-   *
-   * Checks for:
-   * - START codon (ATG) at beginning
-   * - STOP codon (TAA/TAG/TGA) at end
-   * - Unknown/unmapped codons
-   * - Code after STOP (unreachable)
-   *
-   * @param tokens - Array of codon tokens to validate
-   * @returns Array of structural errors and warnings
-   */
-  validateStructure(tokens: CodonToken[]): ParseError[];
 }
 
 /**

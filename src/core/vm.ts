@@ -1,4 +1,3 @@
-import type { Renderer } from "@/core";
 import {
   CODON_MAP,
   type Codon,
@@ -8,6 +7,9 @@ import {
   Opcode,
   type VMState,
 } from "@/types";
+import type { Renderer, VM } from "@/types/core";
+
+export type { VM };
 
 /**
  * Stack values are 6-bit (0-63 range).
@@ -67,51 +69,6 @@ const BOOLEAN_TRUE = 1;
  * Boolean false value for comparison operations (EQ, LT).
  */
 const BOOLEAN_FALSE = 0;
-
-/**
- * Virtual Machine interface for CodonCanvas execution.
- * Stack-based VM with drawing primitives and transform state.
- */
-export interface VM {
-  /** Current VM execution state (position, rotation, scale, color, stack) */
-  state: VMState;
-  /** Renderer for drawing operations */
-  renderer: Renderer;
-
-  /**
-   * Execute a single opcode instruction.
-   * @param opcode - The operation to execute
-   * @param codon - The codon string (used for PUSH literal decoding)
-   * @throws Error on stack underflow or invalid operations
-   */
-  execute(opcode: Opcode, codon: string): void;
-
-  /**
-   * Run entire genome program.
-   * @param tokens - Array of codon tokens to execute
-   * @returns Array of VM state snapshots (one per instruction) for timeline playback
-   * @throws Error on instruction limit exceeded or execution errors
-   */
-  run(tokens: CodonToken[]): VMState[];
-
-  /**
-   * Reset VM to initial state.
-   * Clears stack, resets position/rotation/scale/color, zeroes instruction counter.
-   */
-  reset(): void;
-
-  /**
-   * Create snapshot of current VM state.
-   * @returns Deep copy of current state for rewind/step-through
-   */
-  snapshot(): VMState;
-
-  /**
-   * Restore VM from a previous snapshot.
-   * @param state - Previously captured VM state
-   */
-  restore(state: VMState): void;
-}
 
 /**
  * CodonCanvas virtual machine implementation.
