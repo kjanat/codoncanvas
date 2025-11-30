@@ -8,8 +8,6 @@ import type {
   ToolFeature,
 } from "@/analysis/constants";
 
-export type { MutationType, RenderMode, ToolFeature };
-
 /**
  * Mutation event for tracking genome modifications
  */

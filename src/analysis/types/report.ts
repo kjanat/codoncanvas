@@ -2,6 +2,7 @@
  * Report and metrics aggregate types
  */
 
+import type { MutationType, ToolFeature } from "@/analysis/constants";
 import type { DescriptiveStats } from "./statistics";
 
 /**
@@ -33,39 +34,38 @@ export interface LearningVelocity {
   noArtifact: number;
 }
 
+/** Usage stats for a single tool feature */
+export interface ToolUsageStats {
+  users: number;
+  avgUsage: number;
+}
+
 /**
- * Feature adoption statistics
+ * Feature adoption statistics (derived from ToolFeature)
  */
-export interface ToolAdoption {
-  diffViewer: { users: number; avgUsage: number };
-  timeline: { users: number; avgUsage: number };
-  evolution: { users: number; avgUsage: number };
-  assessment: { users: number; avgUsage: number };
-  export: { users: number; avgUsage: number };
+export type ToolAdoption = Record<ToolFeature, ToolUsageStats>;
+
+/** Session count with percentage */
+export interface SessionStats {
+  sessions: number;
+  percentage: number;
 }
 
 /**
  * Render mode usage preferences
  */
 export interface RenderModePreferences {
-  visualOnly: { sessions: number; percentage: number };
-  audioOnly: { sessions: number; percentage: number };
-  multiSensory: { sessions: number; percentage: number };
+  visualOnly: SessionStats;
+  audioOnly: SessionStats;
+  multiSensory: SessionStats;
 }
 
 /**
- * Mutation type usage patterns
+ * Mutation type usage patterns (derived from MutationType)
  */
-export interface MutationPatterns {
-  silent: DescriptiveStats;
-  missense: DescriptiveStats;
-  nonsense: DescriptiveStats;
-  frameshift: DescriptiveStats;
-  point: DescriptiveStats;
-  insertion: DescriptiveStats;
-  deletion: DescriptiveStats;
+export type MutationPatterns = Record<MutationType, DescriptiveStats> & {
   totalMutations: number;
-}
+};
 
 /**
  * Complete classroom analytics report

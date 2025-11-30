@@ -2,6 +2,14 @@
  * Constants for analysis module
  */
 
+// Import domain types from genetics (single source of truth)
+import type { MutationType, RenderMode } from "@/types/genetics";
+import { RENDER_MODES } from "@/types/genetics";
+
+// Re-export for analysis module consumers
+export type { MutationType, RenderMode };
+export { RENDER_MODES };
+
 // Time constants
 export const MS_PER_SECOND = 1000;
 export const MS_PER_MINUTE = 60 * MS_PER_SECOND;
@@ -22,8 +30,8 @@ export const TOOL_FEATURES = [
 ] as const;
 export type ToolFeature = (typeof TOOL_FEATURES)[number];
 
-/** Mutation types as they appear in MetricsSession */
-export const MUTATION_TYPES = [
+/** Mutation types array for iteration (type from genetics.ts) */
+export const MUTATION_TYPES: readonly MutationType[] = [
   "silent",
   "missense",
   "nonsense",
@@ -32,11 +40,6 @@ export const MUTATION_TYPES = [
   "insertion",
   "deletion",
 ] as const;
-export type MutationType = (typeof MUTATION_TYPES)[number];
-
-/** Render mode options */
-export const RENDER_MODES = ["visual", "audio", "both"] as const;
-export type RenderMode = (typeof RENDER_MODES)[number];
 
 // ============================================================================
 // Shared count types - used by both MetricsSession and ResearchSession

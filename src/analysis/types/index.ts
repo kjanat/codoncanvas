@@ -3,13 +3,7 @@
  */
 
 export type { MetricsSession } from "../parsers/schema";
-export type {
-  ExecutionEvent,
-  FeatureEvent,
-  MutationEvent,
-  MutationType,
-  ToolFeature,
-} from "./events";
+export type { ExecutionEvent, FeatureEvent, MutationEvent } from "./events";
 export type {
   AggregateStats,
   ResearchSession,
