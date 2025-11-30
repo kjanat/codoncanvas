@@ -31,6 +31,7 @@ ATG
   GAA GTC AGA                 ; Rotate 45
   GAA GTC GAA TTT GAA TGG TTA ; Color(45, 63, 45) greenish
   GAA CCC GAA ACC GTA          ; Ellipse 21×5
+  TCG                         ; RESTORE (close outer cluster SAVE)
 
   ; Inner ring - smaller star shapes
   TCA                         ; SAVE
