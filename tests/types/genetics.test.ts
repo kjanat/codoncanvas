@@ -8,10 +8,17 @@ import { describe, expect, test } from "bun:test";
 import {
   ALL_DNA_CODONS,
   CODON_MAP,
+  createBase,
   DNA_CODON_MAP,
+  dnaCodonToRna,
+  isDNA,
+  isDNACodon,
+  isRNA,
+  isRNACodon,
   lookupCodon,
   Opcode,
   RNA_CODON_MAP,
+  rnaCodonToDna,
 } from "@/types";
 
 describe("types/genetics", () => {
@@ -183,6 +190,156 @@ describe("types/genetics", () => {
         expect(typeof opcode).toBe("number");
         expect(codon.length).toBe(3);
       }
+    });
+  });
+
+  describe("createBase", () => {
+    test("creates DNA base with correct properties", () => {
+      const adenine = createBase("DNA", "A");
+      expect(adenine.type).toBe("DNA");
+      expect(adenine.letter).toBe("A");
+      expect(adenine.name).toBe("Adenine");
+    });
+
+    test("creates RNA base with correct properties", () => {
+      const uracil = createBase("RNA", "U");
+      expect(uracil.type).toBe("RNA");
+      expect(uracil.letter).toBe("U");
+      expect(uracil.name).toBe("Uracil");
+    });
+
+    test("creates all DNA bases", () => {
+      const adenine = createBase("DNA", "A");
+      const cytosine = createBase("DNA", "C");
+      const guanine = createBase("DNA", "G");
+      const thymine = createBase("DNA", "T");
+
+      expect(adenine.name).toBe("Adenine");
+      expect(cytosine.name).toBe("Cytosine");
+      expect(guanine.name).toBe("Guanine");
+      expect(thymine.name).toBe("Thymine");
+    });
+
+    test("creates all RNA bases", () => {
+      const adenine = createBase("RNA", "A");
+      const cytosine = createBase("RNA", "C");
+      const guanine = createBase("RNA", "G");
+      const uracil = createBase("RNA", "U");
+
+      expect(adenine.name).toBe("Adenine");
+      expect(cytosine.name).toBe("Cytosine");
+      expect(guanine.name).toBe("Guanine");
+      expect(uracil.name).toBe("Uracil");
+    });
+  });
+
+  describe("isDNA type guard", () => {
+    test("returns true for DNA bases", () => {
+      const dnaBase = createBase("DNA", "A");
+      expect(isDNA(dnaBase)).toBe(true);
+    });
+
+    test("returns false for RNA bases", () => {
+      const rnaBase = createBase("RNA", "U");
+      expect(isDNA(rnaBase)).toBe(false);
+    });
+
+    test("narrows type correctly", () => {
+      const base = createBase("DNA", "T");
+      if (isDNA(base)) {
+        // Type should be narrowed to DNABase
+        expect(base.letter).toBe("T");
+        expect(base.type).toBe("DNA");
+      }
+    });
+  });
+
+  describe("isRNA type guard", () => {
+    test("returns true for RNA bases", () => {
+      const rnaBase = createBase("RNA", "U");
+      expect(isRNA(rnaBase)).toBe(true);
+    });
+
+    test("returns false for DNA bases", () => {
+      const dnaBase = createBase("DNA", "T");
+      expect(isRNA(dnaBase)).toBe(false);
+    });
+
+    test("narrows type correctly", () => {
+      const base = createBase("RNA", "U");
+      if (isRNA(base)) {
+        // Type should be narrowed to RNABase
+        expect(base.letter).toBe("U");
+        expect(base.type).toBe("RNA");
+      }
+    });
+  });
+
+  describe("isDNACodon", () => {
+    test("returns true for valid DNA codons", () => {
+      expect(isDNACodon("ATG")).toBe(true);
+      expect(isDNACodon("TAA")).toBe(true);
+      expect(isDNACodon("GGG")).toBe(true);
+    });
+
+    test("returns false for RNA codons", () => {
+      expect(isDNACodon("AUG")).toBe(false);
+      expect(isDNACodon("UAA")).toBe(false);
+    });
+
+    test("returns false for invalid strings", () => {
+      expect(isDNACodon("XYZ")).toBe(false);
+      expect(isDNACodon("AT")).toBe(false);
+      expect(isDNACodon("ATGC")).toBe(false);
+      expect(isDNACodon("")).toBe(false);
+    });
+  });
+
+  describe("isRNACodon", () => {
+    test("returns true for valid RNA codons", () => {
+      expect(isRNACodon("AUG")).toBe(true);
+      expect(isRNACodon("UAA")).toBe(true);
+      expect(isRNACodon("GGG")).toBe(true);
+    });
+
+    test("returns false for DNA codons with T", () => {
+      expect(isRNACodon("ATG")).toBe(false);
+      expect(isRNACodon("TAA")).toBe(false);
+    });
+
+    test("returns false for invalid strings", () => {
+      expect(isRNACodon("XYZ")).toBe(false);
+      expect(isRNACodon("AU")).toBe(false);
+      expect(isRNACodon("AUGC")).toBe(false);
+      expect(isRNACodon("")).toBe(false);
+    });
+  });
+
+  describe("dnaCodonToRna", () => {
+    test("converts T to U", () => {
+      expect(dnaCodonToRna("ATG")).toBe("AUG");
+      expect(dnaCodonToRna("TAA")).toBe("UAA");
+      expect(dnaCodonToRna("TTT")).toBe("UUU");
+    });
+
+    test("preserves A, C, G", () => {
+      expect(dnaCodonToRna("AAA")).toBe("AAA");
+      expect(dnaCodonToRna("CCC")).toBe("CCC");
+      expect(dnaCodonToRna("GGG")).toBe("GGG");
+    });
+  });
+
+  describe("rnaCodonToDna", () => {
+    test("converts U to T", () => {
+      expect(rnaCodonToDna("AUG")).toBe("ATG");
+      expect(rnaCodonToDna("UAA")).toBe("TAA");
+      expect(rnaCodonToDna("UUU")).toBe("TTT");
+    });
+
+    test("preserves A, C, G", () => {
+      expect(rnaCodonToDna("AAA")).toBe("AAA");
+      expect(rnaCodonToDna("CCC")).toBe("CCC");
+      expect(rnaCodonToDna("GGG")).toBe("GGG");
     });
   });
 });

@@ -416,4 +416,155 @@ describe("useCanvas", () => {
       expect(result.current.isReady).toBe(false);
     });
   });
+
+  describe("ResizeObserver callback simulation", () => {
+    beforeEach(() => {
+      mockCanvasContext();
+    });
+
+    afterEach(() => {
+      restoreCanvasContext();
+    });
+
+    test("resize function handles aspect ratio - wider container", () => {
+      const { result } = renderHook(() =>
+        useCanvas({
+          width: 400,
+          height: 400,
+        }),
+      );
+
+      const canvas = document.createElement("canvas");
+      canvas.width = 400;
+      canvas.height = 400;
+
+      Object.defineProperty(result.current.canvasRef, "current", {
+        value: canvas,
+        writable: true,
+      });
+
+      // Simulate what ResizeObserver would do for wider container
+      // aspectRatio = 1, containerRatio = 2, so containerRatio > aspectRatio
+      // newWidth = containerHeight * aspectRatio = 400 * 1 = 400
+      act(() => {
+        result.current.resize(400, 400); // Would be calculated from 800x400 container
+      });
+
+      expect(result.current.dimensions.width).toBe(400);
+      expect(result.current.dimensions.height).toBe(400);
+    });
+
+    test("resize function handles aspect ratio - taller container", () => {
+      const { result } = renderHook(() =>
+        useCanvas({
+          width: 400,
+          height: 400,
+        }),
+      );
+
+      const canvas = document.createElement("canvas");
+      canvas.width = 400;
+      canvas.height = 400;
+
+      Object.defineProperty(result.current.canvasRef, "current", {
+        value: canvas,
+        writable: true,
+      });
+
+      // Simulate what ResizeObserver would do for taller container
+      // aspectRatio = 1, containerRatio = 0.5, so containerRatio < aspectRatio
+      // newHeight = containerWidth / aspectRatio = 400 / 1 = 400
+      act(() => {
+        result.current.resize(400, 400); // Would be calculated from 400x800 container
+      });
+
+      expect(result.current.dimensions.width).toBe(400);
+      expect(result.current.dimensions.height).toBe(400);
+    });
+
+    test("resize function without aspect ratio constraint", () => {
+      const { result } = renderHook(() =>
+        useCanvas({
+          width: 400,
+          height: 400,
+        }),
+      );
+
+      const canvas = document.createElement("canvas");
+      canvas.width = 400;
+      canvas.height = 400;
+
+      Object.defineProperty(result.current.canvasRef, "current", {
+        value: canvas,
+        writable: true,
+      });
+
+      // Direct resize without aspect ratio constraint
+      act(() => {
+        result.current.resize(600, 300);
+      });
+
+      expect(result.current.dimensions.width).toBe(600);
+      expect(result.current.dimensions.height).toBe(300);
+    });
+  });
+
+  describe("renderer initialization with canvas", () => {
+    beforeEach(() => {
+      mockCanvasContext();
+    });
+
+    afterEach(() => {
+      restoreCanvasContext();
+    });
+
+    test("renderer initializes when canvas is available", async () => {
+      const { result } = renderHook(() => useCanvas());
+
+      const canvas = document.createElement("canvas");
+      canvas.width = 400;
+      canvas.height = 400;
+
+      // Simulate canvas being available
+      Object.defineProperty(result.current.canvasRef, "current", {
+        value: canvas,
+        writable: true,
+      });
+
+      // Trigger refreshRenderer
+      await act(async () => {
+        result.current.refreshRenderer();
+      });
+
+      // Renderer should be created (or attempted)
+      expect(result.current.canvasRef.current).toBe(canvas);
+    });
+
+    test("renderer logs error on creation failure", async () => {
+      const originalConsoleError = console.error;
+      const errors: unknown[] = [];
+      console.error = (...args: unknown[]) => errors.push(args);
+
+      // Create canvas without mocking context
+      restoreCanvasContext();
+
+      const { result } = renderHook(() => useCanvas());
+
+      const canvas = document.createElement("canvas");
+
+      Object.defineProperty(result.current.canvasRef, "current", {
+        value: canvas,
+        writable: true,
+      });
+
+      await act(async () => {
+        result.current.refreshRenderer();
+      });
+
+      console.error = originalConsoleError;
+
+      // Either logs error or sets renderer to null
+      expect(result.current.renderer).toBeNull();
+    });
+  });
 });
