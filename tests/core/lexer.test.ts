@@ -131,5 +131,32 @@ describe("CodonLexer", () => {
 
       expect(errors.every((e) => e.severity !== "error")).toBe(true);
     });
+
+    test("returns empty errors for empty tokens", () => {
+      const errors = lexer.validateStructure([]);
+      expect(errors).toHaveLength(0);
+    });
+  });
+
+  describe("edge cases", () => {
+    test("handles empty source", () => {
+      const tokens = lexer.tokenize("");
+      expect(tokens).toHaveLength(0);
+    });
+
+    test("handles source with only comments", () => {
+      const tokens = lexer.tokenize("; just a comment");
+      expect(tokens).toHaveLength(0);
+    });
+
+    test("handles source with only whitespace", () => {
+      const tokens = lexer.tokenize("   \n  \t  ");
+      expect(tokens).toHaveLength(0);
+    });
+
+    test("validates frame with only comments", () => {
+      const errors = lexer.validateFrame("; comment only");
+      expect(errors).toHaveLength(0);
+    });
   });
 });

@@ -1,5 +1,5 @@
 import { beforeEach, describe, expect, test } from "bun:test";
-import { Canvas2DRenderer } from "@/core";
+import { Canvas2DRenderer, CanvasContextError } from "@/core";
 
 /**
  * Mock Canvas 2D Context for testing rendering operations.
@@ -143,13 +143,31 @@ describe("Canvas2DRenderer", () => {
       expect(transform.scale).toBe(1);
     });
 
-    test("throws error when canvas context unavailable", () => {
+    test("throws CanvasContextError when canvas context unavailable", () => {
       const badCanvas = {
         getContext: () => null,
       } as unknown as HTMLCanvasElement;
 
       expect(() => new Canvas2DRenderer(badCanvas)).toThrow(
         "Could not get 2D context",
+      );
+    });
+
+    test("thrown error is instance of CanvasContextError", () => {
+      const badCanvas = {
+        getContext: () => null,
+      } as unknown as HTMLCanvasElement;
+
+      let caughtError: unknown;
+      try {
+        new Canvas2DRenderer(badCanvas);
+      } catch (e) {
+        caughtError = e;
+      }
+
+      expect(caughtError).toBeInstanceOf(CanvasContextError);
+      expect((caughtError as CanvasContextError).name).toBe(
+        "CanvasContextError",
       );
     });
   });

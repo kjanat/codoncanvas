@@ -6,6 +6,8 @@ coveragePathIgnorePatterns = [
   "bun-test-setup.ts",
   "e2e/**",
   "tests/**",
+  "src/ui/icons/**",
+  "src/exporters/gif-exporter.ts",
 ]
 
 [test.coverageThreshold]

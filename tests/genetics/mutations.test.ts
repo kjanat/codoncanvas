@@ -114,6 +114,23 @@ describe("Mutation Tools", () => {
       // Should be a different opcode (not CIRCLE)
       expect(lookupCodon(codons[1])).not.toBe(CODON_MAP.GGA);
     });
+
+    test("handles position beyond genome length by selecting random", () => {
+      const genome = "ATG GGA CCA TAA";
+      // Position 100 is out of bounds, should fall back to random selection
+      const result = applyMissenseMutation(genome, 100);
+      expect(result.type).toBe("missense");
+    });
+
+    test("can mutate STOP codon to non-STOP opcode", () => {
+      const genome = "ATG GGA TAA";
+      const result = applyMissenseMutation(genome, 2);
+
+      expect(result.type).toBe("missense");
+      const codons = result.mutated.split(" ");
+      // TAA was mutated to a non-STOP codon
+      expect(["TAA", "TAG", "TGA"]).not.toContain(codons[2]);
+    });
   });
 
   describe("applyNonsenseMutation", () => {

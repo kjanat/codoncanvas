@@ -85,6 +85,69 @@ describe("SVGRenderer", () => {
     });
   });
 
+  describe("numeric validation", () => {
+    test("circle handles NaN by using 0", () => {
+      const renderer = new SVGRenderer(400, 400);
+      renderer.circle(Number.NaN);
+
+      const svg = renderer.toSVG();
+      expect(svg).toContain('r="0"');
+    });
+
+    test("circle handles Infinity by using 0", () => {
+      const renderer = new SVGRenderer(400, 400);
+      renderer.circle(Number.POSITIVE_INFINITY);
+
+      const svg = renderer.toSVG();
+      expect(svg).toContain('r="0"');
+    });
+
+    test("rect handles NaN dimensions", () => {
+      const renderer = new SVGRenderer(400, 400);
+      renderer.rect(Number.NaN, Number.NaN);
+
+      const svg = renderer.toSVG();
+      expect(svg).toContain('width="0"');
+      expect(svg).toContain('height="0"');
+    });
+
+    test("line handles NaN length", () => {
+      const renderer = new SVGRenderer(400, 400);
+      renderer.line(Number.NaN);
+
+      const svg = renderer.toSVG();
+      expect(svg).toContain('x2="0"');
+    });
+
+    test("triangle handles Infinity size", () => {
+      const renderer = new SVGRenderer(400, 400);
+      renderer.triangle(Number.NEGATIVE_INFINITY);
+
+      const svg = renderer.toSVG();
+      // With size 0, the triangle points should be at origin
+      expect(svg).toContain("<polygon");
+      expect(svg).toContain("points=");
+    });
+
+    test("ellipse handles NaN radii", () => {
+      const renderer = new SVGRenderer(400, 400);
+      renderer.ellipse(Number.NaN, Number.POSITIVE_INFINITY);
+
+      const svg = renderer.toSVG();
+      expect(svg).toContain('rx="0"');
+      expect(svg).toContain('ry="0"');
+    });
+
+    test("noise handles NaN seed and intensity", () => {
+      const renderer = new SVGRenderer(400, 400);
+      // Should not throw
+      renderer.noise(Number.NaN, Number.NaN);
+
+      const svg = renderer.toSVG();
+      expect(svg).toContain("<g");
+    });
+  });
+
   describe("transforms", () => {
     test("translate moves position", () => {
       const renderer = new SVGRenderer(400, 400);
@@ -162,6 +225,48 @@ describe("SVGRenderer", () => {
 
       const svg = renderer.toSVG();
       expect(svg).toContain("hsl(120, 80%, 50%)");
+    });
+
+    test("setColor clamps saturation to 0-100", () => {
+      const renderer = new SVGRenderer(400, 400);
+      renderer.setColor(0, -50, 50);
+      renderer.circle(30);
+      let svg = renderer.toSVG();
+      expect(svg).toContain("hsl(0, 0%, 50%)");
+
+      renderer.clear();
+      renderer.setColor(0, 150, 50);
+      renderer.circle(30);
+      svg = renderer.toSVG();
+      expect(svg).toContain("hsl(0, 100%, 50%)");
+    });
+
+    test("setColor clamps lightness to 0-100", () => {
+      const renderer = new SVGRenderer(400, 400);
+      renderer.setColor(0, 50, -20);
+      renderer.circle(30);
+      let svg = renderer.toSVG();
+      expect(svg).toContain("hsl(0, 50%, 0%)");
+
+      renderer.clear();
+      renderer.setColor(0, 50, 200);
+      renderer.circle(30);
+      svg = renderer.toSVG();
+      expect(svg).toContain("hsl(0, 50%, 100%)");
+    });
+
+    test("setColor normalizes hue to 0-359", () => {
+      const renderer = new SVGRenderer(400, 400);
+      renderer.setColor(400, 50, 50);
+      renderer.circle(30);
+      let svg = renderer.toSVG();
+      expect(svg).toContain("hsl(40, 50%, 50%)");
+
+      renderer.clear();
+      renderer.setColor(-30, 50, 50);
+      renderer.circle(30);
+      svg = renderer.toSVG();
+      expect(svg).toContain("hsl(330, 50%, 50%)");
     });
   });
 

@@ -97,6 +97,65 @@ describe("useVM", () => {
       // Empty tokens should still succeed (just no output)
       expect(execResult).toBeDefined();
     });
+
+    test("handles VM execution error gracefully", () => {
+      const { result } = renderHook(() => useVM());
+      // Create a renderer that throws on any operation
+      const throwingRenderer = {
+        ...createMockRenderer(),
+        circle: () => {
+          throw new Error("Renderer explosion");
+        },
+      };
+      const tokens = lexer.tokenize(SIMPLE_GENOME);
+
+      let execResult: ReturnType<typeof result.current.run> | undefined;
+      act(() => {
+        execResult = result.current.run(tokens, throwingRenderer);
+      });
+
+      expect(execResult?.success).toBe(false);
+      expect(execResult?.error).toContain("Renderer explosion");
+      expect(execResult?.snapshots).toEqual([]);
+      expect(execResult?.instructionCount).toBe(0);
+    });
+
+    test("sets playback to step 0 on error", () => {
+      const { result } = renderHook(() => useVM());
+      const throwingRenderer = {
+        ...createMockRenderer(),
+        circle: () => {
+          throw new Error("fail");
+        },
+      };
+      const tokens = lexer.tokenize(SIMPLE_GENOME);
+
+      act(() => {
+        result.current.run(tokens, throwingRenderer);
+      });
+
+      expect(result.current.playback.currentStep).toBe(0);
+      expect(result.current.playback.isPlaying).toBe(false);
+    });
+
+    test("updates result state on error", () => {
+      const { result } = renderHook(() => useVM());
+      const throwingRenderer = {
+        ...createMockRenderer(),
+        circle: () => {
+          throw new Error("test error");
+        },
+      };
+      const tokens = lexer.tokenize(SIMPLE_GENOME);
+
+      act(() => {
+        result.current.run(tokens, throwingRenderer);
+      });
+
+      expect(result.current.result).not.toBeNull();
+      expect(result.current.result?.success).toBe(false);
+      expect(result.current.result?.error).toContain("test error");
+    });
   });
 
   describe("playback controls", () => {
