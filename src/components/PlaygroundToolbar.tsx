@@ -40,7 +40,9 @@ function NucleotideModeToggle({
             ? "bg-accent/10 text-accent"
             : "text-text hover:bg-bg-light"
         }`}
+        onBlur={() => onShowInfo(false)}
         onClick={onToggle}
+        onFocus={() => onShowInfo(true)}
         onMouseEnter={() => onShowInfo(true)}
         onMouseLeave={() => onShowInfo(false)}
         title={getModeButtonTooltip(mode)}

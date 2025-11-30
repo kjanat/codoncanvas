@@ -59,6 +59,7 @@ export function FilterToggle<T extends string>({
     <div className={`flex flex-wrap gap-2 ${className}`}>
       {options.map((opt) => (
         <button
+          aria-pressed={selected === opt.value}
           className={getButtonClasses(selected === opt.value)}
           key={opt.value}
           onClick={() => onSelect(opt.value)}
