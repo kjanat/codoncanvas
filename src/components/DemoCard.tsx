@@ -5,6 +5,7 @@
  * icon, title, description and link.
  */
 
+import type { ReactElement } from "react";
 import { Link } from "react-router-dom";
 import { ChevronRightIcon } from "@/ui/icons";
 
@@ -30,7 +31,7 @@ export function DemoCard({
   description,
   icon,
   color,
-}: DemoCardProps): React.JSX.Element {
+}: DemoCardProps): ReactElement {
   return (
     <Link
       className="group relative overflow-hidden rounded-xl border border-border bg-white p-6 shadow-sm transition-all hover:shadow-lg"

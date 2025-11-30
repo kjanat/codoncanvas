@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { type ReactElement, useState } from "react";
 import { Link } from "react-router-dom";
 import { CanvasPreview } from "@/components/CanvasPreview";
 import type { TutorialLesson } from "@/data/tutorial-lessons";
@@ -29,7 +29,7 @@ export function LessonContent({
   onComplete,
   onHintUsed,
   onNextLesson,
-}: LessonContentProps): React.JSX.Element {
+}: LessonContentProps): ReactElement {
   // Local state - resets automatically via key prop from parent
   const [code, setCode] = useState(lesson.starterCode);
   const [validation, setValidation] = useState<ValidationResult | null>(null);

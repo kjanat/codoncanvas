@@ -1,4 +1,4 @@
-import type React from "react";
+import type { ReactElement } from "react";
 
 export interface StatCardProps {
   /** Label for the stat */
@@ -19,7 +19,7 @@ export function StatCard({
   subtitle,
   danger = false,
   variant = "compact",
-}: StatCardProps): React.JSX.Element {
+}: StatCardProps): ReactElement {
   if (variant === "dashboard") {
     return (
       <div className="rounded-xl border border-border bg-white p-6 shadow-sm">

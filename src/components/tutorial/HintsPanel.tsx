@@ -1,3 +1,5 @@
+import type { ReactElement } from "react";
+
 interface HintsPanelProps {
   hints: string[];
   hintsRevealed: number;
@@ -8,7 +10,7 @@ export function HintsPanel({
   hints,
   hintsRevealed,
   onRevealHint,
-}: HintsPanelProps): React.JSX.Element {
+}: HintsPanelProps): ReactElement {
   // Clamp to valid range
   const revealedCount = Math.min(Math.max(0, hintsRevealed), hints.length);
   const hasMoreHints = revealedCount < hints.length;
@@ -39,8 +41,11 @@ export function HintsPanel({
       </div>
       {revealedCount > 0 ? (
         <ul className="space-y-2 text-sm text-text-light">
-          {hints.slice(0, revealedCount).map((hint) => (
-            <li className="flex gap-2" key={hint}>
+          {hints.slice(0, revealedCount).map((hint, hintIndex) => (
+            <li
+              className="flex gap-2"
+              key={`${hintIndex}-${hint.slice(0, 20)}`}
+            >
               <span className="text-warning">*</span>
               {hint}
             </li>

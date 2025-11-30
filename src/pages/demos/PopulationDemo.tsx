@@ -1,5 +1,4 @@
-import type React from "react";
-import { useMemo } from "react";
+import { type ReactElement, useMemo } from "react";
 import { Card } from "@/components/Card";
 import { Label } from "@/components/Label";
 import { PageContainer } from "@/components/PageContainer";
@@ -14,7 +13,7 @@ import {
   usePopulationSimulation,
 } from "./population";
 
-export default function PopulationDemo(): React.JSX.Element {
+export default function PopulationDemo(): ReactElement {
   const sim = usePopulationSimulation();
 
   const chartSeries = useMemo(

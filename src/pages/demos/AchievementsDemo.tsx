@@ -1,4 +1,5 @@
-import type React from "react";
+import type { ReactElement } from "react";
+
 import { PageContainer } from "@/components/PageContainer";
 import { PageHeader } from "@/components/PageHeader";
 import {
@@ -10,7 +11,7 @@ import {
   useAchievementsDemo,
 } from "./achievements";
 
-export default function AchievementsDemo(): React.JSX.Element {
+export default function AchievementsDemo(): ReactElement {
   const demo = useAchievementsDemo();
 
   return (

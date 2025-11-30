@@ -1,11 +1,13 @@
+import type { ReactElement } from "react";
 import { ProgressBar } from "@/components/ProgressBar";
+
 import {
   LessonContent,
   ModuleSidebar,
   useTutorialProgress,
 } from "@/components/tutorial";
 
-export default function Tutorial(): React.JSX.Element {
+export default function Tutorial(): ReactElement {
   const {
     progress,
     currentLesson,
