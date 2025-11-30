@@ -8,44 +8,6 @@ import type {
   RenderModeCounts,
 } from "@/analysis/constants";
 
-/**
- * Flattened session data for CSV export/import and analysis.
- * Used by MetricsAnalyzer for classroom-level analytics.
- *
- * Note: Uses flattened field names (renderMode_visual, mutation_silent, etc.)
- * for CSV compatibility. See ResearchSession for nested structure.
- */
-export interface MetricsSession {
-  sessionId: string;
-  startTime: number;
-  endTime: number;
-  duration: number;
-  genomesCreated: number;
-  genomesExecuted: number;
-  timeToFirstArtifact: number | null;
-  mutationsApplied: number;
-  // Flattened render mode counts
-  renderMode_visual: number;
-  renderMode_audio: number;
-  renderMode_both: number;
-  // Flattened mutation counts
-  mutation_silent: number;
-  mutation_missense: number;
-  mutation_nonsense: number;
-  mutation_frameshift: number;
-  mutation_point: number;
-  mutation_insertion: number;
-  mutation_deletion: number;
-  // Flattened feature counts
-  feature_diffViewer: number;
-  feature_timeline: number;
-  feature_evolution: number;
-  feature_assessment: number;
-  feature_export: number;
-  errorCount: number;
-  errorTypes: string;
-}
-
 /** Error event stored in session */
 export interface SessionError {
   timestamp: number;

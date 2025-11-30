@@ -56,7 +56,12 @@ export {
   parseCSVContent,
   parseCSVContentWithErrors,
 } from "./parsers/csv-parser";
-export { type SchemaField, SESSION_SCHEMA } from "./parsers/schema";
+export {
+  REQUIRED_SESSION_FIELDS,
+  type RequiredSessionField,
+  type SchemaField,
+  SESSION_SCHEMA,
+} from "./parsers/schema";
 
 // Statistics
 export {

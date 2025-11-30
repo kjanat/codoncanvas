@@ -2,6 +2,7 @@
  * Type exports for analysis module
  */
 
+export type { MetricsSession } from "../parsers/schema";
 export type {
   ExecutionEvent,
   FeatureEvent,
@@ -11,7 +12,6 @@ export type {
 } from "./events";
 export type {
   AggregateStats,
-  MetricsSession,
   ResearchSession,
   SessionError,
 } from "./metrics-session";

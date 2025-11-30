@@ -8,13 +8,13 @@ import {
   MUTATION_TYPES,
   TOOL_FEATURES,
 } from "@/analysis/constants";
+import type { MetricsSession } from "@/analysis/parsers/schema";
 import { descriptiveStats, sum } from "@/analysis/statistics/descriptive";
 import {
   cohensD,
   interpretEffectSize,
   tTest,
 } from "@/analysis/statistics/inferential";
-import type { MetricsSession } from "@/analysis/types/metrics-session";
 import type {
   AnalysisReport,
   EngagementMetrics,

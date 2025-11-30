@@ -1,5 +1,8 @@
 /**
  * CSV schema definition for MetricsSession
+ *
+ * This is the single source of truth for MetricsSession structure.
+ * The MetricsSession type is derived from this schema.
  */
 
 /** Schema field definition */
@@ -38,4 +41,47 @@ export const SESSION_SCHEMA = {
   errorTypes: { type: "string", required: false },
 } as const satisfies Record<string, SchemaFieldDef>;
 
+/** All field names in the schema */
 export type SchemaField = keyof typeof SESSION_SCHEMA;
+
+// ============================================================================
+// Type derivation utilities
+// ============================================================================
+
+/** Derive TypeScript type from a schema field definition */
+type FieldType<F extends SchemaFieldDef> = F extends { nullable: true }
+  ? F["type"] extends "string"
+    ? string | null
+    : number | null
+  : F["type"] extends "string"
+    ? string
+    : number;
+
+/**
+ * MetricsSession interface derived from SESSION_SCHEMA.
+ *
+ * Flattened session data for CSV export/import and analysis.
+ * Used by MetricsAnalyzer for classroom-level analytics.
+ */
+export type MetricsSession = {
+  [K in keyof typeof SESSION_SCHEMA]: FieldType<(typeof SESSION_SCHEMA)[K]>;
+};
+
+// ============================================================================
+// Required fields
+// ============================================================================
+
+/** Extract required field names from schema */
+type RequiredKeys<T extends Record<string, SchemaFieldDef>> = {
+  [K in keyof T]: T[K] extends { required: true } ? K : never;
+}[keyof T];
+
+/** Required field names type */
+export type RequiredSessionField = RequiredKeys<typeof SESSION_SCHEMA>;
+
+/** Required field names array (runtime) */
+export const REQUIRED_SESSION_FIELDS = (
+  Object.entries(SESSION_SCHEMA) as Array<[SchemaField, SchemaFieldDef]>
+)
+  .filter(([_, def]) => "required" in def && def.required)
+  .map(([key]) => key) as RequiredSessionField[];

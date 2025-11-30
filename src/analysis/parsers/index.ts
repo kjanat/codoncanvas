@@ -7,4 +7,10 @@ export {
   parseCSVContent,
   parseCSVContentWithErrors,
 } from "./csv-parser";
-export { type SchemaField, SESSION_SCHEMA } from "./schema";
+export {
+  type MetricsSession,
+  REQUIRED_SESSION_FIELDS,
+  type RequiredSessionField,
+  type SchemaField,
+  SESSION_SCHEMA,
+} from "./schema";

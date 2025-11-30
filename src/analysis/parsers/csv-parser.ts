@@ -4,8 +4,11 @@
 
 import { csv2json } from "csv42";
 
-import type { MetricsSession } from "@/analysis/types/metrics-session";
-import { type SchemaField, SESSION_SCHEMA } from "./schema";
+import {
+  type MetricsSession,
+  type SchemaField,
+  SESSION_SCHEMA,
+} from "./schema";
 
 /** Parse result with success flag */
 interface ParseResult<T> {
