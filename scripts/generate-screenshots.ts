@@ -12,9 +12,10 @@ import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { type Canvas, createCanvas } from "canvas";
-import type { Renderer } from "../src/core";
-import { CodonLexer } from "../src/core/lexer";
-import { CodonVM } from "../src/core/vm";
+import type { Renderer } from "@/core";
+import { CodonLexer } from "@/core/lexer";
+import { generateNoisePoints } from "@/core/renderer";
+import { CodonVM } from "@/core/vm";
 
 // ES module equivalents for __dirname
 const __filename = fileURLToPath(import.meta.url);
@@ -88,14 +89,15 @@ export class NodeCanvasRenderer implements Renderer {
   }
 
   line(length: number): void {
-    const scaledLength = length * this._scale; // already scaled by VM
-    const rad = (this._rotation * Math.PI) / 180;
-    const endX = this._x + Math.cos(rad) * scaledLength;
-    const endY = this._y + Math.sin(rad) * scaledLength;
+    const scaledLength = length * this._scale;
+    this.ctx.save();
+    this.ctx.translate(this._x, this._y);
+    this.ctx.rotate((this._rotation * Math.PI) / 180);
     this.ctx.beginPath();
-    this.ctx.moveTo(this._x, this._y);
-    this.ctx.lineTo(endX, endY);
+    this.ctx.moveTo(-scaledLength / 2, 0);
+    this.ctx.lineTo(scaledLength / 2, 0);
     this.ctx.stroke();
+    this.ctx.restore();
   }
 
   triangle(size: number): void {
@@ -128,24 +130,12 @@ export class NodeCanvasRenderer implements Renderer {
   }
 
   noise(seed: number, intensity: number): void {
-    const size = 100;
-    const imageData = this.ctx.createImageData(size, size);
-    let state = seed % 2147483647;
-    if (state <= 0) state += 2147483646;
-
-    for (let i = 0; i < size * size * 4; i += 4) {
-      state = (state * 48271) % 2147483647;
-      const rand = (state - 1) / 2147483646;
-      const gray = Math.floor(rand * intensity);
-      imageData.data[i] = gray;
-      imageData.data[i + 1] = gray;
-      imageData.data[i + 2] = gray;
-      imageData.data[i + 3] = Math.floor((intensity / 100) * 255);
-    }
-
+    const points = generateNoisePoints(seed, intensity, this.width);
     this.ctx.save();
-    this.ctx.translate(this._x - size / 2, this._y - size / 2);
-    this.ctx.putImageData(imageData, 0, 0);
+    this.ctx.translate(this._x, this._y);
+    for (const { x, y } of points) {
+      this.ctx.fillRect(x, y, 1, 1);
+    }
     this.ctx.restore();
   }
 
