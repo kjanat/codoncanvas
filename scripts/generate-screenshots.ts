@@ -51,8 +51,9 @@ export class NodeCanvasRenderer implements Renderer {
     return this.canvas.height;
   }
 
-  resize(): void {
-    // Re-read dimensions from canvas and reset state
+  resize(_width?: number, _height?: number): void {
+    // For node-canvas, dimensions are set at construction time.
+    // Parameters ignored - just reset state to canvas center.
     this._x = this.width / 2;
     this._y = this.height / 2;
     this._rotation = 0;
