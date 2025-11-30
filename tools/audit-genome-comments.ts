@@ -1,4 +1,5 @@
 #!/usr/bin/env bun
+
 /**
  * Audit genome file comments for accuracy.
  * Compares commented values against actual codon-decoded values.
@@ -52,13 +53,14 @@ function analyzeLine(file: string, line: GenomeLine): Discrepancy[] {
     const literal = literals[i];
 
     if (commented !== literal.value) {
+      const isValidRange = commented >= 0 && commented <= 63;
       discrepancies.push({
         file,
         lineNumber: line.lineNumber,
         codon: literal.codon,
         commentedValue: commented,
         actualValue: literal.value,
-        suggestedCodon: encodeCodonValue(commented),
+        suggestedCodon: isValidRange ? encodeCodonValue(commented) : "N/A",
       });
     }
   }
