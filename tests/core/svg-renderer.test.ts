@@ -187,23 +187,23 @@ describe("SVGRenderer", () => {
       expect(transform.rotation).toBe(0);
     });
 
-    test("scale handles NaN by using 0 (multiplies to 0)", () => {
+    test("scale handles NaN by clamping to MIN_SCALE", () => {
       const renderer = new SVGRenderer(400, 400);
       renderer.scale(2);
       renderer.scale(Number.NaN);
 
       const transform = renderer.getCurrentTransform();
-      // 2 * safeNum(NaN) = 2 * 0 = 0
-      expect(transform.scale).toBe(0);
+      // 2 * safeNum(NaN) = 2 * 0 = 0, clamped to MIN_SCALE
+      expect(transform.scale).toBe(0.001);
     });
 
-    test("setScale handles Infinity by using 0", () => {
+    test("setScale handles Infinity by clamping to MIN_SCALE", () => {
       const renderer = new SVGRenderer(400, 400);
       renderer.scale(5);
       renderer.setScale(Number.NEGATIVE_INFINITY);
 
       const transform = renderer.getCurrentTransform();
-      expect(transform.scale).toBe(0);
+      expect(transform.scale).toBe(0.001);
     });
   });
 

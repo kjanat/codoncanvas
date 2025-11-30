@@ -10,6 +10,9 @@
 import type { Renderer, TransformState } from "./renderer";
 import { generateNoisePoints, safeNum } from "./renderer";
 
+/** Minimum scale to prevent zero/negative values breaking rendering */
+const MIN_SCALE = 0.001;
+
 /** Error thrown when canvas 2D context cannot be obtained */
 export class CanvasContextError extends Error {
   constructor(message: string) {
@@ -186,11 +189,14 @@ export class Canvas2DRenderer implements Renderer {
   }
 
   setScale(scale: number): void {
-    this.currentScale = safeNum(scale);
+    this.currentScale = Math.max(safeNum(scale), MIN_SCALE);
   }
 
   scale(factor: number): void {
-    this.currentScale *= safeNum(factor);
+    this.currentScale = Math.max(
+      this.currentScale * safeNum(factor),
+      MIN_SCALE,
+    );
   }
 
   setColor(h: number, s: number, l: number): void {

@@ -10,6 +10,9 @@
 import type { Renderer, TransformState } from "./renderer";
 import { generateNoisePoints, safeNum } from "./renderer";
 
+/** Minimum scale to prevent zero/negative values breaking rendering */
+const MIN_SCALE = 0.001;
+
 /**
  * SVG rendering implementation.
  * Renders CodonCanvas programs to SVG vector graphics.
@@ -179,17 +182,23 @@ export class SVGRenderer implements Renderer {
   }
 
   setScale(scale: number): void {
-    this.currentScale = safeNum(scale);
+    this.currentScale = Math.max(safeNum(scale), MIN_SCALE);
   }
 
   scale(factor: number): void {
-    this.currentScale *= safeNum(factor);
+    this.currentScale = Math.max(
+      this.currentScale * safeNum(factor),
+      MIN_SCALE,
+    );
   }
 
   setColor(h: number, s: number, l: number): void {
-    const safeH = ((h % 360) + 360) % 360; // Normalize hue to 0-359
-    const safeS = Math.max(0, Math.min(100, s));
-    const safeL = Math.max(0, Math.min(100, l));
+    const sanitizedH = safeNum(h);
+    const sanitizedS = safeNum(s);
+    const sanitizedL = safeNum(l);
+    const safeH = ((sanitizedH % 360) + 360) % 360; // Normalize hue to 0-359
+    const safeS = Math.max(0, Math.min(100, sanitizedS));
+    const safeL = Math.max(0, Math.min(100, sanitizedL));
     this.currentColor = `hsl(${safeH}, ${safeS}%, ${safeL}%)`;
   }
 
