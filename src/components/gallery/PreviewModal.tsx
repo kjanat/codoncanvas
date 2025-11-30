@@ -1,11 +1,7 @@
 import type { ReactNode } from "react";
 import { useEffect } from "react";
 import { CanvasPreview } from "@/components/CanvasPreview";
-import type { ExampleMetadata } from "@/data/examples";
-
-export interface ExampleWithName extends ExampleMetadata {
-  name: string;
-}
+import type { ExampleWithName } from "./types";
 
 interface PreviewModalProps {
   example: ExampleWithName;
