@@ -37,7 +37,7 @@ export function StatCard({
   return (
     <div className="rounded-lg bg-surface p-4 text-center">
       <div
-        className={`text-2xl font-bold ${danger ? "text-red-600" : "text-primary"}`}
+        className={`text-2xl font-bold ${danger ? "text-danger" : "text-primary"}`}
       >
         {value}
       </div>

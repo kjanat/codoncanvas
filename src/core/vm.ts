@@ -438,6 +438,14 @@ export class CodonVM implements VM {
       );
     }
 
+    // Guard: Need at least LOOP_PARAMETER_COUNT instructions in history
+    // (the two PUSHes for loop parameters themselves)
+    if (this.instructionHistory.length < LOOP_PARAMETER_COUNT) {
+      throw new Error(
+        `LOOP requires at least ${LOOP_PARAMETER_COUNT} instructions in history`,
+      );
+    }
+
     // Compute max replayable instructions (exclude LOOP parameter PUSHes)
     const maxReplayable = this.instructionHistory.length - LOOP_PARAMETER_COUNT;
     if (instructionCount > maxReplayable) {
