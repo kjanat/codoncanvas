@@ -5,6 +5,10 @@
  */
 
 export {
+  type AchievementNotification,
+  AchievementToastContainer,
+} from "./AchievementToast";
+export {
   Button,
   type ButtonProps,
   type ButtonSize,
@@ -20,6 +24,16 @@ export { FilterToggle } from "./FilterToggle";
 export { KeyboardShortcutsHelp } from "./KeyboardShortcutsHelp";
 export { Label } from "./Label";
 export { Layout } from "./Layout";
+export {
+  Footer,
+  Header,
+  NavDropdown,
+  type NavDropdownProps,
+  Navigation,
+  type NavLink,
+  type NavSection,
+  ThemeToggle,
+} from "./layout";
 export {
   PageContainer,
   type PageContainerProps,
@@ -37,3 +51,5 @@ export {
   SimulationControls,
   type SimulationControlsProps,
 } from "./SimulationControls";
+export { StatCard, type StatCardProps } from "./StatCard";
+export { ToastContainer } from "./Toast";

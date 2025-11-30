@@ -5,7 +5,9 @@
  * and export grading summaries. All data is processed client-side for privacy.
  */
 
-import { useCallback, useMemo, useState } from "react";
+import { type ChangeEvent, useCallback, useMemo, useState } from "react";
+import { StatCard } from "@/components/StatCard";
+import { useToast } from "@/contexts";
 import {
   type AtRiskStudent,
   type ClassroomStats,
@@ -139,30 +141,6 @@ function loadDemoDataIntoEngine(dashboard: TeacherDashboardEngine): void {
 }
 
 // --- Sub-Components ---
-
-function StatCard({
-  label,
-  value,
-  subtitle,
-  danger,
-}: {
-  label: string;
-  value: string | number;
-  subtitle?: string;
-  danger?: boolean;
-}) {
-  return (
-    <div className="rounded-xl border border-border bg-white p-6 shadow-sm">
-      <p className="text-sm text-text-muted">{label}</p>
-      <p
-        className={`mt-2 text-3xl font-bold ${danger ? "text-danger" : "text-text"}`}
-      >
-        {value}
-      </p>
-      {subtitle && <p className="mt-1 text-xs text-text-muted">{subtitle}</p>}
-    </div>
-  );
-}
 
 function AtRiskPanel({ students }: { students: AtRiskStudent[] }) {
   if (students.length === 0) {
@@ -420,6 +398,7 @@ function TutorialMatrix({
 // --- Main Component ---
 
 export default function TeacherDashboard() {
+  const { success } = useToast();
   const [dashboard] = useState(() => new TeacherDashboardEngine());
   const [students, setStudents] = useState<TeacherStudentProgress[]>([]);
   const [importError, setImportError] = useState<string | null>(null);
@@ -439,7 +418,7 @@ export default function TeacherDashboard() {
   }, [dashboard]);
 
   const handleFileImport = useCallback(
-    async (event: React.ChangeEvent<HTMLInputElement>) => {
+    async (event: ChangeEvent<HTMLInputElement>) => {
       const files = event.target.files;
       if (!files || files.length === 0) return;
 
@@ -448,7 +427,7 @@ export default function TeacherDashboard() {
       try {
         const imported = await dashboard.importMultipleFiles(Array.from(files));
         refreshData();
-        alert(`Successfully imported ${imported} student file(s)`);
+        success(`Successfully imported ${imported} student file(s)`);
       } catch (error) {
         setImportError(
           error instanceof Error ? error.message : "Failed to import files",
@@ -457,31 +436,34 @@ export default function TeacherDashboard() {
 
       event.target.value = "";
     },
-    [dashboard, refreshData],
+    [dashboard, refreshData, success],
   );
 
   const handleLoadDemoData = useCallback(() => {
     loadDemoDataIntoEngine(dashboard);
     refreshData();
-    alert("Loaded 12 demo students with varying engagement levels");
-  }, [dashboard, refreshData]);
+    success("Loaded 12 demo students with varying engagement levels");
+  }, [dashboard, refreshData, success]);
 
   const handleExportCSV = useCallback(() => {
     const csv = dashboard.exportGradingSummary();
     downloadFile(csv, "codoncanvas-grading-summary.csv", "text/csv");
-  }, [dashboard]);
+    success("Grading summary exported as CSV");
+  }, [dashboard, success]);
 
   const handleExportJSON = useCallback(() => {
     const json = dashboard.exportClassroomData();
     downloadFile(json, "codoncanvas-classroom-data.json", "application/json");
-  }, [dashboard]);
+    success("Classroom data exported as JSON");
+  }, [dashboard, success]);
 
   const handleClearData = useCallback(() => {
     if (confirm("Are you sure you want to clear all imported student data?")) {
       dashboard.clearAll();
       refreshData();
+      success("All student data cleared");
     }
-  }, [dashboard, refreshData]);
+  }, [dashboard, refreshData, success]);
 
   return (
     <div className="mx-auto max-w-7xl px-4 py-8">
@@ -559,31 +541,40 @@ export default function TeacherDashboard() {
         <>
           {/* Stats Grid */}
           <div className="mb-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6">
-            <StatCard label="Total Students" value={stats.studentCount} />
+            <StatCard
+              label="Total Students"
+              value={stats.studentCount}
+              variant="dashboard"
+            />
             <StatCard
               label="Avg Sessions"
               subtitle="per student"
               value={stats.avgEngagement.sessionsPerStudent.toFixed(1)}
+              variant="dashboard"
             />
             <StatCard
               label="Avg Duration"
               subtitle="per student"
               value={formatDuration(stats.avgEngagement.durationPerStudent)}
+              variant="dashboard"
             />
             <StatCard
               label="Tutorial Completion"
               value={`${Math.round(stats.avgEngagement.tutorialCompletionRate * 100)}%`}
+              variant="dashboard"
             />
             <StatCard
               label="High Engagement"
               subtitle="3+ sessions"
               value={stats.distribution.highEngagement}
+              variant="dashboard"
             />
             <StatCard
               danger
               label="At Risk"
               subtitle="need intervention"
               value={stats.distribution.atRisk}
+              variant="dashboard"
             />
           </div>
 

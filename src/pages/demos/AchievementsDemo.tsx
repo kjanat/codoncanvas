@@ -1,9 +1,11 @@
+import type React from "react";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { Button } from "@/components/Button";
 import { Card } from "@/components/Card";
 import { FilterToggle } from "@/components/FilterToggle";
 import { PageContainer } from "@/components/PageContainer";
 import { PageHeader } from "@/components/PageHeader";
+import { StatCard } from "@/components/StatCard";
 import {
   type Achievement,
   type AchievementCategory,
@@ -26,23 +28,12 @@ const CATEGORY_COLORS: Record<AchievementCategory, string> = {
   perfection: "bg-amber-100 text-amber-800 border-amber-200",
 };
 
-function StatCard({ label, value }: { label: string; value: number }) {
-  return (
-    <div className="rounded-lg bg-surface p-4 text-center">
-      <div className="text-2xl font-bold text-primary">{value}</div>
-      <div className="mt-1 text-xs text-text-muted">{label}</div>
-    </div>
-  );
-}
-
 type CategoryFilter = AchievementCategory | "all";
 
-export default function AchievementsDemo() {
+export default function AchievementsDemo(): React.JSX.Element {
   const [engine] = useState(() => new AchievementEngine());
   const [stats, setStats] = useState<PlayerStats>(() => engine.getStats());
-  const [achievements] = useState<Achievement[]>(() =>
-    engine.getAchievements(),
-  );
+  const achievements = useMemo(() => engine.getAchievements(), [engine]);
   const [unlocked, setUnlocked] = useState<UnlockedAchievement[]>(() =>
     engine.getUnlockedAchievements(),
   );
