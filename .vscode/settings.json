@@ -43,7 +43,9 @@
   "editor.quickSuggestions": { "strings": "on" },
 
   /** TypeScript settings */
-  "typescript.tsdk": "node_modules/typescript/lib",
+  // "typescript.tsdk": "node_modules/typescript/lib",
+  // TypeScript (Native Preview) > Use Tsgo
+  "typescript.experimental.useTsgo": true,
 
   /** JSON Schemas */
   "json.schemas": [
