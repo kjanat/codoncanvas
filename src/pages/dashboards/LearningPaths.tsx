@@ -7,6 +7,8 @@
 
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import { PageContainer } from "@/components/PageContainer";
+import { PageHeader } from "@/components/PageHeader";
 import { ProgressBar } from "@/components/ProgressBar";
 
 interface LearningPath {
@@ -86,16 +88,11 @@ export default function LearningPaths() {
   };
 
   return (
-    <div className="mx-auto max-w-7xl px-4 py-8">
-      {/* Header */}
-      <div className="mb-8 text-center">
-        <h1 className="mb-2 text-3xl font-bold text-text">Learning Paths</h1>
-        <p className="mx-auto max-w-2xl text-text-muted">
-          Structured learning journeys guide you from genetic fundamentals to
-          advanced mathematical concepts. Each path provides curated examples,
-          concept narratives, and hands-on experiments.
-        </p>
-      </div>
+    <PageContainer>
+      <PageHeader
+        subtitle="Structured learning journeys guide you from genetic fundamentals to advanced mathematical concepts. Each path provides curated examples, concept narratives, and hands-on experiments."
+        title="Learning Paths"
+      />
 
       {/* Path Cards */}
       <div className="grid gap-6 md:grid-cols-2">
@@ -241,6 +238,6 @@ export default function LearningPaths() {
           ))}
         </div>
       </div>
-    </div>
+    </PageContainer>
   );
 }

@@ -11,7 +11,6 @@ export type {
 } from "./achievements/achievement-engine";
 // Achievements
 export { AchievementEngine } from "./achievements/achievement-engine";
-export { AchievementUI } from "./achievements/achievement-ui";
 export type {
   AssessmentDifficulty,
   AssessmentProgress,

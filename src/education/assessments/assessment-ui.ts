@@ -15,7 +15,6 @@
  */
 
 import type { AchievementEngine } from "@/education/achievements/achievement-engine";
-import type { AchievementUI } from "@/education/achievements/achievement-ui";
 import type {
   AssessmentDifficulty,
   AssessmentEngine,
@@ -35,7 +34,6 @@ export class AssessmentUI {
   private results: AssessmentResult[] = [];
   private difficulty: AssessmentDifficulty = "easy";
   private achievementEngine?: AchievementEngine;
-  private achievementUI?: AchievementUI;
   private originalGenome!: HTMLDivElement;
   private mutatedGenome!: HTMLDivElement;
   private hintDisplay!: HTMLDivElement;
@@ -49,12 +47,10 @@ export class AssessmentUI {
     engine: AssessmentEngine,
     container: HTMLElement,
     achievementEngine?: AchievementEngine,
-    achievementUI?: AchievementUI,
   ) {
     this.engine = engine;
     this.container = container;
     this.achievementEngine = achievementEngine;
-    this.achievementUI = achievementUI;
     this.answerButtons = new Map();
     this.createUI();
   }
@@ -332,12 +328,11 @@ export class AssessmentUI {
     this.results.push(result);
 
     // Track challenge completion for achievements
-    if (this.achievementEngine && this.achievementUI) {
-      const unlocked = this.achievementEngine.trackChallengeCompleted(
+    if (this.achievementEngine) {
+      this.achievementEngine.trackChallengeCompleted(
         result.correct,
         this.currentChallenge.correctAnswer,
       );
-      this.achievementUI.handleUnlocks(unlocked);
     }
 
     // Display feedback
@@ -396,13 +391,8 @@ export class AssessmentUI {
     const progress = this.engine.calculateProgress(this.results);
 
     // Track perfect score achievement
-    if (
-      this.achievementEngine &&
-      this.achievementUI &&
-      progress.accuracy === 100
-    ) {
-      const unlocked = this.achievementEngine.trackPerfectScore();
-      this.achievementUI.handleUnlocks(unlocked);
+    if (this.achievementEngine && progress.accuracy === 100) {
+      this.achievementEngine.trackPerfectScore();
     }
 
     const accuracyColor =

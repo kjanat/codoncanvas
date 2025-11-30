@@ -1,4 +1,6 @@
-import { Link } from "react-router-dom";
+import { DemoCard } from "@/components/DemoCard";
+import { PageContainer } from "@/components/PageContainer";
+import { PageHeader } from "@/components/PageHeader";
 
 const demos = [
   {
@@ -61,76 +63,18 @@ const demos = [
 
 export default function Demos() {
   return (
-    <div className="mx-auto max-w-7xl px-4 py-8">
-      {/* Header */}
-      <div className="mb-8 text-center">
-        <h1 className="mb-2 text-3xl font-bold text-text">Interactive Demos</h1>
-        <p className="text-text-muted">
-          Explore mutation types, evolution mechanics, and genetic concepts
-          through hands-on demonstrations
-        </p>
-      </div>
+    <PageContainer>
+      <PageHeader
+        subtitle="Explore mutation types, evolution mechanics, and genetic concepts through hands-on demonstrations"
+        title="Interactive Demos"
+      />
 
       {/* Grid */}
       <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
         {demos.map((demo) => (
-          <Link
-            className="group relative overflow-hidden rounded-xl border border-border bg-white p-6 shadow-sm transition-all hover:shadow-lg"
-            key={demo.path}
-            to={demo.path}
-          >
-            {/* Gradient accent */}
-            <div
-              className={`absolute inset-x-0 top-0 h-1 bg-gradient-to-r ${demo.color}`}
-            />
-
-            {/* Icon */}
-            <div
-              className={`mb-4 inline-flex rounded-lg bg-gradient-to-r p-3 ${demo.color}`}
-            >
-              <svg
-                aria-hidden="true"
-                className="h-6 w-6 text-white"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth={1.5}
-                viewBox="0 0 24 24"
-              >
-                <path
-                  d={demo.icon}
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-              </svg>
-            </div>
-
-            {/* Content */}
-            <h2 className="mb-2 text-xl font-semibold text-text group-hover:text-primary">
-              {demo.title}
-            </h2>
-            <p className="text-sm text-text-muted">{demo.description}</p>
-
-            {/* Arrow */}
-            <div className="mt-4 flex items-center text-sm font-medium text-primary">
-              <span>Open Demo</span>
-              <svg
-                aria-hidden="true"
-                className="ml-1 h-4 w-4 transition-transform group-hover:translate-x-1"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  d="M9 5l7 7-7 7"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                />
-              </svg>
-            </div>
-          </Link>
+          <DemoCard key={demo.path} {...demo} />
         ))}
       </div>
-    </div>
+    </PageContainer>
   );
 }

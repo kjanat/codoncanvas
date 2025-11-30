@@ -6,7 +6,6 @@
  */
 import { afterEach, beforeEach, describe, expect, mock, test } from "bun:test";
 import type { AchievementEngine } from "@/education/achievements/achievement-engine";
-import type { AchievementUI } from "@/education/achievements/achievement-ui";
 import type {
   AssessmentEngine,
   AssessmentResult,
@@ -60,18 +59,10 @@ const createMockAchievementEngine = () => {
   } as unknown as AchievementEngine;
 };
 
-// Mock AchievementUI
-const createMockAchievementUI = () => {
-  return {
-    handleUnlocks: mock(() => {}),
-  } as unknown as AchievementUI;
-};
-
 describe("AssessmentUI", () => {
   let container: HTMLElement;
   let mockEngine: ReturnType<typeof createMockEngine>;
   let mockAchievementEngine: ReturnType<typeof createMockAchievementEngine>;
-  let mockAchievementUI: ReturnType<typeof createMockAchievementUI>;
 
   beforeEach(() => {
     container = document.createElement("div");
@@ -79,7 +70,6 @@ describe("AssessmentUI", () => {
     document.body.appendChild(container);
     mockEngine = createMockEngine();
     mockAchievementEngine = createMockAchievementEngine();
-    mockAchievementUI = createMockAchievementUI();
   });
 
   afterEach(() => {
@@ -98,16 +88,6 @@ describe("AssessmentUI", () => {
 
     test("accepts optional AchievementEngine for integration", () => {
       const ui = new AssessmentUI(mockEngine, container, mockAchievementEngine);
-      expect(ui).toBeDefined();
-    });
-
-    test("accepts optional AchievementUI for notification handling", () => {
-      const ui = new AssessmentUI(
-        mockEngine,
-        container,
-        mockAchievementEngine,
-        mockAchievementUI,
-      );
       expect(ui).toBeDefined();
     });
 
@@ -446,33 +426,13 @@ describe("AssessmentUI", () => {
     });
 
     test("tracks challenge completion with achievement engine if available", () => {
-      const ui = new AssessmentUI(
-        mockEngine,
-        container,
-        mockAchievementEngine,
-        mockAchievementUI,
-      );
+      const ui = new AssessmentUI(mockEngine, container, mockAchievementEngine);
       ui.show();
       const btn = container.querySelector(
         '[data-type="missense"]',
       ) as HTMLButtonElement;
       btn?.click();
       expect(mockAchievementEngine.trackChallengeCompleted).toHaveBeenCalled();
-    });
-
-    test("calls achievementUI.handleUnlocks with newly unlocked", () => {
-      const ui = new AssessmentUI(
-        mockEngine,
-        container,
-        mockAchievementEngine,
-        mockAchievementUI,
-      );
-      ui.show();
-      const btn = container.querySelector(
-        '[data-type="missense"]',
-      ) as HTMLButtonElement;
-      btn?.click();
-      expect(mockAchievementUI.handleUnlocks).toHaveBeenCalled();
     });
 
     test("displays feedback for the result", () => {
@@ -639,7 +599,6 @@ describe("AssessmentUI", () => {
         perfectEngine,
         container,
         mockAchievementEngine,
-        mockAchievementUI,
       );
       ui.show();
       const btn = container.querySelector(
@@ -764,33 +723,13 @@ describe("AssessmentUI", () => {
     });
 
     test("correctly integrates with AchievementEngine", () => {
-      const ui = new AssessmentUI(
-        mockEngine,
-        container,
-        mockAchievementEngine,
-        mockAchievementUI,
-      );
+      const ui = new AssessmentUI(mockEngine, container, mockAchievementEngine);
       ui.show();
       const btn = container.querySelector(
         '[data-type="missense"]',
       ) as HTMLButtonElement;
       btn?.click();
       expect(mockAchievementEngine.trackChallengeCompleted).toHaveBeenCalled();
-    });
-
-    test("correctly integrates with AchievementUI for notifications", () => {
-      const ui = new AssessmentUI(
-        mockEngine,
-        container,
-        mockAchievementEngine,
-        mockAchievementUI,
-      );
-      ui.show();
-      const btn = container.querySelector(
-        '[data-type="missense"]',
-      ) as HTMLButtonElement;
-      btn?.click();
-      expect(mockAchievementUI.handleUnlocks).toHaveBeenCalled();
     });
 
     test("progresses through multiple challenges", () => {
