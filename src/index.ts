@@ -37,7 +37,7 @@ export type {
   MutationEvent,
   ResearchMetricsOptions,
   ResearchSession,
-} from "@/analysis/research-metrics";
+} from "@/analysis";
 /**
  * Research Metrics - Tracks learning events and engagement
  *
@@ -53,7 +53,7 @@ export type {
  * const session = metrics.getSession();
  * ```
  */
-export { ResearchMetrics } from "@/analysis/research-metrics";
+export { ResearchMetrics } from "@/analysis";
 /**
  * Renderer interface for graphics abstraction
  *

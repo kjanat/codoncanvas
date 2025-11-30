@@ -3,11 +3,7 @@
  */
 
 import { describe, expect, test } from "bun:test";
-import {
-  analyzeCodonUsage,
-  compareAnalyses,
-  formatAnalysis,
-} from "@/analysis/codon-analyzer";
+import { analyzeCodonUsage, compareAnalyses, formatAnalysis } from "@/analysis";
 import type { CodonToken } from "@/types";
 
 describe("CodonAnalyzer", () => {

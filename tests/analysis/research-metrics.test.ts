@@ -5,12 +5,8 @@
  * Tracks user interactions for effectiveness studies.
  */
 import { afterEach, beforeEach, describe, expect, test } from "bun:test";
-import type {
-  ExecutionEvent,
-  FeatureEvent,
-  MutationEvent,
-} from "@/analysis/research-metrics";
-import { ResearchMetrics } from "@/analysis/research-metrics";
+import type { ExecutionEvent, FeatureEvent, MutationEvent } from "@/analysis";
+import { ResearchMetrics } from "@/analysis";
 
 // Helper to create a complete ExecutionEvent
 function createExecutionEvent(

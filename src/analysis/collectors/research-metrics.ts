@@ -12,96 +12,15 @@
  * - Transparent data collection (user can see what's tracked)
  */
 
-export interface ResearchSession {
-  /** Unique session ID (UUID) */
-  sessionId: string;
-  /** Timestamp when session started */
-  startTime: number;
-  /** Timestamp when session ended (null if ongoing) */
-  endTime: number | null;
-  /** Duration in milliseconds (null if ongoing) */
-  duration: number | null;
-  /** Total genomes created during session */
-  genomesCreated: number;
-  /** Total genomes executed during session */
-  genomesExecuted: number;
-  /** Total mutations applied during session */
-  mutationsApplied: number;
-  /** Render mode usage counts */
-  renderModeUsage: { visual: number; audio: number; both: number };
-  /** Feature usage tracking */
-  features: {
-    diffViewer: number;
-    timeline: number;
-    evolution: number;
-    assessment: number;
-    export: number;
-  };
-  /** Time to first successful execution (null if not yet achieved) */
-  timeToFirstArtifact: number | null;
-  /** Error events */
-  errors: Array<{ timestamp: number; type: string; message: string }>;
-  /** Mutation type distribution */
-  mutationTypes: {
-    silent: number;
-    missense: number;
-    nonsense: number;
-    frameshift: number;
-    point: number;
-    insertion: number;
-    deletion: number;
-  };
-}
+import type {
+  ExecutionEvent,
+  FeatureEvent,
+  MutationEvent,
+} from "@/analysis/types/events";
+import type { ResearchSession } from "@/analysis/types/metrics-session";
 
-export interface MutationEvent {
-  timestamp: number;
-  type:
-    | "silent"
-    | "missense"
-    | "nonsense"
-    | "frameshift"
-    | "point"
-    | "insertion"
-    | "deletion";
-  genomeLengthBefore: number;
-  genomeLengthAfter: number;
-}
-
-/**
- * Genome execution event for tracking user interactions
- *
- * Records each time a user executes a genome including render mode,
- * performance metrics, and success/failure status for error analysis.
- */
-export interface ExecutionEvent {
-  /** Unix timestamp of execution */
-  timestamp: number;
-  /** Render mode: visual drawing, audio synthesis, or both */
-  renderMode: "visual" | "audio" | "both";
-  /** Length of executed genome (codon count) */
-  genomeLength: number;
-  /** Number of VM instructions executed */
-  instructionCount: number;
-  /** Whether execution succeeded */
-  success: boolean;
-  /** Error message if execution failed */
-  errorMessage?: string;
-}
-
-/**
- * Feature usage event for tracking feature adoption
- *
- * Records when students open, close, or interact with advanced features
- * (diff viewer, timeline, evolution engine, assessment system, export tools).
- */
-export interface FeatureEvent {
-  /** Unix timestamp of feature interaction */
-  timestamp: number;
-  /** Which feature was used */
-  feature: "diffViewer" | "timeline" | "evolution" | "assessment" | "export";
-  /** Action performed: opening, closing, or interacting */
-  action: "open" | "close" | "interact";
-}
+// Re-export types for backward compatibility
+export type { ExecutionEvent, FeatureEvent, MutationEvent, ResearchSession };
 
 /**
  * Research metrics configuration options
@@ -473,7 +392,7 @@ export class ResearchMetrics {
       export: 0,
     };
 
-    sessions.forEach((s) => {
+    for (const s of sessions) {
       mutationTypeDistribution.silent += s.mutationTypes.silent;
       mutationTypeDistribution.missense += s.mutationTypes.missense;
       mutationTypeDistribution.nonsense += s.mutationTypes.nonsense;
@@ -491,7 +410,7 @@ export class ResearchMetrics {
       featureUsage.evolution += s.features.evolution;
       featureUsage.assessment += s.features.assessment;
       featureUsage.export += s.features.export;
-    });
+    }
 
     return {
       totalSessions: sessions.length,
@@ -581,6 +500,6 @@ export class ResearchMetrics {
    * Generate unique session ID.
    */
   private generateSessionId(): string {
-    return `session_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+    return `session_${Date.now()}_${Math.random().toString(36).slice(2, 11)}`;
   }
 }

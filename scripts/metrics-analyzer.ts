@@ -33,7 +33,7 @@ import {
   type MetricsSession,
   parseCSVContent,
   Stats,
-} from "@/analysis/metrics-analyzer-core";
+} from "@/analysis";
 
 /** CLI options for the metrics analyzer */
 export interface MetricsAnalyzerCliOptions {

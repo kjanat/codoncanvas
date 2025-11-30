@@ -13,7 +13,7 @@ import {
   type MetricsSession,
   parseCSVContent,
   Stats,
-} from "@/analysis/metrics-analyzer-core";
+} from "@/analysis";
 
 // Helper function to create mock sessions
 function createMockSession(
@@ -308,7 +308,8 @@ describe("Stats", () => {
       const group2 = [5, 5, 5];
       const d = Stats.cohensD(group1, group2);
 
-      expect(d).toBeNaN(); // Both groups have SD=0, so pooled SD is 0
+      // Both groups have SD=0, so pooled SD is 0; we return 0 (no effect) rather than NaN
+      expect(d).toBe(0);
     });
 
     test("handles groups with different variances", () => {
@@ -1121,13 +1122,12 @@ session-3,180000,15,12,60000,15,3000,4000,4,3,2,3,3,2,2,3,2,2,4,3,2,1,2,2,[]`;
     ).toThrow();
   });
 
-  test("handles malformed numeric values (defaults to 0)", () => {
+  test("rejects rows with malformed numeric values", () => {
     const csv = `sessionId,duration,genomesCreated,genomesExecuted,timeToFirstArtifact,mutationsApplied,startTime,endTime,renderMode_visual,renderMode_audio,renderMode_both,mutation_silent,mutation_missense,mutation_nonsense,mutation_frameshift,mutation_point,mutation_insertion,mutation_deletion,feature_diffViewer,feature_timeline,feature_evolution,feature_assessment,feature_export,errorCount,errorTypes
 test,invalid,abc,xyz,30000,10,1000,2000,2,1,0,2,2,1,1,2,1,1,3,2,1,0,1,0,[]`;
-    const sessions = parseCSVContent(csv);
 
-    expect(sessions[0].duration).toBe(0); // NaN becomes 0
-    expect(sessions[0].genomesCreated).toBe(0);
+    // Schema-based validation rejects rows with invalid numeric values
+    expect(() => parseCSVContent(csv)).toThrow("No valid sessions found");
   });
 });
 
