@@ -10,6 +10,7 @@
 import { rm } from "node:fs/promises";
 import { join } from "node:path";
 import { zipSync } from "fflate";
+import pkg from "~/package.json";
 
 const OUTPUT_ZIP = "codoncanvas-examples.zip";
 const TEMP_DIR = "codoncanvas-examples";
@@ -93,13 +94,13 @@ See EDUCATORS.md and STUDENT_HANDOUTS.md for lesson plans
 /**
  * Generate VERSION.txt content with build metadata
  */
-function generateVersionInfo(): string {
+function generateVersionInfo(genomeCount: number): string {
   const buildDate = new Date().toISOString().split("T")[0];
 
   return `CodonCanvas Example Programs
-Version: 1.0.0
+Version: ${pkg.version}
 Date: ${buildDate}
-Contents: 18 example .genome files + documentation
+Contents: ${genomeCount} example .genome files + documentation
 License: MIT
 
 For more information:
@@ -135,13 +136,21 @@ async function main(): Promise<void> {
   const collectedFiles = await collectFiles();
   Object.assign(zipEntries, collectedFiles);
 
-  // 3. Add generated documentation files
+  // Count genome files for VERSION.txt metadata
+  const collectedPaths = Object.keys(collectedFiles);
+  const genomeCount = collectedPaths.filter((p) =>
+    p.endsWith(".genome"),
+  ).length;
+
+  // 2. Add generated documentation files
   console.info("Generating documentation...");
   const encoder = new TextEncoder();
   zipEntries[`${TEMP_DIR}/QUICK_START.txt`] = encoder.encode(
     generateQuickStart(),
   );
-  zipEntries[`${TEMP_DIR}/VERSION.txt`] = encoder.encode(generateVersionInfo());
+  zipEntries[`${TEMP_DIR}/VERSION.txt`] = encoder.encode(
+    generateVersionInfo(genomeCount),
+  );
 
   // Create ZIP archive
   console.info("\nCreating ZIP archive...");
@@ -155,9 +164,6 @@ async function main(): Promise<void> {
   // Report results
   const zipSize = formatSize(zipped.byteLength);
   const paths = Object.keys(zipEntries);
-
-  // Count files by type
-  const genomeCount = paths.filter((p) => p.endsWith(".genome")).length;
   const pngCount = paths.filter((p) => p.endsWith(".png")).length;
   const hasCodonChart = paths.some((p) => p.endsWith("codon-chart.svg"));
   const hasReadme = paths.some((p) => p.endsWith("README.md"));
