@@ -7,12 +7,12 @@
 
 ATG
   ; Deep navy/purple background
-  ; H=42 (blue-purple ~240deg), S=50, L=3 (very dark)
+  ; H=45 (blue-purple ~253deg), S=31, L=1 (very dark)
   GAA GTC GAA CTT GAA AAC TTA ; Color(45, 31, 1) #030206 near black
   GAA TTT GGA                 ; Circle 63 (fills canvas)
 
   ; Warm nebula glow in center-right area (Milky Way hint)
-  ; H=5 (orange ~30deg), S=40, L=15
+  ; H=7 (orange ~39deg), S=25, L=10
   GAA ACT GAA CGC GAA AGG TTA ; Color(7, 25, 10) #372d18 dark brown
   TCA
   GAA CCC GAA AAA ACA         ; Translate(21, 0)
@@ -45,7 +45,7 @@ ATG
   TCG
 
   ; Top right - pale warm star (like Betelgeuse)
-  ; H=3 (orange-red ~20deg), S=30, L=60
+  ; H=2 (orange-red ~11deg), S=31, L=60
   GAA AAG GAA CTT GAA TTA TTA ; Color(2, 31, 60) #f7eae8 pale warm
   TCA
   GAA GCC GAA AAA ACA         ; Translate(37, 0)
@@ -54,7 +54,7 @@ ATG
   TCG
 
   ; Upper left - pale blue star (like Rigel)
-  ; H=38 (blue ~215deg), S=25, L=62
+  ; H=36 (blue ~203deg), S=21, L=63
   GAA GCA GAA CCC GAA TTT TTA ; Color(36, 21, 63) #fafbfc near white
   TCA
   GAA CCA GAA AAA ACA         ; Translate(20, 0)
