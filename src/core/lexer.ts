@@ -60,11 +60,16 @@ export const DEFAULT_GENOME_METADATA: GenomeMetadata = {
  * User-facing names in genome files:
  * - `bidirectional` → "centered" (can move in any direction)
  * - `forward-only` → "forward" (legacy, positive movement only)
+ * - `signed` → "centered" (technical alias)
+ * - `unsigned` → "forward" (technical alias)
  */
 const MODE_ALIASES: Record<string, ValueMode> = {
   // User-friendly names
   bidirectional: "centered",
   "forward-only": "forward",
+  // Technical aliases (for those familiar with signed/unsigned concepts)
+  signed: "centered",
+  unsigned: "forward",
   // Also accept internal names for advanced users
   centered: "centered",
   forward: "forward",
@@ -335,9 +340,9 @@ export class CodonLexer implements Lexer {
 
       const comment = line.slice(commentIdx + 1).trim();
 
-      // Parse @mode directive - accepts user-friendly and internal names
+      // Parse @mode directive - accepts user-friendly, technical, and internal names
       const modeMatch = comment.match(
-        /^@mode:\s*(bidirectional|forward-only|centered|forward)$/i,
+        /^@mode:\s*(bidirectional|forward-only|signed|unsigned|centered|forward)$/i,
       );
       if (modeMatch) {
         const userMode = modeMatch[1].toLowerCase();
