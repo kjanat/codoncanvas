@@ -5,7 +5,7 @@
  * Works with useCanvas to render output.
  */
 
-import { useCallback, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import type { Renderer } from "@/core/renderer";
 import { CodonVM } from "@/core/vm";
 import type { CodonToken, VMState } from "@/types";
@@ -132,13 +132,22 @@ export function useVM(options: UseVMOptions = {}): UseVMReturn {
     }
   }, []);
 
+  // Cleanup interval on unmount to prevent memory leaks
+  useEffect(() => {
+    return () => {
+      clearPlaybackInterval();
+    };
+  }, [clearPlaybackInterval]);
+
+  const resultRef = useRef<ExecutionResult | null>(null);
+
   // Run tokens and capture snapshots
   const run = useCallback(
     (tokens: CodonToken[], renderer: Renderer): ExecutionResult => {
       clearPlaybackInterval();
 
       try {
-        const vm = new CodonVM(renderer);
+        const vm = new CodonVM(renderer, _maxInstructions);
         const snapshots = vm.run(tokens);
 
         const executionResult: ExecutionResult = {
@@ -149,6 +158,7 @@ export function useVM(options: UseVMOptions = {}): UseVMReturn {
         };
 
         setResult(executionResult);
+        resultRef.current = executionResult;
         setPlayback((prev) => ({
           ...prev,
           currentStep: snapshots.length - 1,
@@ -174,7 +184,7 @@ export function useVM(options: UseVMOptions = {}): UseVMReturn {
         return executionResult;
       }
     },
-    [clearPlaybackInterval],
+    [clearPlaybackInterval, _maxInstructions],
   );
 
   // Render at specific step (re-executes up to that point)
@@ -182,13 +192,14 @@ export function useVM(options: UseVMOptions = {}): UseVMReturn {
     (step: number, tokens: CodonToken[], renderer: Renderer) => {
       try {
         const tokensToRun = tokens.slice(0, step + 1);
-        const vm = new CodonVM(renderer);
+        const vm = new CodonVM(renderer, _maxInstructions);
         vm.run(tokensToRun);
       } catch {
-        // Ignore render errors during stepping
+        // Ignore render errors during stepping for UX
+        console.warn(`Failed to render at step ${step}`);
       }
     },
-    [],
+    [_maxInstructions],
   );
 
   // Go to specific step
@@ -239,7 +250,7 @@ export function useVM(options: UseVMOptions = {}): UseVMReturn {
       setPlayback((prev) => {
         const nextStep = prev.currentStep + 1;
 
-        if (nextStep >= (result?.snapshots.length ?? 0)) {
+        if (nextStep >= (resultRef.current?.snapshots.length ?? 0)) {
           clearPlaybackInterval();
           return { ...prev, isPlaying: false };
         }

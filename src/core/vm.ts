@@ -139,15 +139,16 @@ export interface VM {
 export class CodonVM implements VM {
   state: VMState;
   renderer: Renderer;
-  private maxInstructions: number = DEFAULT_MAX_INSTRUCTIONS;
+  private maxInstructions: number;
   private instructionHistory: {
     opcode: Opcode;
     codon: Codon;
     pushValue?: number;
   }[] = [];
 
-  constructor(renderer: Renderer) {
+  constructor(renderer: Renderer, maxInstructions?: number) {
     this.renderer = renderer;
+    this.maxInstructions = maxInstructions ?? DEFAULT_MAX_INSTRUCTIONS;
     this.state = this.createInitialState();
   }
 
