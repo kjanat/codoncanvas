@@ -1,6 +1,8 @@
 /**
- * CanvasPanel - Renders a genome to canvas using ref callback
+ * CanvasPanel - Renders a genome to canvas
  */
+
+import { useEffect, useRef } from "react";
 
 import { Canvas2DRenderer } from "@/core";
 import { CodonLexer } from "@/core/lexer";
@@ -30,13 +32,14 @@ export function CanvasPanel({
   label,
   width,
   height,
-}: CanvasPanelProps) {
-  // Ref callback - runs when canvas mounts
-  function canvasRef(canvas: HTMLCanvasElement | null): void {
-    if (canvas) {
-      renderGenome(canvas, genome);
+}: CanvasPanelProps): React.JSX.Element {
+  const canvasRef = useRef<HTMLCanvasElement | null>(null);
+
+  useEffect(() => {
+    if (canvasRef.current) {
+      renderGenome(canvasRef.current, genome);
     }
-  }
+  }, [genome]);
 
   return (
     <div className="flex flex-col items-center gap-2">

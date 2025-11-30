@@ -19,7 +19,8 @@ const DEFAULT_PROGRESS: TutorialProgress = {
 
 export interface UseTutorialProgressReturn {
   progress: TutorialProgress;
-  currentLesson: TutorialLesson;
+  /** Current lesson, or null if no lessons are available. Callers must null-check before use. */
+  currentLesson: TutorialLesson | null;
   progressPercent: number;
   totalLessons: number;
   selectLesson: (id: string) => void;
@@ -34,12 +35,17 @@ export function useTutorialProgress(): UseTutorialProgressReturn {
     DEFAULT_PROGRESS,
   );
 
-  const currentLesson =
-    getLessonById(progress.currentLesson) ?? tutorialLessons[0];
+  const currentLesson: TutorialLesson | null =
+    tutorialLessons.length === 0
+      ? null
+      : (getLessonById(progress.currentLesson) ?? tutorialLessons[0]);
 
-  const progressPercent = Math.round(
-    (progress.completedLessons.length / tutorialLessons.length) * 100,
-  );
+  const progressPercent =
+    tutorialLessons.length === 0
+      ? 0
+      : Math.round(
+          (progress.completedLessons.length / tutorialLessons.length) * 100,
+        );
 
   const selectLesson = (id: string) => {
     setProgress((prev) => ({ ...prev, currentLesson: id }));

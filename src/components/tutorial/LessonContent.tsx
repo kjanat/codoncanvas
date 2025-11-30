@@ -29,24 +29,32 @@ export function LessonContent({
   onComplete,
   onHintUsed,
   onNextLesson,
-}: LessonContentProps) {
+}: LessonContentProps): React.JSX.Element {
   // Local state - resets automatically via key prop from parent
   const [code, setCode] = useState(lesson.starterCode);
   const [validation, setValidation] = useState<ValidationResult | null>(null);
   const [hintsRevealed, setHintsRevealed] = useState(initialHintsRevealed);
 
-  const handleRevealHint = () => {
+  const handleRevealHint = (): void => {
     const newCount = hintsRevealed + 1;
     setHintsRevealed(newCount);
     onHintUsed(newCount);
   };
 
-  const handleRun = () => {
-    const result = validateCode(lesson, code);
-    setValidation(result);
+  const handleRun = (): void => {
+    try {
+      const result = validateCode(lesson, code);
+      setValidation(result);
 
-    if (result.passed) {
-      onComplete();
+      if (result.passed) {
+        onComplete();
+      }
+    } catch (err) {
+      console.error("Validation error:", err);
+      setValidation({
+        passed: false,
+        errors: ["An unexpected error occurred while validating your code."],
+      });
     }
   };
 

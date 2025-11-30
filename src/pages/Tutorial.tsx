@@ -5,7 +5,7 @@ import {
   useTutorialProgress,
 } from "@/components/tutorial";
 
-export default function Tutorial() {
+export default function Tutorial(): React.JSX.Element {
   const {
     progress,
     currentLesson,
@@ -17,11 +17,20 @@ export default function Tutorial() {
     getHintsUsed,
   } = useTutorialProgress();
 
-  const handleNextLesson = () => {
-    if (currentLesson.nextLesson) {
+  const handleNextLesson = (): void => {
+    if (currentLesson?.nextLesson) {
       selectLesson(currentLesson.nextLesson);
     }
   };
+
+  // No lessons available
+  if (!currentLesson) {
+    return (
+      <div className="flex h-full items-center justify-center bg-bg">
+        <p className="text-text-muted">No tutorial lessons available.</p>
+      </div>
+    );
+  }
 
   return (
     <div className="flex h-full bg-bg">
