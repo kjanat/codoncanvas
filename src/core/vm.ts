@@ -479,11 +479,13 @@ export class CodonVM implements VM {
   ): void {
     // Handle PUSH specially - use stored value instead of executing
     if (opcode === Opcode.PUSH && pushValue !== undefined) {
-      // Check limit before PUSH since we bypass execute()
-      if (this.state.instructionCount >= this.maxInstructions) {
-        throw new Error(`Instruction limit exceeded (${this.maxInstructions})`);
-      }
+      // Match execute() pattern: increment first, then check
       this.state.instructionCount++;
+      if (this.state.instructionCount > this.maxInstructions) {
+        throw new Error(
+          `Instruction limit exceeded (max ${this.maxInstructions})`,
+        );
+      }
       this.push(pushValue);
     } else {
       // execute() is single source of truth for counting and limit enforcement
