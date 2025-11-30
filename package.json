@@ -31,7 +31,7 @@
     "test:coverage": "bun test --coverage",
     "test:watch": "bun test --watch",
     "typecheck": "tsgo --noEmit",
-    "zip-examples": "./scripts/zip-examples.sh"
+    "zip-examples": "bun --bun scripts/zip-examples.ts"
   },
   "stylelint": {
     "extends": [
@@ -72,6 +72,7 @@
     "@typescript/native-preview": "^7.0.0-dev.20251126.1",
     "canvas": "^3.2.0",
     "dprint": "^0.50.2",
+    "fflate": "^0.8.2",
     "happy-dom": "^20.0.10",
     "jsdom": "^27.2.0",
     "lefthook": "^2.0.4",
