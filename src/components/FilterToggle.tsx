@@ -30,7 +30,7 @@ export function FilterToggle<T extends string>({
   variant = "rounded",
   size = "md",
   className = "",
-}: FilterToggleProps<T>) {
+}: FilterToggleProps<T>): ReactNode {
   const baseClasses = "font-medium transition-colors";
 
   const sizeClasses = {
@@ -56,17 +56,23 @@ export function FilterToggle<T extends string>({
   };
 
   return (
-    <div className={`flex flex-wrap gap-2 ${className}`}>
+    <div className={`flex flex-wrap gap-2 ${className}`} role="radiogroup">
       {options.map((opt) => (
-        <button
-          aria-pressed={selected === opt.value}
+        <label
           className={getButtonClasses(selected === opt.value)}
           key={opt.value}
-          onClick={() => onSelect(opt.value)}
-          type="button"
         >
+          <input
+            checked={selected === opt.value}
+            className="sr-only"
+            name="filter-toggle"
+            onChange={() => onSelect(opt.value)}
+            tabIndex={selected === opt.value ? 0 : -1}
+            type="radio"
+            value={opt.value}
+          />
           {opt.label}
-        </button>
+        </label>
       ))}
     </div>
   );
