@@ -51,3 +51,11 @@ about what user facing changes were made
 
 After the single commit that requested a push,
 do not push again, ever, without explicit re-request to do so.
+
+Here is the status:
+
+<git_status>
+
+!`git --no-pager status`
+
+</git_status>
