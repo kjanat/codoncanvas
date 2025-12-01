@@ -1,6 +1,6 @@
 # Genome Tools
 
-CLI utilities for working with `.genome` files.
+CLI utilities for working with `.genome` files and development tasks.
 
 ---
 
@@ -70,3 +70,17 @@ Checks:
 - STOP codon (TAA/TAG/TGA) at end
 - Balanced SAVE/RESTORE (TCA/TCC vs TCG/TCT)
 - Valid codon characters (A, C, G, T only)
+
+---
+
+## coverage-check.ts
+
+Identify source files not imported by any test (won't appear in coverage reports).
+
+```bash
+bun tools/coverage-check.ts           # Console report
+bun tools/coverage-check.ts --json    # JSON output
+bun tools/coverage-check.ts --verbose # Include imported files list
+```
+
+Analyzes test files to find which `src/` files are imported (directly or transitively). Files not imported by tests won't be instrumented by the coverage tool.
