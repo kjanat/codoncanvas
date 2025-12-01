@@ -43,7 +43,7 @@ export default defineConfig({
 
   build: {
     outDir: "dist",
-    sourcemap: isCI,
+    sourcemap: !isCI,
   },
 
   css: {
