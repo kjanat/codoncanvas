@@ -32,7 +32,7 @@ export function Footer({ authorName, githubUrl }: FooterProps) {
             <a
               className="text-primary hover:underline"
               href={githubUrl}
-              rel="noreferrer"
+              rel="noopener noreferrer"
               target="_blank"
             >
               {authorName}

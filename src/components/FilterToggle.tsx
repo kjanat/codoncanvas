@@ -1,4 +1,4 @@
-import type { ReactNode } from "react";
+import type { ReactElement, ReactNode } from "react";
 
 interface FilterOption<T extends string> {
   value: T;
@@ -30,7 +30,7 @@ export function FilterToggle<T extends string>({
   variant = "rounded",
   size = "md",
   className = "",
-}: FilterToggleProps<T>): ReactNode {
+}: FilterToggleProps<T>): ReactElement {
   const baseClasses = "font-medium transition-colors";
 
   const sizeClasses = {

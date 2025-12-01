@@ -2,6 +2,8 @@
  * ProgressBar Component - Displays progress as a horizontal bar
  */
 
+import type { ReactElement } from "react";
+
 export interface ProgressBarProps {
   /** Progress percentage (0-100) */
   value: number;
@@ -24,7 +26,7 @@ export function ProgressBar({
   gradientClass,
   className = "",
   bgClass = "bg-border",
-}: ProgressBarProps) {
+}: ProgressBarProps): ReactElement {
   const sizeClasses = {
     sm: "h-1.5",
     md: "h-2",
@@ -40,7 +42,11 @@ export function ProgressBar({
 
   return (
     <div
+      aria-valuemax={100}
+      aria-valuemin={0}
+      aria-valuenow={clampedValue}
       className={`overflow-hidden rounded-full ${bgClass} ${sizeClasses[size]} ${className}`}
+      role="progressbar"
     >
       <div
         className={`h-full rounded-full transition-all ${variantClasses[variant]}`}
