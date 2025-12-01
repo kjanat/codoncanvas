@@ -2,9 +2,9 @@
 
 ## Commands
 
-- **Test all**: `bun test`
-- **Test single file**: `bun test tests/lexer.test.ts`
-- **Test pattern**: `bun test --test-name-pattern "tokenize"`
+- **Test all**: `bun test:agent`
+- **Test single file**: `bun test:agent tests/lexer.test.ts`
+- **Test pattern**: `bun test:agent --test-name-pattern "tokenize"`
 - **Lint**: `bun run lint` (biome) | **Format**: `bun run fmt` (dprint)
 - **Typecheck**: `bun run typecheck` | **Dev server**: `bun run dev`
 
@@ -22,7 +22,10 @@
 - Use `bun:test` with `describe`/`test`/`expect` (vitest-compatible API)
 - Tests in `tests/` mirror src structure, suffix `.test.ts`
 - Unused vars: prefix with `_` (e.g., `_unusedParam`)
-- Run `bun test:agent` to get output relevant only to failing tests (as agent)
+- `test:agent` just filters out passing test output so you only see
+  failures/warnings/coverage.
+- Exit code 1 on failure or coverage less than configured in `bunfig.toml`.
+- Don't touch the ignore and coverage thresholds in `bunfig.toml`!
 
 ## Key Rules
 

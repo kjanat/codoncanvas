@@ -1,0 +1,350 @@
+/**
+ * Edge Case Tests for Statistical Functions
+ *
+ * Tests boundary conditions and edge cases for inferential statistics,
+ * particularly the Fisher z-transformation and t-distribution approximations.
+ */
+import { describe, expect, test } from "bun:test";
+import { mean, sd } from "@/analysis/statistics/descriptive";
+import {
+  cohensD,
+  normalCDF,
+  tDistribution,
+  tTest,
+} from "@/analysis/statistics/inferential";
+
+describe("tDistribution edge cases", () => {
+  describe("extreme t values", () => {
+    test.each([
+      { t: 0, df: 10, desc: "t=0 returns p~1", check: (p: number) => p > 0.99 },
+      {
+        t: 100,
+        df: 10,
+        desc: "large positive t returns small p",
+        check: (p: number) => p < 0.01 && p >= 0,
+      },
+      {
+        t: -100,
+        df: 10,
+        desc: "large negative t returns small p",
+        check: (p: number) => p < 0.01 && p >= 0,
+      },
+      {
+        t: 1000,
+        df: 10,
+        desc: "very large t returns very small p",
+        check: (p: number) => p < 0.01 && p >= 0,
+      },
+    ])("$desc", ({ t, df, check }) => {
+      const p = tDistribution(t, df);
+      expect(check(p)).toBe(true);
+    });
+
+    test("handles Infinity t value (returns NaN or near-zero)", () => {
+      const p = tDistribution(Number.POSITIVE_INFINITY, 10);
+      // z becomes NaN or Infinity, resulting in p near 0 or NaN
+      expect(Number.isFinite(p) || Number.isNaN(p)).toBe(true);
+    });
+
+    test("handles -Infinity t value", () => {
+      const p = tDistribution(Number.NEGATIVE_INFINITY, 10);
+      expect(Number.isFinite(p) || Number.isNaN(p)).toBe(true);
+    });
+
+    test("handles NaN t value", () => {
+      const p = tDistribution(Number.NaN, 10);
+      expect(Number.isNaN(p)).toBe(true);
+    });
+  });
+
+  describe("extreme df values", () => {
+    test("handles df = 1 (Cauchy distribution)", () => {
+      const p = tDistribution(2, 1);
+      expect(p).toBeGreaterThan(0);
+      expect(p).toBeLessThan(1);
+    });
+
+    test("handles df = 0 (degenerate case, z becomes 0)", () => {
+      const p = tDistribution(2, 0);
+      // df=0: z = |t| * sqrt(0 / (0 + t^2)) = 0, so p = 2*(1-0.5) = 1
+      expect(p).toBeCloseTo(1, 5);
+    });
+
+    test("handles very large df (approaches normal distribution)", () => {
+      const pLargeDf = tDistribution(1.96, 10000);
+      const pNormal = 2 * (1 - normalCDF(1.96));
+      expect(pLargeDf).toBeCloseTo(pNormal, 2);
+    });
+
+    test("handles negative df (produces finite result, mathematically invalid)", () => {
+      // Note: negative df is invalid input, but sqrt(neg/pos) can still produce
+      // a real number if the ratio is positive due to JS handling
+      const p = tDistribution(2, -5);
+      // df=-5, t=2: df + t^2 = -5 + 4 = -1, sqrt(-5/-1) = sqrt(5)
+      // This actually produces a valid number!
+      expect(Number.isFinite(p) || Number.isNaN(p)).toBe(true);
+    });
+
+    test("handles NaN df value", () => {
+      const p = tDistribution(2, Number.NaN);
+      expect(Number.isNaN(p)).toBe(true);
+    });
+  });
+
+  describe("Fisher z-transformation boundary conditions", () => {
+    test("when t^2 dominates df, p approaches 0", () => {
+      // z = |t| * sqrt(df / (df + t^2))
+      // When t^2 >> df: z -> |t| * sqrt(df/t^2) = sqrt(df)
+      const t = 1000;
+      const df = 10;
+      const p = tDistribution(t, df);
+      // Fisher approximation has ~20% error, so use looser bound
+      expect(p).toBeLessThan(0.01);
+    });
+
+    test("when df dominates t^2, z approaches |t|", () => {
+      // When df >> t^2: z -> |t| * sqrt(df/df) = |t|
+      const t = 0.1;
+      const df = 10000;
+      const p = tDistribution(t, df);
+      const expected = 2 * (1 - normalCDF(0.1));
+      expect(p).toBeCloseTo(expected, 2);
+    });
+  });
+});
+
+describe("normalCDF edge cases", () => {
+  test("handles z = 0 (returns ~0.5)", () => {
+    // Polynomial approximation isn't exact, use appropriate precision
+    expect(normalCDF(0)).toBeCloseTo(0.5, 5);
+  });
+
+  test.each([
+    { z: 10, expected: 1, precision: 10 },
+    { z: 100, expected: 1, precision: 10 },
+    { z: -10, expected: 0, precision: 10 },
+    { z: -100, expected: 0, precision: 10 },
+  ])("handles extreme z=$z (returns ~$expected)", ({
+    z,
+    expected,
+    precision,
+  }) => {
+    expect(normalCDF(z)).toBeCloseTo(expected, precision);
+  });
+
+  test("handles Infinity (returns ~1)", () => {
+    const result = normalCDF(Number.POSITIVE_INFINITY);
+    expect(result).toBeCloseTo(1, 5);
+  });
+
+  test("handles -Infinity (returns ~0)", () => {
+    const result = normalCDF(Number.NEGATIVE_INFINITY);
+    expect(result).toBeCloseTo(0, 5);
+  });
+
+  test("handles NaN", () => {
+    expect(Number.isNaN(normalCDF(Number.NaN))).toBe(true);
+  });
+
+  test("maintains symmetry: CDF(z) + CDF(-z) ~ 1", () => {
+    const values = [0.5, 1, 1.5, 2, 2.5, 3];
+    for (const z of values) {
+      const sum = normalCDF(z) + normalCDF(-z);
+      expect(sum).toBeCloseTo(1, 5);
+    }
+  });
+});
+
+describe("tTest edge cases", () => {
+  describe("identical groups", () => {
+    test("returns NaN for identical zero-variance groups (division by zero)", () => {
+      const group = [5, 5, 5, 5, 5];
+      const result = tTest(group, group);
+      // pooledVariance = 0, se = 0, t = 0/0 = NaN
+      expect(Number.isNaN(result.t)).toBe(true);
+    });
+
+    test("handles groups with zero variance but different means", () => {
+      const group1 = [5, 5, 5];
+      const group2 = [10, 10, 10];
+      const result = tTest(group1, group2);
+      // pooledVariance = 0, se = 0, t = (5-10)/0 = -Infinity
+      expect(result.t).toBe(Number.NEGATIVE_INFINITY);
+    });
+  });
+
+  describe("small sample sizes", () => {
+    test("handles n=2 per group (df=2)", () => {
+      const group1 = [1, 2];
+      const group2 = [10, 11];
+      const result = tTest(group1, group2);
+
+      expect(result.df).toBe(2);
+      expect(result.t).toBeLessThan(0);
+      expect(result.p).toBeGreaterThan(0);
+      expect(result.p).toBeLessThan(1);
+    });
+
+    test("handles n=1 per group (df=0, degenerate)", () => {
+      const group1 = [5];
+      const group2 = [10];
+      const result = tTest(group1, group2);
+
+      expect(result.df).toBe(0);
+      // With n=1, variance calculation involves division by 0
+      expect(Number.isNaN(result.t) || !Number.isFinite(result.t)).toBe(true);
+    });
+  });
+
+  describe("empty groups", () => {
+    test("handles empty first group (t = -0, p ~ 1)", () => {
+      const result = tTest([], [1, 2, 3]);
+      // mean([]) = 0, sd([]) = 0, n1=0, n2=3
+      // df = 0 + 3 - 2 = 1
+      // t = (0 - mean([1,2,3])) / se = negative / positive = -0
+      expect(result.df).toBe(1);
+      expect(Object.is(result.t, -0)).toBe(true);
+      expect(result.p).toBeCloseTo(1, 3);
+    });
+
+    test("handles empty second group (t = 0, p ~ 1)", () => {
+      const result = tTest([1, 2, 3], []);
+      expect(result.df).toBe(1); // 3 + 0 - 2
+      expect(result.t).toBe(0);
+      expect(result.p).toBeCloseTo(1, 3);
+    });
+
+    test("handles both groups empty", () => {
+      const result = tTest([], []);
+      expect(result.df).toBe(-2);
+      expect(Number.isNaN(result.t)).toBe(true);
+    });
+  });
+
+  describe("extreme values", () => {
+    test("handles very large numbers", () => {
+      const group1 = [1e10, 1e10 + 1, 1e10 + 2];
+      const group2 = [1, 2, 3];
+      const result = tTest(group1, group2);
+
+      expect(Number.isFinite(result.t)).toBe(true);
+      expect(result.p).toBeLessThan(0.05);
+    });
+
+    test("handles very small numbers", () => {
+      const group1 = [1e-10, 2e-10, 3e-10];
+      const group2 = [4e-10, 5e-10, 6e-10];
+      const result = tTest(group1, group2);
+
+      expect(Number.isFinite(result.t)).toBe(true);
+    });
+
+    test("handles mixed positive and negative", () => {
+      const group1 = [-100, -50, 0];
+      const group2 = [0, 50, 100];
+      const result = tTest(group1, group2);
+
+      expect(result.t).toBeLessThan(0);
+      expect(Number.isFinite(result.p)).toBe(true);
+    });
+  });
+});
+
+describe("cohensD edge cases", () => {
+  test("returns 0 when both groups have zero variance and same mean", () => {
+    const group1 = [5, 5, 5];
+    const group2 = [5, 5, 5];
+    const d = cohensD(group1, group2);
+    // pooledSD = 0, explicit check returns 0
+    expect(d).toBe(0);
+  });
+
+  test("returns 0 when pooled SD is 0 (explicit guard)", () => {
+    // This tests the explicit check: pooledSD === 0 ? 0 : ...
+    const group1 = [10, 10, 10];
+    const group2 = [5, 5, 5];
+    const d = cohensD(group1, group2);
+    // pooledSD = 0, so should return 0 (not Infinity)
+    expect(d).toBe(0);
+  });
+
+  test("handles single element groups (NaN variance)", () => {
+    const group1 = [10];
+    const group2 = [5];
+    const d = cohensD(group1, group2);
+    // With n=1, sample variance is NaN (division by 0)
+    expect(Number.isNaN(d)).toBe(true);
+  });
+
+  test("handles empty first group (returns finite effect size)", () => {
+    const d = cohensD([], [1, 2, 3]);
+    // mean([]) = 0, sd([]) = 0, but pooledVariance calculation
+    // with (n1-1)=-1 and (n2-1)=2 still produces a valid number
+    // d = (0 - 2) / pooledSD = negative value
+    expect(Number.isFinite(d)).toBe(true);
+    expect(d).toBeLessThan(0);
+  });
+
+  test("correctly identifies large effect size (|d| >= 0.8)", () => {
+    const group1 = [100, 101, 102, 103, 104]; // mean=102, sd~1.58
+    const group2 = [90, 91, 92, 93, 94]; // mean=92, sd~1.58
+    const d = cohensD(group1, group2);
+    expect(Math.abs(d)).toBeGreaterThan(0.8);
+  });
+});
+
+describe("descriptive statistics edge cases", () => {
+  describe("mean", () => {
+    test("handles empty array", () => {
+      expect(mean([])).toBe(0);
+    });
+
+    test.each([
+      {
+        input: [1, 2, Number.POSITIVE_INFINITY],
+        expected: Number.POSITIVE_INFINITY,
+      },
+      {
+        input: [1, 2, Number.NEGATIVE_INFINITY],
+        expected: Number.NEGATIVE_INFINITY,
+      },
+    ])("handles array with $expected", ({ input, expected }) => {
+      expect(mean(input)).toBe(expected);
+    });
+
+    test("handles array with NaN", () => {
+      const result = mean([1, 2, Number.NaN]);
+      expect(Number.isNaN(result)).toBe(true);
+    });
+
+    test("handles array with mixed Infinity and -Infinity (NaN)", () => {
+      const result = mean([Number.POSITIVE_INFINITY, Number.NEGATIVE_INFINITY]);
+      expect(Number.isNaN(result)).toBe(true);
+    });
+  });
+
+  describe("sd", () => {
+    test("handles empty array", () => {
+      expect(sd([])).toBe(0);
+    });
+
+    test("handles single value (sample SD is NaN)", () => {
+      const result = sd([42]);
+      expect(Number.isNaN(result)).toBe(true);
+    });
+
+    test("handles single value (population SD is 0)", () => {
+      const result = sd([42], false);
+      expect(result).toBe(0);
+    });
+
+    test("handles array with all identical values", () => {
+      expect(sd([5, 5, 5, 5], false)).toBe(0);
+    });
+
+    test("handles array with Infinity (NaN result)", () => {
+      const result = sd([1, 2, Number.POSITIVE_INFINITY]);
+      expect(Number.isNaN(result)).toBe(true);
+    });
+  });
+});

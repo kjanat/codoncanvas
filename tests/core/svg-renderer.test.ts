@@ -356,6 +356,64 @@ describe("SVGRenderer", () => {
     });
   });
 
+  describe("resize", () => {
+    test("resize updates both dimensions", () => {
+      const renderer = new SVGRenderer(400, 400);
+      renderer.resize(800, 600);
+
+      expect(renderer.width).toBe(800);
+      expect(renderer.height).toBe(600);
+    });
+
+    test("resize with only width keeps height", () => {
+      const renderer = new SVGRenderer(400, 400);
+      renderer.resize(800);
+
+      expect(renderer.width).toBe(800);
+      expect(renderer.height).toBe(400);
+    });
+
+    test("resize with only height keeps width", () => {
+      const renderer = new SVGRenderer(400, 400);
+      renderer.resize(undefined, 600);
+
+      expect(renderer.width).toBe(400);
+      expect(renderer.height).toBe(600);
+    });
+
+    test("resize clears elements", () => {
+      const renderer = new SVGRenderer(400, 400);
+      renderer.circle(50);
+      renderer.rect(100, 100);
+      renderer.resize(800, 600);
+
+      const svg = renderer.toSVG();
+      expect(svg).not.toContain("<circle");
+      expect(svg).not.toContain("<rect");
+    });
+
+    test("resize resets position to new center", () => {
+      const renderer = new SVGRenderer(400, 400);
+      renderer.translate(100, 100);
+      renderer.resize(800, 600);
+
+      const transform = renderer.getCurrentTransform();
+      expect(transform.x).toBe(400); // 800/2
+      expect(transform.y).toBe(300); // 600/2
+    });
+
+    test("resize resets rotation and scale", () => {
+      const renderer = new SVGRenderer(400, 400);
+      renderer.rotate(45);
+      renderer.scale(2);
+      renderer.resize(800, 600);
+
+      const transform = renderer.getCurrentTransform();
+      expect(transform.rotation).toBe(0);
+      expect(transform.scale).toBe(1);
+    });
+  });
+
   describe("output", () => {
     test("toSVG returns valid SVG document", () => {
       const renderer = new SVGRenderer(400, 300);

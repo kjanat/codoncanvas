@@ -93,13 +93,15 @@ describe("createRenderer", () => {
 
   describe("unknown type", () => {
     test("throws error for unknown renderer type", () => {
-      const canvas = createMockCanvas();
-      expect(() =>
-        createRenderer({
-          type: "webgl" as "canvas",
-          canvas,
-        }),
-      ).toThrow("Unknown renderer type: webgl");
+      // Force an unknown type through type assertion to hit exhaustive check
+      const invalidOptions = { type: "webgl" } as unknown as {
+        type: "svg";
+        width: number;
+        height: number;
+      };
+      expect(() => createRenderer(invalidOptions)).toThrow(
+        "Unknown renderer type: webgl",
+      );
     });
   });
 
