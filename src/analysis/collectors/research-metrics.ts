@@ -167,7 +167,8 @@ export class ResearchMetrics {
     try {
       const stored = localStorage.getItem(this.STORAGE_KEY);
       return stored ? JSON.parse(stored) : [];
-    } catch {
+    } catch (error) {
+      console.warn("Failed to read research metrics from localStorage:", error);
       return [];
     }
   }
