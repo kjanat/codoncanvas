@@ -5,7 +5,7 @@
  * and provides convenient methods for canvas operations.
  */
 
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { Canvas2DRenderer, type Renderer } from "@/core";
 import {
   canvasToBlob,
@@ -137,10 +137,10 @@ export function useCanvas(options: UseCanvasOptions = {}): UseCanvasReturn {
     initRendererRef.current();
   };
 
-  // Clear canvas - delegate to utility
-  const clear = () => {
+  // Clear canvas - delegate to utility (memoized for stable reference)
+  const clear = useCallback(() => {
     clearCanvas(canvasRef.current);
-  };
+  }, []);
 
   // Resize canvas - stored in ref for stable reference in ResizeObserver
   const resizeRef = useRef((width: number, height: number) => {

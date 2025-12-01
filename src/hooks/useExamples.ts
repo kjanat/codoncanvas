@@ -5,7 +5,7 @@
  * from the built-in examples library.
  */
 
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import {
   type Concept,
   type ExampleDifficulty,
@@ -206,15 +206,15 @@ export function useExamples(
     setFilters(DEFAULT_FILTERS);
   };
 
-  // Select example
-  const selectExample = (key: string | null) => {
+  // Select example (memoized to prevent infinite loops in consumers)
+  const selectExample = useCallback((key: string | null) => {
     setSelectedKey(key);
-  };
+  }, []);
 
-  // Get example by key
-  const getExample = (key: string): ExampleWithKey | null => {
+  // Get example by key (memoized - no dependencies since ALL_EXAMPLES is static)
+  const getExample = useCallback((key: string): ExampleWithKey | null => {
     return ALL_EXAMPLES.find((ex) => ex.key === key) ?? null;
-  };
+  }, []);
 
   // Selected example
   const selectedExample = selectedKey ? getExample(selectedKey) : null;

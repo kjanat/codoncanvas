@@ -216,25 +216,30 @@ export function usePlayground(): UsePlaygroundResult {
 
   // --- Effects ---
 
+  // Stable reference to validation for effect dependency
+  const tokensLength = validation.tokens.length;
+  const tokensRef = useRef(validation.tokens);
+  tokensRef.current = validation.tokens;
+
   // Run genome when canvas ready or validation changes
   useEffect(() => {
     if (!isReady || !renderer) {
       return;
     }
     clear();
-    if (validation.isValid && validation.tokens.length > 0) {
+    if (validation.isValid && tokensLength > 0) {
       try {
         const vm = new CodonVM(renderer);
-        const snapshots = vm.run(validation.tokens);
+        const snapshots = vm.run(tokensRef.current);
         setStats({
-          codons: validation.tokens.length,
+          codons: tokensLength,
           instructions: snapshots.length,
         });
       } catch (err) {
         console.warn("Execution error:", err);
       }
     }
-  }, [isReady, renderer, validation.isValid, validation.tokens, clear]);
+  }, [isReady, renderer, validation.isValid, tokensLength, clear]);
 
   // Load example from URL param
   useEffect(() => {

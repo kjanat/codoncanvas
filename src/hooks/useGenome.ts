@@ -5,7 +5,7 @@
  * error checking. Central hook for genome manipulation across the app.
  */
 
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { CodonLexer } from "@/core/lexer";
 import {
   createEmptyValidation,
@@ -106,26 +106,29 @@ export function useGenome(options: UseGenomeOptions = {}): UseGenomeReturn {
     return result;
   };
 
-  // Set genome with optional immediate validation
-  const setGenome = (newGenome: string) => {
-    setGenomeState(newGenome);
+  // Set genome with optional immediate validation (memoized to prevent infinite loops)
+  const setGenome = useCallback(
+    (newGenome: string) => {
+      setGenomeState(newGenome);
 
-    if (autoValidate) {
-      setIsPending(true);
+      if (autoValidate) {
+        setIsPending(true);
 
-      // Clear existing debounce
-      if (debounceRef.current) {
-        clearTimeout(debounceRef.current);
+        // Clear existing debounce
+        if (debounceRef.current) {
+          clearTimeout(debounceRef.current);
+        }
+
+        // Schedule validation
+        debounceRef.current = setTimeout(() => {
+          setIsPending(false);
+          const result = validateGenome(newGenome, lexer);
+          setValidation(result);
+        }, debounceMs);
       }
-
-      // Schedule validation
-      debounceRef.current = setTimeout(() => {
-        setIsPending(false);
-        const result = validateGenome(newGenome, lexer);
-        setValidation(result);
-      }, debounceMs);
-    }
-  };
+    },
+    [autoValidate, debounceMs, lexer],
+  );
 
   // Clear genome
   const clear = () => {
