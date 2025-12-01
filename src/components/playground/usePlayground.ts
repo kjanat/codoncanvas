@@ -5,7 +5,7 @@
  * and display mode management.
  */
 
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { useTheme } from "@/contexts";
 import {
   useCanvas,
@@ -206,19 +206,6 @@ export function usePlayground(): UsePlaygroundResult {
       current.focus();
     });
   }
-
-  // --- Effects ---
-
-  // Load example from URL param (only if no shared genome takes priority)
-  useEffect(() => {
-    if (exampleFromUrl && !sharedGenome) {
-      const example = getExample(exampleFromUrl);
-      if (example) {
-        selectExample(exampleFromUrl);
-        setGenome(example.genome);
-      }
-    }
-  }, [exampleFromUrl, sharedGenome, getExample, selectExample, setGenome]);
 
   // --- Keyboard Shortcuts ---
 
