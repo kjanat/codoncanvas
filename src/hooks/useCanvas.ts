@@ -5,7 +5,13 @@
  * and provides convenient methods for canvas operations.
  */
 
-import { useCallback, useEffect, useRef, useState } from "react";
+import {
+  type RefObject,
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import { Canvas2DRenderer, type Renderer } from "@/core";
 import {
   canvasToBlob,
@@ -37,7 +43,7 @@ export interface UseCanvasOptions {
 /** Return type of useCanvas hook */
 export interface UseCanvasReturn {
   /** Ref to attach to canvas element */
-  canvasRef: React.RefObject<HTMLCanvasElement | null>;
+  canvasRef: RefObject<HTMLCanvasElement | null>;
   /** Current renderer instance (null until canvas mounted) */
   renderer: Renderer | null;
   /** Current canvas dimensions */

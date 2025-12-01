@@ -5,6 +5,7 @@
  * Used by GeneticDemo, PopulationDemo, and similar simulation UIs.
  */
 
+import type { ReactNode } from "react";
 import { Button } from "./Button";
 
 export interface SimulationControlsProps {
@@ -23,7 +24,7 @@ export interface SimulationControlsProps {
   /** Whether step button is disabled */
   stepDisabled?: boolean;
   /** Additional controls to render */
-  children?: React.ReactNode;
+  children?: ReactNode;
 }
 
 /**

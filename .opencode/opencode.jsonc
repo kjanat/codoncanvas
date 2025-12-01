@@ -10,12 +10,11 @@
   "formatter": {
     "dprint": {
       "command": [
-        "bun",
+        "bunx",
         "dprint",
         "fmt",
         "--config",
         ".dprint.jsonc",
-        "--config-discovery=false",
         "--allow-no-files",
         "$FILE"
       ],
@@ -41,7 +40,9 @@
         ".sass",
         ".css"
       ],
-      "environment": {}
+      "environment": {
+        "DPRINT_CONFIG_DISCOVERY": "false"
+      }
     }
   },
   "mcp": {
@@ -74,9 +75,7 @@
     "context7": {
       "type": "remote",
       "url": "https://mcp.context7.com/mcp",
-      "headers": {
-        "CONTEXT7_API_KEY": "{env:CONTEXT7_API_KEY}"
-      },
+      "headers": { "CONTEXT7_API_KEY": "{env:CONTEXT7_API_KEY}" },
       "enabled": true
     },
     "morphllm": {

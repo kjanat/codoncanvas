@@ -11,6 +11,7 @@
     "build": "bun typecheck && vite build",
     "cli": "bun --bun cli.ts",
     "dev": "bun --bun run vite",
+    "diff": "bun --bun .opencode/command/review.ts",
     "export-examples": "bun --bun scripts/export-examples.ts",
     "fmt": "dprint fmt --config .dprint.jsonc --config-discovery=false --allow-no-files",
     "format": "bun fmt",

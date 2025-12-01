@@ -4,7 +4,12 @@
  * Handles the reference panel and shortcuts help panel state.
  */
 
-import { useCallback, useState } from "react";
+import {
+  type Dispatch,
+  type SetStateAction,
+  useCallback,
+  useState,
+} from "react";
 
 export interface UsePlaygroundPanelsReturn {
   /** Whether the codon reference panel is visible */
@@ -18,9 +23,9 @@ export interface UsePlaygroundPanelsReturn {
   /** Close all panels */
   closeAllPanels: () => void;
   /** Direct setter for reference panel */
-  setShowReference: React.Dispatch<React.SetStateAction<boolean>>;
+  setShowReference: Dispatch<SetStateAction<boolean>>;
   /** Direct setter for shortcuts help panel */
-  setShowShortcutsHelp: React.Dispatch<React.SetStateAction<boolean>>;
+  setShowShortcutsHelp: Dispatch<SetStateAction<boolean>>;
 }
 
 /**

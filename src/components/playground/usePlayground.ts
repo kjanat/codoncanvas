@@ -5,7 +5,7 @@
  * display mode management, panels, and keyboard shortcuts.
  */
 
-import { useRef } from "react";
+import { type ChangeEvent, useRef } from "react";
 import { useTheme } from "@/contexts";
 import {
   useCanvas,
@@ -138,14 +138,14 @@ export function usePlayground(): UsePlaygroundResult {
 
   // Wrap handleLoad to match expected signature
   async function handleLoad(
-    event: React.ChangeEvent<HTMLInputElement>,
+    event: ChangeEvent<HTMLInputElement>,
   ): Promise<void> {
     await loadFile(event);
   }
 
   // --- Handlers ---
 
-  function handleGenomeChange(e: React.ChangeEvent<HTMLTextAreaElement>): void {
+  function handleGenomeChange(e: ChangeEvent<HTMLTextAreaElement>): void {
     const newGenome = fromDisplay(e.target.value);
     applyGenome(newGenome);
   }

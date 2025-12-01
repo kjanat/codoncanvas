@@ -2,6 +2,7 @@
  * Types for Playground component
  */
 
+import type { ChangeEvent, RefObject } from "react";
 import type { ExampleWithKey } from "@/hooks/useExamples";
 import type { GenomeValidation } from "@/hooks/useGenome";
 import type { KeyboardShortcut } from "@/hooks/useKeyboardShortcuts";
@@ -29,7 +30,7 @@ export interface PlaygroundState {
 }
 
 export interface PlaygroundActions {
-  handleGenomeChange: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
+  handleGenomeChange: (e: ChangeEvent<HTMLTextAreaElement>) => void;
   handleUndo: () => void;
   handleRedo: () => void;
   handleShare: () => void;
@@ -37,7 +38,7 @@ export interface PlaygroundActions {
   runGenome: () => void;
   handleExampleChange: (key: string) => void;
   handleSave: () => void;
-  handleLoad: (event: React.ChangeEvent<HTMLInputElement>) => Promise<void>;
+  handleLoad: (event: ChangeEvent<HTMLInputElement>) => Promise<void>;
   handleExportPNG: () => void;
   handleInsertCodon: (codon: string) => void;
   handleToggleNucleotideMode: () => void;
@@ -50,8 +51,8 @@ export interface UsePlaygroundResult {
   state: PlaygroundState;
   actions: PlaygroundActions;
   refs: {
-    canvasRef: React.RefObject<HTMLCanvasElement | null>;
-    editorRef: React.RefObject<HTMLTextAreaElement | null>;
+    canvasRef: RefObject<HTMLCanvasElement | null>;
+    editorRef: RefObject<HTMLTextAreaElement | null>;
   };
   examples: ExampleWithKey[];
   selectedExample: ExampleWithKey | null;

@@ -60,13 +60,13 @@
 
   /** File inclusions/exclusions */
   "excludes": [
-    "**/.venv",
     "**/*-lock.json",
-    "**/*.lock",
-    "**/node_modules",
     "**/*.gen.ts",
+    "**/*.lock",
+    "**/.opencode",
+    "**/.venv",
+    "**/node_modules",
     "**/worker-configuration.d.ts",
-    "research-dashboard.html",
     "codon-chart.svg"
   ],
 

@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { type RefObject, useEffect, useRef, useState } from "react";
 import { useTheme } from "@/contexts";
 import { Canvas2DRenderer } from "@/core";
 import { CodonLexer } from "@/core/lexer";
@@ -6,7 +6,7 @@ import { CodonVM } from "@/core/vm";
 import type { VMState } from "@/types";
 
 interface UseTimelinePlayerOptions {
-  canvasRef: React.RefObject<HTMLCanvasElement | null>;
+  canvasRef: RefObject<HTMLCanvasElement | null>;
 }
 
 export function useTimelinePlayer({ canvasRef }: UseTimelinePlayerOptions) {

@@ -3,7 +3,8 @@ set -euo pipefail # Strict mode: exit on error/unbound vars/pipefail
 
 # Check if rg is installed
 if ! command -v rg &>/dev/null; then
-	echo "Error: unable to list the files to refactor: rg is not installed. Please install it first."
+	RG_ERROR_MSG="rg is not installed. Please install it first."
+	echo "Error: unable to search for refactor patterns: ${RG_ERROR_MSG}" >&2
 	exit 1
 fi
 
@@ -21,11 +22,11 @@ GLBS=(
 INPUT="${1:-.}"
 
 # Build rg command
-rg_cmd=(rg -n "$PATTERNS")
+rg_cmd=(rg -n "${PATTERNS}")
 for glob in "${GLBS[@]}"; do
-	rg_cmd+=("--glob" "$glob")
+	rg_cmd+=("--glob" "${glob}")
 done
-rg_cmd+=("$INPUT")
+rg_cmd+=("${INPUT}")
 
 # Run and exit 1 if matches found (treat as "lint error")
-"${rg_cmd[@]}" || exit 1
+! "${rg_cmd[@]}"

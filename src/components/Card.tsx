@@ -22,7 +22,8 @@ const PADDING_CLASSES = {
 
 type PaddingSize = keyof typeof PADDING_CLASSES;
 
-export interface CardProps extends HTMLAttributes<HTMLDivElement> {
+export interface CardProps
+  extends Omit<HTMLAttributes<HTMLDivElement>, "onClick"> {
   /** Card content */
   children: ReactNode;
   /** Additional padding variant */
@@ -31,6 +32,10 @@ export interface CardProps extends HTMLAttributes<HTMLDivElement> {
   hoverable?: boolean;
   /** Whether card is interactive (button-like) */
   interactive?: boolean;
+  /** Click handler (receives MouseEvent or KeyboardEvent for a11y) */
+  onClick?: (
+    event: MouseEvent<HTMLDivElement> | KeyboardEvent<HTMLDivElement>,
+  ) => void;
 }
 
 /**
@@ -87,7 +92,7 @@ export function Card({
       ? (event: KeyboardEvent<HTMLDivElement>) => {
           if (event.key === "Enter" || event.key === " ") {
             event.preventDefault();
-            onClick(event as unknown as MouseEvent<HTMLDivElement>);
+            onClick(event);
           }
           onKeyDown?.(event);
         }

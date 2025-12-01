@@ -5,7 +5,7 @@
  * and reference panel toggle.
  */
 
-import { memo } from "react";
+import { type ChangeEvent, memo } from "react";
 import type { ExampleWithKey } from "@/hooks/useExamples";
 import {
   getModeButtonLabel,
@@ -57,7 +57,7 @@ export interface PlaygroundToolbarProps {
   /** Callback when example is selected */
   onExampleChange: (key: string) => void;
   /** Callback to load genome from file */
-  onLoad: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  onLoad: (event: ChangeEvent<HTMLInputElement>) => void;
   /** Callback to save genome to file */
   onSave: () => void;
   /** Callback to copy genome code */

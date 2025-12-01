@@ -5,7 +5,13 @@
  */
 
 import { Link } from "@tanstack/react-router";
-import { type ReactElement, useRef, useState } from "react";
+import {
+  type FocusEvent,
+  type KeyboardEvent,
+  type ReactElement,
+  useRef,
+  useState,
+} from "react";
 
 import { ChevronDownIcon } from "@/ui/icons";
 
@@ -47,7 +53,7 @@ export function NavDropdown({
   const [isOpen, setIsOpen] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
 
-  const handleKeyDown = (e: React.KeyboardEvent): void => {
+  const handleKeyDown = (e: KeyboardEvent<HTMLDivElement>): void => {
     if (e.key === "Escape" && isOpen) {
       setIsOpen(false);
       // Return focus to trigger button for keyboard users
@@ -55,7 +61,7 @@ export function NavDropdown({
     }
   };
 
-  const handleBlur = (e: React.FocusEvent): void => {
+  const handleBlur = (e: FocusEvent<HTMLDivElement>): void => {
     // Close dropdown when focus leaves the container entirely
     if (!containerRef.current?.contains(e.relatedTarget as Node)) {
       setIsOpen(false);

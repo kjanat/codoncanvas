@@ -47,7 +47,7 @@ prefer to explain WHY something was done from an end user perspective instead of
 WHAT was done.
 
 do not do generic messages like "improved agent experience" be very specific
-about what user facing changes were made
+about what user-facing changes were made
 
 After the single commit that requested a push,
 do not push again, ever, without explicit re-request to do so.

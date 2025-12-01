@@ -4,7 +4,7 @@
  * Contains the genome textarea, validation status, and error/warning displays.
  */
 
-import { forwardRef, memo } from "react";
+import { type ChangeEvent, forwardRef, memo } from "react";
 import type { GenomeValidation } from "@/hooks/useGenome";
 import { CheckIcon, ErrorIcon } from "@/ui/icons";
 import type { NucleotideDisplayMode } from "@/utils/nucleotide-display";
@@ -90,7 +90,7 @@ export interface PlaygroundEditorProps {
   /** Displayed genome text (may be transformed for display) */
   displayedGenome: string;
   /** Callback when genome text changes */
-  onGenomeChange: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
+  onGenomeChange: (e: ChangeEvent<HTMLTextAreaElement>) => void;
   /** Current validation state */
   validation: GenomeValidation;
   /** Whether validation is pending */

@@ -4,7 +4,7 @@
  * Handles downloading genome files and reading uploaded genome files.
  */
 
-import { useCallback } from "react";
+import { type ChangeEvent, useCallback } from "react";
 import { downloadGenomeFile, readGenomeFile } from "@/genetics/genome-io";
 
 export interface UseGenomeFileIOOptions {
@@ -22,7 +22,7 @@ export interface UseGenomeFileIOReturn {
   /** Save current genome to file */
   handleSave: () => void;
   /** Load genome from file input event */
-  handleLoad: (event: React.ChangeEvent<HTMLInputElement>) => Promise<void>;
+  handleLoad: (event: ChangeEvent<HTMLInputElement>) => Promise<void>;
 }
 
 /**
@@ -55,7 +55,7 @@ export function useGenomeFileIO({
 
   // Load genome from file
   const handleLoad = useCallback(
-    async (event: React.ChangeEvent<HTMLInputElement>): Promise<void> => {
+    async (event: ChangeEvent<HTMLInputElement>): Promise<void> => {
       const file = event.target.files?.[0];
       if (!file) {
         return;
