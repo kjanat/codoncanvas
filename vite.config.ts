@@ -4,8 +4,7 @@ import react from "@vitejs/plugin-react";
 import { defineConfig } from "vite";
 
 const root: string = import.meta.dirname;
-// biome-ignore lint/suspicious/noDoubleEquals: leave me alone
-const isCI: boolean = import.meta.env.CI == "true";
+const isCI: boolean = process.env.GITHUB_PAGES === "true";
 
 export default defineConfig({
   // GitHub Pages base path - set by deploy.yml from actions/configure-pages
