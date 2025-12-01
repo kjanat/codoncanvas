@@ -60,7 +60,7 @@ export function PreviewModal({
         {/* Content */}
         <div className="grid gap-6 p-6 lg:grid-cols-2">
           <div className="flex flex-col items-center gap-4">
-            <div className="rounded-xl border border-border bg-dark-bg p-4">
+            <div className="rounded-xl border border-border bg-surface-alt p-4">
               <CanvasPreview
                 className="rounded-lg"
                 genome={example.genome}

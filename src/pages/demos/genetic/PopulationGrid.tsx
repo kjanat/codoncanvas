@@ -1,3 +1,4 @@
+import { useEffect, useRef } from "react";
 import { useRenderGenome } from "@/hooks/useRenderGenome";
 import type { Individual } from "./types";
 
@@ -12,15 +13,29 @@ export function PopulationGrid({
   selectedId,
   onSelect,
 }: PopulationGridProps) {
-  const { render } = useRenderGenome();
+  const { render, isDark: _isDark } = useRenderGenome();
+  const canvasRefs = useRef<Map<string, HTMLCanvasElement>>(new Map());
 
-  const renderToCanvas = (genome: string, canvas: HTMLCanvasElement | null) => {
-    if (!canvas) return;
-    const ctx = canvas.getContext("2d");
-    if (!ctx) return;
-    ctx.fillStyle = "white";
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
-    render(genome, canvas);
+  // Re-render all canvases when population or theme changes
+  useEffect(() => {
+    canvasRefs.current.forEach((canvas, id) => {
+      const ind = population.find((p) => p.id === id);
+      if (ind) {
+        render(ind.genome, canvas);
+      }
+    });
+  }, [population, render]);
+
+  const setCanvasRef = (id: string, el: HTMLCanvasElement | null) => {
+    if (el) {
+      canvasRefs.current.set(id, el);
+      const ind = population.find((p) => p.id === id);
+      if (ind) {
+        render(ind.genome, el);
+      }
+    } else {
+      canvasRefs.current.delete(id);
+    }
   };
 
   return (
@@ -39,7 +54,7 @@ export function PopulationGrid({
           <canvas
             className="w-full rounded"
             height={80}
-            ref={(el) => renderToCanvas(ind.genome, el)}
+            ref={(el) => setCanvasRef(ind.id, el)}
             width={80}
           />
           {i < 2 && (

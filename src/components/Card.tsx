@@ -48,7 +48,7 @@ export function Card({
   interactive = false,
   ...props
 }: CardProps) {
-  const baseClasses = "rounded-xl border border-border bg-white shadow-sm";
+  const baseClasses = "rounded-xl border border-border bg-surface shadow-sm";
   const paddingClass = PADDING_CLASSES[padding];
   const hoverClass = hoverable ? "transition-shadow hover:shadow-md" : "";
   const interactiveClass = interactive

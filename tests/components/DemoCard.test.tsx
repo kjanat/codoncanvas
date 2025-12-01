@@ -94,7 +94,7 @@ describe("DemoCard", () => {
       const link = container.querySelector("a");
       expect(link?.className).toContain("rounded-xl");
       expect(link?.className).toContain("border");
-      expect(link?.className).toContain("bg-white");
+      expect(link?.className).toContain("bg-surface");
       expect(link?.className).toContain("shadow-sm");
     });
   });

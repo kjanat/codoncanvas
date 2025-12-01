@@ -77,7 +77,7 @@ export const PlaygroundCanvas = memo(
           <div className="flex flex-1 items-center justify-center p-4">
             <canvas
               aria-label="Genome execution output"
-              className="rounded-lg border border-dark-border bg-surface shadow-lg"
+              className="rounded-lg border border-border bg-surface shadow-lg"
               height={height}
               ref={ref}
               role="img"

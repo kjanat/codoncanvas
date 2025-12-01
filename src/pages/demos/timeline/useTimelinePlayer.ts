@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import { useTheme } from "@/contexts";
 import { Canvas2DRenderer } from "@/core";
 import { CodonLexer } from "@/core/lexer";
 import { CodonVM } from "@/core/vm";
@@ -16,6 +17,9 @@ export function useTimelinePlayer({ canvasRef }: UseTimelinePlayerOptions) {
   const [playbackSpeed, setPlaybackSpeed] = useState(500);
   const [error, setError] = useState<string | null>(null);
 
+  const { resolvedTheme } = useTheme();
+  const isDark = resolvedTheme === "dark";
+
   const intervalRef = useRef<number | null>(null);
   // Store genome in ref for render function to avoid stale closures
   const genomeRef = useRef(genome);
@@ -29,6 +33,7 @@ export function useTimelinePlayer({ canvasRef }: UseTimelinePlayerOptions) {
       const lexer = new CodonLexer();
       const tokens = lexer.tokenize(genome);
       const renderer = new Canvas2DRenderer(canvasRef.current);
+      renderer.setColor(0, 0, isDark ? 100 : 0);
       const vm = new CodonVM(renderer);
       const states = vm.run(tokens);
       setSnapshots(states);
@@ -49,12 +54,13 @@ export function useTimelinePlayer({ canvasRef }: UseTimelinePlayerOptions) {
       const tokens = lexer.tokenize(genomeRef.current);
       const tokensToRun = tokens.slice(0, currentStep + 1);
       const renderer = new Canvas2DRenderer(canvasRef.current);
+      renderer.setColor(0, 0, isDark ? 100 : 0);
       const vm = new CodonVM(renderer);
       vm.run(tokensToRun);
     } catch {
       console.warn(`Failed to render at step ${currentStep}`);
     }
-  }, [currentStep, snapshots, canvasRef]);
+  }, [currentStep, snapshots, canvasRef, isDark]);
 
   // Playback control
   useEffect(() => {

@@ -5,6 +5,8 @@
  * example browsing, user preferences, history, clipboard, and keyboard shortcuts.
  */
 
+// Theme exports moved to @/contexts - re-export for backwards compatibility
+export { type ResolvedTheme, type Theme, useTheme } from "@/contexts";
 export { useAchievements } from "./useAchievements";
 export {
   type CanvasDimensions,
@@ -64,12 +66,6 @@ export {
   type UseSimulationReturn,
   useSimulation,
 } from "./useSimulation";
-export {
-  type ResolvedTheme,
-  type Theme,
-  type UseThemeReturn,
-  useTheme,
-} from "./useTheme";
 export {
   type ExecutionResult,
   type PlaybackState,

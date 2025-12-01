@@ -4,7 +4,7 @@
  * Displays current theme icon and cycles through light/dark/system on click.
  */
 
-import { useTheme } from "@/hooks/useTheme";
+import { useTheme } from "@/contexts";
 
 export function ThemeToggle() {
   const { theme, cycleTheme, ThemeIcon } = useTheme();

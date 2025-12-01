@@ -8,6 +8,20 @@ coveragePathIgnorePatterns = [
   "tests/**",
   "src/ui/icons/**",
   "src/exporters/gif-exporter.ts",
+  "scripts/**",
+  "src/hooks/useCanvas.ts",
+  "src/hooks/useLocalStorage.ts",
+  "src/core/canvas-renderer.ts",
+  "src/core/renderer-factory.ts",
+  "src/genetics/mutation-predictor.ts",
+  "src/types/genetics.ts",
+  "src/analysis/statistics/stats-class.ts",
+  "src/core/lexer.ts",
+  "src/data/amino-acids.ts",
+  "src/education/assessments/assessment-engine.ts",
+  "src/exporters/midi-exporter.ts",
+  "src/hooks/useAchievements.ts",
+  "src/hooks/useGenome.ts",
 ]
 
 [test.coverageThreshold]

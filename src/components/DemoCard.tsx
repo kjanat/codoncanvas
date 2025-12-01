@@ -44,7 +44,7 @@ export function DemoCard({
 }: DemoCardProps): ReactElement {
   return (
     <Link
-      className="group relative overflow-hidden rounded-xl border border-border bg-white p-6 shadow-sm transition-all hover:shadow-lg"
+      className="group relative overflow-hidden rounded-xl border border-border bg-surface p-6 shadow-sm transition-all hover:shadow-lg"
       to={path}
     >
       {/* Gradient accent bar */}

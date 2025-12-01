@@ -4,7 +4,7 @@ import { Suspense } from "react";
 
 import { ErrorBoundary } from "@/components/ErrorBoundary";
 import { Layout } from "@/components/Layout";
-import { ToastProvider } from "@/contexts";
+import { ThemeProvider, ToastProvider } from "@/contexts";
 
 function LoadingFallback() {
   return (
@@ -19,16 +19,18 @@ function LoadingFallback() {
 
 function RootComponent() {
   return (
-    <ToastProvider>
-      <Layout>
-        <ErrorBoundary>
-          <Suspense fallback={<LoadingFallback />}>
-            <Outlet />
-          </Suspense>
-        </ErrorBoundary>
-      </Layout>
-      <TanStackRouterDevtools position="bottom-right" />
-    </ToastProvider>
+    <ThemeProvider>
+      <ToastProvider>
+        <Layout>
+          <ErrorBoundary>
+            <Suspense fallback={<LoadingFallback />}>
+              <Outlet />
+            </Suspense>
+          </ErrorBoundary>
+        </Layout>
+        <TanStackRouterDevtools position="bottom-right" />
+      </ToastProvider>
+    </ThemeProvider>
   );
 }
 

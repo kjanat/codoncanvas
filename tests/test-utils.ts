@@ -5,6 +5,8 @@
  * to reduce duplication and ensure consistent test patterns.
  */
 
+import { createElement, type ReactNode } from "react";
+import { ThemeProvider } from "@/contexts";
 import { MUTATION_TYPES } from "@/genetics/mutations";
 import {
   type MutationType,
@@ -12,6 +14,25 @@ import {
   type RenderMode,
   type VMState,
 } from "@/types";
+
+// ============================================================================
+// React Test Wrappers
+// ============================================================================
+
+/**
+ * Wrapper component that provides ThemeProvider context for hook tests.
+ * Use this with renderHook when testing hooks that depend on ThemeContext.
+ *
+ * @example
+ * ```ts
+ * const { result } = renderHook(() => useRenderGenome(), {
+ *   wrapper: ThemeWrapper,
+ * });
+ * ```
+ */
+export function ThemeWrapper({ children }: { children: ReactNode }) {
+  return createElement(ThemeProvider, null, children);
+}
 
 // ============================================================================
 // Validation Helpers

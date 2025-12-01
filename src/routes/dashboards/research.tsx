@@ -20,7 +20,7 @@ function ResearchDashboardPage() {
           { label: "Mutations Applied", value: "0", change: "+0%" },
         ].map((stat) => (
           <div
-            className="rounded-xl border border-border bg-white p-6 shadow-sm"
+            className="rounded-xl border border-border bg-surface p-6 shadow-sm"
             key={stat.label}
           >
             <p className="text-sm text-text-muted">{stat.label}</p>
@@ -30,7 +30,7 @@ function ResearchDashboardPage() {
         ))}
       </div>
 
-      <div className="rounded-xl border border-border bg-white p-8 text-center shadow-sm">
+      <div className="rounded-xl border border-border bg-surface p-8 text-center shadow-sm">
         <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-primary/10">
           <svg
             aria-hidden="true"

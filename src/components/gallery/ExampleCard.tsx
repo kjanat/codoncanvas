@@ -13,7 +13,7 @@ export function ExampleCard({ example, onClick }: ExampleCardProps) {
       onClick={onClick}
       type="button"
     >
-      <div className="flex aspect-square items-center justify-center bg-dark-bg p-2">
+      <div className="flex aspect-square items-center justify-center bg-surface-alt p-2">
         <CanvasPreview
           className="rounded-md"
           genome={example.genome}

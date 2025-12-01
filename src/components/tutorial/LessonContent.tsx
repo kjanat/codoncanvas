@@ -76,7 +76,7 @@ export function LessonContent({
 
         {/* Right Column */}
         <div>
-          <div className="mb-4 rounded-lg border border-border bg-white p-4">
+          <div className="mb-4 rounded-lg border border-border bg-surface p-4">
             <h3 className="mb-3 font-semibold text-text">Your Code</h3>
             <CodeEditor
               code={code}
@@ -87,9 +87,9 @@ export function LessonContent({
           </div>
 
           {/* Preview */}
-          <div className="rounded-lg border border-border bg-white p-4">
+          <div className="rounded-lg border border-border bg-surface p-4">
             <h3 className="mb-3 font-semibold text-text">Preview</h3>
-            <div className="flex justify-center rounded-lg bg-dark-bg p-4">
+            <div className="flex justify-center rounded-lg bg-surface-alt p-4">
               <CanvasPreview
                 className="rounded-md"
                 genome={code}

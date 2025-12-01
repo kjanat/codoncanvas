@@ -1,3 +1,4 @@
+import { useEffect, useRef } from "react";
 import { Card } from "@/components/Card";
 import { useRenderGenome } from "@/hooks/useRenderGenome";
 
@@ -12,14 +13,15 @@ export function ParentPanel({
   onGenomeChange,
   onGenerateCandidates,
 }: ParentPanelProps) {
-  const { render } = useRenderGenome();
+  const { render, isDark: _isDark } = useRenderGenome();
+  const canvasRef = useRef<HTMLCanvasElement>(null);
 
-  // Render parent genome when canvas is available
-  const handleCanvasRef = (el: HTMLCanvasElement | null) => {
-    if (el) {
-      render(genome, el);
+  // Re-render when genome or theme changes
+  useEffect(() => {
+    if (canvasRef.current) {
+      render(genome, canvasRef.current);
     }
-  };
+  }, [genome, render]);
 
   return (
     <Card className="mb-8">
@@ -37,7 +39,7 @@ export function ParentPanel({
       <div className="grid gap-6 lg:grid-cols-2">
         <div>
           <textarea
-            className="w-full rounded-lg border border-border bg-dark-bg p-3 font-mono text-sm text-dark-text"
+            className="w-full rounded-lg border border-border bg-surface-alt p-3 font-mono text-sm text-dark-text"
             onChange={(e) => onGenomeChange(e.target.value)}
             rows={4}
             spellCheck={false}
@@ -47,9 +49,9 @@ export function ParentPanel({
 
         <div className="flex justify-center">
           <canvas
-            className="rounded-lg border border-border bg-white"
+            className="rounded-lg border border-border bg-surface"
             height={200}
-            ref={handleCanvasRef}
+            ref={canvasRef}
             width={200}
           />
         </div>

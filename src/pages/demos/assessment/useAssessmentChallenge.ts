@@ -24,7 +24,7 @@ export function useAssessmentChallenge() {
 
   const originalCanvasRef = useRef<HTMLCanvasElement>(null);
   const mutatedCanvasRef = useRef<HTMLCanvasElement>(null);
-  const { render } = useRenderGenome();
+  const { render, isDark: _isDark } = useRenderGenome();
 
   const generateNewChallenge = () => {
     const newChallenge = engine.generateChallenge(difficulty);
@@ -34,7 +34,7 @@ export function useAssessmentChallenge() {
     setShowHint(false);
   };
 
-  // Render canvases when challenge changes
+  // Render canvases when challenge or theme changes
   useEffect(() => {
     if (!challenge) return;
     render(challenge.original, originalCanvasRef.current);

@@ -45,7 +45,7 @@ function MutationDemoPage() {
             className={`rounded-lg px-4 py-2 text-sm font-medium transition-colors ${
               selectedMutation === m.type
                 ? "bg-primary text-white"
-                : "bg-white text-text hover:bg-bg-light"
+                : "bg-surface text-text hover:bg-bg-light"
             }`}
             key={m.type}
             onClick={() => setSelectedMutation(m.type)}
@@ -78,7 +78,7 @@ function MutationDemoPage() {
           Original Genome
         </label>
         <textarea
-          className="w-full rounded-lg border border-border bg-white p-3 font-mono text-sm text-text"
+          className="w-full rounded-lg border border-border bg-surface p-3 font-mono text-sm text-text"
           id="original-genome"
           onChange={(e) => setOriginalGenome(e.target.value)}
           rows={2}

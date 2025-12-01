@@ -64,7 +64,7 @@ export function KeyboardShortcutsHelp({
       onKeyDown={handleBackdropKeyDown}
       role="dialog"
     >
-      <div className="mx-4 w-full max-w-md rounded-lg bg-white p-6 shadow-xl">
+      <div className="mx-4 w-full max-w-md rounded-lg bg-surface p-6 shadow-xl">
         <div className="mb-4 flex items-center justify-between">
           <h2 className="text-lg font-semibold text-text" id="shortcuts-title">
             Keyboard Shortcuts

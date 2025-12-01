@@ -40,7 +40,7 @@ export default function TeacherDashboard() {
           </p>
         </div>
         <div className="flex flex-wrap gap-2">
-          <label className="cursor-pointer rounded-lg border border-border bg-white px-4 py-2 text-sm font-medium text-text transition-colors hover:bg-bg-light">
+          <label className="cursor-pointer rounded-lg border border-border bg-surface px-4 py-2 text-sm font-medium text-text transition-colors hover:bg-bg-light">
             Import Files
             <input
               accept=".json"
@@ -51,7 +51,7 @@ export default function TeacherDashboard() {
             />
           </label>
           <button
-            className="rounded-lg border border-border bg-white px-4 py-2 text-sm font-medium text-text transition-colors hover:bg-bg-light"
+            className="rounded-lg border border-border bg-surface px-4 py-2 text-sm font-medium text-text transition-colors hover:bg-bg-light"
             onClick={handleLoadDemoData}
             type="button"
           >
@@ -68,7 +68,7 @@ export default function TeacherDashboard() {
 
       {/* Empty State */}
       {students.length === 0 && (
-        <div className="rounded-xl border border-border bg-white p-12 text-center shadow-sm">
+        <div className="rounded-xl border border-border bg-surface p-12 text-center shadow-sm">
           <p className="text-5xl">X</p>
           <h2 className="mt-4 text-xl font-semibold text-text">
             No Student Data Imported
@@ -150,7 +150,7 @@ export default function TeacherDashboard() {
           <TutorialMatrix stats={stats} students={students} />
 
           {/* Export Actions */}
-          <div className="rounded-xl border border-border bg-white p-6 shadow-sm">
+          <div className="rounded-xl border border-border bg-surface p-6 shadow-sm">
             <h2 className="mb-4 text-lg font-semibold text-text">
               Export Data
             </h2>

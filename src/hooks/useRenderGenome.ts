@@ -6,6 +6,7 @@
  */
 
 import { useRef } from "react";
+import { useTheme } from "@/contexts";
 import { Canvas2DRenderer } from "@/core";
 import { CodonLexer } from "@/core/lexer";
 import { CodonVM } from "@/core/vm";
@@ -27,10 +28,12 @@ export interface UseRenderGenomeReturn {
     genome: string,
     canvas: HTMLCanvasElement | null,
   ) => RenderResult;
-  /** Clear canvas to white */
+  /** Clear canvas */
   clear: (canvas: HTMLCanvasElement | null) => void;
   /** Lexer instance for advanced use */
   lexer: CodonLexer;
+  /** Whether dark mode is active */
+  isDark: boolean;
 }
 
 /**
@@ -58,12 +61,15 @@ export function useRenderGenome(): UseRenderGenomeReturn {
   }
   const lexer = lexerRef.current;
 
-  // Clear canvas to white background
+  const { resolvedTheme } = useTheme();
+  const isDark = resolvedTheme === "dark";
+
+  // Clear canvas
   const clear = (canvas: HTMLCanvasElement | null) => {
     if (!canvas) return;
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
-    ctx.fillStyle = "white";
+    ctx.fillStyle = isDark ? "#2d2d30" : "white";
     ctx.fillRect(0, 0, canvas.width, canvas.height);
   };
 
@@ -79,6 +85,7 @@ export function useRenderGenome(): UseRenderGenomeReturn {
     try {
       const tokens = lexer.tokenize(genome);
       const renderer = new Canvas2DRenderer(canvas);
+      renderer.setColor(0, 0, isDark ? 100 : 0);
       const vm = new CodonVM(renderer);
       vm.run(tokens);
       return { success: true, error: null };
@@ -103,6 +110,7 @@ export function useRenderGenome(): UseRenderGenomeReturn {
     renderWithResult,
     clear,
     lexer,
+    isDark,
   };
 }
 

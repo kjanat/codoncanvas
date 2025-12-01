@@ -1,3 +1,4 @@
+import { useEffect, useRef } from "react";
 import { useRenderGenome } from "@/hooks/useRenderGenome";
 import type { Candidate } from "./types";
 
@@ -7,11 +8,29 @@ interface CandidateGridProps {
 }
 
 export function CandidateGrid({ candidates, onSelect }: CandidateGridProps) {
-  const { render } = useRenderGenome();
+  const { render, isDark: _isDark } = useRenderGenome();
+  const canvasRefs = useRef<Map<number, HTMLCanvasElement>>(new Map());
 
-  const renderToCanvas = (genome: string, canvas: HTMLCanvasElement | null) => {
-    if (!canvas) return;
-    render(genome, canvas);
+  // Re-render all canvases when theme changes
+  useEffect(() => {
+    canvasRefs.current.forEach((canvas, id) => {
+      const candidate = candidates.find((c) => c.id === id);
+      if (candidate) {
+        render(candidate.genome, canvas);
+      }
+    });
+  }, [candidates, render]);
+
+  const setCanvasRef = (id: number, el: HTMLCanvasElement | null) => {
+    if (el) {
+      canvasRefs.current.set(id, el);
+      const candidate = candidates.find((c) => c.id === id);
+      if (candidate) {
+        render(candidate.genome, el);
+      }
+    } else {
+      canvasRefs.current.delete(id);
+    }
   };
 
   return (
@@ -26,15 +45,15 @@ export function CandidateGrid({ candidates, onSelect }: CandidateGridProps) {
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {candidates.map((candidate, i) => (
           <button
-            className="group rounded-xl border border-border bg-white p-4 text-left shadow-sm transition-all hover:border-primary hover:shadow-md"
+            className="group rounded-xl border border-border bg-surface p-4 text-left shadow-sm transition-all hover:border-primary hover:shadow-md"
             key={candidate.id}
             onClick={() => onSelect(candidate)}
             type="button"
           >
             <canvas
-              className="mx-auto rounded-lg border border-border bg-white"
+              className="mx-auto rounded-lg border border-border bg-surface"
               height={180}
-              ref={(el) => renderToCanvas(candidate.genome, el)}
+              ref={(el) => setCanvasRef(candidate.id, el)}
               width={180}
             />
             <div className="mt-3">

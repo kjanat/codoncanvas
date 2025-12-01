@@ -22,7 +22,7 @@ export function StatCard({
 }: StatCardProps): ReactElement {
   if (variant === "dashboard") {
     return (
-      <div className="rounded-xl border border-border bg-white p-6 shadow-sm">
+      <div className="rounded-xl border border-border bg-surface p-6 shadow-sm">
         <p className="text-sm text-text-muted">{label}</p>
         <p
           className={`mt-2 text-3xl font-bold ${danger ? "text-danger" : "text-text"}`}

@@ -3,7 +3,7 @@
  */
 
 import { useEffect, useRef, useState } from "react";
-
+import { useTheme } from "@/contexts";
 import { CodonVM } from "@/core/vm";
 import { downloadGenomeFile, readGenomeFile } from "@/genetics/genome-io";
 import {
@@ -50,6 +50,8 @@ export function usePlayground(): UsePlaygroundResult {
   const [exampleFromUrl] = useState(() => getSearchParam("example"));
 
   // --- External Hooks ---
+
+  const { resolvedTheme } = useTheme();
 
   const [draftGenome, setDraftGenome] = useLocalStorage<string | null>(
     DRAFT_STORAGE_KEY,
@@ -146,6 +148,8 @@ export function usePlayground(): UsePlaygroundResult {
     if (validation.isValid && validation.tokens.length > 0) {
       try {
         const vm = new CodonVM(renderer);
+        // Set default color based on theme
+        renderer.setColor(0, 0, resolvedTheme === "dark" ? 100 : 0);
         const snapshots = vm.run(validation.tokens);
         setStats({
           codons: validation.tokens.length,
@@ -230,6 +234,8 @@ export function usePlayground(): UsePlaygroundResult {
     if (validation.isValid && tokensLength > 0) {
       try {
         const vm = new CodonVM(renderer);
+        // Set default color based on theme (dark text on light bg, light text on dark bg)
+        renderer.setColor(0, 0, resolvedTheme === "dark" ? 100 : 0);
         const snapshots = vm.run(tokensRef.current);
         setStats({
           codons: tokensLength,
@@ -239,7 +245,14 @@ export function usePlayground(): UsePlaygroundResult {
         console.warn("Execution error:", err);
       }
     }
-  }, [isReady, renderer, validation.isValid, tokensLength, clear]);
+  }, [
+    isReady,
+    renderer,
+    validation.isValid,
+    tokensLength,
+    clear,
+    resolvedTheme,
+  ]);
 
   // Load example from URL param
   useEffect(() => {

@@ -3,7 +3,9 @@ import { tanstackRouter } from "@tanstack/router-plugin/vite";
 import react from "@vitejs/plugin-react";
 import { defineConfig } from "vite";
 
-const root = import.meta.dirname;
+const root: string = import.meta.dirname;
+// biome-ignore lint/suspicious/noDoubleEquals: leave me alone
+const isCI: boolean = import.meta.env.CI == "true";
 
 export default defineConfig({
   // GitHub Pages base path - set by deploy.yml from actions/configure-pages
@@ -42,5 +44,10 @@ export default defineConfig({
 
   build: {
     outDir: "dist",
+    sourcemap: isCI,
+  },
+
+  css: {
+    devSourcemap: true,
   },
 });

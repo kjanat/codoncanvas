@@ -5,6 +5,7 @@ import { Card } from "@/components/Card";
 import { ErrorAlert } from "@/components/ErrorAlert";
 import { PageContainer } from "@/components/PageContainer";
 import { PageHeader } from "@/components/PageHeader";
+import { useTheme } from "@/contexts";
 import { Canvas2DRenderer } from "@/core";
 import { CodonLexer } from "@/core/lexer";
 import { CodonVM } from "@/core/vm";
@@ -20,6 +21,9 @@ function TimelineDemoPage() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [isExporting, setIsExporting] = useState(false);
   const [exportProgress, setExportProgress] = useState(0);
+
+  const { resolvedTheme } = useTheme();
+  const isDark = resolvedTheme === "dark";
 
   const player = useTimelinePlayer({ canvasRef });
 
@@ -54,6 +58,7 @@ function TimelineDemoPage() {
         canvas.width = canvasRef.current.width;
         canvas.height = canvasRef.current.height;
         const renderer = new Canvas2DRenderer(canvas);
+        renderer.setColor(0, 0, isDark ? 100 : 0);
         const vm = new CodonVM(renderer);
         vm.run(tokens.slice(0, i + 1));
         frames.push(canvas);
@@ -83,7 +88,7 @@ function TimelineDemoPage() {
         <Card>
           <h2 className="mb-4 text-lg font-semibold text-text">Genome</h2>
           <textarea
-            className="mb-4 w-full rounded-lg border border-border bg-dark-bg p-3 font-mono text-sm text-dark-text"
+            className="mb-4 w-full rounded-lg border border-border bg-surface-alt p-3 font-mono text-sm text-dark-text"
             onChange={(e) => player.setGenome(e.target.value)}
             rows={6}
             spellCheck={false}
@@ -103,9 +108,9 @@ function TimelineDemoPage() {
 
         <Card>
           <h2 className="mb-4 text-lg font-semibold text-text">Output</h2>
-          <div className="flex justify-center">
+          <div className="flex justify-center rounded-lg bg-surface-alt p-4">
             <canvas
-              className="rounded-lg border border-border bg-white"
+              className="rounded-lg border border-dark-border"
               height={300}
               ref={canvasRef}
               width={300}

@@ -5,6 +5,13 @@
  */
 
 export {
+  type ResolvedTheme,
+  type Theme,
+  ThemeProvider,
+  useTheme,
+} from "./ThemeContext";
+
+export {
   type Toast,
   type ToastOptions,
   ToastProvider,

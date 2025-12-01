@@ -56,7 +56,7 @@ export function AchievementToastItem({
     <div
       aria-live="polite"
       className={`
-        pointer-events-auto w-80 rounded-xl border border-primary/20 bg-white p-4 shadow-lg
+        pointer-events-auto w-80 rounded-xl border border-primary/20 bg-surface p-4 shadow-lg
         transition-all duration-300
         ${isExiting ? "translate-x-full opacity-0" : "translate-x-0 opacity-100"}
       `}

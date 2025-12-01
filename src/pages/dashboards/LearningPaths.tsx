@@ -101,7 +101,7 @@ export default function LearningPaths() {
 
           return (
             <div
-              className="group relative overflow-hidden rounded-xl border border-border bg-white shadow-sm transition-all hover:shadow-lg"
+              className="group relative overflow-hidden rounded-xl border border-border bg-surface shadow-sm transition-all hover:shadow-lg"
               key={path.id}
             >
               {/* Gradient header */}
@@ -209,7 +209,7 @@ export default function LearningPaths() {
       </div>
 
       {/* Features section */}
-      <div className="mt-12 rounded-xl border border-border bg-white p-8 shadow-sm">
+      <div className="mt-12 rounded-xl border border-border bg-surface p-8 shadow-sm">
         <h2 className="mb-6 text-center text-xl font-semibold text-text">
           What You'll Learn
         </h2>

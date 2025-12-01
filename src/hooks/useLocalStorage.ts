@@ -61,14 +61,9 @@ export function useLocalStorage<T>(
           // Save to localStorage
           if (typeof window !== "undefined") {
             localStorage.setItem(key, JSON.stringify(valueToStore));
-
-            // Dispatch storage event for other tabs/components
-            window.dispatchEvent(
-              new StorageEvent("storage", {
-                key,
-                newValue: JSON.stringify(valueToStore),
-              }),
-            );
+            // Note: Don't dispatch synthetic storage event - the native storage
+            // event only fires in OTHER tabs, and our listener should only
+            // respond to cross-tab changes. Dispatching here causes loops.
           }
 
           return valueToStore;

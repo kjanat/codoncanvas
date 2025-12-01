@@ -15,7 +15,7 @@ export function EngagementTable({ students }: EngagementTableProps) {
   }
 
   return (
-    <div className="mb-8 rounded-xl border border-border bg-white shadow-sm">
+    <div className="mb-8 rounded-xl border border-border bg-surface shadow-sm">
       <div className="border-b border-border p-6">
         <h2 className="text-lg font-semibold text-text">Student Engagement</h2>
       </div>

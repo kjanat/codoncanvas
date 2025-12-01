@@ -52,7 +52,7 @@ function AssessmentDemoPage() {
 
         <div className="space-y-6 lg:col-span-3">
           {!assessment.challenge ? (
-            <div className="flex h-64 items-center justify-center rounded-xl border border-border bg-white shadow-sm">
+            <div className="flex h-64 items-center justify-center rounded-xl border border-border bg-surface shadow-sm">
               <div className="text-center">
                 <p className="text-lg text-text-muted">
                   Click "Start Challenge" to begin

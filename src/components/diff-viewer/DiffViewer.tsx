@@ -19,7 +19,7 @@ export function DiffViewer({
   const { differences } = comparison;
 
   return (
-    <div className="rounded-xl border border-border bg-white p-6 shadow-sm">
+    <div className="rounded-xl border border-border bg-surface p-6 shadow-sm">
       <div className="mb-4 flex items-center justify-between border-b border-border pb-2">
         <h3 className="text-lg font-semibold text-text">{title}</h3>
         <div className="flex items-center gap-2 text-sm text-text-muted">
@@ -87,7 +87,7 @@ export function DiffViewer({
           <ul className="space-y-1">
             {differences.map((diff) => (
               <li
-                className="text-sm text-text bg-white p-2 rounded border border-border"
+                className="text-sm text-text bg-surface p-2 rounded border border-border"
                 key={diff.position}
               >
                 <span className="font-mono text-gray-500">

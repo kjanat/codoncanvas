@@ -3,7 +3,7 @@
  */
 
 import { type ReactElement, useEffect, useRef, useState } from "react";
-
+import { useTheme } from "@/contexts";
 import { Canvas2DRenderer } from "@/core";
 import { CodonLexer } from "@/core/lexer";
 import { CodonVM } from "@/core/vm";
@@ -17,11 +17,16 @@ interface CanvasPanelProps {
   onRenderError?: (error: Error, genome: string) => void;
 }
 
-function renderGenome(canvas: HTMLCanvasElement, genome: string): Error | null {
+function renderGenome(
+  canvas: HTMLCanvasElement,
+  genome: string,
+  isDark: boolean,
+): Error | null {
   try {
     const lexer = new CodonLexer();
     const tokens = lexer.tokenize(genome);
     const renderer = new Canvas2DRenderer(canvas);
+    renderer.setColor(0, 0, isDark ? 100 : 0);
     const vm = new CodonVM(renderer);
     vm.run(tokens);
     return null;
@@ -39,13 +44,15 @@ export function CanvasPanel({
 }: CanvasPanelProps): ReactElement {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const [renderError, setRenderError] = useState<Error | null>(null);
+  const { resolvedTheme } = useTheme();
+  const isDark = resolvedTheme === "dark";
 
   useEffect(() => {
     const canvas = canvasRef.current;
     if (canvas) {
       canvas.width = width;
       canvas.height = height;
-      const error = renderGenome(canvas, genome);
+      const error = renderGenome(canvas, genome, isDark);
       if (error) {
         setRenderError(error);
         console.warn("Render error:", error);
@@ -54,7 +61,7 @@ export function CanvasPanel({
         setRenderError(null);
       }
     }
-  }, [genome, width, height, onRenderError]);
+  }, [genome, width, height, onRenderError, isDark]);
 
   return (
     <div className="flex flex-col items-center gap-2">
@@ -68,7 +75,7 @@ export function CanvasPanel({
         </div>
       ) : (
         <canvas
-          className="rounded-lg border border-border bg-white"
+          className="rounded-lg border border-border bg-surface"
           height={height}
           ref={canvasRef}
           width={width}

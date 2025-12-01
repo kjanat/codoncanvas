@@ -14,7 +14,7 @@ export function ModuleSidebar({
   const modules = [1, 2, 3];
 
   return (
-    <div className="w-64 shrink-0 overflow-auto border-r border-border bg-white p-4">
+    <div className="w-64 shrink-0 overflow-auto border-r border-border bg-surface p-4">
       <h2 className="mb-4 text-lg font-bold text-text">Lessons</h2>
       {modules.map((moduleNum) => (
         <div className="mb-4" key={moduleNum}>

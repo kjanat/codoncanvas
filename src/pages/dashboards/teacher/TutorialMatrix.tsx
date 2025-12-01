@@ -17,7 +17,7 @@ export function TutorialMatrix({ students, stats }: TutorialMatrixProps) {
 
   if (tutorials.length === 0) {
     return (
-      <div className="mb-8 rounded-xl border border-border bg-white p-8 text-center shadow-sm">
+      <div className="mb-8 rounded-xl border border-border bg-surface p-8 text-center shadow-sm">
         <p className="text-4xl">B</p>
         <h3 className="mt-2 font-semibold text-text">No tutorial data</h3>
         <p className="text-sm text-text-muted">
@@ -28,7 +28,7 @@ export function TutorialMatrix({ students, stats }: TutorialMatrixProps) {
   }
 
   return (
-    <div className="mb-8 rounded-xl border border-border bg-white shadow-sm">
+    <div className="mb-8 rounded-xl border border-border bg-surface shadow-sm">
       <div className="border-b border-border p-6">
         <h2 className="text-lg font-semibold text-text">
           Tutorial Completion Matrix

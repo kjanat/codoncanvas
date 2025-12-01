@@ -32,8 +32,8 @@ export function AtRiskPanel({ students }: AtRiskPanelProps) {
           <div
             className={`rounded-lg p-4 ${
               student.severity === "high"
-                ? "border border-danger/30 bg-white"
-                : "border border-warning/30 bg-white"
+                ? "border border-danger/30 bg-surface"
+                : "border border-warning/30 bg-surface"
             }`}
             key={student.studentId}
           >

@@ -21,7 +21,7 @@
   --color-info: #17a2b8;
 
   /* Neutral Colors */
-  --color-text: #333333;
+  --color-text: #333;
   --color-text-muted: #6c757d;
   --color-text-light: #495057;
   --color-bg-light: #f8f9fa;
@@ -36,18 +36,18 @@
   --color-dark-text: #d4d4d4;
 
   /* Semantic Colors */
-  --color-surface: #ffffff;
+  --color-surface: #fff;
   --color-surface-alt: #f8f9fa;
 
   /* ===== Typography ===== */
   --font-base:
     -apple-system,
-    BlinkMacSystemFont,
+    blinkmacsystemfont,
     "Segoe UI",
-    Roboto,
-    Oxygen,
-    Ubuntu,
-    Cantarell,
+    roboto,
+    oxygen,
+    ubuntu,
+    cantarell,
     sans-serif;
   --font-mono: "Consolas", "Monaco", "Courier New", monospace;
 
@@ -71,6 +71,7 @@
     from {
       opacity: 0;
     }
+
     to {
       opacity: 1;
     }
@@ -81,6 +82,7 @@
       opacity: 0;
       transform: translateY(10px);
     }
+
     to {
       opacity: 1;
       transform: translateY(0);
