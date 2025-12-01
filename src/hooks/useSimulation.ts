@@ -5,7 +5,7 @@
  * Used by GeneticDemo, PopulationDemo, and similar simulation UIs.
  */
 
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 
 /** Simulation state */
 export interface SimulationState {
@@ -139,22 +139,22 @@ export function useSimulation(
   }, [state.isRunning, state.speed]);
 
   // Start simulation
-  const start = () => {
+  const start = useCallback(() => {
     setState((prev) => ({ ...prev, isRunning: true }));
-  };
+  }, []);
 
   // Pause simulation
-  const pause = () => {
+  const pause = useCallback(() => {
     setState((prev) => ({ ...prev, isRunning: false }));
-  };
+  }, []);
 
   // Toggle running state
-  const toggle = () => {
+  const toggle = useCallback(() => {
     setState((prev) => ({ ...prev, isRunning: !prev.isRunning }));
-  };
+  }, []);
 
   // Execute single step
-  const step = () => {
+  const step = useCallback(() => {
     // Only step when not running
     setState((prev) => {
       if (!prev.isRunning) {
@@ -162,10 +162,10 @@ export function useSimulation(
       }
       return prev;
     });
-  };
+  }, []);
 
   // Reset to initial state
-  const reset = () => {
+  const reset = useCallback(() => {
     // Clear interval directly using ref
     if (intervalRef.current !== undefined) {
       clearInterval(intervalRef.current);
@@ -176,17 +176,17 @@ export function useSimulation(
       step: 0,
       speed: initialSpeed,
     });
-  };
+  }, [initialSpeed]);
 
   // Set speed
-  const setSpeed = (speed: number) => {
+  const setSpeed = useCallback((speed: number) => {
     setState((prev) => ({ ...prev, speed }));
-  };
+  }, []);
 
   // Increment step counter
-  const incrementStep = () => {
+  const incrementStep = useCallback(() => {
     setState((prev) => ({ ...prev, step: prev.step + 1 }));
-  };
+  }, []);
 
   return {
     state,
