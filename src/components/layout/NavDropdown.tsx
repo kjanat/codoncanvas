@@ -50,6 +50,8 @@ export function NavDropdown({
   const handleKeyDown = (e: React.KeyboardEvent) => {
     if (e.key === "Escape" && isOpen) {
       setIsOpen(false);
+      // Return focus to trigger button for keyboard users
+      containerRef.current?.querySelector("button")?.focus();
     }
   };
 
@@ -67,6 +69,7 @@ export function NavDropdown({
     <div
       className="group relative"
       onBlur={handleBlur}
+      onKeyDown={handleKeyDown}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
       ref={containerRef}
@@ -77,7 +80,6 @@ export function NavDropdown({
         aria-haspopup="menu"
         className="flex items-center gap-1 rounded-md px-3 py-2 text-sm font-medium text-text hover:bg-bg-light focus:outline-none focus:ring-2 focus:ring-primary"
         onClick={() => setIsOpen(!isOpen)}
-        onKeyDown={handleKeyDown}
         type="button"
       >
         {label}
