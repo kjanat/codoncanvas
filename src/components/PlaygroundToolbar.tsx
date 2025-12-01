@@ -20,7 +20,7 @@ interface NucleotideModeToggleProps {
 }
 
 function NucleotideModeToggle({ mode, onToggle }: NucleotideModeToggleProps) {
-  const info = getNucleotideModeInfo();
+  const info = getNucleotideModeInfo(mode);
 
   return (
     <div className="group relative">

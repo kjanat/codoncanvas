@@ -206,12 +206,15 @@ export interface NucleotideModeInfo {
 }
 
 /**
- * Get educational information about current display mode.
+ * Get educational information about display mode.
  *
+ * @param mode - Mode to get info for (defaults to current global mode)
  * @returns Educational context for UI display
  */
-export function getNucleotideModeInfo(): NucleotideModeInfo {
-  if (currentMode === "DNA") {
+export function getNucleotideModeInfo(
+  mode: NucleotideDisplayMode = currentMode,
+): NucleotideModeInfo {
+  if (mode === "DNA") {
     return {
       mode: "DNA",
       baseLetter: "T",
