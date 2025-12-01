@@ -4,7 +4,7 @@
  * Tests localStorage-backed state persistence.
  */
 
-import { afterEach, describe, expect, test } from "bun:test";
+import { afterEach, describe, expect, spyOn, test } from "bun:test";
 import { act, renderHook } from "@testing-library/react";
 import { useLocalStorage } from "@/hooks/useLocalStorage";
 
@@ -33,6 +33,7 @@ describe("useLocalStorage", () => {
     });
 
     test("handles invalid JSON gracefully", () => {
+      const warnSpy = spyOn(console, "warn").mockImplementation(() => {});
       localStorage.setItem("bad-json", "not valid json {{{");
 
       const { result } = renderHook(() =>
@@ -40,6 +41,11 @@ describe("useLocalStorage", () => {
       );
 
       expect(result.current[0]).toBe("fallback");
+      expect(warnSpy).toHaveBeenCalledWith(
+        expect.stringContaining("Error reading localStorage key"),
+        expect.any(SyntaxError),
+      );
+      warnSpy.mockRestore();
     });
   });
 

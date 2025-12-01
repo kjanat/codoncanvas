@@ -4,7 +4,7 @@
  * Tests VM execution, playback controls, and timeline functionality.
  */
 
-import { describe, expect, test } from "bun:test";
+import { describe, expect, spyOn, test } from "bun:test";
 import { act, renderHook } from "@testing-library/react";
 import { CodonLexer } from "@/core/lexer";
 import { useVM } from "@/hooks/useVM";
@@ -403,6 +403,7 @@ describe("useVM", () => {
 
   describe("renderAtStep", () => {
     test("renders tokens up to specified step without throwing", () => {
+      const warnSpy = spyOn(console, "warn").mockImplementation(() => {});
       const { result } = renderHook(() => useVM());
       const renderer = createMockRenderer();
       const tokens = lexer.tokenize(MULTI_STEP_GENOME);
@@ -412,6 +413,7 @@ describe("useVM", () => {
           result.current.renderAtStep(1, tokens, renderer);
         });
       }).not.toThrow();
+      warnSpy.mockRestore();
     });
   });
 
