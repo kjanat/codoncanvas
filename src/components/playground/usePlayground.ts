@@ -99,7 +99,7 @@ export function usePlayground(): UsePlaygroundResult {
   const [nucleotideMode, setNucleotideMode] = useState<NucleotideDisplayMode>(
     getNucleotideDisplayMode,
   );
-  const [showModeInfo, setShowModeInfo] = useState(false);
+
   const editorRef = useRef<HTMLTextAreaElement>(null);
 
   // Derived state
@@ -356,7 +356,6 @@ export function usePlayground(): UsePlaygroundResult {
       handler: () => {
         setShowReference(false);
         setShowShortcutsHelp(false);
-        setShowModeInfo(false);
       },
       description: "Close panels",
     },
@@ -382,7 +381,6 @@ export function usePlayground(): UsePlaygroundResult {
       nucleotideMode,
       showReference,
       showShortcutsHelp,
-      showModeInfo,
       canUndo,
       canRedo,
       copied,
@@ -404,7 +402,6 @@ export function usePlayground(): UsePlaygroundResult {
       handleToggleNucleotideMode,
       setShowReference,
       setShowShortcutsHelp,
-      setShowModeInfo,
       clear,
     },
     refs: {

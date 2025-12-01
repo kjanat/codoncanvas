@@ -8,7 +8,18 @@ import type { ReactElement } from "react";
 import { forwardRef, memo } from "react";
 import type { ExampleWithKey } from "@/hooks/useExamples";
 
+/** Generate stable keys for concepts that may repeat */
+function getConceptKeys(concepts: string[]): string[] {
+  const counts = new Map<string, number>();
+  return concepts.map((concept) => {
+    const count = counts.get(concept) ?? 0;
+    counts.set(concept, count + 1);
+    return count === 0 ? concept : `${concept}-${count}`;
+  });
+}
+
 function ExampleInfo({ example }: { example: ExampleWithKey }): ReactElement {
+  const conceptKeys = getConceptKeys(example.concepts);
   return (
     <div className="border-t border-dark-border px-4 py-3">
       <h3 className="font-medium text-dark-text">{example.title}</h3>
@@ -17,11 +28,10 @@ function ExampleInfo({ example }: { example: ExampleWithKey }): ReactElement {
         <span className="rounded-full bg-primary/20 px-2 py-0.5 text-xs text-primary">
           {example.difficulty}
         </span>
-        {example.concepts.map((concept, index) => (
+        {example.concepts.map((concept, idx) => (
           <span
             className="rounded-full bg-dark-surface px-2 py-0.5 text-xs text-dark-text"
-            // biome-ignore lint/suspicious/noArrayIndexKey: concepts can repeat, index ensures uniqueness
-            key={`${concept}-${index}`}
+            key={conceptKeys[idx]}
           >
             {concept}
           </span>

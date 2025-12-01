@@ -34,14 +34,12 @@ export function Playground() {
           onRun={actions.runGenome}
           onSave={actions.handleSave}
           onShare={actions.handleShare}
-          onShowModeInfo={actions.setShowModeInfo}
           onToggleNucleotideMode={actions.handleToggleNucleotideMode}
           onToggleReference={() =>
             actions.setShowReference(!state.showReference)
           }
           onUndo={actions.handleUndo}
           selectedExampleKey={state.selectedExampleKey}
-          showModeInfo={state.showModeInfo}
           showReference={state.showReference}
         />
         <PlaygroundEditor

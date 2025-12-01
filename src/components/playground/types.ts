@@ -21,7 +21,6 @@ export interface PlaygroundState {
   nucleotideMode: NucleotideDisplayMode;
   showReference: boolean;
   showShortcutsHelp: boolean;
-  showModeInfo: boolean;
   canUndo: boolean;
   canRedo: boolean;
   copied: boolean;
@@ -44,7 +43,6 @@ export interface PlaygroundActions {
   handleToggleNucleotideMode: () => void;
   setShowReference: (show: boolean) => void;
   setShowShortcutsHelp: (show: boolean) => void;
-  setShowModeInfo: (show: boolean) => void;
   clear: () => void;
 }
 

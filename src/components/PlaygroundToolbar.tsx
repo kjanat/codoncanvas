@@ -16,21 +16,14 @@ import {
 
 interface NucleotideModeToggleProps {
   mode: NucleotideDisplayMode;
-  showInfo: boolean;
   onToggle: () => void;
-  onShowInfo: (show: boolean) => void;
 }
 
-function NucleotideModeToggle({
-  mode,
-  showInfo,
-  onToggle,
-  onShowInfo,
-}: NucleotideModeToggleProps) {
+function NucleotideModeToggle({ mode, onToggle }: NucleotideModeToggleProps) {
   const info = getNucleotideModeInfo();
 
   return (
-    <div className="relative">
+    <div className="group relative">
       <button
         aria-label={`Switch to ${mode === "DNA" ? "RNA" : "DNA"} display mode`}
         className={`rounded-md px-3 py-1.5 text-sm transition-colors ${
@@ -38,28 +31,20 @@ function NucleotideModeToggle({
             ? "bg-accent/10 text-accent"
             : "text-text hover:bg-bg-light"
         }`}
-        onBlur={() => onShowInfo(false)}
         onClick={onToggle}
-        onFocus={() => onShowInfo(true)}
-        onMouseEnter={() => onShowInfo(true)}
-        onMouseLeave={() => onShowInfo(false)}
         title={getModeButtonTooltip(mode)}
         type="button"
       >
         {getModeButtonLabel(mode)}
       </button>
 
-      {showInfo && (
-        <div className="absolute left-0 top-full z-50 mt-1 w-64 rounded-lg border border-border bg-surface p-3 shadow-lg">
-          <div className="mb-2 font-medium text-text">
-            {info.nucleicAcid} Mode
-          </div>
-          <p className="text-xs text-text-muted">{info.description}</p>
-          <p className="mt-2 text-xs text-text-muted">
-            {info.biologicalContext}
-          </p>
+      <div className="invisible absolute left-0 top-full z-50 mt-1 w-64 rounded-lg border border-border bg-surface p-3 opacity-0 shadow-lg transition-all group-hover:visible group-hover:opacity-100 group-focus-within:visible group-focus-within:opacity-100">
+        <div className="mb-2 font-medium text-text">
+          {info.nucleicAcid} Mode
         </div>
-      )}
+        <p className="text-xs text-text-muted">{info.description}</p>
+        <p className="mt-2 text-xs text-text-muted">{info.biologicalContext}</p>
+      </div>
     </div>
   );
 }
@@ -91,12 +76,8 @@ export interface PlaygroundToolbarProps {
   canRedo: boolean;
   /** Current nucleotide display mode */
   nucleotideMode: NucleotideDisplayMode;
-  /** Whether nucleotide mode info is shown */
-  showModeInfo: boolean;
   /** Callback to toggle nucleotide mode */
   onToggleNucleotideMode: () => void;
-  /** Callback to show/hide mode info */
-  onShowModeInfo: (show: boolean) => void;
   /** Whether reference panel is shown */
   showReference: boolean;
   /** Callback to toggle reference panel */
@@ -121,9 +102,7 @@ export const PlaygroundToolbar = memo(function PlaygroundToolbar({
   canUndo,
   canRedo,
   nucleotideMode,
-  showModeInfo,
   onToggleNucleotideMode,
-  onShowModeInfo,
   showReference,
   onToggleReference,
   onRun,
@@ -214,9 +193,7 @@ export const PlaygroundToolbar = memo(function PlaygroundToolbar({
       {/* Nucleotide mode toggle */}
       <NucleotideModeToggle
         mode={nucleotideMode}
-        onShowInfo={onShowModeInfo}
         onToggle={onToggleNucleotideMode}
-        showInfo={showModeInfo}
       />
 
       {/* Reference toggle */}

@@ -29,6 +29,8 @@
 - Max cognitive complexity: 15 | Keep files <300 lines
 - Always use `const`, strict equality (`===`), curly braces for all blocks
 - No `console.log` (use `console.info`/`warn`/`error` only)
+- **Never add linter ignore comments** (e.g., `biome-ignore`, `eslint-disable`)
+  without explicit user permission for each addition
 
 ## Genome Tools
 

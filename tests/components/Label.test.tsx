@@ -19,23 +19,31 @@ describe("Label", () => {
   });
 
   test("shows required indicator when required prop is true", () => {
-    render(<Label required>Required Field</Label>);
+    render(
+      <Label htmlFor="req-field" required>
+        Required Field
+      </Label>,
+    );
     expect(screen.getByText("*")).toBeDefined();
   });
 
   test("does not show required indicator by default", () => {
-    render(<Label>Optional Field</Label>);
+    render(<Label htmlFor="opt-field">Optional Field</Label>);
     expect(screen.queryByText("*")).toBeNull();
   });
 
   test("applies custom className", () => {
-    render(<Label className="custom-class">Label</Label>);
+    render(
+      <Label className="custom-class" htmlFor="custom">
+        Label
+      </Label>,
+    );
     const label = screen.getByText("Label");
     expect(label.className).toContain("custom-class");
   });
 
   test("has default styling classes", () => {
-    render(<Label>Label</Label>);
+    render(<Label htmlFor="styled">Label</Label>);
     const label = screen.getByText("Label");
     expect(label.className).toContain("text-sm");
     expect(label.className).toContain("font-medium");

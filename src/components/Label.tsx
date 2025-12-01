@@ -1,6 +1,8 @@
 import type { ComponentProps } from "react";
 
-interface LabelProps extends ComponentProps<"label"> {
+interface LabelProps extends Omit<ComponentProps<"label">, "htmlFor"> {
+  /** ID of the associated form control */
+  htmlFor: string;
   /** Whether the associated field is required */
   required?: boolean;
 }
@@ -10,15 +12,16 @@ interface LabelProps extends ComponentProps<"label"> {
  * Always pass htmlFor to associate with an input element.
  */
 export function Label({
+  htmlFor,
   children,
   className = "",
   required,
   ...props
 }: LabelProps) {
   return (
-    // biome-ignore lint/a11y/noLabelWithoutControl: htmlFor passed via spread props
     <label
       className={`mb-1 block text-sm font-medium text-text ${className}`}
+      htmlFor={htmlFor}
       {...props}
     >
       {children}
