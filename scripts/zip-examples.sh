@@ -21,7 +21,7 @@ cp -r examples/* "${TEMP_DIR}/"
 cp codon-chart.svg "${TEMP_DIR}/"
 
 # Copy quick start from student handouts (extract relevant section)
-cat > "${TEMP_DIR}/QUICK_START.txt" << 'EOF'
+cat >"${TEMP_DIR}/QUICK_START.txt" <<'EOF'
 CodonCanvas Quick Start
 =======================
 
@@ -55,7 +55,7 @@ EOF
 
 # Create distribution info
 BUILD_DATE=$(date +%Y-%m-%d) || true
-cat > "${TEMP_DIR}/VERSION.txt" << EOF
+cat >"${TEMP_DIR}/VERSION.txt" <<EOF
 CodonCanvas Example Programs
 Version: 1.0.0
 Date: ${BUILD_DATE}
@@ -72,7 +72,7 @@ Docs: https://github.com/codoncanvas/codoncanvas
 EOF
 
 # Create ZIP
-zip -r "${OUTPUT}" "${TEMP_DIR}" > /dev/null
+zip -r "${OUTPUT}" "${TEMP_DIR}" >/dev/null
 
 # Cleanup
 rm -rf "${TEMP_DIR}"
