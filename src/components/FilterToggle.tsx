@@ -1,4 +1,4 @@
-import type { ReactElement, ReactNode } from "react";
+import type { HTMLAttributes, ReactElement, ReactNode } from "react";
 import { useId } from "react";
 
 interface FilterOption<T extends string> {
@@ -6,7 +6,8 @@ interface FilterOption<T extends string> {
   label: ReactNode;
 }
 
-interface FilterToggleProps<T extends string> {
+interface FilterToggleProps<T extends string>
+  extends Omit<HTMLAttributes<HTMLDivElement>, "role" | "onSelect"> {
   /** Available filter options */
   options: FilterOption<T>[];
   /** Currently selected value */
@@ -19,8 +20,6 @@ interface FilterToggleProps<T extends string> {
   size?: "sm" | "md";
   /** Optional radio group name (defaults to unique id per instance) */
   name?: string;
-  /** Custom class for container */
-  className?: string;
 }
 
 /**
@@ -34,6 +33,7 @@ export function FilterToggle<T extends string>({
   size = "md",
   name,
   className = "",
+  ...rest
 }: FilterToggleProps<T>): ReactElement {
   const generatedId = useId();
   const groupName = name ?? `filter-toggle-${generatedId}`;
@@ -63,7 +63,11 @@ export function FilterToggle<T extends string>({
   };
 
   return (
-    <div className={`flex flex-wrap gap-2 ${className}`} role="radiogroup">
+    <div
+      {...rest}
+      className={`flex flex-wrap gap-2 ${className}`}
+      role="radiogroup"
+    >
       {options.map((opt) => (
         <label
           className={`${getButtonClasses(selected === opt.value)} focus-within:ring-2 focus-within:ring-primary focus-within:ring-offset-2`}
