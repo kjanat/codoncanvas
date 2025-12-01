@@ -47,7 +47,7 @@ export function NavDropdown({
   const [isOpen, setIsOpen] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
 
-  const handleKeyDown = (e: React.KeyboardEvent) => {
+  const handleKeyDown = (e: React.KeyboardEvent): void => {
     if (e.key === "Escape" && isOpen) {
       setIsOpen(false);
       // Return focus to trigger button for keyboard users
@@ -55,15 +55,15 @@ export function NavDropdown({
     }
   };
 
-  const handleBlur = (e: React.FocusEvent) => {
+  const handleBlur = (e: React.FocusEvent): void => {
     // Close dropdown when focus leaves the container entirely
     if (!containerRef.current?.contains(e.relatedTarget as Node)) {
       setIsOpen(false);
     }
   };
 
-  const handleMouseEnter = () => setIsOpen(true);
-  const handleMouseLeave = () => setIsOpen(false);
+  const handleMouseEnter = (): void => setIsOpen(true);
+  const handleMouseLeave = (): void => setIsOpen(false);
 
   return (
     <div
