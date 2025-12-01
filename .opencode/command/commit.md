@@ -48,3 +48,6 @@ WHAT was done.
 
 do not do generic messages like "improved agent experience" be very specific
 about what user facing changes were made
+
+After the single commit that requested a push,
+do not push again, ever, without explicit re-request to do so.
