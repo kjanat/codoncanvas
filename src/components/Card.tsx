@@ -60,11 +60,14 @@ export function Card({
   onKeyDown,
   ...props
 }: CardProps): ReactElement {
+  // Set role="button" and tabIndex=0 when interactive or has onClick for a11y
+  const needsButtonRole = interactive || !!onClick;
+
   const baseClasses = "rounded-xl border border-border bg-surface shadow-sm";
   const paddingClass = PADDING_CLASSES[padding];
   const hoverClass =
-    hoverable && !interactive ? "transition-shadow hover:shadow-md" : "";
-  const interactiveClass = interactive
+    hoverable && !needsButtonRole ? "transition-shadow hover:shadow-md" : "";
+  const interactiveClass = needsButtonRole
     ? "cursor-pointer transition-all hover:border-primary hover:shadow-md"
     : "";
 
@@ -77,9 +80,6 @@ export function Card({
   ]
     .filter(Boolean)
     .join(" ");
-
-  // Set role="button" and tabIndex=0 when interactive or has onClick for a11y
-  const needsButtonRole = interactive || onClick;
 
   // Handle keyboard activation for interactive cards (WCAG 2.1 compliance)
   const handleKeyDown =
