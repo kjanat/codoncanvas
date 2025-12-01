@@ -4,9 +4,10 @@
  * Displays current theme icon and cycles through light/dark/system on click.
  */
 
+import type { ReactElement } from "react";
 import { useTheme } from "@/contexts";
 
-export function ThemeToggle() {
+export function ThemeToggle(): ReactElement {
   const { theme, cycleTheme, ThemeIcon } = useTheme();
 
   return (

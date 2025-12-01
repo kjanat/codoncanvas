@@ -194,7 +194,10 @@ describe("ResearchMetrics", () => {
     test("creates new ResearchSession with unique sessionId", () => {
       const metrics = new ResearchMetrics({ enabled: true });
       const session = metrics.getCurrentSession();
-      expect(session?.sessionId).toMatch(/^session_\d+_/);
+      // Session ID now uses crypto.randomUUID() format
+      expect(session?.sessionId).toMatch(
+        /^session_[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/,
+      );
       metrics.disable();
     });
 
@@ -945,19 +948,18 @@ describe("ResearchMetrics", () => {
 
   // Session ID Generation
   describe("generateSessionId (private, tested via startSession)", () => {
-    test("generates unique ID with format: session_{timestamp}_{random}", () => {
+    test("generates unique ID with UUID format", () => {
       const metrics = new ResearchMetrics({ enabled: true });
       const session = metrics.getCurrentSession();
-      expect(session?.sessionId).toMatch(/^session_\d+_[a-z0-9]+$/);
+      // Session ID now uses crypto.randomUUID() or fallback format
+      expect(session?.sessionId).toMatch(/^session_[0-9a-f-]+$/);
       metrics.disable();
     });
 
-    test("random portion is 9 characters of base36", () => {
+    test("session ID starts with 'session_' prefix", () => {
       const metrics = new ResearchMetrics({ enabled: true });
       const session = metrics.getCurrentSession();
-      const parts = session?.sessionId.split("_") || [];
-      expect(parts.length).toBe(3);
-      expect(parts[2].length).toBe(9);
+      expect(session?.sessionId).toStartWith("session_");
       metrics.disable();
     });
 

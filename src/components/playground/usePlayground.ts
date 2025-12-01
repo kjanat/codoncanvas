@@ -254,16 +254,16 @@ export function usePlayground(): UsePlaygroundResult {
     resolvedTheme,
   ]);
 
-  // Load example from URL param
+  // Load example from URL param (only if no shared genome takes priority)
   useEffect(() => {
-    if (exampleFromUrl) {
+    if (exampleFromUrl && !sharedGenome) {
       const example = getExample(exampleFromUrl);
       if (example) {
         selectExample(exampleFromUrl);
         setGenome(example.genome);
       }
     }
-  }, [exampleFromUrl, getExample, selectExample, setGenome]);
+  }, [exampleFromUrl, sharedGenome, getExample, selectExample, setGenome]);
 
   // --- Keyboard Shortcuts ---
 

@@ -5,6 +5,7 @@
  * Automatically handles errors gracefully.
  */
 
+import type { ReactElement } from "react";
 import { memo, useEffect, useRef } from "react";
 import { type ResolvedTheme, useTheme } from "@/contexts";
 import { Canvas2DRenderer } from "@/core";
@@ -39,7 +40,7 @@ function renderGenome(
     renderer.setColor(0, 0, isDark ? 100 : 0);
     const vm = new CodonVM(renderer);
     vm.run(tokens);
-  } catch {
+  } catch (_err) {
     // Clear canvas on error
     const ctx = canvas.getContext("2d");
     if (ctx) {
@@ -63,7 +64,7 @@ export const CanvasPreview = memo(function CanvasPreview({
   height = 150,
   className = "",
   theme: themeProp,
-}: CanvasPreviewProps) {
+}: CanvasPreviewProps): ReactElement {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const { resolvedTheme } = useTheme();
   // Use prop if provided, otherwise use hook value

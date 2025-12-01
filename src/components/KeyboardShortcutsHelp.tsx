@@ -2,6 +2,11 @@
  * KeyboardShortcutsHelp - Modal overlay showing available keyboard shortcuts
  */
 
+import type {
+  MouseEvent,
+  ReactElement,
+  KeyboardEvent as ReactKeyboardEvent,
+} from "react";
 import { useEffect } from "react";
 import {
   formatShortcut,
@@ -15,11 +20,17 @@ interface KeyboardShortcutsHelpProps {
   onClose: () => void;
 }
 
+type ShortcutWithDescription = KeyboardShortcut & { description: string };
+
+function hasDescription(s: KeyboardShortcut): s is ShortcutWithDescription {
+  return typeof s.description === "string";
+}
+
 export function KeyboardShortcutsHelp({
   shortcuts,
   isOpen,
   onClose,
-}: KeyboardShortcutsHelpProps) {
+}: KeyboardShortcutsHelpProps): ReactElement | null {
   // Close on Escape or ?
   useEffect(() => {
     if (!isOpen) {
@@ -41,15 +52,15 @@ export function KeyboardShortcutsHelp({
     return null;
   }
 
-  const shortcutsWithDescriptions = shortcuts.filter((s) => s.description);
+  const shortcutsWithDescriptions = shortcuts.filter(hasDescription);
 
-  function handleBackdropClick(e: React.MouseEvent<HTMLDivElement>): void {
+  function handleBackdropClick(e: MouseEvent<HTMLDivElement>): void {
     if (e.target === e.currentTarget) {
       onClose();
     }
   }
 
-  function handleBackdropKeyDown(e: React.KeyboardEvent<HTMLDivElement>): void {
+  function handleBackdropKeyDown(e: ReactKeyboardEvent<HTMLDivElement>): void {
     if (e.key === "Escape") {
       onClose();
     }

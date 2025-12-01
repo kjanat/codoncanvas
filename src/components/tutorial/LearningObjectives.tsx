@@ -1,8 +1,12 @@
+import type { ReactElement } from "react";
+
 interface LearningObjectivesProps {
   objectives: string[];
 }
 
-export function LearningObjectives({ objectives }: LearningObjectivesProps) {
+export function LearningObjectives({
+  objectives,
+}: LearningObjectivesProps): ReactElement {
   return (
     <div className="rounded-lg border border-border bg-surface p-4">
       <h3 className="mb-3 font-semibold text-text">Learning Objectives</h3>

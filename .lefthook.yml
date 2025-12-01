@@ -13,7 +13,8 @@ pre-commit:
       run: bunx dprint fmt --staged --config .dprint.jsonc --config-discovery=false --allow-no-files
       stage_fixed: true
     format-css:
-      run: bun run stylelint '**/*.css' --fix
+      glob: "*.css"
+      run: bun run stylelint {staged_files} --fix
       stage_fixed: true
 
 pre-push:

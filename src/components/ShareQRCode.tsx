@@ -1,15 +1,16 @@
-import type React from "react";
+import type { ReactElement } from "react";
 import QRCode from "react-qr-code";
 
 interface ShareQRCodeProps {
   value: string;
 }
 
-export const ShareQRCode: React.FC<ShareQRCodeProps> = ({ value }) => {
+export function ShareQRCode({ value }: ShareQRCodeProps): ReactElement {
   return (
     <div className="flex flex-col items-center justify-center p-4">
       <div className="rounded-lg bg-surface p-4">
         <QRCode
+          aria-hidden="true"
           size={256}
           style={{ height: "auto", maxWidth: "100%", width: "100%" }}
           value={value}
@@ -21,4 +22,4 @@ export const ShareQRCode: React.FC<ShareQRCodeProps> = ({ value }) => {
       </p>
     </div>
   );
-};
+}

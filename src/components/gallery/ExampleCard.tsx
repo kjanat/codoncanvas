@@ -1,3 +1,4 @@
+import type { ReactElement } from "react";
 import { CanvasPreview } from "@/components/CanvasPreview";
 import type { ExampleWithName } from "./types";
 
@@ -6,7 +7,10 @@ interface ExampleCardProps {
   onClick: () => void;
 }
 
-export function ExampleCard({ example, onClick }: ExampleCardProps) {
+export function ExampleCard({
+  example,
+  onClick,
+}: ExampleCardProps): ReactElement {
   return (
     <button
       className="group overflow-hidden rounded-xl border border-border bg-surface shadow-sm transition-all hover:shadow-md text-left w-full"

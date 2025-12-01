@@ -5,18 +5,7 @@
  * Used throughout the application for content sections.
  */
 
-import type { HTMLAttributes, ReactNode } from "react";
-
-export interface CardProps extends HTMLAttributes<HTMLDivElement> {
-  /** Card content */
-  children: ReactNode;
-  /** Additional padding variant */
-  padding?: "sm" | "md" | "lg" | "xl";
-  /** Whether to apply hover effect */
-  hoverable?: boolean;
-  /** Whether card is interactive (button-like) */
-  interactive?: boolean;
-}
+import type { HTMLAttributes, ReactElement, ReactNode } from "react";
 
 const PADDING_CLASSES = {
   sm: "p-4",
@@ -24,6 +13,19 @@ const PADDING_CLASSES = {
   lg: "p-8",
   xl: "p-12",
 } as const;
+
+type PaddingSize = keyof typeof PADDING_CLASSES;
+
+export interface CardProps extends HTMLAttributes<HTMLDivElement> {
+  /** Card content */
+  children: ReactNode;
+  /** Additional padding variant */
+  padding?: PaddingSize;
+  /** Whether to apply hover effect */
+  hoverable?: boolean;
+  /** Whether card is interactive (button-like) */
+  interactive?: boolean;
+}
 
 /**
  * Card container with consistent styling.
@@ -46,11 +48,14 @@ export function Card({
   padding = "md",
   hoverable = false,
   interactive = false,
+  role,
+  tabIndex,
   ...props
-}: CardProps) {
+}: CardProps): ReactElement {
   const baseClasses = "rounded-xl border border-border bg-surface shadow-sm";
   const paddingClass = PADDING_CLASSES[padding];
-  const hoverClass = hoverable ? "transition-shadow hover:shadow-md" : "";
+  const hoverClass =
+    hoverable && !interactive ? "transition-shadow hover:shadow-md" : "";
   const interactiveClass = interactive
     ? "cursor-pointer transition-all hover:border-primary hover:shadow-md"
     : "";
@@ -65,8 +70,12 @@ export function Card({
     .filter(Boolean)
     .join(" ");
 
+  const interactiveProps = interactive
+    ? { role: role ?? "button", tabIndex: tabIndex ?? 0 }
+    : { role, tabIndex };
+
   return (
-    <div className={combinedClasses} {...props}>
+    <div className={combinedClasses} {...interactiveProps} {...props}>
       {children}
     </div>
   );
@@ -84,7 +93,11 @@ export interface CardHeaderProps {
 /**
  * Card header with title, optional subtitle and action.
  */
-export function CardHeader({ title, subtitle, action }: CardHeaderProps) {
+export function CardHeader({
+  title,
+  subtitle,
+  action,
+}: CardHeaderProps): ReactElement {
   return (
     <div className="mb-4 flex items-center justify-between">
       <div>

@@ -364,6 +364,13 @@ export class ResearchMetrics {
   }
 
   private generateSessionId(): string {
-    return `session_${Date.now()}_${Math.random().toString(36).slice(2, 11)}`;
+    // Use crypto.randomUUID() for cryptographically secure session IDs
+    if (typeof crypto !== "undefined" && crypto.randomUUID) {
+      return `session_${crypto.randomUUID()}`;
+    }
+    // Fallback for older browsers - use crypto.getRandomValues
+    const array = new Uint32Array(2);
+    crypto.getRandomValues(array);
+    return `session_${Date.now()}_${array[0].toString(16)}${array[1].toString(16)}`;
   }
 }

@@ -4,10 +4,11 @@
  * Displays the canvas for genome execution output with clear and export controls.
  */
 
+import type { ReactElement } from "react";
 import { forwardRef, memo } from "react";
 import type { ExampleWithKey } from "@/hooks/useExamples";
 
-function ExampleInfo({ example }: { example: ExampleWithKey }) {
+function ExampleInfo({ example }: { example: ExampleWithKey }): ReactElement {
   return (
     <div className="border-t border-dark-border px-4 py-3">
       <h3 className="font-medium text-dark-text">{example.title}</h3>
@@ -16,10 +17,11 @@ function ExampleInfo({ example }: { example: ExampleWithKey }) {
         <span className="rounded-full bg-primary/20 px-2 py-0.5 text-xs text-primary">
           {example.difficulty}
         </span>
-        {example.concepts.map((concept) => (
+        {example.concepts.map((concept, index) => (
           <span
             className="rounded-full bg-dark-surface px-2 py-0.5 text-xs text-dark-text"
-            key={concept}
+            // biome-ignore lint/suspicious/noArrayIndexKey: concepts can repeat, index ensures uniqueness
+            key={`${concept}-${index}`}
           >
             {concept}
           </span>
