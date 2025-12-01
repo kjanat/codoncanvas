@@ -17,6 +17,8 @@ export interface ProgressBarProps {
   className?: string;
   /** Background color class */
   bgClass?: string;
+  /** Accessible label for screen readers */
+  ariaLabel?: string;
 }
 
 export function ProgressBar({
@@ -26,6 +28,7 @@ export function ProgressBar({
   gradientClass,
   className = "",
   bgClass = "bg-border",
+  ariaLabel,
 }: ProgressBarProps): ReactElement {
   const sizeClasses = {
     sm: "h-1.5",
@@ -42,6 +45,7 @@ export function ProgressBar({
 
   return (
     <div
+      aria-label={ariaLabel}
       aria-valuemax={100}
       aria-valuemin={0}
       aria-valuenow={clampedValue}

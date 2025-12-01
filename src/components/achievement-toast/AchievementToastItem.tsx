@@ -59,14 +59,13 @@ export function AchievementToastItem({
   const { achievement } = notification;
 
   return (
-    <div
+    <output
       aria-live="polite"
       className={`
         pointer-events-auto w-80 rounded-xl border border-primary/20 bg-surface p-4 shadow-lg
         transition-all duration-300
         ${isExiting ? "translate-x-full opacity-0" : "translate-x-0 opacity-100"}
       `}
-      role="alert"
       style={{
         animation: isExiting ? undefined : "slide-in-right 0.3s ease-out",
       }}
@@ -93,6 +92,6 @@ export function AchievementToastItem({
           <CloseIcon />
         </button>
       </div>
-    </div>
+    </output>
   );
 }

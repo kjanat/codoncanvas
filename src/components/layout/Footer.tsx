@@ -4,22 +4,15 @@
  * Static footer with copyright and creator attribution.
  */
 
+import type { ReactElement } from "react";
 import { siteConfig } from "@/config";
 
-/**
- * Application footer component.
- * Contains copyright notice and creator link.
- */
 export interface FooterProps {
   authorName: string;
   githubUrl?: string;
 }
 
-/**
- * Application footer component.
- * Contains copyright notice and creator link.
- */
-export function Footer({ authorName, githubUrl }: FooterProps) {
+export function Footer({ authorName, githubUrl }: FooterProps): ReactElement {
   return (
     <footer className="border-t border-border bg-surface py-6">
       <div className="mx-auto max-w-7xl px-4 text-center text-sm text-text-muted">

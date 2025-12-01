@@ -167,7 +167,7 @@ export class ResearchMetrics {
     try {
       const stored = localStorage.getItem(this.STORAGE_KEY);
       return stored ? JSON.parse(stored) : [];
-    } catch (_error) {
+    } catch {
       return [];
     }
   }
@@ -344,8 +344,8 @@ export class ResearchMetrics {
       }
 
       localStorage.setItem(this.STORAGE_KEY, JSON.stringify(sessions));
-    } catch (_error) {
-      // Save failed - fail silently
+    } catch (error) {
+      console.error("Failed to save research session", error);
     }
   }
 

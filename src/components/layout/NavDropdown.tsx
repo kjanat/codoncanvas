@@ -5,7 +5,7 @@
  */
 
 import { Link } from "@tanstack/react-router";
-import type { ReactElement } from "react";
+import { type ReactElement, useRef, useState } from "react";
 
 import { ChevronDownIcon } from "@/ui/icons";
 
@@ -44,11 +44,40 @@ export function NavDropdown({
   label,
   sections,
 }: NavDropdownProps): ReactElement {
+  const [isOpen, setIsOpen] = useState(false);
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === "Escape" && isOpen) {
+      setIsOpen(false);
+    }
+  };
+
+  const handleBlur = (e: React.FocusEvent) => {
+    // Close dropdown when focus leaves the container entirely
+    if (!containerRef.current?.contains(e.relatedTarget as Node)) {
+      setIsOpen(false);
+    }
+  };
+
+  const handleMouseEnter = () => setIsOpen(true);
+  const handleMouseLeave = () => setIsOpen(false);
+
   return (
-    <div className="group relative">
+    <div
+      className="group relative"
+      onBlur={handleBlur}
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
+      ref={containerRef}
+      role="none"
+    >
       <button
+        aria-expanded={isOpen}
         aria-haspopup="menu"
-        className="flex items-center gap-1 rounded-md px-3 py-2 text-sm font-medium text-text hover:bg-bg-light"
+        className="flex items-center gap-1 rounded-md px-3 py-2 text-sm font-medium text-text hover:bg-bg-light focus:outline-none focus:ring-2 focus:ring-primary"
+        onClick={() => setIsOpen(!isOpen)}
+        onKeyDown={handleKeyDown}
         type="button"
       >
         {label}
@@ -56,7 +85,7 @@ export function NavDropdown({
       </button>
 
       <div
-        className="invisible absolute right-0 top-full z-50 mt-1 w-56 rounded-lg border border-border bg-surface p-2 opacity-0 shadow-lg transition-all group-hover:visible group-hover:opacity-100 group-focus-within:visible group-focus-within:opacity-100"
+        className={`absolute right-0 top-full z-50 mt-1 w-56 rounded-lg border border-border bg-surface p-2 shadow-lg transition-all ${isOpen ? "visible opacity-100" : "invisible opacity-0"}`}
         role="menu"
       >
         {sections.map((section, index) => (

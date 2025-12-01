@@ -5,7 +5,13 @@
  * Used throughout the application for content sections.
  */
 
-import type { HTMLAttributes, ReactElement, ReactNode } from "react";
+import type {
+  HTMLAttributes,
+  KeyboardEvent,
+  MouseEvent,
+  ReactElement,
+  ReactNode,
+} from "react";
 
 const PADDING_CLASSES = {
   sm: "p-4",
@@ -50,6 +56,8 @@ export function Card({
   interactive = false,
   role,
   tabIndex,
+  onClick,
+  onKeyDown,
   ...props
 }: CardProps): ReactElement {
   const baseClasses = "rounded-xl border border-border bg-surface shadow-sm";
@@ -70,9 +78,29 @@ export function Card({
     .filter(Boolean)
     .join(" ");
 
-  const interactiveProps = interactive
-    ? { role: role ?? "button", tabIndex: tabIndex ?? 0 }
-    : { role, tabIndex };
+  // Set role="button" and tabIndex=0 when interactive or has onClick for a11y
+  const needsButtonRole = interactive || onClick;
+
+  // Handle keyboard activation for interactive cards (WCAG 2.1 compliance)
+  const handleKeyDown =
+    needsButtonRole && onClick
+      ? (event: KeyboardEvent<HTMLDivElement>) => {
+          if (event.key === "Enter" || event.key === " ") {
+            event.preventDefault();
+            onClick(event as unknown as MouseEvent<HTMLDivElement>);
+          }
+          onKeyDown?.(event);
+        }
+      : onKeyDown;
+
+  const interactiveProps = needsButtonRole
+    ? {
+        role: role ?? "button",
+        tabIndex: tabIndex ?? 0,
+        onClick,
+        onKeyDown: handleKeyDown,
+      }
+    : { role, tabIndex, onClick, onKeyDown };
 
   return (
     <div className={combinedClasses} {...interactiveProps} {...props}>
@@ -83,9 +111,9 @@ export function Card({
 
 export interface CardHeaderProps {
   /** Card title */
-  title: string;
+  title: ReactNode;
   /** Optional subtitle */
-  subtitle?: string;
+  subtitle?: ReactNode;
   /** Optional right-side action */
   action?: ReactNode;
 }

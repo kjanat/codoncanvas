@@ -40,6 +40,15 @@ function decodeGenome(encoded: string): string | null {
   }
 }
 
+/** Synchronously get shared genome from current URL (for initial state) */
+function getSharedGenomeFromUrl(): string | null {
+  if (typeof window === "undefined") return null;
+  const url = new URL(window.location.href);
+  const encoded = url.searchParams.get(GENOME_PARAM);
+  if (!encoded) return null;
+  return decodeGenome(encoded);
+}
+
 /** Options for useShareUrl hook */
 export interface UseShareUrlOptions {
   /** Auto-load genome from URL on mount (default: true) */
@@ -85,20 +94,23 @@ export function useShareUrl(
   options: UseShareUrlOptions = {},
 ): UseShareUrlReturn {
   const { autoLoad = true } = options;
-  const [sharedGenome, setSharedGenome] = useState<string | null>(null);
 
-  // Load genome from URL on mount
+  // Synchronous initialization ensures sharedGenome is available on first render
+  // This fixes timing issue where initialGenome was calculated before async decode
+  const [sharedGenome, setSharedGenome] = useState<string | null>(() =>
+    autoLoad ? getSharedGenomeFromUrl() : null,
+  );
+
+  // Handle URL changes after mount (browser back/forward navigation)
   useEffect(() => {
     if (!autoLoad) return;
 
-    const url = new URL(window.location.href);
-    const encoded = url.searchParams.get(GENOME_PARAM);
-    if (encoded) {
-      const decoded = decodeGenome(encoded);
-      if (decoded) {
-        setSharedGenome(decoded);
-      }
-    }
+    const handlePopState = () => {
+      setSharedGenome(getSharedGenomeFromUrl());
+    };
+
+    window.addEventListener("popstate", handlePopState);
+    return () => window.removeEventListener("popstate", handlePopState);
   }, [autoLoad]);
 
   // Generate shareable URL for a genome

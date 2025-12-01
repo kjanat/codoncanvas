@@ -1,4 +1,4 @@
-import type { ComponentProps } from "react";
+import type { ComponentProps, ReactElement } from "react";
 
 interface LabelProps extends Omit<ComponentProps<"label">, "htmlFor"> {
   /** ID of the associated form control */
@@ -17,7 +17,7 @@ export function Label({
   className = "",
   required,
   ...props
-}: LabelProps) {
+}: LabelProps): ReactElement {
   return (
     <label
       className={`mb-1 block text-sm font-medium text-text ${className}`}
