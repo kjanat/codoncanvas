@@ -2,10 +2,10 @@
  * usePlayground - Main orchestration hook for the Playground component
  *
  * Composes focused sub-hooks for URL handling, execution, file I/O,
- * and display mode management.
+ * display mode management, panels, and keyboard shortcuts.
  */
 
-import { useRef, useState } from "react";
+import { useRef } from "react";
 import { useTheme } from "@/contexts";
 import {
   useCanvas,
@@ -15,13 +15,13 @@ import {
   useGenomeExecution,
   useGenomeFileIO,
   useHistory,
-  useKeyboardShortcuts,
   useLocalStorage,
   useNucleotideDisplay,
   usePlaygroundSearch,
 } from "@/hooks";
-import type { KeyboardShortcut } from "@/hooks/useKeyboardShortcuts";
 import type { PlaygroundStats, UsePlaygroundResult } from "./types";
+import { usePlaygroundPanels } from "./usePlaygroundPanels";
+import { usePlaygroundShortcuts } from "./usePlaygroundShortcuts";
 
 const DRAFT_STORAGE_KEY = "codoncanvas-draft-genome";
 const DEFAULT_GENOME = "ATG GAA AAT GGA TAA";
@@ -96,8 +96,15 @@ export function usePlayground(): UsePlaygroundResult {
   });
 
   // --- UI State ---
-  const [showReference, setShowReference] = useState(false);
-  const [showShortcutsHelp, setShowShortcutsHelp] = useState(false);
+  const {
+    showReference,
+    showShortcutsHelp,
+    toggleReference,
+    toggleShortcutsHelp,
+    closeAllPanels,
+    setShowReference,
+    setShowShortcutsHelp,
+  } = usePlaygroundPanels();
   const editorRef = useRef<HTMLTextAreaElement>(null);
 
   // Derived state
@@ -213,89 +220,18 @@ export function usePlayground(): UsePlaygroundResult {
 
   // --- Keyboard Shortcuts ---
 
-  const shortcuts: KeyboardShortcut[] = [
-    {
-      key: "s",
-      ctrl: true,
-      handler: handleSave,
-      description: "Save genome",
-      preventDefault: true,
-    },
-    {
-      key: "Enter",
-      ctrl: true,
-      handler: runGenome,
-      description: "Run genome",
-      preventDefault: true,
-    },
-    {
-      key: "z",
-      ctrl: true,
-      handler: handleUndo,
-      description: "Undo",
-      preventDefault: true,
-    },
-    {
-      key: "z",
-      ctrl: true,
-      shift: true,
-      handler: handleRedo,
-      description: "Redo",
-      preventDefault: true,
-    },
-    {
-      key: "y",
-      ctrl: true,
-      handler: handleRedo,
-      description: "Redo",
-      preventDefault: true,
-    },
-    {
-      key: "e",
-      ctrl: true,
-      handler: handleExportPNG,
-      description: "Export PNG",
-      preventDefault: true,
-    },
-    {
-      key: "l",
-      ctrl: true,
-      handler: handleShare,
-      description: "Copy share link",
-      preventDefault: true,
-    },
-    {
-      key: "r",
-      ctrl: true,
-      shift: true,
-      handler: () => setShowReference((s) => !s),
-      description: "Toggle reference",
-      preventDefault: true,
-    },
-    {
-      key: "m",
-      ctrl: true,
-      handler: handleToggleNucleotideMode,
-      description: "Toggle display mode",
-      preventDefault: true,
-    },
-    {
-      key: "Escape",
-      handler: () => {
-        setShowReference(false);
-        setShowShortcutsHelp(false);
-      },
-      description: "Close panels",
-    },
-    {
-      key: "?",
-      handler: () => setShowShortcutsHelp((s) => !s),
-      description: "Show shortcuts",
-      preventDefault: true,
-    },
-  ];
-
-  useKeyboardShortcuts(shortcuts);
+  const shortcuts = usePlaygroundShortcuts({
+    handleSave,
+    runGenome,
+    handleUndo,
+    handleRedo,
+    handleExportPNG,
+    handleShare,
+    handleToggleNucleotideMode,
+    toggleReference,
+    toggleShortcutsHelp,
+    closeAllPanels,
+  });
 
   // --- Return ---
 
