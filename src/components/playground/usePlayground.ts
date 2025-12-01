@@ -187,14 +187,18 @@ export function usePlayground(): UsePlaygroundResult {
       applyGenome(genome ? `${genome} ${codon}` : codon);
       return;
     }
+    // Operate in display space since selection indices come from the textarea
+    // which shows displayedGenome, then normalize back via fromDisplay
+    const value = editor.value;
     const start = editor.selectionStart;
     const end = editor.selectionEnd;
-    const before = genome.slice(0, start);
-    const after = genome.slice(end);
+    const before = value.slice(0, start);
+    const after = value.slice(end);
     const needsSpace =
       before.length > 0 && !before.endsWith(" ") && !before.endsWith("\n");
     const insert = (needsSpace ? " " : "") + codon;
-    const nextGenome = before + insert + after;
+    const nextDisplayed = before + insert + after;
+    const nextGenome = fromDisplay(nextDisplayed);
     applyGenome(nextGenome);
     requestAnimationFrame(() => {
       const current = editorRef.current;

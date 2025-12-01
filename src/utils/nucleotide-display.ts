@@ -65,6 +65,11 @@ export function toggleNucleotideDisplayMode(): NucleotideDisplayMode {
 /**
  * Transform genome text for display based on current mode.
  *
+ * **Invariant**: This transformation is position-preserving - the output
+ * string has the same length and character positions as the input.
+ * Only T<->U substitution occurs. This is relied upon by cursor position
+ * logic in the editor.
+ *
  * @param text - Genome text (internally stored as DNA)
  * @returns Transformed text for display
  *
@@ -86,6 +91,11 @@ export function transformForDisplay(text: string): string {
 
 /**
  * Transform display text back to internal DNA format.
+ *
+ * **Invariant**: This transformation is position-preserving - the output
+ * string has the same length and character positions as the input.
+ * Only U->T substitution occurs. This is relied upon by cursor position
+ * logic in the editor.
  *
  * @param text - Display text (may contain U if in RNA mode)
  * @returns Normalized DNA text
