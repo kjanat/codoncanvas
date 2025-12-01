@@ -68,17 +68,18 @@ for (const line of lines) {
     }
   }
 
-  // Capture test summary
-  const passMatch = line.match(/^\s*(\d+)\s+pass/);
-  if (passMatch) {
-    summary.pass = passMatch[1];
-    const skipMatch = line.match(/(\d+)\s+skip/);
-    const failMatch = line.match(/(\d+)\s+fail/);
-    const expectMatch = line.match(/(\d+)\s+expect\(\)/);
-    if (skipMatch) summary.skip = skipMatch[1];
-    if (failMatch) summary.fail = failMatch[1];
-    if (expectMatch) summary.expect = expectMatch[1];
-  }
+  // Capture test summary (each stat is on its own line)
+  const passMatch = line.match(/^\s*(\d+)\s+pass\s*$/);
+  if (passMatch) summary.pass = passMatch[1];
+
+  const skipMatch = line.match(/^\s*(\d+)\s+skip\s*$/);
+  if (skipMatch) summary.skip = skipMatch[1];
+
+  const failMatch = line.match(/^\s*(\d+)\s+fail\s*$/);
+  if (failMatch) summary.fail = failMatch[1];
+
+  const expectMatch = line.match(/^\s*(\d+)\s+expect\(\)\s+calls\s*$/);
+  if (expectMatch) summary.expect = expectMatch[1];
 
   // Capture files ran summary
   const ranMatch = line.match(
@@ -130,19 +131,6 @@ if (coverageData.length === 0) {
   process.exit(1);
 }
 
-// Report inline coverage
-console.log("summary:");
-console.log(`  functions: ${summary.functions}`);
-console.log(`  lines: ${summary.lines}`);
-console.log(`  pass: ${summary.pass}`);
-console.log(`  skip: ${summary.skip}`);
-console.log(`  fail: ${summary.fail}`);
-console.log(`  expect: ${summary.expect}`);
-console.log(`  tests: ${summary.tests}`);
-console.log(`  files: ${summary.files}`);
-console.log(`  time: ${summary.time}`);
-console.log();
-
 for (const item of coverageData) {
   const parts = [`func:${item.funcCoverage}`];
 
@@ -154,5 +142,18 @@ for (const item of coverageData) {
 
   console.log(`${item.file} ${parts.join(",")}`);
 }
+
+// Report inline coverage
+console.log();
+console.log("summary:");
+console.log(`  functions: ${summary.functions}`);
+console.log(`  lines:     ${summary.lines}`);
+console.log(`  pass:      ${summary.pass}`);
+console.log(`  skip:      ${summary.skip}`);
+console.log(`  fail:      ${summary.fail}`);
+console.log(`  expect:    ${summary.expect}`);
+console.log(`  tests:     ${summary.tests}`);
+console.log(`  files:     ${summary.files}`);
+console.log(`  time:      ${summary.time}`);
 
 process.exit(proc.exitCode ?? 0);
