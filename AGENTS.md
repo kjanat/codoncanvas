@@ -26,6 +26,28 @@
   failures/warnings/coverage.
 - Exit code 1 on failure or coverage less than configured in `bunfig.toml`.
 - Don't touch the ignore and coverage thresholds in `bunfig.toml`!
+- Focus on Quality, Not Just Quantity
+
+  ```ts
+  // Good: Test actual functionality
+  test("calculateTax should handle different tax rates", () => {
+    expect(calculateTax(100, 0.08)).toBe(8);
+    expect(calculateTax(100, 0.1)).toBe(10);
+    expect(calculateTax(0, 0.08)).toBe(0);
+  });
+
+  // Avoid: Just hitting lines for coverage
+  test("calculateTax exists", () => {
+    calculateTax(100, 0.08); // No assertions!
+  });
+  ```
+- If files aren’t appearing in coverage reports, they might not be imported by
+  your tests. Coverage only tracks files that are actually loaded.
+- Aim For:
+  - 80%+ overall coverage: Generally considered good
+  - 90%+ critical paths: Important business logic should be well-tested
+  - 100% utility functions: Pure functions and utilities are easy to test completely
+  - Lower coverage for UI components: Often acceptable as they may require integration tests
 
 ## Key Rules
 

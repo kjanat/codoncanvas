@@ -2,15 +2,17 @@
 root = "./tests"
 preload = ["./bun-test-setup.ts"]
 coverage = true
+coverageDir = "coverage"
+coverageReporter = ["text", "lcov"]
 # Coverage exemptions - only for code that genuinely can't be unit tested
 # See docs/TESTING.md for full justification of each exemption
-coverageSkipTestFiles = true
+coverageSkipTestFiles = false
 coveragePathIgnorePatterns = [
   # Test infrastructure (not application code)
   "bun-test-setup.ts",  # Setup for happy-dom
   "scripts/**",  # Scripts
   "e2e/**",  # End-to-end tests
-  "tests/test-utils.ts",  # Test utils
+  # "tests/test-utils/**",  # Test utils
   # Trivial/generated code
   ## "src/ui/icons/**",
   # Browser API dependencies (Canvas2D, AudioContext, external libs)

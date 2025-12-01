@@ -176,4 +176,74 @@ describe("useLocalStorage", () => {
       expect(result2.current[0]).toBe("value2");
     });
   });
+
+  describe("cross-tab sync", () => {
+    test("updates value when storage event fires for same key", () => {
+      const { result } = renderHook(() =>
+        useLocalStorage("sync-key", "initial"),
+      );
+
+      expect(result.current[0]).toBe("initial");
+
+      // Simulate storage event from another tab
+      act(() => {
+        const event = new StorageEvent("storage", {
+          key: "sync-key",
+          newValue: JSON.stringify("from-other-tab"),
+        });
+        window.dispatchEvent(event);
+      });
+
+      expect(result.current[0]).toBe("from-other-tab");
+    });
+
+    test("ignores storage events for different keys", () => {
+      const { result } = renderHook(() =>
+        useLocalStorage("my-key", "my-value"),
+      );
+
+      act(() => {
+        const event = new StorageEvent("storage", {
+          key: "other-key",
+          newValue: JSON.stringify("other-value"),
+        });
+        window.dispatchEvent(event);
+      });
+
+      expect(result.current[0]).toBe("my-value");
+    });
+
+    test("ignores storage events with null newValue", () => {
+      const { result } = renderHook(() =>
+        useLocalStorage("null-key", "original"),
+      );
+
+      act(() => {
+        const event = new StorageEvent("storage", {
+          key: "null-key",
+          newValue: null,
+        });
+        window.dispatchEvent(event);
+      });
+
+      expect(result.current[0]).toBe("original");
+    });
+
+    test("ignores invalid JSON in storage events", () => {
+      const { result } = renderHook(() =>
+        useLocalStorage("bad-event-key", "original"),
+      );
+
+      act(() => {
+        const event = new StorageEvent("storage", {
+          key: "bad-event-key",
+          newValue: "not valid json {{{",
+        });
+        window.dispatchEvent(event);
+      });
+
+      // Should keep original value when parse fails
+      expect(result.current[0]).toBe("original");
+    });
+  });
 });
