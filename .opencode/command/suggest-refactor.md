@@ -7,7 +7,7 @@ Search the codebase for lint suppression comments and analyze each one.
 
 ## Lint Ignore Comments Found
 
-!`rg -n "biome-ignore|eslint-disable|ts-expect-error|ts-ignore|@ts-nocheck|prettier-ignore|stylelint-disable" --glob "*.{ts,tsx,js,jsx,css}" --glob "!*.gen.ts" --glob "!node_modules" ${ARGUMENTS:-.}`
+!`.opencode/command/suggest-refactor.sh $ARGUMENTS`
 
 ## Analysis Guidelines
 
