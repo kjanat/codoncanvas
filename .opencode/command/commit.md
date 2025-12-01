@@ -1,10 +1,28 @@
 ---
-description: Git commit and push
+description: "Git commit. Args: [push|no-push|no-verify|amend]..."
 ---
 
-commit and push
+Commit staged changes.
 
-make sure it includes a prefix like
+arguments:
+
+<consider>
+
+$ARGUMENTS
+
+</consider>
+
+- If `no-push` is present OR no push flag specified: do NOT push after commit
+- If `push` is present: push after commit
+- If `no-verify` is present: use `--no-verify` flag, otherwise do not use it
+- If `amend` is present: use `--amend` flag, decide yourself whether to use
+  `--no-edit`, or specify an updated message, otherwise do not use `--amend`.
+
+IMPORTANT: NEVER use `--no-verify` or `--amend` unless explicitly provided in arguments.
+
+Make sure the commit message includes a prefix like
+
+```plaintext
 build:
 chore:
 docs:
@@ -19,6 +37,7 @@ core:
 site:
 ignore:
 wip:
+```
 
 For anything web/react use the `site:` prefix.
 
