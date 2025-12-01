@@ -77,7 +77,7 @@ export function NavDropdown({
     >
       <button
         aria-expanded={isOpen}
-        aria-haspopup="menu"
+        aria-haspopup="true"
         className="flex items-center gap-1 rounded-md px-3 py-2 text-sm font-medium text-text hover:bg-bg-light focus:outline-none focus:ring-2 focus:ring-primary"
         onClick={() => setIsOpen(!isOpen)}
         type="button"
@@ -88,7 +88,6 @@ export function NavDropdown({
 
       <div
         className={`absolute right-0 top-full z-50 mt-1 w-56 rounded-lg border border-border bg-surface p-2 shadow-lg transition-all ${isOpen ? "visible opacity-100" : "invisible opacity-0"}`}
-        role="menu"
       >
         {sections.map((section, index) => (
           <div
@@ -102,7 +101,6 @@ export function NavDropdown({
               <Link
                 className="block rounded-md px-3 py-2 text-sm text-text hover:bg-bg-light"
                 key={link.path}
-                role="menuitem"
                 to={link.path}
               >
                 {link.label}
