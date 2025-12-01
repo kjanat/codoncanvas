@@ -25,6 +25,7 @@ import { usePlaygroundShortcuts } from "./usePlaygroundShortcuts";
 
 const DRAFT_STORAGE_KEY = "codoncanvas-draft-genome";
 const DEFAULT_GENOME = "ATG GAA AAT GGA TAA";
+const DEFAULT_EXPORT_FILENAME = "codoncanvas-output.png";
 
 export function usePlayground(): UsePlaygroundResult {
   // --- URL & Router Integration ---
@@ -185,7 +186,10 @@ export function usePlayground(): UsePlaygroundResult {
   }
 
   function handleExportPNG(): void {
-    exportPNG("codoncanvas-output.png");
+    const filename = selectedExample?.key
+      ? `codoncanvas-${selectedExample.key}.png`
+      : DEFAULT_EXPORT_FILENAME;
+    exportPNG(filename);
   }
 
   function handleInsertCodon(codon: string): void {
