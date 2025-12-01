@@ -12,7 +12,7 @@ $ARGUMENTS
 
 </consider>
 
-- If `no-push` is present OR no push flag specified: do NOT push after commit
+- If `no-push` or `nopush` is present OR flag reference is specified: do NOT push after commit
 - If `push` is present: push after commit
 - If `no-verify` is present: use `--no-verify` flag, otherwise do not use it
 - If `amend` is present: use `--amend` flag, decide yourself whether to use
