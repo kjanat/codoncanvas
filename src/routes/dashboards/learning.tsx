@@ -1,12 +1,6 @@
-/**
- * Learning Paths Dashboard - Curated learning journeys
- *
- * Provides structured paths from DNA basics to mathematical beauty,
- * with progress tracking and interactive examples.
- */
-
-import { Link } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { useState } from "react";
+
 import { PageContainer } from "@/components/PageContainer";
 import { PageHeader } from "@/components/PageHeader";
 import { ProgressBar } from "@/components/ProgressBar";
@@ -75,11 +69,9 @@ const difficultyColors = {
   Advanced: "bg-danger/10 text-danger",
 };
 
-export default function LearningPaths() {
-  // Path selection for future modal/detail view
+function LearningPathsPage() {
   const [_selectedPath, _setSelectedPath] = useState<string | null>(null);
 
-  // Mock progress data (would come from localStorage in real implementation)
   const progress: Record<string, number> = {
     "dna-fundamentals": 60,
     "visual-programming": 20,
@@ -94,7 +86,6 @@ export default function LearningPaths() {
         title="Learning Paths"
       />
 
-      {/* Path Cards */}
       <div className="grid gap-6 md:grid-cols-2">
         {LEARNING_PATHS.map((path) => {
           const pathProgress = progress[path.id] || 0;
@@ -104,11 +95,9 @@ export default function LearningPaths() {
               className="group relative overflow-hidden rounded-xl border border-border bg-white shadow-sm transition-all hover:shadow-lg"
               key={path.id}
             >
-              {/* Gradient header */}
               <div className={`h-2 bg-linear-to-r ${path.color}`} />
 
               <div className="p-6">
-                {/* Icon and badges */}
                 <div className="mb-4 flex items-start justify-between">
                   <div
                     className={`rounded-lg bg-linear-to-r p-3 ${path.color}`}
@@ -135,7 +124,6 @@ export default function LearningPaths() {
                   </span>
                 </div>
 
-                {/* Title and description */}
                 <h2 className="mb-2 text-xl font-semibold text-text">
                   {path.title}
                 </h2>
@@ -143,7 +131,6 @@ export default function LearningPaths() {
                   {path.description}
                 </p>
 
-                {/* Meta info */}
                 <div className="mb-4 flex gap-4 text-sm text-text-muted">
                   <span className="flex items-center gap-1">
                     <svg
@@ -181,7 +168,6 @@ export default function LearningPaths() {
                   </span>
                 </div>
 
-                {/* Progress bar */}
                 <div className="mb-4">
                   <div className="mb-1 flex justify-between text-xs">
                     <span className="text-text-muted">Progress</span>
@@ -194,7 +180,6 @@ export default function LearningPaths() {
                   />
                 </div>
 
-                {/* Action button */}
                 <Link
                   className={`block w-full rounded-lg bg-linear-to-r py-2 text-center font-medium text-white transition-opacity hover:opacity-90 ${path.color}`}
                   search={{ path: path.id }}
@@ -208,7 +193,6 @@ export default function LearningPaths() {
         })}
       </div>
 
-      {/* Features section */}
       <div className="mt-12 rounded-xl border border-border bg-white p-8 shadow-sm">
         <h2 className="mb-6 text-center text-xl font-semibold text-text">
           What You'll Learn
@@ -242,3 +226,7 @@ export default function LearningPaths() {
     </PageContainer>
   );
 }
+
+export const Route = createFileRoute("/dashboards/learning")({
+  component: LearningPathsPage,
+});

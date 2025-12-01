@@ -4,7 +4,7 @@
  * Hover-triggered dropdown with support for grouped link sections.
  */
 
-import { Link } from "react-router-dom";
+import { Link } from "@tanstack/react-router";
 
 import { ChevronDownIcon } from "@/ui/icons";
 

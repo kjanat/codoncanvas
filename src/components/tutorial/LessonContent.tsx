@@ -1,5 +1,5 @@
+import { Link } from "@tanstack/react-router";
 import { type ReactElement, useState } from "react";
-import { Link } from "react-router-dom";
 import { CanvasPreview } from "@/components/CanvasPreview";
 import type { TutorialLesson } from "@/data/tutorial-lessons";
 import { CodeEditor } from "./CodeEditor";

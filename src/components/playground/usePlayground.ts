@@ -3,7 +3,7 @@
  */
 
 import { useEffect, useRef, useState } from "react";
-import { useSearchParams } from "react-router-dom";
+
 import { CodonVM } from "@/core/vm";
 import { downloadGenomeFile, readGenomeFile } from "@/genetics/genome-io";
 import {
@@ -29,9 +29,25 @@ import type { PlaygroundStats, UsePlaygroundResult } from "./types";
 const DRAFT_STORAGE_KEY = "codoncanvas-draft-genome";
 const DEFAULT_GENOME = "ATG GAA AAT GGA TAA";
 
+function getSearchParam(key: string): string | null {
+  const url = new URL(window.location.href);
+  return url.searchParams.get(key);
+}
+
+function setSearchParam(key: string, value: string): void {
+  const url = new URL(window.location.href);
+  url.searchParams.set(key, value);
+  window.history.pushState({}, "", url.toString());
+}
+
+function deleteSearchParam(key: string): void {
+  const url = new URL(window.location.href);
+  url.searchParams.delete(key);
+  window.history.pushState({}, "", url.toString());
+}
+
 export function usePlayground(): UsePlaygroundResult {
-  const [searchParams, setSearchParams] = useSearchParams();
-  const exampleFromUrl = searchParams.get("example");
+  const [exampleFromUrl] = useState(() => getSearchParam("example"));
 
   // --- External Hooks ---
 
@@ -146,7 +162,7 @@ export function usePlayground(): UsePlaygroundResult {
     if (example) {
       selectExample(key);
       setGenome(example.genome);
-      setSearchParams({ example: key });
+      setSearchParam("example", key);
     }
   }
 
@@ -168,7 +184,7 @@ export function usePlayground(): UsePlaygroundResult {
       const genomeFile = await readGenomeFile(file);
       setGenome(genomeFile.genome);
       selectExample(null);
-      setSearchParams({});
+      deleteSearchParam("example");
     } catch (err) {
       console.error("Failed to load genome:", err);
     }

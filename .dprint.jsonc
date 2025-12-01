@@ -64,6 +64,7 @@
     "**/*-lock.json",
     "**/*.lock",
     "**/node_modules",
+    "**/*.gen.ts",
     "**/worker-configuration.d.ts",
     "research-dashboard.html",
     "codon-chart.svg"

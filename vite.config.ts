@@ -1,21 +1,9 @@
 import tailwindcss from "@tailwindcss/vite";
+import { tanstackRouter } from "@tanstack/router-plugin/vite";
 import react from "@vitejs/plugin-react";
 import { defineConfig } from "vite";
 
 const root = import.meta.dirname;
-
-// Content Security Policy for static GH Pages hosting
-const CSP = [
-  "default-src 'self'",
-  "script-src 'self' 'unsafe-inline'",
-  "style-src 'self' 'unsafe-inline'",
-  "img-src 'self' data: https:",
-  "font-src 'self' data:",
-  "connect-src 'self'",
-  "frame-ancestors 'none'",
-  "base-uri 'self'",
-  "form-action 'self'",
-].join("; ");
 
 export default defineConfig({
   // GitHub Pages base path - set by deploy.yml from actions/configure-pages
@@ -24,18 +12,12 @@ export default defineConfig({
   publicDir: "public",
 
   plugins: [
+    tanstackRouter({
+      target: "react",
+      autoCodeSplitting: true,
+    }),
     react(),
     tailwindcss(),
-    {
-      name: "html-csp-injection",
-      transformIndexHtml(html, ctx) {
-        if (ctx.server) return html;
-        return html.replace(
-          "</head>",
-          `<meta http-equiv="Content-Security-Policy" content="${CSP}">\n  </head>`,
-        );
-      },
-    },
   ],
 
   resolve: {
@@ -56,10 +38,6 @@ export default defineConfig({
       "@/components": `${root}/src/components`,
       "@/hooks": `${root}/src/hooks`,
     },
-  },
-
-  server: {
-    headers: { "Content-Security-Policy": CSP },
   },
 
   build: {

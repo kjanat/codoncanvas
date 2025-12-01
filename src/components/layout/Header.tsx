@@ -4,7 +4,7 @@
  * Combines logo, main navigation, theme toggle, and external links.
  */
 
-import { Link } from "react-router-dom";
+import { Link } from "@tanstack/react-router";
 
 import { siteConfig } from "@/config";
 import { GitHubIcon } from "@/ui/icons";

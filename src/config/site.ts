@@ -5,7 +5,7 @@
  * Import from here to ensure consistency across the application.
  */
 
-type userName = string | undefined;
+type UserName = string | undefined;
 
 /** Author username type
  *
@@ -13,19 +13,19 @@ type userName = string | undefined;
  *
  * @example
  * ```ts
- * const username: authorUsername = "kjanat";
- * const username: authorUsername = { github: "kjanat" };
+ * const username: AuthorUsername = "kjanat";
+ * const username: AuthorUsername = { github: "kjanat" };
  * ```
  */
-type authorUsername =
-  | userName
+type AuthorUsername =
+  | UserName
   | {
       /** GitHub username */
-      github?: userName;
+      github?: UserName;
       /** Twitter username */
-      twitter?: userName;
+      twitter?: UserName;
       /** Discord username */
-      discord?: userName;
+      discord?: UserName;
     };
 
 export const siteConfig = {
@@ -46,7 +46,7 @@ export const siteConfig = {
     /** Author username */
     username: {
       github: "kjanat",
-    } as authorUsername,
+    } as AuthorUsername,
   },
 
   /** Repository links */

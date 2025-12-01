@@ -5,7 +5,7 @@
  * and dropdown menus for additional pages.
  */
 
-import { Link, useLocation } from "react-router-dom";
+import { Link, useRouterState } from "@tanstack/react-router";
 
 import { NavDropdown, type NavSection } from "./NavDropdown";
 
@@ -42,7 +42,7 @@ const MORE_SECTIONS: NavSection[] = [
  * Hidden on mobile (md:flex), shows active state for current route.
  */
 export function Navigation() {
-  const location = useLocation();
+  const { location } = useRouterState();
 
   return (
     <nav className="hidden items-center gap-1 md:flex">

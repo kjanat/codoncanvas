@@ -1,4 +1,4 @@
-import { useNavigate } from "@tanstack/react-router";
+import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
 
 import {
@@ -11,7 +11,7 @@ import {
 import { PageContainer } from "@/components/PageContainer";
 import { PageHeader } from "@/components/PageHeader";
 
-export default function Gallery() {
+function GalleryPage() {
   const navigate = useNavigate();
   const {
     filters,
@@ -59,3 +59,7 @@ export default function Gallery() {
     </PageContainer>
   );
 }
+
+export const Route = createFileRoute("/gallery")({
+  component: GalleryPage,
+});

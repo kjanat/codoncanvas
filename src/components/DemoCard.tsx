@@ -5,8 +5,8 @@
  * icon, title, description and link.
  */
 
+import { Link } from "@tanstack/react-router";
 import type { ReactElement } from "react";
-import { Link } from "react-router-dom";
 import { ChevronRightIcon } from "@/ui/icons";
 
 /** Allowed gradient color combinations for demo cards */

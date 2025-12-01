@@ -6,7 +6,6 @@
  */
 
 import { useEffect, useState } from "react";
-import { useSearchParams } from "react-router-dom";
 
 /** URL parameter key for encoded genome */
 const GENOME_PARAM = "g";
@@ -86,21 +85,21 @@ export function useShareUrl(
   options: UseShareUrlOptions = {},
 ): UseShareUrlReturn {
   const { autoLoad = true } = options;
-  const [searchParams, setSearchParams] = useSearchParams();
   const [sharedGenome, setSharedGenome] = useState<string | null>(null);
 
   // Load genome from URL on mount
   useEffect(() => {
     if (!autoLoad) return;
 
-    const encoded = searchParams.get(GENOME_PARAM);
+    const url = new URL(window.location.href);
+    const encoded = url.searchParams.get(GENOME_PARAM);
     if (encoded) {
       const decoded = decodeGenome(encoded);
       if (decoded) {
         setSharedGenome(decoded);
       }
     }
-  }, [autoLoad, searchParams]);
+  }, [autoLoad]);
 
   // Generate shareable URL for a genome
   const getShareUrl = (genome: string): string => {
@@ -116,7 +115,9 @@ export function useShareUrl(
   const shareGenome = (genome: string) => {
     const encoded = encodeGenome(genome);
     if (encoded) {
-      setSearchParams({ [GENOME_PARAM]: encoded });
+      const url = new URL(window.location.href);
+      url.searchParams.set(GENOME_PARAM, encoded);
+      window.history.pushState({}, "", url.toString());
     }
   };
 
@@ -133,9 +134,9 @@ export function useShareUrl(
 
   // Clear genome from URL
   const clearShareUrl = () => {
-    const newParams = new URLSearchParams(searchParams);
-    newParams.delete(GENOME_PARAM);
-    setSearchParams(newParams);
+    const url = new URL(window.location.href);
+    url.searchParams.delete(GENOME_PARAM);
+    window.history.pushState({}, "", url.toString());
     setSharedGenome(null);
   };
 

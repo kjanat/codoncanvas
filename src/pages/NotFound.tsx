@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link } from "@tanstack/react-router";
 import { DnaIcon, GalleryIcon, HomeIcon } from "@/ui/icons";
 
 export default function NotFound() {
