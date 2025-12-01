@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-set -euo pipefail # Strict mode: exit on error/unbound vars/pipefail [web:20]
+set -euo pipefail # Strict mode: exit on error/unbound vars/pipefail
 
 # Check if rg is installed
 if ! command -v rg &>/dev/null; then
