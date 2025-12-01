@@ -21,6 +21,18 @@ export interface ProgressBarProps {
   ariaLabel?: string;
 }
 
+const sizeClasses = {
+  sm: "h-1.5",
+  md: "h-2",
+};
+
+const variantClasses = {
+  primary: "bg-primary",
+  success: "bg-success",
+  gradient: (gradientClass?: string) =>
+    `bg-linear-to-r ${gradientClass ?? "from-primary to-success"}`,
+};
+
 export function ProgressBar({
   value,
   size = "md",
@@ -30,17 +42,6 @@ export function ProgressBar({
   bgClass = "bg-border",
   ariaLabel,
 }: ProgressBarProps): ReactElement {
-  const sizeClasses = {
-    sm: "h-1.5",
-    md: "h-2",
-  };
-
-  const variantClasses = {
-    primary: "bg-primary",
-    success: "bg-success",
-    gradient: `bg-linear-to-r ${gradientClass ?? "from-primary to-success"}`,
-  };
-
   const clampedValue = Math.min(100, Math.max(0, value));
 
   return (
@@ -53,7 +54,11 @@ export function ProgressBar({
       role="progressbar"
     >
       <div
-        className={`h-full rounded-full transition-all ${variantClasses[variant]}`}
+        className={`h-full rounded-full transition-all ${
+          variant === "gradient"
+            ? variantClasses.gradient(gradientClass)
+            : variantClasses[variant]
+        }`}
         style={{ width: `${clampedValue}%` }}
       />
     </div>
