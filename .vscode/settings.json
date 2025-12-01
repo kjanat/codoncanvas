@@ -36,9 +36,16 @@
   },
 
   /** Tailwind settings */
+  "tailwindCSS.experimental.configFile": "src/app.css",
   "tailwindCSS.includeLanguages": { "plaintext": "html" },
   "tailwindCSS.validate": true,
   "tailwindCSS.codeActions": true,
+  "tailwindCSS.experimental.classRegex": [
+    "Classes\\s*=\\s*\"([^\"]+)\"",
+    "Classes\\s*=\\s*'([^']+)'",
+    ":\\s*\"([^\"]+)\"",
+    ":\\s*'([^']+)'"
+  ],
   "files.associations": { "*.css": "tailwindcss" },
   "editor.quickSuggestions": { "strings": "on" },
 
