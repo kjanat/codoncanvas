@@ -1,6 +1,9 @@
 /**
  * useShareUrl - React hook for shareable genome URLs
  *
+ * @deprecated Use `usePlaygroundSearch` instead for TanStack Router integration.
+ * This hook uses manual window.location manipulation which bypasses the router.
+ *
  * Encodes/decodes genome strings to/from URL parameters for sharing.
  * Uses base64 encoding for compact representation.
  */

@@ -1,78 +1,66 @@
 /**
  * usePlayground - Main orchestration hook for the Playground component
+ *
+ * Composes focused sub-hooks for URL handling, execution, file I/O,
+ * and display mode management.
  */
 
 import { useEffect, useRef, useState } from "react";
 import { useTheme } from "@/contexts";
-import { CodonVM } from "@/core/vm";
-import { downloadGenomeFile, readGenomeFile } from "@/genetics/genome-io";
 import {
   useCanvas,
   useClipboard,
   useExamples,
   useGenome,
+  useGenomeExecution,
+  useGenomeFileIO,
   useHistory,
   useKeyboardShortcuts,
   useLocalStorage,
-  useShareUrl,
+  useNucleotideDisplay,
+  usePlaygroundSearch,
 } from "@/hooks";
 import type { KeyboardShortcut } from "@/hooks/useKeyboardShortcuts";
-import {
-  getNucleotideDisplayMode,
-  type NucleotideDisplayMode,
-  toggleNucleotideDisplayMode,
-  transformForDisplay,
-  transformFromDisplay,
-} from "@/utils/nucleotide-display";
 import type { PlaygroundStats, UsePlaygroundResult } from "./types";
 
 const DRAFT_STORAGE_KEY = "codoncanvas-draft-genome";
 const DEFAULT_GENOME = "ATG GAA AAT GGA TAA";
 
-function getSearchParam(key: string): string | null {
-  const url = new URL(window.location.href);
-  return url.searchParams.get(key);
-}
-
-function setSearchParam(key: string, value: string): void {
-  const url = new URL(window.location.href);
-  url.searchParams.set(key, value);
-  window.history.pushState({}, "", url.toString());
-}
-
-function deleteSearchParam(key: string): void {
-  const url = new URL(window.location.href);
-  url.searchParams.delete(key);
-  window.history.pushState({}, "", url.toString());
-}
-
 export function usePlayground(): UsePlaygroundResult {
-  const [exampleFromUrl] = useState(() => getSearchParam("example"));
+  // --- URL & Router Integration ---
+  const {
+    exampleFromUrl,
+    sharedGenome,
+    setExampleParam,
+    clearExampleParam,
+    copyShareUrl,
+  } = usePlaygroundSearch();
 
-  // --- External Hooks ---
-
+  // --- Theme ---
   const { resolvedTheme } = useTheme();
 
+  // --- Draft Persistence ---
   const [draftGenome, setDraftGenome] = useLocalStorage<string | null>(
     DRAFT_STORAGE_KEY,
     null,
   );
 
+  // --- Examples ---
   const { allExamples, selectedExample, selectExample, getExample } =
     useExamples({
       initialSelection: exampleFromUrl ?? undefined,
     });
 
-  const { sharedGenome, copyShareUrl } = useShareUrl();
-
   // Priority: URL shared genome > URL example > draft > default
   const initialGenome =
     sharedGenome ?? selectedExample?.genome ?? draftGenome ?? DEFAULT_GENOME;
 
+  // --- Genome State ---
   const { genome, setGenome, validation, isPending } = useGenome({
     initialGenome,
   });
 
+  // --- History (Undo/Redo) ---
   const {
     setState: setHistoryState,
     undo,
@@ -81,33 +69,41 @@ export function usePlayground(): UsePlaygroundResult {
     canRedo,
   } = useHistory<string>(genome);
 
+  // --- Canvas ---
   const { canvasRef, renderer, isReady, clear, exportPNG } = useCanvas({
     width: 400,
     height: 400,
   });
 
+  // --- Clipboard ---
   const { copy, copied } = useClipboard({ copiedDuration: 2000 });
 
-  // --- Local State ---
+  // --- Nucleotide Display Mode ---
+  const {
+    mode: nucleotideMode,
+    toggle: handleToggleNucleotideMode,
+    toDisplay,
+    fromDisplay,
+  } = useNucleotideDisplay();
 
-  const [stats, setStats] = useState<PlaygroundStats>({
-    codons: 0,
-    instructions: 0,
+  // --- VM Execution ---
+  const { stats, execute: executeGenome } = useGenomeExecution({
+    renderer,
+    isReady,
+    validation,
+    clear,
+    theme: resolvedTheme === "dark" ? "dark" : "light",
   });
+
+  // --- UI State ---
   const [showReference, setShowReference] = useState(false);
   const [showShortcutsHelp, setShowShortcutsHelp] = useState(false);
-  const [nucleotideMode, setNucleotideMode] = useState<NucleotideDisplayMode>(
-    getNucleotideDisplayMode,
-  );
-
   const editorRef = useRef<HTMLTextAreaElement>(null);
 
   // Derived state
-  const displayedGenome = transformForDisplay(genome);
+  const displayedGenome = toDisplay(genome);
 
   // --- Canonical genome update helper ---
-  // Routes all genome mutations through a single path to keep genome/history/draft in sync
-
   function applyGenome(
     next: string,
     options: { recordHistory?: boolean } = {},
@@ -120,14 +116,29 @@ export function usePlayground(): UsePlaygroundResult {
     }
   }
 
-  // --- Handlers ---
+  // --- File I/O ---
+  const { handleSave, handleLoad: loadFile } = useGenomeFileIO({
+    genome,
+    onLoad: (loadedGenome) => {
+      applyGenome(loadedGenome);
+      selectExample(null);
+      clearExampleParam();
+    },
+    title: selectedExample?.title,
+    description: selectedExample?.description,
+  });
 
-  function handleToggleNucleotideMode(): void {
-    setNucleotideMode(toggleNucleotideDisplayMode());
+  // Wrap handleLoad to match expected signature
+  async function handleLoad(
+    event: React.ChangeEvent<HTMLInputElement>,
+  ): Promise<void> {
+    await loadFile(event);
   }
 
+  // --- Handlers ---
+
   function handleGenomeChange(e: React.ChangeEvent<HTMLTextAreaElement>): void {
-    const newGenome = transformFromDisplay(e.target.value);
+    const newGenome = fromDisplay(e.target.value);
     applyGenome(newGenome);
   }
 
@@ -153,30 +164,6 @@ export function usePlayground(): UsePlaygroundResult {
     copy(genome);
   }
 
-  // Consolidated VM execution - single source of truth
-  function executeGenome(): void {
-    if (!isReady || !renderer) {
-      return;
-    }
-    clear();
-    const { isValid, tokens } = validation;
-    if (!isValid || tokens.length === 0) {
-      return;
-    }
-    try {
-      const vm = new CodonVM(renderer);
-      // Set default color based on theme
-      renderer.setColor(0, 0, resolvedTheme === "dark" ? 100 : 0);
-      const snapshots = vm.run(tokens);
-      setStats({
-        codons: tokens.length,
-        instructions: snapshots.length,
-      });
-    } catch (err) {
-      console.warn("Execution error:", err);
-    }
-  }
-
   function runGenome(): void {
     executeGenome();
   }
@@ -186,34 +173,7 @@ export function usePlayground(): UsePlaygroundResult {
     if (example) {
       selectExample(key);
       applyGenome(example.genome);
-      setSearchParam("example", key);
-    }
-  }
-
-  function handleSave(): void {
-    const title = selectedExample?.title ?? "untitled";
-    downloadGenomeFile(genome, title.toLowerCase().replace(/\s+/g, "-"), {
-      description: selectedExample?.description,
-    });
-  }
-
-  async function handleLoad(
-    event: React.ChangeEvent<HTMLInputElement>,
-  ): Promise<void> {
-    const file = event.target.files?.[0];
-    if (!file) {
-      return;
-    }
-    try {
-      const genomeFile = await readGenomeFile(file);
-      applyGenome(genomeFile.genome);
-      selectExample(null);
-      deleteSearchParam("example");
-    } catch (err) {
-      console.error("Failed to load genome:", err);
-    } finally {
-      // Reset input value to allow re-selecting the same file
-      event.currentTarget.value = "";
+      setExampleParam(key);
     }
   }
 
@@ -248,29 +208,6 @@ export function usePlayground(): UsePlaygroundResult {
   }
 
   // --- Effects ---
-
-  // Run genome when canvas ready or validation changes
-  useEffect(() => {
-    if (!isReady || !renderer) {
-      return;
-    }
-    clear();
-    const { isValid, tokens } = validation;
-    if (!isValid || tokens.length === 0) {
-      return;
-    }
-    try {
-      const vm = new CodonVM(renderer);
-      renderer.setColor(0, 0, resolvedTheme === "dark" ? 100 : 0);
-      const snapshots = vm.run(tokens);
-      setStats({
-        codons: tokens.length,
-        instructions: snapshots.length,
-      });
-    } catch (err) {
-      console.warn("Execution error:", err);
-    }
-  }, [isReady, renderer, validation, clear, resolvedTheme]);
 
   // Load example from URL param (only if no shared genome takes priority)
   useEffect(() => {
@@ -377,7 +314,7 @@ export function usePlayground(): UsePlaygroundResult {
       displayedGenome,
       validation,
       isPending,
-      stats,
+      stats: stats as PlaygroundStats,
       nucleotideMode,
       showReference,
       showShortcutsHelp,

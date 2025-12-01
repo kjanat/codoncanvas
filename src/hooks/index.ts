@@ -33,6 +33,17 @@ export {
   useGenome,
 } from "./useGenome";
 export {
+  type ExecutionStats,
+  type UseGenomeExecutionOptions,
+  type UseGenomeExecutionReturn,
+  useGenomeExecution,
+} from "./useGenomeExecution";
+export {
+  type UseGenomeFileIOOptions,
+  type UseGenomeFileIOReturn,
+  useGenomeFileIO,
+} from "./useGenomeFileIO";
+export {
   type UseHistoryOptions,
   type UseHistoryReturn,
   useHistory,
@@ -45,6 +56,14 @@ export {
 } from "./useKeyboardShortcuts";
 export { useLineChart } from "./useLineChart";
 export { useLocalStorage } from "./useLocalStorage";
+export {
+  type UseNucleotideDisplayReturn,
+  useNucleotideDisplay,
+} from "./useNucleotideDisplay";
+export {
+  type UsePlaygroundSearchReturn,
+  usePlaygroundSearch,
+} from "./usePlaygroundSearch";
 export {
   type UsePreferencesReturn,
   type UserPreferences,
