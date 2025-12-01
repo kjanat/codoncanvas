@@ -5,7 +5,7 @@
  * Replaces 13+ duplicated button className patterns.
  */
 
-import type { ButtonHTMLAttributes, ReactNode } from "react";
+import type { ButtonHTMLAttributes, ReactElement, ReactNode } from "react";
 
 export type ButtonVariant =
   | "primary"
@@ -69,7 +69,7 @@ export function Button({
   fullWidth = false,
   disabled,
   ...props
-}: ButtonProps) {
+}: ButtonProps): ReactElement {
   const baseClasses =
     "rounded-lg font-medium transition-colors disabled:cursor-not-allowed";
   const variantClass = VARIANT_CLASSES[variant];

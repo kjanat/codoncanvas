@@ -105,6 +105,21 @@ export function usePlayground(): UsePlaygroundResult {
   // Derived state
   const displayedGenome = transformForDisplay(genome);
 
+  // --- Canonical genome update helper ---
+  // Routes all genome mutations through a single path to keep genome/history/draft in sync
+
+  function applyGenome(
+    next: string,
+    options: { recordHistory?: boolean } = {},
+  ): void {
+    const { recordHistory = true } = options;
+    setGenome(next);
+    setDraftGenome(next);
+    if (recordHistory) {
+      setHistoryState(next);
+    }
+  }
+
   // --- Handlers ---
 
   function handleToggleNucleotideMode(): void {
@@ -113,22 +128,20 @@ export function usePlayground(): UsePlaygroundResult {
 
   function handleGenomeChange(e: React.ChangeEvent<HTMLTextAreaElement>): void {
     const newGenome = transformFromDisplay(e.target.value);
-    setGenome(newGenome);
-    setHistoryState(newGenome);
-    setDraftGenome(newGenome);
+    applyGenome(newGenome);
   }
 
   function handleUndo(): void {
     if (canUndo) {
       const newState = undo();
-      setGenome(newState);
+      applyGenome(newState, { recordHistory: false });
     }
   }
 
   function handleRedo(): void {
     if (canRedo) {
       const newState = redo();
-      setGenome(newState);
+      applyGenome(newState, { recordHistory: false });
     }
   }
 
@@ -140,32 +153,39 @@ export function usePlayground(): UsePlaygroundResult {
     copy(genome);
   }
 
-  function runGenome(): void {
+  // Consolidated VM execution - single source of truth
+  function executeGenome(): void {
     if (!isReady || !renderer) {
       return;
     }
     clear();
-    if (validation.isValid && validation.tokens.length > 0) {
-      try {
-        const vm = new CodonVM(renderer);
-        // Set default color based on theme
-        renderer.setColor(0, 0, resolvedTheme === "dark" ? 100 : 0);
-        const snapshots = vm.run(validation.tokens);
-        setStats({
-          codons: validation.tokens.length,
-          instructions: snapshots.length,
-        });
-      } catch (err) {
-        console.warn("Execution error:", err);
-      }
+    const { isValid, tokens } = validation;
+    if (!isValid || tokens.length === 0) {
+      return;
     }
+    try {
+      const vm = new CodonVM(renderer);
+      // Set default color based on theme
+      renderer.setColor(0, 0, resolvedTheme === "dark" ? 100 : 0);
+      const snapshots = vm.run(tokens);
+      setStats({
+        codons: tokens.length,
+        instructions: snapshots.length,
+      });
+    } catch (err) {
+      console.warn("Execution error:", err);
+    }
+  }
+
+  function runGenome(): void {
+    executeGenome();
   }
 
   function handleExampleChange(key: string): void {
     const example = getExample(key);
     if (example) {
       selectExample(key);
-      setGenome(example.genome);
+      applyGenome(example.genome);
       setSearchParam("example", key);
     }
   }
@@ -186,11 +206,14 @@ export function usePlayground(): UsePlaygroundResult {
     }
     try {
       const genomeFile = await readGenomeFile(file);
-      setGenome(genomeFile.genome);
+      applyGenome(genomeFile.genome);
       selectExample(null);
       deleteSearchParam("example");
     } catch (err) {
       console.error("Failed to load genome:", err);
+    } finally {
+      // Reset input value to allow re-selecting the same file
+      event.currentTarget.value = "";
     }
   }
 
@@ -201,7 +224,7 @@ export function usePlayground(): UsePlaygroundResult {
   function handleInsertCodon(codon: string): void {
     const editor = editorRef.current;
     if (!editor) {
-      setGenome(`${genome} ${codon}`);
+      applyGenome(genome ? `${genome} ${codon}` : codon);
       return;
     }
     const start = editor.selectionStart;
@@ -211,19 +234,20 @@ export function usePlayground(): UsePlaygroundResult {
     const needsSpace =
       before.length > 0 && !before.endsWith(" ") && !before.endsWith("\n");
     const insert = (needsSpace ? " " : "") + codon;
-    setGenome(before + insert + after);
+    const nextGenome = before + insert + after;
+    applyGenome(nextGenome);
     requestAnimationFrame(() => {
-      editor.setSelectionRange(start + insert.length, start + insert.length);
-      editor.focus();
+      const current = editorRef.current;
+      if (!current) {
+        return;
+      }
+      const nextPos = start + insert.length;
+      current.setSelectionRange(nextPos, nextPos);
+      current.focus();
     });
   }
 
   // --- Effects ---
-
-  // Stable reference to validation for effect dependency
-  const tokensLength = validation.tokens.length;
-  const tokensRef = useRef(validation.tokens);
-  tokensRef.current = validation.tokens;
 
   // Run genome when canvas ready or validation changes
   useEffect(() => {
@@ -231,28 +255,22 @@ export function usePlayground(): UsePlaygroundResult {
       return;
     }
     clear();
-    if (validation.isValid && tokensLength > 0) {
-      try {
-        const vm = new CodonVM(renderer);
-        // Set default color based on theme (dark text on light bg, light text on dark bg)
-        renderer.setColor(0, 0, resolvedTheme === "dark" ? 100 : 0);
-        const snapshots = vm.run(tokensRef.current);
-        setStats({
-          codons: tokensLength,
-          instructions: snapshots.length,
-        });
-      } catch (err) {
-        console.warn("Execution error:", err);
-      }
+    const { isValid, tokens } = validation;
+    if (!isValid || tokens.length === 0) {
+      return;
     }
-  }, [
-    isReady,
-    renderer,
-    validation.isValid,
-    tokensLength,
-    clear,
-    resolvedTheme,
-  ]);
+    try {
+      const vm = new CodonVM(renderer);
+      renderer.setColor(0, 0, resolvedTheme === "dark" ? 100 : 0);
+      const snapshots = vm.run(tokens);
+      setStats({
+        codons: tokens.length,
+        instructions: snapshots.length,
+      });
+    } catch (err) {
+      console.warn("Execution error:", err);
+    }
+  }, [isReady, renderer, validation, clear, resolvedTheme]);
 
   // Load example from URL param (only if no shared genome takes priority)
   useEffect(() => {
@@ -268,33 +286,55 @@ export function usePlayground(): UsePlaygroundResult {
   // --- Keyboard Shortcuts ---
 
   const shortcuts: KeyboardShortcut[] = [
-    { key: "s", ctrl: true, handler: handleSave, description: "Save genome" },
+    {
+      key: "s",
+      ctrl: true,
+      handler: handleSave,
+      description: "Save genome",
+      preventDefault: true,
+    },
     {
       key: "Enter",
       ctrl: true,
       handler: runGenome,
       description: "Run genome",
+      preventDefault: true,
     },
-    { key: "z", ctrl: true, handler: handleUndo, description: "Undo" },
+    {
+      key: "z",
+      ctrl: true,
+      handler: handleUndo,
+      description: "Undo",
+      preventDefault: true,
+    },
     {
       key: "z",
       ctrl: true,
       shift: true,
       handler: handleRedo,
       description: "Redo",
+      preventDefault: true,
     },
-    { key: "y", ctrl: true, handler: handleRedo, description: "Redo" },
+    {
+      key: "y",
+      ctrl: true,
+      handler: handleRedo,
+      description: "Redo",
+      preventDefault: true,
+    },
     {
       key: "e",
       ctrl: true,
       handler: handleExportPNG,
       description: "Export PNG",
+      preventDefault: true,
     },
     {
       key: "l",
       ctrl: true,
       handler: handleShare,
       description: "Copy share link",
+      preventDefault: true,
     },
     {
       key: "r",
@@ -302,12 +342,14 @@ export function usePlayground(): UsePlaygroundResult {
       shift: true,
       handler: () => setShowReference((s) => !s),
       description: "Toggle reference",
+      preventDefault: true,
     },
     {
       key: "m",
       ctrl: true,
       handler: handleToggleNucleotideMode,
       description: "Toggle display mode",
+      preventDefault: true,
     },
     {
       key: "Escape",

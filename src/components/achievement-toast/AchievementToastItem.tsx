@@ -2,7 +2,8 @@
  * AchievementToastItem - Individual achievement notification
  */
 
-import { useEffect, useRef, useState } from "react";
+import type { ReactElement } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { CloseIcon } from "@/ui/icons";
 import { DEFAULT_TOAST_DURATION, EXIT_ANIMATION_DURATION } from "./constants";
 import type { AchievementToastItemProps } from "./types";
@@ -11,18 +12,26 @@ export function AchievementToastItem({
   notification,
   onDismiss,
   duration = DEFAULT_TOAST_DURATION,
-}: AchievementToastItemProps) {
+}: AchievementToastItemProps): ReactElement {
   const [isExiting, setIsExiting] = useState(false);
   const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const exitTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
+  // Centralized exit logic: start animation and schedule final dismiss
+  const startExitAndScheduleDismiss = useCallback(() => {
+    if (exitTimeoutRef.current) {
+      clearTimeout(exitTimeoutRef.current);
+    }
+    setIsExiting(true);
+    exitTimeoutRef.current = setTimeout(() => {
+      onDismiss(notification.id);
+    }, EXIT_ANIMATION_DURATION);
+  }, [notification.id, onDismiss]);
+
   // Auto-dismiss effect
   useEffect(() => {
     timeoutRef.current = setTimeout(() => {
-      setIsExiting(true);
-      exitTimeoutRef.current = setTimeout(() => {
-        onDismiss(notification.id);
-      }, EXIT_ANIMATION_DURATION);
+      startExitAndScheduleDismiss();
     }, duration);
 
     return () => {
@@ -33,7 +42,7 @@ export function AchievementToastItem({
         clearTimeout(exitTimeoutRef.current);
       }
     };
-  }, [duration, notification.id, onDismiss]);
+  }, [duration, startExitAndScheduleDismiss]);
 
   // Manual dismiss handler
   function handleDismissClick(): void {
@@ -44,10 +53,7 @@ export function AchievementToastItem({
     if (timeoutRef.current) {
       clearTimeout(timeoutRef.current);
     }
-    setIsExiting(true);
-    exitTimeoutRef.current = setTimeout(() => {
-      onDismiss(notification.id);
-    }, EXIT_ANIMATION_DURATION);
+    startExitAndScheduleDismiss();
   }
 
   const { achievement } = notification;
