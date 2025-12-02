@@ -16,10 +16,10 @@ Fix Time:         50 min (Phase 1) + 10-15 hours (Phase 2)
 ### 1. localStorage Mock (5 MIN FIX) ⚡
 
 ```
-❌ 51 tests failing: src/achievement-engine.test.ts
+51 tests failing: tests/achievement-engine.test.ts
 Error: localStorage.clear is not a function
 
-✅ FIX: Add 16 lines at top of achievement-engine.test.ts
+FIX: Add 16 lines at top of achievement-engine.test.ts
    Copy lines 4-19 from theme-manager.test.ts
 
 IMPACT: +51 tests → 99% pass rate
@@ -30,7 +30,7 @@ IMPACT: +51 tests → 99% pass rate
 ```bash
 # Copy localStorage mock from theme-manager
 # Paste at top of achievement-engine.test.ts (before describe)
-# Run: npm test -- src/achievement-engine.test.ts
+# Run: bun test tests/achievement-engine.test.ts
 ```
 
 ---
@@ -38,7 +38,7 @@ IMPACT: +51 tests → 99% pass rate
 ### 2. Performance Regression (30 MIN DEBUG) 🐢
 
 ```
-❌ 2 tests failing: src/performance-benchmarks.test.ts
+2 tests failing: tests/performance-benchmarks.test.ts
 Issue 1: Memory accumulation (4.032ms > 2.454ms limit)
 Issue 2: silentMutation 54.54ms > 50ms target (8.8% over)
 
@@ -62,7 +62,7 @@ DIAGNOSIS NEEDED: Lexer vs VM vs Renderer bottleneck
 ### 3. Security Testing (2-3 HOUR BUILD) 🔒
 
 ```
-❌ 0 security tests
+0 security tests
 ⚠️ 33 innerHTML injection points found
 Risk: XSS vulnerabilities in user data
 
@@ -72,7 +72,7 @@ NEEDED: 15-20 security tests
 **Action:**
 
 ```bash
-# Create: src/security-xss.test.ts
+# Create: tests/security-xss.test.ts
 # Add tests for:
 #  - Genome name sanitization
 #  - URL parameter injection
@@ -146,14 +146,14 @@ TESTS FOR XSS: 0 ❌
 
 ### Example Vulnerability
 
-```javascript
+```typescript
 // Current (unsafe):
 innerHTML = `<div>${genomeName}</div>`;
 
 // Attack:
 genomeName = "<img src=x onerror=alert('XSS')>";
 
-// Result: XSS execution ❌
+// Result: XSS execution
 ```
 
 ---
@@ -194,34 +194,34 @@ genomeName = "<img src=x onerror=alert('XSS')>";
 ### Fix #1: localStorage (5 min)
 
 ```bash
-# Edit: src/achievement-engine.test.ts
+# Edit: tests/achievement-engine.test.ts
 # Add 16-line localStorage mock at top (before describe)
 # Source: theme-manager.test.ts lines 4-19
 
-npm test -- src/achievement-engine.test.ts
-# Expected: ✓ 51 tests passing
+bun test tests/achievement-engine.test.ts
+# Expected: 51 tests passing
 ```
 
 ### Fix #2: Performance Debug (30 min)
 
 ```bash
-# Create: src/performance-diagnostics.test.ts
+# Create: tests/performance-diagnostics.test.ts
 # Measure: Lexer vs VM vs Renderer timing
 # Identify: Which component is slow
 # Check for: Memory leaks, state accumulation
 
-npm test -- src/performance-diagnostics.test.ts
+bun test tests/performance-diagnostics.test.ts
 # Look for: 10x iteration timing breakdown
 ```
 
 ### Fix #3: Security Framework (15 min)
 
 ```bash
-# Create: src/security-xss.test.ts
+# Create: tests/security-xss.test.ts
 # Add: 20-25 test descriptions (skeleton)
 # Add: TODO comments for implementation
 
-npm test -- src/security-xss.test.ts
+bun test tests/security-xss.test.ts
 # Expected: All tests pending/skipped
 ```
 
@@ -281,19 +281,22 @@ Time: 10-15 hours
 
 ```bash
 # Full test suite
-npm test
+bun test
 
 # Specific module
-npm test -- src/achievement-engine.test.ts
+bun test tests/achievement-engine.test.ts
 
 # Watch mode
-npm test:watch
+bun test --watch
 
 # Coverage report
-npm run test:coverage
+bun test --coverage
 
 # Performance benchmark
-npm test -- src/performance-benchmarks.test.ts
+bun test tests/performance-benchmarks.test.ts
+
+# Test with pattern matching
+bun test --test-name-pattern "tokenize"
 ```
 
 ---
@@ -302,10 +305,10 @@ npm test -- src/performance-benchmarks.test.ts
 
 ### TODAY (50 min)
 
-1. Add localStorage mock to achievement-engine.test.ts (5 min)
-2. Create performance-diagnostics.test.ts (10 min)
+1. Add localStorage mock to tests/achievement-engine.test.ts (5 min)
+2. Create tests/performance-diagnostics.test.ts (10 min)
 3. Analyze timing breakdown (20 min)
-4. Create security-xss.test.ts skeleton (15 min)
+4. Create tests/security-xss.test.ts skeleton (15 min)
 
 ### THIS WEEK (10-15 hours)
 

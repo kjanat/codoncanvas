@@ -269,16 +269,21 @@ bun dev
 
 Then open in browser:
 
-- Main playground: `http://localhost:5173`
-- **Mutation demos: `http://localhost:5173/demos.html`**\
-  ⭐ Start here to see mutation effects!
-- Mutation lab: `http://localhost:5173/mutation-demo.html`
-- Timeline demo: `http://localhost:5173/timeline-demo.html`
-- Evolution lab: `http://localhost:5173/evolution-demo.html`\
-  → Directed evolution through natural selection
-- **Population genetics:
-  `http://localhost:5173/population-genetics-demo.html`**\
-  ⭐ NEW: Watch genetic drift in action!
+- Main playground: `http://localhost:5173/`
+- **Mutation demos: `http://localhost:5173/demos`**\
+  Start here to see mutation effects!
+- Mutation lab: `http://localhost:5173/demos/mutation`
+- Timeline demo: `http://localhost:5173/demos/timeline`
+- Evolution lab: `http://localhost:5173/demos/evolution`\
+  Directed evolution through natural selection
+- Population genetics: `http://localhost:5173/demos/population`\
+  Watch genetic drift in action!
+- Genetic algorithm: `http://localhost:5173/demos/genetic`
+- Gallery: `http://localhost:5173/gallery`
+- Tutorial: `http://localhost:5173/tutorial`
+- Teacher dashboard: `http://localhost:5173/dashboards/teacher`
+- Research dashboard: `http://localhost:5173/dashboards/research`
+- Learning paths: `http://localhost:5173/dashboards/learning`
 
 ## Example: Hello Circle
 
@@ -308,7 +313,7 @@ AUG GAA AAU GGA UAA
 
 ## Built-in Examples
 
-The playground includes **27 pedagogical examples** demonstrating all features:
+The playground includes **48 pedagogical examples** demonstrating all features:
 
 ### Basic Shapes & Transforms (9)
 
@@ -485,7 +490,7 @@ Share your `.genome` files with others to:
 
 ## Directed Evolution Lab
 
-The **Evolution Lab** (`evolution-demo.html`) implements natural selection for
+The **Evolution Lab** (`/demos/evolution`) implements natural selection for
 genomes.\
 This is a core pedagogical feature demonstrating how directed evolution works:
 
@@ -759,42 +764,29 @@ Delete first 'A': All downstream codons shift, output completely different -->
 ```tree
 codoncanvas/
 ├── docs/                     # User documentation
-├── claudedocs/               # Internal project documentation
 ├── src/
-│   ├── types/                # Type definitions
-│   ├── playground/           # Playground UI components
-│   ├── lexer.ts              # Tokenizer and validator
-│   ├── vm.ts                 # Stack machine VM
-│   ├── renderer.ts           # Canvas2D renderer
-│   ├── mutations.ts          # Mutation tools (7 types)
-│   ├── diff-viewer.ts        # Genome comparison component
-│   ├── timeline-scrubber.ts  # Step-through execution
-│   ├── genome-io.ts          # Import/export .genome files
-│   ├── examples.ts           # Built-in example genomes
-│   ├── playground.ts         # Main playground entry point
-│   ├── evolution-engine.ts   # Evolution algorithm logic
-│   ├── assessment-engine.ts  # Assessment system logic
-│   ├── achievement-engine.ts # Gamification logic
-│   ├── research-metrics.ts   # Research data collection
-│   ├── teacher-dashboard.ts  # Teacher dashboard logic
-│   └── ...
-├── tests/
-│   ├── lexer.test.ts         # Lexer validation tests
-│   ├── vm.test.ts            # VM execution tests
-│   ├── mutations.test.ts     # Mutation engine tests
-│   ├── genome-io.test.ts     # File I/O tests
-│   ├── evolution-engine.test.ts   # Evolution algorithm tests
-│   ├── assessment-engine.test.ts  # Assessment system tests
-│   ├── achievement-engine.test.ts # Gamification tests
-│   └── ...
-├── index.html                # Main playground interface
-├── mutation-demo.html        # Mutation laboratory
-├── timeline-demo.html        # Timeline scrubber demo
-├── evolution-demo.html       # Evolution lab
-├── population-genetics-demo.html # Population genetics demo
-├── package.json
-├── tsconfig.json
-└── vite.config.ts
+│   ├── components/           # React components
+│   ├── hooks/                # React hooks
+│   ├── pages/                # Page components
+│   │   ├── demos/            # Demo pages
+│   │   └── dashboards/       # Dashboard pages
+│   ├── routes/               # TanStack Router routes
+│   ├── contexts/             # React contexts
+│   ├── core/                 # Lexer, VM, Renderer
+│   ├── genetics/             # Mutation, evolution engines
+│   ├── education/            # Assessment, achievements
+│   ├── analysis/             # Research metrics
+│   ├── data/                 # Static data (examples, tutorials)
+│   ├── types/                # TypeScript types
+│   ├── utils/                # Utilities
+│   ├── ui/                   # UI utilities, icons
+│   ├── app.css               # Tailwind CSS styles
+│   ├── main.tsx              # React entry point
+│   └── routeTree.gen.ts      # Generated routes
+├── tests/                    # Test files (mirrors src/)
+├── index.html                # Single HTML entry point
+├── vite.config.ts            # Vite + React config
+└── package.json
 ```
 
 ## Development
@@ -819,13 +811,8 @@ bun run build
 bun test
 ```
 
-Test suite includes:
-
-- Lexer tokenization and validation
-- VM execution and stack operations
-- Numeric literal decoding
-- Mutation demonstrations
-- Error handling
+Test suite uses Bun's built-in test runner with vitest-compatible API.
+Tests mirror the `src/` directory structure in `tests/`.
 
 ## Pedagogy
 
@@ -927,11 +914,17 @@ rubrics, and classroom activities.
   - Intensity-based dot count and radius scaling
   - Full integration with transform system
 
-🚧 **Phase C: Extensions (Future)**
+✅ **Phase C: React Migration (Completed)**
+
+- React 19 with TanStack Router for client-side routing
+- Component-based architecture with hooks
+- Tailwind CSS for styling
+- Single-page application with code splitting
+
+🚧 **Phase D: Extensions (Future)**
 
 - `RESTORE_STATE` opcode (requires codon reallocation)
 - Audio backend for sound synthesis
-- Alternative alphabets (U for RNA)
 - Enhanced linter with stack depth analysis
 - Visual regression testing infrastructure
 
@@ -972,16 +965,16 @@ See [DEPLOYMENT.md][deployment-doc] for complete instructions including:
 [demo]: https://kjanat.github.io/codoncanvas/
 [deployment-doc]: ./docs/DEPLOYMENT.md
 [educators-doc]: ./docs/EDUCATORS.md
-[evolution-lab]: https://kjanat.github.io/codoncanvas/evolution-demo.html
-[gallery]: https://kjanat.github.io/codoncanvas/gallery.html
-[genetic-algorithm]: https://kjanat.github.io/codoncanvas/genetic-algorithm-demo.html
-[learning-paths]: https://kjanat.github.io/codoncanvas/learning-paths.html
+[evolution-lab]: https://kjanat.github.io/codoncanvas/demos/evolution
+[gallery]: https://kjanat.github.io/codoncanvas/gallery
+[genetic-algorithm]: https://kjanat.github.io/codoncanvas/demos/genetic
+[learning-paths]: https://kjanat.github.io/codoncanvas/dashboards/learning
 [license]: ./LICENSE
-[mutation-demos]: https://kjanat.github.io/codoncanvas/demos.html
-[mutation-lab]: https://kjanat.github.io/codoncanvas/mutation-demo.html
+[mutation-demos]: https://kjanat.github.io/codoncanvas/demos
+[mutation-lab]: https://kjanat.github.io/codoncanvas/demos/mutation
 [playground]: https://kjanat.github.io/codoncanvas/
-[population-genetics]: https://kjanat.github.io/codoncanvas/population-genetics-demo.html
-[research-dashboard]: https://kjanat.github.io/codoncanvas/research-dashboard.html
-[teacher-dashboard]: https://kjanat.github.io/codoncanvas/teacher-dashboard.html
-[timeline-scrubber]: https://kjanat.github.io/codoncanvas/timeline-demo.html
-[tutorial]: https://kjanat.github.io/codoncanvas/tutorial.html
+[population-genetics]: https://kjanat.github.io/codoncanvas/demos/population
+[research-dashboard]: https://kjanat.github.io/codoncanvas/dashboards/research
+[teacher-dashboard]: https://kjanat.github.io/codoncanvas/dashboards/teacher
+[timeline-scrubber]: https://kjanat.github.io/codoncanvas/demos/timeline
+[tutorial]: https://kjanat.github.io/codoncanvas/tutorial

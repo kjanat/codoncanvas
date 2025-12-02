@@ -6,7 +6,7 @@ This guide explains how to deploy CodonCanvas to GitHub Pages for public access.
 
 - GitHub account
 - Git installed locally
-- Node.js 20+ installed
+- Node.js 20+ or Bun 1.0+ installed
 
 ## Quick Deployment Steps
 
@@ -66,10 +66,10 @@ Location: `.github/workflows/deploy.yml`
 **Build Job:**
 
 1. Checkout code
-2. Setup Node.js 20
-3. Install dependencies (`npm ci`)
-4. Run tests (`npm test`) - fails deployment if tests fail
-5. Build production bundle (`npm run build`)
+2. Setup Bun
+3. Install dependencies (`bun install --frozen-lockfile`)
+4. Run tests (`bun test`) - fails deployment if tests fail
+5. Build production bundle (`bun run build`)
 6. Upload artifact for deployment
 
 **Deploy Job:**
@@ -83,25 +83,20 @@ Location: `vite.config.ts`
 
 **Key Settings:**
 
-- **Base path:** `/codoncanvas/` in production (for GitHub Pages subdirectory)
-- **Build inputs:** All 5 HTML pages (index, demos, mutation, timeline, evolution)
+- **Base path:** Dynamically set via `VITE_BASE_PATH` env var (defaults to `/codoncanvas/`)
+- **SPA:** React application with TanStack Router for client-side routing
 - **Output:** `dist/` directory with bundled assets
 
 ### Build Output
 
 ```
 dist/
-├── index.html              # Main playground
-├── demos.html              # Demos overview
-├── mutation-demo.html      # Mutation laboratory
-├── timeline-demo.html      # Timeline scrubber
-├── evolution-demo.html     # Evolution lab
+├── index.html              # Single-page application entry
 ├── assets/
-│   ├── *.js               # Bundled JavaScript
-│   ├── *.css              # Bundled styles
-│   └── *.svg              # Static assets
-├── screenshot_*.png        # Social sharing images
-└── codon-chart.svg         # Codon reference chart
+│   ├── index-*.js          # Bundled JavaScript
+│   ├── index-*.css         # Bundled Tailwind CSS
+│   └── *.svg               # Static assets
+└── ...
 ```
 
 ## Testing Deployment Locally
@@ -110,18 +105,21 @@ Before pushing, test the production build locally:
 
 ```bash
 # Build for production
-NODE_ENV=production npm run build
+bun run build
 
 # Preview the production build
-npm run preview
+bun run preview
 
 # Open browser to preview URL (typically http://localhost:4173)
-# Test all pages:
+# All routes work via React Router:
 # - http://localhost:4173/
-# - http://localhost:4173/demos.html
-# - http://localhost:4173/mutation-demo.html
-# - http://localhost:4173/timeline-demo.html
-# - http://localhost:4173/evolution-demo.html
+# - http://localhost:4173/gallery
+# - http://localhost:4173/tutorial
+# - http://localhost:4173/demos
+# - http://localhost:4173/demos/mutation
+# - http://localhost:4173/demos/timeline
+# - http://localhost:4173/demos/evolution
+# - http://localhost:4173/dashboards/teacher
 ```
 
 ## Troubleshooting
@@ -137,9 +135,9 @@ npm run preview
 
 ### Pages Not Found
 
-**Problem:** Clicking links gives 404 errors.
+**Problem:** Direct URL access gives 404 errors.
 
-**Solution:** Ensure all HTML files are in `rollupOptions.input` in `vite.config.ts`.
+**Solution:** React Router handles client-side routing. For GitHub Pages, a `404.html` redirect may be needed for direct URL access. The build process should copy `index.html` to `404.html`.
 
 ### Deployment Fails on Tests
 
@@ -148,7 +146,7 @@ npm run preview
 **Solution:** Fix failing tests locally first:
 
 ```bash
-npm test
+bun test
 ```
 
 ### Social Sharing Images Not Showing
@@ -175,9 +173,9 @@ If you want to use a custom domain instead of GitHub Pages subdomain:
 
 Before deploying:
 
-- [ ] All tests passing (`npm test`)
-- [ ] Build succeeds locally (`npm run build`)
-- [ ] Preview works locally (`npm run preview`)
+- [ ] All tests passing (`bun test`)
+- [ ] Build succeeds locally (`bun run build`)
+- [ ] Preview works locally (`bun run preview`)
 - [ ] Social sharing URLs updated in HTML files
 - [ ] README.md updated with live demo links
 - [ ] CHANGELOG.md updated with deployment info

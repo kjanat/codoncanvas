@@ -445,7 +445,7 @@ A **10-student, 3-session pilot** (Week 5 deployment) to empirically validate Co
 
 **Method:**
 
-- Use built-in assessment system (`assessment-demo.html`)
+- Use built-in assessment system (`/demos/assessment`)
 - Students complete 10 "Medium" difficulty challenges
 - Export results as JSON (automatic scoring)
 

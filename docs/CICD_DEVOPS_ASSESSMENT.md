@@ -433,10 +433,10 @@ trigger:
 jobs:
   build:
     - Checkout code
-    - Setup Node.js 20
-    - Install dependencies (npm ci)
-    - Run tests (npm test)          ← FAILS CURRENTLY
-    - Build (npm run build)
+    - Setup Bun runtime
+    - Install dependencies (bun install --frozen-lockfile)
+    - Run tests (bun test)          ← FAILS CURRENTLY
+    - Build (bun run build)
     - Upload artifact
 
   deploy:
@@ -445,21 +445,23 @@ jobs:
 ```
 
 **Strengths:**
-✅ Simple, clean workflow
-✅ Tests run before build (quality gate)
-✅ Artifact-based deployment (safe)
-✅ Concurrency control (prevents race conditions)
-✅ Manual trigger capability
-✅ Environment-based permissions
+
+- Simple, clean workflow
+- Tests run before build (quality gate)
+- Artifact-based deployment (safe)
+- Concurrency control (prevents race conditions)
+- Manual trigger capability
+- Environment-based permissions
 
 **Weaknesses:**
-❌ No security scanning in pipeline
-❌ No dependency vulnerability scanning
-❌ No static analysis (SAST)
-❌ No performance regression detection
-❌ No automated rollback capability
-❌ No smoke tests post-deployment
-❌ No Slack/email notifications
+
+- No security scanning in pipeline
+- No dependency vulnerability scanning
+- No static analysis (SAST)
+- No performance regression detection
+- No automated rollback capability
+- No smoke tests post-deployment
+- No Slack/email notifications
 
 ### Deployment Flow for Classroom Scale (50-100 students)
 
@@ -540,9 +542,9 @@ jobs:
 ```
 push → GitHub Actions trigger (1 sec)
      → Checkout + setup (20 sec)
-     → npm ci (40 sec)
-     → npm test (2 sec - CURRENTLY FAILING)
-     → npm build (1 sec)
+     → bun install --frozen-lockfile (40 sec)
+     → bun test (2 sec - CURRENTLY FAILING)
+     → bun run build (1 sec)
      → Upload artifact (5 sec)
      → Deploy (30 sec)
      = Total: ~2 minutes
@@ -718,13 +720,13 @@ No Docker/Kubernetes needed for GitHub Pages static deployment.
 **Required Scans:**
 
 1. **SAST (Static Application Security Testing)**
-   - ❌ Not configured
-   - Tools: ESLint + security plugin (easy add)
+   - Not configured
+   - Tools: Biome + security plugin (easy add)
    - Effort: 15 min to implement
 
 2. **Dependency Scanning**
-   - ❌ npm audit not in pipeline
-   - Tools: npm audit, dependabot
+   - bun audit not in pipeline
+   - Tools: bun audit, dependabot
    - Effort: 5 min to add to pipeline
 
 3. **Container Scanning**
@@ -805,7 +807,7 @@ No Docker/Kubernetes needed for GitHub Pages static deployment.
 **Phase 1 (BEFORE LAUNCH):**
 
 1. Add security tests (2-3 hours) → XSS prevention
-2. Add npm audit to CI pipeline (5 min) → Dependency safety
+2. Add bun audit to CI pipeline (5 min) → Dependency safety
 3. Add CSP headers (1 hour) → Defense-in-depth
 
 **Phase 2 (POST-LAUNCH):**
@@ -1068,7 +1070,7 @@ PATCH: Bug fixes (error handling)
 
 1. Update package.json version
 2. Update CHANGELOG.md
-3. Run `npm run build` to verify
+3. Run `bun run build` to verify
 4. Commit with message: `chore: release v1.0.1`
 5. Push to trigger deployment
 
@@ -1175,8 +1177,8 @@ PATCH: Bug fixes (error handling)
 1. Verify error in teacher's browser (reproduce)
 2. Check browser console for errors
 3. Check Sentry for error reports (if implemented)
-4. Debug locally: `npm run dev`
-5. Fix and test: `npm test && npm run build`
+4. Debug locally: `bun run dev`
+5. Fix and test: `bun test && bun run build`
 6. Commit and push (triggers deployment)
 7. Verify fix in production: 2-3 min
 8. Communicate: "Issue fixed, refresh page"
@@ -1186,7 +1188,7 @@ PATCH: Bug fixes (error handling)
 **Runbook: Slow Performance**
 
 ```
-1. Measure baseline (npm run benchmark)
+1. Measure baseline (bun run benchmark)
 2. Profile with DevTools
 3. Check Sentry performance metrics
 4. Identify bottleneck (lexer/VM/renderer)
@@ -1496,10 +1498,10 @@ PATCH: Bug fixes (error handling)
 **Pre-Flight Checks:**
 
 - [ ] All 443 tests passing (currently 390/443)
-- [ ] `npm run build` succeeds
-- [ ] `npm run preview` loads all pages
-- [ ] No TypeScript errors: `npm run typecheck`
-- [ ] ESLint clean: `npm run lint`
+- [ ] `bun run build` succeeds
+- [ ] `bun run preview` loads all pages
+- [ ] No TypeScript errors: `bun run typecheck`
+- [ ] Biome clean: `bun run lint`
 - [ ] Bundle size acceptable (<500KB)
 
 **Functional Validation:**
@@ -1703,7 +1705,7 @@ PATCH: Bug fixes (error handling)
 **Day 2 (2-3 hours):**
 
 1. Implement XSS security tests (2 hours)
-2. Add npm audit to CI (5 min)
+2. Add bun audit to CI (5 min)
 3. Add CSP headers (30 min)
 
 **Day 3 (1-2 hours):**

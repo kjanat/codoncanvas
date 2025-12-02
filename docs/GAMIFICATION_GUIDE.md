@@ -1097,7 +1097,7 @@ achievementEngine.reset();
 **Step 3: Rebuild**
 
 ```bash
-npm run build
+bun run build
 ```
 
 ### Custom Achievement Icons

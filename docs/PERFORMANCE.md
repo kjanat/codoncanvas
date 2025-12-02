@@ -205,7 +205,7 @@ Balanced programs with shapes, transforms, and state management. Represents typi
 Execute the benchmark suite to reproduce these results:
 
 ```bash
-npm run benchmark
+bun run benchmark
 ```
 
 Or directly:

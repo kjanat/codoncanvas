@@ -112,10 +112,10 @@ cd /home/kjanat/projects/codoncanvas
 git pull origin master
 
 # Install dependencies
-npm install
+bun install
 
 # Run development server
-npm run dev
+bun dev
 
 # Open browser → localhost:5173
 # Attempt to reproduce issue
@@ -137,7 +137,7 @@ npm run dev
 ### Step 3: Run Test Suite (5 min)
 
 ```bash
-npm test
+bun test
 
 # Look for failures related to broken feature
 # Tests provide specific failure location
@@ -153,10 +153,10 @@ git checkout -b fix/critical-issue
 # Fix identified in Step 2-3
 
 # Run tests to verify fix
-npm test
+bun test
 
 # Build to verify no build errors
-npm run build
+bun run build
 
 # Commit and push
 git add .
@@ -185,7 +185,7 @@ git push origin fix/critical-issue
 
 ```bash
 # Run benchmark suite
-npm run benchmark
+bun run benchmark
 
 # Compare to baseline:
 # - Simple genome: <50ms expected
@@ -223,12 +223,12 @@ VM: 30ms → Normal (expected <50ms)
 # Most likely: renderer.ts or mutation-predictor.ts
 
 # Re-run benchmarks
-npm run benchmark
+bun run benchmark
 
 # Verify improvement (aim for 30%+ reduction)
 
 # Run full test suite
-npm test
+bun test
 
 # Deploy fix
 git add .
@@ -258,20 +258,20 @@ git push origin master
 # Scroll to test results section
 
 # Or run locally:
-npm test
+bun test
 ```
 
 ### Step 2: Reproduce Locally (10 min)
 
 ```bash
 # Run specific failing test
-npm test -- [test-file-name]
+bun test [test-file-name]
 
 # Example:
-npm test -- achievement-engine.test.ts
+bun test achievement-engine.test.ts
 
 # Run with verbose output
-npm test -- --reporter=verbose
+bun test --reporter=verbose
 ```
 
 ### Step 3: Fix Test or Code (20-40 min)
@@ -292,10 +292,10 @@ npm test -- --reporter=verbose
 
 ```bash
 # Run full test suite
-npm test
+bun test
 
 # All tests must pass:
-# ✓ 443 tests passing
+# 443 tests passing
 
 # Commit and push
 git add .
@@ -398,9 +398,9 @@ git push origin master
 
 **Pre-Deployment:**
 
-- [ ] All tests passing locally (`npm test`)
-- [ ] No linter errors (`npm run lint`)
-- [ ] Build succeeds (`npm run build`)
+- [ ] All tests passing locally (`bun test`)
+- [ ] No linter errors (`bun run lint`)
+- [ ] Build succeeds (`bun run build`)
 - [ ] Manual smoke test completed
 
 **Post-Deployment:**

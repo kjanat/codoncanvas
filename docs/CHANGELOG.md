@@ -5,6 +5,83 @@ All notable changes to CodonCanvas are documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.0.0] - 2025-11-29
+
+### Added - React 19 SPA Architecture
+
+- **React 19**: Complete migration from vanilla JS to React 19 single-page application
+- **TanStack Router**: File-based routing with type-safe navigation
+- **Tailwind CSS v4**: Modern utility-first styling with semantic color tokens
+- **Dark mode**: System-aware theme with manual toggle support
+
+### Added - React Components
+
+- **Playground**: Full-featured code editor with live preview, keyboard shortcuts, undo/redo
+- **Gallery**: Sortable example browser with preview modal
+- **Tutorial**: 10-lesson interactive tutorial engine with progress tracking
+- **DiffViewer**: Side-by-side genome comparison component
+- **Achievement system**: Gamification with toast notifications
+
+### Added - React Hooks
+
+- `useGenome`, `useVM`, `useCanvas`: Core genome execution
+- `useHistory`: Undo/redo functionality
+- `useLocalStorage`, `usePreferences`: Persistent state
+- `useKeyboardShortcuts`: Declarative shortcut handling
+- `useShareUrl`: URL-based genome sharing
+- `useClipboard`: Copy/paste with feedback
+- `useAchievements`: Achievement tracking
+
+### Added - Dashboard Pages
+
+- **Teacher Dashboard**: Student engagement metrics, at-risk detection, progress matrix
+- **Research Dashboard**: Detailed analytics for educational research
+- **Learning Paths**: Curated learning journeys with progress tracking
+
+### Added - Demo Pages (React)
+
+- Mutation Demo with DiffViewer
+- Evolution Demo with lineage tracking
+- Timeline Demo with GIF export
+- Population Genetics simulation
+- Genetic Algorithm with fitness visualization
+- Achievements Demo
+
+### Added - Developer Experience
+
+- **Bun runtime**: CLI now runs on Bun for faster execution
+- **Bun test runner**: Native testing with coverage
+- **Commitlint**: Conventional commit message enforcement
+- **VSCode configs**: Debugging and task configurations
+- **MCP toolchain**: Modern tooling configuration
+
+### Added - Type Safety
+
+- Branded types for domain safety (StackValue, Degrees, Hue, etc.)
+- VM state system with discriminated unions
+- Comprehensive TypeScript strict mode
+
+### Changed
+
+- Test runner: Vitest -> Bun native test runner
+- Styling: CSS files -> Tailwind CSS v4
+- Routing: Multiple HTML files -> Single SPA with React Router
+- State management: DOM manipulation -> React hooks and contexts
+
+### Removed
+
+- Legacy vanilla JS playground (`src/playground.ts`, `src/playground/`)
+- Legacy demo pages (`pages/*.html`)
+- Legacy CSS files (`css/`)
+- ESLint (replaced by Biome)
+- Vitest (replaced by Bun test runner)
+
+### Migration Notes
+
+- All demo URLs changed from `.html` extensions to clean paths
+- Example: `/demos.html` -> `/demos`
+- Example: `/mutation-demo.html` -> `/demos/mutation`
+
 ## [1.1.0] - 2025-10-12
 
 ### Added - Documentation & Distribution
@@ -182,19 +259,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Future Roadmap
 
-### v1.2.0 (Planned)
-
-- API documentation with JSDoc comments
-- Contributing guide with PR guidelines
-- Animated GIF demos of mutation effects
-- Performance optimizations for complex genomes
-
-### v2.0.0 (Future)
+### v2.1.0 (Planned)
 
 - Alternative backends: Audio synthesis, robot plotter
-- Evolutionary mode: Auto-mutation with fitness selection
-- Alternative alphabets: Support for U (RNA), custom bases
-- Theme packs: Swappable codon maps for different educational contexts
+- Collaborative editing: Real-time multi-user genome editing
+- AI-assisted learning: Intelligent hints and suggestions
+- Mobile apps: Native iOS/Android versions
+
+### v2.0.0 (Released)
+
+- React 19 SPA migration
+- TanStack Router with type-safe navigation
+- Tailwind CSS v4 styling
+- Comprehensive hook library
+- Teacher and Research dashboards
 
 ## Contributors
 

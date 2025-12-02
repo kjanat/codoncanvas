@@ -1051,8 +1051,8 @@ By the end of this session, participants will be able to:
 
 **Online Resources** (URLs for review committee):
 
-- CodonCanvas Playground: https://[your-url]/index.html
-- Example Gallery: https://[your-url]/gallery.html
+- CodonCanvas Playground: https://[your-url]/
+- Example Gallery: https://[your-url]/gallery
 - Educator Guide: https://[your-url]/EDUCATORS.md
 
 ## References (if applicable)

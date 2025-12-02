@@ -11,11 +11,11 @@ Command-line interface for validating, linting, and analyzing CodonCanvas genome
 ## Installation
 
 ```bash
-# Install globally (after publishing to npm)
-npm install -g codoncanvas
+# Run locally in project (using Bun runtime)
+bun run cli -- <command>
 
-# Or run locally in project
-npm run cli -- <command>
+# Or install globally (after publishing)
+bun install -g codoncanvas
 ```
 
 ---
@@ -224,12 +224,12 @@ Validate genomes before committing to Git.
 # .git/hooks/pre-commit
 #!/bin/bash
 echo "Validating genomes..."
-if ! npm run cli -- lint "examples/*.genome" > /dev/null 2>&1; then
-  echo "❌ Genome validation failed. Fix errors before committing."
-  npm run cli -- lint "examples/*.genome"
+if ! bun run cli -- lint "examples/*.genome" > /dev/null 2>&1; then
+  echo "Genome validation failed. Fix errors before committing."
+  bun run cli -- lint "examples/*.genome"
   exit 1
 fi
-echo "✅ All genomes valid"
+echo "All genomes valid"
 ```
 
 ### CI/CD Integration (GitHub Actions)
@@ -244,12 +244,12 @@ jobs:
   validate:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
+      - uses: actions/checkout@v4
+      - uses: oven-sh/setup-bun@v2
         with:
-          node-version: "18"
-      - run: npm install
-      - run: npm run cli -- lint "examples/*.genome"
+          bun-version: latest
+      - run: bun install
+      - run: bun run cli -- lint "examples/*.genome"
 ```
 
 ### Batch Grading Script
@@ -262,7 +262,7 @@ STUDENTS_DIR="student-submissions"
 RESULTS_FILE="grading-results.json"
 
 # Validate all submissions
-npm run cli -- lint "${STUDENTS_DIR}/*.genome" --json > "${RESULTS_FILE}"
+bun run cli -- lint "${STUDENTS_DIR}/*.genome" --json > "${RESULTS_FILE}"
 
 # Extract grades (valid = 100%, invalid = 0%)
 jq '.results[] | {student: .file, grade: (if .valid then 100 else 0 end)}' "${RESULTS_FILE}"
@@ -271,8 +271,8 @@ jq '.results[] | {student: .file, grade: (if .valid then 100 else 0 end)}' "${RE
 for file1 in ${STUDENTS_DIR}/*.genome; do
   for file2 in ${STUDENTS_DIR}/*.genome; do
     if [ "$file1" != "$file2" ]; then
-      npm run cli -- check-similarity "$file1" "$file2" --threshold 0.85 || \
-        echo "⚠️ Potential plagiarism: $file1 and $file2"
+      bun run cli -- check-similarity "$file1" "$file2" --threshold 0.85 || \
+        echo "Potential plagiarism: $file1 and $file2"
     fi
   done
 done
@@ -288,7 +288,7 @@ The CLI tool complements the [Educational Research Framework](claudedocs/RESEARC
 
 ```bash
 # Validate all participant genomes
-npm run cli -- lint "study-data/participant-*.genome" --json > validation-report.json
+bun run cli -- lint "study-data/participant-*.genome" --json > validation-report.json
 
 # Check data integrity
 VALID_COUNT=$(jq '.valid' validation-report.json)
@@ -304,7 +304,7 @@ fi
 for file1 in study-data/*.genome; do
   for file2 in study-data/*.genome; do
     if [ "$file1" != "$file2" ]; then
-      npm run cli -- check-similarity "$file1" "$file2" --threshold 0.9 >> similarity-report.txt
+      bun run cli -- check-similarity "$file1" "$file2" --threshold 0.9 >> similarity-report.txt
     fi
   done
 done
@@ -315,7 +315,7 @@ done
 ```bash
 # Extract stats for analysis
 for file in study-data/*.genome; do
-  npm run cli -- stats "$file" >> stats-raw.txt
+  bun run cli -- stats "$file" >> stats-raw.txt
 done
 
 # Parse into CSV for statistical analysis
@@ -422,10 +422,10 @@ For automation and integration with other tools:
 **Benchmarks (MacBook Pro M1):**
 
 ```bash
-time npm run cli -- lint "examples/*.genome"
+time bun run cli -- lint "examples/*.genome"
 # 25 files validated in 0.12s (208 files/sec)
 
-time npm run cli -- check-similarity large1.genome large2.genome
+time bun run cli -- check-similarity large1.genome large2.genome
 # 4,860 bases compared in 0.05s
 ```
 
@@ -435,11 +435,11 @@ time npm run cli -- check-similarity large1.genome large2.genome
 
 ### "Command not found: codoncanvas"
 
-- **Solution:** Run `npm run cli --` instead, or install globally: `npm link`
+- **Solution:** Run `bun run cli --` instead, or install globally: `bun link`
 
 ### "Cannot find module 'commander'"
 
-- **Solution:** Install dependencies: `npm install`
+- **Solution:** Install dependencies: `bun install`
 
 ### Glob pattern not working
 
@@ -447,7 +447,7 @@ time npm run cli -- check-similarity large1.genome large2.genome
 
 ### Slow similarity checks
 
-- **Solution:** Large genomes (>5,000 bases) take longer due to O(n²) algorithm. Consider sampling or chunking.
+- **Solution:** Large genomes (>5,000 bases) take longer due to O(n^2) algorithm. Consider sampling or chunking.
 
 ---
 
@@ -455,15 +455,16 @@ time npm run cli -- check-similarity large1.genome large2.genome
 
 The CLI is built using:
 
+- **Bun:** JavaScript runtime and package manager
 - **Commander.js:** Command parsing and help
 - **Chalk:** Colored terminal output
-- **Existing lexer:** Reuses `src/lexer.ts` (no duplication)
+- **Existing lexer:** Reuses `src/core/lexer.ts` (no duplication)
 
 **Add new commands:**
 
 1. Add command in `cli.ts` using `program.command()`
-2. Leverage existing modules (`src/lexer.ts`, `src/vm.ts`)
-3. Test with `npm run cli -- <command>`
+2. Leverage existing modules (`src/core/lexer.ts`, `src/core/vm.ts`)
+3. Test with `bun run cli -- <command>`
 4. Update this documentation
 
 ---

@@ -61,14 +61,14 @@ CodonCanvas is an educational programming language that uses **DNA-like triplets
 ✅ **Visual Reference**: Print-ready codon chart poster (`codon-chart.svg`)
 ✅ **18 Built-in Examples**: Progressive difficulty (beginner → advanced)
 ✅ **Distribution Package**: Example genomes ZIP for LMS deployment (`codoncanvas-examples.zip`)
-✅ **🎯 Interactive Mutation Demos** (`demos.html`): Visual before/after comparisons of all mutation types ⭐ **NEW!**
+✅ **Interactive Mutation Demos** (`/demos`): Visual before/after comparisons of all mutation types
 ✅ **Mutation Tools**: One-click demonstration of 7 mutation types
 ✅ **Save/Load**: Students can save work and submit .genome files
 ✅ **Offline-capable**: Can run locally without internet after initial setup
 ✅ **DNA/RNA Toggle**: Switch between DNA (T) and RNA (U) notation for teaching transcription concepts
 ✅ **Biology Comparison Panel**: Side-by-side view of CodonCanvas opcodes vs real amino acids
-✅ **📊 Teacher Dashboard**: Classroom analytics with student progress tracking and at-risk detection ⭐ **NEW!**
-✅ **📈 Research Metrics**: Detailed engagement analytics for assessment and pedagogical research ⭐ **NEW!**
+✅ **Teacher Dashboard**: Classroom analytics with student progress tracking and at-risk detection
+✅ **Research Metrics**: Detailed engagement analytics for assessment and pedagogical research
 
 ---
 
@@ -86,10 +86,10 @@ CodonCanvas is an educational programming language that uses **DNA-like triplets
    cd codoncanvas
 
    # Install dependencies
-   npm install
+   bun install
 
    # Build for production
-   npm run build
+   bun run build
 
    # Deploy 'dist/' folder to:
    # - GitHub Pages (free)
@@ -125,8 +125,8 @@ CodonCanvas is an educational programming language that uses **DNA-like triplets
    ```bash
    git clone https://github.com/codoncanvas/codoncanvas.git
    cd codoncanvas
-   npm install
-   npm run dev
+   bun install
+   bun dev
    ```
 3. **Open `http://localhost:5173` in browser**
 
@@ -352,7 +352,7 @@ Complete assessment tools now available in [`ASSESSMENTS.md`](ASSESSMENTS.md):
 ### Lesson 2: Mutations (60-90 min)
 
 **Learning Objectives:** LO4, LO6, LO7, LO8, LO19, LO20
-**Materials:** CodonCanvas, Mutation Lab (mutation-demo.html), Worksheet (provided below)
+**Materials:** CodonCanvas, Mutation Lab (`/demos/mutation`), Worksheet (provided below)
 
 #### Structure
 
@@ -716,8 +716,8 @@ ATG GAA AAT ACA TAA  ; TRANSLATE needs 2 values
 
 CodonCanvas provides two powerful analytics tools for classroom assessment and educational research:
 
-1. **Teacher Dashboard** (`teacher-dashboard.html`) - Classroom-level analytics and student progress tracking
-2. **Research Metrics Dashboard** (`research-dashboard.html`) - Deep-dive session analytics for research
+1. **Teacher Dashboard** (`/dashboards/teacher`) - Classroom-level analytics and student progress tracking
+2. **Research Metrics Dashboard** (`/dashboards/research`) - Deep-dive session analytics for research
 
 Both tools are **privacy-preserving** and work entirely client-side with no data transmission to servers (FERPA-compliant).
 
@@ -727,7 +727,7 @@ Both tools are **privacy-preserving** and work entirely client-side with no data
 
 **Purpose**: Monitor classroom engagement, track student progress, identify at-risk learners
 
-**Access**: [https://kjanat.github.io/codoncanvas/teacher-dashboard.html](https://kjanat.github.io/codoncanvas/teacher-dashboard.html)
+**Access**: [https://kjanat.github.io/codoncanvas/dashboards/teacher](https://kjanat.github.io/codoncanvas/dashboards/teacher)
 
 #### Features
 
@@ -835,7 +835,7 @@ Use demo mode to:
 
 **Purpose**: Detailed session-level analytics for educational research and deep assessment
 
-**Access**: [https://kjanat.github.io/codoncanvas/research-dashboard.html](https://kjanat.github.io/codoncanvas/research-dashboard.html)
+**Access**: [https://kjanat.github.io/codoncanvas/dashboards/research](https://kjanat.github.io/codoncanvas/dashboards/research)
 
 #### Features
 

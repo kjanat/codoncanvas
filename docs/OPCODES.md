@@ -611,8 +611,8 @@ Legend: * = all 4 bases (family of 4), (3) = 3 codons, (2) = 2 codons
 
 - [MVP Technical Specification](MVP_Technical_Specification.md) - Original design document
 - [Quick Reference](claudedocs/QUICK_REFERENCE.md) - 1-page cheat sheet for students
-- [Example Gallery](gallery.html) - 38+ working examples from simple to advanced
-- [Interactive Tutorial](tutorial.html) - Step-by-step guided learning
+- [Example Gallery](/gallery) - 38+ working examples from simple to advanced
+- [Interactive Tutorial](/tutorial) - Step-by-step guided learning
 
 ---
 

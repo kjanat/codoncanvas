@@ -41,7 +41,7 @@ The **Assessment System** provides automated challenges and grading for testing 
 1. **Open Assessment Demo**:
 
    ```
-   Open: assessment-demo.html
+   Open: /demos/assessment
    ```
 
 2. **Select Difficulty**:
@@ -473,4 +473,4 @@ Educators can request features such as:
 
 ---
 
-**🎓 Ready to assess student learning? Open `assessment-demo.html` to get started!**
+**🎓 Ready to assess student learning? Open `/demos/assessment` to get started!**

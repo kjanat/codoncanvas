@@ -129,7 +129,7 @@ Data saves every 30 seconds to browser localStorage.
 
 **Method 1: Research Dashboard (Recommended)**
 
-1. Open `research-dashboard.html` in same browser
+1. Open `/dashboards/research` in same browser
 2. View aggregate statistics and session table
 3. Click "📊 Export CSV" button
 4. Save CSV file (e.g., `pilot_study_oct2025.csv`)
@@ -156,7 +156,7 @@ import("./src/research-metrics.js").then((m) => {
 Use provided analysis script:
 
 ```bash
-npm run metrics:analyze -- --data pilot_study_oct2025.csv
+bun run metrics:analyze -- --data pilot_study_oct2025.csv
 ```
 
 See [Data Analysis Workflow](#data-analysis-workflow) for details.
@@ -183,7 +183,7 @@ CodonCanvas research metrics are designed to comply with FERPA:
 
 ✅ **Parental Rights**
 
-- Parents can request data inspection (`research-dashboard.html`)
+- Parents can request data inspection (`/dashboards/research`)
 - Parents can delete data (browser localStorage clear)
 - Data collection is optional (opt-in consent required)
 
@@ -516,14 +516,14 @@ sessionId,startTime,endTime,duration,genomesCreated,genomesExecuted,timeToFirstA
 
 ### Step 1: Export CSV from Research Dashboard
 
-1. Open `research-dashboard.html`
-2. Click "📊 Export CSV"
+1. Open `/dashboards/research`
+2. Click "Export CSV"
 3. Save file (e.g., `study1_metrics.csv`)
 
 ### Step 2: Run Automated Analysis
 
 ```bash
-npm run metrics:analyze -- --data study1_metrics.csv
+bun run metrics:analyze -- --data study1_metrics.csv
 ```
 
 **Output:**
@@ -575,7 +575,7 @@ df.groupby(["renderMode_visual", "renderMode_audio"]).mean()
 
 ## Research Dashboard Guide
 
-The research dashboard (`research-dashboard.html`) provides visual analytics and data export.
+The research dashboard (`/dashboards/research`) provides visual analytics and data export.
 
 ### Dashboard Sections
 
@@ -608,24 +608,25 @@ The research dashboard (`research-dashboard.html`) provides visual analytics and
 
 ### Accessing the Dashboard
 
-**Method 1: Direct File Access**
-
-```
-file:///path/to/codoncanvas/research-dashboard.html
-```
-
-**Method 2: Local Server** (recommended)
+**Method 1: Local Development Server** (recommended)
 
 ```bash
 cd codoncanvas
-npx http-server -p 8080
-# Open http://localhost:8080/research-dashboard.html
+bun run dev
+# Open http://localhost:5173/dashboards/research
 ```
 
-**Method 3: GitHub Pages** (if deployed)
+**Method 2: Production Build**
+
+```bash
+bun run build && bun run preview
+# Open http://localhost:4173/dashboards/research
+```
+
+**Method 3: Deployed App** (if deployed)
 
 ```
-https://yourusername.github.io/codoncanvas/research-dashboard.html
+https://yourdomain.com/dashboards/research
 ```
 
 ### Dashboard Limitations
@@ -669,7 +670,7 @@ https://yourusername.github.io/codoncanvas/research-dashboard.html
 **Solution:** Ensure CSV exported from ResearchMetrics (not hand-edited)
 
 **Cause:** Missing dependencies
-**Solution:** Run `npm install` first
+**Solution:** Run `bun install` first
 
 ### Data Lost After Browser Update
 

@@ -23,8 +23,10 @@ By participating in this project, you agree to abide by our [Code of Conduct](CO
 
 ### Prerequisites
 
-- Node.js 18+ and npm
+- Bun 1.0+ (or Node.js 20+)
 - Basic understanding of TypeScript
+- Familiarity with React 19 and hooks
+- Understanding of TanStack Router (for routing contributions)
 - Familiarity with HTML5 Canvas (for renderer contributions)
 - Understanding of stack-based virtual machines (for VM contributions)
 
@@ -40,16 +42,16 @@ cd codoncanvas
 git remote add upstream https://github.com/ORIGINAL_OWNER/codoncanvas.git
 
 # Install dependencies
-npm install
+bun install
 
 # Run development server
-npm run dev
+bun dev
 
 # Run tests
-npm run test
+bun test
 
 # Run type checking
-npm run typecheck
+bun typecheck
 ```
 
 ### Project Structure
@@ -57,15 +59,18 @@ npm run typecheck
 ```
 codoncanvas/
 ├── src/
-│   ├── lexer/          # Tokenization and parsing
-│   ├── vm/             # Virtual machine and opcodes
-│   ├── renderer/       # Canvas rendering
-│   ├── examples/       # Built-in example genomes
-│   └── utils/          # Shared utilities
-├── scripts/            # Build and utility scripts
-├── examples/           # Exported .genome files
+│   ├── components/     # React components
+│   ├── hooks/          # Custom React hooks
+│   ├── pages/          # Page components
+│   ├── routes/         # TanStack Router routes
+│   ├── contexts/       # React contexts (Theme, Toast, Achievement)
+│   ├── core/           # Lexer, VM, Renderer
+│   ├── genetics/       # Mutation, evolution engines
+│   ├── data/           # Static data modules
+│   └── types/          # TypeScript definitions
+├── tests/              # Test files (mirrors src/)
 ├── docs/               # Documentation
-└── tests/              # Test files
+└── examples/           # .genome files
 ```
 
 ## Development Workflow
@@ -91,22 +96,19 @@ Branch naming conventions:
 
 ```bash
 # Start dev server with hot reload
-npm run dev
+bun dev
 
 # Run tests in watch mode
-npm run test:watch
-
-# Run tests with UI
-npm run test:ui
+bun test --watch
 
 # Type checking
-npm run typecheck
+bun typecheck
 
 # Lint code
-npm run lint
+bun run lint
 
 # Run performance benchmarks
-npm run benchmark
+bun run benchmark
 ```
 
 ### Keeping Your Fork Updated
@@ -131,6 +133,7 @@ git push origin master
 ### Naming Conventions
 
 - **Files**: `kebab-case.ts` (e.g., `codon-lexer.ts`)
+- **React Components**: `PascalCase.tsx` (e.g., `CodeEditor.tsx`)
 - **Classes**: `PascalCase` (e.g., `CodonLexer`)
 - **Interfaces**: `PascalCase` (e.g., `VMState`)
 - **Functions**: `camelCase` (e.g., `tokenize()`)
@@ -143,6 +146,49 @@ git push origin master
 - Keep files under 300 lines where possible
 - Extract complex logic into separate functions
 - Use JSDoc comments for public APIs
+
+### React Component Guidelines
+
+Use functional components with hooks. Follow this structure:
+
+```typescript
+import { useTheme } from "@/contexts/ThemeContext"
+import { useToast } from "@/contexts/ToastContext"
+
+interface MyComponentProps {
+  title: string
+  onAction?: () => void
+}
+
+export function MyComponent({ title, onAction }: MyComponentProps) {
+  const { theme } = useTheme()
+  const { showToast } = useToast()
+
+  const handleClick = () => {
+    onAction?.()
+    showToast("Action completed", "success")
+  }
+
+  return (
+    <button onClick={handleClick} className={theme}>
+      {title}
+    </button>
+  )
+}
+```
+
+**Context usage:**
+
+- `ThemeContext` - Theme switching (light/dark)
+- `ToastContext` - User notifications
+- `AchievementContext` - Gamification features
+
+**Component rules:**
+
+- One component per file
+- Props interface above component
+- Destructure props in function signature
+- Use custom hooks from `src/hooks/` for shared logic
 
 ### Example Code Style
 
@@ -176,7 +222,7 @@ export function tokenize(source: string): CodonToken[] {
 ### Test Organization
 
 ```typescript
-import { describe, expect, test } from "vitest";
+import { describe, expect, test } from "bun:test";
 import { CodonLexer } from "@/core/lexer";
 
 describe("CodonLexer", () => {
@@ -199,16 +245,13 @@ describe("CodonLexer", () => {
 
 ```bash
 # Run all tests
-npm run test
+bun test
 
 # Watch mode during development
-npm run test:watch
-
-# With UI for debugging
-npm run test:ui
+bun test --watch
 
 # Before committing
-npm run typecheck && npm run test
+bun typecheck && bun test
 ```
 
 ## Performance Guidelines
@@ -226,13 +269,13 @@ CodonCanvas maintains high performance standards:
 
 ```bash
 # Run benchmarks before making changes
-npm run benchmark > before.txt
+bun run benchmark > before.txt
 
 # Make your changes
 # ...
 
 # Run benchmarks after changes
-npm run benchmark > after.txt
+bun run benchmark > after.txt
 
 # Compare results
 diff before.txt after.txt
@@ -254,9 +297,9 @@ diff before.txt after.txt
 2. **Run all checks**:
 
    ```bash
-   npm run typecheck
-   npm run test
-   npm run benchmark  # If making performance-related changes
+   bun typecheck
+   bun test
+   bun run benchmark  # If making performance-related changes
    ```
 
 3. **Update documentation**: Update README, JSDoc, or other docs as needed
@@ -317,8 +360,8 @@ When creating a PR, include:
 
 ## Testing
 
-- [ ] Tests pass locally (`npm run test`)
-- [ ] Type checking passes (`npm run typecheck`)
+- [ ] Tests pass locally (`bun test`)
+- [ ] Type checking passes (`bun typecheck`)
 - [ ] New tests added for new functionality
 - [ ] Manual testing completed
 
@@ -438,7 +481,7 @@ TAA               ; Stop
 1. Add to `src/examples/example-genomes.ts`
 2. Test in playground
 3. Add to `scripts/export-examples.ts` metadata
-4. Run `npm run export-examples` to generate .genome file
+4. Run `bun run export-examples` to generate .genome file
 5. Include screenshot in PR
 
 ## Documentation Contributions
@@ -478,7 +521,7 @@ All public APIs must include JSDoc:
  *
  * @example
  * ```typescript
- * vm.execute(Opcode.CIRCLE, 'GGA');
+ * vm.execute(Opcode.CIRCLE, "GGA")
  * ```
  */
 execute(opcode: Opcode, codon: Codon): void {

@@ -127,7 +127,7 @@ Step-by-step fix guide for immediate classroom deployment:
    - Add mock at top of file
 
 2. **Resolve performance test** (30 min)
-   - Run: `npm run benchmark`
+   - Run: `bun run benchmark`
    - Either optimize or accept 60ms threshold
 
 3. **Create security test skeleton** (15 min)
@@ -176,10 +176,10 @@ Step-by-step fix guide for immediate classroom deployment:
 ### Build Verification
 
 ```bash
-npm test                    # All tests passing?
-npm run build              # Build succeeds?
-npm run preview            # Load in browser?
-npm run lint               # Clean lint?
+bun test                    # All tests passing?
+bun run build              # Build succeeds?
+bun run preview            # Load in browser?
+bun run lint               # Clean lint?
 ```
 
 ---
@@ -188,13 +188,13 @@ npm run lint               # Clean lint?
 
 You're ready when:
 
-- ✅ 443/443 tests passing
-- ✅ npm test runs clean
-- ✅ npm run build succeeds
-- ✅ All 11 entry points load
-- ✅ PRIVACY.md + RUNBOOKS.md exist
-- ✅ Performance acceptable (<50ms)
-- ✅ No XSS vulnerabilities identified
+- 443/443 tests passing
+- bun test runs clean
+- bun run build succeeds
+- All routes load via React Router
+- PRIVACY.md + RUNBOOKS.md exist
+- Performance acceptable (<50ms)
+- No XSS vulnerabilities identified
 
 ---
 
@@ -251,4 +251,4 @@ See the full assessment documents for:
 - Operational procedures and runbooks
 - Success criteria and metrics
 
-**You've got this!** 🚀
+**You've got this!**
