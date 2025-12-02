@@ -1,262 +1,163 @@
-# Testing with Bun + Vitest
+# Testing with Bun
 
 ## Overview
 
-This project uses **Vitest** for testing, NOT Bun's native test runner. Vitest provides DOM testing capabilities through `happy-dom`.
+This project uses Bun's native test runner (`bun:test`). DOM testing uses happy-dom via `bun-test-setup.ts`.
 
-## Quick Reference
+---
+
+## Quick reference
 
 ```bash
-# Run all tests (CORRECT)
-bun run test
+# Run all tests
+bun test
 
-# Watch mode
-bun run test:watch
+# Run with coverage
+bun test --coverage
 
-# UI mode
-bun run test:ui
+# Run specific file
+bun test tests/core/lexer.test.ts
 
-# Run specific test file
-bunx vitest run src/mutation-predictor.test.ts
+# Run tests matching pattern
+bun test --test-name-pattern "tokenize"
 
-# WRONG - Uses Bun's native test runner (no DOM support)
-bun test  # ❌ Don't use this
+# Agent mode (filtered output)
+bun test:agent
 ```
 
-## Why Not `bun test`?
+---
 
-**Problem**: `bun test` uses Bun's native test runner, which:
+## Configuration
 
-- Doesn't read `vite.config.ts`
-- Doesn't provide DOM globals (`document`, `window`, etc.)
-- Results in `ReferenceError: document is not defined`
+Test configuration lives in three files:
 
-**Solution**: Always use `bun run test` or `bunx vitest` to invoke Vitest, which:
+1. **bunfig.toml** - Test runner settings, coverage thresholds
+2. **bun-test-setup.ts** - DOM mocking via happy-dom, storage mocks
+3. **tests/** - Test files mirroring `src/` structure
 
-- Reads `vite.config.ts` for DOM environment setup
-- Provides full DOM API support via happy-dom
-- Runs all canvas/DOM-dependent tests successfully
+```toml
+# bunfig.toml
+[test]
+root = "tests"
+preload = ["./bun-test-setup.ts"]
+coverage = true
+coverageDir = "coverage"
 
-## DOM Testing Setup
-
-### Configuration Stack
-
-1. **vite.config.ts** - Vitest configuration
-
-   ```ts
-   test: {
-     globals: true,
-     environment: "happy-dom",  // DOM environment
-     setupFiles: ["./vitest.setup.ts"],
-     fileParallelism: false,    // Prevent race conditions
-     pool: "threads",
-   }
-   ```
-
-2. **vitest.setup.ts** - Global test setup
-   - Verifies DOM environment loaded
-   - Mocks canvas 2D context (happy-dom doesn't fully implement canvas)
-   - Provides localStorage mock
-   - Sets up test cleanup hooks
-
-3. **happy-dom** - Fast DOM implementation
-   - Lightweight alternative to jsdom
-   - ~36% faster test execution (4.3s vs 7.2s)
-   - Full DOM API compatibility
-   - Better Bun integration
-
-### jsdom vs happy-dom
-
-| Feature           | jsdom         | happy-dom     | Choice                  |
-| ----------------- | ------------- | ------------- | ----------------------- |
-| Speed             | Slower (7.2s) | Faster (4.3s) | ✅ happy-dom            |
-| Accuracy          | High          | High          | Both good               |
-| Canvas Support    | Partial       | Partial       | Equal (both need mocks) |
-| Bun Compatibility | Good          | Better        | ✅ happy-dom            |
-| Maintenance       | Active        | Very Active   | ✅ happy-dom            |
-
-## Testing DOM-Dependent Code
-
-### Example: document.createElement
-
-```ts
-// mutation-predictor.ts
-export function predictMutationImpact(...) {
-  const canvas = document.createElement("canvas");  // ✅ Works with Vitest
-  canvas.width = 200;
-  canvas.height = 200;
-  const ctx = canvas.getContext("2d");
-  // ... render logic
-}
+[test.coverageThreshold]
+line = 0.85
+function = 0.85
 ```
 
-```ts
-// mutation-predictor.test.ts
-import { describe, it, expect } from "vitest";
+---
 
-describe("Mutation Predictor", () => {
-  it("should predict impact with canvas rendering", () => {
-    const prediction = predictMutationImpact(genome, mutation);
-    expect(prediction.originalPreview).toMatch(/^data:image\/png/);
+## Write tests
+
+Import test utilities from `bun:test`:
+
+```typescript
+import { describe, test, expect, beforeEach, afterEach, mock } from "bun:test";
+```
+
+Basic test structure:
+
+```typescript
+describe("Lexer", () => {
+  test("tokenizes codon sequence", () => {
+    const tokens = tokenize("AUG UGA");
+    expect(tokens).toHaveLength(2);
   });
 });
 ```
 
-### Canvas Mocking Strategy
+---
 
-happy-dom provides `document.createElement("canvas")` but canvas methods are mocked in `vitest.setup.ts`:
+## Test organization
 
-```ts
-HTMLCanvasElement.prototype.getContext = (contextId) => {
-  if (contextId === "2d") {
-    return {
-      fillRect: () => {},
-      strokeRect: () => {},
-      fillText: () => {},
-      // ... all canvas 2D methods
-      getImageData: (sx, sy, sw, sh) => ({
-        data: new Uint8ClampedArray(sw * sh * 4),
-        width: sw,
-        height: sh,
-      }),
-    };
-  }
-  return null;
-};
-```
-
-## Best Practices
-
-### 1. Always Use Test Scripts
-
-```bash
-✅ bun run test       # Uses Vitest
-✅ bunx vitest run    # Direct Vitest invocation
-❌ bun test           # Bun's native runner (no DOM)
-```
-
-### 2. File Organization
+Tests live in `tests/` directory, mirroring `src/` structure:
 
 ```
 src/
-  mutation-predictor.ts        # Source file
-  mutation-predictor.test.ts   # Test file (same directory)
-vite.config.ts                 # Vitest configuration
-vitest.setup.ts                # Global test setup
+  core/
+    lexer.ts
+    parser.ts
+tests/
+  core/
+    lexer.test.ts
+    parser.test.ts
 ```
 
-### 3. Test File Naming
+Pattern: `tests/**/*.test.ts`
 
-- Pattern: `*.test.ts`
-- Vitest auto-discovers all `**/*.test.ts` files
-- Co-locate tests with source files
+---
 
-### 4. Import from vitest
+## DOM testing
 
-```ts
-import { describe, it, expect, beforeAll, afterEach, vi } from "vitest";
-```
+happy-dom provides DOM globals (`document`, `window`, etc.). Setup is automatic via `bun-test-setup.ts`.
 
-### 5. Handle Async Canvas Operations
+Canvas `getContext('2d')` returns null by design. Mock locally when needed:
 
-```ts
-it("should handle canvas toBlob", async () => {
+```typescript
+test("renders to canvas", () => {
   const canvas = document.createElement("canvas");
-  const blob = await new Promise((resolve) => {
-    canvas.toBlob((b) => resolve(b));
-  });
-  expect(blob).toBeInstanceOf(Blob);
+  const mockCtx = {
+    fillRect: mock(() => {}),
+    strokeRect: mock(() => {}),
+    // ... other methods
+  };
+  mock.module("canvas", () => ({ getContext: () => mockCtx }));
+
+  // Test canvas operations
 });
 ```
 
-## Performance Optimization
+Storage (`localStorage`, `sessionStorage`) is mocked and cleared after each test.
 
-### Current Configuration
+---
 
-- **environment**: `happy-dom` (faster than jsdom)
-- **fileParallelism**: `false` (prevents DOM race conditions)
-- **pool**: `threads` (parallel tests within each file)
+## Coverage
 
-### Performance Metrics
+Built-in coverage with `--coverage` flag. Thresholds configured in `bunfig.toml`.
 
-- **Total tests**: 469
-- **Test files**: 17
-- **Execution time**: ~4.3s (with happy-dom)
-- **Environment setup**: ~2.4s
-- **Test execution**: ~188ms
+```bash
+# Run with coverage report
+bun test --coverage
+```
 
-### Optimization Tips
+Coverage reports output to `coverage/` directory in text and lcov formats.
 
-1. Minimize canvas operations in setup/teardown
-2. Reuse test fixtures across tests
-3. Keep DOM manipulation focused in specific tests
-4. Use `vi.clearAllTimers()` in cleanup to prevent leaks
+Agent mode (`bun test:agent`) filters passing test output for cleaner CI logs.
+
+---
 
 ## Troubleshooting
 
-### "document is not defined"
-
-**Problem**: Using `bun test` instead of `bun run test`
-**Solution**: Always use `bun run test` or `bunx vitest`
-
 ### Canvas method not implemented
 
-**Problem**: happy-dom doesn't implement all canvas methods
-**Solution**: Check `vitest.setup.ts` canvas mocks - add missing methods if needed
+Mock canvas methods locally in your test. Don't rely on happy-dom's canvas implementation.
 
 ### Test files not discovered
 
-**Problem**: File naming or location issue
-**Solution**: Ensure files match `**/*.test.ts` pattern in `src/` directory
+Ensure files are in `tests/` directory and match `*.test.ts` pattern.
 
-### Race conditions in DOM tests
+### Storage not isolated
 
-**Problem**: Parallel file execution causes DOM conflicts
-**Solution**: Already configured - `fileParallelism: false` in vite.config.ts
+Storage is cleared after each test automatically. If issues persist, check that `bun-test-setup.ts` is preloaded.
 
-### Slow test execution
+---
 
-**Problem**: Using jsdom instead of happy-dom
-**Solution**: Already optimized - using happy-dom for 36% faster tests
-
-## CI/CD Integration
-
-### GitHub Actions Example
+## CI integration
 
 ```yaml
 - name: Install dependencies
   run: bun install
 
 - name: Run tests
-  run: bun run test # NOT bun test
+  run: bun test --coverage
 ```
 
-### Pre-commit Hook
+---
 
-```bash
-#!/bin/bash
-bun run test || exit 1
-```
+## Resources
 
-## Migration Notes
-
-### From jsdom to happy-dom
-
-1. Update `vite.config.ts`: `environment: "jsdom"` → `environment: "happy-dom"`
-2. Update `vitest.setup.ts` comments
-3. Install: `bun add -d happy-dom`
-4. Optional: Remove jsdom if not used elsewhere: `bun remove -d jsdom`
-
-### From Bun test to Vitest
-
-1. Keep existing test syntax (compatible)
-2. Change test invocation: `bun test` → `bun run test`
-3. Add DOM environment configuration to `vite.config.ts`
-4. Create `vitest.setup.ts` for global mocks
-
-## Additional Resources
-
-- [Vitest Documentation](https://vitest.dev/)
-- [happy-dom GitHub](https://github.com/capricorn86/happy-dom)
-- [Bun Testing Guide](https://bun.sh/docs/test/writing)
-- [Canvas API Reference](https://developer.mozilla.org/en-US/docs/Web/API/Canvas_API)
+- [Bun Test Runner](https://bun.sh/docs/test/writing)
+- [happy-dom](https://github.com/capricorn86/happy-dom)
