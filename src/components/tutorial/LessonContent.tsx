@@ -62,9 +62,9 @@ export function LessonContent({
     <div className="mx-auto max-w-4xl">
       <LessonHeader lesson={lesson} />
 
-      <div className="grid gap-6 lg:grid-cols-2">
-        {/* Left Column */}
-        <div>
+      <div className="grid gap-4 md:gap-6 lg:grid-cols-2">
+        {/* Left Column - Instructions */}
+        <div className="space-y-4">
           <InstructionsPanel lesson={lesson} />
           <HintsPanel
             hints={lesson.hints}
@@ -74,9 +74,9 @@ export function LessonContent({
           <LearningObjectives objectives={lesson.learningObjectives} />
         </div>
 
-        {/* Right Column */}
-        <div>
-          <div className="mb-4 rounded-lg border border-border bg-surface p-4">
+        {/* Right Column - Code & Preview */}
+        <div className="space-y-4">
+          <div className="rounded-lg border border-border bg-surface p-3 md:p-4">
             <h3 className="mb-3 font-semibold text-text">Your Code</h3>
             <CodeEditor
               code={code}
@@ -87,11 +87,11 @@ export function LessonContent({
           </div>
 
           {/* Preview */}
-          <div className="rounded-lg border border-border bg-surface p-4">
+          <div className="rounded-lg border border-border bg-surface p-3 md:p-4">
             <h3 className="mb-3 font-semibold text-text">Preview</h3>
-            <div className="flex justify-center rounded-lg bg-surface-alt p-4">
+            <div className="flex justify-center rounded-lg bg-surface-alt p-2 md:p-4">
               <CanvasPreview
-                className="rounded-md"
+                className="max-w-full rounded-md"
                 genome={code}
                 height={250}
                 width={250}
@@ -101,10 +101,10 @@ export function LessonContent({
 
           {/* Navigation */}
           {validation?.passed && (
-            <div className="mt-4 flex justify-end gap-4">
+            <div className="flex justify-end gap-4">
               {lesson.nextLesson ? (
                 <button
-                  className="rounded-lg bg-success px-6 py-2 font-medium text-white transition-colors hover:bg-success-dark"
+                  className="min-h-[44px] rounded-lg bg-success px-6 py-2 font-medium text-white transition-colors hover:bg-success-dark"
                   onClick={onNextLesson}
                   type="button"
                 >
@@ -112,7 +112,7 @@ export function LessonContent({
                 </button>
               ) : (
                 <Link
-                  className="rounded-lg bg-success px-6 py-2 font-medium text-white transition-colors hover:bg-success-dark"
+                  className="min-h-[44px] rounded-lg bg-success px-6 py-2 font-medium text-white transition-colors hover:bg-success-dark"
                   to="/"
                 >
                   Start Coding!

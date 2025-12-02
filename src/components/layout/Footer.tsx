@@ -5,7 +5,8 @@
  */
 
 import type { ReactElement } from "react";
-import { siteConfig } from "@/config";
+
+import { getTagline, siteConfig } from "@/config";
 
 export interface FooterProps {
   authorName: string;
@@ -17,7 +18,14 @@ export function Footer({ authorName, githubUrl }: FooterProps): ReactElement {
     <footer className="border-t border-border bg-surface py-6">
       <div className="mx-auto max-w-7xl px-4 text-center text-sm text-text-muted">
         <p>
-          {siteConfig.name} — {siteConfig.tagline}
+          {siteConfig.name}
+          {" — "}
+          <span className="md:hidden">
+            {getTagline(siteConfig.tagline, "short")}
+          </span>
+          <span className="hidden md:inline">
+            {getTagline(siteConfig.tagline, "long")}
+          </span>
         </p>
         <p className="mt-1">
           Created by{" "}

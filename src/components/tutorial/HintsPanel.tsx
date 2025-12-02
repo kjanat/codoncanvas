@@ -18,20 +18,22 @@ export function HintsPanel({
   // No hints available
   if (hints.length === 0) {
     return (
-      <div className="mb-6 rounded-lg border border-warning/30 bg-warning/5 p-4">
+      <div className="rounded-lg border border-warning/30 bg-warning/5 p-3 md:p-4">
         <h3 className="font-semibold text-warning-dark">Hints</h3>
-        <p className="mt-3 text-sm text-text-muted">No hints available.</p>
+        <p className="mt-2 text-sm text-text-muted md:mt-3">
+          No hints available.
+        </p>
       </div>
     );
   }
 
   return (
-    <div className="mb-6 rounded-lg border border-warning/30 bg-warning/5 p-4">
-      <div className="mb-3 flex items-center justify-between">
+    <div className="rounded-lg border border-warning/30 bg-warning/5 p-3 md:p-4">
+      <div className="mb-2 flex flex-wrap items-center justify-between gap-2 md:mb-3">
         <h3 className="font-semibold text-warning-dark">Hints</h3>
         {hasMoreHints && (
           <button
-            className="text-sm text-warning-dark hover:underline"
+            className="min-h-[44px] rounded-md border border-warning/40 bg-warning/10 px-3 py-1 text-sm font-medium text-warning-dark hover:bg-warning/20"
             onClick={onRevealHint}
             type="button"
           >

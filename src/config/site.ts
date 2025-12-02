@@ -7,6 +7,16 @@
 
 type UserName = string | undefined;
 
+/** Tagline type - can be a string or object with short/long variants */
+type Tagline =
+  | string
+  | {
+      /** Short tagline for mobile */
+      short: string;
+      /** Long tagline for desktop */
+      long: string;
+    };
+
 /** Author username type
  *
  * Can be a string or an object with optional GitHub, Twitter, and Discord usernames.
@@ -32,8 +42,13 @@ export const siteConfig = {
   /** Site name displayed in header and metadata */
   name: "CodonCanvas",
 
-  /** Short tagline/description */
-  tagline: "DNA-Inspired Visual Programming Language",
+  /** Tagline/description */
+  tagline: {
+    /** Short tagline for use in mobile */
+    short: "DNA Programming",
+    /** Long tagline for use in desktop */
+    long: "DNA-Inspired Visual Programming Language",
+  },
 
   /** Full description for SEO/metadata */
   description:
@@ -82,3 +97,21 @@ export function getAuthorSocialUrl(
 }
 
 export type SiteConfig = typeof siteConfig;
+
+/**
+ * Get tagline string from tagline config.
+ * Handles both string and object forms.
+ *
+ * @param tagline - Tagline config (string or { short, long })
+ * @param variant - Which variant to return ("short" | "long"), defaults to "long"
+ * @returns The tagline string
+ */
+export function getTagline(
+  tagline: Tagline,
+  variant: "short" | "long" = "long",
+): string {
+  if (typeof tagline === "string") {
+    return tagline;
+  }
+  return tagline[variant];
+}

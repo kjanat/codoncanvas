@@ -42,9 +42,10 @@ function TutorialPage(): ReactElement {
         onSelectLesson={selectLesson}
       />
 
-      <div className="flex-1 overflow-auto p-6">
+      <div className="flex-1 overflow-auto p-4 md:p-6">
+        {/* Progress bar */}
         <div className="mb-6">
-          <div className="mb-2 flex justify-between text-sm text-text-muted">
+          <div className="mb-2 flex flex-wrap items-center justify-between gap-2 text-sm text-text-muted">
             <span>Overall Progress</span>
             <span>
               {progress.completedLessons.length}/{totalLessons} lessons (

@@ -5,22 +5,23 @@
 - **Test all**: `bun test:agent`
 - **Test single file**: `bun test:agent tests/lexer.test.ts`
 - **Test pattern**: `bun test:agent --test-name-pattern "tokenize"`
-- **Lint**: `bun run lint` (biome) | **Format**: `bun run fmt` (dprint)
+- **Lint**: `bun run lint` (biome) | **Format**: `bun run fmt` (`dprint`)
 - **Typecheck**: `bun run typecheck` | **Dev server**: `bun run dev`
+- **All-in-one checks/validation**: run `bun validate`, which does all the checks mentioned above.
 
 ## Code Style
 
 - **TypeScript strict mode**, target ES2022, double quotes, 2-space indent
 - **Naming**: files=`kebab-case.ts` except for components which use `PascalCase`,
   classes=`PascalCase`, functions=`camelCase`, constants=`UPPER_SNAKE_CASE`
-- **Imports**: use path aliases `@/*` for src/, organize imports via biome
+- **Imports**: use path aliases `@/*` for `src/`, organize imports via biome
 - **Types**: prefer interfaces over types, avoid `any`, use explicit return types
 - **Errors**: throw typed errors, handle with try/catch, no silent failures
 
 ## Testing
 
 - Use `bun:test` with `describe`/`test`/`expect` (vitest-compatible API)
-- Tests in `tests/` mirror src structure, suffix `.test.ts`
+- Tests in `tests/` mirror `src` structure, suffix `.test.ts`
 - Unused vars: prefix with `_` (e.g., `_unusedParam`)
 - `test:agent` just filters out passing test output so you only see
   failures/warnings/coverage.
@@ -41,6 +42,7 @@
     calculateTax(100, 0.08); // No assertions!
   });
   ```
+
 - If files aren’t appearing in coverage reports, they might not be imported by
   your tests. Coverage only tracks files that are actually loaded.
 - Aim For:
@@ -59,7 +61,7 @@
 
 ## Genome Tools
 
-See [tools/README.md](tools/README.md) for CLI utilities:
+See [tools/README](tools/README.md) for CLI utilities:
 
 - `codon-calc.ts` - convert values, codons, colors
 - `get-colours.ts` - extract colors from genome (runs VM)

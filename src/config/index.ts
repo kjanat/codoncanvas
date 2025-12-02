@@ -4,4 +4,9 @@
  * Centralized configuration exports.
  */
 
-export { getAuthorSocialUrl, type SiteConfig, siteConfig } from "./site";
+export {
+  getAuthorSocialUrl,
+  getTagline,
+  type SiteConfig,
+  siteConfig,
+} from "./site";

@@ -6,8 +6,8 @@ interface InstructionsPanelProps {
 
 export function InstructionsPanel({ lesson }: InstructionsPanelProps) {
   return (
-    <div className="mb-6 rounded-lg border border-border bg-bg-light p-4">
-      <h3 className="mb-3 font-semibold text-text">Instructions</h3>
+    <div className="rounded-lg border border-border bg-bg-light p-3 md:p-4">
+      <h3 className="mb-2 font-semibold text-text md:mb-3">Instructions</h3>
       <ol className="list-inside list-decimal space-y-2 text-sm text-text-light">
         {lesson.instructions.map((instruction) => (
           <li key={instruction}>{instruction}</li>
