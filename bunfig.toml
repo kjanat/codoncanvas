@@ -18,6 +18,5 @@ coveragePathIgnorePatterns = [
 [test.coverageThreshold]
 # 85% is achievable while allowing reasonable gaps for error paths,
 # browser-specific branches, and edge cases that are hard to trigger in unit tests
-lines = 0.85
-functions = 0.85
-# statements = 0.85
+line = 0.85
+function = 0.85
