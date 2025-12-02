@@ -9,8 +9,13 @@ const isCI: boolean = process.env.GITHUB_PAGES === "true";
 export default defineConfig({
   // GitHub Pages base path - set by deploy.yml from actions/configure-pages
   base: process.env.VITE_BASE_PATH ? `${process.env.VITE_BASE_PATH}/` : "/",
-
   publicDir: "public",
+
+  server: {
+    host: "0.0.0.0",
+    allowedHosts: ["*"],
+    strictPort: true,
+  },
 
   plugins: [
     tanstackRouter({

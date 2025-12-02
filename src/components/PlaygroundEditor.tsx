@@ -21,7 +21,7 @@ function ValidationStatus({
   stats,
 }: ValidationStatusProps): ReactElement {
   return (
-    <div className="mt-2 flex items-center justify-between text-sm">
+    <div className="mt-2 flex flex-wrap items-center justify-between gap-2 text-xs sm:text-sm">
       <div className="flex items-center gap-2">
         {isPending ? (
           <span className="text-text-muted">Validating...</span>
@@ -119,12 +119,12 @@ export const PlaygroundEditor = memo(
       ref,
     ) {
       return (
-        <div className="flex flex-1 flex-col border-r border-border bg-surface">
+        <div className="flex flex-1 flex-col border-r border-border bg-surface md:border-b-0">
           {/* Editor textarea */}
-          <div className="flex flex-1 flex-col p-4">
+          <div className="flex flex-1 flex-col p-2 sm:p-4">
             <textarea
               aria-label="Genome editor"
-              className="flex-1 resize-none rounded-lg border border-border bg-dark-bg p-4 font-mono text-sm leading-relaxed text-dark-text focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20"
+              className="min-h-[150px] flex-1 resize-none rounded-lg border border-border bg-dark-bg p-3 font-mono text-sm leading-relaxed text-dark-text focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20 sm:p-4 md:text-base"
               onChange={onGenomeChange}
               placeholder={`Enter your genome here...\n\nExample:\n${nucleotideMode === "RNA" ? "AUG GAA AAU GGA UAA" : "ATG GAA AAT GGA TAA"}`}
               ref={ref}

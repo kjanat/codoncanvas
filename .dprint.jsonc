@@ -69,11 +69,11 @@
     "**/*-lock.json",
     "**/*.gen.ts",
     "**/*.lock",
+    "**/.github/agents/**",
     "**/.opencode",
     "**/.venv",
     "**/node_modules",
-    "**/worker-configuration.d.ts",
-    "codon-chart.svg"
+    "**/worker-configuration.d.ts"
   ],
 
   /** Plugins */

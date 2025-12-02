@@ -74,7 +74,19 @@
       "extensions": ["sh"]
     }
   },
+  /*"agent": {
+    "playwright": {
+      "tools": {
+        
+      }
+    }
+  },*/
   "mcp": {
+    "playwright-test": {
+      "type": "local",
+      "command": ["bunx", "playwright", "run-test-mcp-server"],
+      "enabled": true
+    },
     "bun_docs": {
       "type": "remote",
       "url": "https://bun.com/docs/mcp",

@@ -34,6 +34,7 @@
     "test:coverage": "bun --bun ./scripts/coverage-reporter.ts",
     "test:watch": "bun test --watch",
     "typecheck": "tsgo --noEmit",
+    "validate": "bun lint:fix && bun fmt && bun typecheck && bun test:agent",
     "zip-examples": "bun --bun scripts/zip-examples.ts"
   },
   "dependencies": {
@@ -55,6 +56,7 @@
     "@commitlint/config-conventional": "^20.0.0",
     "@happy-dom/global-registrator": "^20.0.11",
     "@jscpd/badge-reporter": "^4.0.1",
+    "@playwright/test": "^1.57.0",
     "@tanstack/react-router-devtools": "^1.139.12",
     "@tanstack/router-plugin": "^1.139.12",
     "@testing-library/jest-dom": "^6.9.1",

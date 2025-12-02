@@ -42,10 +42,10 @@ function ExampleInfo({ example }: { example: ExampleWithKey }): ReactElement {
 }
 
 export interface PlaygroundCanvasProps {
-  /** Canvas width */
-  width: number;
-  /** Canvas height */
-  height: number;
+  /** Canvas width (default 400, will be constrained by container) */
+  width?: number;
+  /** Canvas height (default 400, will be constrained by container) */
+  height?: number;
   /** Callback to clear canvas */
   onClear: () => void;
   /** Callback to export canvas as PNG */
@@ -57,18 +57,18 @@ export interface PlaygroundCanvasProps {
 export const PlaygroundCanvas = memo(
   forwardRef<HTMLCanvasElement, PlaygroundCanvasProps>(
     function PlaygroundCanvas(
-      { width, height, onClear, onExportPNG, selectedExample },
+      { width = 400, height = 400, onClear, onExportPNG, selectedExample },
       ref,
     ) {
       return (
-        <div className="flex flex-1 flex-col bg-dark-bg">
+        <div className="flex min-h-[300px] flex-1 flex-col bg-dark-bg md:min-h-0">
           {/* Header with controls */}
           <div className="flex items-center justify-between border-b border-dark-border px-4 py-2">
-            <span className="text-sm text-dark-text">Output</span>
+            <span className="text-sm text-dark-text md:text-base">Output</span>
             <div className="flex gap-2">
               <button
                 aria-label="Clear canvas"
-                className="rounded-md px-3 py-1 text-sm text-dark-text hover:bg-dark-surface"
+                className="min-h-[44px] rounded-md px-3 py-2 text-sm text-dark-text hover:bg-dark-surface"
                 onClick={onClear}
                 type="button"
               >
@@ -76,7 +76,7 @@ export const PlaygroundCanvas = memo(
               </button>
               <button
                 aria-label="Export canvas as PNG"
-                className="rounded-md px-3 py-1 text-sm text-dark-text hover:bg-dark-surface"
+                className="min-h-[44px] rounded-md px-3 py-2 text-sm text-dark-text hover:bg-dark-surface"
                 onClick={onExportPNG}
                 type="button"
               >
@@ -85,14 +85,15 @@ export const PlaygroundCanvas = memo(
             </div>
           </div>
 
-          {/* Canvas container */}
-          <div className="flex flex-1 items-center justify-center p-4">
+          {/* Canvas container - responsive with max constraints */}
+          <div className="flex flex-1 items-center justify-center p-2 sm:p-4">
             <canvas
               aria-label="Genome execution output"
-              className="rounded-lg border border-border bg-surface shadow-lg"
+              className="max-h-full max-w-full rounded-lg border border-border bg-surface shadow-lg"
               height={height}
               ref={ref}
               role="img"
+              style={{ aspectRatio: `${width}/${height}` }}
               width={width}
             />
           </div>

@@ -17,9 +17,9 @@ export function Playground() {
     usePlayground();
 
   return (
-    <div className="flex h-full flex-col lg:flex-row">
+    <div className="flex h-full flex-col md:flex-row">
       {/* Editor Panel */}
-      <div className="flex flex-1 flex-col">
+      <div className="flex min-h-[40vh] flex-1 flex-col md:min-h-0">
         <PlaygroundToolbar
           display={{
             nucleotideMode: state.nucleotideMode,
@@ -62,12 +62,10 @@ export function Playground() {
 
       {/* Canvas Panel */}
       <PlaygroundCanvas
-        height={400}
         onClear={actions.clear}
         onExportPNG={actions.handleExportPNG}
         ref={refs.canvasRef}
         selectedExample={selectedExample}
-        width={400}
       />
 
       {/* Reference Panel */}

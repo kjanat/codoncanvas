@@ -9,6 +9,7 @@ import { Link } from "@tanstack/react-router";
 import { siteConfig } from "@/config";
 import { GitHubIcon } from "@/ui/icons";
 
+import { MobileMenu } from "./MobileMenu";
 import { Navigation } from "./Navigation";
 import { ThemeToggle } from "./ThemeToggle";
 
@@ -45,6 +46,7 @@ export function Header() {
             <span className="sr-only">View on GitHub</span>
             <GitHubIcon />
           </a>
+          <MobileMenu />
         </div>
       </div>
     </header>

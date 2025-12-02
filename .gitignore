@@ -238,3 +238,10 @@ $RECYCLE.BIN/
 *:Zone.Identifier
 
 # End of https://gitignore.kjanat.com/api/node,linux,macos,windows
+
+# Playwright
+/test-results/
+/playwright-report/
+/blob-report/
+/playwright/.cache/
+/playwright/.auth/

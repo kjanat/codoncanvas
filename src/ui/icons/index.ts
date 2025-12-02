@@ -3,7 +3,21 @@
  */
 
 // Actions
-export { CheckIcon, CloseIcon, ErrorIcon, WarningIcon } from "./actions";
+export {
+  BookIcon,
+  CheckIcon,
+  CloseIcon,
+  CopyIcon,
+  DotsVerticalIcon,
+  ErrorIcon,
+  PlayIcon,
+  RedoIcon,
+  SaveIcon,
+  ShareIcon,
+  UndoIcon,
+  UploadIcon,
+  WarningIcon,
+} from "./actions";
 // Brand
 export { DnaIcon, GitHubIcon } from "./brand";
 // Media
@@ -14,7 +28,9 @@ export {
   ChevronLeftIcon,
   ChevronRightIcon,
   HomeIcon,
+  MenuIcon,
   RewindIcon,
+  XIcon,
 } from "./navigation";
 // Theme
 export { MoonIcon, SunIcon, SystemIcon } from "./theme";
