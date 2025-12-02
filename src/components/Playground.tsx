@@ -21,26 +21,33 @@ export function Playground() {
       {/* Editor Panel */}
       <div className="flex flex-1 flex-col">
         <PlaygroundToolbar
-          canRedo={state.canRedo}
-          canRun={state.validation.isValid}
-          canUndo={state.canUndo}
-          copied={state.copied}
+          display={{
+            nucleotideMode: state.nucleotideMode,
+            onToggleNucleotideMode: actions.handleToggleNucleotideMode,
+            showReference: state.showReference,
+            onToggleReference: () =>
+              actions.setShowReference(!state.showReference),
+          }}
           examples={examples}
-          nucleotideMode={state.nucleotideMode}
-          onCopy={actions.handleCopyCode}
+          execution={{
+            canRun: state.validation.isValid,
+            onRun: actions.runGenome,
+          }}
+          history={{
+            canRedo: state.canRedo,
+            canUndo: state.canUndo,
+            onRedo: actions.handleRedo,
+            onUndo: actions.handleUndo,
+          }}
+          io={{
+            copied: state.copied,
+            onCopy: actions.handleCopyCode,
+            onLoad: actions.handleLoad,
+            onSave: actions.handleSave,
+            onShare: actions.handleShare,
+          }}
           onExampleChange={actions.handleExampleChange}
-          onLoad={actions.handleLoad}
-          onRedo={actions.handleRedo}
-          onRun={actions.runGenome}
-          onSave={actions.handleSave}
-          onShare={actions.handleShare}
-          onToggleNucleotideMode={actions.handleToggleNucleotideMode}
-          onToggleReference={() =>
-            actions.setShowReference(!state.showReference)
-          }
-          onUndo={actions.handleUndo}
           selectedExampleKey={state.selectedExampleKey}
-          showReference={state.showReference}
         />
         <PlaygroundEditor
           displayedGenome={state.displayedGenome}

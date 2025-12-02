@@ -1,4 +1,4 @@
-import type { JSX } from "react";
+import type { ReactElement } from "react";
 import type { AssessmentDifficulty } from "@/education/assessments/assessment-engine";
 import { DIFFICULTY_LABELS } from "./constants";
 
@@ -10,7 +10,7 @@ interface DifficultySelectorProps {
 export function DifficultySelector({
   difficulty,
   onSelect,
-}: DifficultySelectorProps): JSX.Element {
+}: DifficultySelectorProps): ReactElement {
   return (
     <div>
       <span className="mb-2 block text-sm font-medium text-text">

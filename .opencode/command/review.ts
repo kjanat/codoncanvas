@@ -51,7 +51,7 @@ Examples:
 `;
 
 if (scope === "--help" || scope === "-h") {
-  console.log(HELP);
+  console.info(HELP);
   process.exit(0);
 }
 
@@ -102,9 +102,9 @@ commands.committed = commands.commit;
 
 if (!(scope in commands)) {
   console.error(`Unknown scope: ${scope}\n`);
-  console.log(HELP);
+  console.info(HELP);
   process.exit(1);
 }
 
 await commands[scope]();
-console.log(output.join("\n"));
+console.info(output.join("\n"));

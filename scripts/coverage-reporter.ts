@@ -56,7 +56,17 @@ const output = stdoutData + stderrData;
 const lines = output.split("\n");
 
 let captureMode = false;
-const summary: Record<string, string> = {};
+const summary: Record<string, string> = {
+  functions: "N/A",
+  lines: "N/A",
+  pass: "0",
+  skip: "0",
+  fail: "0",
+  expect: "0",
+  tests: "0",
+  files: "0",
+  time: "N/A",
+};
 
 for (const line of lines) {
   // Capture overall coverage
@@ -140,20 +150,20 @@ for (const item of coverageData) {
     parts.push(`lines:${item.lineCoverage}`);
   }
 
-  console.log(`${item.file} ${parts.join(",")}`);
+  console.info(`${item.file} ${parts.join(",")}`);
 }
 
 // Report inline coverage
-console.log();
-console.log("summary:");
-console.log(`  functions: ${summary.functions}`);
-console.log(`  lines:     ${summary.lines}`);
-console.log(`  pass:      ${summary.pass}`);
-console.log(`  skip:      ${summary.skip}`);
-console.log(`  fail:      ${summary.fail}`);
-console.log(`  expect:    ${summary.expect}`);
-console.log(`  tests:     ${summary.tests}`);
-console.log(`  files:     ${summary.files}`);
-console.log(`  time:      ${summary.time}`);
+console.info("");
+console.info("summary:");
+console.info(`  functions: ${summary.functions}`);
+console.info(`  lines:     ${summary.lines}`);
+console.info(`  pass:      ${summary.pass}`);
+console.info(`  skip:      ${summary.skip}`);
+console.info(`  fail:      ${summary.fail}`);
+console.info(`  expect:    ${summary.expect}`);
+console.info(`  tests:     ${summary.tests}`);
+console.info(`  files:     ${summary.files}`);
+console.info(`  time:      ${summary.time}`);
 
 process.exit(proc.exitCode ?? 0);

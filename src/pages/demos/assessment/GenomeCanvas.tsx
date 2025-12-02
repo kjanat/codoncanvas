@@ -1,4 +1,4 @@
-import type { JSX, RefObject } from "react";
+import type { ReactElement, RefObject } from "react";
 import { Card } from "@/components/Card";
 
 interface GenomeCanvasProps {
@@ -11,7 +11,7 @@ export function GenomeCanvas({
   title,
   genome,
   canvasRef,
-}: GenomeCanvasProps): JSX.Element {
+}: GenomeCanvasProps): ReactElement {
   return (
     <Card>
       <h3 className="mb-4 text-center font-semibold text-text">{title}</h3>

@@ -25,7 +25,8 @@ function NucleotideModeToggle({ mode, onToggle }: NucleotideModeToggleProps) {
   return (
     <div className="group relative">
       <button
-        aria-label={`Switch to ${mode === "DNA" ? "RNA" : "DNA"} display mode`}
+        aria-label="Toggle RNA display mode"
+        aria-pressed={mode === "RNA"}
         className={`rounded-md px-3 py-1.5 text-sm transition-colors ${
           mode === "RNA"
             ? "bg-accent/10 text-accent"
@@ -49,6 +50,37 @@ function NucleotideModeToggle({ mode, onToggle }: NucleotideModeToggleProps) {
   );
 }
 
+/** File I/O operations (load, save, copy, share) */
+export interface ToolbarIOProps {
+  onLoad: (event: ChangeEvent<HTMLInputElement>) => void;
+  onSave: () => void;
+  onCopy: () => void;
+  copied: boolean;
+  onShare: () => void;
+}
+
+/** Undo/redo history controls */
+export interface ToolbarHistoryProps {
+  onUndo: () => void;
+  onRedo: () => void;
+  canUndo: boolean;
+  canRedo: boolean;
+}
+
+/** Display mode and reference panel toggles */
+export interface ToolbarDisplayProps {
+  nucleotideMode: NucleotideDisplayMode;
+  onToggleNucleotideMode: () => void;
+  showReference: boolean;
+  onToggleReference: () => void;
+}
+
+/** Genome execution controls */
+export interface ToolbarExecutionProps {
+  onRun: () => void;
+  canRun: boolean;
+}
+
 export interface PlaygroundToolbarProps {
   /** All available examples */
   examples: ExampleWithKey[];
@@ -56,57 +88,24 @@ export interface PlaygroundToolbarProps {
   selectedExampleKey: string | null;
   /** Callback when example is selected */
   onExampleChange: (key: string) => void;
-  /** Callback to load genome from file */
-  onLoad: (event: ChangeEvent<HTMLInputElement>) => void;
-  /** Callback to save genome to file */
-  onSave: () => void;
-  /** Callback to copy genome code */
-  onCopy: () => void;
-  /** Whether copy was recently triggered */
-  copied: boolean;
-  /** Callback to share genome URL */
-  onShare: () => void;
-  /** Callback to undo */
-  onUndo: () => void;
-  /** Callback to redo */
-  onRedo: () => void;
-  /** Whether undo is available */
-  canUndo: boolean;
-  /** Whether redo is available */
-  canRedo: boolean;
-  /** Current nucleotide display mode */
-  nucleotideMode: NucleotideDisplayMode;
-  /** Callback to toggle nucleotide mode */
-  onToggleNucleotideMode: () => void;
-  /** Whether reference panel is shown */
-  showReference: boolean;
-  /** Callback to toggle reference panel */
-  onToggleReference: () => void;
-  /** Callback to run genome */
-  onRun: () => void;
-  /** Whether genome is valid for running */
-  canRun: boolean;
+  /** File I/O operations */
+  io: ToolbarIOProps;
+  /** Undo/redo history controls */
+  history: ToolbarHistoryProps;
+  /** Display mode and panel toggles */
+  display: ToolbarDisplayProps;
+  /** Genome execution controls */
+  execution: ToolbarExecutionProps;
 }
 
 export const PlaygroundToolbar = memo(function PlaygroundToolbar({
   examples,
   selectedExampleKey,
   onExampleChange,
-  onLoad,
-  onSave,
-  onCopy,
-  copied,
-  onShare,
-  onUndo,
-  onRedo,
-  canUndo,
-  canRedo,
-  nucleotideMode,
-  onToggleNucleotideMode,
-  showReference,
-  onToggleReference,
-  onRun,
-  canRun,
+  io,
+  history,
+  display,
+  execution,
 }: PlaygroundToolbarProps) {
   return (
     <div className="flex flex-wrap items-center gap-2 border-b border-border px-4 py-2">
@@ -114,7 +113,9 @@ export const PlaygroundToolbar = memo(function PlaygroundToolbar({
       <select
         aria-label="Select example genome"
         className="rounded-md border border-border px-3 py-1.5 text-sm focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20"
-        onChange={(e) => onExampleChange(e.target.value)}
+        onChange={(event: ChangeEvent<HTMLSelectElement>) =>
+          onExampleChange(event.target.value)
+        }
         value={selectedExampleKey ?? ""}
       >
         <option value="">Select example...</option>
@@ -133,32 +134,32 @@ export const PlaygroundToolbar = memo(function PlaygroundToolbar({
             accept=".genome,.txt"
             aria-label="Load genome file"
             className="hidden"
-            onChange={onLoad}
+            onChange={io.onLoad}
             type="file"
           />
         </label>
         <button
           aria-label="Save genome file"
           className="rounded-md px-3 py-1.5 text-sm text-text hover:bg-bg-light"
-          onClick={onSave}
+          onClick={io.onSave}
           title="Save (Ctrl+S)"
           type="button"
         >
           Save
         </button>
         <button
-          aria-label={copied ? "Copied to clipboard" : "Copy genome code"}
+          aria-label={io.copied ? "Copied to clipboard" : "Copy genome code"}
           className="rounded-md px-3 py-1.5 text-sm text-text hover:bg-bg-light"
-          onClick={onCopy}
+          onClick={io.onCopy}
           title="Copy genome code"
           type="button"
         >
-          {copied ? "Copied!" : "Copy"}
+          {io.copied ? "Copied!" : "Copy"}
         </button>
         <button
           aria-label="Copy shareable link"
           className="rounded-md px-3 py-1.5 text-sm text-text hover:bg-bg-light"
-          onClick={onShare}
+          onClick={io.onShare}
           title="Copy shareable link"
           type="button"
         >
@@ -171,8 +172,8 @@ export const PlaygroundToolbar = memo(function PlaygroundToolbar({
         <button
           aria-label="Undo last change"
           className="rounded-md px-2 py-1.5 text-sm text-text hover:bg-bg-light disabled:opacity-40"
-          disabled={!canUndo}
-          onClick={onUndo}
+          disabled={!history.canUndo}
+          onClick={history.onUndo}
           title="Undo (Ctrl+Z)"
           type="button"
         >
@@ -181,8 +182,8 @@ export const PlaygroundToolbar = memo(function PlaygroundToolbar({
         <button
           aria-label="Redo last change"
           className="rounded-md px-2 py-1.5 text-sm text-text hover:bg-bg-light disabled:opacity-40"
-          disabled={!canRedo}
-          onClick={onRedo}
+          disabled={!history.canRedo}
+          onClick={history.onRedo}
           title="Redo (Ctrl+Shift+Z)"
           type="button"
         >
@@ -192,22 +193,24 @@ export const PlaygroundToolbar = memo(function PlaygroundToolbar({
 
       {/* Nucleotide mode toggle */}
       <NucleotideModeToggle
-        mode={nucleotideMode}
-        onToggle={onToggleNucleotideMode}
+        mode={display.nucleotideMode}
+        onToggle={display.onToggleNucleotideMode}
       />
 
       {/* Reference toggle */}
       <button
         aria-label={
-          showReference ? "Hide codon reference" : "Show codon reference"
+          display.showReference
+            ? "Hide codon reference"
+            : "Show codon reference"
         }
-        aria-pressed={showReference}
+        aria-pressed={display.showReference}
         className={`rounded-md px-3 py-1.5 text-sm transition-colors ${
-          showReference
+          display.showReference
             ? "bg-primary/10 text-primary"
             : "text-text hover:bg-bg-light"
         }`}
-        onClick={onToggleReference}
+        onClick={display.onToggleReference}
         title="Toggle codon reference"
         type="button"
       >
@@ -218,8 +221,8 @@ export const PlaygroundToolbar = memo(function PlaygroundToolbar({
       <button
         aria-label="Run genome"
         className="ml-auto rounded-md bg-primary px-4 py-1.5 text-sm font-medium text-white transition-colors hover:bg-primary-hover disabled:opacity-50"
-        disabled={!canRun}
-        onClick={onRun}
+        disabled={!execution.canRun}
+        onClick={execution.onRun}
         type="button"
       >
         Run

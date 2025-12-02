@@ -5,7 +5,7 @@ coverage = true
 coverageDir = "coverage"
 coverageReporter = ["text", "lcov"]
 # Coverage exemptions - only for code that genuinely can't be unit tested
-# See docs/TESTING.md for full justification of each exemption
+# Justifications are inline below for each active exemption
 coverageSkipTestFiles = false
 coveragePathIgnorePatterns = [
   # Test infrastructure (not application code)

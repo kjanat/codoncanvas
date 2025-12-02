@@ -1,4 +1,4 @@
-import type { JSX } from "react";
+import type { ReactElement } from "react";
 import { Card } from "@/components/Card";
 import type { AssessmentProgress } from "@/education/assessments/assessment-engine";
 
@@ -10,7 +10,7 @@ interface ProgressPanelProps {
 export function ProgressPanel({
   progress,
   onReset,
-}: ProgressPanelProps): JSX.Element {
+}: ProgressPanelProps): ReactElement {
   return (
     <Card>
       <h2 className="mb-4 text-lg font-semibold text-text">Progress</h2>

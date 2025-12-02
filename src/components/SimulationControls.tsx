@@ -5,7 +5,7 @@
  * Used by GeneticDemo, PopulationDemo, and similar simulation UIs.
  */
 
-import type { ReactNode } from "react";
+import type { ReactElement, ReactNode } from "react";
 import { Button } from "./Button";
 
 export interface SimulationControlsProps {
@@ -50,7 +50,7 @@ export function SimulationControls({
   pauseLabel = "Pause",
   stepDisabled,
   children,
-}: SimulationControlsProps) {
+}: SimulationControlsProps): ReactElement {
   return (
     <div className="flex gap-2">
       <Button className="flex-1" onClick={onToggle} variant="primary">
