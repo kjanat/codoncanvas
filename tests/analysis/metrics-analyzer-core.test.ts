@@ -890,10 +890,17 @@ describe("MetricsAnalyzer", () => {
   });
 
   // compareGroups
+  // Note: t-test requires at least 3 total observations (df >= 1), so use 2+ per group
   describe("compareGroups", () => {
     test("compares session duration between groups", () => {
-      const group1 = [createMockSession({ duration: 60000 })];
-      const group2 = [createMockSession({ duration: 120000 })];
+      const group1 = [
+        createMockSession({ duration: 60000 }),
+        createMockSession({ duration: 65000 }),
+      ];
+      const group2 = [
+        createMockSession({ duration: 120000 }),
+        createMockSession({ duration: 125000 }),
+      ];
       const analyzer = new MetricsAnalyzer([...group1, ...group2]);
 
       const results = analyzer.compareGroups(
@@ -908,8 +915,14 @@ describe("MetricsAnalyzer", () => {
     });
 
     test("compares genomes created between groups", () => {
-      const group1 = [createMockSession({ genomesCreated: 5 })];
-      const group2 = [createMockSession({ genomesCreated: 10 })];
+      const group1 = [
+        createMockSession({ genomesCreated: 5 }),
+        createMockSession({ genomesCreated: 6 }),
+      ];
+      const group2 = [
+        createMockSession({ genomesCreated: 10 }),
+        createMockSession({ genomesCreated: 11 }),
+      ];
       const analyzer = new MetricsAnalyzer([...group1, ...group2]);
 
       const results = analyzer.compareGroups(group1, group2, "A", "B");
@@ -921,8 +934,14 @@ describe("MetricsAnalyzer", () => {
     });
 
     test("compares time to first artifact between groups", () => {
-      const group1 = [createMockSession({ timeToFirstArtifact: 60000 })];
-      const group2 = [createMockSession({ timeToFirstArtifact: 120000 })];
+      const group1 = [
+        createMockSession({ timeToFirstArtifact: 60000 }),
+        createMockSession({ timeToFirstArtifact: 65000 }),
+      ];
+      const group2 = [
+        createMockSession({ timeToFirstArtifact: 120000 }),
+        createMockSession({ timeToFirstArtifact: 125000 }),
+      ];
       const analyzer = new MetricsAnalyzer([...group1, ...group2]);
 
       const results = analyzer.compareGroups(group1, group2, "A", "B");
@@ -934,8 +953,14 @@ describe("MetricsAnalyzer", () => {
     });
 
     test("compares mutations applied between groups", () => {
-      const group1 = [createMockSession({ mutationsApplied: 5 })];
-      const group2 = [createMockSession({ mutationsApplied: 15 })];
+      const group1 = [
+        createMockSession({ mutationsApplied: 5 }),
+        createMockSession({ mutationsApplied: 6 }),
+      ];
+      const group2 = [
+        createMockSession({ mutationsApplied: 15 }),
+        createMockSession({ mutationsApplied: 16 }),
+      ];
       const analyzer = new MetricsAnalyzer([...group1, ...group2]);
 
       const results = analyzer.compareGroups(group1, group2, "A", "B");
@@ -947,8 +972,8 @@ describe("MetricsAnalyzer", () => {
     });
 
     test("returns array of ComparisonResult objects", () => {
-      const group1 = [createMockSession()];
-      const group2 = [createMockSession()];
+      const group1 = [createMockSession(), createMockSession()];
+      const group2 = [createMockSession(), createMockSession()];
       const analyzer = new MetricsAnalyzer([...group1, ...group2]);
 
       const results = analyzer.compareGroups(group1, group2, "A", "B");
@@ -958,8 +983,14 @@ describe("MetricsAnalyzer", () => {
     });
 
     test("each result includes group names, metric, means", () => {
-      const group1 = [createMockSession({ genomesCreated: 5 })];
-      const group2 = [createMockSession({ genomesCreated: 10 })];
+      const group1 = [
+        createMockSession({ genomesCreated: 5 }),
+        createMockSession({ genomesCreated: 6 }),
+      ];
+      const group2 = [
+        createMockSession({ genomesCreated: 10 }),
+        createMockSession({ genomesCreated: 11 }),
+      ];
       const analyzer = new MetricsAnalyzer([...group1, ...group2]);
 
       const results = analyzer.compareGroups(
@@ -991,8 +1022,8 @@ describe("MetricsAnalyzer", () => {
     });
 
     test("each result includes interpretation string", () => {
-      const group1 = [createMockSession()];
-      const group2 = [createMockSession()];
+      const group1 = [createMockSession(), createMockSession()];
+      const group2 = [createMockSession(), createMockSession()];
       const analyzer = new MetricsAnalyzer([...group1, ...group2]);
 
       const results = analyzer.compareGroups(group1, group2, "A", "B");
@@ -1002,8 +1033,14 @@ describe("MetricsAnalyzer", () => {
     });
 
     test("converts durations to minutes for readability", () => {
-      const group1 = [createMockSession({ duration: 60000 })]; // 1 min
-      const group2 = [createMockSession({ duration: 120000 })]; // 2 min
+      const group1 = [
+        createMockSession({ duration: 60000 }),
+        createMockSession({ duration: 60000 }),
+      ]; // 1 min
+      const group2 = [
+        createMockSession({ duration: 120000 }),
+        createMockSession({ duration: 120000 }),
+      ]; // 2 min
       const analyzer = new MetricsAnalyzer([...group1, ...group2]);
 
       const results = analyzer.compareGroups(group1, group2, "A", "B");
@@ -1014,8 +1051,14 @@ describe("MetricsAnalyzer", () => {
     });
 
     test("filters null timeToFirstArtifact before comparison", () => {
-      const group1 = [createMockSession({ timeToFirstArtifact: null })];
-      const group2 = [createMockSession({ timeToFirstArtifact: 60000 })];
+      const group1 = [
+        createMockSession({ timeToFirstArtifact: null }),
+        createMockSession({ timeToFirstArtifact: null }),
+      ];
+      const group2 = [
+        createMockSession({ timeToFirstArtifact: 60000 }),
+        createMockSession({ timeToFirstArtifact: 65000 }),
+      ];
       const analyzer = new MetricsAnalyzer([...group1, ...group2]);
 
       const results = analyzer.compareGroups(group1, group2, "A", "B");

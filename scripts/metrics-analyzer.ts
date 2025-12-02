@@ -60,7 +60,7 @@ const REQUIRED_SESSION_FIELDS = [
 
 /** Validates that a parsed session object contains all required fields */
 export function validateSession(
-  session: Record<string, string | number | null>,
+  session: Record<string, unknown>,
   lineNumber: number,
 ): void {
   const missingFields = REQUIRED_SESSION_FIELDS.filter(
@@ -84,10 +84,7 @@ function loadCSV(filepath: string): MetricsSession[] {
 
   // Validate each session has required fields
   sessions.forEach((session, i) => {
-    validateSession(
-      session as unknown as Record<string, string | number | null>,
-      i + 2,
-    ); // +2 for 1-indexed + header row
+    validateSession(session as Record<string, unknown>, i + 2);
   });
 
   return sessions;

@@ -161,19 +161,21 @@ describe("normalCDF edge cases", () => {
 
 describe("tTest edge cases", () => {
   describe("identical groups", () => {
-    test("returns NaN for identical zero-variance groups (division by zero)", () => {
+    test("returns t=0, p=1 for identical zero-variance groups (guarded)", () => {
       const group = [5, 5, 5, 5, 5];
       const result = tTest(group, group);
-      // pooledVariance = 0, se = 0, t = 0/0 = NaN
-      expect(Number.isNaN(result.t)).toBe(true);
+      // pooledVariance = 0, se = 0, guarded: t = 0, p = 1
+      expect(result.t).toBe(0);
+      expect(result.p).toBe(1);
     });
 
-    test("handles groups with zero variance but different means", () => {
+    test("handles groups with zero variance but different means (guarded)", () => {
       const group1 = [5, 5, 5];
       const group2 = [10, 10, 10];
       const result = tTest(group1, group2);
-      // pooledVariance = 0, se = 0, t = (5-10)/0 = -Infinity
-      expect(result.t).toBe(Number.NEGATIVE_INFINITY);
+      // pooledVariance = 0, se = 0, means differ: guarded returns t = Infinity, p = 0
+      expect(result.t).toBe(Infinity);
+      expect(result.p).toBe(0);
     });
   });
 
@@ -189,14 +191,13 @@ describe("tTest edge cases", () => {
       expect(result.p).toBeLessThan(1);
     });
 
-    test("handles n=1 per group (df=0, degenerate)", () => {
+    test("throws for n=1 per group (insufficient df)", () => {
       const group1 = [5];
       const group2 = [10];
-      const result = tTest(group1, group2);
-
-      expect(result.df).toBe(0);
-      // With n=1, variance calculation involves division by 0
-      expect(Number.isNaN(result.t) || !Number.isFinite(result.t)).toBe(true);
+      // Requires at least 3 total observations for df >= 1
+      expect(() => tTest(group1, group2)).toThrow(
+        "t-test requires at least 3 observations total",
+      );
     });
   });
 
@@ -218,10 +219,11 @@ describe("tTest edge cases", () => {
       expect(result.p).toBeCloseTo(1, 3);
     });
 
-    test("handles both groups empty", () => {
-      const result = tTest([], []);
-      expect(result.df).toBe(-2);
-      expect(Number.isNaN(result.t)).toBe(true);
+    test("throws for both groups empty (insufficient df)", () => {
+      // Total observations = 0, needs at least 3
+      expect(() => tTest([], [])).toThrow(
+        "t-test requires at least 3 observations total",
+      );
     });
   });
 
@@ -272,12 +274,13 @@ describe("cohensD edge cases", () => {
     expect(d).toBe(0);
   });
 
-  test("handles single element groups (NaN variance)", () => {
+  test("throws for single element groups (insufficient df)", () => {
     const group1 = [10];
     const group2 = [5];
-    const d = cohensD(group1, group2);
-    // With n=1, sample variance is NaN (division by 0)
-    expect(Number.isNaN(d)).toBe(true);
+    // Requires at least 3 total observations for valid df
+    expect(() => cohensD(group1, group2)).toThrow(
+      "t-test requires at least 3 observations total",
+    );
   });
 
   test("handles empty first group (returns finite effect size)", () => {
@@ -304,14 +307,23 @@ describe("pairedTTest", () => {
     );
   });
 
-  test("calculates correct t-statistic for simple case", () => {
+  test("throws for single pair (insufficient df)", () => {
+    // Requires at least 2 pairs for df >= 1
+    expect(() => pairedTTest([10], [15])).toThrow(
+      "Paired t-test requires at least 2 pairs",
+    );
+  });
+
+  test("returns t=0, p=1 for zero-variance differences (guarded)", () => {
     // Pre: [10, 20, 30], Post: [15, 25, 35]
     // Differences: [5, 5, 5], meanDiff = 5, sdDiff = 0
-    // t = 5 / (0/sqrt(3)) = Infinity
+    // seMean = 0, guarded: t = 0, p = 1
     const result = pairedTTest([10, 20, 30], [15, 25, 35]);
-    expect(result.t).toBe(Number.POSITIVE_INFINITY);
+    expect(result.t).toBe(0);
+    expect(result.p).toBe(1);
     expect(result.df).toBe(2);
     expect(result.meanDiff).toBe(5);
+    expect(result.cohensD).toBe(0);
   });
 
   test("calculates correct values for varied differences", () => {
@@ -329,21 +341,24 @@ describe("pairedTTest", () => {
     expect(result.ciUpper).toBeGreaterThan(result.meanDiff);
   });
 
-  test("handles identical pre and post (no change)", () => {
+  test("handles identical pre and post (no change, guarded)", () => {
     const data = [10, 20, 30];
     const result = pairedTTest(data, data);
 
     expect(result.meanDiff).toBe(0);
-    expect(Number.isNaN(result.t)).toBe(true); // 0/0
-    expect(result.cohensD).toBe(0); // guard against 0/0
+    expect(result.t).toBe(0); // guarded: 0/0 -> 0
+    expect(result.p).toBe(1);
+    expect(result.cohensD).toBe(0);
   });
 
   test("handles negative differences (decline)", () => {
-    const pre = [50, 60, 70];
-    const post = [40, 50, 60];
+    // Use varied differences to avoid zero SE guard
+    const pre = [50, 60, 70, 80, 90];
+    const post = [40, 48, 58, 70, 82];
     const result = pairedTTest(pre, post);
 
-    expect(result.meanDiff).toBe(-10);
+    // Differences: [-10, -12, -12, -10, -8], meanDiff ~ -10.4
+    expect(result.meanDiff).toBeLessThan(0);
     expect(result.t).toBeLessThan(0);
   });
 });

@@ -27,6 +27,12 @@ function groupStats(
 } {
   const n1 = group1.length;
   const n2 = group2.length;
+
+  // Require at least 3 total observations for valid degrees of freedom (df >= 1)
+  if (n1 + n2 < 3) {
+    throw new Error("t-test requires at least 3 observations total (df >= 1)");
+  }
+
   const m1 = mean(group1);
   const m2 = mean(group2);
   const v1 = sd(group1) ** 2;
@@ -92,8 +98,14 @@ export function tTest(
   const { n1, n2, m1, m2, pooledVariance } = groupStats(group1, group2);
 
   const se = Math.sqrt(pooledVariance * (1 / n1 + 1 / n2));
-  const t = (m1 - m2) / se;
   const df = n1 + n2 - 2;
+
+  // Handle zero standard error (identical values in both groups)
+  if (se === 0) {
+    return { t: m1 === m2 ? 0 : Infinity, df, p: m1 === m2 ? 1 : 0 };
+  }
+
+  const t = (m1 - m2) / se;
   const p = tDistribution(Math.abs(t), df);
 
   return { t, df, p };
@@ -214,14 +226,34 @@ export function pairedTTest(
     throw new Error("Pre and post arrays must have same length");
   }
 
+  const n = pre.length;
+
+  // Require at least 2 pairs for valid degrees of freedom (df >= 1)
+  if (n < 2) {
+    throw new Error("Paired t-test requires at least 2 pairs (df >= 1)");
+  }
+
   const differences = pre.map((p, i) => post[i] - p);
-  const n = differences.length;
   const meanDiff = mean(differences);
   const sdDiff = sd(differences);
   const seMean = sdDiff / Math.sqrt(n);
+  const df = n - 1;
+
+  // Handle zero standard error (identical differences)
+  if (seMean === 0) {
+    const cohensD = 0;
+    return {
+      t: 0,
+      df,
+      p: 1,
+      cohensD,
+      ciLower: meanDiff,
+      ciUpper: meanDiff,
+      meanDiff,
+    };
+  }
 
   const t = meanDiff / seMean;
-  const df = n - 1;
   const p = tDistribution(Math.abs(t), df);
 
   // Cohen's d for paired samples
@@ -260,6 +292,12 @@ export function independentTTest(
 } {
   const n1 = group1.length;
   const n2 = group2.length;
+
+  // Require at least 3 total observations for valid degrees of freedom (df >= 1)
+  if (n1 + n2 < 3) {
+    throw new Error("t-test requires at least 3 observations total (df >= 1)");
+  }
+
   const m1 = mean(group1);
   const m2 = mean(group2);
   const sd1 = sd(group1);
@@ -272,8 +310,23 @@ export function independentTTest(
   const seMean = pooledSD * Math.sqrt(1 / n1 + 1 / n2);
 
   const meanDiff = m1 - m2;
-  const t = meanDiff / seMean;
   const df = n1 + n2 - 2;
+
+  // Handle zero standard error (identical values in both groups)
+  if (seMean === 0) {
+    const cohensD = 0;
+    return {
+      t: 0,
+      df,
+      p: 1,
+      cohensD,
+      ciLower: meanDiff,
+      ciUpper: meanDiff,
+      meanDiff,
+    };
+  }
+
+  const t = meanDiff / seMean;
   const p = tDistribution(Math.abs(t), df);
 
   // Cohen's d using pooled SD
