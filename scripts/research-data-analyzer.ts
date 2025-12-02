@@ -591,10 +591,7 @@ function parseCSV(filepath: string): StudentData[] {
     const row: Record<string, string | number | undefined> = {};
 
     for (const [key, value] of Object.entries(rawRow)) {
-      row[key] = parseStudentValue(String(value), key) as
-        | string
-        | number
-        | undefined;
+      row[key] = parseStudentValue(value, key) as string | number | undefined;
     }
 
     // Validate row before adding to results
@@ -745,7 +742,7 @@ function main(): void {
   handleDataAnalysis(args);
 }
 
-function handlePowerAnalysis(args: string[]) {
+function handlePowerAnalysis(args: string[]): void {
   const effect = getNumericFlag(args, "--effect", 0.5);
   const alpha = getNumericFlag(args, "--alpha", 0.05);
   const power = getNumericFlag(args, "--power", 0.8);
@@ -790,7 +787,7 @@ function handlePowerAnalysis(args: string[]) {
   console.log(`${"═".repeat(64)}\n`);
 }
 
-function handleDataAnalysis(args: string[]) {
+function handleDataAnalysis(args: string[]): void {
   const design = getRequiredFlag(args, "--design");
   const dataFile = getRequiredFlag(args, "--data");
   const controlFile = getOptionalFlag(args, "--control");
@@ -842,7 +839,7 @@ function validateGroupSizes(
 function handleRCTAnalysis(
   data: StudentData[],
   controlFile: string | undefined,
-) {
+): void {
   if (controlFile === undefined) {
     // Assume data file has 'group' column
     const treatment = data.filter((d) => d.group === "treatment");

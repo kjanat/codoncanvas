@@ -2,6 +2,18 @@
 
 import { spawn } from "bun";
 
+interface CoverageSummary {
+  functions: string;
+  lines: string;
+  pass: string;
+  skip: string;
+  fail: string;
+  expect: string;
+  tests: string;
+  files: string;
+  time: string;
+}
+
 const coverageData: Array<{
   file: string;
   funcCoverage: string;
@@ -69,7 +81,7 @@ const output = stdoutData + stderrData;
 const lines = output.split("\n");
 
 let captureMode = false;
-const summary: Record<string, string> = {
+const summary: CoverageSummary = {
   functions: "N/A",
   lines: "N/A",
   pass: "0",
@@ -150,7 +162,19 @@ for (const line of lines) {
 }
 
 if (coverageData.length === 0) {
-  console.error("\n❌ ERROR: No coverage data captured!");
+  console.error("\n[ERROR] No coverage data captured!");
+  console.error("\n--- Raw output for debugging ---");
+  if (stdoutData.trim()) {
+    console.error("STDOUT:");
+    console.error(stdoutData);
+  }
+  if (stderrData.trim()) {
+    console.error("STDERR:");
+    console.error(stderrData);
+  }
+  if (!stdoutData.trim() && !stderrData.trim()) {
+    console.error("(no output captured)");
+  }
   process.exit(1);
 }
 

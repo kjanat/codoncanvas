@@ -38,15 +38,32 @@ const git = async (header: string, ...args: string[]): Promise<void> => {
 };
 
 const getBaseBranch = async (): Promise<string> => {
+  // Try symbolic-ref first (works when origin/HEAD is set)
   const result = await $`git symbolic-ref refs/remotes/origin/HEAD`
     .nothrow()
     .quiet();
   const text = result.text().trim();
-  if (result.exitCode !== 0 || !text) {
-    // Fall back to master if origin/HEAD is not set (common in shallow clones)
+  if (result.exitCode === 0 && text) {
+    return text.replace("refs/remotes/origin/", "");
+  }
+
+  // Fallback: probe origin/main, then origin/master (common in shallow clones)
+  const mainCheck = await $`git rev-parse --verify origin/main`
+    .nothrow()
+    .quiet();
+  if (mainCheck.exitCode === 0) {
+    return "main";
+  }
+
+  const masterCheck = await $`git rev-parse --verify origin/master`
+    .nothrow()
+    .quiet();
+  if (masterCheck.exitCode === 0) {
     return "master";
   }
-  return text.replace("refs/remotes/origin/", "");
+
+  // Ultimate fallback (neither exists)
+  return "main";
 };
 
 const validateRef = async (r: string): Promise<void> => {
@@ -55,6 +72,12 @@ const validateRef = async (r: string): Promise<void> => {
     console.error(`Invalid ref: ${r}`);
     process.exit(1);
   }
+};
+
+const showCommit = async (): Promise<void> => {
+  const commitRef = ref ?? "HEAD";
+  await validateRef(commitRef);
+  await git(`=== COMMIT: ${commitRef} ===`, "show", commitRef);
 };
 
 const isValidScope = (s: string): s is Scope => SCOPES.includes(s as Scope);
@@ -97,16 +120,8 @@ const base = await getBaseBranch();
 const commands: Record<Scope, () => Promise<void>> = {
   staged: () => git("=== STAGED CHANGES ===", "diff", "--cached"),
   unstaged: () => git("=== UNSTAGED CHANGES ===", "diff"),
-  commit: async () => {
-    const commitRef = ref ?? "HEAD";
-    await validateRef(commitRef);
-    await git(`=== COMMIT: ${commitRef} ===`, "show", commitRef);
-  },
-  committed: async () => {
-    const commitRef = ref ?? "HEAD";
-    await validateRef(commitRef);
-    await git(`=== COMMIT: ${commitRef} ===`, "show", commitRef);
-  },
+  commit: showCommit,
+  committed: showCommit,
   branch: async () => {
     const baseRef = ref ?? base;
     await git(
