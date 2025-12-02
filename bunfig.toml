@@ -13,21 +13,6 @@ coveragePathIgnorePatterns = [
   "scripts/**",  # Scripts
   "e2e/**",  # End-to-end tests
   "tests/test-utils/**",  # Test utils
-  # Trivial/generated code
-  ## "src/ui/icons/**",
-  # Browser API dependencies (Canvas2D, AudioContext, external libs)
-  # These require integration tests or manual verification
-  ## "src/core/canvas-renderer.ts",  # Canvas2D API
-  ## "src/hooks/useCanvas.ts",  # Canvas ref + resize observers
-  ## "src/hooks/useLocalStorage.ts",  # localStorage API + SSR edge cases
-  ## "src/exporters/gif-exporter.ts",  # gif.js external library
-  ## "src/exporters/midi-exporter.ts",  # Web Audio API
-  # React hooks with complex async/effect interactions
-  # Covered by integration tests in Playground component tests
-  ## "src/hooks/useAchievements.ts",
-  ## "src/hooks/useGenome.ts",
-  # `Stats` is never instantiated - only static properties are accessed like `Stats.mean(...)`.
-  "src/analysis/statistics/stats-class.ts"
 ]
 
 [test.coverageThreshold]
