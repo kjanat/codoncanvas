@@ -1,0 +1,45 @@
+name: opencode
+
+on:
+  issue_comment:
+    types: [created]
+  pull_request_review_comment:
+    types: [created]
+
+jobs:
+  opencode:
+    if: |
+      github.actor == github.repository_owner &&
+      (
+        contains(github.event.comment.body, '/oc') ||
+        contains(github.event.comment.body, '/opencode')
+      )
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      contents: write
+      pull-requests: write
+      issues: write
+    steps:
+      - name: Validate secret exists
+        run: |
+          if [[ -z "${{ secrets.OPENCODE_JSON }}" ]]; then
+            echo "::error::OPENCODE_JSON secret not set"
+            exit 1
+          fi
+
+      - name: Checkout repository
+        uses: actions/checkout@v6
+        with: { fetch-depth: 1 }
+
+      - name: Write auth.json
+        uses: ./.github/actions/opencode-auth
+        with:
+          OPENCODE_JSON: ${{ secrets.OPENCODE_JSON }}
+
+      - name: Run opencode
+        uses: sst/opencode/github@latest
+        with:
+          model: anthropic/claude-opus-4-5
+          share: true
+          github_token: ${{ github.token }}

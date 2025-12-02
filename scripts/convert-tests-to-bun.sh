@@ -9,21 +9,21 @@ exit 0
 
 # shellcheck disable=SC2317 # Unreachable code kept for reference
 for file in src/*.test.ts; do
-	if [[ -f "${file}" ]]; then
-		echo "Converting ${file}..."
+  if [[ -f ${file} ]]; then
+    echo "Converting ${file}..."
 
-		# Replace vitest imports with bun:test imports
-		sed -i 's/from "vitest"/from "bun:test"/g' "${file}"
+    # Replace vitest imports with bun:test imports
+    sed -i 's/from "vitest"/from "bun:test"/g' "${file}"
 
-		# Replace 'it' with 'test'
-		sed -i 's/\bit(/test(/g' "${file}"
+    # Replace 'it' with 'test'
+    sed -i 's/\bit(/test(/g' "${file}"
 
-		# Replace vi.fn() with mock()
-		sed -i 's/vi\.fn()/mock()/g' "${file}"
+    # Replace vi.fn() with mock()
+    sed -i 's/vi\.fn()/mock()/g' "${file}"
 
-		# Replace vi with mock for other usages (but keep vitest-specific like spyOn for manual fixing)
-		# We'll leave spyOn alone as it needs more complex changes
-	fi
+    # Replace vi with mock for other usages (but keep vitest-specific like spyOn for manual fixing)
+    # We'll leave spyOn alone as it needs more complex changes
+  fi
 done
 
 # shellcheck disable=SC2317 # Unreachable code kept for reference

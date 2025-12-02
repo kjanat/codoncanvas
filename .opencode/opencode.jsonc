@@ -1,10 +1,16 @@
 {
   "$schema": "https://opencode.ai/config.json",
   "lsp": {
+    // https://opencode.ai/docs/lsp/
     "biome": {
       "command": ["biome", "lsp-proxy"],
       "extensions": [".js", ".jsx", ".ts", ".tsx", ".json", ".jsonc"],
       "env": {}
+    },
+    "shellcheck": {
+      "command": ["shellcheck", "-f", "gcc", "-x", "-s", "bash", "-o", "all"],
+      "extensions": ["sh"],
+      "disabled": true
     }
   },
   "formatter": {
@@ -36,13 +42,36 @@
         ".xml",
         ".toml",
         ".svg",
-        ".scss",
+        ".css",
         ".sass",
-        ".css"
+        ".scss"
       ],
-      "environment": {
-        "DPRINT_CONFIG_DISCOVERY": "false"
-      }
+      "environment": { "DPRINT_CONFIG_DISCOVERY": "false" }
+    },
+    "markdownlint-cli2": {
+      "command": [
+        "bunx",
+        "markdownlint-cli2",
+        /*"--config", ".markdownlint.jsonc",*/ "$FILE",
+        "--fix"
+      ],
+      "extensions": ["md", "markdown"]
+    },
+    "shfmt": {
+      "command": [
+        "shfmt",
+        "--indent",
+        "2",
+        "--language-dialect",
+        "bash",
+        "--simplify",
+        "--binary-next-line",
+        "--case-indent",
+        "--keep-padding",
+        "--write",
+        "$FILE"
+      ],
+      "extensions": ["sh"]
     }
   },
   "mcp": {
@@ -67,9 +96,7 @@
     "perplexity": {
       "type": "local",
       "command": ["bunx", "server-perplexity-ask@latest"],
-      "environment": {
-        "PERPLEXITY_API_KEY": "{env:PERPLEXITY_API_KEY}"
-      },
+      "environment": { "PERPLEXITY_API_KEY": "{env:PERPLEXITY_API_KEY}" },
       "enabled": true
     },
     "context7": {
@@ -94,5 +121,13 @@
     }
   },
   "model": "anthropic/claude-opus-4-5",
-  "small_model": "anthropic/claude-haiku-4-5"
+  "small_model": "anthropic/claude-haiku-4-5",
+  "share": "auto",
+  "autoupdate": true,
+  // "instructions": [],
+  "experimental": {
+    "chatMaxRetries": 1,
+    "batch_tool": true
+  },
+  "username": "kjanat"
 }
