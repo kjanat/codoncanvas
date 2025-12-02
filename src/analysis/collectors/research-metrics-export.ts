@@ -104,10 +104,21 @@ function sessionToCSVRow(session: ResearchSession): (string | number)[] {
   ];
 }
 
+function escapeCSVField(value: string | number | boolean): string {
+  const str = String(value);
+  if (str.includes(",") || str.includes('"') || str.includes("\n")) {
+    return `"${str.replace(/"/g, '""')}"`;
+  }
+  return str;
+}
+
 /**
  * Exports sessions as CSV string.
  */
 export function formatSessionsAsCSV(sessions: ResearchSession[]): string {
   const rows = sessions.map(sessionToCSVRow);
-  return [CSV_HEADERS.join(","), ...rows.map((r) => r.join(","))].join("\n");
+  return [
+    CSV_HEADERS.join(","),
+    ...rows.map((r) => r.map(escapeCSVField).join(",")),
+  ].join("\n");
 }

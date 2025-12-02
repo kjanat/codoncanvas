@@ -202,6 +202,7 @@ export class ResearchMetrics {
 
   clearAllData(): void {
     localStorage.removeItem(this.STORAGE_KEY);
+    this.stopAutoSave();
     this.currentSession = null;
   }
 

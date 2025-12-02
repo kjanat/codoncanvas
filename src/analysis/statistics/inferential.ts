@@ -159,10 +159,10 @@ export function interpretPValue(p: number): string {
 }
 
 /**
- * Critical t-value lookup table for common degrees of freedom.
- * Values are for two-tailed test at alpha = 0.05.
+ * Critical t-value lookup tables for common degrees of freedom.
+ * Values are for two-tailed tests.
  */
-const T_CRITICAL_TABLE: Record<number, number> = {
+const T_CRITICAL_TABLE_05: Record<number, number> = {
   5: 2.571,
   10: 2.228,
   20: 2.086,
@@ -171,6 +171,17 @@ const T_CRITICAL_TABLE: Record<number, number> = {
   50: 2.009,
   60: 2.0,
   100: 1.984,
+};
+
+const T_CRITICAL_TABLE_01: Record<number, number> = {
+  5: 4.032,
+  10: 3.169,
+  20: 2.845,
+  30: 2.75,
+  40: 2.704,
+  50: 2.678,
+  60: 2.66,
+  100: 2.626,
 };
 
 /**
@@ -189,14 +200,15 @@ export function tCritical(alpha: number, df: number): number {
     return alpha === 0.05 ? 1.96 : 2.576;
   }
 
-  // For smaller df, use lookup table (alpha = 0.05 only)
-  const dfs = Object.keys(T_CRITICAL_TABLE)
+  // Select table based on alpha
+  const table = alpha === 0.01 ? T_CRITICAL_TABLE_01 : T_CRITICAL_TABLE_05;
+  const dfs = Object.keys(table)
     .map(Number)
     .sort((a, b) => a - b);
   for (const tableDf of dfs) {
-    if (df <= tableDf) return T_CRITICAL_TABLE[tableDf];
+    if (df <= tableDf) return table[tableDf];
   }
-  return 1.96; // fallback to z-critical
+  return alpha === 0.05 ? 1.96 : 2.576; // fallback to z-critical
 }
 
 /**
@@ -367,7 +379,19 @@ export function powerAnalysis(
 } {
   // z-values for common alpha and power levels
   const zAlpha = alpha === 0.05 ? 1.96 : 2.576;
-  const zBeta = power === 0.8 ? 0.84 : power === 0.9 ? 1.28 : 0.52;
+
+  // z-beta lookup for supported power levels
+  const zBetaTable: Record<number, number> = {
+    0.7: 0.52,
+    0.8: 0.84,
+    0.9: 1.28,
+  };
+  const zBeta = zBetaTable[power];
+  if (zBeta === undefined) {
+    throw new Error(
+      `Unsupported power value: ${power}. Supported values: 0.7, 0.8, 0.9`,
+    );
+  }
 
   // n = 2(z_alpha + z_beta)^2 / d^2
   const requiredNPerGroup = Math.ceil(

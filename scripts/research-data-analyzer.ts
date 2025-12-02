@@ -268,7 +268,8 @@ function analyzeSubscales(data: StudentData[]): void {
     const gainMean = mean(gains).toFixed(2);
     const gainSD = sd(gains).toFixed(2);
 
-    const d = mean(gains) / sd(gains);
+    const sdGains = sd(gains);
+    const d = sdGains === 0 ? 0 : mean(gains) / sdGains;
 
     console.log(
       `${type.padEnd(
@@ -284,10 +285,10 @@ function analyzeSubscales(data: StudentData[]): void {
  * Analyze retention
  */
 function analyzeRetention(data: StudentData[]): void {
-  const postScores = data.map((d) => d.posttest_total);
-  const delayedScores = data
-    .map((d) => d.delayed_total)
-    .filter((s): s is number => s !== undefined);
+  // Filter to participants who have both post and delayed scores
+  const pairedData = data.filter((d) => d.delayed_total !== undefined);
+  const postScores = pairedData.map((d) => d.posttest_total);
+  const delayedScores = pairedData.map((d) => d.delayed_total as number);
 
   const postMean = mean(postScores);
   const delayedMean = mean(delayedScores);

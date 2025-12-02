@@ -3,15 +3,26 @@
 import { relative } from "node:path";
 import { $ } from "bun";
 
-const [scope = "all", ref = "HEAD"] = Bun.argv.slice(2);
+const [scope = "all", ref] = Bun.argv.slice(2);
 const output: string[] = [];
 
 const git = async (header: string, ...args: string[]) => {
-  output.push(header);
-  const proc = Bun.spawn(["git", "--no-pager", ...args], { stdout: "pipe" });
-  const text = await new Response(proc.stdout).text();
-  await proc.exited; // ensure process cleanup
-  output.push(text);
+  const proc = Bun.spawn(["git", "--no-pager", ...args], {
+    stdout: "pipe",
+    stderr: "pipe",
+  });
+  const [text, err, exitCode] = await Promise.all([
+    new Response(proc.stdout).text(),
+    new Response(proc.stderr).text(),
+    proc.exited,
+  ]);
+  if (exitCode !== 0) {
+    output.push(`${header}\n[git exit ${exitCode}]\n${err.trim()}`);
+    return;
+  }
+  if (text) {
+    output.push(header, text);
+  }
 };
 
 const getBaseBranch = async () => {
@@ -61,39 +72,42 @@ const commands: Record<string, () => Promise<void>> = {
   staged: () => git("=== STAGED CHANGES ===", "diff", "--cached"),
   unstaged: () => git("=== UNSTAGED CHANGES ===", "diff"),
   commit: async () => {
-    await validateRef(ref);
-    await git(`=== COMMIT: ${ref} ===`, "show", ref);
+    const commitRef = ref ?? "HEAD";
+    await validateRef(commitRef);
+    await git(`=== COMMIT: ${commitRef} ===`, "show", commitRef);
   },
   branch: async () => {
+    const baseRef = ref ?? base;
     await git(
-      `=== BRANCH vs ${base.toUpperCase()} ===\n--- Commits ---`,
+      `=== BRANCH vs ${baseRef.toUpperCase()} ===\n--- Commits ---`,
       "log",
       "--oneline",
-      `${base}..HEAD`,
+      `${baseRef}..HEAD`,
     );
     await git(
       "--- Changed Files ---",
       "diff",
       "--name-status",
-      `${base}...HEAD`,
+      `${baseRef}...HEAD`,
     );
-    await git("--- Diff ---", "diff", `${base}...HEAD`);
+    await git("--- Diff ---", "diff", `${baseRef}...HEAD`);
   },
   pr: async () => {
+    const baseRef = ref ?? base;
     await git(
       "=== PR REVIEW ===\n--- Commits ---",
       "log",
       "--oneline",
-      `${base}..HEAD`,
+      `${baseRef}..HEAD`,
     );
-    await git("--- Stats ---", "diff", "--stat", `${base}...HEAD`);
+    await git("--- Stats ---", "diff", "--stat", `${baseRef}...HEAD`);
     await git(
       "--- Changed Files ---",
       "diff",
       "--name-status",
-      `${base}...HEAD`,
+      `${baseRef}...HEAD`,
     );
-    await git("--- Full Diff ---", "diff", `${base}...HEAD`);
+    await git("--- Full Diff ---", "diff", `${baseRef}...HEAD`);
   },
   all: () => git("=== ALL UNCOMMITTED CHANGES ===", "diff", "HEAD"),
 };

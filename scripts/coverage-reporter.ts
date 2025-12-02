@@ -9,11 +9,20 @@ const coverageData: Array<{
   uncoveredLines: string;
 }> = [];
 
-const proc = spawn({
-  cmd: ["bun", "test:agent", "--coverage"],
-  stdout: "pipe",
-  stderr: "pipe",
-});
+const spawnProcess = () => {
+  try {
+    return spawn({
+      cmd: ["bun", "test:agent", "--coverage"],
+      stdout: "pipe",
+      stderr: "pipe",
+    });
+  } catch (error) {
+    console.error(`Failed to spawn test process: ${error}`);
+    process.exit(1);
+  }
+};
+
+const proc = spawnProcess();
 
 // Collect all output from both streams (don't print to console)
 let stdoutData = "";

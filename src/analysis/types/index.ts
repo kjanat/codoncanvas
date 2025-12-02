@@ -2,7 +2,7 @@
  * Type exports for analysis module
  */
 
-export type { MetricsSession } from "../parsers/schema";
+export type { MetricsSession } from "@/analysis/parsers/schema";
 export type { ExecutionEvent, FeatureEvent, MutationEvent } from "./events";
 export type {
   AggregateStats,
