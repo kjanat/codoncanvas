@@ -1,16 +1,19 @@
 /**
- * useAchievements - React hook for achievement tracking
+ * AchievementContext - Global achievement tracking
  *
- * Provides achievement tracking functionality. When used within an AchievementProvider,
- * uses the shared context. Otherwise, falls back to a component-local engine instance.
- *
- * Prefer wrapping your app with AchievementProvider for:
- * - Shared achievement state across components
- * - Better testability
- * - SSR compatibility
+ * Provides centralized achievement tracking through React Context.
+ * Replaces module-level singleton pattern for better testability and SSR support.
  */
 
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import {
+  createContext,
+  type ReactNode,
+  useCallback,
+  useContext,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 
 import type { AchievementNotification } from "@/components/AchievementToast";
 import {
@@ -24,10 +27,9 @@ function generateId(): string {
   return `achievement-${Date.now()}-${++notificationId}`;
 }
 
-/** Return type for useAchievements hook */
-export interface UseAchievementsReturn {
+interface AchievementContextValue {
   /** The achievement engine instance */
-  engine: AchievementEngine | null;
+  engine: AchievementEngine;
   /** Current notifications */
   notifications: AchievementNotification[];
   /** Dismiss a notification by ID */
@@ -42,37 +44,39 @@ export interface UseAchievementsReturn {
   trackEvolutionGeneration: () => void;
 }
 
+const AchievementContext = createContext<AchievementContextValue | null>(null);
+
+export interface AchievementProviderProps {
+  children: ReactNode;
+  /** Optional custom engine for testing */
+  engine?: AchievementEngine;
+}
+
 /**
- * React hook for achievement tracking.
- *
- * Creates a component-local engine instance using useRef for stability.
- * This avoids the pitfalls of module-level singletons (SSR issues, test pollution).
- *
- * For shared achievement state across components, wrap your app with AchievementProvider
- * and use useAchievementContext instead.
+ * Provides achievement tracking to the app.
  *
  * @example
  * ```tsx
- * function MyComponent() {
- *   const { trackGenomeCreated, notifications } = useAchievements();
- *   trackGenomeCreated(10);
- * }
+ * <AchievementProvider>
+ *   <App />
+ * </AchievementProvider>
  * ```
  */
-export function useAchievements(): UseAchievementsReturn {
-  // Use ref to create engine lazily and keep stable reference
-  const engineRef = useRef<AchievementEngine | null>(null);
+export function AchievementProvider({
+  children,
+  engine: customEngine,
+}: AchievementProviderProps) {
+  // Use ref to ensure stable engine instance across renders
+  const engineRef = useRef<AchievementEngine>(
+    customEngine ?? new AchievementEngine(),
+  );
   const [notifications, setNotifications] = useState<AchievementNotification[]>(
     [],
   );
   const mountedRef = useRef(true);
 
-  // Initialize engine on first render (lazy initialization)
-  if (!engineRef.current) {
-    engineRef.current = new AchievementEngine();
-  }
-
-  useEffect(() => {
+  // Update mounted ref on unmount
+  useMemo(() => {
     mountedRef.current = true;
     return () => {
       mountedRef.current = false;
@@ -106,7 +110,6 @@ export function useAchievements(): UseAchievementsReturn {
 
   const trackGenomeCreated = useCallback(
     (length: number) => {
-      if (!engineRef.current) return;
       const unlocked = engineRef.current.trackGenomeCreated(length);
       handleUnlocks(unlocked);
     },
@@ -115,7 +118,6 @@ export function useAchievements(): UseAchievementsReturn {
 
   const trackGenomeExecuted = useCallback(
     (opcodes: string[]) => {
-      if (!engineRef.current) return;
       const unlocked = engineRef.current.trackGenomeExecuted(opcodes);
       handleUnlocks(unlocked);
     },
@@ -123,18 +125,16 @@ export function useAchievements(): UseAchievementsReturn {
   );
 
   const trackMutationApplied = useCallback(() => {
-    if (!engineRef.current) return;
     const unlocked = engineRef.current.trackMutationApplied();
     handleUnlocks(unlocked);
   }, [handleUnlocks]);
 
   const trackEvolutionGeneration = useCallback(() => {
-    if (!engineRef.current) return;
     const unlocked = engineRef.current.trackEvolutionGeneration();
     handleUnlocks(unlocked);
   }, [handleUnlocks]);
 
-  return useMemo(
+  const value = useMemo<AchievementContextValue>(
     () => ({
       engine: engineRef.current,
       notifications,
@@ -153,4 +153,41 @@ export function useAchievements(): UseAchievementsReturn {
       trackEvolutionGeneration,
     ],
   );
+
+  return (
+    <AchievementContext.Provider value={value}>
+      {children}
+    </AchievementContext.Provider>
+  );
+}
+
+/**
+ * Hook to access achievement tracking.
+ *
+ * @throws Error if used outside AchievementProvider
+ *
+ * @example
+ * ```tsx
+ * function MyComponent() {
+ *   const { trackGenomeCreated } = useAchievementContext();
+ *   trackGenomeCreated(10);
+ * }
+ * ```
+ */
+export function useAchievementContext(): AchievementContextValue {
+  const context = useContext(AchievementContext);
+  if (!context) {
+    throw new Error(
+      "useAchievementContext must be used within an AchievementProvider. " +
+        "Wrap your app with <AchievementProvider> or use the standalone useAchievements hook.",
+    );
+  }
+  return context;
+}
+
+/**
+ * Check if we're inside an AchievementProvider
+ */
+export function useHasAchievementProvider(): boolean {
+  return useContext(AchievementContext) !== null;
 }

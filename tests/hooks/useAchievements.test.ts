@@ -45,12 +45,13 @@ describe("useAchievements", () => {
       expect(typeof result.current.trackEvolutionGeneration).toBe("function");
     });
 
-    test("uses singleton engine instance", () => {
+    test("each hook instance has its own engine (no singleton)", () => {
       const { result: result1 } = renderHook(() => useAchievements());
       const { result: result2 } = renderHook(() => useAchievements());
 
-      // Both hooks should share the same engine instance
-      expect(result1.current.engine).toBe(result2.current.engine);
+      // Each hook should have its own engine instance (no module-level singleton)
+      // This is intentional for SSR compatibility and test isolation
+      expect(result1.current.engine).not.toBe(result2.current.engine);
     });
   });
 

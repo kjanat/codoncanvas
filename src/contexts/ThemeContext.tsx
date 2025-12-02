@@ -210,7 +210,14 @@ export function useTheme(): ThemeContextValue {
   const context = useContext(ThemeContext);
 
   if (!context) {
-    throw new Error("useTheme must be used within a ThemeProvider");
+    throw new Error(
+      "useTheme must be used within a ThemeProvider. " +
+        "Wrap your app with <ThemeProvider> in your root component:\n\n" +
+        "  import { ThemeProvider } from '@/contexts';\n\n" +
+        "  <ThemeProvider>\n" +
+        "    <App />\n" +
+        "  </ThemeProvider>",
+    );
   }
 
   return context;

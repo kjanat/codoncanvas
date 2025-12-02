@@ -8,6 +8,30 @@
 import { useCallback, useEffect, useState } from "react";
 
 /**
+ * Safely persist value to localStorage with quota handling.
+ */
+function persistToStorage<T>(key: string, value: T): void {
+  if (typeof window === "undefined") return;
+
+  try {
+    localStorage.setItem(key, JSON.stringify(value));
+  } catch (error) {
+    // Handle QuotaExceededError specifically
+    if (
+      error instanceof DOMException &&
+      (error.name === "QuotaExceededError" || error.code === 22)
+    ) {
+      console.error(
+        `localStorage quota exceeded for key "${key}". ` +
+          "Consider clearing old data or reducing storage usage.",
+      );
+    } else {
+      throw error;
+    }
+  }
+}
+
+/**
  * React hook for localStorage-backed state.
  *
  * @example
@@ -57,15 +81,7 @@ export function useLocalStorage<T>(
         // Allow value to be a function (like useState)
         setStoredValue((prev) => {
           const valueToStore = value instanceof Function ? value(prev) : value;
-
-          // Save to localStorage
-          if (typeof window !== "undefined") {
-            localStorage.setItem(key, JSON.stringify(valueToStore));
-            // Note: Don't dispatch synthetic storage event - the native storage
-            // event only fires in OTHER tabs, and our listener should only
-            // respond to cross-tab changes. Dispatching here causes loops.
-          }
-
+          persistToStorage(key, valueToStore);
           return valueToStore;
         });
       } catch (error) {

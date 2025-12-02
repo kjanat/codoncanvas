@@ -77,26 +77,32 @@ export interface UseShareUrlReturn {
 /**
  * React hook for shareable genome URLs.
  *
+ * @deprecated Use `usePlaygroundSearch` instead for proper TanStack Router integration.
+ * This hook manipulates window.location directly which bypasses the router and
+ * can cause state synchronization issues.
+ *
  * @example
  * ```tsx
- * function Playground() {
- *   const { sharedGenome, shareGenome, copyShareUrl } = useShareUrl();
- *   const [genome, setGenome] = useState(sharedGenome ?? "ATG TAA");
+ * // Preferred: Use usePlaygroundSearch with TanStack Router
+ * import { usePlaygroundSearch } from '@/hooks';
+ * const { sharedGenome, copyShareUrl } = usePlaygroundSearch();
  *
- *   return (
- *     <div>
- *       <textarea value={genome} onChange={(e) => setGenome(e.target.value)} />
- *       <button onClick={() => copyShareUrl(genome)}>Copy Share Link</button>
- *       <button onClick={() => shareGenome(genome)}>Update URL</button>
- *     </div>
- *   );
- * }
+ * // Legacy: This hook (deprecated)
+ * import { useShareUrl } from '@/hooks';
+ * const { sharedGenome, shareGenome, copyShareUrl } = useShareUrl();
  * ```
  */
 export function useShareUrl(
   options: UseShareUrlOptions = {},
 ): UseShareUrlReturn {
   const { autoLoad = true } = options;
+
+  // Runtime deprecation warning (development only)
+  if (process.env.NODE_ENV === "development") {
+    console.warn(
+      "[DEPRECATED] useShareUrl is deprecated. Use usePlaygroundSearch instead for TanStack Router integration.",
+    );
+  }
 
   // Synchronous initialization ensures sharedGenome is available on first render
   // This fixes timing issue where initialGenome was calculated before async decode

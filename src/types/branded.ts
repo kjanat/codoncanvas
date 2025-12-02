@@ -274,10 +274,31 @@ export type ArithmeticResult =
 // ============================================================================
 // Stack Arithmetic Helpers
 // ============================================================================
+//
+// All arithmetic operations use WRAPPING semantics (modulo 64) to match
+// DNA codon encoding. This is intentional behavior, not a bug.
+//
+// Overflow Examples:
+//   stackAdd(60, 10) = 6    (70 % 64 = 6)
+//   stackMul(63, 63) = 1    (3969 % 64 = 1)
+//   stackSub(5, 10)  = 59   ((-5 % 64 + 64) % 64 = 59)
+//
+// This matches biological constraints where codon values are inherently
+// limited to a 6-bit range (64 possible codons).
+// ============================================================================
 
 /**
  * Adds two stack values with wrapping overflow.
- * @example stackAdd(stackValue(60), stackValue(10)) // 6 (wrapped)
+ *
+ * Uses modulo 64 arithmetic to stay within valid stack range.
+ * This mirrors biological constraints of codon encoding.
+ *
+ * @example
+ * ```typescript
+ * stackAdd(stackValue(60), stackValue(10)) // 6 (70 % 64)
+ * stackAdd(stackValue(30), stackValue(30)) // 60
+ * stackAdd(stackValue(63), stackValue(1))  // 0 (wraps)
+ * ```
  */
 export function stackAdd(a: StackValue, b: StackValue): StackValue {
   return stackValueWrapped(a + b);
@@ -285,7 +306,15 @@ export function stackAdd(a: StackValue, b: StackValue): StackValue {
 
 /**
  * Subtracts two stack values with wrapping underflow.
- * @example stackSub(stackValue(5), stackValue(10)) // 59 (wrapped)
+ *
+ * Negative results wrap around: -1 becomes 63, -5 becomes 59, etc.
+ *
+ * @example
+ * ```typescript
+ * stackSub(stackValue(5), stackValue(10))  // 59 (wraps negative)
+ * stackSub(stackValue(0), stackValue(1))   // 63
+ * stackSub(stackValue(30), stackValue(10)) // 20
+ * ```
  */
 export function stackSub(a: StackValue, b: StackValue): StackValue {
   return stackValueWrapped(a - b);
@@ -293,7 +322,18 @@ export function stackSub(a: StackValue, b: StackValue): StackValue {
 
 /**
  * Multiplies two stack values with wrapping overflow.
- * @example stackMul(stackValue(10), stackValue(10)) // 36 (100 % 64)
+ *
+ * Large products wrap modulo 64. Be aware that multiplication
+ * can produce surprising results due to wrapping:
+ * - 63 * 63 = 3969, which wraps to 1 (3969 % 64)
+ * - 8 * 8 = 64, which wraps to 0
+ *
+ * @example
+ * ```typescript
+ * stackMul(stackValue(10), stackValue(10)) // 36 (100 % 64)
+ * stackMul(stackValue(8), stackValue(8))   // 0 (64 % 64)
+ * stackMul(stackValue(63), stackValue(63)) // 1 (3969 % 64)
+ * ```
  */
 export function stackMul(a: StackValue, b: StackValue): StackValue {
   return stackValueWrapped(a * b);

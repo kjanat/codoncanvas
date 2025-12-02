@@ -5,6 +5,12 @@
  */
 
 export {
+  AchievementProvider,
+  useAchievementContext,
+  useHasAchievementProvider,
+} from "./AchievementContext";
+
+export {
   type ResolvedTheme,
   type Theme,
   ThemeProvider,
