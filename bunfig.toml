@@ -12,7 +12,7 @@ coveragePathIgnorePatterns = [
   "bun-test-setup.ts",  # Setup for happy-dom
   "scripts/**",  # Scripts
   "e2e/**",  # End-to-end tests
-  # "tests/test-utils/**",  # Test utils
+  "tests/test-utils/**",  # Test utils
   # Trivial/generated code
   ## "src/ui/icons/**",
   # Browser API dependencies (Canvas2D, AudioContext, external libs)
