@@ -9,6 +9,7 @@ import { mean, sd } from "@/analysis/statistics/descriptive";
 import {
   cohensD,
   independentTTest,
+  inverseNormalCDF,
   normalCDF,
   pairedTTest,
   powerAnalysis,
@@ -426,53 +427,149 @@ describe("tCritical", () => {
   });
 });
 
-describe("powerAnalysis", () => {
-  test("calculates correct sample size for medium effect (d=0.5)", () => {
-    const result = powerAnalysis(0.5);
+describe("inverseNormalCDF", () => {
+  // Z-table values: area from 0 to z (one tail)
+  // So P(Z < z) = 0.5 + table_value
+  // Test: inverseNormalCDF(0.5 + table_value) should ≈ z
+  test.each([
+    [0, 0],
+    [0.1, 0.03983],
+    [0.2, 0.07926],
+    [0.3, 0.11791],
+    [0.4, 0.15542],
+    [0.5, 0.19146],
+    [0.6, 0.22575],
+    [0.7, 0.25804],
+    [0.8, 0.28814],
+    [0.9, 0.31594],
+    [1.0, 0.34134],
+    [1.1, 0.36433],
+    [1.2, 0.38493],
+    [1.3, 0.4032],
+    [1.4, 0.41924],
+    [1.5, 0.43319],
+    [1.6, 0.4452],
+    [1.7, 0.45543],
+    [1.8, 0.46407],
+    [1.9, 0.47128],
+    [2.0, 0.47725],
+    [2.1, 0.48214],
+    [2.2, 0.4861],
+    [2.3, 0.48928],
+    [2.4, 0.4918],
+    [2.5, 0.49379],
+    [2.6, 0.49534],
+    [2.7, 0.49653],
+    [2.8, 0.49744],
+    [2.9, 0.49813],
+    [3.0, 0.49865],
+    [3.5, 0.49977],
+  ])("z=%f corresponds to area=%f from z-table", (expectedZ, tableArea) => {
+    const p = 0.5 + tableArea;
+    expect(inverseNormalCDF(p)).toBeCloseTo(expectedZ, 2);
+  });
 
-    // n = 2*(1.96 + 0.84)^2 / 0.5^2 = 2*7.84 / 0.25 = 62.72 -> 63
+  // Two-tailed critical values (common alpha levels)
+  test.each([
+    [0.1, 1.645], // 90% confidence
+    [0.05, 1.96], // 95% confidence
+    [0.01, 2.576], // 99% confidence
+  ])("alpha=%f (two-tailed) gives z≈%f", (alpha, expectedZ) => {
+    expect(inverseNormalCDF(1 - alpha / 2)).toBeCloseTo(expectedZ, 2);
+  });
+
+  // Symmetry: inverseNormalCDF(p) = -inverseNormalCDF(1-p)
+  test.each([0.1, 0.25, 0.4])("symmetric for p=%f", (p) => {
+    expect(inverseNormalCDF(p)).toBeCloseTo(-inverseNormalCDF(1 - p), 5);
+  });
+
+  test("returns 0 for p=0.5", () => {
+    expect(inverseNormalCDF(0.5)).toBeCloseTo(0, 5);
+  });
+
+  test("throws RangeError for p <= 0", () => {
+    expect(() => inverseNormalCDF(0)).toThrow(RangeError);
+    expect(() => inverseNormalCDF(-0.1)).toThrow(RangeError);
+  });
+
+  test("throws RangeError for p >= 1", () => {
+    expect(() => inverseNormalCDF(1)).toThrow(RangeError);
+    expect(() => inverseNormalCDF(1.1)).toThrow(RangeError);
+  });
+});
+
+describe("powerAnalysis", () => {
+  test("medium effect (d=0.5) with defaults", () => {
+    const result = powerAnalysis(0.5);
+    // z_alpha = inverseNormalCDF(0.975) ≈ 1.96
+    // z_beta = inverseNormalCDF(0.8) ≈ 0.84
+    // n = 2*(1.96 + 0.84)^2 / 0.25 ≈ 63
     expect(result.requiredNPerGroup).toBe(63);
     expect(result.totalN).toBe(126);
-    // With 20% attrition: 63 / 0.8 = 78.75 -> 79
     expect(result.inflatedNPerGroup).toBe(79);
     expect(result.inflatedTotal).toBe(158);
   });
 
-  test("calculates correct sample size for large effect (d=0.8)", () => {
+  test("large effect (d=0.8)", () => {
     const result = powerAnalysis(0.8);
-
-    // n = 2*(1.96 + 0.84)^2 / 0.8^2 = 15.68 / 0.64 = 24.5 -> 25
     expect(result.requiredNPerGroup).toBe(25);
     expect(result.totalN).toBe(50);
   });
 
-  test("handles alpha=0.01", () => {
+  test("alpha=0.01 (99% confidence)", () => {
     const result = powerAnalysis(0.5, 0.01);
-
-    // n = 2*(2.576 + 0.84)^2 / 0.5^2 = 93.55 -> 94
+    // z_alpha ≈ 2.576
     expect(result.requiredNPerGroup).toBe(94);
   });
 
-  test("handles power=0.9", () => {
-    const result = powerAnalysis(0.5, 0.05, 0.9);
-
-    // n = 2*(1.96 + 1.28)^2 / 0.5^2 = 83.98 -> 84
-    expect(result.requiredNPerGroup).toBe(84);
+  test("alpha=0.1 (90% confidence)", () => {
+    const result = powerAnalysis(0.5, 0.1);
+    // z_alpha ≈ 1.645
+    expect(result.requiredNPerGroup).toBe(50);
   });
 
-  test("handles custom attrition rate", () => {
-    const result = powerAnalysis(0.5, 0.05, 0.8, 0.3);
+  test("power=0.9", () => {
+    const result = powerAnalysis(0.5, 0.05, 0.9);
+    // z_beta = inverseNormalCDF(0.9) ≈ 1.2816 (more precise than 1.28)
+    // n = 2*(1.96 + 1.2816)^2 / 0.25 ≈ 84.1 -> ceil = 85
+    expect(result.requiredNPerGroup).toBe(85);
+  });
 
-    // requiredNPerGroup = 63, with 30% attrition: 63 / 0.7 = 90
+  test("power=0.7", () => {
+    const result = powerAnalysis(0.5, 0.05, 0.7);
+    // z_beta ≈ 0.52
+    expect(result.requiredNPerGroup).toBe(50);
+  });
+
+  test("power=0.95", () => {
+    const result = powerAnalysis(0.5, 0.05, 0.95);
+    // z_beta = inverseNormalCDF(0.95) ≈ 1.645
+    // n = 2*(1.96 + 1.645)^2 / 0.25 ≈ 104
+    expect(result.requiredNPerGroup).toBe(104);
+  });
+
+  test("custom attrition rate", () => {
+    const result = powerAnalysis(0.5, 0.05, 0.8, 0.3);
     expect(result.requiredNPerGroup).toBe(63);
     expect(result.inflatedNPerGroup).toBe(90);
   });
 
-  test("handles very small effect size (requires large n)", () => {
+  test("small effect (d=0.2) requires large n", () => {
     const result = powerAnalysis(0.2);
+    // With precise inverseNormalCDF: n = 2*(1.96 + 0.8416)^2 / 0.04 ≈ 392.4 -> ceil = 393
+    expect(result.requiredNPerGroup).toBe(393);
+  });
 
-    // n = 2*(1.96 + 0.84)^2 / 0.2^2 = 392
-    expect(result.requiredNPerGroup).toBe(392);
+  test("throws RangeError for invalid alpha", () => {
+    expect(() => powerAnalysis(0.5, 0)).toThrow(RangeError);
+    expect(() => powerAnalysis(0.5, 1)).toThrow(RangeError);
+    expect(() => powerAnalysis(0.5, -0.1)).toThrow(RangeError);
+  });
+
+  test("throws RangeError for invalid power", () => {
+    expect(() => powerAnalysis(0.5, 0.05, 0)).toThrow(RangeError);
+    expect(() => powerAnalysis(0.5, 0.05, 1)).toThrow(RangeError);
+    expect(() => powerAnalysis(0.5, 0.05, -0.1)).toThrow(RangeError);
   });
 });
 

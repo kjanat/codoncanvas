@@ -18,6 +18,7 @@ export {
   independentTTest,
   interpretEffectSize,
   interpretPValue,
+  inverseNormalCDF,
   normalCDF,
   pairedTTest,
   powerAnalysis,

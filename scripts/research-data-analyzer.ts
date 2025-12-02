@@ -750,21 +750,15 @@ function handlePowerAnalysis(args: string[]) {
   const alpha = getNumericFlag(args, "--alpha", 0.05);
   const power = getNumericFlag(args, "--power", 0.8);
 
-  // Validate supported alpha values
-  const SUPPORTED_ALPHA = [0.05, 0.01];
-  if (!SUPPORTED_ALPHA.includes(alpha)) {
-    console.error(
-      `Error: --alpha must be one of [${SUPPORTED_ALPHA.join(", ")}], got: ${alpha}`,
-    );
+  // Validate alpha range (significance level)
+  if (alpha <= 0 || alpha >= 1) {
+    console.error(`Error: --alpha must be in (0, 1), got: ${alpha}`);
     process.exit(1);
   }
 
-  // Validate supported power values (must match powerAnalysis in inferential.ts)
-  const SUPPORTED_POWER = [0.7, 0.8, 0.9];
-  if (!SUPPORTED_POWER.includes(power)) {
-    console.error(
-      `Error: --power must be one of [${SUPPORTED_POWER.join(", ")}], got: ${power}`,
-    );
+  // Validate power range
+  if (power <= 0 || power >= 1) {
+    console.error(`Error: --power must be in (0, 1), got: ${power}`);
     process.exit(1);
   }
 

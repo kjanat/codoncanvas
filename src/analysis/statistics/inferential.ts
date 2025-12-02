@@ -70,6 +70,81 @@ export function normalCDF(z: number): number {
 }
 
 /**
+ * Inverse normal CDF (quantile function / probit).
+ *
+ * Given probability p, returns z such that P(Z <= z) = p.
+ * Uses Abramowitz & Stegun rational approximation (formula 26.2.23).
+ * Error < 4.5e-4 for 0 < p < 1.
+ *
+ * @param p - Cumulative probability (0 < p < 1)
+ * @returns z-score corresponding to the probability
+ * @throws {RangeError} If p is not in (0, 1)
+ *
+ * @example
+ * ```typescript
+ * inverseNormalCDF(0.5);    // 0 (median)
+ * inverseNormalCDF(0.975);  // ~1.96 (alpha=0.05 two-tailed)
+ * inverseNormalCDF(0.995);  // ~2.576 (alpha=0.01 two-tailed)
+ * ```
+ */
+export function inverseNormalCDF(p: number): number {
+  if (p <= 0 || p >= 1) {
+    throw new RangeError(`Probability must be in (0, 1), got: ${p}`);
+  }
+
+  // Abramowitz & Stegun rational approximation constants
+  const a = [
+    -3.969683028665376e1, 2.209460984245205e2, -2.759285104469687e2,
+    1.38357751867269e2, -3.066479806614716e1, 2.506628277459239,
+  ];
+  const b = [
+    -5.447609879822406e1, 1.615858368580409e2, -1.556989798598866e2,
+    6.680131188771972e1, -1.328068155288572e1,
+  ];
+  const c = [
+    -7.784894002430293e-3, -3.223964580411365e-1, -2.400758277161838,
+    -2.549732539343734, 4.374664141464968, 2.938163982698783,
+  ];
+  const d = [
+    7.784695709041462e-3, 3.224671290700398e-1, 2.445134137142996,
+    3.754408661907416,
+  ];
+
+  const pLow = 0.02425;
+  const pHigh = 1 - pLow;
+
+  let q: number;
+  let r: number;
+
+  if (p < pLow) {
+    // Lower tail
+    q = Math.sqrt(-2 * Math.log(p));
+    return (
+      (((((c[0] * q + c[1]) * q + c[2]) * q + c[3]) * q + c[4]) * q + c[5]) /
+      ((((d[0] * q + d[1]) * q + d[2]) * q + d[3]) * q + 1)
+    );
+  }
+
+  if (p <= pHigh) {
+    // Central region
+    q = p - 0.5;
+    r = q * q;
+    return (
+      ((((((a[0] * r + a[1]) * r + a[2]) * r + a[3]) * r + a[4]) * r + a[5]) *
+        q) /
+      (((((b[0] * r + b[1]) * r + b[2]) * r + b[3]) * r + b[4]) * r + 1)
+    );
+  }
+
+  // Upper tail
+  q = Math.sqrt(-2 * Math.log(1 - p));
+  return (
+    -(((((c[0] * q + c[1]) * q + c[2]) * q + c[3]) * q + c[4]) * q + c[5]) /
+    ((((d[0] * q + d[1]) * q + d[2]) * q + d[3]) * q + 1)
+  );
+}
+
+/**
  * Approximate two-tailed p-value from t-distribution.
  *
  * Uses Fisher z-transformation for improved accuracy at small df.
@@ -361,17 +436,29 @@ export function independentTTest(
 }
 
 /**
- * Power analysis for sample size planning.
+ * Power analysis for sample size determination.
  *
  * Calculates required sample size per group to detect a given effect size
  * with specified alpha level and statistical power.
  * Based on Cohen (1988) power analysis formulas.
  *
+ * Uses inverseNormalCDF for dynamic z-score calculation, allowing any
+ * alpha and power values in (0, 1).
+ *
  * @param effectSize - Expected Cohen's d effect size.
- * @param alpha - Significance level (0.05 or 0.01). Default: 0.05.
- * @param power - Desired statistical power (0.8 or 0.9). Default: 0.8.
+ * @param alpha - Significance level, must be in (0, 1). Default: 0.05.
+ * @param power - Desired statistical power, must be in (0, 1). Default: 0.8.
  * @param attritionRate - Expected attrition rate for inflation. Default: 0.2.
  * @returns PowerAnalysisResult with required and inflated sample sizes.
+ * @throws {RangeError} If alpha or power is not in (0, 1).
+ *
+ * @example
+ * ```typescript
+ * powerAnalysis(0.5);              // medium effect, alpha=0.05, power=0.8
+ * powerAnalysis(0.5, 0.01);        // 99% confidence
+ * powerAnalysis(0.5, 0.1);         // 90% confidence (exploratory)
+ * powerAnalysis(0.5, 0.05, 0.95);  // 95% power
+ * ```
  */
 export function powerAnalysis(
   effectSize: number,
@@ -384,21 +471,20 @@ export function powerAnalysis(
   inflatedNPerGroup: number;
   inflatedTotal: number;
 } {
-  // z-values for common alpha and power levels
-  const zAlpha = alpha === 0.05 ? 1.96 : 2.576;
-
-  // z-beta lookup for supported power levels
-  const zBetaTable: Record<number, number> = {
-    0.7: 0.52,
-    0.8: 0.84,
-    0.9: 1.28,
-  };
-  const zBeta = zBetaTable[power];
-  if (zBeta === undefined) {
-    throw new Error(
-      `Unsupported power value: ${power}. Supported values: 0.7, 0.8, 0.9`,
-    );
+  // Validate alpha and power ranges
+  if (alpha <= 0 || alpha >= 1) {
+    throw new RangeError(`Alpha must be in (0, 1), got: ${alpha}`);
   }
+  if (power <= 0 || power >= 1) {
+    throw new RangeError(`Power must be in (0, 1), got: ${power}`);
+  }
+
+  // z-alpha for two-tailed test: P(|Z| > z) = alpha
+  // So we need z where P(Z < z) = 1 - alpha/2
+  const zAlpha = inverseNormalCDF(1 - alpha / 2);
+
+  // z-beta: P(Z <= z) = power
+  const zBeta = inverseNormalCDF(power);
 
   // n = 2(z_alpha + z_beta)^2 / d^2
   const requiredNPerGroup = Math.ceil(
