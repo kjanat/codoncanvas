@@ -759,8 +759,8 @@ function handlePowerAnalysis(args: string[]) {
     process.exit(1);
   }
 
-  // Validate supported power values
-  const SUPPORTED_POWER = [0.8, 0.9];
+  // Validate supported power values (must match powerAnalysis in inferential.ts)
+  const SUPPORTED_POWER = [0.7, 0.8, 0.9];
   if (!SUPPORTED_POWER.includes(power)) {
     console.error(
       `Error: --power must be one of [${SUPPORTED_POWER.join(", ")}], got: ${power}`,

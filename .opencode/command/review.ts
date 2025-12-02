@@ -3,10 +3,22 @@
 import { relative } from "node:path";
 import { $ } from "bun";
 
-const [scope = "all", ref] = Bun.argv.slice(2);
+// Typed scopes for compile-time safety
+const SCOPES = [
+  "all",
+  "staged",
+  "unstaged",
+  "commit",
+  "committed",
+  "branch",
+  "pr",
+] as const;
+type Scope = (typeof SCOPES)[number];
+
+const [scopeArg = "all", ref] = Bun.argv.slice(2);
 const output: string[] = [];
 
-const git = async (header: string, ...args: string[]) => {
+const git = async (header: string, ...args: string[]): Promise<void> => {
   const proc = Bun.spawn(["git", "--no-pager", ...args], {
     stdout: "pipe",
     stderr: "pipe",
@@ -25,14 +37,19 @@ const git = async (header: string, ...args: string[]) => {
   }
 };
 
-const getBaseBranch = async () => {
+const getBaseBranch = async (): Promise<string> => {
   const result = await $`git symbolic-ref refs/remotes/origin/HEAD`
     .nothrow()
     .quiet();
-  return result.text().trim().replace("refs/remotes/origin/", "") || "master";
+  const text = result.text().trim();
+  if (result.exitCode !== 0 || !text) {
+    // Fall back to master if origin/HEAD is not set (common in shallow clones)
+    return "master";
+  }
+  return text.replace("refs/remotes/origin/", "");
 };
 
-const validateRef = async (r: string) => {
+const validateRef = async (r: string): Promise<void> => {
   const result = await $`git rev-parse --verify ${r}`.nothrow().quiet();
   if (result.exitCode !== 0) {
     console.error(`Invalid ref: ${r}`);
@@ -40,7 +57,8 @@ const validateRef = async (r: string) => {
   }
 };
 
-const fileName = import.meta.file;
+const isValidScope = (s: string): s is Scope => SCOPES.includes(s as Scope);
+
 const relativePath = relative(process.cwd(), import.meta.path);
 
 const HELP = `Usage: bun diff [scope] [ref]
@@ -51,27 +69,40 @@ Options:
   ref        Reference (for scope-specific commands)
 
 Scopes:
-  all, staged, unstaged    # No ref needed
-  commit, branch, pr       # Optional ref parameter
+  all, staged, unstaged      # No ref needed
+  commit (or committed)      # Optional ref (default: HEAD)
+  branch, pr                 # Optional ref (default: base branch)
 
 Examples:
-  ${fileName}                  # all uncommitted changes
-  ${fileName} staged           # staged changes only
-  ${fileName} commit abc123    # show specific commit
-  ${fileName} pr               # full PR review
+  bun diff                   # all uncommitted changes
+  bun diff staged            # staged changes only
+  bun diff commit abc123     # show specific commit
+  bun diff pr                # full PR review (commits + diff vs base)
 `;
 
-if (scope === "--help" || scope === "-h") {
+if (scopeArg === "--help" || scopeArg === "-h") {
   console.info(HELP);
   process.exit(0);
 }
 
+if (!isValidScope(scopeArg)) {
+  console.error(`Unknown scope: ${scopeArg}\n`);
+  console.info(HELP);
+  process.exit(1);
+}
+
+const scope: Scope = scopeArg;
 const base = await getBaseBranch();
 
-const commands: Record<string, () => Promise<void>> = {
+const commands: Record<Scope, () => Promise<void>> = {
   staged: () => git("=== STAGED CHANGES ===", "diff", "--cached"),
   unstaged: () => git("=== UNSTAGED CHANGES ===", "diff"),
   commit: async () => {
+    const commitRef = ref ?? "HEAD";
+    await validateRef(commitRef);
+    await git(`=== COMMIT: ${commitRef} ===`, "show", commitRef);
+  },
+  committed: async () => {
     const commitRef = ref ?? "HEAD";
     await validateRef(commitRef);
     await git(`=== COMMIT: ${commitRef} ===`, "show", commitRef);
@@ -111,14 +142,6 @@ const commands: Record<string, () => Promise<void>> = {
   },
   all: () => git("=== ALL UNCOMMITTED CHANGES ===", "diff", "HEAD"),
 };
-
-commands.committed = commands.commit;
-
-if (!(scope in commands)) {
-  console.error(`Unknown scope: ${scope}\n`);
-  console.info(HELP);
-  process.exit(1);
-}
 
 await commands[scope]();
 console.info(output.join("\n"));

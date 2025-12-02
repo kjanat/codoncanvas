@@ -4,7 +4,7 @@
  * Modular structure:
  * - analyzers/    - Codon analysis, metrics aggregation
  * - collectors/   - Research metrics collection (localStorage)
- * - constants     - Shared metric constants and factory functions
+ * - constants/    - Shared metric constants and factory functions
  * - formatters/   - Duration, number, percentage formatting
  * - parsers/      - CSV parsing with schema validation
  * - statistics/   - Descriptive and inferential stats

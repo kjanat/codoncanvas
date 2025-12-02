@@ -9,15 +9,16 @@ const coverageData: Array<{
   uncoveredLines: string;
 }> = [];
 
-const spawnProcess = () => {
+const spawnProcess = (): ReturnType<typeof spawn> => {
   try {
     return spawn({
       cmd: ["bun", "test:agent", "--coverage"],
       stdout: "pipe",
       stderr: "pipe",
     });
-  } catch (error) {
-    console.error(`Failed to spawn test process: ${error}`);
+  } catch (error: unknown) {
+    const message = error instanceof Error ? error.message : String(error);
+    console.error(`Failed to spawn test process: ${message}`);
     process.exit(1);
   }
 };
@@ -29,8 +30,11 @@ let stdoutData = "";
 let stderrData = "";
 const decoder = new TextDecoder();
 
-const stdoutReader = proc.stdout.getReader();
-const stderrReader = proc.stderr.getReader();
+// Type narrowing: stdout/stderr are ReadableStream when spawned with "pipe"
+const stdout = proc.stdout as ReadableStream<Uint8Array>;
+const stderr = proc.stderr as ReadableStream<Uint8Array>;
+const stdoutReader = stdout.getReader();
+const stderrReader = stderr.getReader();
 
 // Read both streams in parallel
 await Promise.all([

@@ -1,5 +1,12 @@
 /**
  * Inferential statistics functions (t-tests, effect sizes)
+ *
+ * NOTE: This file exceeds the 300-line guideline (~410 lines). This is an
+ * intentional deviation because splitting these tightly-coupled statistical
+ * functions (t-tests, effect sizes, power analysis, distribution utilities)
+ * would hurt maintainability more than help. The functions share internal
+ * helpers (groupStats, normalCDF, tDistribution) and the t-distribution
+ * lookup table must stay co-located with tCritical for correctness.
  */
 
 import { mean, sd } from "./descriptive";
