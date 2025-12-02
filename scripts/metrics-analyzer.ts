@@ -29,10 +29,10 @@ import {
   type ComparisonResult,
   type DescriptiveStats,
   formatDuration,
+  interpretPValue,
   MetricsAnalyzer,
   type MetricsSession,
   parseCSVContent,
-  Stats,
 } from "@/analysis";
 
 /** CLI options for the metrics analyzer */
@@ -317,7 +317,7 @@ function generateComparisonReport(
     report += `Effect Size:     Cohen's d = ${comp.cohensD.toFixed(
       3,
     )} (${comp.interpretation})\n`;
-    report += `Interpretation:  ${Stats.interpretPValue(comp.p)}\n\n`;
+    report += `Interpretation:  ${interpretPValue(comp.p)}\n\n`;
   }
 
   report +=

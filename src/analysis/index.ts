@@ -76,13 +76,16 @@ export {
 } from "./statistics/descriptive";
 export {
   cohensD,
+  independentTTest,
   interpretEffectSize,
   interpretPValue,
   normalCDF,
+  pairedTTest,
+  powerAnalysis,
+  tCritical,
   tDistribution,
   tTest,
 } from "./statistics/inferential";
-export { Stats } from "./statistics/stats-class";
 
 // Types (re-exported from types/)
 export type {

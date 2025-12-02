@@ -25,6 +25,3 @@ export {
   tDistribution,
   tTest,
 } from "./inferential";
-
-// Re-export Stats class for backward compatibility
-export { Stats } from "./stats-class";
