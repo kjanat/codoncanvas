@@ -77,8 +77,9 @@ describe("getMutationTypeInfo", () => {
   });
 
   test("returns undefined for invalid type", () => {
-    // @ts-expect-error testing invalid input
-    const info = getMutationTypeInfo("invalid");
+    const info = getMutationTypeInfo(
+      "invalid" as Parameters<typeof getMutationTypeInfo>[0],
+    );
 
     expect(info).toBeUndefined();
   });
