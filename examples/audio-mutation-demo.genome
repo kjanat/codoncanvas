@@ -8,10 +8,10 @@
 ATG
 
 ; Simple 4-note melody
-GAA CGC GGA    ; Tone 1: 470Hz sine
-GAA CCC GGA    ; Tone 2: 421Hz sine
-GAA AGG GGA    ; Tone 3: 340Hz sine
-GAA CGC GGA    ; Tone 4: 470Hz sine (repeat)
+GAA AAC GGA    ; Tone 1: 470Hz sine
+GAA AAG GGA    ; Tone 2: 421Hz sine
+GAA AAT GGA    ; Tone 3: 340Hz sine
+GAA ACA GGA    ; Tone 4: 470Hz sine (repeat)
 
 TAA
 

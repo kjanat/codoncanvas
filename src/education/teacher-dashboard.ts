@@ -17,7 +17,7 @@
  * - Supports formative assessment and early intervention
  */
 
-import type { ResearchSession } from "@/analysis/research-metrics";
+import type { ResearchSession } from "@/analysis";
 import type { RiskLevel } from "@/types";
 
 /**

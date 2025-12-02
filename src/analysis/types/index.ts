@@ -1,0 +1,25 @@
+/**
+ * Type exports for analysis module
+ */
+
+export type { MetricsSession } from "@/analysis/parsers/schema";
+export type { ExecutionEvent, FeatureEvent, MutationEvent } from "./events";
+export type {
+  AggregateStats,
+  ResearchSession,
+  SessionError,
+} from "./metrics-session";
+export type {
+  AnalysisReport,
+  EngagementMetrics,
+  LearningVelocity,
+  MutationPatterns,
+  RenderModePreferences,
+  ToolAdoption,
+} from "./report";
+export type {
+  ComparisonResult,
+  DescriptiveStats,
+  PowerAnalysisResult,
+  TTestResult,
+} from "./statistics";

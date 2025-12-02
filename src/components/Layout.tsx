@@ -1,0 +1,45 @@
+/**
+ * Layout - Main application layout
+ *
+ * Composes Header, Footer, and content area.
+ * Provides global notification containers for toasts and achievements.
+ */
+
+import type { ReactElement, ReactNode } from "react";
+
+import { AchievementToastContainer } from "@/components/AchievementToast";
+import { ToastContainer } from "@/components/Toast";
+import { getAuthorSocialUrl, siteConfig } from "@/config";
+import { useAchievements } from "@/hooks";
+
+import { Footer, Header } from "./layout";
+
+interface LayoutProps {
+  children: ReactNode;
+}
+
+/**
+ * Main layout wrapper for the application.
+ * Renders header, main content area, footer, and notification containers.
+ */
+export function Layout({ children }: LayoutProps): ReactElement {
+  const { notifications, dismissNotification } = useAchievements();
+
+  return (
+    <div className="flex h-screen flex-col bg-bg-light">
+      <Header />
+      <main className="flex-1 overflow-auto">{children}</main>
+      <Footer
+        authorName={siteConfig.author.name}
+        githubUrl={getAuthorSocialUrl(siteConfig.author, "github")}
+      />
+
+      {/* Global notifications */}
+      <ToastContainer />
+      <AchievementToastContainer
+        notifications={notifications}
+        onDismiss={dismissNotification}
+      />
+    </div>
+  );
+}

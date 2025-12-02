@@ -23,19 +23,19 @@ ATG
   GAA CCC                      ; PUSH 21 (translation distance)
   GAA AAA                      ; PUSH 0 (dy)
   ACA                          ; TRANSLATE
-  GAA CCG                      ; PUSH 23 (rotation ≈ 22.5°)
+  GAA CCT                      ; PUSH 23 (rotation ≈ 22.5°)
   AGA                          ; ROTATE
   GAA AAT                      ; PUSH 3 (radius)
   GGA                          ; CIRCLE
 
   ; LOOP: repeat above 6 instructions, 14 more times
-  GAA ACA                      ; PUSH 6 (instruction count)
-  GAA TGA                      ; PUSH 14 (repeat count)
+  GAA ACG                      ; PUSH 6 (instruction count)
+  GAA ATG                      ; PUSH 14 (repeat count)
   CAA                          ; LOOP
 
   ; Add center decoration
   TCA                          ; RESTORE to origin
-  GAA TTT GAA TTT GAA AAA TTA ; Color(63, 63, 0) yellow center
+  GAA TTT GAA AAA GAA AAA TTA ; Color(63, 63, 0) yellow center
   GAA AGG GGA                  ; PUSH 10, CIRCLE (large center)
   GAA TTT GAA AAA GAA AAA TTA ; Color(63, 0, 0) red
   GAA AAT GGA                  ; PUSH 3, CIRCLE (small center)

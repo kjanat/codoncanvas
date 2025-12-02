@@ -1,6 +1,6 @@
 import { beforeEach, describe, expect, test } from "bun:test";
+import type { Renderer } from "@/core";
 import { CodonLexer } from "@/core/lexer";
-import type { Renderer } from "@/core/renderer";
 import { CodonVM } from "@/core/vm";
 import { type Codon, DNA_LETTERS } from "@/types";
 
@@ -9,8 +9,12 @@ class MockRenderer implements Renderer {
   readonly width = 400;
   readonly height = 400;
 
-  private transform = { x: 200, y: 200, rotation: 0, scale: 1 };
+  transform = { x: 200, y: 200, rotation: 0, scale: 1 };
   public operations: string[] = [];
+
+  resize(): void {
+    this.clear();
+  }
 
   clear(): void {
     this.operations = [];
@@ -83,6 +87,60 @@ describe("CodonVM", () => {
     renderer = new MockRenderer();
     vm = new CodonVM(renderer);
     lexer = new CodonLexer();
+  });
+
+  describe("constructor validation", () => {
+    test("accepts valid positive integer maxInstructions", () => {
+      expect(() => new CodonVM(renderer, 1)).not.toThrow();
+      expect(() => new CodonVM(renderer, 100)).not.toThrow();
+      expect(() => new CodonVM(renderer, 10000)).not.toThrow();
+    });
+
+    test("rejects zero maxInstructions", () => {
+      expect(() => new CodonVM(renderer, 0)).toThrow(
+        /maxInstructions must be a positive integer/,
+      );
+    });
+
+    test("rejects negative maxInstructions", () => {
+      expect(() => new CodonVM(renderer, -1)).toThrow(
+        /maxInstructions must be a positive integer/,
+      );
+      expect(() => new CodonVM(renderer, -100)).toThrow(
+        /maxInstructions must be a positive integer/,
+      );
+    });
+
+    test("rejects NaN maxInstructions", () => {
+      expect(() => new CodonVM(renderer, NaN)).toThrow(
+        /maxInstructions must be a positive integer/,
+      );
+    });
+
+    test("rejects Infinity maxInstructions", () => {
+      expect(() => new CodonVM(renderer, Infinity)).toThrow(
+        /maxInstructions must be a positive integer/,
+      );
+      expect(() => new CodonVM(renderer, -Infinity)).toThrow(
+        /maxInstructions must be a positive integer/,
+      );
+    });
+
+    test("rejects non-integer maxInstructions", () => {
+      expect(() => new CodonVM(renderer, 1.5)).toThrow(
+        /maxInstructions must be a positive integer/,
+      );
+      expect(() => new CodonVM(renderer, 99.9)).toThrow(
+        /maxInstructions must be a positive integer/,
+      );
+    });
+
+    test("uses default when maxInstructions is undefined", () => {
+      const vmDefault = new CodonVM(renderer);
+      // Should not throw - uses DEFAULT_MAX_INSTRUCTIONS
+      const tokens = lexer.tokenize("ATG TAA");
+      expect(() => vmDefault.run(tokens)).not.toThrow();
+    });
   });
 
   describe("Basic execution", () => {
@@ -610,7 +668,47 @@ describe("CodonVM", () => {
       // PUSH 5, PUSH 100, LOOP (tries to loop 100 instructions)
       const genome = "ATG GAA ACT GAA TTT CAA TAA";
       const tokens = lexer.tokenize(genome);
-      expect(() => vm.run(tokens)).toThrow("exceeds history length");
+      expect(() => vm.run(tokens)).toThrow("exceeds available history");
+    });
+
+    test("loop enforces instruction limit during replay", () => {
+      // Create VM with low instruction limit
+      const limitedVm = new CodonVM(renderer, 10);
+
+      // ATG GAA AAA GGA GAA AAG GAA ACT CAA TAA
+      // START, PUSH 0, CIRCLE, PUSH 2 (instr count), PUSH 4 (loop count), LOOP, STOP
+      // Initial: 1 PUSH + 1 CIRCLE + 1 PUSH + 1 PUSH = 4 instructions
+      // Loop replays 2 instructions (PUSH + CIRCLE) x 4 times = 8 more
+      // Total: 4 + 8 = 12 instructions, but limit is 10
+      const genome = "ATG GAA AAA GGA GAA AAG GAA ACG CAA TAA";
+      const tokens = lexer.tokenize(genome);
+      expect(() => limitedVm.run(tokens)).toThrow("Instruction limit exceeded");
+    });
+
+    test("loop enforces instruction limit on PUSH replay", () => {
+      // Create VM with very low instruction limit
+      const limitedVm = new CodonVM(renderer, 6);
+
+      // ATG GAA AAA GAA AAC GAA AAG GAA AAG CAA TAA
+      // START, PUSH 0, PUSH 1, PUSH 2 (instr count), PUSH 2 (loop count), LOOP, STOP
+      // Initial: 4 PUSHes = 4 instructions
+      // Loop replays 2 PUSHes x 2 times = 4 more
+      // Total: 4 + 4 = 8 instructions, but limit is 6
+      const genome = "ATG GAA AAA GAA AAC GAA AAG GAA AAG CAA TAA";
+      const tokens = lexer.tokenize(genome);
+      expect(() => limitedVm.run(tokens)).toThrow("Instruction limit exceeded");
+    });
+
+    test("instruction count is correct after successful loop", () => {
+      // ATG GAA AAA GGA GAA AAG GAA AAC CAA TAA
+      // START, PUSH 0, CIRCLE, PUSH 2 (instr count), PUSH 1 (loop 1 more time), LOOP, STOP
+      // Initial: START + PUSH + CIRCLE + PUSH + PUSH + LOOP = 6 instructions
+      // Loop replays 2 instructions (PUSH + CIRCLE) x 1 time = 2 more
+      // Total: 6 + 2 = 8 instructions
+      const genome = "ATG GAA AAA GGA GAA AAG GAA AAC CAA TAA";
+      const tokens = lexer.tokenize(genome);
+      vm.run(tokens);
+      expect(vm.state.instructionCount).toBe(8);
     });
   });
 
@@ -738,14 +836,13 @@ describe("CodonVM", () => {
 
   describe("Error handling", () => {
     test("throws on unknown codon", () => {
+      // Create tokens with an invalid codon to test error handling
+      // Using type assertion since "XXX" is intentionally not a valid Codon
       const tokens = [
-        // biome-ignore lint/suspicious/noExplicitAny: Testing invalid codon handling
-        { text: "ATG" as any, position: 0, line: 1 },
-        // biome-ignore lint/suspicious/noExplicitAny: Testing invalid codon handling
-        { text: "XXX" as any, position: 3, line: 1 },
-        // biome-ignore lint/suspicious/noExplicitAny: Testing invalid codon handling
-        { text: "TAA" as any, position: 6, line: 1 },
-      ];
+        { text: "ATG", position: 0, line: 1 },
+        { text: "XXX", position: 3, line: 1 },
+        { text: "TAA", position: 6, line: 1 },
+      ] as { text: Codon; position: number; line: number }[];
 
       expect(() => vm.run(tokens)).toThrow("Unknown codon");
     });

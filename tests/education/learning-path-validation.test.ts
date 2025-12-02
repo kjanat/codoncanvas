@@ -1,10 +1,7 @@
 import { describe, expect, test } from "bun:test";
 import { readdirSync, readFileSync } from "node:fs";
 import { join } from "node:path";
-import {
-  analyzeComplexity,
-  type GenomeComplexity,
-} from "@/analysis/codon-analyzer";
+import { analyzeComplexity, type GenomeComplexity } from "@/analysis";
 import { CodonLexer } from "@/core/lexer";
 
 /**

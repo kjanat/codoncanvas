@@ -591,6 +591,61 @@ function isRNACodon(value: string): value is RNACodon {
   );
 }
 
+// ============ CODON VALUE ENCODING ============
+
+/** Weights for base-4 codon value encoding */
+const BASE4_WEIGHTS = [16, 4, 1] as const;
+
+/** Index to DNA base letter mapping */
+const INDEX_TO_DNA_BASE: readonly DNABaseLetter[] = ["A", "C", "G", "T"];
+
+/**
+ * Decode a DNA codon to its numeric value (0-63).
+ * Uses base-4 encoding where A=0, C=1, G=2, T=3.
+ *
+ * @param codon - DNA codon to decode
+ * @returns Numeric value 0-63
+ *
+ * @example
+ * ```typescript
+ * decodeCodonValue("AAA"); // => 0
+ * decodeCodonValue("AAC"); // => 1
+ * decodeCodonValue("TTT"); // => 63
+ * decodeCodonValue("GGC"); // => 41 (2*16 + 2*4 + 1)
+ * ```
+ */
+function decodeCodonValue(codon: string): number {
+  const d1 = DNA_BASE_TO_INDEX[codon[0] as DNABaseLetter] ?? 0;
+  const d2 = DNA_BASE_TO_INDEX[codon[1] as DNABaseLetter] ?? 0;
+  const d3 = DNA_BASE_TO_INDEX[codon[2] as DNABaseLetter] ?? 0;
+  return d1 * BASE4_WEIGHTS[0] + d2 * BASE4_WEIGHTS[1] + d3 * BASE4_WEIGHTS[2];
+}
+
+/**
+ * Encode a numeric value (0-63) to a DNA codon.
+ * Uses base-4 encoding where A=0, C=1, G=2, T=3.
+ *
+ * @param value - Numeric value 0-63
+ * @returns DNA codon string
+ *
+ * @example
+ * ```typescript
+ * encodeCodonValue(0);  // => "AAA"
+ * encodeCodonValue(1);  // => "AAC"
+ * encodeCodonValue(63); // => "TTT"
+ * encodeCodonValue(30); // => "CTG"
+ * ```
+ */
+function encodeCodonValue(value: number): DNACodon {
+  const clamped = Math.max(0, Math.min(63, Math.floor(value)));
+  const d1 = Math.floor(clamped / 16) % 4;
+  const d2 = Math.floor(clamped / 4) % 4;
+  const d3 = clamped % 4;
+  return (INDEX_TO_DNA_BASE[d1] +
+    INDEX_TO_DNA_BASE[d2] +
+    INDEX_TO_DNA_BASE[d3]) as DNACodon;
+}
+
 // ============ EXPORTS ============
 
 export type {
@@ -626,6 +681,8 @@ export {
   isRNACodon,
   dnaCodonToRna,
   rnaCodonToDna,
+  decodeCodonValue,
+  encodeCodonValue,
 };
 
 /**
@@ -722,6 +779,16 @@ export type MutationType =
  * - **both**: Multimodal rendering with synchronized visual and audio output
  */
 export type RenderMode = "visual" | "audio" | "both";
+
+/**
+ * Array of all valid render modes.
+ * Runtime counterpart to RenderMode union for iteration/validation.
+ */
+export const RENDER_MODES: readonly RenderMode[] = [
+  "visual",
+  "audio",
+  "both",
+] as const;
 
 /**
  * Tokenized codon with source location metadata.

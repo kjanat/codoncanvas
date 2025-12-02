@@ -24,7 +24,7 @@
  * ```
  */
 
-import type { Renderer } from "@/core/renderer";
+import type { Renderer } from "@/core";
 
 /**
  * Web Audio-based implementation of Renderer interface.
@@ -178,6 +178,13 @@ export class AudioRenderer implements Renderer {
 
     // Advance timeline
     this.currentTime += duration + 0.02; // Small gap between notes
+  }
+
+  /** @param _width - Ignored (audio has no dimensions) */
+  /** @param _height - Ignored (audio has no dimensions) */
+  resize(_width?: number, _height?: number): void {
+    // Audio renderer has no concept of dimensions - just clear state
+    this.clear();
   }
 
   clear(): void {

@@ -8,6 +8,8 @@ import {
   applyPointMutation,
   applySilentMutation,
   compareGenomes,
+  getMutationByType,
+  MUTATION_TYPES,
 } from "@/genetics/mutations";
 import { CODON_MAP, lookupCodon } from "@/types";
 
@@ -113,6 +115,23 @@ describe("Mutation Tools", () => {
       expect(codons[1]).not.toBe("GGA");
       // Should be a different opcode (not CIRCLE)
       expect(lookupCodon(codons[1])).not.toBe(CODON_MAP.GGA);
+    });
+
+    test("handles position beyond genome length by selecting random", () => {
+      const genome = "ATG GGA CCA TAA";
+      // Position 100 is out of bounds, should fall back to random selection
+      const result = applyMissenseMutation(genome, 100);
+      expect(result.type).toBe("missense");
+    });
+
+    test("can mutate STOP codon to non-STOP opcode", () => {
+      const genome = "ATG GGA TAA";
+      const result = applyMissenseMutation(genome, 2);
+
+      expect(result.type).toBe("missense");
+      const codons = result.mutated.split(" ");
+      // TAA was mutated to a non-STOP codon
+      expect(["TAA", "TAG", "TGA"]).not.toContain(codons[2]);
     });
   });
 
@@ -336,6 +355,114 @@ describe("Mutation Tools", () => {
       const comparison = compareGenomes(genome, genome);
 
       expect(comparison.differences).toHaveLength(0);
+    });
+  });
+
+  describe("getMutationByType", () => {
+    test("applies silent mutation by type", () => {
+      const genome = "ATG GGA CCA TAA";
+      const result = getMutationByType("silent", genome);
+      expect(result.type).toBe("silent");
+    });
+
+    test("applies missense mutation by type", () => {
+      const genome = "ATG GGA CCA TAA";
+      const result = getMutationByType("missense", genome);
+      expect(result.type).toBe("missense");
+    });
+
+    test("applies nonsense mutation by type", () => {
+      const genome = "ATG GGA CCA TAA";
+      const result = getMutationByType("nonsense", genome);
+      expect(result.type).toBe("nonsense");
+    });
+
+    test("applies point mutation by type", () => {
+      const genome = "ATG GGA CCA TAA";
+      const result = getMutationByType("point", genome);
+      expect(result.type).toBe("point");
+    });
+
+    test("applies insertion mutation by type", () => {
+      const genome = "ATG GGA CCA TAA";
+      const result = getMutationByType("insertion", genome);
+      expect(result.type).toBe("insertion");
+    });
+
+    test("applies deletion mutation by type", () => {
+      const genome = "ATG GGA CCA TAA";
+      const result = getMutationByType("deletion", genome);
+      expect(result.type).toBe("deletion");
+    });
+
+    test("applies frameshift mutation by type", () => {
+      const genome = "ATG GGA CCA TAA";
+      const result = getMutationByType("frameshift", genome);
+      expect(result.type).toBe("frameshift");
+    });
+
+    test("throws for unknown mutation type", () => {
+      const genome = "ATG GGA CCA TAA";
+      expect(() =>
+        getMutationByType(
+          "unknown" as Parameters<typeof getMutationByType>[0],
+          genome,
+        ),
+      ).toThrow("Unknown mutation type");
+    });
+
+    test("MUTATION_TYPES contains all expected types", () => {
+      expect(MUTATION_TYPES).toContain("silent");
+      expect(MUTATION_TYPES).toContain("missense");
+      expect(MUTATION_TYPES).toContain("nonsense");
+      expect(MUTATION_TYPES).toContain("point");
+      expect(MUTATION_TYPES).toContain("insertion");
+      expect(MUTATION_TYPES).toContain("deletion");
+      expect(MUTATION_TYPES).toContain("frameshift");
+    });
+  });
+
+  describe("edge cases for error paths", () => {
+    test("applySilentMutation throws with genome where no synonymous available", () => {
+      // ATG has synonymous TAA has synonyms, so need special case
+      // Actually TAA has TAG and TGA as synonyms, so use a genome that will eventually exhaust
+      expect(() => applySilentMutation("ATG")).toThrow(
+        "No synonymous mutations available",
+      );
+    });
+
+    test("applyMissenseMutation works with ATG at position 0", () => {
+      // ATG can be mutated to other codons
+      const result = applyMissenseMutation("ATG TAA", 0);
+      expect(result.type).toBe("missense");
+    });
+
+    test("applyNonsenseMutation converts codon to STOP", () => {
+      const genome = "ATG GGA CCA TAA";
+      const result = applyNonsenseMutation(genome, 1);
+      expect(result.mutated.split(" ")[1]).toBe("TAA");
+    });
+
+    test("applyMissenseMutation with position at boundary", () => {
+      const genome = "ATG GGA CCA TAA";
+      // Last codon is TAA (STOP), should be able to get missense
+      const result = applyMissenseMutation(genome, 3);
+      expect(result.type).toBe("missense");
+    });
+
+    test("applySilentMutation handles genome with only one mutable codon", () => {
+      // GGA has synonymous codons (GGC, GGG, GGT)
+      const genome = "ATG GGA TAA";
+      const result = applySilentMutation(genome);
+      expect(result.type).toBe("silent");
+    });
+
+    test("applySilentMutation with position for codon with no synonyms", () => {
+      // ATG at position 0 has no synonymous codons
+      const genome = "ATG GGA TAA";
+      expect(() => applySilentMutation(genome, 0)).toThrow(
+        /No synonymous codons for ATG/,
+      );
     });
   });
 });

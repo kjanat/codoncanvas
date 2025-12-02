@@ -1,4 +1,4 @@
-#!/usr/bin/env tsx
+#!/usr/bin/env bun
 /**
  * Generate Sample Metrics Data for CodonCanvas Research Dashboard
  *

@@ -5,18 +5,18 @@
 ; Good for mutations: silent, frameshift
 
 ATG
-  GAA AAA GAA AAA GAA AAA TTA ; Color(0, 0, 0) black
+  GAA AAA GAA AAA GAA AAA TTA ; Color(0, 0, 0) #000000 black
   GAA AGG GGA        ; Push 10, draw circle
   GAA AGG GAA AAA ACA ; Push 10, push 0, translate(10, 0)
-  GAA AAA GAA AAA GAA AGG TTA ; Color(0, 0, 10) dark gray
+  GAA AAA GAA AGG GAA AGG TTA ; Color(0, 10, 10) #2e2222 dark red
   GAA AGG GGA        ; Draw circle
   GAA AGG GAA AAA ACA ; Translate(10, 0)
-  GAA AAA GAA AAA GAA CCC TTA ; Color(0, 0, 21) medium gray
+  GAA AAA GAA CCC GAA CCC TTA ; Color(0, 21, 21) #6f3838 dark red
   GAA AGG GGA        ; Draw circle
   GAA AGG GAA AAA ACA ; Translate(10, 0)
-  GAA AAA GAA AAA GAA CGC TTA ; Color(0, 0, 25) light gray
+  GAA AAA GAA CGC GAA CGC TTA ; Color(0, 25, 25) #8b3d3d red
   GAA AGG GGA        ; Draw circle
   GAA AGG GAA AAA ACA ; Translate(10, 0)
-  GAA AAA GAA AAA GAA GCC TTA ; Color(0, 0, 37) lighter
+  GAA AAA GAA GCC GAA GCC TTA ; Color(0, 37, 37) #d25555 red
   GAA AGG GGA        ; Draw circle
 TAA

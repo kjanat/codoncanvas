@@ -1,0 +1,65 @@
+{
+  /** Editor settings */
+  "editor.defaultFormatter": "dprint.dprint",
+  "editor.formatOnSave": true,
+
+  /** Other formatter settings */
+  "[markdown]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+
+  /** Task settings */
+  "typescript.tsc.autoDetect": "on",
+  "npm.autoDetect": "on",
+
+  /** Bun settings */
+  "bun.debugTerminal.enabled": true,
+  "bun.debugTerminal.stopOnEntry": false,
+  "bun.test.filePattern": "**/*{.test.,.spec.,_test_,_spec_}{js,ts,tsx,jsx,mts,cts,cjs,mjs}",
+  "bun.test.customScript": "bun test",
+
+  /** Biome settings */
+  "editor.codeActionsOnSave": {
+    "source.biome": "explicit",
+    "source.fixAll.biome": "explicit",
+    "source.organizeImports.biome": "explicit",
+    "source.organizeLinkDefinitions": "explicit"
+  },
+  "biome.lsp.bin": {
+    "darwin-arm64": "./node_modules/@biomejs/cli-darwin-arm64/biome",
+    "darwin-x64": "./node_modules/@biomejs/cli-darwin-x64/biome",
+    "linux-arm64": "./node_modules/@biomejs/cli-linux-arm64/biome",
+    "linux-arm64-musl": "./node_modules/@biomejs/cli-linux-arm64-musl/biome",
+    "linux-x64": "./node_modules/@biomejs/cli-linux-x64/biome",
+    "linux-x64-musl": "./node_modules/@biomejs/cli-linux-x64-musl/biome",
+    "win32-arm64": "./node_modules/@biomejs/cli-win32-arm64/biome",
+    "win32-x64": "./node_modules/@biomejs/cli-win32-x64/biome"
+  },
+
+  /** Tailwind settings */
+  "tailwindCSS.experimental.configFile": "src/app.css",
+  "tailwindCSS.includeLanguages": { "plaintext": "html" },
+  "tailwindCSS.validate": true,
+  "tailwindCSS.codeActions": true,
+  "tailwindCSS.experimental.classRegex": [
+    "Classes\\s*=\\s*\"([^\"]+)\"",
+    "Classes\\s*=\\s*'([^']+)'",
+    ":\\s*\"([^\"]+)\"",
+    ":\\s*'([^']+)'"
+  ],
+  "files.associations": { "*.css": "tailwindcss" },
+  "editor.quickSuggestions": { "strings": "on" },
+
+  /** TypeScript settings */
+  // "typescript.tsdk": "node_modules/typescript/lib",
+  // TypeScript (Native Preview) > Use Tsgo
+  "typescript.experimental.useTsgo": true,
+
+  /** JSON Schemas */
+  "json.schemas": [
+    {
+      "fileMatch": ["**/jscpd.json", "**/.jscpd.json"],
+      "url": "https://www.schemastore.org/jscpd.json"
+    }
+  ]
+}

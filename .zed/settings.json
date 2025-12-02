@@ -1,0 +1,5 @@
+{
+  "formatter": {
+    "language_server": { "name": "dprint" }
+  }
+}

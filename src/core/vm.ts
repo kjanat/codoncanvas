@@ -1,4 +1,4 @@
-import type { Renderer } from "@/core/renderer";
+import type { Renderer } from "@/core";
 import {
   CODON_MAP,
   type Codon,
@@ -139,15 +139,24 @@ export interface VM {
 export class CodonVM implements VM {
   state: VMState;
   renderer: Renderer;
-  private maxInstructions: number = DEFAULT_MAX_INSTRUCTIONS;
+  private maxInstructions: number;
   private instructionHistory: {
     opcode: Opcode;
     codon: Codon;
     pushValue?: number;
   }[] = [];
 
-  constructor(renderer: Renderer) {
+  constructor(renderer: Renderer, maxInstructions?: number) {
     this.renderer = renderer;
+
+    const limit = maxInstructions ?? DEFAULT_MAX_INSTRUCTIONS;
+    if (!Number.isFinite(limit) || limit < 1 || !Number.isInteger(limit)) {
+      throw new Error(
+        `maxInstructions must be a positive integer, got: ${maxInstructions}`,
+      );
+    }
+    this.maxInstructions = limit;
+
     this.state = this.createInitialState();
   }
 
@@ -429,46 +438,58 @@ export class CodonVM implements VM {
       );
     }
 
-    if (instructionCount > this.instructionHistory.length) {
+    // Guard: Need at least LOOP_PARAMETER_COUNT instructions in history
+    // (the two PUSHes for loop parameters themselves)
+    if (this.instructionHistory.length < LOOP_PARAMETER_COUNT) {
       throw new Error(
-        `LOOP instruction count (${instructionCount}) exceeds history length (${this.instructionHistory.length})`,
+        `LOOP requires at least ${LOOP_PARAMETER_COUNT} instructions in history`,
+      );
+    }
+
+    // Compute max replayable instructions (exclude LOOP parameter PUSHes)
+    const maxReplayable = this.instructionHistory.length - LOOP_PARAMETER_COUNT;
+    if (instructionCount > maxReplayable) {
+      throw new Error(
+        `LOOP instruction count (${instructionCount}) exceeds available history (${maxReplayable})`,
       );
     }
 
     // Get the instructions to replay
     // Note: The last LOOP_PARAMETER_COUNT instructions in history are the PUSH operations for loop parameters
     // We want to replay instructions BEFORE those parameter PUSHes
-    const historyBeforeParams =
-      this.instructionHistory.length - LOOP_PARAMETER_COUNT;
-    const startIdx = historyBeforeParams - instructionCount;
+    const startIdx = maxReplayable - instructionCount;
     const instructionsToRepeat = this.instructionHistory.slice(
       startIdx,
-      historyBeforeParams,
+      maxReplayable,
     );
 
     // Execute the loop body loopCount times
     for (let iteration = 0; iteration < loopCount; iteration++) {
-      for (const {
-        opcode: loopOpcode,
-        codon: loopCodon,
-        pushValue,
-      } of instructionsToRepeat) {
-        // Check instruction limit
-        this.state.instructionCount++;
-        if (this.state.instructionCount > this.maxInstructions) {
-          throw new Error(
-            `Instruction limit exceeded (${this.maxInstructions})`,
-          );
-        }
-
-        // Handle PUSH specially - use stored value instead of executing
-        if (loopOpcode === Opcode.PUSH && pushValue !== undefined) {
-          this.push(pushValue);
-        } else {
-          // Execute other instructions normally (don't add to history - avoid infinite growth)
-          this.execute(loopOpcode, loopCodon);
-        }
+      for (const { opcode, codon, pushValue } of instructionsToRepeat) {
+        this.replayInstruction(opcode, codon, pushValue);
       }
+    }
+  }
+
+  /** Replay a single instruction from history (used by LOOP) */
+  private replayInstruction(
+    opcode: Opcode,
+    codon: string,
+    pushValue: number | undefined,
+  ): void {
+    // Handle PUSH specially - use stored value instead of executing
+    if (opcode === Opcode.PUSH && pushValue !== undefined) {
+      // Match execute() pattern: increment first, then check
+      this.state.instructionCount++;
+      if (this.state.instructionCount > this.maxInstructions) {
+        throw new Error(
+          `Instruction limit exceeded (max ${this.maxInstructions})`,
+        );
+      }
+      this.push(pushValue);
+    } else {
+      // execute() is single source of truth for counting and limit enforcement
+      this.execute(opcode, codon);
     }
   }
 
@@ -480,6 +501,42 @@ export class CodonVM implements VM {
     } else if (opcode === Opcode.LT) {
       this.push(a < b ? BOOLEAN_TRUE : BOOLEAN_FALSE);
     }
+  }
+
+  /**
+   * Execute a PUSH instruction, reading the next token as a numeric literal.
+   * @returns The new token index after consuming the literal
+   */
+  private executePush(
+    tokens: CodonToken[],
+    tokenIndex: number,
+    codon: Codon,
+  ): number {
+    // Count instruction and check limit (PUSH bypasses execute())
+    this.state.instructionCount++;
+    if (this.state.instructionCount > this.maxInstructions) {
+      throw new Error(
+        `Instruction limit exceeded (max ${this.maxInstructions})`,
+      );
+    }
+
+    const nextIndex = tokenIndex + 1;
+    if (nextIndex >= tokens.length) {
+      throw new Error(
+        "PUSH instruction at end of program (missing numeric literal)",
+      );
+    }
+
+    const literalCodon = tokens[nextIndex].text;
+    const value = this.decodeNumericLiteral(literalCodon);
+    this.push(value);
+    this.instructionHistory.push({
+      opcode: Opcode.PUSH,
+      codon,
+      pushValue: value,
+    });
+
+    return nextIndex;
   }
 
   run(tokens: CodonToken[]): VMState[] {
@@ -499,25 +556,10 @@ export class CodonVM implements VM {
 
       this.state.instructionPointer = i;
 
-      // Handle PUSH specially - reads next codon as numeric literal
       if (opcode === Opcode.PUSH) {
-        i++;
-        if (i >= tokens.length) {
-          throw new Error(
-            "PUSH instruction at end of program (missing numeric literal)",
-          );
-        }
-        const literalCodon = tokens[i].text;
-        const value = this.decodeNumericLiteral(literalCodon);
-        this.push(value);
-        this.instructionHistory.push({
-          opcode: Opcode.PUSH,
-          codon: token.text,
-          pushValue: value,
-        });
+        i = this.executePush(tokens, i, token.text as Codon);
         snapshots.push(this.snapshot());
       } else if (opcode === Opcode.STOP) {
-        // Stop execution
         snapshots.push(this.snapshot());
         break;
       } else {

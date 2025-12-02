@@ -7,37 +7,37 @@
 
 ATG
   ; Light blue cell membrane color
-  GAA CAG GAA AAA GAA TGG TTA  ; COLOR (26, 0, 63) light blue
+  GAA CGG GAA AAA GAA TTT TTA  ; COLOR (26, 0, 63) light blue
 
   ; Parent cell (top left)
-  GAA TAG GAA TGC ACA          ; PUSH 45(-19), PUSH 60(-4), TRANSLATE (-80, -90)
-  GAA AGT GAA CAG GTA          ; PUSH 9, PUSH 26, ELLIPSE
-  GAA AGT GAA AAC CTA          ; PUSH 9, PUSH 3, NOISE (membrane texture)
+  GAA GTC GAA TTA ACA          ; PUSH 45(-19), PUSH 60(-4), TRANSLATE (-80, -90)
+  GAA AGC GAA CGG GTA          ; PUSH 9, PUSH 26, ELLIPSE
+  GAA AGC GAA AAT CTA          ; PUSH 9, PUSH 3, NOISE (membrane texture)
 
   ; First daughter cell (middle left, slightly smaller)
-  GAA TAG GAA CCC ACA          ; PUSH 45(-19), PUSH 21, TRANSLATE (-80, 21)
-  GAA AGC GAA CCC TTA          ; COLOR (20, 21, 21) slightly different
-  GAA AAG GAA CCA GTA          ; PUSH 5, PUSH 22, ELLIPSE
-  GAA AAG GAA AAC CTA          ; PUSH 5, PUSH 3, NOISE
+  GAA GTC GAA CCC ACA          ; PUSH 45(-19), PUSH 21, TRANSLATE (-80, 21)
+  GAA CCA GAA CCC TTA          ; COLOR (20, 21, 21) slightly different
+  GAA ACC GAA CCG GTA          ; PUSH 5, PUSH 22, ELLIPSE
+  GAA ACC GAA AAT CTA          ; PUSH 5, PUSH 3, NOISE
 
   ; Second daughter cell (middle right)
   GAA CCC GAA CCC ACA          ; PUSH 21, PUSH 21, TRANSLATE (21, 21)
-  GAA AGC GAA CCC TTA          ; COLOR (20, 21, 21)
-  GAA AAG GAA CCA GTA          ; PUSH 5, PUSH 22, ELLIPSE
-  GAA AAG GAA AAC CTA          ; PUSH 5, PUSH 3, NOISE
+  GAA CCA GAA CCC TTA          ; COLOR (20, 21, 21)
+  GAA ACC GAA CCG GTA          ; PUSH 5, PUSH 22, ELLIPSE
+  GAA ACC GAA AAT CTA          ; PUSH 5, PUSH 3, NOISE
 
   ; Granddaughter cells (bottom row - 4 cells)
-  GAA TAG GAA TCC ACA          ; PUSH 45(-19), PUSH 57, TRANSLATE (-80, 90)
-  GAA CAG GAA AAA GAA TTC TTA  ; COLOR (26, 0, 60)
-  GAA AAT GAA CAG GTA          ; PUSH 3, PUSH 26, ELLIPSE (tiny)
+  GAA GTC GAA TGC ACA          ; PUSH 45(-19), PUSH 57, TRANSLATE (-80, 90)
+  GAA CGG GAA AAA GAA TTA TTA  ; COLOR (26, 0, 60)
+  GAA AAT GAA CGG GTA          ; PUSH 3, PUSH 26, ELLIPSE (tiny)
 
-  GAA TGC GAA TCC ACA          ; PUSH 60(-4), PUSH 57, TRANSLATE (-20, 90)
-  GAA AAT GAA CAG GTA          ; PUSH 3, PUSH 26, ELLIPSE
+  GAA TTA GAA TGC ACA          ; PUSH 60(-4), PUSH 57, TRANSLATE (-20, 90)
+  GAA AAT GAA CGG GTA          ; PUSH 3, PUSH 26, ELLIPSE
 
-  GAA CCC GAA TCC ACA          ; PUSH 21, PUSH 57, TRANSLATE (21, 90)
-  GAA AAT GAA CAG GTA          ; PUSH 3, PUSH 26, ELLIPSE
+  GAA CCC GAA TGC ACA          ; PUSH 21, PUSH 57, TRANSLATE (21, 90)
+  GAA AAT GAA CGG GTA          ; PUSH 3, PUSH 26, ELLIPSE
 
-  GAA TCC GAA TCC ACA          ; PUSH 57, PUSH 57, TRANSLATE (90, 90)
-  GAA AAT GAA CAG GTA          ; PUSH 3, PUSH 26, ELLIPSE
+  GAA TGC GAA TCC ACA          ; PUSH 57, PUSH 57, TRANSLATE (90, 90)
+  GAA AAT GAA CGG GTA          ; PUSH 3, PUSH 26, ELLIPSE
 
 TAA

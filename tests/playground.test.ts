@@ -198,7 +198,7 @@ describe("Playground Main Module", () => {
     });
 
     test("runs in visual mode by default", async () => {
-      const { Canvas2DRenderer } = await import("@/core/renderer");
+      const { Canvas2DRenderer } = await import("@/core");
       const { CodonVM } = await import("@/core/vm");
       const { CodonLexer } = await import("@/core/lexer");
 
@@ -231,7 +231,7 @@ describe("Playground Main Module", () => {
   // clearCanvas
   describe("clearCanvas", () => {
     test("resets VM state", async () => {
-      const { Canvas2DRenderer } = await import("@/core/renderer");
+      const { Canvas2DRenderer } = await import("@/core");
       const { CodonVM } = await import("@/core/vm");
 
       const canvas = document.createElement("canvas");
@@ -253,7 +253,7 @@ describe("Playground Main Module", () => {
     });
 
     test("clears renderer", async () => {
-      const { Canvas2DRenderer } = await import("@/core/renderer");
+      const { Canvas2DRenderer } = await import("@/core");
       const canvas = document.createElement("canvas");
       const renderer = new Canvas2DRenderer(canvas);
 
@@ -262,7 +262,7 @@ describe("Playground Main Module", () => {
     });
 
     test("VM can be reset to initial state", async () => {
-      const { Canvas2DRenderer } = await import("@/core/renderer");
+      const { Canvas2DRenderer } = await import("@/core");
       const { CodonVM } = await import("@/core/vm");
       const canvas = document.createElement("canvas");
       const renderer = new Canvas2DRenderer(canvas);
@@ -877,7 +877,7 @@ describe("Playground Main Module", () => {
   describe("integration", () => {
     test("full workflow: load example -> run -> clear", async () => {
       const { CodonLexer } = await import("@/core/lexer");
-      const { Canvas2DRenderer } = await import("@/core/renderer");
+      const { Canvas2DRenderer } = await import("@/core");
       const { CodonVM } = await import("@/core/vm");
       const { examples } = await import("@/data/examples");
 
@@ -906,7 +906,7 @@ describe("Playground Main Module", () => {
 
     test("full workflow: edit genome -> run -> export", async () => {
       const { CodonLexer } = await import("@/core/lexer");
-      const { Canvas2DRenderer } = await import("@/core/renderer");
+      const { Canvas2DRenderer } = await import("@/core");
       const { CodonVM } = await import("@/core/vm");
 
       // Use a simple genome that doesn't require stack values
@@ -974,7 +974,7 @@ describe("Playground Main Module", () => {
 
     test("handles rapid successive runs", async () => {
       const { CodonLexer } = await import("@/core/lexer");
-      const { Canvas2DRenderer } = await import("@/core/renderer");
+      const { Canvas2DRenderer } = await import("@/core");
       const { CodonVM } = await import("@/core/vm");
 
       const canvas = document.createElement("canvas");

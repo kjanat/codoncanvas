@@ -1,8 +1,15 @@
 #!/bin/bash
+
+# DEPRECATED: Migration to bun:test is complete. This script is kept for reference only.
 # Convert all test files from Vitest to Bun test format
 
+echo "WARNING: This script is deprecated. Migration to bun:test has been completed." >&2
+echo "Tests are now located in tests/ directory." >&2
+exit 0
+
+# shellcheck disable=SC2317 # Unreachable code kept for reference
 for file in src/*.test.ts; do
-  if [[ -f "${file}" ]]; then
+  if [[ -f ${file} ]]; then
     echo "Converting ${file}..."
 
     # Replace vitest imports with bun:test imports
@@ -19,4 +26,5 @@ for file in src/*.test.ts; do
   fi
 done
 
+# shellcheck disable=SC2317 # Unreachable code kept for reference
 echo "Conversion complete! Please review the changes and fix any remaining vitest-specific code."

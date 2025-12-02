@@ -7,22 +7,22 @@
 
 ATG
   ; Icy blue color for snowflake
-  GAA TCC GAA TCA GAA TGC TTA ; Color(53, 52, 59) cool blue-white
+  GAA TCC GAA TCA GAA TGT TTA ; Color(53, 52, 59) cool blue-white
 
   ; Level 0: Central hexagonal star (6 large triangles)
   ; Create 6-pointed star using rotational symmetry
   TCA                          ; SAVE_STATE
 
   ; Draw one triangle, then LOOP to create 6-fold pattern
-  GAA GCG GCA                  ; PUSH 35, TRIANGLE (large central)
+  GAA GAT GCA                  ; PUSH 35, TRIANGLE (large central)
 
   ; Instructions to repeat: ROTATE 60°, TRIANGLE 35
   GAA TTA AGA                  ; PUSH 60, ROTATE
-  GAA GCG GCA                  ; PUSH 35, TRIANGLE
+  GAA GAT GCA                  ; PUSH 35, TRIANGLE
 
   ; LOOP: repeat 3 instructions, 5 more times (6 total triangles)
-  GAA AAG                      ; PUSH 3 (instruction count)
-  GAA ACA                      ; PUSH 5 (repeat count)
+  GAA AAT                      ; PUSH 3 (instruction count)
+  GAA ACC                      ; PUSH 5 (repeat count)
   CAA                          ; LOOP
 
   TCT                          ; RESTORE_STATE
@@ -33,50 +33,50 @@ ATG
   GAA CGC GAA AAA ACA          ; Translate(25, 0) - move to edge
 
   ; Draw medium triangle and rotate around
-  GAA CTT GCA                  ; PUSH 20, TRIANGLE
+  GAA CCA GCA                  ; PUSH 20, TRIANGLE
 
   ; Instructions: ROTATE 60°, TRANSLATE back to center, out again at new angle
   GAA TTA AGA                  ; PUSH 60, ROTATE
-  GAA GTC GAA AAA ACA          ; Translate(-25, 0) equivalent via rotation
+  GAA CGC GAA AAA ACA          ; Translate(-25, 0) equivalent via rotation
   GAA CGC GAA AAA ACA          ; Translate(25, 0) - out at new angle
-  GAA CTT GCA                  ; PUSH 20, TRIANGLE
+  GAA CCA GCA                  ; PUSH 20, TRIANGLE
 
   ; LOOP: repeat 6 instructions, 5 more times
-  GAA ATC                      ; PUSH 6 (instruction count)
-  GAA ACA                      ; PUSH 5 (repeat count)
+  GAA ACG                      ; PUSH 6 (instruction count)
+  GAA ACC                      ; PUSH 5 (repeat count)
   CAA                          ; LOOP
 
   TCT                          ; RESTORE_STATE
 
   ; Level 2: Fine details (12 small triangles, 2 per main edge)
   ; Lighter blue for contrast
-  GAA TTT GAA TGC GAA TTC TTA ; Color(63, 59, 55) lighter icy blue
+  GAA TTT GAA TGT GAA TCT TTA ; Color(63, 59, 55) lighter icy blue
 
   TCA                          ; SAVE_STATE
-  GAA GTC GAA AAA ACA          ; Translate(40, 0) - outer position
+  GAA GGA GAA AAA ACA          ; Translate(40, 0) - outer position
 
   ; Small triangular detail
-  GAA AGA GCA                  ; PUSH 10, TRIANGLE
+  GAA AGG GCA                  ; PUSH 10, TRIANGLE
 
   ; Rotate 30° for between-edge placement
-  GAA TGT AGA                  ; PUSH 30, ROTATE
+  GAA CTG AGA                  ; PUSH 30, ROTATE
   GAA AAA GAA ATT ACA          ; Translate(0, 15) - slight offset
-  GAA AGA GCA                  ; PUSH 10, TRIANGLE
+  GAA AGG GCA                  ; PUSH 10, TRIANGLE
 
   ; Main rotation to next section (30° more = 60° total)
-  GAA TGT AGA                  ; PUSH 30, ROTATE
+  GAA CTG AGA                  ; PUSH 30, ROTATE
   GAA ATT GAA AAA ACA          ; Translate(15, 0)
-  GAA AGA GCA                  ; PUSH 10, TRIANGLE
+  GAA AGG GCA                  ; PUSH 10, TRIANGLE
 
   ; LOOP to create 12 details around perimeter
   GAA AGG                      ; PUSH 10 (instructions for 2 triangles + movement)
-  GAA AAT                      ; PUSH 5 (repeat 5 more times = 6 sections)
+  GAA ACC                      ; PUSH 5 (repeat 5 more times = 6 sections)
   CAA                          ; LOOP
 
   TCT                          ; RESTORE_STATE
 
   ; Center accent (tiny circle for snowflake center)
   GAA TTT GAA TTT GAA TTT TTA ; Color(63, 63, 63) bright white
-  GAA AAG GGA                  ; PUSH 3, CIRCLE (small center dot)
+  GAA AAT GGA                  ; PUSH 3, CIRCLE (small center dot)
 
 TAA

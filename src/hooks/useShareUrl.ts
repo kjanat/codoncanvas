@@ -1,0 +1,174 @@
+/**
+ * useShareUrl - React hook for shareable genome URLs
+ *
+ * @deprecated Use `usePlaygroundSearch` instead for TanStack Router integration.
+ * This hook uses manual window.location manipulation which bypasses the router.
+ *
+ * Encodes/decodes genome strings to/from URL parameters for sharing.
+ * Uses base64 encoding for compact representation.
+ */
+
+import { useEffect, useState } from "react";
+
+/** URL parameter key for encoded genome */
+const GENOME_PARAM = "g";
+
+/** Encode genome string to URL-safe base64 */
+function encodeGenome(genome: string): string {
+  try {
+    // Use btoa for base64, then make URL-safe
+    return btoa(encodeURIComponent(genome))
+      .replace(/\+/g, "-")
+      .replace(/\//g, "_")
+      .replace(/=+$/, "");
+  } catch {
+    return "";
+  }
+}
+
+/** Decode URL-safe base64 to genome string */
+function decodeGenome(encoded: string): string | null {
+  try {
+    // Restore standard base64 characters
+    let base64 = encoded.replace(/-/g, "+").replace(/_/g, "/");
+
+    // Add padding if needed
+    while (base64.length % 4) {
+      base64 += "=";
+    }
+
+    return decodeURIComponent(atob(base64));
+  } catch {
+    return null;
+  }
+}
+
+/** Synchronously get shared genome from current URL (for initial state) */
+function getSharedGenomeFromUrl(): string | null {
+  if (typeof window === "undefined") return null;
+  const url = new URL(window.location.href);
+  const encoded = url.searchParams.get(GENOME_PARAM);
+  if (!encoded) return null;
+  return decodeGenome(encoded);
+}
+
+/** Options for useShareUrl hook */
+export interface UseShareUrlOptions {
+  /** Auto-load genome from URL on mount (default: true) */
+  autoLoad?: boolean;
+}
+
+/** Return type of useShareUrl hook */
+export interface UseShareUrlReturn {
+  /** Genome loaded from URL (null if none) */
+  sharedGenome: string | null;
+  /** Generate shareable URL for a genome */
+  getShareUrl: (genome: string) => string;
+  /** Update URL with genome (adds to browser history) */
+  shareGenome: (genome: string) => void;
+  /** Copy share URL to clipboard */
+  copyShareUrl: (genome: string) => Promise<boolean>;
+  /** Clear genome from URL */
+  clearShareUrl: () => void;
+  /** Whether a shared genome was found in URL */
+  hasSharedGenome: boolean;
+}
+
+/**
+ * React hook for shareable genome URLs.
+ *
+ * @deprecated Use `usePlaygroundSearch` instead for proper TanStack Router integration.
+ * This hook manipulates window.location directly which bypasses the router and
+ * can cause state synchronization issues.
+ *
+ * @example
+ * ```tsx
+ * // Preferred: Use usePlaygroundSearch with TanStack Router
+ * import { usePlaygroundSearch } from '@/hooks';
+ * const { sharedGenome, copyShareUrl } = usePlaygroundSearch();
+ *
+ * // Legacy: This hook (deprecated)
+ * import { useShareUrl } from '@/hooks';
+ * const { sharedGenome, shareGenome, copyShareUrl } = useShareUrl();
+ * ```
+ */
+export function useShareUrl(
+  options: UseShareUrlOptions = {},
+): UseShareUrlReturn {
+  const { autoLoad = true } = options;
+
+  // Runtime deprecation warning (development only)
+  if (process.env.NODE_ENV === "development") {
+    console.warn(
+      "[DEPRECATED] useShareUrl is deprecated. Use usePlaygroundSearch instead for TanStack Router integration.",
+    );
+  }
+
+  // Synchronous initialization ensures sharedGenome is available on first render
+  // This fixes timing issue where initialGenome was calculated before async decode
+  const [sharedGenome, setSharedGenome] = useState<string | null>(() =>
+    autoLoad ? getSharedGenomeFromUrl() : null,
+  );
+
+  // Handle URL changes after mount (browser back/forward navigation)
+  useEffect(() => {
+    if (!autoLoad) return;
+
+    const handlePopState = () => {
+      setSharedGenome(getSharedGenomeFromUrl());
+    };
+
+    window.addEventListener("popstate", handlePopState);
+    return () => window.removeEventListener("popstate", handlePopState);
+  }, [autoLoad]);
+
+  // Generate shareable URL for a genome
+  const getShareUrl = (genome: string): string => {
+    const encoded = encodeGenome(genome);
+    if (!encoded) return window.location.href;
+
+    const url = new URL(window.location.href);
+    url.searchParams.set(GENOME_PARAM, encoded);
+    return url.toString();
+  };
+
+  // Update URL with genome
+  const shareGenome = (genome: string) => {
+    const encoded = encodeGenome(genome);
+    if (encoded) {
+      const url = new URL(window.location.href);
+      url.searchParams.set(GENOME_PARAM, encoded);
+      window.history.pushState({}, "", url.toString());
+    }
+  };
+
+  // Copy share URL to clipboard
+  const copyShareUrl = async (genome: string): Promise<boolean> => {
+    const url = getShareUrl(genome);
+    try {
+      await navigator.clipboard.writeText(url);
+      return true;
+    } catch {
+      return false;
+    }
+  };
+
+  // Clear genome from URL
+  const clearShareUrl = () => {
+    const url = new URL(window.location.href);
+    url.searchParams.delete(GENOME_PARAM);
+    window.history.pushState({}, "", url.toString());
+    setSharedGenome(null);
+  };
+
+  return {
+    sharedGenome,
+    getShareUrl,
+    shareGenome,
+    copyShareUrl,
+    clearShareUrl,
+    hasSharedGenome: sharedGenome !== null,
+  };
+}
+
+export default useShareUrl;

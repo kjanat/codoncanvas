@@ -1,0 +1,157 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Dev",
+      "type": "shell",
+      "detail": "Start development server",
+      "command": "bun run dev",
+      "group": "none",
+      "isBackground": true,
+      "problemMatcher": "$esbuild-watch"
+    },
+    {
+      "label": "Build",
+      "type": "shell",
+      "detail": "Typecheck and build for production",
+      "command": "bun run build",
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      },
+      "problemMatcher": ["$tsc", "$esbuild"]
+    },
+    {
+      "label": "Test",
+      "type": "shell",
+      "detail": "Run all tests",
+      "command": "bun test",
+      "group": {
+        "kind": "test",
+        "isDefault": true
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "Test: Coverage",
+      "type": "shell",
+      "detail": "Run tests with coverage report",
+      "command": "bun test --coverage",
+      "group": "test",
+      "problemMatcher": []
+    },
+    {
+      "label": "Test: Watch",
+      "type": "shell",
+      "detail": "Run tests in watch mode",
+      "command": "bun run test:watch",
+      "group": "test",
+      "isBackground": true,
+      "problemMatcher": []
+    },
+    {
+      "label": "Typecheck",
+      "type": "shell",
+      "detail": "TypeScript type checking (tsgo)",
+      "command": "bun run typecheck",
+      "group": "build",
+      "problemMatcher": "$tsc"
+    },
+    {
+      "label": "Lint",
+      "type": "shell",
+      "detail": "Run biome linter",
+      "command": "bun run lint",
+      "group": "none",
+      "problemMatcher": []
+    },
+    {
+      "label": "Lint: Fix",
+      "type": "shell",
+      "detail": "Lint and auto-fix issues",
+      "command": "bun run lint:fix",
+      "group": "none",
+      "problemMatcher": []
+    },
+    {
+      "label": "Format",
+      "type": "shell",
+      "detail": "Format code with dprint",
+      "command": "bun run fmt",
+      "group": "none",
+      "problemMatcher": []
+    },
+    {
+      "label": "Lint: CSS",
+      "type": "shell",
+      "detail": "Lint CSS files with stylelint",
+      "command": "bun run lint:css",
+      "group": "none",
+      "problemMatcher": []
+    },
+    {
+      "label": "Lint: Duplicates",
+      "type": "shell",
+      "detail": "Check for code duplication (jscpd)",
+      "command": "bun run lint:duplicates",
+      "group": "none",
+      "problemMatcher": []
+    },
+    {
+      "label": "Benchmark",
+      "type": "shell",
+      "detail": "Run performance benchmarks",
+      "command": "bun run benchmark",
+      "group": "none",
+      "problemMatcher": []
+    },
+    {
+      "label": "CLI",
+      "type": "shell",
+      "detail": "Run CodonCanvas CLI",
+      "command": "bun run cli",
+      "group": "none",
+      "problemMatcher": []
+    },
+    {
+      "label": "Export Examples",
+      "type": "shell",
+      "detail": "Export example genome files",
+      "command": "bun run export-examples",
+      "group": "none",
+      "problemMatcher": []
+    },
+    {
+      "label": "Generate Screenshots",
+      "type": "shell",
+      "detail": "Generate example screenshots",
+      "command": "bun run generate-screenshots",
+      "group": "none",
+      "problemMatcher": []
+    },
+    {
+      "label": "Research: Analyze Data",
+      "type": "shell",
+      "detail": "Analyze research data",
+      "command": "bun run research:analyze",
+      "group": "none",
+      "problemMatcher": []
+    },
+    {
+      "label": "Research: Generate Sample",
+      "type": "shell",
+      "detail": "Generate sample research data",
+      "command": "bun run research:generate-data",
+      "group": "none",
+      "problemMatcher": []
+    },
+    {
+      "label": "Metrics: Analyze",
+      "type": "shell",
+      "detail": "Analyze metrics data",
+      "command": "bun run metrics:analyze",
+      "group": "none",
+      "problemMatcher": []
+    }
+  ]
+}

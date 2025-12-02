@@ -144,3 +144,49 @@ export function restoreCanvasContext(): void {
     originalToBlob = null;
   }
 }
+
+/**
+ * Create a mock Renderer for use in hook/component tests
+ * Matches the Renderer interface from src/core/renderer.ts
+ */
+export function createMockRenderer() {
+  return {
+    // Properties
+    width: 400,
+    height: 400,
+
+    // Lifecycle methods
+    resize: () => {},
+    clear: () => {},
+
+    // Drawing methods
+    circle: (_radius: number) => {},
+    rect: (_width: number, _height: number) => {},
+    line: (_length: number) => {},
+    triangle: (_size: number) => {},
+    ellipse: (_rx: number, _ry: number) => {},
+    noise: (_seed: number, _intensity: number) => {},
+
+    // Transform methods
+    translate: (_dx: number, _dy: number) => {},
+    setPosition: (_x: number, _y: number) => {},
+    rotate: (_degrees: number) => {},
+    setRotation: (_degrees: number) => {},
+    scale: (_factor: number) => {},
+    setScale: (_scale: number) => {},
+
+    // Color
+    setColor: (_h: number, _s: number, _l: number) => {},
+
+    // State
+    getCurrentTransform: () => ({
+      x: 200,
+      y: 200,
+      rotation: 0,
+      scale: 1,
+    }),
+
+    // Export
+    toDataURL: () => "data:image/png;base64,mock",
+  };
+}

@@ -1,17 +1,23 @@
-#!/usr/bin/env tsx
+#!/usr/bin/env bun
 /**
  * Export built-in examples as individual .genome files
- * Creates examples/ directory with all 18 examples
+ * Creates examples/ directory with genome files from src/data/examples
  */
 
 import { mkdirSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
-import { examples } from "../src/data/examples";
+import { examples } from "@/data/examples";
 
 const OUTPUT_DIR = "examples";
-const README_TEMPLATE = `# CodonCanvas Example Programs
 
-This directory contains 18 ready-to-use genome files for CodonCanvas.
+/** Generate README header with actual counts */
+function generateReadmeHeader(
+  totalCount: number,
+  beginnerCount: number,
+): string {
+  return `# CodonCanvas Example Programs
+
+This directory contains ${totalCount} ready-to-use genome files for CodonCanvas.
 
 ## Usage
 
@@ -21,13 +27,21 @@ This directory contains 18 ready-to-use genome files for CodonCanvas.
 
 ## Difficulty Levels
 
-### Beginner (5 examples)
+### Beginner (${beginnerCount} examples)
 `;
+}
 
 // Ensure output directory exists
 mkdirSync(OUTPUT_DIR, { recursive: true });
 
-console.log("📦 Exporting CodonCanvas examples...\n");
+console.info("Exporting CodonCanvas examples...\n");
+
+// Pre-compute max filename length for aligned output
+const exampleEntries = Object.entries(examples);
+const COLUMN_GAP = 2;
+const maxFilenameLen = Math.max(
+  ...exampleEntries.map(([key]) => `${key}.genome`.length),
+);
 
 // Export each example
 let count = 0;
@@ -38,7 +52,7 @@ const metadataList: Array<{
   concepts: string[];
 }> = [];
 
-for (const [key, example] of Object.entries(examples)) {
+for (const [key, example] of exampleEntries) {
   const filename = `${key}.genome`;
   const filepath = join(OUTPUT_DIR, filename);
 
@@ -62,7 +76,9 @@ ${example.genome}
     concepts: example.concepts,
   });
 
-  console.log(`✅ ${filename.padEnd(30)} (${example.difficulty})`);
+  console.info(
+    `${filename.padEnd(maxFilenameLen + COLUMN_GAP)} (${example.difficulty})`,
+  );
 }
 
 // Group by difficulty
@@ -72,8 +88,8 @@ const intermediate = metadataList.filter(
 );
 const advanced = metadataList.filter((e) => e.difficulty === "advanced");
 
-// Generate README
-let readme = README_TEMPLATE;
+// Generate README with actual counts
+let readme = generateReadmeHeader(metadataList.length, beginner.length);
 
 readme += beginner.map((e) => `- **${e.key}.genome** - ${e.title}`).join("\n");
 readme += `\n\n### Intermediate (${intermediate.length} examples)\n`;
@@ -111,8 +127,6 @@ For classroom use, see EDUCATORS.md for lesson plans and mutation activities.
 
 writeFileSync(join(OUTPUT_DIR, "README.md"), readme, "utf-8");
 
-console.log(`\n✅ Exported ${count} examples to ${OUTPUT_DIR}/`);
-console.log("✅ Generated examples/README.md");
-console.log(
-  "\n📝 Next: Run `npm run zip-examples` to create distribution archive",
-);
+console.info(`\nExported ${count} examples to ${OUTPUT_DIR}/`);
+console.info("Generated examples/README.md");
+console.info("\nNext: Run `bun zip-examples` to create archive");

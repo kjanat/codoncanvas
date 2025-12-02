@@ -37,7 +37,7 @@ export type {
   MutationEvent,
   ResearchMetricsOptions,
   ResearchSession,
-} from "@/analysis/research-metrics";
+} from "@/analysis";
 /**
  * Research Metrics - Tracks learning events and engagement
  *
@@ -53,30 +53,7 @@ export type {
  * const session = metrics.getSession();
  * ```
  */
-export { ResearchMetrics } from "@/analysis/research-metrics";
-/**
- * Lexer interface for tokenizing DNA-like genome strings
- *
- * Responsible for parsing raw genome text into codon tokens,
- * with support for comments and whitespace handling.
- */
-export type { Lexer } from "@/core/lexer";
-
-/**
- * Codon Lexer - Parses genome strings into executable codon tokens
- *
- * Tokenizes DNA-like triplet syntax (A, C, G, T bases) into codon tokens
- * with full frame validation and error reporting for malformed genomes.
- *
- * @example
- * ```typescript
- * const lexer = new CodonLexer();
- * const tokens = lexer.tokenize("ATG GAA CCC GGA TAA");
- * // [{ text: 'ATG', position: 0, line: 0 }, ...]
- * ```
- */
-export { CodonLexer } from "@/core/lexer";
-
+export { ResearchMetrics } from "@/analysis";
 /**
  * Renderer interface for graphics abstraction
  *
@@ -84,8 +61,7 @@ export { CodonLexer } from "@/core/lexer";
  * Implementers handle drawing primitives (circle, rect, line, etc.)
  * and graphics state transformations (translate, rotate, scale, color).
  */
-export type { Renderer, TransformState } from "@/core/renderer";
-
+export type { Renderer, TransformState } from "@/core";
 /**
  * Canvas2D Renderer - Draws CodonCanvas programs to HTML5 Canvas
  *
@@ -101,7 +77,28 @@ export type { Renderer, TransformState } from "@/core/renderer";
  * renderer.circle(30);
  * ```
  */
-export { Canvas2DRenderer } from "@/core/renderer";
+export { Canvas2DRenderer } from "@/core";
+/**
+ * Lexer interface for tokenizing DNA-like genome strings
+ *
+ * Responsible for parsing raw genome text into codon tokens,
+ * with support for comments and whitespace handling.
+ */
+export type { Lexer } from "@/core/lexer";
+/**
+ * Codon Lexer - Parses genome strings into executable codon tokens
+ *
+ * Tokenizes DNA-like triplet syntax (A, C, G, T bases) into codon tokens
+ * with full frame validation and error reporting for malformed genomes.
+ *
+ * @example
+ * ```typescript
+ * const lexer = new CodonLexer();
+ * const tokens = lexer.tokenize("ATG GAA CCC GGA TAA");
+ * // [{ text: 'ATG', position: 0, line: 0 }, ...]
+ * ```
+ */
+export { CodonLexer } from "@/core/lexer";
 /**
  * VM interface for stack-based execution
  *

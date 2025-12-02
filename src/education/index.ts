@@ -11,7 +11,6 @@ export type {
 } from "./achievements/achievement-engine";
 // Achievements
 export { AchievementEngine } from "./achievements/achievement-engine";
-export { AchievementUI } from "./achievements/achievement-ui";
 export type {
   AssessmentDifficulty,
   AssessmentProgress,
@@ -20,7 +19,6 @@ export type {
 } from "./assessments/assessment-engine";
 // Assessments
 export { AssessmentEngine } from "./assessments/assessment-engine";
-export { AssessmentUI } from "./assessments/assessment-ui";
 export type {
   AtRiskStudent,
   ClassroomStats,
@@ -40,4 +38,3 @@ export {
   TutorialManager,
   timelineTutorial,
 } from "./tutorials/tutorial";
-export { initializeTutorial, TutorialUI } from "./tutorials/tutorial-ui";

@@ -13,11 +13,11 @@ import {
   type ExampleMetadata,
   examples,
 } from "@/data/examples";
+import { VALID_MUTATION_TYPES } from "@/tests/test-utils";
 import {
   mockCanvasContext,
   restoreCanvasContext,
 } from "@/tests/test-utils/canvas-mock";
-import type { MutationType } from "@/types";
 
 describe("Examples Library", () => {
   // Mock canvas for VM execution tests
@@ -48,16 +48,8 @@ describe("Examples Library", () => {
     "logic",
   ];
 
-  // Valid mutation types
-  const validMutationTypes: MutationType[] = [
-    "silent",
-    "missense",
-    "nonsense",
-    "point",
-    "insertion",
-    "deletion",
-    "frameshift",
-  ];
+  // Valid mutation types - imported from shared test-utils
+  const validMutationTypes = VALID_MUTATION_TYPES;
 
   // Examples Object Structure
   describe("examples object structure", () => {
@@ -330,7 +322,7 @@ describe("Examples Library", () => {
     test("all genomes execute without error", async () => {
       // Import VM and renderer dynamically to avoid circular deps
       const { CodonVM } = await import("@/core/vm");
-      const { Canvas2DRenderer } = await import("@/core/renderer");
+      const { Canvas2DRenderer } = await import("@/core");
 
       const canvas = document.createElement("canvas");
       canvas.width = 400;

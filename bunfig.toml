@@ -2,8 +2,21 @@
 root = "tests"
 preload = ["./bun-test-setup.ts"]
 coverage = true
+coverageDir = "coverage"
+coverageReporter = ["text", "lcov"]
+# Coverage exemptions - only for code that genuinely can't be unit tested
+# Justifications are inline below for each active exemption
+coverageSkipTestFiles = false
 coveragePathIgnorePatterns = [
-  "bun-test-setup.ts",
-  "e2e/**",
-  "tests/**",
+  # Test infrastructure (not application code)
+  "bun-test-setup.ts",  # Setup for happy-dom
+  "scripts/**",  # Scripts
+  "e2e/**",  # End-to-end tests
+  "tests/test-utils/**",  # Test utils
 ]
+
+[test.coverageThreshold]
+# 85% is achievable while allowing reasonable gaps for error paths,
+# browser-specific branches, and edge cases that are hard to trigger in unit tests
+line = 0.85
+function = 0.85

@@ -1,0 +1,40 @@
+/**
+ * Footer - Application footer
+ *
+ * Static footer with copyright and creator attribution.
+ */
+
+import type { ReactElement } from "react";
+import { siteConfig } from "@/config";
+
+export interface FooterProps {
+  authorName: string;
+  githubUrl?: string;
+}
+
+export function Footer({ authorName, githubUrl }: FooterProps): ReactElement {
+  return (
+    <footer className="border-t border-border bg-surface py-6">
+      <div className="mx-auto max-w-7xl px-4 text-center text-sm text-text-muted">
+        <p>
+          {siteConfig.name} — {siteConfig.tagline}
+        </p>
+        <p className="mt-1">
+          Created by{" "}
+          {githubUrl ? (
+            <a
+              className="text-primary hover:underline"
+              href={githubUrl}
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              {authorName}
+            </a>
+          ) : (
+            authorName
+          )}
+        </p>
+      </div>
+    </footer>
+  );
+}

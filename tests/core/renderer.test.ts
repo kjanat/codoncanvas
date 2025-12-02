@@ -1,5 +1,5 @@
 import { beforeEach, describe, expect, test } from "bun:test";
-import { Canvas2DRenderer } from "@/core/renderer";
+import { Canvas2DRenderer, CanvasContextError } from "@/core";
 
 /**
  * Mock Canvas 2D Context for testing rendering operations.
@@ -143,13 +143,31 @@ describe("Canvas2DRenderer", () => {
       expect(transform.scale).toBe(1);
     });
 
-    test("throws error when canvas context unavailable", () => {
+    test("throws CanvasContextError when canvas context unavailable", () => {
       const badCanvas = {
         getContext: () => null,
       } as unknown as HTMLCanvasElement;
 
       expect(() => new Canvas2DRenderer(badCanvas)).toThrow(
         "Could not get 2D context",
+      );
+    });
+
+    test("thrown error is instance of CanvasContextError", () => {
+      const badCanvas = {
+        getContext: () => null,
+      } as unknown as HTMLCanvasElement;
+
+      let caughtError: unknown;
+      try {
+        new Canvas2DRenderer(badCanvas);
+      } catch (e) {
+        caughtError = e;
+      }
+
+      expect(caughtError).toBeInstanceOf(CanvasContextError);
+      expect((caughtError as CanvasContextError).name).toBe(
+        "CanvasContextError",
       );
     });
   });
@@ -248,14 +266,15 @@ describe("Canvas2DRenderer", () => {
   });
 
   describe("line()", () => {
-    test("draws line with correct length", () => {
+    test("draws line with correct length (center-anchored)", () => {
       renderer.line(100);
 
       const moveCall = ctx.operations.find((op) => op.startsWith("moveTo("));
       const lineCall = ctx.operations.find((op) => op.startsWith("lineTo("));
 
-      expect(moveCall).toBe("moveTo(0,0)");
-      expect(lineCall).toBe("lineTo(100,0)");
+      // Line is center-anchored: from -length/2 to +length/2
+      expect(moveCall).toBe("moveTo(-50,0)");
+      expect(lineCall).toBe("lineTo(50,0)");
     });
 
     test("strokes the line", () => {
@@ -456,11 +475,11 @@ describe("Canvas2DRenderer", () => {
       expect(transform.scale).toBe(0.5);
     });
 
-    test("allows scale factor of 0", () => {
+    test("clamps scale factor of 0 to MIN_SCALE", () => {
       renderer.scale(0);
 
       const transform = renderer.getCurrentTransform();
-      expect(transform.scale).toBe(0);
+      expect(transform.scale).toBe(0.001);
     });
   });
 
@@ -579,6 +598,59 @@ describe("Canvas2DRenderer", () => {
 
       // All saves should be balanced with restores
       expect(ctx.savedStates).toBe(0);
+    });
+  });
+
+  describe("numeric validation for transforms", () => {
+    test("translate handles NaN by using 0", () => {
+      renderer.translate(Number.NaN, Number.POSITIVE_INFINITY);
+
+      const transform = renderer.getCurrentTransform();
+      // Center (200,200) + safeNum(NaN,Infinity) = (200,200)
+      expect(transform.x).toBe(200);
+      expect(transform.y).toBe(200);
+    });
+
+    test("setPosition handles NaN/Infinity by using 0", () => {
+      renderer.setPosition(Number.NaN, Number.NEGATIVE_INFINITY);
+
+      const transform = renderer.getCurrentTransform();
+      expect(transform.x).toBe(0);
+      expect(transform.y).toBe(0);
+    });
+
+    test("rotate handles NaN by using 0", () => {
+      renderer.rotate(45);
+      renderer.rotate(Number.NaN);
+
+      const transform = renderer.getCurrentTransform();
+      // 45 + safeNum(NaN) = 45 + 0 = 45
+      expect(transform.rotation).toBe(45);
+    });
+
+    test("setRotation handles Infinity by using 0", () => {
+      renderer.rotate(90);
+      renderer.setRotation(Number.POSITIVE_INFINITY);
+
+      const transform = renderer.getCurrentTransform();
+      expect(transform.rotation).toBe(0);
+    });
+
+    test("scale handles NaN by clamping to MIN_SCALE", () => {
+      renderer.scale(2);
+      renderer.scale(Number.NaN);
+
+      const transform = renderer.getCurrentTransform();
+      // 2 * safeNum(NaN) = 2 * 0 = 0, clamped to MIN_SCALE
+      expect(transform.scale).toBe(0.001);
+    });
+
+    test("setScale handles Infinity by clamping to MIN_SCALE", () => {
+      renderer.scale(5);
+      renderer.setScale(Number.NEGATIVE_INFINITY);
+
+      const transform = renderer.getCurrentTransform();
+      expect(transform.scale).toBe(0.001);
     });
   });
 });

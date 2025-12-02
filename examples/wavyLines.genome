@@ -1,60 +1,84 @@
 ; Wavy Lines - Showcase
-; Flowing wave pattern using medium ellipses with spacing
+; Flowing wave pattern using rotated ellipses
 ; Difficulty: showcase
-; Concepts: ellipses, rotation, gradients
-; Visual: Ellipse petals creating wave-like flow
+; Concepts: ellipses, rotation, translation, composition
+; Visual: Wavy flowing lines like ocean waves
 ; Good for mutations: silent (preserves flow), missense (color shift)
 
 ATG
-  ; Wave pattern - 8 ellipses with 45° spacing (full circle)
-  GAA AAA GAA TTT GAA GCC TTA ; Color(0, 63, 37) red
-  GAA GCC GAA ATT GTA          ; Ellipse 37×15
-  GAA ATT AGA                 ; Rotate 45
-  GAA CCC GAA TTT GAA GCC TTA ; Color(21, 63, 37) orange
-  GAA GCC GAA ATT GTA          ; Ellipse 37×15
-  GAA ATT AGA                 ; Rotate 45
-  GAA TTT GAA TTT GAA GCC TTA ; Color(63, 63, 37) yellow
-  GAA GCC GAA ATT GTA          ; Ellipse 37×15
-  GAA ATT AGA                 ; Rotate 45
-  GAA TTT GAA AGG GAA GCC TTA ; Color(63, 10, 37) lime
-  GAA GCC GAA ATT GTA          ; Ellipse 37×15
-  GAA ATT AGA                 ; Rotate 45
-  GAA AGG GAA TTT GAA TCC TTA ; Color(10, 63, 53) cyan
-  GAA GCC GAA ATT GTA          ; Ellipse 37×15
-  GAA ATT AGA                 ; Rotate 45
-  GAA GCC GAA TTT GAA TCC TTA ; Color(37, 63, 53) blue
-  GAA GCC GAA ATT GTA          ; Ellipse 37×15
-  GAA ATT AGA                 ; Rotate 45
-  GAA TTT GAA TTT GAA TCC TTA ; Color(63, 63, 53) purple
-  GAA GCC GAA ATT GTA          ; Ellipse 37×15
-  GAA ATT AGA                 ; Rotate 45
-  GAA TTT GAA GCC GAA TCC TTA ; Color(63, 37, 53) pink
-  GAA GCC GAA ATT GTA          ; Ellipse 37×15
+  ; Wave 1 - blue, top
+  GAA GCA GAA TTT GAA GCC TTA ; Color(36, 63, 37) #2aaefd blue
+  TCA
+  GAA AAA GAA GCC ACA         ; Translate(0, -37)
+  GAA AGG AGA                 ; Rotate 10
+  GAA TCC GAA AGG GTA         ; Ellipse 53×10
+  TCG
 
-  ; Inner layer - 6 smaller ellipses offset
-  TCA                         ; SAVE
-  GAA GGC AGA                 ; Rotate 30 (offset)
-  GAA TTT GAA CCC GAA TCC TTA ; Color(63, 21, 53) hot pink
-  GAA CCC GAA AGG GTA          ; Ellipse 21×10
-  GAA CTC AGA                 ; Rotate 60
-  GAA TCC GAA AAA GAA TCC TTA ; Color(53, 0, 53) deep magenta
-  GAA CCC GAA AGG GTA          ; Ellipse 21×10
-  GAA CTC AGA                 ; Rotate 60
-  GAA GCC GAA AAA GAA TCC TTA ; Color(37, 0, 53) purple-magenta
-  GAA CCC GAA AGG GTA          ; Ellipse 21×10
-  GAA CTC AGA                 ; Rotate 60
-  GAA CCC GAA AAA GAA TCC TTA ; Color(21, 0, 53) dark purple
-  GAA CCC GAA AGG GTA          ; Ellipse 21×10
-  GAA CTC AGA                 ; Rotate 60
-  GAA AGG GAA AAA GAA TCC TTA ; Color(10, 0, 53) very dark purple
-  GAA CCC GAA AGG GTA          ; Ellipse 21×10
-  GAA CTC AGA                 ; Rotate 60
-  GAA AAA GAA AAA GAA TCC TTA ; Color(0, 0, 53) blackish purple
-  GAA CCC GAA AGG GTA          ; Ellipse 21×10
-  TCG                         ; RESTORE
+  TCA
+  GAA AAA GAA CTG ACA         ; Translate(0, -30)
+  GAA AAA GAA AGG CAG         ; Rotate -10
+  GAA TCC GAA AGG GTA         ; Ellipse 53×10
+  TCG
 
-  ; Center - white focal point
-  GAA TTT GAA TTT GAA TTT TTA ; Color(63, 63, 63) white
-  GAA ATT GGA                 ; Circle 15
+  ; Wave 2 - cyan
+  GAA GCA GAA TCC GAA GTC TTA ; Color(36, 53, 45) #75c3f2 light blue
+  TCA
+  GAA AAA GAA CCC ACA         ; Translate(0, -21)
+  GAA AGG AGA                 ; Rotate 10
+  GAA TCC GAA AGG GTA         ; Ellipse 53×10
+  TCG
+
+  TCA
+  GAA AAA GAA ATT ACA         ; Translate(0, -15)
+  GAA AAA GAA AGG CAG         ; Rotate -10
+  GAA TCC GAA AGG GTA         ; Ellipse 53×10
+  TCG
+
+  ; Wave 3 - teal, center
+  GAA CCC GAA TCC GAA GTC TTA ; Color(21, 53, 45) #79f275 green
+  TCA
+  GAA AAA GAA ACC ACA         ; Translate(0, -5)
+  GAA AGG AGA                 ; Rotate 10
+  GAA TCC GAA AGG GTA         ; Ellipse 53×10
+  TCG
+
+  GAA AAA GAA AGG CAG         ; Rotate -10
+  GAA TCC GAA AGG GTA         ; Ellipse 53×10
+
+  ; Wave 4 - green
+  GAA AGG GAA TCC GAA GTC TTA ; Color(10, 53, 45) #f2ea75 yellow
+  TCA
+  GAA AAA GAA AGG ACA         ; Translate(0, 10)
+  GAA AGG AGA                 ; Rotate 10
+  GAA TCC GAA AGG GTA         ; Ellipse 53×10
+  TCG
+
+  TCA
+  GAA AAA GAA ATT ACA         ; Translate(0, 15)
+  GAA AAA GAA AGG CAG         ; Rotate -10
+  GAA TCC GAA AGG GTA         ; Ellipse 53×10
+  TCG
+
+  ; Wave 5 - yellow-green
+  GAA ACC GAA TCC GAA GTC TTA ; Color(5, 53, 45) #f2af75 orange
+  TCA
+  GAA AAA GAA CCC ACA         ; Translate(0, 21)
+  GAA AGG AGA                 ; Rotate 10
+  GAA TCC GAA AGG GTA         ; Ellipse 53×10
+  TCG
+
+  TCA
+  GAA AAA GAA CTG ACA         ; Translate(0, 30)
+  GAA AAA GAA AGG CAG         ; Rotate -10
+  GAA TCC GAA AGG GTA         ; Ellipse 53×10
+  TCG
+
+  ; Wave 6 - yellow, bottom
+  GAA AAA GAA TCC GAA GTC TTA ; Color(0, 53, 45) #f27575 red
+  TCA
+  GAA AAA GAA GCC ACA         ; Translate(0, 37)
+  GAA AGG AGA                 ; Rotate 10
+  GAA TCC GAA AGG GTA         ; Ellipse 53×10
+  TCG
 
 TAA

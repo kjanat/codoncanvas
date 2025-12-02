@@ -54,18 +54,25 @@
         /** Formats toml files */
         "command": "bunx tombi format --stdin-filename {{file_path}} -",
         "exts": ["toml"]
+      },
+      {
+        /** Formats shell files */
+        "command": "shfmt --indent 2 --language-dialect bash --binary-next-line --keep-padding --case-indent --filename {{file_path}}",
+        "exts": ["sh", "bash"],
+        "stdin": true
       }
     ]
   },
 
   /** File inclusions/exclusions */
   "excludes": [
-    "**/.venv",
     "**/*-lock.json",
+    "**/*.gen.ts",
     "**/*.lock",
+    "**/.opencode",
+    "**/.venv",
     "**/node_modules",
     "**/worker-configuration.d.ts",
-    "research-dashboard.html",
     "codon-chart.svg"
   ],
 

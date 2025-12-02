@@ -5,8 +5,8 @@
  * Maps visual opcodes to musical notes and control changes.
  */
 import { afterEach, beforeEach, describe, expect, test } from "bun:test";
+import { Canvas2DRenderer } from "@/core";
 import { CodonLexer } from "@/core/lexer";
-import { Canvas2DRenderer } from "@/core/renderer";
 import { CodonVM } from "@/core/vm";
 import { MIDIExporter } from "@/exporters/midi-exporter";
 import {

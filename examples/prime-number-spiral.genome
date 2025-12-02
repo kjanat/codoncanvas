@@ -7,7 +7,7 @@
 
 ATG
   ; Setup colors
-  GAA TTT GAA AAA GAA TTT TTA ; Color(63, 0, 63) magenta
+  GAA TTT GAA AAA GAA TTT TTA ; Color(63, 0, 63) #fbfbfb white
 
   ; Center point
   TCA                          ; SAVE_STATE
@@ -23,34 +23,34 @@ ATG
   ; 4. TRANSLATE
   ; 5. PUSH 3 (radius)
   ; 6. CIRCLE
-  GAA CTC AGA                  ; PUSH 60, ROTATE (instr 1-2)
+  GAA TTA AGA                  ; PUSH 60, ROTATE (instr 1-2)
   GAA AGG GAA AAA ACA          ; PUSH 10, PUSH 0, TRANSLATE (instr 3-5)
   GAA AAT GGA                  ; PUSH 3, CIRCLE (instr 6-7)
 
   ; LOOP: repeat 7 instructions, 4 more times (5 more circles = 6 total)
-  GAA AAA                      ; PUSH 7 (instruction count)
-  GAA AAA                      ; PUSH 4 (repeat count)
+  GAA ACT                      ; PUSH 7 (instruction count)
+  GAA ACA                      ; PUSH 4 (repeat count)
   CAA                          ; LOOP
 
   ; Second ring - larger distance, different color
   TCA                          ; RESTORE to center
-  GAA TTT GAA TTT GAA AAA TTA ; Color(63, 63, 0) gold
+  GAA TTT GAA AAA GAA AAA TTA ; Color(63, 0, 0) #000000 black
   GAA CCC GAA AAA ACA          ; Translate(21, 0)
   GAA AAG GGA                  ; PUSH 2, CIRCLE
 
   ; Pattern for outer ring
-  GAA GGC AGA                  ; PUSH 30, ROTATE
+  GAA CTG AGA                  ; PUSH 30, ROTATE
   GAA CCC GAA AAA ACA          ; PUSH 21, PUSH 0, TRANSLATE
   GAA AAG GGA                  ; PUSH 2, CIRCLE
 
   ; LOOP outer ring
-  GAA AAA                      ; PUSH 7 (instruction count)
+  GAA ACT                      ; PUSH 7 (instruction count)
   GAA AAT                      ; PUSH 3 (repeat count)
   CAA                          ; LOOP
 
   ; Center accent
   TCA                          ; RESTORE
-  GAA TTT GAA CCC GAA GCC TTA ; Color(63, 21, 37) pink
+  GAA TTT GAA CCC GAA GCC TTA ; Color(63, 21, 37) #b77077 dusty pink
   GAA AAC GGA                  ; PUSH 1, center dot
 
 TAA

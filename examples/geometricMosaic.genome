@@ -1,73 +1,91 @@
-; Geometric Mosaic - Advanced Showcase
-; Varied ellipse sizes and rotations creating mosaic-like pattern
-; Difficulty: advanced-showcase
-; Concepts: ellipses, rotation, size variation, composition
-; Visual: Colorful ellipses in mosaic arrangement
-; Good for mutations: missense (color variations), frameshift (chaos)
+; Geometric Mosaic - Rainbow Tile Grid
+; A grid of colored circles forming a colorful mosaic pattern
+; Difficulty: intermediate
+; Concepts: HSL colors, circles, translation, save/restore
+; Visual: Colorful dot mosaic with rainbow hue gradient and lightness variation
+; Good for mutations: missense (color shifts), silent (same grid)
+; NOTE: Uses circles due to VM positioning limitations - squares would need
+;       negative translation support for proper grid layout
 
 ATG
-  ; Outer ring - 8 large ellipses (red to cyan gradient)
-  GAA AAA GAA TTT GAA GCC TTA ; Color(0, 63, 37) red
-  GAA TCC GAA CCC GTA          ; Ellipse 53×21
-  GAA ATT AGA                 ; Rotate 45
-  GAA ATT GAA TTT GAA GCC TTA ; Color(15, 63, 37) orange
-  GAA TCC GAA CCC GTA          ; Ellipse 53×21
-  GAA ATT AGA                 ; Rotate 45
-  GAA CCC GAA TTT GAA GCC TTA ; Color(21, 63, 37) yellow-orange
-  GAA TCC GAA CCC GTA          ; Ellipse 53×21
-  GAA ATT AGA                 ; Rotate 45
-  GAA TTT GAA TTT GAA GCC TTA ; Color(63, 63, 37) yellow
-  GAA TCC GAA CCC GTA          ; Ellipse 53×21
-  GAA ATT AGA                 ; Rotate 45
-  GAA TTT GAA AGG GAA GCC TTA ; Color(63, 10, 37) lime
-  GAA TCC GAA CCC GTA          ; Ellipse 53×21
-  GAA ATT AGA                 ; Rotate 45
-  GAA TCC GAA AGG GAA GCC TTA ; Color(53, 10, 37) green
-  GAA TCC GAA CCC GTA          ; Ellipse 53×21
-  GAA ATT AGA                 ; Rotate 45
-  GAA AGG GAA TTT GAA TCC TTA ; Color(10, 63, 53) cyan
-  GAA TCC GAA CCC GTA          ; Ellipse 53×21
-  GAA ATT AGA                 ; Rotate 45
-  GAA ATT GAA TTT GAA TCC TTA ; Color(15, 63, 53) light blue
-  GAA TCC GAA CCC GTA          ; Ellipse 53×21
-
-  ; Middle ring - 6 medium ellipses offset (cyan to purple)
-  TCA                         ; SAVE
-  GAA GGC AGA                 ; Rotate 30 (offset)
-  GAA CCC GAA TTT GAA TCC TTA ; Color(21, 63, 53) sky blue
-  GAA GCC GAA ATT GTA          ; Ellipse 37×15
-  GAA CTC AGA                 ; Rotate 60
-  GAA GCC GAA TTT GAA TCC TTA ; Color(37, 63, 53) blue
-  GAA GCC GAA ATT GTA          ; Ellipse 37×15
-  GAA CTC AGA                 ; Rotate 60
-  GAA TGG GAA TTT GAA TCC TTA ; Color(45, 63, 53) blue-purple
-  GAA GCC GAA ATT GTA          ; Ellipse 37×15
-  GAA CTC AGA                 ; Rotate 60
-  GAA TTT GAA TTT GAA TCC TTA ; Color(63, 63, 53) purple
-  GAA GCC GAA ATT GTA          ; Ellipse 37×15
-  GAA CTC AGA                 ; Rotate 60
-  GAA TTT GAA TCC GAA TCC TTA ; Color(63, 53, 53) magenta
-  GAA GCC GAA ATT GTA          ; Ellipse 37×15
-  GAA CTC AGA                 ; Rotate 60
-  GAA TTT GAA GCC GAA TCC TTA ; Color(63, 37, 53) pink
-  GAA GCC GAA ATT GTA          ; Ellipse 37×15
-  TCG                         ; RESTORE
-
-  ; Inner accents - 4 small ellipses
-  GAA TTT GAA CCC GAA TCC TTA ; Color(63, 21, 53) hot pink
-  GAA CCC GAA AGG GTA          ; Ellipse 21×10
-  GAA GGA AGA                 ; Rotate 90
-  GAA TTT GAA AGG GAA TCC TTA ; Color(63, 10, 53) bright pink
-  GAA CCC GAA AGG GTA          ; Ellipse 21×10
-  GAA GGA AGA                 ; Rotate 90
-  GAA TCC GAA AAA GAA TCC TTA ; Color(53, 0, 53) deep magenta
-  GAA CCC GAA AGG GTA          ; Ellipse 21×10
-  GAA GGA AGA                 ; Rotate 90
-  GAA GCC GAA AAA GAA TCC TTA ; Color(37, 0, 53) purple-magenta
-  GAA CCC GAA AGG GTA          ; Ellipse 21×10
-
-  ; Center - yellow focal point
-  GAA TTT GAA TTT GAA CTT TTA ; Color(63, 63, 31) bright yellow
-  GAA ATT GGA                 ; Circle 15
+  ; 8x6 grid of circles, radius 4
+  ; Hue changes across columns (0-63 = 0-360 degrees)
+  ; Lightness changes down rows (lighter at top, darker at bottom)
+  
+  ; Row 1 - Light (L=55, encoded as ~35)
+  TCA ; Save start position
+  GAA AAA GAA TTT GAA GGC TTA GAA ACG GGA GAA ACT GAA AAA ACA ; Red
+  GAA AGG GAA TTT GAA GGC TTA GAA ACG GGA GAA ACT GAA AAA ACA ; Orange  
+  GAA CCC GAA TTT GAA GGC TTA GAA ACG GGA GAA ACT GAA AAA ACA ; Yellow-orange
+  GAA GCC GAA TTT GAA GGC TTA GAA ACG GGA GAA ACT GAA AAA ACA ; Yellow
+  GAA TCC GAA TTT GAA GGC TTA GAA ACG GGA GAA ACT GAA AAA ACA ; Yellow-green
+  GAA TTT GAA TTT GAA GGC TTA GAA ACG GGA GAA ACT GAA AAA ACA ; Green
+  GAA TTT GAA TCC GAA GGC TTA GAA ACG GGA GAA ACT GAA AAA ACA ; Cyan
+  GAA TTT GAA GCC GAA GGC TTA GAA ACG GGA ; Blue
+  
+  TCG TCA ; Restore row start, save again
+  GAA AAA GAA ACT ACA ; Move down 5
+  
+  ; Row 2 - Medium-light (L=50)
+  GAA AAA GAA TTT GAA CTT TTA GAA ACG GGA GAA ACT GAA AAA ACA
+  GAA AGG GAA TTT GAA CTT TTA GAA ACG GGA GAA ACT GAA AAA ACA
+  GAA CCC GAA TTT GAA CTT TTA GAA ACG GGA GAA ACT GAA AAA ACA
+  GAA GCC GAA TTT GAA CTT TTA GAA ACG GGA GAA ACT GAA AAA ACA
+  GAA TCC GAA TTT GAA CTT TTA GAA ACG GGA GAA ACT GAA AAA ACA
+  GAA TTT GAA TTT GAA CTT TTA GAA ACG GGA GAA ACT GAA AAA ACA
+  GAA TTT GAA TCC GAA CTT TTA GAA ACG GGA GAA ACT GAA AAA ACA
+  GAA TTT GAA GCC GAA CTT TTA GAA ACG GGA
+  
+  TCG TCA
+  GAA AAA GAA ACT ACA
+  
+  ; Row 3 - Medium (L=45)
+  GAA AAA GAA TTT GAA CGC TTA GAA ACG GGA GAA ACT GAA AAA ACA
+  GAA AGG GAA TTT GAA CGC TTA GAA ACG GGA GAA ACT GAA AAA ACA
+  GAA CCC GAA TTT GAA CGC TTA GAA ACG GGA GAA ACT GAA AAA ACA
+  GAA GCC GAA TTT GAA CGC TTA GAA ACG GGA GAA ACT GAA AAA ACA
+  GAA TCC GAA TTT GAA CGC TTA GAA ACG GGA GAA ACT GAA AAA ACA
+  GAA TTT GAA TTT GAA CGC TTA GAA ACG GGA GAA ACT GAA AAA ACA
+  GAA TTT GAA TCC GAA CGC TTA GAA ACG GGA GAA ACT GAA AAA ACA
+  GAA TTT GAA GCC GAA CGC TTA GAA ACG GGA
+  
+  TCG TCA
+  GAA AAA GAA ACT ACA
+  
+  ; Row 4 - Medium-dark (L=40)
+  GAA AAA GAA TTT GAA CCC TTA GAA ACG GGA GAA ACT GAA AAA ACA
+  GAA AGG GAA TTT GAA CCC TTA GAA ACG GGA GAA ACT GAA AAA ACA
+  GAA CCC GAA TTT GAA CCC TTA GAA ACG GGA GAA ACT GAA AAA ACA
+  GAA GCC GAA TTT GAA CCC TTA GAA ACG GGA GAA ACT GAA AAA ACA
+  GAA TCC GAA TTT GAA CCC TTA GAA ACG GGA GAA ACT GAA AAA ACA
+  GAA TTT GAA TTT GAA CCC TTA GAA ACG GGA GAA ACT GAA AAA ACA
+  GAA TTT GAA TCC GAA CCC TTA GAA ACG GGA GAA ACT GAA AAA ACA
+  GAA TTT GAA GCC GAA CCC TTA GAA ACG GGA
+  
+  TCG TCA
+  GAA AAA GAA ACT ACA
+  
+  ; Row 5 - Dark (L=35)
+  GAA AAA GAA TTT GAA AGG TTA GAA ACG GGA GAA ACT GAA AAA ACA
+  GAA AGG GAA TTT GAA AGG TTA GAA ACG GGA GAA ACT GAA AAA ACA
+  GAA CCC GAA TTT GAA AGG TTA GAA ACG GGA GAA ACT GAA AAA ACA
+  GAA GCC GAA TTT GAA AGG TTA GAA ACG GGA GAA ACT GAA AAA ACA
+  GAA TCC GAA TTT GAA AGG TTA GAA ACG GGA GAA ACT GAA AAA ACA
+  GAA TTT GAA TTT GAA AGG TTA GAA ACG GGA GAA ACT GAA AAA ACA
+  GAA TTT GAA TCC GAA AGG TTA GAA ACG GGA GAA ACT GAA AAA ACA
+  GAA TTT GAA GCC GAA AGG TTA GAA ACG GGA
+  
+  TCG TCA
+  GAA AAA GAA ACT ACA
+  
+  ; Row 6 - Very dark (L=30)
+  GAA AAA GAA TTT GAA ACT TTA GAA ACG GGA GAA ACT GAA AAA ACA
+  GAA AGG GAA TTT GAA ACT TTA GAA ACG GGA GAA ACT GAA AAA ACA
+  GAA CCC GAA TTT GAA ACT TTA GAA ACG GGA GAA ACT GAA AAA ACA
+  GAA GCC GAA TTT GAA ACT TTA GAA ACG GGA GAA ACT GAA AAA ACA
+  GAA TCC GAA TTT GAA ACT TTA GAA ACG GGA GAA ACT GAA AAA ACA
+  GAA TTT GAA TTT GAA ACT TTA GAA ACG GGA GAA ACT GAA AAA ACA
+  GAA TTT GAA TCC GAA ACT TTA GAA ACG GGA GAA ACT GAA AAA ACA
+  GAA TTT GAA GCC GAA ACT TTA GAA ACG GGA
 
 TAA

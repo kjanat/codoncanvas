@@ -1,4 +1,4 @@
-#!/usr/bin/env tsx
+#!/usr/bin/env bun
 /**
  * CodonCanvas Metrics Analyzer CLI
  *
@@ -22,16 +22,28 @@
 
 import * as fs from "node:fs";
 import * as path from "node:path";
+import { parseArgs } from "node:util";
 
 // Import all types and utilities from the browser-compatible core module
 import {
   type ComparisonResult,
   type DescriptiveStats,
   formatDuration,
+  interpretPValue,
   MetricsAnalyzer,
   type MetricsSession,
-  Stats,
-} from "../src/analysis/metrics-analyzer-core";
+  parseCSVContent,
+} from "@/analysis";
+
+/** CLI options for the metrics analyzer */
+export interface MetricsAnalyzerCliOptions {
+  dataFile: string;
+  groupName: string;
+  baselineFile: string;
+  reportType: string;
+  outputDir: string;
+  help: boolean;
+}
 
 /** Required fields for a valid MetricsSession */
 const REQUIRED_SESSION_FIELDS = [
@@ -47,8 +59,8 @@ const REQUIRED_SESSION_FIELDS = [
 ] as const;
 
 /** Validates that a parsed session object contains all required fields */
-function validateSession(
-  session: Record<string, string | number | null>,
+export function validateSession(
+  session: Record<string, unknown>,
   lineNumber: number,
 ): void {
   const missingFields = REQUIRED_SESSION_FIELDS.filter(
@@ -62,75 +74,20 @@ function validateSession(
   }
 }
 
-function parseCSV(filepath: string): MetricsSession[] {
+/**
+ * Load and parse CSV file into MetricsSession objects
+ * Uses shared parseCSVContent from metrics-analyzer-core
+ */
+function loadCSV(filepath: string): MetricsSession[] {
   const content = fs.readFileSync(filepath, "utf-8");
-  const lines = content.trim().split("\n");
+  const sessions = parseCSVContent(content);
 
-  if (lines.length < 2) {
-    throw new Error("CSV file is empty or missing header");
-  }
-
-  const header = lines[0]
-    .split(",")
-    .map((h) => h.trim().replace(/^"(.*)"$/, "$1"));
-  const sessions: MetricsSession[] = [];
-
-  for (let i = 1; i < lines.length; i++) {
-    const values = parseCSVLine(lines[i]);
-    const session: Record<string, string | number | null> = {};
-
-    header.forEach((key, idx) => {
-      const value = values[idx];
-
-      // Parse numbers
-      if (
-        key === "duration" ||
-        key === "startTime" ||
-        key === "endTime" ||
-        key.startsWith("genomes") ||
-        key.startsWith("mutation") ||
-        key.startsWith("renderMode") ||
-        key.startsWith("feature") ||
-        key === "mutationsApplied" ||
-        key === "errorCount"
-      ) {
-        session[key] = parseFloat(value) || 0;
-      } else if (key === "timeToFirstArtifact") {
-        session[key] =
-          value === "null" || value === "" ? null : parseFloat(value);
-      } else {
-        session[key] = value;
-      }
-    });
-
-    validateSession(session, i + 1);
-    // Cast is safe after validation confirms required fields exist
-    sessions.push(session as unknown as MetricsSession);
-  }
+  // Validate each session has required fields
+  sessions.forEach((session, i) => {
+    validateSession(session as Record<string, unknown>, i + 2);
+  });
 
   return sessions;
-}
-
-function parseCSVLine(line: string): string[] {
-  const result: string[] = [];
-  let current = "";
-  let inQuotes = false;
-
-  for (let i = 0; i < line.length; i++) {
-    const char = line[i];
-
-    if (char === '"') {
-      inQuotes = !inQuotes;
-    } else if (char === "," && !inQuotes) {
-      result.push(current.trim());
-      current = "";
-    } else {
-      current += char;
-    }
-  }
-
-  result.push(current.trim());
-  return result.map((v) => v.replace(/^"(.*)"$/, "$1"));
 }
 
 function generateReport(analyzer: MetricsAnalyzer, outputPath: string): void {
@@ -302,10 +259,10 @@ function generateReport(analyzer: MetricsAnalyzer, outputPath: string): void {
     "===============================================================================\n";
 
   fs.writeFileSync(outputPath, report);
-  console.log(`\n Report generated: ${outputPath}\n`);
+  console.info(`\nReport generated: ${outputPath}\n`);
 }
 
-function formatToolRow(
+export function formatToolRow(
   name: string,
   data: { users: number; avgUsage: number },
   total: number,
@@ -316,7 +273,7 @@ function formatToolRow(
   )} uses/session)\n`;
 }
 
-function formatMutationRow(
+export function formatMutationRow(
   name: string,
   stats: DescriptiveStats,
   total: number,
@@ -357,18 +314,18 @@ function generateComparisonReport(
     report += `Effect Size:     Cohen's d = ${comp.cohensD.toFixed(
       3,
     )} (${comp.interpretation})\n`;
-    report += `Interpretation:  ${Stats.interpretPValue(comp.p)}\n\n`;
+    report += `Interpretation:  ${interpretPValue(comp.p)}\n\n`;
   }
 
   report +=
     "===============================================================================\n";
 
   fs.writeFileSync(outputPath, report);
-  console.log(`\n Comparison report generated: ${outputPath}\n`);
+  console.info(`\nComparison report generated: ${outputPath}\n`);
 }
 
-function printUsage() {
-  console.log(`
+function printUsage(): void {
+  console.info(`
 CodonCanvas Metrics Analyzer
 
 USAGE:
@@ -406,15 +363,14 @@ STATISTICAL METHODS:
   `);
 }
 
-function main() {
-  const args = process.argv.slice(2);
+function main(): void {
+  const args = Bun.argv.slice(2);
+  const options = parseArguments(args);
 
-  if (args.length === 0 || args.includes("--help") || args.includes("-h")) {
+  if (args.length === 0 || options.help) {
     printUsage();
     process.exit(0);
   }
-
-  const options = parseArguments(args);
 
   if (!options.dataFile) {
     console.error("Error: --data <file> is required\n");
@@ -432,8 +388,8 @@ function main() {
     fs.mkdirSync(options.outputDir, { recursive: true });
   }
 
-  console.log("\nCodonCanvas Metrics Analyzer\n");
-  console.log(`Data file: ${options.dataFile}`);
+  console.info("\nCodonCanvas Metrics Analyzer\n");
+  console.info(`Data file: ${options.dataFile}`);
 
   try {
     runAnalysis(options);
@@ -445,60 +401,36 @@ function main() {
   }
 }
 
-function parseArguments(args: string[]) {
-  let dataFile = "";
-  let groupName = "Group 1";
-  let baselineFile = "";
-  let reportType = "full";
-  let outputDir = ".";
+export function parseArguments(args: string[]): MetricsAnalyzerCliOptions {
+  const { values } = parseArgs({
+    args,
+    options: {
+      data: { type: "string", default: "" },
+      group: { type: "string", default: "Group 1" },
+      baseline: { type: "string", default: "" },
+      report: { type: "string", default: "full" },
+      output: { type: "string", default: "." },
+      help: { type: "boolean", short: "h", default: false },
+    },
+    strict: false, // Allow unknown args
+    allowPositionals: true,
+  });
 
-  const ensureValue = (flag: string, index: number): void => {
-    if (index + 1 >= args.length || args[index + 1].startsWith("--")) {
-      throw new Error(`Missing value for option: ${flag}`);
-    }
+  return {
+    dataFile: String(values.data ?? ""),
+    groupName: String(values.group ?? "Group 1"),
+    baselineFile: String(values.baseline ?? ""),
+    reportType: String(values.report ?? "full"),
+    outputDir: String(values.output ?? "."),
+    help: Boolean(values.help),
   };
-
-  for (let i = 0; i < args.length; i++) {
-    const arg = args[i];
-
-    switch (arg) {
-      case "--data":
-        ensureValue(arg, i);
-        dataFile = args[++i];
-        break;
-      case "--group":
-        ensureValue(arg, i);
-        groupName = args[++i];
-        break;
-      case "--baseline":
-        ensureValue(arg, i);
-        baselineFile = args[++i];
-        break;
-      case "--report":
-        ensureValue(arg, i);
-        reportType = args[++i];
-        break;
-      case "--output":
-        ensureValue(arg, i);
-        outputDir = args[++i];
-        break;
-    }
-  }
-
-  return { dataFile, groupName, baselineFile, reportType, outputDir };
 }
 
-function runAnalysis(options: {
-  dataFile: string;
-  groupName: string;
-  baselineFile: string;
-  reportType: string;
-  outputDir: string;
-}) {
+function runAnalysis(options: MetricsAnalyzerCliOptions): void {
   // Parse CSV
-  console.log("Parsing CSV...");
-  const sessions = parseCSV(options.dataFile);
-  console.log(`Loaded ${sessions.length} sessions\n`);
+  console.info("Parsing CSV...");
+  const sessions = loadCSV(options.dataFile);
+  console.info(`Loaded ${sessions.length} sessions\n`);
 
   // Create analyzer
   const analyzer = new MetricsAnalyzer(sessions);
@@ -530,7 +462,7 @@ function runAnalysis(options: {
     );
   }
 
-  console.log("Analysis complete!\n");
+  console.info("Analysis complete!\n");
 }
 
 function runComparison(
@@ -540,14 +472,14 @@ function runComparison(
   groupName: string,
   outputDir: string,
   timestamp: string,
-) {
+): void {
   if (!fs.existsSync(baselineFile)) {
     throw new Error(`Baseline file not found: ${baselineFile}`);
   }
 
-  console.log(`Baseline file: ${baselineFile}`);
-  const baselineSessions = parseCSV(baselineFile);
-  console.log(`Loaded ${baselineSessions.length} baseline sessions\n`);
+  console.info(`Baseline file: ${baselineFile}`);
+  const baselineSessions = loadCSV(baselineFile);
+  console.info(`Loaded ${baselineSessions.length} baseline sessions\n`);
 
   const comparisons = analyzer.compareGroups(
     sessions,
@@ -563,4 +495,7 @@ function runComparison(
   generateComparisonReport(comparisons, comparisonPath);
 }
 
-main();
+// Only run when executed directly
+if (import.meta.main) {
+  main();
+}

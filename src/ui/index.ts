@@ -1,11 +1,5 @@
 /**
  * UI components and systems
+ *
+ * Icons are in @/ui/icons - import directly from there
  */
-
-export type { DiffViewOptions } from "./diff-viewer";
-export { DiffViewer, injectDiffViewerStyles } from "./diff-viewer";
-export type { ShareOptions, ShareSystemConfig } from "./share-system";
-export { injectShareStyles, ShareSystem } from "./share-system";
-export { ThemeManager } from "./theme-manager";
-export type { TimelineOptions } from "./timeline-scrubber";
-export { injectTimelineStyles, TimelineScrubber } from "./timeline-scrubber";

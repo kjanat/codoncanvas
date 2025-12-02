@@ -6,10 +6,10 @@
 
 ATG
   GAA GCC AAA        ; Push 37, draw line
-  GAA GGA AGA        ; Push 26, rotate 26 degrees
+  GAA CGG AGA        ; Push 26, rotate 26 degrees
   GAA GCC AAA        ; Push 37, draw line
-  GAA GGA AGA        ; Push 26, rotate 26 degrees
+  GAA CGG AGA        ; Push 26, rotate 26 degrees
   GAA GCC AAA        ; Push 37, draw line
-  GAA GGA AGA        ; Push 26, rotate 26 degrees
+  GAA CGG AGA        ; Push 26, rotate 26 degrees
   GAA GCC AAA        ; Push 37, draw line
 TAA

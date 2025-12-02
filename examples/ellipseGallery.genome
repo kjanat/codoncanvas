@@ -9,7 +9,7 @@ ATG
   GAA ATT            ; Push 15 (ry)
   GTA                ; Draw ellipse (wide)
   GAA CCC            ; Push 21
-  GAA AAA ACA        ; Push 0, translate(21, 0)
+  GAA CCC ACA        ; Push 0, translate(21, 0)
   GAA ATT            ; Push 15 (rx)
   GAA AGG            ; Push 10 (ry)
   GTA                ; Draw ellipse (tall)

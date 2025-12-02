@@ -7,26 +7,26 @@
 
 ATG
   ; Fiery dragon colors: orange to red gradient
-  GAA TGT GAA TTT GAA TCT TTA ; Color(48, 63, 50) bright orange
+  GAA TAA GAA TTT GAA TAG TTA ; Color(48, 63, 50) #c790fe purple
 
   ; Level 0: Outermost spiral (large scale)
   TCA                          ; SAVE_STATE
 
   ; Draw square spiral pattern
-  GAA CTT AAA                  ; PUSH 20, LINE
+  GAA CCA AAA                  ; PUSH 20, LINE
   GAA TCA AGA                  ; PUSH 90, ROTATE right
-  GAA CTT AAA                  ; PUSH 20, LINE
+  GAA CCA AAA                  ; PUSH 20, LINE
   GAA TCA AGA                  ; PUSH 90, ROTATE
-  GAA CTT AAA                  ; PUSH 20, LINE
+  GAA CCA AAA                  ; PUSH 20, LINE
   GAA TCA AGA                  ; PUSH 90, ROTATE
-  GAA CTT AAA                  ; PUSH 20, LINE
+  GAA CCA AAA                  ; PUSH 20, LINE
 
   ; Level 1: Medium spiral (rotated 45°, scaled down)
-  GAA GCG AGA                  ; PUSH 45, ROTATE (offset)
-  GAA AGC GAA AGC CGA           ; SCALE(0.7) via PUSH 9, PUSH 9, SCALE
+  GAA GTC AGA                  ; PUSH 45, ROTATE (offset)
+  GAA AGC GAA AAA CGA           ; SCALE(0.7) via PUSH 9, PUSH 9, SCALE
 
   ; Warmer color for depth
-  GAA TGG GAA TTT GAA GTG TTA ; Color(50, 63, 46) red-orange
+  GAA TAG GAA TTT GAA GTG TTA ; Color(50, 63, 46) #d271fe purple
 
   ; Medium square spiral
   GAA ATT AAA                  ; PUSH 15, LINE
@@ -38,11 +38,11 @@ ATG
   GAA ATT AAA                  ; PUSH 15, LINE
 
   ; Level 2: Inner spiral (more rotation, smaller scale)
-  GAA GCG AGA                  ; PUSH 45, ROTATE
-  GAA AGA GAA AGA CGA           ; SCALE down more (0.6)
+  GAA GTC AGA                  ; PUSH 45, ROTATE
+  GAA AAA GAA AGA CGA           ; SCALE down more (0.6)
 
   ; Deep red for inner detail
-  GAA TTG GAA TTT GAA GGG TTA ; Color(60, 63, 36) deep red
+  GAA TTA GAA TTT GAA GCA TTA ; Color(60, 63, 36) #fd2274 magenta
 
   ; Small angular pattern
   GAA AGG AAA                  ; PUSH 10, LINE
@@ -55,32 +55,32 @@ ATG
 
   ; Level 3: Multiple small spirals using LOOP
   ; Create spiral burst pattern
-  GAA TGT AGA                  ; PUSH 30, ROTATE
-  GAA AAT GAA AAT CGA           ; SCALE(0.4) even smaller
+  GAA CTG AGA                  ; PUSH 30, ROTATE
+  GAA AAA GAA AAT CGA           ; SCALE(0.4) even smaller
 
   ; Instructions for mini-spiral: LINE(5), ROTATE(90), LINE(5), ROTATE(90)
-  GAA AAC AAA                  ; PUSH 5, LINE
+  GAA ACC AAA                  ; PUSH 5, LINE
   GAA TCA AGA                  ; PUSH 90, ROTATE
-  GAA AAC AAA                  ; PUSH 5, LINE
+  GAA ACC AAA                  ; PUSH 5, LINE
   GAA TCA AGA                  ; PUSH 90, ROTATE
 
   ; LOOP: repeat this 4-instruction pattern 8 times for burst effect
-  GAA AAA                      ; PUSH 4 (instruction count)
-  GAA AGC                      ; PUSH 8 (repeat count)
+  GAA ACA                      ; PUSH 4 (instruction count)
+  GAA AGA                      ; PUSH 8 (repeat count)
   CAA                          ; LOOP
 
   TCT                          ; RESTORE_STATE
 
   ; Accent circles at key vertices for visual interest
-  GAA TTT GAA TCA GAA TCA TTA ; Color(63, 52, 52) gold accents
+  GAA TTT GAA TCA GAA TCA TTA ; Color(63, 52, 52) #f6a9b0 pink
   TCA                          ; SAVE_STATE
 
   ; Place circles at corners
-  GAA CTT GAA AAA ACA          ; Translate(20, 0)
-  GAA AAC GGA                  ; PUSH 2, CIRCLE
+  GAA CCA GAA AAA ACA          ; Translate(20, 0)
+  GAA AAG GGA                  ; PUSH 2, CIRCLE
 
-  GAA AAA GAA CTT ACA          ; Translate(0, 20)
-  GAA AAC GGA                  ; PUSH 2, CIRCLE
+  GAA AAA GAA CCA ACA          ; Translate(0, 20)
+  GAA AAG GGA                  ; PUSH 2, CIRCLE
 
   TCT                          ; RESTORE_STATE
 

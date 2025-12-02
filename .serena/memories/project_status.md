@@ -6,9 +6,9 @@ MVP v1.0.0 complete. Production-ready. Active development continues.
 
 ## Test Status
 
-- 2237 pass, 0 fail, 1 skip (100% passing)
-- 43 test files, 6351 assertions
-- Runtime: ~3.5s
+- 2271 pass, 0 fail, 7 skip (100% passing)
+- 68 test files, 9505 assertions
+- Runtime: ~2.0s
 
 ## Architecture
 
@@ -16,6 +16,7 @@ MVP v1.0.0 complete. Production-ready. Active development continues.
 - **VM**: CodonVM - stack-based execution (17 opcodes)
 - **Renderer**: Canvas2DRenderer with 64-codon support
 - **Playground**: Full UI with live preview, timeline, exports
+- **Analysis**: Modular statistics (src/analysis/) with 22 focused files
 
 ## Tech Stack
 

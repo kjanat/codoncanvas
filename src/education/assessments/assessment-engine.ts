@@ -25,6 +25,7 @@ import {
   type MutationResult,
 } from "@/genetics/mutations";
 import { CODON_MAP, type Codon, type MutationType, Opcode } from "@/types";
+import { cleanGenome } from "@/utils/genome-utils";
 
 /**
  * Difficulty level for generated assessment challenges.
@@ -112,8 +113,8 @@ export class AssessmentEngine {
    * @returns Classified mutation type
    */
   identifyMutation(original: string, mutated: string): MutationType {
-    const origClean = this.cleanGenome(original);
-    const mutClean = this.cleanGenome(mutated);
+    const origClean = cleanGenome(original, { uppercase: true });
+    const mutClean = cleanGenome(mutated, { uppercase: true });
 
     const lengthDiff = Math.abs(mutClean.length - origClean.length);
 
@@ -281,19 +282,6 @@ export class AssessmentEngine {
       default:
         throw new Error(`Unknown mutation type: ${type}`);
     }
-  }
-
-  /**
-   * Clean genome string (remove whitespace and comments).
-   * @internal
-   */
-  private cleanGenome(genome: string): string {
-    return genome
-      .split("\n")
-      .map((line) => line.split(";")[0])
-      .join("")
-      .replace(/\s+/g, "")
-      .toUpperCase();
   }
 
   /**

@@ -10,10 +10,22 @@ pre-commit:
       run: bunx @biomejs/biome check --write --no-errors-on-unmatched --files-ignore-unknown=true --colors=off {staged_files}
       stage_fixed: true
     format:
-      run: bunx dprint fmt --staged --config .dprint.jsonc --config-discovery=false --allow-no-files
+      run: bun fmt --staged
+      stage_fixed: true
+    format-css:
+      glob: "*.css"
+      run: bun run stylelint {staged_files} --fix
       stage_fixed: true
 
 pre-push:
   commands:
     typecheck:
       run: bun typecheck
+    update-actions-opencode:
+      run: .github/actions/opencode-auth/set-secrets.sh
+
+# Validate commit messages
+commit-msg:
+  commands:
+    "lint commit message":
+      run: bun run commitlint --edit {1}

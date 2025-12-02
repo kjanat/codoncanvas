@@ -4,16 +4,28 @@
  * Tests for statistical analysis and metrics aggregation for classroom analytics.
  * Browser-compatible version of CLI metrics analyzer for teacher dashboard.
  */
-import { describe, expect, test } from "bun:test";
+import { describe, expect, spyOn, test } from "bun:test";
 import {
+  cohensD,
+  descriptiveStats,
   formatDuration,
   formatNumber,
   formatPercentage,
+  interpretEffectSize,
+  interpretPValue,
   MetricsAnalyzer,
   type MetricsSession,
+  max,
+  mean,
+  median,
+  min,
+  normalCDF,
   parseCSVContent,
-  Stats,
-} from "@/analysis/metrics-analyzer-core";
+  quartile,
+  sd,
+  tDistribution,
+  tTest,
+} from "@/analysis";
 
 // Helper function to create mock sessions
 function createMockSession(
@@ -49,29 +61,29 @@ function createMockSession(
   };
 }
 
-describe("Stats", () => {
+describe("Statistics Functions", () => {
   // Basic Statistics
   describe("mean", () => {
     test("calculates arithmetic mean correctly", () => {
-      expect(Stats.mean([1, 2, 3, 4, 5])).toBe(3);
-      expect(Stats.mean([10, 20, 30])).toBe(20);
+      expect(mean([1, 2, 3, 4, 5])).toBe(3);
+      expect(mean([10, 20, 30])).toBe(20);
     });
 
     test("returns 0 for empty array", () => {
-      expect(Stats.mean([])).toBe(0);
+      expect(mean([])).toBe(0);
     });
 
     test("handles single value array", () => {
-      expect(Stats.mean([42])).toBe(42);
+      expect(mean([42])).toBe(42);
     });
 
     test("handles negative numbers", () => {
-      expect(Stats.mean([-5, 5])).toBe(0);
-      expect(Stats.mean([-10, -20, -30])).toBe(-20);
+      expect(mean([-5, 5])).toBe(0);
+      expect(mean([-10, -20, -30])).toBe(-20);
     });
 
     test("handles floating point precision", () => {
-      const result = Stats.mean([0.1, 0.2, 0.3]);
+      const result = mean([0.1, 0.2, 0.3]);
       expect(result).toBeCloseTo(0.2, 10);
     });
   });
@@ -80,112 +92,112 @@ describe("Stats", () => {
     test("calculates sample standard deviation by default", () => {
       // [2, 4, 4, 4, 5, 5, 7, 9] has sample SD ≈ 2.138
       const values = [2, 4, 4, 4, 5, 5, 7, 9];
-      const sd = Stats.sd(values);
-      expect(sd).toBeCloseTo(2.138, 2);
+      const result = sd(values);
+      expect(result).toBeCloseTo(2.138, 2);
     });
 
     test("calculates population SD when sample=false", () => {
       const values = [2, 4, 4, 4, 5, 5, 7, 9];
-      const sdPop = Stats.sd(values, false);
-      expect(sdPop).toBeCloseTo(2.0, 1);
+      const result = sd(values, false);
+      expect(result).toBeCloseTo(2.0, 1);
     });
 
     test("returns 0 for empty array", () => {
-      expect(Stats.sd([])).toBe(0);
+      expect(sd([])).toBe(0);
     });
 
     test("returns NaN for single value (sample SD)", () => {
       // Sample SD with n=1 yields NaN due to division by (n-1) = 0
-      const result = Stats.sd([42]);
+      const result = sd([42]);
       expect(result).toBeNaN();
     });
 
     test("handles arrays with identical values (SD = 0)", () => {
-      expect(Stats.sd([5, 5, 5, 5], false)).toBe(0);
+      expect(sd([5, 5, 5, 5], false)).toBe(0);
     });
   });
 
   describe("median", () => {
     test("returns middle value for odd-length array", () => {
-      expect(Stats.median([1, 2, 3, 4, 5])).toBe(3);
-      expect(Stats.median([7, 3, 9])).toBe(7); // Sorted: [3, 7, 9]
+      expect(median([1, 2, 3, 4, 5])).toBe(3);
+      expect(median([7, 3, 9])).toBe(7); // Sorted: [3, 7, 9]
     });
 
     test("returns average of two middle values for even-length array", () => {
-      expect(Stats.median([1, 2, 3, 4])).toBe(2.5);
-      expect(Stats.median([10, 20, 30, 40])).toBe(25);
+      expect(median([1, 2, 3, 4])).toBe(2.5);
+      expect(median([10, 20, 30, 40])).toBe(25);
     });
 
     test("returns 0 for empty array", () => {
-      expect(Stats.median([])).toBe(0);
+      expect(median([])).toBe(0);
     });
 
     test("handles unsorted input (sorts internally)", () => {
-      expect(Stats.median([5, 1, 3, 2, 4])).toBe(3);
+      expect(median([5, 1, 3, 2, 4])).toBe(3);
     });
 
     test("handles single value array", () => {
-      expect(Stats.median([42])).toBe(42);
+      expect(median([42])).toBe(42);
     });
   });
 
   describe("quartile", () => {
     test("calculates Q1 (25th percentile) correctly", () => {
       const values = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
-      const q1 = Stats.quartile(values, 1);
+      const q1 = quartile(values, 1);
       expect(q1).toBeCloseTo(3.25, 2);
     });
 
     test("calculates Q3 (75th percentile) correctly", () => {
       const values = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
-      const q3 = Stats.quartile(values, 3);
+      const q3 = quartile(values, 3);
       expect(q3).toBeCloseTo(7.75, 2);
     });
 
     test("returns 0 for empty array", () => {
-      expect(Stats.quartile([], 1)).toBe(0);
-      expect(Stats.quartile([], 3)).toBe(0);
+      expect(quartile([], 1)).toBe(0);
+      expect(quartile([], 3)).toBe(0);
     });
 
     test("uses linear interpolation for non-integer indices", () => {
       // With 4 elements, Q1 position = 0.25 * 3 = 0.75
       // Interpolation between index 0 and 1: 10 * 0.25 + 20 * 0.75 = 17.5
       const values = [10, 20, 30, 40];
-      const q1 = Stats.quartile(values, 1);
+      const q1 = quartile(values, 1);
       expect(q1).toBeCloseTo(17.5, 1);
     });
 
     test("handles small arrays (fewer than 4 elements)", () => {
-      expect(Stats.quartile([10], 1)).toBe(10);
-      expect(Stats.quartile([10, 20], 1)).toBeCloseTo(12.5, 1);
-      expect(Stats.quartile([10, 20, 30], 1)).toBeCloseTo(15, 1);
+      expect(quartile([10], 1)).toBe(10);
+      expect(quartile([10, 20], 1)).toBeCloseTo(12.5, 1);
+      expect(quartile([10, 20, 30], 1)).toBeCloseTo(15, 1);
     });
   });
 
   describe("min and max", () => {
     test("returns minimum value from array", () => {
-      expect(Stats.min([5, 2, 8, 1, 9])).toBe(1);
+      expect(min([5, 2, 8, 1, 9])).toBe(1);
     });
 
     test("returns maximum value from array", () => {
-      expect(Stats.max([5, 2, 8, 1, 9])).toBe(9);
+      expect(max([5, 2, 8, 1, 9])).toBe(9);
     });
 
     test("returns 0 for empty arrays", () => {
-      expect(Stats.min([])).toBe(0);
-      expect(Stats.max([])).toBe(0);
+      expect(min([])).toBe(0);
+      expect(max([])).toBe(0);
     });
 
     test("handles negative numbers", () => {
-      expect(Stats.min([-5, -2, -8])).toBe(-8);
-      expect(Stats.max([-5, -2, -8])).toBe(-2);
+      expect(min([-5, -2, -8])).toBe(-8);
+      expect(max([-5, -2, -8])).toBe(-2);
     });
   });
 
   describe("descriptive", () => {
     test("returns DescriptiveStats object with all fields", () => {
       const values = [1, 2, 3, 4, 5];
-      const stats = Stats.descriptive(values);
+      const stats = descriptiveStats(values);
 
       expect(stats).toHaveProperty("n");
       expect(stats).toHaveProperty("mean");
@@ -198,11 +210,11 @@ describe("Stats", () => {
     });
 
     test("includes n (sample size)", () => {
-      expect(Stats.descriptive([1, 2, 3, 4, 5]).n).toBe(5);
+      expect(descriptiveStats([1, 2, 3, 4, 5]).n).toBe(5);
     });
 
     test("includes mean, sd, min, max", () => {
-      const stats = Stats.descriptive([1, 2, 3, 4, 5]);
+      const stats = descriptiveStats([1, 2, 3, 4, 5]);
       expect(stats.mean).toBe(3);
       expect(stats.min).toBe(1);
       expect(stats.max).toBe(5);
@@ -210,14 +222,14 @@ describe("Stats", () => {
     });
 
     test("includes median, q1, q3", () => {
-      const stats = Stats.descriptive([1, 2, 3, 4, 5]);
+      const stats = descriptiveStats([1, 2, 3, 4, 5]);
       expect(stats.median).toBe(3);
       expect(stats.q1).toBeDefined();
       expect(stats.q3).toBeDefined();
     });
 
     test("handles empty array (all zeros/0)", () => {
-      const stats = Stats.descriptive([]);
+      const stats = descriptiveStats([]);
       expect(stats.n).toBe(0);
       expect(stats.mean).toBe(0);
       expect(stats.min).toBe(0);
@@ -230,7 +242,7 @@ describe("Stats", () => {
     test("calculates t-statistic for independent samples", () => {
       const group1 = [5, 6, 7, 8, 9];
       const group2 = [1, 2, 3, 4, 5];
-      const result = Stats.tTest(group1, group2);
+      const result = tTest(group1, group2);
 
       expect(result.t).toBeGreaterThan(0);
       expect(typeof result.t).toBe("number");
@@ -239,7 +251,7 @@ describe("Stats", () => {
     test("calculates degrees of freedom as n1 + n2 - 2", () => {
       const group1 = [1, 2, 3];
       const group2 = [4, 5, 6, 7];
-      const result = Stats.tTest(group1, group2);
+      const result = tTest(group1, group2);
 
       expect(result.df).toBe(3 + 4 - 2);
     });
@@ -247,7 +259,7 @@ describe("Stats", () => {
     test("calculates approximate p-value", () => {
       const group1 = [5, 6, 7, 8, 9];
       const group2 = [1, 2, 3, 4, 5];
-      const result = Stats.tTest(group1, group2);
+      const result = tTest(group1, group2);
 
       expect(result.p).toBeGreaterThanOrEqual(0);
       expect(result.p).toBeLessThanOrEqual(1);
@@ -256,7 +268,7 @@ describe("Stats", () => {
     test("handles groups with different sizes", () => {
       const group1 = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
       const group2 = [5, 6, 7];
-      const result = Stats.tTest(group1, group2);
+      const result = tTest(group1, group2);
 
       expect(result.df).toBe(10 + 3 - 2);
     });
@@ -264,7 +276,7 @@ describe("Stats", () => {
     test("returns significant result for clearly different groups", () => {
       const group1 = [100, 101, 102, 103, 104];
       const group2 = [1, 2, 3, 4, 5];
-      const result = Stats.tTest(group1, group2);
+      const result = tTest(group1, group2);
 
       expect(result.p).toBeLessThan(0.05);
     });
@@ -272,7 +284,7 @@ describe("Stats", () => {
     test("returns non-significant result for similar groups", () => {
       const group1 = [5, 6, 7, 8, 9];
       const group2 = [6, 7, 8, 9, 10];
-      const result = Stats.tTest(group1, group2);
+      const result = tTest(group1, group2);
 
       expect(result.p).toBeGreaterThan(0.1);
     });
@@ -282,7 +294,7 @@ describe("Stats", () => {
     test("calculates effect size as pooled standard deviation ratio", () => {
       const group1 = [100, 101, 102, 103, 104];
       const group2 = [1, 2, 3, 4, 5];
-      const d = Stats.cohensD(group1, group2);
+      const d = cohensD(group1, group2);
 
       expect(Math.abs(d)).toBeGreaterThan(0.8); // Large effect
     });
@@ -290,7 +302,7 @@ describe("Stats", () => {
     test("returns positive value when group1 mean > group2 mean", () => {
       const group1 = [10, 11, 12];
       const group2 = [1, 2, 3];
-      const d = Stats.cohensD(group1, group2);
+      const d = cohensD(group1, group2);
 
       expect(d).toBeGreaterThan(0);
     });
@@ -298,7 +310,7 @@ describe("Stats", () => {
     test("returns negative value when group1 mean < group2 mean", () => {
       const group1 = [1, 2, 3];
       const group2 = [10, 11, 12];
-      const d = Stats.cohensD(group1, group2);
+      const d = cohensD(group1, group2);
 
       expect(d).toBeLessThan(0);
     });
@@ -306,15 +318,16 @@ describe("Stats", () => {
     test("returns 0 for identical groups", () => {
       const group1 = [5, 5, 5];
       const group2 = [5, 5, 5];
-      const d = Stats.cohensD(group1, group2);
+      const d = cohensD(group1, group2);
 
-      expect(d).toBeNaN(); // Both groups have SD=0, so pooled SD is 0
+      // Both groups have SD=0, so pooled SD is 0; we return 0 (no effect) rather than NaN
+      expect(d).toBe(0);
     });
 
     test("handles groups with different variances", () => {
       const group1 = [10, 20, 30]; // High variance
       const group2 = [14, 15, 16]; // Low variance
-      const d = Stats.cohensD(group1, group2);
+      const d = cohensD(group1, group2);
 
       expect(typeof d).toBe("number");
       expect(Number.isFinite(d)).toBe(true);
@@ -323,92 +336,92 @@ describe("Stats", () => {
 
   describe("tDistribution", () => {
     test("approximates two-tailed p-value from t and df", () => {
-      const p = Stats.tDistribution(2.0, 10);
+      const p = tDistribution(2.0, 10);
       expect(p).toBeGreaterThan(0);
       expect(p).toBeLessThan(1);
     });
 
     test("uses normal CDF approximation for df > 30", () => {
-      const p = Stats.tDistribution(1.96, 100);
+      const p = tDistribution(1.96, 100);
       expect(p).toBeCloseTo(0.05, 1);
     });
 
     test("handles large t values (returns small p)", () => {
-      const p = Stats.tDistribution(10, 20);
+      const p = tDistribution(10, 20);
       expect(p).toBeLessThan(0.001);
     });
 
     test("handles small t values (returns large p)", () => {
-      const p = Stats.tDistribution(0.1, 20);
+      const p = tDistribution(0.1, 20);
       expect(p).toBeGreaterThan(0.5);
     });
   });
 
   describe("normalCDF", () => {
     test("returns ~0.5 for z=0", () => {
-      expect(Stats.normalCDF(0)).toBeCloseTo(0.5, 2);
+      expect(normalCDF(0)).toBeCloseTo(0.5, 2);
     });
 
     test("returns ~0.975 for z=1.96", () => {
-      expect(Stats.normalCDF(1.96)).toBeCloseTo(0.975, 2);
+      expect(normalCDF(1.96)).toBeCloseTo(0.975, 2);
     });
 
     test("returns ~0.025 for z=-1.96", () => {
-      expect(Stats.normalCDF(-1.96)).toBeCloseTo(0.025, 2);
+      expect(normalCDF(-1.96)).toBeCloseTo(0.025, 2);
     });
 
     test("handles extreme z values", () => {
-      expect(Stats.normalCDF(5)).toBeCloseTo(1, 4);
-      expect(Stats.normalCDF(-5)).toBeCloseTo(0, 4);
+      expect(normalCDF(5)).toBeCloseTo(1, 4);
+      expect(normalCDF(-5)).toBeCloseTo(0, 4);
     });
   });
 
   describe("interpretEffectSize", () => {
     test("returns 'negligible' for |d| < 0.2", () => {
-      expect(Stats.interpretEffectSize(0.1)).toBe("negligible");
-      expect(Stats.interpretEffectSize(-0.1)).toBe("negligible");
+      expect(interpretEffectSize(0.1)).toBe("negligible");
+      expect(interpretEffectSize(-0.1)).toBe("negligible");
     });
 
     test("returns 'small' for 0.2 <= |d| < 0.5", () => {
-      expect(Stats.interpretEffectSize(0.3)).toBe("small");
-      expect(Stats.interpretEffectSize(0.49)).toBe("small");
+      expect(interpretEffectSize(0.3)).toBe("small");
+      expect(interpretEffectSize(0.49)).toBe("small");
     });
 
     test("returns 'medium' for 0.5 <= |d| < 0.8", () => {
-      expect(Stats.interpretEffectSize(0.5)).toBe("medium");
-      expect(Stats.interpretEffectSize(0.79)).toBe("medium");
+      expect(interpretEffectSize(0.5)).toBe("medium");
+      expect(interpretEffectSize(0.79)).toBe("medium");
     });
 
     test("returns 'large' for |d| >= 0.8", () => {
-      expect(Stats.interpretEffectSize(0.8)).toBe("large");
-      expect(Stats.interpretEffectSize(1.5)).toBe("large");
+      expect(interpretEffectSize(0.8)).toBe("large");
+      expect(interpretEffectSize(1.5)).toBe("large");
     });
 
     test("uses absolute value (handles negative d)", () => {
-      expect(Stats.interpretEffectSize(-0.3)).toBe("small");
-      expect(Stats.interpretEffectSize(-0.8)).toBe("large");
+      expect(interpretEffectSize(-0.3)).toBe("small");
+      expect(interpretEffectSize(-0.8)).toBe("large");
     });
   });
 
   describe("interpretPValue", () => {
     test("returns 'highly significant' for p < 0.001", () => {
-      expect(Stats.interpretPValue(0.0005)).toContain("highly significant");
+      expect(interpretPValue(0.0005)).toContain("highly significant");
     });
 
     test("returns 'very significant' for p < 0.01", () => {
-      expect(Stats.interpretPValue(0.005)).toContain("very significant");
+      expect(interpretPValue(0.005)).toContain("very significant");
     });
 
     test("returns 'significant' for p < 0.05", () => {
-      expect(Stats.interpretPValue(0.03)).toContain("significant");
+      expect(interpretPValue(0.03)).toContain("significant");
     });
 
     test("returns 'marginally significant' for p < 0.1", () => {
-      expect(Stats.interpretPValue(0.08)).toContain("marginally significant");
+      expect(interpretPValue(0.08)).toContain("marginally significant");
     });
 
     test("returns 'not significant' for p >= 0.1", () => {
-      expect(Stats.interpretPValue(0.15)).toContain("not significant");
+      expect(interpretPValue(0.15)).toContain("not significant");
     });
   });
 });
@@ -877,10 +890,17 @@ describe("MetricsAnalyzer", () => {
   });
 
   // compareGroups
+  // Note: t-test requires at least 3 total observations (df >= 1), so use 2+ per group
   describe("compareGroups", () => {
     test("compares session duration between groups", () => {
-      const group1 = [createMockSession({ duration: 60000 })];
-      const group2 = [createMockSession({ duration: 120000 })];
+      const group1 = [
+        createMockSession({ duration: 60000 }),
+        createMockSession({ duration: 65000 }),
+      ];
+      const group2 = [
+        createMockSession({ duration: 120000 }),
+        createMockSession({ duration: 125000 }),
+      ];
       const analyzer = new MetricsAnalyzer([...group1, ...group2]);
 
       const results = analyzer.compareGroups(
@@ -895,8 +915,14 @@ describe("MetricsAnalyzer", () => {
     });
 
     test("compares genomes created between groups", () => {
-      const group1 = [createMockSession({ genomesCreated: 5 })];
-      const group2 = [createMockSession({ genomesCreated: 10 })];
+      const group1 = [
+        createMockSession({ genomesCreated: 5 }),
+        createMockSession({ genomesCreated: 6 }),
+      ];
+      const group2 = [
+        createMockSession({ genomesCreated: 10 }),
+        createMockSession({ genomesCreated: 11 }),
+      ];
       const analyzer = new MetricsAnalyzer([...group1, ...group2]);
 
       const results = analyzer.compareGroups(group1, group2, "A", "B");
@@ -908,8 +934,14 @@ describe("MetricsAnalyzer", () => {
     });
 
     test("compares time to first artifact between groups", () => {
-      const group1 = [createMockSession({ timeToFirstArtifact: 60000 })];
-      const group2 = [createMockSession({ timeToFirstArtifact: 120000 })];
+      const group1 = [
+        createMockSession({ timeToFirstArtifact: 60000 }),
+        createMockSession({ timeToFirstArtifact: 65000 }),
+      ];
+      const group2 = [
+        createMockSession({ timeToFirstArtifact: 120000 }),
+        createMockSession({ timeToFirstArtifact: 125000 }),
+      ];
       const analyzer = new MetricsAnalyzer([...group1, ...group2]);
 
       const results = analyzer.compareGroups(group1, group2, "A", "B");
@@ -921,8 +953,14 @@ describe("MetricsAnalyzer", () => {
     });
 
     test("compares mutations applied between groups", () => {
-      const group1 = [createMockSession({ mutationsApplied: 5 })];
-      const group2 = [createMockSession({ mutationsApplied: 15 })];
+      const group1 = [
+        createMockSession({ mutationsApplied: 5 }),
+        createMockSession({ mutationsApplied: 6 }),
+      ];
+      const group2 = [
+        createMockSession({ mutationsApplied: 15 }),
+        createMockSession({ mutationsApplied: 16 }),
+      ];
       const analyzer = new MetricsAnalyzer([...group1, ...group2]);
 
       const results = analyzer.compareGroups(group1, group2, "A", "B");
@@ -934,8 +972,8 @@ describe("MetricsAnalyzer", () => {
     });
 
     test("returns array of ComparisonResult objects", () => {
-      const group1 = [createMockSession()];
-      const group2 = [createMockSession()];
+      const group1 = [createMockSession(), createMockSession()];
+      const group2 = [createMockSession(), createMockSession()];
       const analyzer = new MetricsAnalyzer([...group1, ...group2]);
 
       const results = analyzer.compareGroups(group1, group2, "A", "B");
@@ -945,8 +983,14 @@ describe("MetricsAnalyzer", () => {
     });
 
     test("each result includes group names, metric, means", () => {
-      const group1 = [createMockSession({ genomesCreated: 5 })];
-      const group2 = [createMockSession({ genomesCreated: 10 })];
+      const group1 = [
+        createMockSession({ genomesCreated: 5 }),
+        createMockSession({ genomesCreated: 6 }),
+      ];
+      const group2 = [
+        createMockSession({ genomesCreated: 10 }),
+        createMockSession({ genomesCreated: 11 }),
+      ];
       const analyzer = new MetricsAnalyzer([...group1, ...group2]);
 
       const results = analyzer.compareGroups(
@@ -978,8 +1022,8 @@ describe("MetricsAnalyzer", () => {
     });
 
     test("each result includes interpretation string", () => {
-      const group1 = [createMockSession()];
-      const group2 = [createMockSession()];
+      const group1 = [createMockSession(), createMockSession()];
+      const group2 = [createMockSession(), createMockSession()];
       const analyzer = new MetricsAnalyzer([...group1, ...group2]);
 
       const results = analyzer.compareGroups(group1, group2, "A", "B");
@@ -989,8 +1033,14 @@ describe("MetricsAnalyzer", () => {
     });
 
     test("converts durations to minutes for readability", () => {
-      const group1 = [createMockSession({ duration: 60000 })]; // 1 min
-      const group2 = [createMockSession({ duration: 120000 })]; // 2 min
+      const group1 = [
+        createMockSession({ duration: 60000 }),
+        createMockSession({ duration: 60000 }),
+      ]; // 1 min
+      const group2 = [
+        createMockSession({ duration: 120000 }),
+        createMockSession({ duration: 120000 }),
+      ]; // 2 min
       const analyzer = new MetricsAnalyzer([...group1, ...group2]);
 
       const results = analyzer.compareGroups(group1, group2, "A", "B");
@@ -1001,8 +1051,14 @@ describe("MetricsAnalyzer", () => {
     });
 
     test("filters null timeToFirstArtifact before comparison", () => {
-      const group1 = [createMockSession({ timeToFirstArtifact: null })];
-      const group2 = [createMockSession({ timeToFirstArtifact: 60000 })];
+      const group1 = [
+        createMockSession({ timeToFirstArtifact: null }),
+        createMockSession({ timeToFirstArtifact: null }),
+      ];
+      const group2 = [
+        createMockSession({ timeToFirstArtifact: 60000 }),
+        createMockSession({ timeToFirstArtifact: 65000 }),
+      ];
       const analyzer = new MetricsAnalyzer([...group1, ...group2]);
 
       const results = analyzer.compareGroups(group1, group2, "A", "B");
@@ -1121,13 +1177,17 @@ session-3,180000,15,12,60000,15,3000,4000,4,3,2,3,3,2,2,3,2,2,4,3,2,1,2,2,[]`;
     ).toThrow();
   });
 
-  test("handles malformed numeric values (defaults to 0)", () => {
+  test("rejects rows with malformed numeric values", () => {
+    const warnSpy = spyOn(console, "warn").mockImplementation(() => {});
     const csv = `sessionId,duration,genomesCreated,genomesExecuted,timeToFirstArtifact,mutationsApplied,startTime,endTime,renderMode_visual,renderMode_audio,renderMode_both,mutation_silent,mutation_missense,mutation_nonsense,mutation_frameshift,mutation_point,mutation_insertion,mutation_deletion,feature_diffViewer,feature_timeline,feature_evolution,feature_assessment,feature_export,errorCount,errorTypes
 test,invalid,abc,xyz,30000,10,1000,2000,2,1,0,2,2,1,1,2,1,1,3,2,1,0,1,0,[]`;
-    const sessions = parseCSVContent(csv);
 
-    expect(sessions[0].duration).toBe(0); // NaN becomes 0
-    expect(sessions[0].genomesCreated).toBe(0);
+    // Schema-based validation rejects rows with invalid numeric values
+    expect(() => parseCSVContent(csv)).toThrow("No valid sessions found");
+    expect(warnSpy).toHaveBeenCalledWith(
+      expect.stringContaining("Skipped 1 invalid row"),
+    );
+    warnSpy.mockRestore();
   });
 });
 

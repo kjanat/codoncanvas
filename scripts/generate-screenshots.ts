@@ -1,4 +1,4 @@
-#!/usr/bin/env tsx
+#!/usr/bin/env bun
 
 /**
  * Screenshot generation utility for CodonCanvas showcase genomes.
@@ -8,23 +8,27 @@
  * Output: examples/screenshots/*.png (full size 400x400)
  */
 
-import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
-import { dirname, join } from "node:path";
-import { fileURLToPath } from "node:url";
+import { mkdir, readdir } from "node:fs/promises";
+import { basename, join, resolve } from "node:path";
+import { parseArgs } from "node:util";
 import { type Canvas, createCanvas } from "canvas";
-import { CodonLexer } from "../src/core/lexer";
-import type { Renderer } from "../src/core/renderer";
-import { CodonVM } from "../src/core/vm";
+import type { Renderer } from "@/core";
+import { CodonLexer } from "@/core/lexer";
+import { generateNoisePoints } from "@/core/renderer";
+import { CodonVM } from "@/core/vm";
 
-// ES module equivalents for __dirname
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
+/** Directory of the script */
+const __dirname = import.meta.dir;
+/** Directory of the examples */
+const __examplesDir = join(__dirname, "../examples");
+/** Directory of the screenshots */
+const __screenshotsDir = join(__examplesDir, "screenshots");
 
 /**
  * Node-canvas renderer adapter for server-side rendering.
  * Implements Renderer interface using node-canvas API.
  */
-class NodeCanvasRenderer implements Renderer {
+export class NodeCanvasRenderer implements Renderer {
   private canvas: Canvas;
   private ctx: ReturnType<Canvas["getContext"]>;
   private _x = 200;
@@ -45,6 +49,15 @@ class NodeCanvasRenderer implements Renderer {
 
   get height(): number {
     return this.canvas.height;
+  }
+
+  resize(_width?: number, _height?: number): void {
+    // For node-canvas, dimensions are set at construction time.
+    // Parameters ignored - just reset state to canvas center.
+    this._x = this.width / 2;
+    this._y = this.height / 2;
+    this._rotation = 0;
+    this._scale = 1;
   }
 
   clear(): void {
@@ -80,14 +93,15 @@ class NodeCanvasRenderer implements Renderer {
   }
 
   line(length: number): void {
-    const scaledLength = length * this._scale; // already scaled by VM
-    const rad = (this._rotation * Math.PI) / 180;
-    const endX = this._x + Math.cos(rad) * scaledLength;
-    const endY = this._y + Math.sin(rad) * scaledLength;
+    const scaledLength = length * this._scale;
+    this.ctx.save();
+    this.ctx.translate(this._x, this._y);
+    this.ctx.rotate((this._rotation * Math.PI) / 180);
     this.ctx.beginPath();
-    this.ctx.moveTo(this._x, this._y);
-    this.ctx.lineTo(endX, endY);
+    this.ctx.moveTo(-scaledLength / 2, 0);
+    this.ctx.lineTo(scaledLength / 2, 0);
     this.ctx.stroke();
+    this.ctx.restore();
   }
 
   triangle(size: number): void {
@@ -120,24 +134,12 @@ class NodeCanvasRenderer implements Renderer {
   }
 
   noise(seed: number, intensity: number): void {
-    const size = 100;
-    const imageData = this.ctx.createImageData(size, size);
-    let state = seed % 2147483647;
-    if (state <= 0) state += 2147483646;
-
-    for (let i = 0; i < size * size * 4; i += 4) {
-      state = (state * 48271) % 2147483647;
-      const rand = (state - 1) / 2147483646;
-      const gray = Math.floor(rand * intensity);
-      imageData.data[i] = gray;
-      imageData.data[i + 1] = gray;
-      imageData.data[i + 2] = gray;
-      imageData.data[i + 3] = Math.floor((intensity / 100) * 255);
-    }
-
+    const points = generateNoisePoints(seed, intensity, this.width);
     this.ctx.save();
-    this.ctx.translate(this._x - size / 2, this._y - size / 2);
-    this.ctx.putImageData(imageData, 0, 0);
+    this.ctx.translate(this._x, this._y);
+    for (const { x, y } of points) {
+      this.ctx.fillRect(x, y, 1, 1);
+    }
     this.ctx.restore();
   }
 
@@ -211,11 +213,14 @@ const SHOWCASE_GENOMES = [
 /**
  * Render a genome file to PNG.
  */
-function renderGenome(genomePath: string, outputPath: string): void {
-  console.log(`Rendering ${genomePath}...`);
+export async function renderGenome(
+  genomePath: Bun.BunFile,
+  outputPath: Bun.BunFile,
+): Promise<void> {
+  console.log(`Rendering ${genomePath.name}...`);
 
   // Read genome source
-  const source = readFileSync(genomePath, "utf-8");
+  const source = await genomePath.text();
 
   // Tokenize
   const lexer = new CodonLexer();
@@ -230,30 +235,90 @@ function renderGenome(genomePath: string, outputPath: string): void {
 
   // Export PNG
   const png = renderer.toPNG();
-  writeFileSync(outputPath, png);
+  await Bun.write(outputPath, png);
 
-  console.log(`✓ Generated ${outputPath}`);
+  console.log(`✓ Generated ${outputPath.name}`);
 }
 
 /**
  * Main execution.
  */
-function main(): void {
+async function main(): Promise<void> {
   console.log("🎨 CodonCanvas Screenshot Generator\n");
 
   // Ensure output directory exists
-  const screenshotsDir = join(__dirname, "../examples/screenshots");
-  mkdirSync(screenshotsDir, { recursive: true });
+  await mkdir(__screenshotsDir, { recursive: true });
 
-  // Render each showcase genome
+  const { values } = parseArgs({
+    args: Bun.argv,
+    options: {
+      all: { type: "boolean", short: "a" },
+      file: { type: "string", short: "f" },
+      help: { type: "boolean", short: "h" },
+    },
+    strict: true,
+    allowPositionals: true,
+  });
+
+  if (values.help) {
+    console.log(`
+Usage: bun scripts/generate-screenshots.ts [options]
+
+Options:
+  -a, --all      Render all .genome files in examples/ directory
+  -f, --file     Render a specific .genome file
+  -h, --help     Show this help message
+
+Examples:
+  bun scripts/generate-screenshots.ts              # Render showcase genomes
+  bun scripts/generate-screenshots.ts --all        # Render all examples
+  bun scripts/generate-screenshots.ts -f examples/fractalFlower.genome
+`);
+    process.exit(0);
+  }
+
+  let genomesToRender: string[] = [];
+
+  if (values.file) {
+    // Render specific file
+    // We need to handle full paths or relative paths
+    try {
+      const fullPath = Bun.file(
+        Bun.resolveSync(resolve(values.file), process.cwd()),
+      );
+      const name = basename(values.file, ".genome");
+      const outputPath = Bun.file(join(__screenshotsDir, `${name}.png`));
+
+      await renderGenome(fullPath, outputPath);
+      console.log(`\n📊 Summary: 1 successful, 0 failed`);
+      console.log(`📁 Screenshot saved to: examples/screenshots/${name}.png\n`);
+      process.exit(0);
+    } catch (error) {
+      console.error(`✗ Failed to render ${values.file}:`, error);
+      process.exit(1);
+    }
+  } else if (values.all) {
+    // Render all .genome files in examples directory
+    const files = await readdir(__examplesDir);
+    genomesToRender = files
+      .filter((file) => file.endsWith(".genome"))
+      .map((file) => file.replace(".genome", ""));
+  } else {
+    // Default: Render showcase genomes
+    genomesToRender = SHOWCASE_GENOMES;
+  }
+
+  // Render the selected genomes
   let successCount = 0;
   let errorCount = 0;
 
-  for (const genomeName of SHOWCASE_GENOMES) {
+  for (const genomeName of genomesToRender) {
     try {
-      const genomePath = join(__dirname, `../examples/${genomeName}.genome`);
-      const outputPath = join(screenshotsDir, `${genomeName}.png`);
-      renderGenome(genomePath, outputPath);
+      const genomePath = Bun.file(
+        Bun.resolveSync(`./${genomeName}.genome`, __examplesDir),
+      );
+      const outputPath = Bun.file(join(__screenshotsDir, `${genomeName}.png`));
+      await renderGenome(genomePath, outputPath);
       successCount++;
     } catch (error) {
       console.error(`✗ Failed to render ${genomeName}:`, error);
@@ -267,5 +332,7 @@ function main(): void {
   process.exit(errorCount > 0 ? 1 : 0);
 }
 
-// Run main
-main();
+// Only run when executed directly
+if (import.meta.main) {
+  main();
+}

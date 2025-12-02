@@ -9,42 +9,42 @@ ATG
   ; Outer spokes - 12 large elongated ellipses (rainbow gradient)
   GAA AAA GAA TTT GAA GCC TTA ; Color(0, 63, 37) red
   GAA TCC GAA CCC GTA          ; Ellipse 53×21
-  GAA GGC AGA                 ; Rotate 30
+  GAA CTG AGA                 ; Rotate 30
   GAA ATT GAA TTT GAA GCC TTA ; Color(15, 63, 37) orange
   GAA TCC GAA CCC GTA          ; Ellipse 53×21
-  GAA GGC AGA                 ; Rotate 30
+  GAA CTG AGA                 ; Rotate 30
   GAA CCC GAA TTT GAA GCC TTA ; Color(21, 63, 37) yellow-orange
   GAA TCC GAA CCC GTA          ; Ellipse 53×21
-  GAA GGC AGA                 ; Rotate 30
-  GAA TTT GAA TTT GAA GCC TTA ; Color(63, 63, 37) yellow
+  GAA CTG AGA                 ; Rotate 30
+  GAA TTT GAA GCC GAA GCC TTA ; Color(63, 37, 37) #d25561 red-pink
   GAA TCC GAA CCC GTA          ; Ellipse 53×21
-  GAA GGC AGA                 ; Rotate 30
-  GAA TTT GAA TCC GAA GCC TTA ; Color(63, 53, 37) yellow-green
+  GAA CTG AGA                 ; Rotate 30
+  GAA TTT GAA TCC GAA GCC TTA ; Color(63, 53, 37) #ec3a4b red
   GAA TCC GAA CCC GTA          ; Ellipse 53×21
-  GAA GGC AGA                 ; Rotate 30
-  GAA TTT GAA AGG GAA GCC TTA ; Color(63, 10, 37) lime
+  GAA CTG AGA                 ; Rotate 30
+  GAA TTT GAA AGG GAA GCC TTA ; Color(63, 10, 37) #a48386 mauve
   GAA TCC GAA CCC GTA          ; Ellipse 53×21
-  GAA GGC AGA                 ; Rotate 30
-  GAA TCC GAA AGG GAA GCC TTA ; Color(53, 10, 37) green
+  GAA CTG AGA                 ; Rotate 30
+  GAA TCC GAA AGG GAA GCC TTA ; Color(53, 10, 37) #a383a4 muted purple
   GAA TCC GAA CCC GTA          ; Ellipse 53×21
-  GAA GGC AGA                 ; Rotate 30
-  GAA AGG GAA TTT GAA TCC TTA ; Color(10, 63, 53) cyan
+  GAA CTG AGA                 ; Rotate 30
+  GAA AGG GAA TTT GAA TCC TTA ; Color(10, 63, 53) #fef9a8 yellow
   GAA TCC GAA CCC GTA          ; Ellipse 53×21
-  GAA GGC AGA                 ; Rotate 30
+  GAA CTG AGA                 ; Rotate 30
   GAA ATT GAA TTT GAA TCC TTA ; Color(15, 63, 53) light blue
   GAA TCC GAA CCC GTA          ; Ellipse 53×21
-  GAA GGC AGA                 ; Rotate 30
+  GAA CTG AGA                 ; Rotate 30
   GAA GCC GAA TTT GAA TCC TTA ; Color(37, 63, 53) blue
   GAA TCC GAA CCC GTA          ; Ellipse 53×21
-  GAA GGC AGA                 ; Rotate 30
-  GAA TTT GAA TTT GAA TCC TTA ; Color(63, 63, 53) purple
+  GAA CTG AGA                 ; Rotate 30
+  GAA TTT GAA TCC GAA TCC TTA ; Color(63, 53, 53) #f7afb6 pink
   GAA TCC GAA CCC GTA          ; Ellipse 53×21
-  GAA GGC AGA                 ; Rotate 30
-  GAA TTT GAA TCC GAA TCC TTA ; Color(63, 53, 53) magenta
+  GAA CTG AGA                 ; Rotate 30
+  GAA TTT GAA TCC GAA TCC TTA ; Color(63, 53, 53) #f7afb6 pink
   GAA TCC GAA CCC GTA          ; Ellipse 53×21
 
   ; Center - Bright white core
-  GAA TTT GAA TTT GAA TTT TTA ; Color(63, 63, 63) white
+  GAA TTT GAA TTT GAA TTT TTA ; Color(63, 63, 63) #fff7f8 pale pink
   GAA CCC GGA                 ; Circle 21
 
 TAA

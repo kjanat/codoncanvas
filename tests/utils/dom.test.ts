@@ -6,10 +6,15 @@
  */
 import { afterEach, describe, expect, test } from "bun:test";
 import {
+  escapeHtml,
   getElement,
   getElementOrNull,
+  getElementOrNullUnsafe,
+  getElementUnsafe,
   querySelector,
   querySelectorAll,
+  querySelectorUnsafe,
+  showStatus,
 } from "@/utils/dom";
 
 describe("DOMUtils", () => {
@@ -397,6 +402,110 @@ describe("DOMUtils", () => {
       // Now it should work
       const result = getElement("dynamic", HTMLDivElement);
       expect(result).toBeInstanceOf(HTMLDivElement);
+    });
+  });
+
+  // escapeHtml
+  describe("escapeHtml", () => {
+    test("escapes ampersand", () => {
+      expect(escapeHtml("a & b")).toBe("a &amp; b");
+    });
+
+    test("escapes less than", () => {
+      expect(escapeHtml("<div>")).toBe("&lt;div&gt;");
+    });
+
+    test("escapes greater than", () => {
+      expect(escapeHtml("a > b")).toBe("a &gt; b");
+    });
+
+    test("escapes double quotes", () => {
+      expect(escapeHtml('"hello"')).toBe("&quot;hello&quot;");
+    });
+
+    test("escapes single quotes", () => {
+      expect(escapeHtml("it's")).toBe("it&#39;s");
+    });
+
+    test("escapes forward slashes", () => {
+      expect(escapeHtml("a/b")).toBe("a&#x2F;b");
+    });
+
+    test("escapes multiple special characters", () => {
+      expect(escapeHtml('<script>alert("xss")</script>')).toBe(
+        "&lt;script&gt;alert(&quot;xss&quot;)&lt;&#x2F;script&gt;",
+      );
+    });
+
+    test("returns empty string unchanged", () => {
+      expect(escapeHtml("")).toBe("");
+    });
+
+    test("returns safe string unchanged", () => {
+      expect(escapeHtml("hello world")).toBe("hello world");
+    });
+  });
+
+  // showStatus
+  describe("showStatus", () => {
+    test("sets innerHTML with escaped message and type", () => {
+      const container = createElement("div", "status-container");
+
+      showStatus(container, "Test message", "success", 100);
+
+      expect(container.innerHTML).toContain("Test message");
+      expect(container.innerHTML).toContain("success");
+    });
+
+    test("escapes HTML in message and type", () => {
+      const container = createElement("div", "status-container2");
+
+      showStatus(container, "<script>alert(1)</script>", "error", 100);
+
+      expect(container.innerHTML).not.toContain("<script>");
+      expect(container.innerHTML).toContain("&lt;script&gt;");
+    });
+  });
+
+  // Legacy unsafe functions
+  describe("getElementUnsafe", () => {
+    test("returns element by ID", () => {
+      createElement("div", "unsafe-el");
+      const result = getElementUnsafe("unsafe-el");
+      expect(result).toBeInstanceOf(HTMLElement);
+    });
+
+    test("throws when element not found", () => {
+      expect(() => getElementUnsafe("nonexistent")).toThrow(
+        'Element with id "nonexistent" not found',
+      );
+    });
+  });
+
+  describe("getElementOrNullUnsafe", () => {
+    test("returns element by ID", () => {
+      createElement("div", "unsafe-null-el");
+      const result = getElementOrNullUnsafe("unsafe-null-el");
+      expect(result).toBeInstanceOf(HTMLElement);
+    });
+
+    test("returns null when element not found", () => {
+      const result = getElementOrNullUnsafe("nonexistent");
+      expect(result).toBeNull();
+    });
+  });
+
+  describe("querySelectorUnsafe", () => {
+    test("returns element by selector", () => {
+      createElement("div", undefined, "unsafe-query");
+      const result = querySelectorUnsafe(".unsafe-query");
+      expect(result).toBeInstanceOf(HTMLElement);
+    });
+
+    test("throws when selector not found", () => {
+      expect(() => querySelectorUnsafe(".nonexistent")).toThrow(
+        'Element matching ".nonexistent" not found',
+      );
     });
   });
 });
