@@ -4,11 +4,9 @@ description: "Git commit. Args: [push|no-push|no-verify|amend]..."
 
 Commit staged changes.
 
-arguments:
-
 <consider>
 
-$ARGUMENTS
+arguments: $ARGUMENTS
 
 </consider>
 
@@ -59,3 +57,9 @@ Here is the status:
 !`git --no-pager status`
 
 </git_status>
+
+<git_diff_stat_staged>
+
+!`git --no-pager diff --stat --staged`
+
+</git_diff_stat_staged>
