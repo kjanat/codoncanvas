@@ -17,4 +17,9 @@ export type {
   RenderModePreferences,
   ToolAdoption,
 } from "./report";
-export type { ComparisonResult, DescriptiveStats } from "./statistics";
+export type {
+  ComparisonResult,
+  DescriptiveStats,
+  PowerAnalysisResult,
+  TTestResult,
+} from "./statistics";

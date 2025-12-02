@@ -15,9 +15,13 @@ export {
 
 export {
   cohensD,
+  independentTTest,
   interpretEffectSize,
   interpretPValue,
   normalCDF,
+  pairedTTest,
+  powerAnalysis,
+  tCritical,
   tDistribution,
   tTest,
 } from "./inferential";

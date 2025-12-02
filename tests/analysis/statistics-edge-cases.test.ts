@@ -8,7 +8,11 @@ import { describe, expect, test } from "bun:test";
 import { mean, sd } from "@/analysis/statistics/descriptive";
 import {
   cohensD,
+  independentTTest,
   normalCDF,
+  pairedTTest,
+  powerAnalysis,
+  tCritical,
   tDistribution,
   tTest,
 } from "@/analysis/statistics/inferential";
@@ -290,6 +294,170 @@ describe("cohensD edge cases", () => {
     const group2 = [90, 91, 92, 93, 94]; // mean=92, sd~1.58
     const d = cohensD(group1, group2);
     expect(Math.abs(d)).toBeGreaterThan(0.8);
+  });
+});
+
+describe("pairedTTest", () => {
+  test("throws when arrays have different lengths", () => {
+    expect(() => pairedTTest([1, 2, 3], [1, 2])).toThrow(
+      "Pre and post arrays must have same length",
+    );
+  });
+
+  test("calculates correct t-statistic for simple case", () => {
+    // Pre: [10, 20, 30], Post: [15, 25, 35]
+    // Differences: [5, 5, 5], meanDiff = 5, sdDiff = 0
+    // t = 5 / (0/sqrt(3)) = Infinity
+    const result = pairedTTest([10, 20, 30], [15, 25, 35]);
+    expect(result.t).toBe(Number.POSITIVE_INFINITY);
+    expect(result.df).toBe(2);
+    expect(result.meanDiff).toBe(5);
+  });
+
+  test("calculates correct values for varied differences", () => {
+    const pre = [10, 20, 30, 40, 50];
+    const post = [12, 22, 35, 45, 55];
+    const result = pairedTTest(pre, post);
+
+    // Differences: [2, 2, 5, 5, 5], meanDiff = 3.8
+    expect(result.meanDiff).toBeCloseTo(3.8, 5);
+    expect(result.df).toBe(4);
+    expect(result.t).toBeGreaterThan(0);
+    expect(result.p).toBeLessThan(0.1); // marginally significant
+    expect(result.cohensD).toBeGreaterThan(0);
+    expect(result.ciLower).toBeLessThan(result.meanDiff);
+    expect(result.ciUpper).toBeGreaterThan(result.meanDiff);
+  });
+
+  test("handles identical pre and post (no change)", () => {
+    const data = [10, 20, 30];
+    const result = pairedTTest(data, data);
+
+    expect(result.meanDiff).toBe(0);
+    expect(Number.isNaN(result.t)).toBe(true); // 0/0
+    expect(result.cohensD).toBe(0); // guard against 0/0
+  });
+
+  test("handles negative differences (decline)", () => {
+    const pre = [50, 60, 70];
+    const post = [40, 50, 60];
+    const result = pairedTTest(pre, post);
+
+    expect(result.meanDiff).toBe(-10);
+    expect(result.t).toBeLessThan(0);
+  });
+});
+
+describe("independentTTest", () => {
+  test("calculates correct values for simple groups", () => {
+    const group1 = [10, 20, 30, 40, 50];
+    const group2 = [5, 15, 25, 35, 45];
+    const result = independentTTest(group1, group2);
+
+    // Mean diff = 30 - 25 = 5
+    expect(result.meanDiff).toBe(5);
+    expect(result.df).toBe(8); // n1 + n2 - 2
+    expect(result.t).toBeGreaterThan(0);
+    expect(result.cohensD).toBeGreaterThan(0);
+    expect(result.ciLower).toBeLessThan(result.meanDiff);
+    expect(result.ciUpper).toBeGreaterThan(result.meanDiff);
+  });
+
+  test("handles groups with different sizes", () => {
+    const group1 = [10, 20, 30];
+    const group2 = [5, 15, 25, 35, 45];
+    const result = independentTTest(group1, group2);
+
+    expect(result.df).toBe(6); // 3 + 5 - 2
+    expect(Number.isFinite(result.t)).toBe(true);
+  });
+
+  test("handles identical groups (t = 0)", () => {
+    const data = [10, 20, 30];
+    const result = independentTTest(data, data);
+
+    expect(result.meanDiff).toBe(0);
+    expect(result.t).toBe(0);
+    expect(result.p).toBeCloseTo(1, 3);
+  });
+});
+
+describe("tCritical", () => {
+  test("returns z-critical for large df (alpha=0.05)", () => {
+    expect(tCritical(0.05, 200)).toBeCloseTo(1.96, 2);
+  });
+
+  test("returns z-critical for large df (alpha=0.01)", () => {
+    expect(tCritical(0.01, 200)).toBeCloseTo(2.576, 2);
+  });
+
+  test("uses lookup table for small df", () => {
+    expect(tCritical(0.05, 10)).toBeCloseTo(2.228, 2);
+    expect(tCritical(0.05, 20)).toBeCloseTo(2.086, 2);
+    expect(tCritical(0.05, 30)).toBeCloseTo(2.042, 2);
+  });
+
+  test("interpolates to nearest table entry", () => {
+    // df=15 should use df=20 entry (2.086)
+    expect(tCritical(0.05, 15)).toBeCloseTo(2.086, 2);
+  });
+
+  test("handles df=5 (smallest table entry)", () => {
+    expect(tCritical(0.05, 5)).toBeCloseTo(2.571, 2);
+  });
+
+  test("handles very small df (uses first table entry)", () => {
+    expect(tCritical(0.05, 2)).toBeCloseTo(2.571, 2);
+  });
+});
+
+describe("powerAnalysis", () => {
+  test("calculates correct sample size for medium effect (d=0.5)", () => {
+    const result = powerAnalysis(0.5);
+
+    // n = 2*(1.96 + 0.84)^2 / 0.5^2 = 2*7.84 / 0.25 = 62.72 -> 63
+    expect(result.requiredNPerGroup).toBe(63);
+    expect(result.totalN).toBe(126);
+    // With 20% attrition: 63 / 0.8 = 78.75 -> 79
+    expect(result.inflatedNPerGroup).toBe(79);
+    expect(result.inflatedTotal).toBe(158);
+  });
+
+  test("calculates correct sample size for large effect (d=0.8)", () => {
+    const result = powerAnalysis(0.8);
+
+    // n = 2*(1.96 + 0.84)^2 / 0.8^2 = 15.68 / 0.64 = 24.5 -> 25
+    expect(result.requiredNPerGroup).toBe(25);
+    expect(result.totalN).toBe(50);
+  });
+
+  test("handles alpha=0.01", () => {
+    const result = powerAnalysis(0.5, 0.01);
+
+    // n = 2*(2.576 + 0.84)^2 / 0.5^2 = 93.55 -> 94
+    expect(result.requiredNPerGroup).toBe(94);
+  });
+
+  test("handles power=0.9", () => {
+    const result = powerAnalysis(0.5, 0.05, 0.9);
+
+    // n = 2*(1.96 + 1.28)^2 / 0.5^2 = 83.98 -> 84
+    expect(result.requiredNPerGroup).toBe(84);
+  });
+
+  test("handles custom attrition rate", () => {
+    const result = powerAnalysis(0.5, 0.05, 0.8, 0.3);
+
+    // requiredNPerGroup = 63, with 30% attrition: 63 / 0.7 = 90
+    expect(result.requiredNPerGroup).toBe(63);
+    expect(result.inflatedNPerGroup).toBe(90);
+  });
+
+  test("handles very small effect size (requires large n)", () => {
+    const result = powerAnalysis(0.2);
+
+    // n = 2*(1.96 + 0.84)^2 / 0.2^2 = 392
+    expect(result.requiredNPerGroup).toBe(392);
   });
 });
 

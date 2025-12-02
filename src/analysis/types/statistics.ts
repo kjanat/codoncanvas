@@ -28,6 +28,46 @@ export interface DescriptiveStats {
 }
 
 /**
+ * Result from a paired or independent t-test
+ *
+ * Contains the t-statistic, degrees of freedom, p-value,
+ * effect size (Cohen's d), and confidence interval for mean difference.
+ */
+export interface TTestResult {
+  /** T-statistic value */
+  t: number;
+  /** Degrees of freedom */
+  df: number;
+  /** Two-tailed p-value */
+  p: number;
+  /** Cohen's d effect size */
+  cohensD: number;
+  /** Lower bound of 95% CI for mean difference */
+  ciLower: number;
+  /** Upper bound of 95% CI for mean difference */
+  ciUpper: number;
+  /** Mean difference between groups */
+  meanDiff: number;
+}
+
+/**
+ * Power analysis result for sample size planning
+ *
+ * Calculates required sample sizes for detecting a given effect size
+ * with specified alpha and power levels.
+ */
+export interface PowerAnalysisResult {
+  /** Required n per group (without attrition) */
+  requiredNPerGroup: number;
+  /** Total n required (both groups) */
+  totalN: number;
+  /** Inflated n per group (accounting for attrition) */
+  inflatedNPerGroup: number;
+  /** Inflated total n */
+  inflatedTotal: number;
+}
+
+/**
  * Statistical comparison result between two groups
  *
  * T-test result comparing a metric between two student groups.

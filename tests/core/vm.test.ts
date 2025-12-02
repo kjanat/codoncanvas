@@ -836,14 +836,13 @@ describe("CodonVM", () => {
 
   describe("Error handling", () => {
     test("throws on unknown codon", () => {
+      // Create tokens with an invalid codon to test error handling
+      // Using type assertion since "XXX" is intentionally not a valid Codon
       const tokens = [
-        // biome-ignore lint/suspicious/noExplicitAny: Testing invalid codon handling
-        { text: "ATG" as any, position: 0, line: 1 },
-        // biome-ignore lint/suspicious/noExplicitAny: Testing invalid codon handling
-        { text: "XXX" as any, position: 3, line: 1 },
-        // biome-ignore lint/suspicious/noExplicitAny: Testing invalid codon handling
-        { text: "TAA" as any, position: 6, line: 1 },
-      ];
+        { text: "ATG", position: 0, line: 1 },
+        { text: "XXX", position: 3, line: 1 },
+        { text: "TAA", position: 6, line: 1 },
+      ] as { text: Codon; position: number; line: number }[];
 
       expect(() => vm.run(tokens)).toThrow("Unknown codon");
     });

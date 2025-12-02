@@ -107,44 +107,59 @@ describe("Tutorial", () => {
   describe("validation logic", () => {
     const lexer = new CodonLexer();
 
-    // biome-ignore lint/complexity/noExcessiveCognitiveComplexity: test helper mirrors actual validation
+    function checkRequiredCodons(
+      code: string,
+      requiredCodons: readonly string[] | undefined,
+    ): string[] {
+      if (!requiredCodons) return [];
+      const errors: string[] = [];
+      const codeUpper = code.toUpperCase();
+      for (const required of requiredCodons) {
+        if (!codeUpper.includes(required)) {
+          errors.push(`Missing required codon: ${required}`);
+        }
+      }
+      return errors;
+    }
+
+    function checkMinInstructions(
+      tokenCount: number,
+      minInstructions: number | undefined,
+    ): string[] {
+      if (minInstructions && tokenCount < minInstructions) {
+        return [`Need at least ${minInstructions} instructions`];
+      }
+      return [];
+    }
+
+    function checkCustomValidator(
+      code: string,
+      validator: ((code: string) => boolean) | undefined,
+    ): string[] {
+      if (validator && !validator(code)) {
+        return ["Custom validation failed"];
+      }
+      return [];
+    }
+
     function validateCode(
       lesson: TutorialLesson,
       code: string,
     ): { passed: boolean; errors: string[] } {
-      const errors: string[] = [];
-
       try {
         const tokens = lexer.tokenize(code);
-
-        if (lesson.validation.requiredCodons) {
-          const codeUpper = code.toUpperCase();
-          for (const required of lesson.validation.requiredCodons) {
-            if (!codeUpper.includes(required)) {
-              errors.push(`Missing required codon: ${required}`);
-            }
-          }
-        }
-
-        if (
-          lesson.validation.minInstructions &&
-          tokens.length < lesson.validation.minInstructions
-        ) {
-          errors.push(
-            `Need at least ${lesson.validation.minInstructions} instructions`,
-          );
-        }
-
-        if (lesson.validation.customValidator) {
-          if (!lesson.validation.customValidator(code)) {
-            errors.push("Custom validation failed");
-          }
-        }
+        const errors = [
+          ...checkRequiredCodons(code, lesson.validation.requiredCodons),
+          ...checkMinInstructions(
+            tokens.length,
+            lesson.validation.minInstructions,
+          ),
+          ...checkCustomValidator(code, lesson.validation.customValidator),
+        ];
+        return { passed: errors.length === 0, errors };
       } catch (error) {
-        errors.push(`Parse error: ${error}`);
+        return { passed: false, errors: [`Parse error: ${error}`] };
       }
-
-      return { passed: errors.length === 0, errors };
     }
 
     test("basics-1: valid solution passes", () => {
