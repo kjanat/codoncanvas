@@ -64,22 +64,28 @@ export function useRenderGenome(): UseRenderGenomeReturn {
   const { resolvedTheme } = useTheme();
   const isDark = resolvedTheme === "dark";
 
-  // Clear canvas
+  // Clear canvas with theme-appropriate background
   const clear = (canvas: HTMLCanvasElement | null) => {
     if (!canvas) return;
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
-    ctx.fillStyle = isDark ? "#2d2d30" : "white";
+    ctx.fillStyle = isDark ? "#1e1e1e" : "#ffffff";
     ctx.fillRect(0, 0, canvas.width, canvas.height);
   };
 
-  // Render genome with detailed result
+  // Render genome with detailed result (auto-clears canvas first)
   const renderWithResult = (
     genome: string,
     canvas: HTMLCanvasElement | null,
+    options: { skipClear?: boolean } = {},
   ): RenderResult => {
     if (!canvas) {
       return { success: false, error: "Canvas not available" };
+    }
+
+    // Clear canvas before rendering (unless skipped)
+    if (!options.skipClear) {
+      clear(canvas);
     }
 
     try {

@@ -507,7 +507,7 @@ describe("PlaygroundToolbar - Reference Toggle", () => {
       display: { ...createDefaultProps().display, showReference: false },
     });
 
-    const button = screen.getByText("Reference");
+    const button = screen.getByRole("button", { name: /codon reference/i });
     expect(button.getAttribute("aria-label")).toBe("Show codon reference");
   });
 
@@ -516,7 +516,7 @@ describe("PlaygroundToolbar - Reference Toggle", () => {
       display: { ...createDefaultProps().display, showReference: true },
     });
 
-    const button = screen.getByText("Reference");
+    const button = screen.getByRole("button", { name: /codon reference/i });
     expect(button.getAttribute("aria-label")).toBe("Hide codon reference");
   });
 
@@ -525,7 +525,7 @@ describe("PlaygroundToolbar - Reference Toggle", () => {
       display: { ...createDefaultProps().display, showReference: false },
     });
 
-    const button = screen.getByText("Reference");
+    const button = screen.getByRole("button", { name: /codon reference/i });
     expect(button.getAttribute("aria-pressed")).toBe("false");
   });
 
@@ -534,14 +534,14 @@ describe("PlaygroundToolbar - Reference Toggle", () => {
       display: { ...createDefaultProps().display, showReference: true },
     });
 
-    const button = screen.getByText("Reference");
+    const button = screen.getByRole("button", { name: /codon reference/i });
     expect(button.getAttribute("aria-pressed")).toBe("true");
   });
 
   test("calls onToggleReference when clicked", () => {
     const { props } = renderToolbar();
 
-    const button = screen.getByText("Reference");
+    const button = screen.getByRole("button", { name: /codon reference/i });
     fireEvent.click(button);
 
     expect(props.display.onToggleReference).toHaveBeenCalledTimes(1);

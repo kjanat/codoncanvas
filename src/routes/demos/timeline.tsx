@@ -16,6 +16,56 @@ import {
   useTimelinePlayer,
   VMStatePanel,
 } from "@/pages/demos/timeline";
+import type { CodonToken } from "@/types/genetics";
+import { CODON_MAP } from "@/types/genetics";
+import { Opcode } from "@/types/vm";
+
+/**
+ * Calculate the safe slice end index that doesn't cut PUSH+literal pairs.
+ * PUSH is a 2-token instruction (opcode + numeric literal).
+ * See: https://github.com/kjanat/codoncanvas/issues/5
+ */
+function getSafeSliceEnd(tokens: CodonToken[], stepIndex: number): number {
+  let sliceEnd = stepIndex + 1;
+  if (sliceEnd <= tokens.length) {
+    const lastToken = tokens[sliceEnd - 1];
+    const opcode = CODON_MAP[lastToken.text];
+    if (opcode === Opcode.PUSH && sliceEnd < tokens.length) {
+      sliceEnd++;
+    }
+  }
+  return sliceEnd;
+}
+
+/**
+ * Render a single frame for GIF export at the given step.
+ */
+function renderFrame(
+  tokens: CodonToken[],
+  stepIndex: number,
+  width: number,
+  height: number,
+  isDark: boolean,
+): HTMLCanvasElement {
+  const canvas = document.createElement("canvas");
+  canvas.width = width;
+  canvas.height = height;
+  const renderer = new Canvas2DRenderer(canvas);
+  renderer.setColor(0, 0, isDark ? 100 : 0);
+  const vm = new CodonVM(renderer);
+
+  const sliceEnd = getSafeSliceEnd(tokens, stepIndex);
+
+  try {
+    vm.run(tokens.slice(0, sliceEnd));
+  } catch (err) {
+    throw new Error(
+      `GIF export failed at step ${stepIndex}: ${(err as Error).message}`,
+    );
+  }
+
+  return canvas;
+}
 
 function TimelineDemoPage() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -49,20 +99,13 @@ function TimelineDemoPage() {
         repeat: 0,
       });
 
-      const frames: HTMLCanvasElement[] = [];
       const lexer = new CodonLexer();
       const tokens = lexer.tokenize(player.genome);
+      const { width, height } = canvasRef.current;
 
-      for (let i = 0; i < player.snapshots.length; i++) {
-        const canvas = document.createElement("canvas");
-        canvas.width = canvasRef.current.width;
-        canvas.height = canvasRef.current.height;
-        const renderer = new Canvas2DRenderer(canvas);
-        renderer.setColor(0, 0, isDark ? 100 : 0);
-        const vm = new CodonVM(renderer);
-        vm.run(tokens.slice(0, i + 1));
-        frames.push(canvas);
-      }
+      const frames = player.snapshots.map((_, i) =>
+        renderFrame(tokens, i, width, height, isDark),
+      );
 
       const blob = await exporter.exportFrames(frames, (progress) => {
         setExportProgress(progress.percent);

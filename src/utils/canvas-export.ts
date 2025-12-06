@@ -74,17 +74,20 @@ export function downloadCanvasPNG(
 }
 
 /**
- * Clear canvas to white background.
+ * Clear canvas with background color.
  *
  * @param canvas - The canvas element to clear
+ * @param isDark - Whether dark mode is active (default: false)
  */
-export function clearCanvas(canvas: HTMLCanvasElement | null): void {
+export function clearCanvas(
+  canvas: HTMLCanvasElement | null,
+  isDark: boolean = false,
+): void {
   if (!canvas) return;
 
   const ctx = canvas.getContext("2d");
   if (ctx) {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    ctx.fillStyle = "white";
+    ctx.fillStyle = isDark ? "#1e1e1e" : "#ffffff";
     ctx.fillRect(0, 0, canvas.width, canvas.height);
   }
 }

@@ -2,15 +2,13 @@
  * CanvasPreview - Small canvas preview for genome visualization
  *
  * Renders a genome to a small canvas for use in gallery/lists.
- * Automatically handles errors gracefully.
+ * Uses useRenderGenome hook for consistent rendering across the app.
  */
 
 import type { ReactElement } from "react";
 import { memo, useEffect, useRef } from "react";
-import { type ResolvedTheme, useTheme } from "@/contexts";
-import { Canvas2DRenderer } from "@/core";
-import { CodonLexer } from "@/core/lexer";
-import { CodonVM } from "@/core/vm";
+
+import { useRenderGenome } from "@/hooks";
 
 interface CanvasPreviewProps {
   /** Genome string to render */
@@ -21,63 +19,33 @@ interface CanvasPreviewProps {
   height?: number;
   /** Additional CSS classes */
   className?: string;
-  /** Optional theme override - if not provided, uses useTheme hook */
-  theme?: ResolvedTheme;
-}
-
-function renderGenome(
-  canvas: HTMLCanvasElement,
-  genome: string,
-  width: number,
-  height: number,
-  isDark: boolean,
-): void {
-  try {
-    const lexer = new CodonLexer();
-    const tokens = lexer.tokenize(genome);
-    const renderer = new Canvas2DRenderer(canvas);
-    // Set default color based on theme
-    renderer.setColor(0, 0, isDark ? 100 : 0);
-    const vm = new CodonVM(renderer);
-    vm.run(tokens);
-  } catch (_err) {
-    // Clear canvas on error
-    const ctx = canvas.getContext("2d");
-    if (ctx) {
-      ctx.fillStyle = isDark ? "#2d2d30" : "#f8f9fa";
-      ctx.fillRect(0, 0, width, height);
-      ctx.fillStyle = "#6c757d";
-      ctx.font = "10px sans-serif";
-      ctx.textAlign = "center";
-      ctx.fillText("Preview unavailable", width / 2, height / 2);
-    }
-  }
 }
 
 /**
  * Memoized canvas preview component.
- * Only re-renders when genome or theme changes.
+ * Only re-renders when genome changes.
  */
 export const CanvasPreview = memo(function CanvasPreview({
   genome,
   width = 150,
   height = 150,
   className = "",
-  theme: themeProp,
 }: CanvasPreviewProps): ReactElement {
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const { resolvedTheme } = useTheme();
-  // Use prop if provided, otherwise use hook value
-  const effectiveTheme = themeProp ?? resolvedTheme;
-  const isDark = effectiveTheme === "dark";
+  const { render } = useRenderGenome();
 
   // Re-render when genome/dimensions/theme change
+  // Note: render function changes when isDark changes (from useRenderGenome)
   useEffect(() => {
     const canvas = canvasRef.current;
     if (canvas) {
-      renderGenome(canvas, genome, width, height, isDark);
+      // Set canvas dimensions
+      canvas.width = width;
+      canvas.height = height;
+      // Render genome (auto-clears with correct background)
+      render(genome, canvas);
     }
-  }, [genome, width, height, isDark]);
+  }, [genome, width, height, render]);
 
   return (
     <canvas

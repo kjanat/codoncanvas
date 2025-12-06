@@ -1,6 +1,6 @@
-# Lefthook configuration
+# yaml-language-server: $schema=https://raw.githubusercontent.com/evilmartians/lefthook/master/schema.json
 # https://lefthook.dev/configuration/
-
+---
 pre-commit:
   commands:
     typecheck:
