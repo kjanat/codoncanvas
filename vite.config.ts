@@ -2,17 +2,18 @@ import tailwindcss from "@tailwindcss/vite";
 import { tanstackRouter } from "@tanstack/router-plugin/vite";
 import react from "@vitejs/plugin-react";
 import { defineConfig } from "vite";
+import { buildConfig } from "./build.config";
 
 const root: string = import.meta.dirname;
-const isCI: boolean = process.env.GITHUB_PAGES === "true";
 
 export default defineConfig({
   // GitHub Pages base path - set by deploy.yml from actions/configure-pages
-  base: process.env.VITE_BASE_PATH ? `${process.env.VITE_BASE_PATH}/` : "/",
+  base: buildConfig.base,
   publicDir: "public",
 
   server: {
     host: "0.0.0.0",
+    port: buildConfig.server.port,
     allowedHosts: ["*"],
     strictPort: true,
   },
@@ -48,7 +49,7 @@ export default defineConfig({
 
   build: {
     outDir: "dist",
-    sourcemap: !isCI,
+    sourcemap: !buildConfig.isCI,
   },
 
   css: {
