@@ -62,14 +62,20 @@ test.describe("Mutation Lab - Silent Mutation", () => {
     const [originalData, mutatedData] = await Promise.all([
       canvases.first().evaluate((canvas: HTMLCanvasElement) => {
         const ctx = canvas.getContext("2d");
+        if (!ctx) {
+          throw new Error("Failed to get 2D context for original canvas");
+        }
         return ctx
-          ?.getImageData(0, 0, canvas.width, canvas.height)
+          .getImageData(0, 0, canvas.width, canvas.height)
           .data.toString();
       }),
       canvases.last().evaluate((canvas: HTMLCanvasElement) => {
         const ctx = canvas.getContext("2d");
+        if (!ctx) {
+          throw new Error("Failed to get 2D context for mutated canvas");
+        }
         return ctx
-          ?.getImageData(0, 0, canvas.width, canvas.height)
+          .getImageData(0, 0, canvas.width, canvas.height)
           .data.toString();
       }),
     ]);

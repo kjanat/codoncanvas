@@ -19,6 +19,8 @@ interface CanvasPreviewProps {
   height?: number;
   /** Additional CSS classes */
   className?: string;
+  /** Test ID for E2E testing */
+  "data-testid"?: string;
 }
 
 /**
@@ -30,6 +32,7 @@ export const CanvasPreview = memo(function CanvasPreview({
   width = 150,
   height = 150,
   className = "",
+  "data-testid": testId,
 }: CanvasPreviewProps): ReactElement {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const { render } = useRenderGenome();
@@ -51,6 +54,7 @@ export const CanvasPreview = memo(function CanvasPreview({
   return (
     <canvas
       className={className}
+      data-testid={testId}
       height={height}
       ref={canvasRef}
       width={width}

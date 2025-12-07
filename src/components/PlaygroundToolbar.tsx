@@ -8,8 +8,8 @@
 import {
   type ChangeEvent,
   type JSX,
-  type KeyboardEvent,
   memo,
+  useCallback,
   useEffect,
   useRef,
   useState,
@@ -85,6 +85,11 @@ function OverflowMenu({ io, history }: OverflowMenuProps): JSX.Element {
   const triggerRef = useRef<HTMLButtonElement>(null);
   const menuRef = useRef<HTMLDivElement>(null);
 
+  const closeMenu = useCallback(() => {
+    setIsOpen(false);
+    triggerRef.current?.focus();
+  }, []);
+
   // Move focus to menu when opened, restore to trigger when closed
   useEffect(() => {
     if (isOpen) {
@@ -92,17 +97,24 @@ function OverflowMenu({ io, history }: OverflowMenuProps): JSX.Element {
     }
   }, [isOpen]);
 
-  const closeMenu = () => {
-    setIsOpen(false);
-    triggerRef.current?.focus();
-  };
-
-  const handleBackdropKeyDown = (e: KeyboardEvent<HTMLDivElement>) => {
-    if (e.key === "Escape") {
-      e.preventDefault();
-      closeMenu();
+  // Global Escape key listener for keyboard accessibility
+  useEffect(() => {
+    if (!isOpen) {
+      return;
     }
-  };
+
+    const handleGlobalKeyDown = (e: globalThis.KeyboardEvent) => {
+      if (e.key === "Escape") {
+        e.preventDefault();
+        closeMenu();
+      }
+    };
+
+    document.addEventListener("keydown", handleGlobalKeyDown);
+    return () => {
+      document.removeEventListener("keydown", handleGlobalKeyDown);
+    };
+  }, [isOpen, closeMenu]);
 
   return (
     <div className="relative md:hidden">
@@ -127,7 +139,6 @@ function OverflowMenu({ io, history }: OverflowMenuProps): JSX.Element {
           />
           <div
             className="absolute right-0 top-full z-50 mt-1 w-48 rounded-lg border border-border bg-surface py-1 shadow-lg"
-            onKeyDown={handleBackdropKeyDown}
             ref={menuRef}
             role="menu"
             tabIndex={-1}

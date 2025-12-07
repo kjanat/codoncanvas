@@ -25,8 +25,8 @@ command: `bun diff [all|staged|unstaged|commit|branch|pr] [ref]`
 
 </message>
 
-Please let me know if the above message is empty. Also, then, run `bun diff` to
-see the changes.
+Please let me know if the above message is empty. Then run `bun diff` to see the
+changes.
 
 ## CodonCanvas Guidelines
 

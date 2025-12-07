@@ -94,6 +94,7 @@ export function LessonContent({
             <div className="flex justify-center rounded-lg bg-surface-alt p-2 md:p-4">
               <CanvasPreview
                 className="max-w-full rounded-md"
+                data-testid="lesson-preview-canvas"
                 genome={code}
                 height={250}
                 width={250}

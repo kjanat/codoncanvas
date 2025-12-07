@@ -56,7 +56,15 @@ test.describe("Mutation Lab - Frameshift Mutation", () => {
       .locator("div")
       .filter({ hasText: "Original" })
       .first();
-    await expect(originalPanel).toBeVisible();
+
+    // Derive codons from customGenome and assert each appears in the Original panel
+    const codons = customGenome.split(/\s+/);
+    for (const codon of codons) {
+      await expect(
+        originalPanel.getByText(codon),
+        `Original panel should contain codon "${codon}" from custom genome`,
+      ).toBeVisible();
+    }
 
     // At least one codon from our custom genome should appear in the changes
     const changesSection = page.getByRole("heading", {

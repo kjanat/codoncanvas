@@ -39,6 +39,7 @@ export function TimelineControls({
     <Card className="mt-6">
       <div className="flex items-center gap-4">
         <button
+          aria-label="Reset to start"
           className="rounded-md p-2 hover:bg-bg-light"
           onClick={onReset}
           title="Reset to start"
@@ -48,6 +49,7 @@ export function TimelineControls({
         </button>
 
         <button
+          aria-label="Previous step"
           className="rounded-md p-2 hover:bg-bg-light disabled:opacity-50"
           disabled={currentStep === 0}
           onClick={onStepBack}
@@ -66,6 +68,7 @@ export function TimelineControls({
         </button>
 
         <button
+          aria-label="Next step"
           className="rounded-md p-2 hover:bg-bg-light disabled:opacity-50"
           disabled={currentStep >= totalSteps - 1}
           onClick={onStepForward}

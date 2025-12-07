@@ -39,39 +39,30 @@ test.describe("Accessibility - ARIA Labels", () => {
 
     for (let i = 0; i < Math.min(count, 10); i++) {
       const button = buttons.nth(i);
-      const ariaLabel = (await button.getAttribute("aria-label"))?.trim() || "";
-      const textContent = (await button.textContent())?.trim() || "";
 
-      // At least one must be a non-empty trimmed string
-      const hasAriaLabel = ariaLabel.length > 0;
-      const hasTextContent = textContent.length > 0;
+      // Normalize both sources up front (treat missing as empty string)
+      const ariaLabel = (
+        (await button.getAttribute("aria-label")) ?? ""
+      ).trim();
+      const textContent = ((await button.textContent()) ?? "").trim();
 
+      // Derive accessible name: prefer aria-label, fall back to text content
+      const accessibleName = ariaLabel || textContent;
+
+      // Must have a non-empty accessible name
       expect(
-        hasAriaLabel || hasTextContent,
+        accessibleName.length > 0,
         `Button ${i} has no accessible name (aria-label or text content)`,
       ).toBe(true);
 
-      // If aria-label is present, it must not be a generic value
-      if (hasAriaLabel) {
-        const isGeneric = GENERIC_LABELS.some(
-          (generic) => ariaLabel.toLowerCase() === generic,
-        );
-        expect(
-          isGeneric,
-          `Button ${i} has generic aria-label "${ariaLabel}"`,
-        ).toBe(false);
-      }
-
-      // If relying on text content (no aria-label), it must not be generic
-      if (!hasAriaLabel && hasTextContent) {
-        const isGeneric = GENERIC_LABELS.some(
-          (generic) => textContent.toLowerCase() === generic,
-        );
-        expect(
-          isGeneric,
-          `Button ${i} has generic text content "${textContent}"`,
-        ).toBe(false);
-      }
+      // Accessible name must not be a generic value
+      const isGeneric = GENERIC_LABELS.some(
+        (generic) => accessibleName.toLowerCase() === generic,
+      );
+      expect(
+        isGeneric,
+        `Button ${i} has generic accessible name "${accessibleName}"`,
+      ).toBe(false);
     }
   });
 });

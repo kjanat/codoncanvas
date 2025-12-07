@@ -37,8 +37,8 @@ test.describe("Tutorial Lesson Validation", () => {
     // Wait for lesson to load
     await expect(page.getByRole("heading", { name: "Preview" })).toBeVisible();
 
-    // Find the preview canvas
-    const preview = page.locator("canvas").first();
+    // Find the preview canvas using data-testid (not fragile .first())
+    const preview = page.getByTestId("lesson-preview-canvas");
     await expect(preview).toBeVisible();
 
     // Verify canvas element has dimensions
@@ -52,7 +52,8 @@ test.describe("Tutorial Lesson Validation", () => {
     // Wait for lesson to load
     await expect(page.getByRole("heading", { name: "Preview" })).toBeVisible();
 
-    const preview = page.locator("canvas").first();
+    // Use data-testid for reliable canvas selection
+    const preview = page.getByTestId("lesson-preview-canvas");
     await expect(preview).toBeVisible();
 
     // Verify canvas has actual content (not blank)

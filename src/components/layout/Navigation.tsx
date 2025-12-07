@@ -45,7 +45,10 @@ export function Navigation() {
   const { location } = useRouterState();
 
   return (
-    <nav className="hidden items-center gap-1 md:flex">
+    <nav
+      aria-label="Primary navigation"
+      className="hidden items-center gap-1 md:flex"
+    >
       {NAV_LINKS.map((link) => (
         <Link
           className={`rounded-md px-3 py-2 text-sm font-medium transition-colors ${

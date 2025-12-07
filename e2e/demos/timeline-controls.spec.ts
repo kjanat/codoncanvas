@@ -29,10 +29,11 @@ test.describe("Timeline Navigation Controls", () => {
       return parseInt(match[1], 10);
     }
 
-    const nextButton = page.getByRole("button", { name: /next|forward|>/i });
-    const prevButton = page.getByRole("button", { name: /prev|back|</i });
+    // Use precise aria-label matches for timeline control buttons
+    const nextButton = page.getByRole("button", { name: /next\s*step/i });
+    const prevButton = page.getByRole("button", { name: /previous\s*step/i });
     const resetButton = page.getByRole("button", {
-      name: /reset|start|first/i,
+      name: /reset\s*to\s*start/i,
     });
 
     // Capture initial step
@@ -67,9 +68,9 @@ test.describe("Timeline Navigation Controls", () => {
     await slider.fill(String(midValue));
 
     // Verify step indicator reflects the slider position (UI is 1-based)
-    await expect(
-      page.getByText(new RegExp(`step ${midValue + 1}`, "i")),
-    ).toBeVisible();
+    // Use string matching instead of dynamic regex to avoid ReDoS warning
+    const expectedStep = `Step ${midValue + 1}`;
+    await expect(page.getByText(expectedStep, { exact: false })).toBeVisible();
   });
 
   test("timeline-play-button", async ({ page }): Promise<void> => {

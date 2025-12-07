@@ -34,7 +34,7 @@ test.describe("Timeline Capture", () => {
     ).toBeVisible();
 
     await expect(vmStatePanel.getByText("Rotation")).toBeVisible();
-    await expect(vmStatePanel.getByText(/\d+\.?\d*deg/)).toBeVisible();
+    await expect(vmStatePanel.getByText(/-?\d+\.?\d*deg/)).toBeVisible();
 
     await expect(vmStatePanel.getByText("Scale")).toBeVisible();
     await expect(vmStatePanel.getByText(/\d+\.?\d*x/)).toBeVisible();
@@ -42,7 +42,19 @@ test.describe("Timeline Capture", () => {
     await expect(vmStatePanel.getByText("Color (HSL)")).toBeVisible();
     await expect(vmStatePanel.getByText(/\d+, \d+%, \d+%/)).toBeVisible();
 
-    await expect(vmStatePanel.getByText("Instructions")).toBeVisible();
+    // Get current step from step indicator (e.g., "Step 1 of 5")
+    const stepText = await page.getByText(/step \d+ of \d+/i).textContent();
+    const stepMatch = stepText?.match(/step (\d+) of/i);
+    const currentStep = stepMatch ? Number.parseInt(stepMatch[1], 10) : 0;
+
+    // Instruction count should match the current step number
+    const instructionsRow = vmStatePanel
+      .getByText("Instructions")
+      .locator("..");
+    const instructionCount = await instructionsRow
+      .getByText(/^\d+$/)
+      .textContent();
+    expect(Number.parseInt(instructionCount ?? "0", 10)).toBe(currentStep);
 
     await expect(vmStatePanel.getByText("Stack")).toBeVisible();
     // Stack shows either "(empty)" or "[values]"
@@ -79,8 +91,8 @@ test.describe("Timeline Capture", () => {
     expect(initialStep.current).toBeGreaterThanOrEqual(1);
     expect(initialStep.total).toBeGreaterThan(1);
 
-    // Click Next to increment step
-    const nextButton = page.getByRole("button", { name: /next|forward|>/i });
+    // Click Next to increment step (use precise aria-label match)
+    const nextButton = page.getByRole("button", { name: /next\s*step/i });
     await nextButton.click();
 
     // Verify step incremented by 1
