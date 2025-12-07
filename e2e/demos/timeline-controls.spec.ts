@@ -20,26 +20,40 @@ test.describe("Timeline Navigation Controls", () => {
   });
 
   test("timeline-navigation-controls", async ({ page }): Promise<void> => {
-    // 1. Click 'Next step' button multiple times
+    // Helper to parse current step from "Step X of Y" text
+    async function getCurrentStep(): Promise<number> {
+      const stepText = await page.getByText(/step \d+ of \d+/i).textContent();
+      if (!stepText) throw new Error("Step indicator not found");
+      const match = stepText.match(/step (\d+) of (\d+)/i);
+      if (!match) throw new Error(`Failed to parse step text: "${stepText}"`);
+      return parseInt(match[1], 10);
+    }
+
     const nextButton = page.getByRole("button", { name: /next|forward|>/i });
-    await expect(nextButton).toBeVisible();
-    await nextButton.click();
-    await expect(page.getByText(/step \d+ of \d+/i)).toBeVisible();
-
-    // 2. Click 'Previous step' button
     const prevButton = page.getByRole("button", { name: /prev|back|</i });
-    await expect(prevButton).toBeVisible();
-    await prevButton.click();
-    // Verify step counter updated
-    await expect(page.getByText(/step \d+ of \d+/i)).toBeVisible();
-
-    // 3. Click 'Reset to start' button
     const resetButton = page.getByRole("button", {
       name: /reset|start|first/i,
     });
-    await expect(resetButton).toBeVisible();
+
+    // Capture initial step
+    const initialStep = await getCurrentStep();
+
+    // Click Next - step should increment by 1
+    await nextButton.click();
+    const afterNext = await getCurrentStep();
+    expect(afterNext).toBe(initialStep + 1);
+
+    // Click Previous - step should decrement by 1
+    await prevButton.click();
+    const afterPrev = await getCurrentStep();
+    expect(afterPrev).toBe(afterNext - 1);
+
+    // Advance a few steps then Reset - should return to step 1
+    await nextButton.click();
+    await nextButton.click();
     await resetButton.click();
-    await expect(page.getByText(/step 1 of \d+/i)).toBeVisible();
+    const afterReset = await getCurrentStep();
+    expect(afterReset).toBe(1);
   });
 
   test("timeline-slider-navigation", async ({ page }): Promise<void> => {

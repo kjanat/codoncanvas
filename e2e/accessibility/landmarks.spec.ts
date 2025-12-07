@@ -12,17 +12,17 @@ test.describe("Accessibility - Landmarks", () => {
     // Check for a single header/banner landmark
     const header = page.locator("header, [role='banner']");
     await expect(header).toHaveCount(1);
-    await expect(header.first()).toBeVisible();
+    await expect(header).toBeVisible();
 
     // 3. Check for a single main landmark
     const main = page.locator("main, [role='main']");
     await expect(main).toHaveCount(1);
-    await expect(main.first()).toBeVisible();
+    await expect(main).toBeVisible();
 
     // 4. Check for a single footer/contentinfo landmark
     const footer = page.locator("footer:not([class*='Devtools'])");
     await expect(footer).toHaveCount(1);
-    await expect(footer.first()).toBeVisible();
+    await expect(footer).toBeVisible();
   });
 
   test("navigation-landmark", async ({ page }): Promise<void> => {

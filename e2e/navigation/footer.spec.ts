@@ -21,7 +21,10 @@ test.describe("Navigation - Footer", () => {
     // 4. Verify creator attribution link
     const creatorLink = footer.getByRole("link", { name: /kjanat/i });
     if (await creatorLink.isVisible()) {
-      await expect(creatorLink).toHaveAttribute("href", /github\.com\/kjanat/);
+      await expect(creatorLink).toHaveAttribute(
+        "href",
+        "https://github.com/kjanat",
+      );
     }
   });
 });

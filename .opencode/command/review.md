@@ -19,10 +19,9 @@ command: `bun diff [all|staged|unstaged|commit|branch|pr] [ref]`
 
 <message>
 
-<!-- I have tried passing `$ARGUMENTS` to the command, but it haven't gotten it to work -->
 <!-- Docs here: https://opencode.ai/docs/commands#file-references -->
 
-!`bun diff`
+!`bun diff $ARGUMENTS`
 
 </message>
 

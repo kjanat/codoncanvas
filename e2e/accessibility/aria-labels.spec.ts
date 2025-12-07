@@ -38,6 +38,13 @@ test.describe("Accessibility - ARIA Labels", () => {
       const accessibleName = name ?? text;
       expect(accessibleName).toBeTruthy();
       expect(accessibleName?.length).toBeGreaterThan(0);
+
+      // Reject generic/non-descriptive labels
+      const genericLabels = ["button", "click", "submit", "link", "icon"];
+      const isGeneric = genericLabels.some(
+        (generic) => accessibleName?.toLowerCase() === generic,
+      );
+      expect(isGeneric).toBe(false);
     }
   });
 });

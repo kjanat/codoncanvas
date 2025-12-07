@@ -5,7 +5,7 @@ import { expect, test } from "@playwright/test";
 import { DEFAULT_GENOME } from "../support/constants";
 
 test.describe("Core Playground", () => {
-  test("undo-redo-functionality", async ({ page, isMobile }) => {
+  test("undo-redo-functionality", async ({ page, isMobile }): Promise<void> => {
     const genomeEditor = page.getByRole("textbox", { name: "Genome editor" });
     const originalGenome = DEFAULT_GENOME;
     const modifiedGenome = "ATG GAA AAT GGA CCC TAA";
@@ -14,14 +14,27 @@ test.describe("Core Playground", () => {
     await page.goto("/");
 
     if (isMobile) {
-      // On mobile, test via overflow menu - simplified flow
+      // On mobile, test via overflow menu
       const moreButton = page.getByRole("button", { name: "More actions" });
 
-      // 2. Type additional codons in editor first
+      // 2. Verify initial editor state matches baseline
+      await expect(genomeEditor).toBeVisible();
+      await expect(genomeEditor).toHaveValue(originalGenome);
+
+      // 3. Verify initial Undo/Redo are disabled
+      await moreButton.click();
+      const undoButtonInitial = page.getByRole("button", { name: "Undo" });
+      const redoButtonInitial = page.getByRole("button", { name: "Redo" });
+      await expect(undoButtonInitial).toBeDisabled();
+      await expect(redoButtonInitial).toBeDisabled();
+      // Close menu before editing
+      await page.keyboard.press("Escape");
+
+      // 4. Type additional codons in editor
       await genomeEditor.fill(modifiedGenome);
       await expect(genomeEditor).toHaveValue(modifiedGenome);
 
-      // 3. Open menu and click Undo
+      // 5. Open menu and click Undo
       await moreButton.click();
       const undoButton = page.getByRole("button", { name: "Undo" });
       await expect(undoButton).toBeEnabled();
@@ -30,7 +43,7 @@ test.describe("Core Playground", () => {
       // Verify Undo restores previous editor state
       await expect(genomeEditor).toHaveValue(originalGenome);
 
-      // 4. Open menu and click Redo
+      // 6. Open menu and click Redo
       await moreButton.click();
       const redoButton = page.getByRole("button", { name: "Redo" });
       await expect(redoButton).toBeEnabled();

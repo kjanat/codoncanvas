@@ -7,32 +7,43 @@ test.describe("Responsive Design", () => {
   test.use({ viewport: { width: 375, height: 667 } });
 
   test("mobile-viewport-layout", async ({ page }): Promise<void> => {
-    // 1. Navigate to main pages
+    // Homepage layout
     await page.goto("/");
 
-    // 3. Verify layout adapts appropriately
-    // Editor should still be visible
+    // No horizontal overflow
+    const hasNoOverflow = await page.evaluate(
+      () =>
+        window.innerWidth >=
+        (document.scrollingElement?.scrollWidth ?? document.body.scrollWidth),
+    );
+    expect(hasNoOverflow).toBe(true);
+
+    // Core elements visible
     await expect(
       page.getByRole("textbox", { name: "Genome editor" }),
     ).toBeVisible();
-
-    // Canvas output should still be visible
     await expect(
       page.getByRole("img", { name: "Genome execution output" }),
     ).toBeVisible();
-
-    // Run button should still be accessible
     await expect(
       page.getByRole("button", { name: "Run genome" }),
     ).toBeVisible();
 
-    // Visit gallery route at mobile viewport
+    // Gallery layout
     await page.goto("/gallery");
+
+    // No horizontal overflow
+    const galleryHasNoOverflow = await page.evaluate(
+      () =>
+        window.innerWidth >=
+        (document.scrollingElement?.scrollWidth ?? document.body.scrollWidth),
+    );
+    expect(galleryHasNoOverflow).toBe(true);
+
+    // Core elements visible
     await expect(
       page.getByRole("heading", { name: "Example Gallery" }),
     ).toBeVisible();
-
-    // Verify search is accessible on mobile
     await expect(
       page.getByRole("searchbox", { name: "Search examples..." }),
     ).toBeVisible();

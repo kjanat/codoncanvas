@@ -5,36 +5,27 @@ import { expect, test } from "@playwright/test";
 
 test.describe("Navigation - Theme Toggle", () => {
   test("theme-toggle", async ({ page }): Promise<void> => {
-    // 1. Navigate to homepage
     await page.goto("/");
 
-    // 2. Find theme toggle button
-    const themeButton = page.getByRole("button", { name: /theme|dark|light/i });
+    // Button name includes current theme: "Toggle theme (system|light|dark)"
+    const themeButton = page.getByRole("button", {
+      name: /Toggle theme \((system|light|dark)\)/i,
+    });
     await expect(themeButton).toBeVisible();
 
-    // Get initial theme state from document
-    const initialTheme = await page.evaluate(() =>
-      document.documentElement.getAttribute("data-theme"),
+    // Capture initial accessible name
+    const initialName = await themeButton.evaluate(
+      (el) => el.textContent?.trim() ?? "",
     );
-    // Initial theme is likely 'light' if system theme is light, or 'dark' if last used.
-    // To ensure a change, click twice to go through the cycle.
 
-    // 3. Click theme toggle first time (e.g., system -> light)
-    await themeButton.click({ force: true });
-    // 4. Click theme toggle second time (e.g., light -> dark)
-    await themeButton.click({ force: true });
+    // Single toggle should cycle to next theme state
+    await themeButton.click();
 
-    // 5. Verify theme changes
-    await expect
-      .poll(async () => {
-        return await page.evaluate(() =>
-          document.documentElement.getAttribute("data-theme"),
-        );
-      })
-      .not.toBe(initialTheme);
-
-    // Theme should have changed (or cycled through system -> light -> dark)
-    await expect(themeButton).toBeVisible();
+    // Button text should change after toggle (system -> light -> dark cycle)
+    const newName = await themeButton.evaluate(
+      (el) => el.textContent?.trim() ?? "",
+    );
+    expect(newName).not.toBe(initialName);
   });
 
   test("theme-persists-across-navigation", async ({ page }): Promise<void> => {

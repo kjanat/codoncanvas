@@ -1,20 +1,19 @@
 // spec: e2e/test-plan.md
 // seed: e2e/seed.spec.ts
 
+import { promises as fs } from "node:fs";
 import { expect, test } from "@playwright/test";
 import { DEFAULT_GENOME } from "../support/constants";
 
 test.describe("File Operations", () => {
-  test("save-genome-file", async ({ page, isMobile }) => {
-    // 1. Navigate to playground
+  test("save-genome-file", async ({ page, isMobile }): Promise<void> => {
     await page.goto("/");
 
-    // 2. Verify default genome is present
     await expect(
       page.getByRole("textbox", { name: "Genome editor" }),
     ).toHaveValue(DEFAULT_GENOME);
 
-    // 3. Click 'Save' button and handle download (via overflow menu on mobile)
+    // Click Save button (via overflow menu on mobile)
     const downloadPromise = page.waitForEvent("download");
 
     if (isMobile) {
@@ -26,7 +25,20 @@ test.describe("File Operations", () => {
 
     const download = await downloadPromise;
 
-    // 4. Verify download was triggered
+    // Verify filename
     expect(download.suggestedFilename()).toMatch(/\.genome$/);
+
+    // Verify file exists and has content
+    const path = await download.path();
+    expect(path).toBeTruthy();
+
+    if (path) {
+      try {
+        const stats = await fs.stat(path);
+        expect(stats.size).toBeGreaterThan(0);
+      } finally {
+        await fs.unlink(path);
+      }
+    }
   });
 });

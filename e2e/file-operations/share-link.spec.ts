@@ -10,22 +10,19 @@ test.describe("File Operations", () => {
     context,
     isMobile,
     browserName,
-  }) => {
-    // Grant clipboard permissions - only supported in Chromium
-    // Firefox and WebKit don't support clipboard-read permission
+  }): Promise<void> => {
+    // Clipboard read is only supported in Chromium; Firefox/WebKit rely on UI feedback
     if (browserName === "chromium") {
       await context.grantPermissions(["clipboard-read", "clipboard-write"]);
     }
 
-    // 1. Navigate to playground
     await page.goto("/");
 
-    // 2. Verify genome code is present
     await expect(
       page.getByRole("textbox", { name: "Genome editor" }),
     ).toHaveValue(DEFAULT_GENOME);
 
-    // 3. Click 'Share' button (via overflow menu on mobile)
+    // Click Share button (via overflow menu on mobile)
     if (isMobile) {
       await page.getByRole("button", { name: "More actions" }).click();
       await page.getByRole("button", { name: "Share" }).click();
@@ -33,30 +30,30 @@ test.describe("File Operations", () => {
       await page.getByRole("button", { name: "Copy shareable link" }).click();
     }
 
-    // 4. Verify share action completed
-    // Check for UI feedback since clipboard doesn't work reliably in headless CI
+    // Verify share action completed - button remains accessible
     if (isMobile) {
-      // Mobile: verify menu closed or toast appeared
       await expect(
         page.getByRole("button", { name: "More actions" }),
       ).toBeVisible();
     } else {
-      // Desktop: verify button shows feedback (e.g., "Copied!" text or icon change)
       await expect(
-        page.getByRole("button", { name: /copied|share/i }),
+        page.getByRole("button", { name: "Copy shareable link" }),
       ).toBeVisible();
     }
 
-    // Verify URL contains genome parameter if share updates the URL
-    // await expect(page).toHaveURL(/[?&]g=/);
-
-    // Read clipboard only in Chromium where it's supported
+    // Validate clipboard content in Chromium
     if (browserName === "chromium") {
-      const clipboardContent = await page.evaluate(() =>
-        navigator.clipboard.readText(),
-      );
-      expect(clipboardContent).toMatch(/^https?:\/\/.+/);
-      expect(clipboardContent).toContain("?g=");
+      try {
+        const clipboardContent = await page.evaluate(() =>
+          navigator.clipboard.readText(),
+        );
+        expect(clipboardContent).toMatch(/^https?:\/\/.+/);
+        expect(clipboardContent).toContain("?g=");
+      } catch (error) {
+        throw new Error(
+          `Clipboard read failed in Chromium - this may indicate a CI permission issue: ${error}`,
+        );
+      }
     }
   });
 });

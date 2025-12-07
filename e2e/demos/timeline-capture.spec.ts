@@ -20,9 +20,35 @@ test.describe("Timeline Capture", () => {
       timeout: 10000,
     });
 
-    // 4. Verify VM state updates with execution data
-    // Should show position, rotation, color, stack info
-    await expect(page.getByRole("heading", { name: "VM State" })).toBeVisible();
+    // 4. Verify VM state panel shows execution data, not just a title
+    const vmStateHeading = page.getByRole("heading", { name: "VM State" });
+    await expect(vmStateHeading).toBeVisible();
+
+    // Get the panel containing the VM state (parent of heading)
+    const vmStatePanel = vmStateHeading.locator("..");
+
+    // Verify each field label exists with formatted values
+    await expect(vmStatePanel.getByText("Position")).toBeVisible();
+    await expect(
+      vmStatePanel.getByText(/\(-?\d+\.?\d*, -?\d+\.?\d*\)/),
+    ).toBeVisible();
+
+    await expect(vmStatePanel.getByText("Rotation")).toBeVisible();
+    await expect(vmStatePanel.getByText(/\d+\.?\d*deg/)).toBeVisible();
+
+    await expect(vmStatePanel.getByText("Scale")).toBeVisible();
+    await expect(vmStatePanel.getByText(/\d+\.?\d*x/)).toBeVisible();
+
+    await expect(vmStatePanel.getByText("Color (HSL)")).toBeVisible();
+    await expect(vmStatePanel.getByText(/\d+, \d+%, \d+%/)).toBeVisible();
+
+    await expect(vmStatePanel.getByText("Instructions")).toBeVisible();
+
+    await expect(vmStatePanel.getByText("Stack")).toBeVisible();
+    // Stack shows either "(empty)" or "[values]"
+    await expect(
+      vmStatePanel.getByText(/\(empty\)|\[.*\]/).first(),
+    ).toBeVisible();
   });
 
   test("timeline-step-count-increments", async ({ page }): Promise<void> => {
@@ -33,12 +59,33 @@ test.describe("Timeline Capture", () => {
     });
     await captureButton.click();
 
-    // Verify step counter exists and shows expected format
-    const stepText = page.getByText(/step (\d+) of (\d+)/i);
+    // Helper to parse step number from "Step X of Y"
+    async function parseStep(): Promise<{ current: number; total: number }> {
+      const text = await page.getByText(/step \d+ of \d+/i).textContent();
+      if (!text) throw new Error("Step indicator not found");
+      const match = text.match(/step (\d+) of (\d+)/i);
+      if (!match) throw new Error(`Failed to parse step text: "${text}"`);
+      return {
+        current: parseInt(match[1], 10),
+        total: parseInt(match[2], 10),
+      };
+    }
+
+    // Wait for timeline to be ready and verify format
+    const stepText = page.getByText(/step \d+ of \d+/i);
     await expect(stepText).toBeVisible({ timeout: 10000 });
 
-    // Verify the format is exactly "Step X of Y"
-    const text = await stepText.textContent();
-    expect(text).toMatch(/^Step \d+ of \d+$/i);
+    const initialStep = await parseStep();
+    expect(initialStep.current).toBeGreaterThanOrEqual(1);
+    expect(initialStep.total).toBeGreaterThan(1);
+
+    // Click Next to increment step
+    const nextButton = page.getByRole("button", { name: /next|forward|>/i });
+    await nextButton.click();
+
+    // Verify step incremented by 1
+    const afterNext = await parseStep();
+    expect(afterNext.current).toBe(initialStep.current + 1);
+    expect(afterNext.total).toBe(initialStep.total); // total unchanged
   });
 });

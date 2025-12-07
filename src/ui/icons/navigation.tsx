@@ -1,8 +1,9 @@
 /**
- * Navigation icons - arrows, chevrons, home
+ * Navigation icons - arrows, chevrons, home, menu, close
  */
 
 import type { JSX } from "react";
+import { CloseIcon } from "./actions";
 import type { IconProps } from "./types";
 
 export function ChevronDownIcon({
@@ -125,21 +126,10 @@ export function MenuIcon({ className = "h-6 w-6" }: IconProps): JSX.Element {
   );
 }
 
+/**
+ * XIcon is an alias for CloseIcon with a larger default size (h-6 w-6).
+ * Used primarily for mobile menu close buttons and modals.
+ */
 export function XIcon({ className = "h-6 w-6" }: IconProps): JSX.Element {
-  return (
-    <svg
-      aria-hidden="true"
-      className={className}
-      fill="none"
-      stroke="currentColor"
-      viewBox="0 0 24 24"
-    >
-      <path
-        d="M6 18L18 6M6 6l12 12"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        strokeWidth={2}
-      />
-    </svg>
-  );
+  return <CloseIcon className={className} />;
 }

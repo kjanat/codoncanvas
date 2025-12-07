@@ -38,16 +38,41 @@ test.describe("Mutation Lab - Frameshift Mutation", () => {
   test("custom-genome-mutation", async ({ page }): Promise<void> => {
     await page.goto("/demos/mutation");
 
-    // Enter custom genome
+    // Enter custom genome with specific codons
+    const customGenome = "ATG GAA CCC GGA TAA";
     const genomeInput = page.getByLabel(/original genome/i);
     await genomeInput.clear();
-    await genomeInput.fill("ATG GAA CCC GGA TAA");
+    await genomeInput.fill(customGenome);
 
-    // Apply any mutation
+    // Apply point mutation
     await page.getByRole("button", { name: /point/i }).click();
     await page.getByRole("button", { name: /apply mutation/i }).click();
 
-    // Should show result
+    // Verify mutation result appears
     await expect(page.getByText(/mutation result/i)).toBeVisible();
+
+    // Verify custom genome was actually used - check Original panel shows our codons
+    const originalPanel = page
+      .locator("div")
+      .filter({ hasText: "Original" })
+      .first();
+    await expect(originalPanel).toBeVisible();
+
+    // At least one codon from our custom genome should appear in the changes
+    const changesSection = page.getByRole("heading", {
+      name: "Changes at codon level:",
+    });
+    await expect(changesSection).toBeVisible();
+
+    // Verify the changed codon is from our custom genome
+    const changeItem = changesSection.locator("..").locator("li").first();
+    const changeText = await changeItem.textContent();
+    expect(changeText).toBeTruthy();
+    // Changed codon should be one of our custom genome codons
+    const customCodons = ["ATG", "GAA", "CCC", "GGA", "TAA"];
+    const hasCustomCodon = customCodons.some((codon) =>
+      changeText?.includes(codon),
+    );
+    expect(hasCustomCodon).toBe(true);
   });
 });

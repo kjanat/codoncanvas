@@ -48,15 +48,23 @@ test.describe("Core Playground", () => {
       page.getByText("Draw circle with radius from stack"),
     ).toBeVisible();
 
+    // Verify non-matching codons are hidden (negative assertion)
+    await expect(page.getByText("RECT", { exact: true })).not.toBeVisible();
+    await expect(page.getByText("PUSH", { exact: true })).not.toBeVisible();
+
     // 5. Clear search and click category filter 'Drawing'
     await searchBox.fill("");
     await page.getByRole("button", { name: "Drawing" }).click();
 
-    // Verify Drawing category shows drawing-related codons - verifies expected drawing-related codons are visible
+    // Verify Drawing category shows drawing-related codons
     await expect(page.getByText("CIRCLE", { exact: true })).toBeVisible();
     await expect(page.getByText("RECT", { exact: true })).toBeVisible();
     await expect(page.getByText("LINE", { exact: true })).toBeVisible();
     await expect(page.getByText("TRIANGLE", { exact: true })).toBeVisible();
+
+    // Verify control codons are hidden when Drawing filter is active (negative assertion)
+    await expect(page.getByText("PUSH", { exact: true })).not.toBeVisible();
+    await expect(page.getByText("IF_ZERO", { exact: true })).not.toBeVisible();
 
     // 6. Click a codon button (e.g., 'GGA') to insert into editor
     const originalValue = await genomeEditor.inputValue();

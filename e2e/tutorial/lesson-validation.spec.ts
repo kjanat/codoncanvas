@@ -31,7 +31,7 @@ test.describe("Tutorial Lesson Validation", () => {
     await expect(editor).toBeVisible();
   });
 
-  test("preview-canvas-renders", async ({ page }): Promise<void> => {
+  test("preview-canvas-exists", async ({ page }): Promise<void> => {
     await page.goto("/tutorial");
 
     // Wait for lesson to load
@@ -41,9 +41,24 @@ test.describe("Tutorial Lesson Validation", () => {
     const preview = page.locator("canvas").first();
     await expect(preview).toBeVisible();
 
-    // The preview should be present and rendered
-    // (Canvas content testing requires visual comparison)
+    // Verify canvas element has dimensions
     await expect(preview).toHaveAttribute("width");
     await expect(preview).toHaveAttribute("height");
+  });
+
+  test("preview-canvas-renders-content", async ({ page }): Promise<void> => {
+    await page.goto("/tutorial");
+
+    // Wait for lesson to load
+    await expect(page.getByRole("heading", { name: "Preview" })).toBeVisible();
+
+    const preview = page.locator("canvas").first();
+    await expect(preview).toBeVisible();
+
+    // Verify canvas has actual content (not blank)
+    const canvasData = await preview.evaluate((el: HTMLCanvasElement) =>
+      el.toDataURL(),
+    );
+    expect(canvasData).not.toBe("data:,"); // Canvas has content
   });
 });

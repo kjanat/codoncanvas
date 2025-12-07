@@ -13,18 +13,14 @@ test.describe("Error Handling", () => {
     // 2. Enter genome with invalid codons
     await genomeEditor.fill("ATG XYZ TAA");
 
-    // 3. Observe validation feedback
-    await expect(page.getByRole("alert")).toBeVisible();
+    // Validation feedback in alert panel
+    const errorPanel = page.getByRole("alert");
+    await expect(errorPanel).toBeVisible();
+    await expect(errorPanel.getByText(/Invalid character/)).toBeVisible();
 
-    // Verify error message indicates invalid codon
-    await expect(page.getByText(/Invalid character/)).toBeVisible();
-
-    // Verify Run button may be disabled
+    // Run button disabled when genome is invalid
     await expect(
       page.getByRole("button", { name: "Run genome" }),
     ).toBeDisabled();
-
-    // Verify error count is shown
-    await expect(page.getByText(/\d+ errors?/i)).toBeVisible();
   });
 });

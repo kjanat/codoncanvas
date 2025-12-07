@@ -5,6 +5,7 @@
  * Mobile: Slide-out drawer triggered by FAB
  */
 
+import type { JSX } from "react";
 import { useEffect, useState } from "react";
 
 import type { TutorialLesson } from "@/data/tutorial-lessons";
@@ -29,7 +30,7 @@ function LessonButton({
   isCurrent,
   isCompleted,
   onSelect,
-}: LessonButtonProps) {
+}: LessonButtonProps): JSX.Element {
   const baseClass =
     "flex w-full items-center gap-2 rounded-lg px-3 py-2.5 text-left text-sm transition-colors";
   const stateClass = isCurrent
@@ -65,7 +66,7 @@ export function ModuleSidebar({
   currentLessonId,
   completedLessons,
   onSelectLesson,
-}: ModuleSidebarProps) {
+}: ModuleSidebarProps): JSX.Element {
   const [isOpen, setIsOpen] = useState(false);
   const modules = [1, 2, 3];
 
@@ -144,13 +145,20 @@ export function ModuleSidebar({
 
       {/* Mobile: Drawer */}
       <div
+        aria-labelledby="module-sidebar-title"
+        aria-modal="true"
         className={`fixed inset-y-0 left-0 z-50 w-80 max-w-[85vw] transform bg-surface shadow-xl transition-transform duration-300 ease-in-out md:hidden ${
           isOpen ? "translate-x-0" : "-translate-x-full"
         }`}
         role="dialog"
       >
         <div className="flex items-center justify-between border-b border-border px-4 py-3">
-          <span className="text-lg font-semibold text-primary">Lessons</span>
+          <span
+            className="text-lg font-semibold text-primary"
+            id="module-sidebar-title"
+          >
+            Lessons
+          </span>
           <button
             aria-label="Close menu"
             className="flex h-11 w-11 items-center justify-center rounded-md text-text hover:bg-bg-light"

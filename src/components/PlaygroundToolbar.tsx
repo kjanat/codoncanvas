@@ -5,7 +5,7 @@
  * and reference panel toggle. Responsive design with icon-only on mobile.
  */
 
-import { type ChangeEvent, memo, useState } from "react";
+import { type ChangeEvent, type JSX, memo, useState } from "react";
 
 import type { ExampleWithKey } from "@/hooks/useExamples";
 import {
@@ -32,7 +32,10 @@ interface NucleotideModeToggleProps {
   onToggle: () => void;
 }
 
-function NucleotideModeToggle({ mode, onToggle }: NucleotideModeToggleProps) {
+function NucleotideModeToggle({
+  mode,
+  onToggle,
+}: NucleotideModeToggleProps): JSX.Element {
   const info = getNucleotideModeInfo(mode);
 
   return (
@@ -63,14 +66,13 @@ function NucleotideModeToggle({ mode, onToggle }: NucleotideModeToggleProps) {
   );
 }
 
-/** Overflow menu for mobile */
-function OverflowMenu({
-  io,
-  history,
-}: {
+interface OverflowMenuProps {
   io: ToolbarIOProps;
   history: ToolbarHistoryProps;
-}) {
+}
+
+/** Overflow menu for mobile */
+function OverflowMenu({ io, history }: OverflowMenuProps): JSX.Element {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
@@ -233,7 +235,7 @@ export const PlaygroundToolbar = memo(function PlaygroundToolbar({
   history,
   display,
   execution,
-}: PlaygroundToolbarProps) {
+}: PlaygroundToolbarProps): JSX.Element {
   return (
     <div className="flex flex-wrap items-center gap-1 border-b border-border px-2 py-2 sm:gap-2 sm:px-4">
       {/* Example selector */}
