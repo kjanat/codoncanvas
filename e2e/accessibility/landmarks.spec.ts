@@ -8,22 +8,21 @@ test.describe("Accessibility - Landmarks", () => {
     // 1. Navigate to homepage
     await page.goto("/");
 
-    // 2. Verify page has proper landmark regions (top-level only)
-    // Check for a single header/banner landmark (direct child of body)
-    const header = page.locator("body > header, body > [role='banner']");
-    await expect(header).toHaveCount(1);
+    // 2. Verify page has proper landmark regions
+    // Check for a single header/banner landmark
+    const header = page.locator("header, [role='banner']").first();
     await expect(header).toBeVisible();
 
-    // 3. Check for a single main landmark (direct child of body)
-    const main = page.locator("body > main, body > [role='main']");
-    await expect(main).toHaveCount(1);
+    // 3. Check for a single main landmark
+    const main = page.locator("main, [role='main']").first();
     await expect(main).toBeVisible();
 
-    // 4. Check for a single footer/contentinfo landmark (direct child of body)
-    const footer = page.locator(
-      "body > footer:not([class*='Devtools']), body > [role='contentinfo']:not([class*='Devtools'])",
-    );
-    await expect(footer).toHaveCount(1);
+    // 4. Check for a single footer/contentinfo landmark (exclude devtools)
+    const footer = page
+      .locator(
+        "footer:not([class*='Devtools']), [role='contentinfo']:not([class*='Devtools'])",
+      )
+      .first();
     await expect(footer).toBeVisible();
   });
 

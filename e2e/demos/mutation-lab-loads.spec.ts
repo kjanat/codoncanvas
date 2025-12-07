@@ -15,16 +15,23 @@ test.describe("Mutation Lab", () => {
 
     // 3. Verify mutation type buttons are visible
     // Expected: Silent, Missense, Nonsense, Point, Insertion, Deletion, Frameshift
-    await expect(page.getByRole("button", { name: /silent/i })).toBeVisible();
-    await expect(page.getByRole("button", { name: /missense/i })).toBeVisible();
-    await expect(page.getByRole("button", { name: /nonsense/i })).toBeVisible();
-    await expect(page.getByRole("button", { name: /point/i })).toBeVisible();
+    // Use ^pattern to match aria-labels starting with the mutation type name
+    await expect(page.getByRole("button", { name: /^Silent:/i })).toBeVisible();
     await expect(
-      page.getByRole("button", { name: /insertion/i }),
+      page.getByRole("button", { name: /^Missense:/i }),
     ).toBeVisible();
-    await expect(page.getByRole("button", { name: /deletion/i })).toBeVisible();
     await expect(
-      page.getByRole("button", { name: /frameshift/i }),
+      page.getByRole("button", { name: /^Nonsense:/i }),
+    ).toBeVisible();
+    await expect(page.getByRole("button", { name: /^Point:/i })).toBeVisible();
+    await expect(
+      page.getByRole("button", { name: /^Insertion:/i }),
+    ).toBeVisible();
+    await expect(
+      page.getByRole("button", { name: /^Deletion:/i }),
+    ).toBeVisible();
+    await expect(
+      page.getByRole("button", { name: /^Frameshift:/i }),
     ).toBeVisible();
 
     // 4. Verify original genome textarea is present

@@ -9,6 +9,7 @@ import {
   type FocusEvent,
   type KeyboardEvent,
   type ReactElement,
+  useId,
   useRef,
   useState,
 } from "react";
@@ -50,6 +51,8 @@ export function NavDropdown({
   label,
   sections,
 }: NavDropdownProps): ReactElement {
+  const triggerId = useId();
+  const menuId = useId();
   const [isOpen, setIsOpen] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
 
@@ -82,11 +85,11 @@ export function NavDropdown({
       role="none"
     >
       <button
-        aria-controls="nav-dropdown-menu"
+        aria-controls={menuId}
         aria-expanded={isOpen}
         aria-haspopup="menu"
         className="flex items-center gap-1 rounded-md px-3 py-2 text-sm font-medium text-text hover:bg-bg-light focus:outline-none focus:ring-2 focus:ring-primary"
-        id="nav-dropdown-trigger"
+        id={triggerId}
         onClick={() => setIsOpen(!isOpen)}
         type="button"
       >
@@ -95,9 +98,9 @@ export function NavDropdown({
       </button>
 
       <div
-        aria-labelledby="nav-dropdown-trigger"
+        aria-labelledby={triggerId}
         className={`absolute right-0 top-full z-50 mt-1 w-56 rounded-lg border border-border bg-surface p-2 shadow-lg transition-all ${isOpen ? "visible opacity-100" : "invisible opacity-0"}`}
-        id="nav-dropdown-menu"
+        id={menuId}
         role="menu"
       >
         {sections.map((section, index) => (

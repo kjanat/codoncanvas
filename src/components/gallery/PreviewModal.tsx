@@ -1,6 +1,6 @@
 import FocusTrap from "focus-trap-react";
 import type { ReactNode } from "react";
-import { useEffect, useRef } from "react";
+import { useEffect, useId, useRef } from "react";
 import { CanvasPreview } from "@/components/CanvasPreview";
 import { CloseIcon } from "@/ui/icons";
 import type { ExampleWithName } from "./types";
@@ -16,6 +16,7 @@ export function PreviewModal({
   onClose,
   onOpenInPlayground,
 }: PreviewModalProps): ReactNode {
+  const titleId = useId();
   const closeButtonRef = useRef<HTMLButtonElement>(null);
 
   useEffect(() => {
@@ -37,7 +38,7 @@ export function PreviewModal({
       }}
     >
       <div
-        aria-labelledby="modal-title"
+        aria-labelledby={titleId}
         aria-modal="true"
         className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4"
         onClick={(e) => {
@@ -58,7 +59,9 @@ export function PreviewModal({
           {/* Header */}
           <div className="sticky top-0 flex items-center justify-between border-b border-border bg-surface p-4">
             <div>
-              <h2 className="text-xl font-bold text-text">{example.title}</h2>
+              <h2 className="text-xl font-bold text-text" id={titleId}>
+                {example.title}
+              </h2>
               <p className="text-sm text-text-muted">{example.description}</p>
             </div>
             <button

@@ -8,7 +8,7 @@ test.describe("Core Playground", () => {
     const referenceButton = page.getByRole("button", {
       name: "Show codon reference",
     });
-    const searchBox = page.getByRole("searchbox", { name: "Search codons..." });
+    const searchBox = page.getByRole("searchbox", { name: "Search codons" });
     const genomeEditor = page.getByRole("textbox", { name: "Genome editor" });
 
     // 1. Navigate to playground
@@ -20,24 +20,24 @@ test.describe("Core Playground", () => {
     // 3. Verify reference panel opens with header
     await expect(page.getByText("Codon Reference")).toBeVisible();
 
-    // Verify all category buttons are visible (use exact to avoid TanStack Router match)
+    // Verify all category buttons are visible (aria-label is "Filter by X")
     await expect(
-      page.getByRole("button", { name: "All", exact: true }),
+      page.getByRole("button", { name: "Filter by All" }),
     ).toBeVisible();
     await expect(
-      page.getByRole("button", { name: "Control", exact: true }),
+      page.getByRole("button", { name: "Filter by Control" }),
     ).toBeVisible();
     await expect(
-      page.getByRole("button", { name: "Drawing", exact: true }),
+      page.getByRole("button", { name: "Filter by Drawing" }),
     ).toBeVisible();
     await expect(
-      page.getByRole("button", { name: "Transform", exact: true }),
+      page.getByRole("button", { name: "Filter by Transform" }),
     ).toBeVisible();
     await expect(
-      page.getByRole("button", { name: "Stack", exact: true }),
+      page.getByRole("button", { name: "Filter by Stack" }),
     ).toBeVisible();
     await expect(
-      page.getByRole("button", { name: "Math", exact: true }),
+      page.getByRole("button", { name: "Filter by Math" }),
     ).toBeVisible();
 
     // 4. Search for 'CIRCLE' in search box
@@ -54,7 +54,7 @@ test.describe("Core Playground", () => {
 
     // 5. Clear search and click category filter 'Drawing'
     await searchBox.fill("");
-    await page.getByRole("button", { name: "Drawing" }).click();
+    await page.getByRole("button", { name: "Filter by Drawing" }).click();
 
     // Verify Drawing category shows drawing-related codons
     await expect(page.getByText("CIRCLE", { exact: true })).toBeVisible();

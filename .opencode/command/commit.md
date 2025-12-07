@@ -1,6 +1,6 @@
 ---
 description: "Git commit. Args: [push|no-push|no-verify|amend]..."
-agent: build
+agent: git-committer
 ---
 
 Commit staged changes.

@@ -45,7 +45,7 @@ test.describe("Responsive Design", () => {
       page.getByRole("heading", { name: "Example Gallery" }),
     ).toBeVisible();
     await expect(
-      page.getByRole("searchbox", { name: "Search examples..." }),
+      page.getByRole("searchbox", { name: "Search examples" }),
     ).toBeVisible();
   });
 });

@@ -15,7 +15,7 @@ test.describe("Tutorial Lesson Validation", () => {
 
     // 2. Find the code editor and run button
     const editor = page.getByRole("textbox", {
-      name: "Write your genome code here...",
+      name: "Genome code editor",
     });
     await expect(editor).toBeVisible();
 

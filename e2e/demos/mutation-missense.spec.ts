@@ -9,7 +9,7 @@ test.describe("Mutation Lab - Missense Mutation", () => {
     await page.goto("/demos/mutation");
 
     // 2. Click 'Missense' mutation button
-    await page.getByRole("button", { name: /missense/i }).click();
+    await page.getByRole("button", { name: /^Missense:/i }).click();
 
     // 3. Click 'Apply Mutation'
     await page.getByRole("button", { name: /apply mutation/i }).click();
@@ -45,15 +45,14 @@ test.describe("Mutation Lab - Missense Mutation", () => {
     expect(originalCodon).not.toBe(mutatedCodon);
 
     // Canvas panels show visual output for comparison
-    const diffContainer = page.locator('[data-testid="diff-canvas-container"]');
-    const canvases = diffContainer.locator("canvas");
-    await expect(canvases).toHaveCount(2);
-    await expect(canvases.first()).toBeVisible();
-    await expect(canvases.last()).toBeVisible();
+    const originalCanvas = page.getByRole("img", { name: "Original Output" });
+    const mutatedCanvas = page.getByRole("img", { name: "Mutated Output" });
+    await expect(originalCanvas).toBeVisible();
+    await expect(mutatedCanvas).toBeVisible();
 
     // For missense mutation, visual output should differ (different opcode)
     const [originalData, mutatedData] = await Promise.all([
-      canvases.first().evaluate((canvas: HTMLCanvasElement) => {
+      originalCanvas.evaluate((canvas: HTMLCanvasElement) => {
         const ctx = canvas.getContext("2d");
         if (!ctx) {
           throw new Error("Failed to get 2D context for original canvas");
@@ -62,7 +61,7 @@ test.describe("Mutation Lab - Missense Mutation", () => {
           .getImageData(0, 0, canvas.width, canvas.height)
           .data.toString();
       }),
-      canvases.last().evaluate((canvas: HTMLCanvasElement) => {
+      mutatedCanvas.evaluate((canvas: HTMLCanvasElement) => {
         const ctx = canvas.getContext("2d");
         if (!ctx) {
           throw new Error("Failed to get 2D context for mutated canvas");

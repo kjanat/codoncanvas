@@ -9,7 +9,7 @@ test.describe("Mutation Lab - Frameshift Mutation", () => {
     await page.goto("/demos/mutation");
 
     // 2. Click 'Frameshift' mutation button
-    await page.getByRole("button", { name: /frameshift/i }).click();
+    await page.getByRole("button", { name: /^Frameshift:/i }).click();
 
     // 3. Click 'Apply Mutation' button
     await page.getByRole("button", { name: /apply mutation/i }).click();
@@ -45,23 +45,25 @@ test.describe("Mutation Lab - Frameshift Mutation", () => {
     await genomeInput.fill(customGenome);
 
     // Apply point mutation
-    await page.getByRole("button", { name: /point/i }).click();
+    await page.getByRole("button", { name: /^Point:/i }).click();
     await page.getByRole("button", { name: /apply mutation/i }).click();
 
     // Verify mutation result appears
     await expect(page.getByText(/mutation result/i)).toBeVisible();
 
-    // Verify custom genome was actually used - check Original panel shows our codons
-    const originalPanel = page
+    // Verify custom genome was actually used - check Original panel in DiffViewer shows our codons
+    // The Original panel has a header div with text "Original" followed by codon list
+    const originalPanelHeader = page
       .locator("div")
-      .filter({ hasText: "Original" })
+      .filter({ hasText: /^Original$/ })
       .first();
+    const originalPanel = originalPanelHeader.locator("..");
 
     // Derive codons from customGenome and assert each appears in the Original panel
     const codons = customGenome.split(/\s+/).filter((c) => c.trim().length > 0);
     for (const codon of codons) {
       await expect(
-        originalPanel.getByText(codon),
+        originalPanel.locator("span").filter({ hasText: codon }).first(),
         `Original panel should contain codon "${codon}" from custom genome`,
       ).toBeVisible();
     }

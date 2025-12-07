@@ -7,7 +7,7 @@ import type {
   ReactElement,
   KeyboardEvent as ReactKeyboardEvent,
 } from "react";
-import { useEffect } from "react";
+import { useEffect, useId } from "react";
 import {
   formatShortcut,
   type KeyboardShortcut,
@@ -31,6 +31,8 @@ export function KeyboardShortcutsHelp({
   isOpen,
   onClose,
 }: KeyboardShortcutsHelpProps): ReactElement | null {
+  const titleId = useId();
+
   // Close on Escape or ?
   useEffect(() => {
     if (!isOpen) {
@@ -68,7 +70,7 @@ export function KeyboardShortcutsHelp({
 
   return (
     <div
-      aria-labelledby="shortcuts-title"
+      aria-labelledby={titleId}
       aria-modal="true"
       className="fixed inset-0 z-50 flex items-center justify-center bg-black/50"
       onClick={handleBackdropClick}
@@ -77,7 +79,7 @@ export function KeyboardShortcutsHelp({
     >
       <div className="mx-4 w-full max-w-md rounded-lg bg-surface p-6 shadow-xl">
         <div className="mb-4 flex items-center justify-between">
-          <h2 className="text-lg font-semibold text-text" id="shortcuts-title">
+          <h2 className="text-lg font-semibold text-text" id={titleId}>
             Keyboard Shortcuts
           </h2>
           <button

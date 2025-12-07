@@ -11,6 +11,7 @@ import {
   memo,
   useCallback,
   useEffect,
+  useId,
   useRef,
   useState,
 } from "react";
@@ -81,6 +82,8 @@ interface OverflowMenuProps {
 
 /** Overflow menu for mobile */
 function OverflowMenu({ io, history }: OverflowMenuProps): JSX.Element {
+  const triggerId = useId();
+  const menuId = useId();
   const [isOpen, setIsOpen] = useState(false);
   const triggerRef = useRef<HTMLButtonElement>(null);
   const menuRef = useRef<HTMLDivElement>(null);
@@ -119,12 +122,12 @@ function OverflowMenu({ io, history }: OverflowMenuProps): JSX.Element {
   return (
     <div className="relative md:hidden">
       <button
-        aria-controls="overflow-menu"
+        aria-controls={menuId}
         aria-expanded={isOpen}
         aria-haspopup="menu"
         aria-label="More actions"
         className="flex min-h-[44px] min-w-[44px] items-center justify-center rounded-md text-text hover:bg-bg-light"
-        id="overflow-menu-trigger"
+        id={triggerId}
         onClick={() => setIsOpen(!isOpen)}
         ref={triggerRef}
         type="button"
@@ -140,9 +143,9 @@ function OverflowMenu({ io, history }: OverflowMenuProps): JSX.Element {
             onClick={closeMenu}
           />
           <div
-            aria-labelledby="overflow-menu-trigger"
+            aria-labelledby={triggerId}
             className="absolute right-0 top-full z-50 mt-1 w-48 rounded-lg border border-border bg-surface py-1 shadow-lg"
-            id="overflow-menu"
+            id={menuId}
             ref={menuRef}
             role="menu"
             tabIndex={-1}

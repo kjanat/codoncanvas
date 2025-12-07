@@ -35,9 +35,10 @@ export function CanvasPanel({
       canvas.width = width;
       canvas.height = height;
       const result = renderWithResult(genome, canvas);
-      if (!result.success && result.error) {
-        setRenderError(result.error);
-        onRenderError?.(new Error(result.error), genome);
+      if (!result.success) {
+        const message = result.error ?? "Render failed";
+        setRenderError(message);
+        onRenderError?.(new Error(message), genome);
       } else {
         setRenderError(null);
       }

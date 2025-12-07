@@ -6,7 +6,7 @@
  */
 
 import type { JSX } from "react";
-import { useEffect, useState } from "react";
+import { useEffect, useId, useState } from "react";
 
 import type { TutorialLesson } from "@/data/tutorial-lessons";
 import { getLessonsByModule, moduleNames } from "@/data/tutorial-lessons";
@@ -67,6 +67,7 @@ export function ModuleSidebar({
   completedLessons,
   onSelectLesson,
 }: ModuleSidebarProps): JSX.Element {
+  const titleId = useId();
   const [isOpen, setIsOpen] = useState(false);
   const modules = [1, 2, 3];
 
@@ -145,7 +146,7 @@ export function ModuleSidebar({
 
       {/* Mobile: Drawer */}
       <div
-        aria-labelledby="module-sidebar-title"
+        aria-labelledby={titleId}
         aria-modal="true"
         className={`fixed inset-y-0 left-0 z-50 w-80 max-w-[85vw] transform bg-surface shadow-xl transition-transform duration-300 ease-in-out md:hidden ${
           isOpen ? "translate-x-0" : "-translate-x-full"
@@ -155,10 +156,7 @@ export function ModuleSidebar({
         role="dialog"
       >
         <div className="flex items-center justify-between border-b border-border px-4 py-3">
-          <span
-            className="text-lg font-semibold text-primary"
-            id="module-sidebar-title"
-          >
+          <span className="text-lg font-semibold text-primary" id={titleId}>
             Lessons
           </span>
           <button

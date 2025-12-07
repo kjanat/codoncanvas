@@ -42,8 +42,8 @@ export function FilterToggle<T extends string>({
 
   // Minimum touch target size: 44x44px (WCAG 2.5.5)
   const sizeClasses = {
-    sm: "px-3 py-2 text-xs min-h-[44px]",
-    md: "px-4 py-2.5 text-sm min-h-[44px]",
+    sm: "px-3 py-2 text-xs min-h-[44px] min-w-[44px]",
+    md: "px-4 py-2.5 text-sm min-h-[44px] min-w-[44px]",
   } as const;
 
   const variantClasses = {

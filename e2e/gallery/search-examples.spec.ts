@@ -9,7 +9,7 @@ test.describe("Example Gallery", () => {
     await page.goto("/gallery");
 
     const searchBox = page.getByRole("searchbox", {
-      name: "Search examples...",
+      name: "Search examples",
     });
 
     // 2. Type 'spiral' in search box

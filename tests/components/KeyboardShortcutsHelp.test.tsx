@@ -70,7 +70,7 @@ describe("KeyboardShortcutsHelp", () => {
       const heading = screen.getByText("Keyboard Shortcuts");
       expect(heading).toBeDefined();
       expect(heading.tagName).toBe("H2");
-      expect(heading.id).toBe("shortcuts-title");
+      expect(heading.id).toBeTruthy();
     });
 
     test("dialog has aria-labelledby pointing to heading", () => {
@@ -84,7 +84,11 @@ describe("KeyboardShortcutsHelp", () => {
       );
 
       const dialog = screen.getByRole("dialog");
-      expect(dialog.getAttribute("aria-labelledby")).toBe("shortcuts-title");
+      const heading = screen.getByRole("heading", {
+        name: "Keyboard Shortcuts",
+      });
+      // Verify aria-labelledby matches the heading's id (dynamic via useId)
+      expect(dialog.getAttribute("aria-labelledby")).toBe(heading.id);
     });
 
     test("renders close button with aria-label='Close shortcuts help'", () => {

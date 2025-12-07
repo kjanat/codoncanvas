@@ -9,7 +9,7 @@ test.describe("Mutation Lab - Silent Mutation", () => {
     await page.goto("/demos/mutation");
 
     // 2. Click 'Silent' mutation button
-    await page.getByRole("button", { name: /silent/i }).click();
+    await page.getByRole("button", { name: /^Silent:/i }).click();
 
     // 3. Click 'Apply Mutation' button
     await page.getByRole("button", { name: /apply mutation/i }).click();
