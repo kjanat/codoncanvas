@@ -17,11 +17,11 @@ function GeneticDemoPage() {
 
   return (
     <PageContainer>
-      {/* Status announcement for screen readers */}
+      {/* Status announcement for screen readers - throttled to avoid flooding */}
       <div aria-atomic="true" aria-live="polite" className="sr-only">
-        {ga.state.generation > 0
-          ? `Generation ${ga.state.generation}: Best fitness ${ga.state.bestFitness.toFixed(2)}`
-          : ""}
+        {ga.state.generation > 0 &&
+          (!ga.isRunning || ga.state.generation % 10 === 0) &&
+          `Generation ${ga.state.generation}: Best fitness ${ga.state.bestFitness.toFixed(2)}`}
       </div>
 
       <PageHeader

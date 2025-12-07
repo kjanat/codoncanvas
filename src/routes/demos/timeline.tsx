@@ -101,9 +101,10 @@ function TimelineDemoPage() {
     setExportError(null);
 
     try {
+      const { width, height } = canvasRef.current;
       const exporter = new GifExporter({
-        width: canvasRef.current.width,
-        height: canvasRef.current.height,
+        width,
+        height,
         fps: 4,
         quality: 10,
         repeat: 0,
@@ -111,7 +112,6 @@ function TimelineDemoPage() {
 
       const lexer = new CodonLexer();
       const tokens = lexer.tokenize(player.genome);
-      const { width, height } = canvasRef.current;
 
       const frames = player.snapshots.map((_, i) =>
         renderFrame(tokens, i, width, height, isDark),

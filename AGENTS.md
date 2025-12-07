@@ -20,6 +20,8 @@
 
 ## Testing
 
+### Unit Tests (bun:test)
+
 - Use `bun:test` with `describe`/`test`/`expect` (vitest-compatible API)
 - Tests in `tests/` mirror `src` structure, suffix `.test.ts`
 - Unused vars: prefix with `_` (e.g., `_unusedParam`)
@@ -50,6 +52,42 @@
   - 90%+ critical paths: Important business logic should be well-tested
   - 100% utility functions: Pure functions and utilities are easy to test completely
   - Lower coverage for UI components: Often acceptable as they may require integration tests
+
+### E2E Tests (Playwright)
+
+- **Run all**: `bun run e2e` (starts dev server automatically)
+- **Run headed**: `bun run e2e:headed` (watch browser)
+- **Run single file**: `bun run e2e e2e/playground/run-genome.spec.ts`
+- **Debug mode**: `bun run e2e:debug` (step through with inspector)
+- **UI mode**: `bun run e2e:ui` (interactive test explorer)
+- **View report**: `bun run e2e:report` (after test run)
+
+Tests in `e2e/` organized by feature:
+
+- `accessibility/` - ARIA, keyboard nav, landmarks
+- `demos/` - mutation lab, timeline scrubber
+- `file-operations/` - save, load, export, share
+- `gallery/` - filtering, search, load examples
+- `navigation/` - header, footer, theme toggle
+- `playground/` - editor, run, clear, undo/redo
+- `tutorial/` - lessons, hints, validation
+
+Key patterns:
+
+```ts
+import { expect, test } from "@playwright/test";
+
+test("loads playground and runs genome", async ({ page }) => {
+  await page.goto("/playground");
+  await page.getByRole("button", { name: "Run" }).click();
+  await expect(page.locator("canvas")).toBeVisible();
+});
+```
+
+- Use `getByRole`, `getByLabel`, `getByText` over CSS selectors
+- Tests suffix `.spec.ts` (not `.test.ts`)
+- CI runs on Chromium, Firefox, WebKit + mobile viewports
+- Local dev runs Chromium only for speed
 
 ## Key Rules
 

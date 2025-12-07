@@ -16,9 +16,10 @@ function EvolutionDemoPage() {
     <PageContainer>
       {/* Status announcement for screen readers */}
       <div aria-atomic="true" aria-live="polite" className="sr-only">
-        {lab.candidates.length > 0
-          ? `Generation ${lab.generation}: ${lab.candidates.length} candidates ready for selection`
-          : ""}
+        {lab.candidates.length > 0 &&
+          `Generation ${lab.generation}: ${lab.candidates.length} candidate${
+            lab.candidates.length === 1 ? "" : "s"
+          } ready for selection`}
       </div>
 
       <PageHeader

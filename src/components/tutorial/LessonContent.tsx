@@ -37,7 +37,8 @@ export function LessonContent({
 
   const handleRevealHint = (): void => {
     setHintsRevealed((prev) => {
-      const newCount = prev + 1;
+      const max = lesson.hints.length;
+      const newCount = Math.min(prev + 1, max);
       onHintUsed(newCount);
       return newCount;
     });
