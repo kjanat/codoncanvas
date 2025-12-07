@@ -42,6 +42,8 @@ function MutationDemoPage() {
       <div className="mb-6 flex flex-wrap items-center justify-center gap-2">
         {MUTATION_TYPES.map((m) => (
           <button
+            aria-label={`${m.label}: ${m.description}`}
+            aria-pressed={selectedMutation === m.type}
             className={`rounded-lg px-4 py-2 text-sm font-medium transition-colors ${
               selectedMutation === m.type
                 ? "bg-primary text-white"

@@ -60,7 +60,7 @@ export const CodonReference = memo(function CodonReference({
       <div className="border-b border-border p-2">
         <input
           aria-label="Search codons"
-          className="w-full rounded-md border border-border px-2 py-1 text-sm focus:border-primary focus:outline-none"
+          className="w-full rounded-md border border-border px-2 py-1 text-sm focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20"
           onChange={(e) => setSearch(e.target.value)}
           placeholder="Search codons..."
           type="search"
@@ -74,7 +74,7 @@ export const CodonReference = memo(function CodonReference({
           <button
             aria-label={`Filter by ${cat.label}`}
             aria-pressed={category === cat.value}
-            className={`rounded-full px-2 py-0.5 text-xs font-medium transition-colors ${
+            className={`rounded-full px-2 py-0.5 text-xs font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-1 ${
               category === cat.value
                 ? `${CATEGORY_COLORS[cat.value]} text-white`
                 : "bg-bg-light text-text-muted hover:bg-border"

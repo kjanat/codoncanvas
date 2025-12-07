@@ -37,7 +37,12 @@ export function GalleryFilters({
           type="search"
           value={search}
         />
-        <Select onChange={onSortChange} options={sortOptions} value={sortBy} />
+        <Select
+          aria-label="Sort examples by"
+          onChange={onSortChange}
+          options={sortOptions}
+          value={sortBy}
+        />
       </div>
     </div>
   );

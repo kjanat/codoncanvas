@@ -80,6 +80,7 @@ export function TimelineControls({
         </button>
 
         <RangeSlider
+          aria-label="Timeline position"
           className="flex-1"
           max={totalSteps - 1}
           min={0}
@@ -88,6 +89,7 @@ export function TimelineControls({
         />
 
         <Select
+          aria-label="Playback speed"
           onChange={onSpeedChange}
           options={SPEED_OPTIONS}
           value={playbackSpeed}

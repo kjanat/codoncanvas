@@ -601,7 +601,7 @@ describe("PlaygroundToolbar - Overflow Menu", () => {
 
     const button = screen.getByLabelText("More actions");
     expect(button).toBeDefined();
-    expect(button.getAttribute("aria-haspopup")).toBe("true");
+    expect(button.getAttribute("aria-haspopup")).toBe("menu");
     expect(button.getAttribute("aria-expanded")).toBe("false");
   });
 

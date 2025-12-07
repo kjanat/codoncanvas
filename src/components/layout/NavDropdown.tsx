@@ -82,9 +82,11 @@ export function NavDropdown({
       role="none"
     >
       <button
+        aria-controls="nav-dropdown-menu"
         aria-expanded={isOpen}
-        aria-haspopup="true"
+        aria-haspopup="menu"
         className="flex items-center gap-1 rounded-md px-3 py-2 text-sm font-medium text-text hover:bg-bg-light focus:outline-none focus:ring-2 focus:ring-primary"
+        id="nav-dropdown-trigger"
         onClick={() => setIsOpen(!isOpen)}
         type="button"
       >
@@ -93,20 +95,27 @@ export function NavDropdown({
       </button>
 
       <div
+        aria-labelledby="nav-dropdown-trigger"
         className={`absolute right-0 top-full z-50 mt-1 w-56 rounded-lg border border-border bg-surface p-2 shadow-lg transition-all ${isOpen ? "visible opacity-100" : "invisible opacity-0"}`}
+        id="nav-dropdown-menu"
+        role="menu"
       >
         {sections.map((section, index) => (
           <div
             className={index > 0 ? "mt-2 border-t border-border pt-2" : ""}
             key={section.title}
           >
-            <p className="px-3 py-1 text-xs font-semibold uppercase text-text-muted">
+            <p
+              className="px-3 py-1 text-xs font-semibold uppercase text-text-muted"
+              id={`nav-section-${section.title.toLowerCase().replace(/\s+/g, "-")}`}
+            >
               {section.title}
             </p>
             {section.links.map((link) => (
               <Link
                 className="block rounded-md px-3 py-2 text-sm text-text hover:bg-bg-light"
                 key={link.path}
+                role="menuitem"
                 to={link.path}
               >
                 {link.label}

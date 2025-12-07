@@ -119,10 +119,12 @@ function OverflowMenu({ io, history }: OverflowMenuProps): JSX.Element {
   return (
     <div className="relative md:hidden">
       <button
+        aria-controls="overflow-menu"
         aria-expanded={isOpen}
-        aria-haspopup="true"
+        aria-haspopup="menu"
         aria-label="More actions"
         className="flex min-h-[44px] min-w-[44px] items-center justify-center rounded-md text-text hover:bg-bg-light"
+        id="overflow-menu-trigger"
         onClick={() => setIsOpen(!isOpen)}
         ref={triggerRef}
         type="button"
@@ -138,7 +140,9 @@ function OverflowMenu({ io, history }: OverflowMenuProps): JSX.Element {
             onClick={closeMenu}
           />
           <div
+            aria-labelledby="overflow-menu-trigger"
             className="absolute right-0 top-full z-50 mt-1 w-48 rounded-lg border border-border bg-surface py-1 shadow-lg"
+            id="overflow-menu"
             ref={menuRef}
             role="menu"
             tabIndex={-1}
@@ -148,6 +152,7 @@ function OverflowMenu({ io, history }: OverflowMenuProps): JSX.Element {
               Load file
               <input
                 accept=".genome,.txt"
+                aria-label="Load genome file"
                 className="hidden"
                 onChange={(e) => {
                   io.onLoad(e);
@@ -162,6 +167,7 @@ function OverflowMenu({ io, history }: OverflowMenuProps): JSX.Element {
                 io.onSave();
                 setIsOpen(false);
               }}
+              role="menuitem"
               type="button"
             >
               <SaveIcon className="h-4 w-4" />
@@ -174,6 +180,7 @@ function OverflowMenu({ io, history }: OverflowMenuProps): JSX.Element {
                 io.onCopy();
                 setIsOpen(false);
               }}
+              role="menuitem"
               type="button"
             >
               {io.copied ? (
@@ -189,6 +196,7 @@ function OverflowMenu({ io, history }: OverflowMenuProps): JSX.Element {
                 io.onShare();
                 setIsOpen(false);
               }}
+              role="menuitem"
               type="button"
             >
               <ShareIcon className="h-4 w-4" />
@@ -202,6 +210,7 @@ function OverflowMenu({ io, history }: OverflowMenuProps): JSX.Element {
                 history.onUndo();
                 setIsOpen(false);
               }}
+              role="menuitem"
               type="button"
             >
               <UndoIcon className="h-4 w-4" />
@@ -214,6 +223,7 @@ function OverflowMenu({ io, history }: OverflowMenuProps): JSX.Element {
                 history.onRedo();
                 setIsOpen(false);
               }}
+              role="menuitem"
               type="button"
             >
               <RedoIcon className="h-4 w-4" />

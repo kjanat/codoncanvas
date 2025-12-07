@@ -38,6 +38,7 @@ function TeacherDashboardPage() {
             Import Files
             <input
               accept=".json"
+              aria-label="Import student progress JSON files"
               className="hidden"
               multiple
               onChange={handleFileImport}
@@ -55,7 +56,10 @@ function TeacherDashboardPage() {
       </div>
 
       {importError && (
-        <div className="mb-6 rounded-lg border border-danger/20 bg-danger/5 p-4 text-danger">
+        <div
+          className="mb-6 rounded-lg border border-danger/20 bg-danger/5 p-4 text-danger"
+          role="alert"
+        >
           {importError}
         </div>
       )}
@@ -74,6 +78,7 @@ function TeacherDashboardPage() {
               Import Student Files
               <input
                 accept=".json"
+                aria-label="Import student progress JSON files"
                 className="hidden"
                 multiple
                 onChange={handleFileImport}
