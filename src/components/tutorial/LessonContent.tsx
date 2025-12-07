@@ -38,7 +38,10 @@ export function LessonContent({
   const handleRevealHint = (): void => {
     setHintsRevealed((prev) => {
       const max = lesson.hints.length;
-      const newCount = Math.min(prev + 1, max);
+      if (prev >= max) {
+        return prev; // No-op: already at max
+      }
+      const newCount = prev + 1;
       onHintUsed(newCount);
       return newCount;
     });
@@ -60,6 +63,9 @@ export function LessonContent({
       });
     }
   };
+
+  const actionButtonClass =
+    "min-h-[44px] rounded-lg bg-success px-6 py-2 font-medium text-white transition-colors hover:bg-success-dark";
 
   return (
     <div className="mx-auto max-w-4xl">
@@ -108,17 +114,14 @@ export function LessonContent({
             <div className="flex justify-end gap-4">
               {lesson.nextLesson ? (
                 <button
-                  className="min-h-[44px] rounded-lg bg-success px-6 py-2 font-medium text-white transition-colors hover:bg-success-dark"
+                  className={actionButtonClass}
                   onClick={onNextLesson}
                   type="button"
                 >
                   Next Lesson -&gt;
                 </button>
               ) : (
-                <Link
-                  className="min-h-[44px] rounded-lg bg-success px-6 py-2 font-medium text-white transition-colors hover:bg-success-dark"
-                  to="/"
-                >
+                <Link className={actionButtonClass} to="/">
                   Start Coding!
                 </Link>
               )}

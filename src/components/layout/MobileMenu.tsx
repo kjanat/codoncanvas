@@ -9,19 +9,9 @@ import { Link, useRouterState } from "@tanstack/react-router";
 import FocusTrap from "focus-trap-react";
 import { type ReactElement, useEffect, useRef, useState } from "react";
 
+import type { NavLink, NavSection } from "@/components/layout";
 import { useScrollLock } from "@/hooks";
-
 import { MenuIcon, XIcon } from "@/ui/icons";
-
-interface NavLink {
-  path: string;
-  label: string;
-}
-
-interface NavSection {
-  title: string;
-  links: NavLink[];
-}
 
 const NAV_LINKS: NavLink[] = [
   { path: "/", label: "Playground" },
@@ -133,6 +123,7 @@ export function MobileMenu(): ReactElement {
               {NAV_LINKS.map((link) => (
                 <li key={link.path}>
                   <Link
+                    aria-current={pathname === link.path ? "page" : undefined}
                     className={`block rounded-md px-4 py-3 text-base font-medium transition-colors ${
                       pathname === link.path
                         ? "bg-primary text-white"
@@ -157,6 +148,9 @@ export function MobileMenu(): ReactElement {
                   {section.links.map((link) => (
                     <li key={link.path}>
                       <Link
+                        aria-current={
+                          pathname === link.path ? "page" : undefined
+                        }
                         className={`block rounded-md px-4 py-3 text-base transition-colors ${
                           pathname === link.path
                             ? "bg-primary/10 text-primary"

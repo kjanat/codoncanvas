@@ -730,11 +730,16 @@ describe("PlaygroundToolbar - Overflow Menu", () => {
     const menuButton = screen.getByLabelText("More actions");
     fireEvent.click(menuButton);
 
-    const mobileLoadLabel = screen.getByTestId("mobile-menu-load");
-    const fileInput = mobileLoadLabel.querySelector('input[type="file"]');
-    expect(fileInput).toBeDefined();
+    // Button triggers hidden file input via ref
+    const mobileLoadButton = screen.getByTestId("mobile-menu-load");
+    expect(mobileLoadButton).toBeDefined();
 
-    fireEvent.change(fileInput!, {
+    // File input is now a sibling with its own data-testid
+    const fileInput = screen.getByTestId("mobile-menu-load-input");
+    expect(fileInput).not.toBeNull();
+    const input = fileInput as HTMLInputElement;
+
+    fireEvent.change(input, {
       target: { files: [new File(["ATG TAA"], "test.genome")] },
     });
 

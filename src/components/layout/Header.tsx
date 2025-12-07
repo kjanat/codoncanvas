@@ -5,6 +5,7 @@
  */
 
 import { Link } from "@tanstack/react-router";
+import type { ReactElement } from "react";
 
 import { siteConfig } from "@/config";
 import { GitHubIcon } from "@/ui/icons";
@@ -17,7 +18,7 @@ import { ThemeToggle } from "./ThemeToggle";
  * Application header component.
  * Contains logo, navigation links, theme toggle, and GitHub link.
  */
-export function Header() {
+export function Header(): ReactElement {
   return (
     <header className="border-b border-border bg-surface shadow-sm">
       <div className="mx-auto flex h-14 max-w-7xl items-center justify-between px-4">

@@ -87,6 +87,7 @@ function OverflowMenu({ io, history }: OverflowMenuProps): JSX.Element {
   const [isOpen, setIsOpen] = useState(false);
   const triggerRef = useRef<HTMLButtonElement>(null);
   const menuRef = useRef<HTMLDivElement>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   const closeMenu = useCallback(() => {
     setIsOpen(false);
@@ -150,23 +151,28 @@ function OverflowMenu({ io, history }: OverflowMenuProps): JSX.Element {
             role="menu"
             tabIndex={-1}
           >
-            <label
-              className="flex w-full cursor-pointer items-center gap-3 px-4 py-3 text-left text-sm text-text hover:bg-bg-light"
+            <button
+              className="flex w-full items-center gap-3 px-4 py-3 text-left text-sm text-text hover:bg-bg-light"
               data-testid="mobile-menu-load"
+              onClick={() => fileInputRef.current?.click()}
+              role="menuitem"
+              type="button"
             >
               <UploadIcon className="h-4 w-4" />
               Load file
-              <input
-                accept=".genome,.txt"
-                aria-label="Load genome file"
-                className="hidden"
-                onChange={(e) => {
-                  io.onLoad(e);
-                  setIsOpen(false);
-                }}
-                type="file"
-              />
-            </label>
+            </button>
+            <input
+              accept=".genome,.txt"
+              aria-label="Load genome file"
+              className="hidden"
+              data-testid="mobile-menu-load-input"
+              onChange={(e) => {
+                io.onLoad(e);
+                setIsOpen(false);
+              }}
+              ref={fileInputRef}
+              type="file"
+            />
             <button
               className="flex w-full items-center gap-3 px-4 py-3 text-left text-sm text-text hover:bg-bg-light"
               data-testid="mobile-menu-save"
