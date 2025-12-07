@@ -10,25 +10,26 @@ test.describe("Tutorial Navigation", () => {
 
     // Get initial lesson title
     const initialTitle = await page
-      .getByRole("heading", { level: 2 })
+      .getByRole("heading", { level: 1 })
       .textContent();
 
     // 2. Click on a different lesson in the sidebar
-    // Find lesson buttons in sidebar and click the second one
-    const lessonButtons = page
-      .locator("button")
-      .filter({ hasText: /^\d+$|^\u2713$/ });
-    const secondLesson = lessonButtons.nth(1);
+    // Lesson buttons have format "2 Moving Around - TRANSLATE"
+    const secondLesson = page.getByRole("button", {
+      name: /2 Moving Around/i,
+    });
     await secondLesson.click();
 
     // 3. Verify lesson content updates
     const newTitle = await page
-      .getByRole("heading", { level: 2 })
+      .getByRole("heading", { level: 1 })
       .textContent();
     expect(newTitle).not.toBe(initialTitle);
 
     // 4. Verify code editor resets for new lesson
-    await expect(page.getByText("Your Code")).toBeVisible();
+    await expect(
+      page.getByRole("heading", { name: "Your Code" }),
+    ).toBeVisible();
   });
 
   test("mobile-sidebar-toggle", async ({ page }): Promise<void> => {

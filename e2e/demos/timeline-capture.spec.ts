@@ -22,8 +22,7 @@ test.describe("Timeline Capture", () => {
 
     // 4. Verify VM state updates with execution data
     // Should show position, rotation, color, stack info
-    const vmStatePanel = page.locator("[class*='state'], [class*='panel']");
-    await expect(vmStatePanel.first()).toBeVisible();
+    await expect(page.getByRole("heading", { name: "VM State" })).toBeVisible();
   });
 
   test("timeline-shows-step-count", async ({ page }): Promise<void> => {

@@ -25,7 +25,7 @@ test.describe("Timeline Demo", () => {
     // 5. Verify canvas is present
     await expect(page.locator("canvas")).toBeVisible();
 
-    // 6. VM State panel shows placeholder message initially
-    await expect(page.getByText(/vm state|step/i)).toBeVisible();
+    // 6. VM State panel shows heading
+    await expect(page.getByRole("heading", { name: "VM State" })).toBeVisible();
   });
 });

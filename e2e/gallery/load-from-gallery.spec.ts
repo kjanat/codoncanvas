@@ -8,9 +8,9 @@ test.describe("Example Gallery", () => {
     // 1. Navigate to /gallery
     await page.goto("/gallery");
 
-    // 2. Click on the first example card
+    // 2. Click on the first example card (they are buttons with example info)
     const firstExample = page
-      .locator("[data-testid='example-card'], article")
+      .getByRole("button", { name: /Hello Circle/i })
       .first();
     await firstExample.click();
 

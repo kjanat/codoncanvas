@@ -10,7 +10,7 @@ test.describe("Research Dashboard", () => {
 
     // 2. Verify research analytics interface loads
     await expect(
-      page.getByRole("heading", { name: /research|analytics/i }),
+      page.getByRole("heading", { name: "Research Metrics Dashboard" }),
     ).toBeVisible();
 
     // 3. Verify metrics or data visualization present

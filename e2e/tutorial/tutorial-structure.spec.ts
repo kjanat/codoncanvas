@@ -10,9 +10,15 @@ test.describe("Tutorial System", () => {
 
     // 2. Verify lesson sidebar with modules
     // Check for module headings (Module 1, 2, 3)
-    await expect(page.getByText("Module 1")).toBeVisible();
-    await expect(page.getByText("Module 2")).toBeVisible();
-    await expect(page.getByText("Module 3")).toBeVisible();
+    await expect(
+      page.getByRole("heading", { name: /Module 1: First Steps/i }),
+    ).toBeVisible();
+    await expect(
+      page.getByRole("heading", { name: /Module 2: Mutations/i }),
+    ).toBeVisible();
+    await expect(
+      page.getByRole("heading", { name: /Module 3: Advanced/i }),
+    ).toBeVisible();
 
     // 3. Verify progress indicator shows initial state
     await expect(page.getByText("Overall Progress")).toBeVisible();

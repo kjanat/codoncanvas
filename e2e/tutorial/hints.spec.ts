@@ -9,30 +9,23 @@ test.describe("Tutorial Hint System", () => {
     await page.goto("/tutorial");
 
     // Wait for lesson to load
-    await expect(page.getByText("Instructions")).toBeVisible();
+    await expect(
+      page.getByRole("heading", { name: "Instructions" }),
+    ).toBeVisible();
 
-    // 2. Click 'Show hint' button
-    const hintButton = page.getByRole("button", { name: /hint/i });
+    // 2. Click 'Show hint' button - it has format "Show hint (1/3)"
+    const hintButton = page.getByRole("button", { name: /show hint/i });
     await expect(hintButton).toBeVisible();
     await hintButton.click();
 
-    // 3. Verify hint content displays
-    // After clicking, a hint should be revealed
-    const hintsPanel = page
-      .locator("[class*='hint'], [data-testid*='hint']")
-      .first();
-    if (await hintsPanel.isVisible()) {
-      // Hint content should be visible
-      await expect(hintsPanel).toBeVisible();
-    }
+    // 3. Verify hint content displays in a list
+    const hintsList = page.getByRole("list").filter({
+      has: page.getByText(/Try:/i),
+    });
+    await expect(hintsList).toBeVisible();
 
-    // 4. Click again for additional hints (if available)
-    const hintButtonAfter = page.getByRole("button", { name: /hint/i });
-    if (await hintButtonAfter.isVisible()) {
-      // Button might show hint counter like "Hint 2/3"
-      const buttonText = await hintButtonAfter.textContent();
-      expect(buttonText).toBeTruthy();
-    }
+    // 4. Verify hint button text updates
+    await expect(hintButton).toContainText(/hint/i);
   });
 
   test("hints-persist-when-returning", async ({ page }): Promise<void> => {
@@ -44,9 +37,11 @@ test.describe("Tutorial Hint System", () => {
       await hintButton.click();
     }
 
-    // Navigate away and back
+    // Navigate away and back - wait for each page to load
     await page.goto("/gallery");
+    await page.waitForLoadState("domcontentloaded");
     await page.goto("/tutorial");
+    await page.waitForLoadState("domcontentloaded");
 
     // Hint state should be preserved (stored in localStorage)
     await expect(page.getByText("Instructions")).toBeVisible();

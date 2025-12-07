@@ -13,17 +13,10 @@ test.describe("Teacher Dashboard", () => {
       page.getByRole("heading", { name: /teacher|dashboard/i }),
     ).toBeVisible();
 
-    // 3. Verify empty state or data import options
-    const emptyState = page.getByText(/no.*data|import|demo/i);
-    const importButton = page.getByRole("button", { name: /import/i });
-    const demoButton = page.getByRole("button", { name: /demo/i });
-
-    // At least one of these should be visible
-    const hasEmptyState = await emptyState.isVisible();
-    const hasImport = await importButton.isVisible();
-    const hasDemo = await demoButton.isVisible();
-
-    expect(hasEmptyState || hasImport || hasDemo).toBeTruthy();
+    // 3. Verify empty state message or data import options
+    await expect(
+      page.getByRole("heading", { name: "No Student Data Imported" }),
+    ).toBeVisible();
   });
 
   test("teacher-dashboard-load-demo", async ({ page }): Promise<void> => {
