@@ -50,7 +50,9 @@ export function CanvasPanel({
       <span className="text-sm text-text-muted">{label}</span>
       {renderError ? (
         <div
+          aria-label={`${label} - render failed`}
           className="flex items-center justify-center rounded-lg border border-red-300 bg-red-50 p-4 text-sm text-red-700"
+          role="alert"
           style={{ width, height }}
         >
           Render failed: {renderError}
