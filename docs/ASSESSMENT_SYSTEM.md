@@ -4,7 +4,9 @@
 
 ## Overview
 
-The **Assessment System** provides automated challenges and grading for testing student understanding of genetic mutation types. Designed for educators running Week 5 pilot programs and beyond, it enables:
+The **Assessment System** provides automated challenges and grading for testing
+student understanding of genetic mutation types. Designed for educators running
+Week 5 pilot programs and beyond, it enables:
 
 - ✅ **Automated Challenge Generation**: Random mutations at 3 difficulty levels
 - ✅ **Instant Feedback**: Students learn from mistakes immediately
@@ -86,44 +88,38 @@ document
 
 ### Silent Mutation
 
-**Definition**: Codon changes but opcode stays the same
-**Example**: `GGA → GGC` (both code for CIRCLE)
-**Visual Effect**: No change in output
-**Common Error**: Students confuse with missense
+**Definition**: Codon changes but opcode stays the same **Example**: `GGA → GGC`
+(both code for CIRCLE) **Visual Effect**: No change in output **Common Error**:
+Students confuse with missense
 
 ### Missense Mutation
 
-**Definition**: Codon changes to different opcode
-**Example**: `GGA → GCA` (CIRCLE → TRIANGLE)
-**Visual Effect**: Different shape/operation
-**Common Error**: Students miss subtle visual differences
+**Definition**: Codon changes to different opcode **Example**: `GGA → GCA`
+(CIRCLE → TRIANGLE) **Visual Effect**: Different shape/operation **Common
+Error**: Students miss subtle visual differences
 
 ### Nonsense Mutation
 
-**Definition**: Introduces STOP codon early
-**Example**: `GGA → TAA` (CIRCLE → STOP)
-**Visual Effect**: Truncated output
-**Common Error**: Students confuse with deletion
+**Definition**: Introduces STOP codon early **Example**: `GGA → TAA` (CIRCLE →
+STOP) **Visual Effect**: Truncated output **Common Error**: Students confuse
+with deletion
 
 ### Frameshift Mutation
 
-**Definition**: Insert/delete bases (not divisible by 3)
-**Example**: `ATGGGATAAA → ATGGGTAAA` (deleted 1 base)
-**Visual Effect**: Completely scrambled downstream
-**Common Error**: Students don't check length carefully
+**Definition**: Insert/delete bases (not divisible by 3) **Example**:
+`ATGGGATAAA → ATGGGTAAA` (deleted 1 base) **Visual Effect**: Completely
+scrambled downstream **Common Error**: Students don't check length carefully
 
 ### Insertion
 
-**Definition**: Add 3+ bases (no frameshift)
-**Example**: `ATG GGA TAA → ATG GGA CCA TAA` (+3 bases)
-**Visual Effect**: Extra operation added
-**Common Error**: Students confuse with missense
+**Definition**: Add 3+ bases (no frameshift) **Example**:
+`ATG GGA TAA → ATG GGA CCA TAA` (+3 bases) **Visual Effect**: Extra operation
+added **Common Error**: Students confuse with missense
 
 ### Deletion
 
-**Definition**: Remove 3+ bases (no frameshift)
-**Example**: `ATG GGA CCA TAA → ATG GGA TAA` (-3 bases)
-**Visual Effect**: Operation removed
+**Definition**: Remove 3+ bases (no frameshift) **Example**:
+`ATG GGA CCA TAA → ATG GGA TAA` (-3 bases) **Visual Effect**: Operation removed
 **Common Error**: Students confuse with nonsense
 
 ---
@@ -316,11 +312,14 @@ private generateHint(mutationType: MutationType, difficulty: DifficultyLevel): s
 
 ### Q: What accuracy indicates mastery?
 
-**A:** 80%+ accuracy across all mutation types indicates proficiency. Lower accuracy on specific types (e.g., frameshift) indicates need for targeted review.
+**A:** 80%+ accuracy across all mutation types indicates proficiency. Lower
+accuracy on specific types (e.g., frameshift) indicates need for targeted
+review.
 
 ### Q: Can students retake challenges?
 
-**A:** Yes! Challenges are randomly generated. Students can practice unlimited times. Export results periodically to track improvement.
+**A:** Yes! Challenges are randomly generated. Students can practice unlimited
+times. Export results periodically to track improvement.
 
 ### Q: How do I identify struggling students?
 
@@ -343,7 +342,9 @@ Export results and review `byType` performance to identify gaps.
 
 ### Q: How do I prevent students from guessing?
 
-**A:** The system tracks all attempts. Review `totalAttempts` vs. `correctAnswers`. High attempt counts with low accuracy indicate guessing. Recommend:
+**A:** The system tracks all attempts. Review `totalAttempts` vs.
+`correctAnswers`. High attempt counts with low accuracy indicate guessing.
+Recommend:
 
 - Require written explanations for wrong answers
 - Use assessment mode as formative, not solely summative
@@ -399,7 +400,8 @@ class AssessmentUI {
 
 If you encounter bugs or have feature requests:
 
-1. Check existing issues: [GitHub Issues](https://github.com/USERNAME/codoncanvas/issues)
+1. Check existing issues:
+   [GitHub Issues](https://github.com/USERNAME/codoncanvas/issues)
 2. Open new issue with:
    - Description of problem
    - Steps to reproduce
@@ -421,7 +423,8 @@ Educators can request features such as:
 
 ### Sample 10-Question Assessment (Medium Difficulty)
 
-**Instructions**: Identify the mutation type for each challenge. Aim for 80%+ accuracy.
+**Instructions**: Identify the mutation type for each challenge. Aim for 80%+
+accuracy.
 
 1. `ATG GGA TAA` → `ATG GGC TAA`
    - **Answer**: Silent
@@ -453,7 +456,8 @@ Educators can request features such as:
 10. `ATGCCATAAA` → `ATGCCATAAAC`
     - **Answer**: Frameshift
 
-**Answer Key**: 1-Silent, 2-Missense, 3-Nonsense, 4-Frameshift, 5-Insertion, 6-Deletion, 7-Silent, 8-Silent, 9-Missense, 10-Frameshift
+**Answer Key**: 1-Silent, 2-Missense, 3-Nonsense, 4-Frameshift, 5-Insertion,
+6-Deletion, 7-Silent, 8-Silent, 9-Missense, 10-Frameshift
 
 ---
 
@@ -473,4 +477,5 @@ Educators can request features such as:
 
 ---
 
-**🎓 Ready to assess student learning? Open `/demos/assessment` to get started!**
+**🎓 Ready to assess student learning? Open `/demos/assessment` to get
+started!**

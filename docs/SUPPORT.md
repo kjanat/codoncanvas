@@ -131,7 +131,8 @@ ATG AAA GGG TA
 - Code is saved automatically in your browser's memory (localStorage)
 - It stays on **your device** - not in the cloud
 - Code remains even if you close the browser
-- **IMPORTANT:** Code is lost if you clear browser data or use a different device
+- **IMPORTANT:** Code is lost if you clear browser data or use a different
+  device
 
 **To Keep Code Long-Term:**
 
@@ -503,5 +504,4 @@ ATG AAA GGG TA
 
 ---
 
-**Last Updated:** 2025-11-25
-**Support Contact:** [your-contact-email]
+**Last Updated:** 2025-11-25 **Support Contact:** [your-contact-email]

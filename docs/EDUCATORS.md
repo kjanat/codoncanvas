@@ -1,11 +1,12 @@
 # CodonCanvas Educator Guide 🧬📚
 
-> **Comprehensive guide for educators teaching genetics and computational thinking through DNA-inspired visual programming**
+> **Comprehensive guide for educators teaching genetics and computational
+> thinking through DNA-inspired visual programming**
 
-**Version:** 1.0.0
-**Target Audience:** Secondary/tertiary biology educators, computer science teachers, STEM coordinators
-**Recommended Duration:** 3-5 class sessions (45-90 minutes each)
-**Prerequisites:** Basic biology (DNA structure, codons) or willingness to learn alongside students
+**Version:** 1.0.0 **Target Audience:** Secondary/tertiary biology educators,
+computer science teachers, STEM coordinators **Recommended Duration:** 3-5 class
+sessions (45-90 minutes each) **Prerequisites:** Basic biology (DNA structure,
+codons) or willingness to learn alongside students
 
 ---
 
@@ -28,13 +29,18 @@
 
 ### What is CodonCanvas?
 
-CodonCanvas is an educational programming language that uses **DNA-like triplets (codons)** as its syntax. Students write sequences of three-letter codes (e.g., `ATG`, `GGA`, `TAA`) that execute as visual graphics on a canvas. The system models genetic concepts—synonymous codons, reading frames, and mutation types—making molecular biology tangible and playful.
+CodonCanvas is an educational programming language that uses **DNA-like triplets
+(codons)** as its syntax. Students write sequences of three-letter codes (e.g.,
+`ATG`, `GGA`, `TAA`) that execute as visual graphics on a canvas. The system
+models genetic concepts—synonymous codons, reading frames, and mutation
+types—making molecular biology tangible and playful.
 
 ### Why Use CodonCanvas?
 
 **For Biology Teachers:**
 
-- Makes abstract genetic concepts (mutations, reading frames, redundancy) **visually concrete**
+- Makes abstract genetic concepts (mutations, reading frames, redundancy)
+  **visually concrete**
 - Demonstrates how small DNA changes create large phenotype effects
 - No prior coding experience required for students
 - Immediate visual feedback builds intuition
@@ -55,20 +61,22 @@ CodonCanvas is an educational programming language that uses **DNA-like triplets
 
 ### Classroom-Ready Features
 
-✅ **Web-based**: No installation, works on Chromebooks/iPads/laptops
-✅ **Mobile-responsive**: Portrait and landscape support for tablets
-✅ **Accessible**: WCAG 2.1 Level AA compliant (screen readers, keyboard navigation)
-✅ **Visual Reference**: Print-ready codon chart poster (`codon-chart.svg`)
-✅ **18 Built-in Examples**: Progressive difficulty (beginner → advanced)
-✅ **Distribution Package**: Example genomes ZIP for LMS deployment (`codoncanvas-examples.zip`)
-✅ **Interactive Mutation Demos** (`/demos`): Visual before/after comparisons of all mutation types
-✅ **Mutation Tools**: One-click demonstration of 7 mutation types
-✅ **Save/Load**: Students can save work and submit .genome files
-✅ **Offline-capable**: Can run locally without internet after initial setup
-✅ **DNA/RNA Toggle**: Switch between DNA (T) and RNA (U) notation for teaching transcription concepts
-✅ **Biology Comparison Panel**: Side-by-side view of CodonCanvas opcodes vs real amino acids
-✅ **Teacher Dashboard**: Classroom analytics with student progress tracking and at-risk detection
-✅ **Research Metrics**: Detailed engagement analytics for assessment and pedagogical research
+✅ **Web-based**: No installation, works on Chromebooks/iPads/laptops ✅
+**Mobile-responsive**: Portrait and landscape support for tablets ✅
+**Accessible**: WCAG 2.1 Level AA compliant (screen readers, keyboard
+navigation) ✅ **Visual Reference**: Print-ready codon chart poster
+(`codon-chart.svg`) ✅ **18 Built-in Examples**: Progressive difficulty
+(beginner → advanced) ✅ **Distribution Package**: Example genomes ZIP for LMS
+deployment (`codoncanvas-examples.zip`) ✅ **Interactive Mutation Demos**
+(`/demos`): Visual before/after comparisons of all mutation types ✅ **Mutation
+Tools**: One-click demonstration of 7 mutation types ✅ **Save/Load**: Students
+can save work and submit .genome files ✅ **Offline-capable**: Can run locally
+without internet after initial setup ✅ **DNA/RNA Toggle**: Switch between DNA
+(T) and RNA (U) notation for teaching transcription concepts ✅ **Biology
+Comparison Panel**: Side-by-side view of CodonCanvas opcodes vs real amino acids
+✅ **Teacher Dashboard**: Classroom analytics with student progress tracking and
+at-risk detection ✅ **Research Metrics**: Detailed engagement analytics for
+assessment and pedagogical research
 
 ---
 
@@ -297,16 +305,18 @@ Complete assessment tools now available in [`ASSESSMENTS.md`](ASSESSMENTS.md):
 
 ### Lesson 1: Hello CodonCanvas (45-60 min)
 
-**Learning Objectives:** LO1, LO2, LO11, LO12
-**Materials:** Computer/tablet per student, CodonCanvas URL, Codon Chart handout
+**Learning Objectives:** LO1, LO2, LO11, LO12 **Materials:** Computer/tablet per
+student, CodonCanvas URL, Codon Chart handout
 
 #### Structure
 
 **Introduction (10 min)**
 
-1. **Hook**: Show two DNA sequences that differ by one letter, produce dramatically different visual outputs
+1. **Hook**: Show two DNA sequences that differ by one letter, produce
+   dramatically different visual outputs
 2. **Explain Analogy**: DNA → CodonCanvas as Genetics → Programming
-3. **Learning Goals**: "By end of class, you'll write a program that draws shapes using DNA-like code"
+3. **Learning Goals**: "By end of class, you'll write a program that draws
+   shapes using DNA-like code"
 
 **Demo (10 min)**
 
@@ -345,14 +355,15 @@ Complete assessment tools now available in [`ASSESSMENTS.md`](ASSESSMENTS.md):
 - ✅ Student successfully runs "Hello Circle"
 - ✅ Student modifies numeric literal and observes change
 - ✅ Student explains START/STOP function
-- ⚠️ **Common Issues**: Reading frame errors (explain triplets), typos (use linter)
+- ⚠️ **Common Issues**: Reading frame errors (explain triplets), typos (use
+  linter)
 
 ---
 
 ### Lesson 2: Mutations (60-90 min)
 
-**Learning Objectives:** LO4, LO6, LO7, LO8, LO19, LO20
-**Materials:** CodonCanvas, Mutation Lab (`/demos/mutation`), Worksheet (provided below)
+**Learning Objectives:** LO4, LO6, LO7, LO8, LO19, LO20 **Materials:**
+CodonCanvas, Mutation Lab (`/demos/mutation`), Worksheet (provided below)
 
 #### Structure
 
@@ -402,7 +413,8 @@ Complete assessment tools now available in [`ASSESSMENTS.md`](ASSESSMENTS.md):
 **Wrap-Up (5 min)**
 
 - **Key Takeaway**: Mutation type determines severity
-- **Challenge**: "Create a genome immune to silent mutations" (hint: avoid synonymous codons)
+- **Challenge**: "Create a genome immune to silent mutations" (hint: avoid
+  synonymous codons)
 
 #### Assessment (Formative + Summative)
 
@@ -416,8 +428,8 @@ Complete assessment tools now available in [`ASSESSMENTS.md`](ASSESSMENTS.md):
 
 ### Lesson 3: Creative Composition (45-60 min)
 
-**Learning Objectives:** LO13, LO14, LO15, LO22, LO24
-**Materials:** CodonCanvas, Codon Chart, blank canvas
+**Learning Objectives:** LO13, LO14, LO15, LO22, LO24 **Materials:**
+CodonCanvas, Codon Chart, blank canvas
 
 #### Structure
 
@@ -480,12 +492,13 @@ Complete assessment tools now available in [`ASSESSMENTS.md`](ASSESSMENTS.md):
 
 ### Lesson 4: Directed Evolution (Optional Extension, 60 min)
 
-**Learning Objectives:** LO9, LO10, LO16, LO19, LO21
-**Materials:** CodonCanvas, target image (provided by teacher)
+**Learning Objectives:** LO9, LO10, LO16, LO19, LO21 **Materials:** CodonCanvas,
+target image (provided by teacher)
 
 #### Structure
 
-**Challenge**: Evolve a genome to match a target image through iterative mutations
+**Challenge**: Evolve a genome to match a target image through iterative
+mutations
 
 **Process:**
 
@@ -518,9 +531,12 @@ Complete assessment tools now available in [`ASSESSMENTS.md`](ASSESSMENTS.md):
 
 **Sample Questions:**
 
-1. `GGA → GGC`: Silent / Missense / Nonsense / Frameshift? Effect: \_\_\_\_\_\_\_\_\_\_\_
-2. `GGA → TAA`: Silent / Missense / Nonsense / Frameshift? Effect: \_\_\_\_\_\_\_\_\_\_\_
-3. `ATG GAA → ATG GA A`: Silent / Missense / Nonsense / Frameshift? Effect: \_\_\_\_\_\_\_\_\_\_\_
+1. `GGA → GGC`: Silent / Missense / Nonsense / Frameshift? Effect:
+   \_\_\_\_\_\_\_\_\_\_\_
+2. `GGA → TAA`: Silent / Missense / Nonsense / Frameshift? Effect:
+   \_\_\_\_\_\_\_\_\_\_\_
+3. `ATG GAA → ATG GA A`: Silent / Missense / Nonsense / Frameshift? Effect:
+   \_\_\_\_\_\_\_\_\_\_\_
 
 ---
 
@@ -538,7 +554,9 @@ Complete assessment tools now available in [`ASSESSMENTS.md`](ASSESSMENTS.md):
 
 **Total: 100 points**
 
-**Grading Note:** Focus on **process** (planning, iteration, debugging) as much as **product** (final image). Consider requiring students to submit intermediate drafts to demonstrate growth.
+**Grading Note:** Focus on **process** (planning, iteration, debugging) as much
+as **product** (final image). Consider requiring students to submit intermediate
+drafts to demonstrate growth.
 
 ---
 
@@ -577,7 +595,8 @@ Complete assessment tools now available in [`ASSESSMENTS.md`](ASSESSMENTS.md):
 
 **Process:**
 
-1. Give students codon chart + list of 10 operations (e.g., "Find a codon that draws circles")
+1. Give students codon chart + list of 10 operations (e.g., "Find a codon that
+   draws circles")
 2. Students race to find codons
 3. First to find all 10 wins
 
@@ -591,7 +610,8 @@ Complete assessment tools now available in [`ASSESSMENTS.md`](ASSESSMENTS.md):
 
 **Process:**
 
-1. Provide students with 5 broken genomes (frame errors, missing START/STOP, stack underflow)
+1. Provide students with 5 broken genomes (frame errors, missing START/STOP,
+   stack underflow)
 2. Students identify error type and fix
 3. Discuss strategies: "How did you know where the error was?"
 
@@ -625,7 +645,8 @@ ATG GAA AAT ACA TAA  ; TRANSLATE needs 2 values
 **Solution Space:**
 
 - Naïve: 3 × (PUSH + CIRCLE) = 15 codons + START/STOP = 17 total
-- Optimized: PUSH + DUP + DUP + CIRCLE + CIRCLE + CIRCLE = 11 codons + 2 = 13 total
+- Optimized: PUSH + DUP + DUP + CIRCLE + CIRCLE + CIRCLE = 11 codons + 2 = 13
+  total
 
 **Discussion:** Efficiency vs. readability trade-offs
 
@@ -642,7 +663,8 @@ ATG GAA AAT ACA TAA  ; TRANSLATE needs 2 values
 3. **Round 3**: Student C loads `v2`, applies 1 mutation, saves as `v3`
 4. **Continue**: 5-6 rounds
 5. **Compare**: Display v1 vs v6 side-by-side
-6. **Discuss**: How much drift occurred? What if mutations were random vs. directed?
+6. **Discuss**: How much drift occurred? What if mutations were random vs.
+   directed?
 
 ---
 
@@ -677,7 +699,8 @@ ATG GAA AAT ACA TAA  ; TRANSLATE needs 2 values
 
 **Key Teaching Point:**
 
-> "The information is the same - just written differently. DNA uses Thymine (T), RNA uses Uracil (U). CodonCanvas shows you this transformation visually."
+> "The information is the same - just written differently. DNA uses Thymine (T),
+> RNA uses Uracil (U). CodonCanvas shows you this transformation visually."
 
 **Extension Questions:**
 
@@ -696,7 +719,8 @@ ATG GAA AAT ACA TAA  ; TRANSLATE needs 2 values
 1. **Open Comparison Panel**: Click "Biology" button in toolbar
 2. **Write Test Genome**: `ATG GAA CCC GGA TAA`
 3. **View Table**: See CodonCanvas opcode vs real amino acid for each codon
-4. **Spot Patterns**: Notice GGA/GGC/GGG/GGT all have same behavior in BOTH systems
+4. **Spot Patterns**: Notice GGA/GGC/GGG/GGT all have same behavior in BOTH
+   systems
 
 **Discussion Topics:**
 
@@ -704,7 +728,8 @@ ATG GAA AAT ACA TAA  ; TRANSLATE needs 2 values
 - What's different? (Output: shapes vs amino acids)
 - Why is the redundancy pattern biologically important? (Error tolerance)
 
-**Worksheet Connection:** Students complete comparison table from Lesson Extension
+**Worksheet Connection:** Students complete comparison table from Lesson
+Extension
 
 **See Also:** `docs/METAPHOR_LIMITATIONS.md` for detailed accuracy analysis
 
@@ -714,20 +739,26 @@ ATG GAA AAT ACA TAA  ; TRANSLATE needs 2 values
 
 ### Overview
 
-CodonCanvas provides two powerful analytics tools for classroom assessment and educational research:
+CodonCanvas provides two powerful analytics tools for classroom assessment and
+educational research:
 
-1. **Teacher Dashboard** (`/dashboards/teacher`) - Classroom-level analytics and student progress tracking
-2. **Research Metrics Dashboard** (`/dashboards/research`) - Deep-dive session analytics for research
+1. **Teacher Dashboard** (`/dashboards/teacher`) - Classroom-level analytics and
+   student progress tracking
+2. **Research Metrics Dashboard** (`/dashboards/research`) - Deep-dive session
+   analytics for research
 
-Both tools are **privacy-preserving** and work entirely client-side with no data transmission to servers (FERPA-compliant).
+Both tools are **privacy-preserving** and work entirely client-side with no data
+transmission to servers (FERPA-compliant).
 
 ---
 
 ### Teacher Dashboard
 
-**Purpose**: Monitor classroom engagement, track student progress, identify at-risk learners
+**Purpose**: Monitor classroom engagement, track student progress, identify
+at-risk learners
 
-**Access**: [https://kjanat.github.io/codoncanvas/dashboards/teacher](https://kjanat.github.io/codoncanvas/dashboards/teacher)
+**Access**:
+[https://kjanat.github.io/codoncanvas/dashboards/teacher](https://kjanat.github.io/codoncanvas/dashboards/teacher)
 
 #### Features
 
@@ -742,7 +773,8 @@ Both tools are **privacy-preserving** and work entirely client-side with no data
 
 **⚠️ At-Risk Student Alerts**
 
-- **High Severity** (Red): No first artifact, no sessions, no tutorials started, or no genomes created
+- **High Severity** (Red): No first artifact, no sessions, no tutorials started,
+  or no genomes created
 - **Medium Severity** (Yellow): Only 1 session or low completion rate (<25%)
 - **Low Severity** (Blue): Minor engagement concerns
 - Sorted by severity level with specific intervention reasons listed
@@ -770,11 +802,13 @@ Both tools are **privacy-preserving** and work entirely client-side with no data
 
 **Step 1: Students Export Their Progress**
 
-Students work in the main playground and click the **"📊 Export Progress"** button (located in toolbar next to "Load .genome").
+Students work in the main playground and click the **"📊 Export Progress"**
+button (located in toolbar next to "Load .genome").
 
 This captures:
 
-- Tutorial progress (which tutorials started/completed, timestamps, current step)
+- Tutorial progress (which tutorials started/completed, timestamps, current
+  step)
 - Research metrics sessions (all learning activity with timestamps)
 - Aggregate metrics (total sessions, duration, genomes, mutations)
 
@@ -797,7 +831,8 @@ Dashboard immediately displays aggregated classroom analytics.
 **Step 3: Review Analytics**
 
 - **Check at-risk alerts**: Prioritize students with high/medium severity flags
-- **Review engagement metrics**: Identify struggling students or disengaged learners
+- **Review engagement metrics**: Identify struggling students or disengaged
+  learners
 - **Examine tutorial completion**: See which lessons resonate and which don't
 - **Compare performance**: Sort by metrics to identify outliers
 
@@ -808,9 +843,12 @@ Dashboard immediately displays aggregated classroom analytics.
 
 #### Formative Assessment Use Cases
 
-1. **Early Intervention**: At-risk alerts flag students needing support before they fall behind
-2. **Tutorial Effectiveness**: Completion matrix reveals which lessons need improvement
-3. **Engagement Monitoring**: Session counts and duration show participation levels
+1. **Early Intervention**: At-risk alerts flag students needing support before
+   they fall behind
+2. **Tutorial Effectiveness**: Completion matrix reveals which lessons need
+   improvement
+3. **Engagement Monitoring**: Session counts and duration show participation
+   levels
 4. **Differentiation**: High performers can be challenged with advanced examples
 5. **Parent Communication**: Export individual student data for progress reports
 
@@ -833,9 +871,11 @@ Use demo mode to:
 
 ### Research Metrics Dashboard
 
-**Purpose**: Detailed session-level analytics for educational research and deep assessment
+**Purpose**: Detailed session-level analytics for educational research and deep
+assessment
 
-**Access**: [https://kjanat.github.io/codoncanvas/dashboards/research](https://kjanat.github.io/codoncanvas/dashboards/research)
+**Access**:
+[https://kjanat.github.io/codoncanvas/dashboards/research](https://kjanat.github.io/codoncanvas/dashboards/research)
 
 #### Features
 
@@ -855,7 +895,8 @@ Use demo mode to:
 
 **🔍 Detailed Session Analysis**
 
-- Action-by-action logs (genome created, mutation applied, tutorial step completed)
+- Action-by-action logs (genome created, mutation applied, tutorial step
+  completed)
 - Timestamps for temporal analysis
 - Genome content and metadata
 - Tutorial interaction patterns
@@ -869,11 +910,16 @@ Use demo mode to:
 
 #### Research Applications
 
-1. **Learning Analytics Studies**: Temporal patterns, engagement trajectories, dropout prediction
-2. **Pedagogical Assessment**: Tutorial effectiveness, optimal lesson sequencing, cognitive load analysis
-3. **Comparative Studies**: Intervention A vs B, cohort comparisons, longitudinal tracking
-4. **Qualitative Research**: Session vignettes, case studies, learning narratives
-5. **System Evaluation**: Feature usage patterns, UI bottlenecks, performance issues
+1. **Learning Analytics Studies**: Temporal patterns, engagement trajectories,
+   dropout prediction
+2. **Pedagogical Assessment**: Tutorial effectiveness, optimal lesson
+   sequencing, cognitive load analysis
+3. **Comparative Studies**: Intervention A vs B, cohort comparisons,
+   longitudinal tracking
+4. **Qualitative Research**: Session vignettes, case studies, learning
+   narratives
+5. **System Evaluation**: Feature usage patterns, UI bottlenecks, performance
+   issues
 
 #### Privacy & Ethics
 
@@ -902,7 +948,8 @@ Use demo mode to:
 - Tool designed for exempt or expedited IRB review
 - Educational setting with minimal risk
 - Student autonomy preserved (opt-in export)
-- See [ACADEMIC_RESEARCH_PACKAGE.md](ACADEMIC_RESEARCH_PACKAGE.md) for research templates
+- See [ACADEMIC_RESEARCH_PACKAGE.md](ACADEMIC_RESEARCH_PACKAGE.md) for research
+  templates
 
 ---
 
@@ -961,7 +1008,8 @@ Use demo mode to:
 
 #### Issue 2: "Nothing shows up on canvas"
 
-**Symptoms:** Program runs (status bar says "Success"), but canvas is blank/white
+**Symptoms:** Program runs (status bar says "Success"), but canvas is
+blank/white
 
 **Possible Causes:**
 
@@ -1056,55 +1104,64 @@ Use demo mode to:
 
 ### For Educators
 
-**Q: Do I need to know biology to teach this?**
-A: Basic DNA knowledge helps (codons, mutations), but you can learn alongside students. Focus on the **metaphor** (code = DNA) rather than deep molecular mechanisms.
+**Q: Do I need to know biology to teach this?** A: Basic DNA knowledge helps
+(codons, mutations), but you can learn alongside students. Focus on the
+**metaphor** (code = DNA) rather than deep molecular mechanisms.
 
-**Q: Do I need to know programming?**
-A: No! CodonCanvas is designed for non-programmers. If you can follow a recipe, you can write CodonCanvas code. The visual feedback makes debugging intuitive.
+**Q: Do I need to know programming?** A: No! CodonCanvas is designed for
+non-programmers. If you can follow a recipe, you can write CodonCanvas code. The
+visual feedback makes debugging intuitive.
 
-**Q: How long does it take for students to create their first program?**
-A: 5-10 minutes for "Hello Circle." Most students create original compositions within 45 minutes.
+**Q: How long does it take for students to create their first program?** A: 5-10
+minutes for "Hello Circle." Most students create original compositions within 45
+minutes.
 
-**Q: What ages is this appropriate for?**
-A: **Recommended**: Grades 9-12 (ages 14-18), some college intro courses
-**Possible with scaffolding**: Advanced middle school (grades 7-8)
-**Too young**: Elementary (abstract concepts challenging)
+**Q: What ages is this appropriate for?** A: **Recommended**: Grades 9-12 (ages
+14-18), some college intro courses **Possible with scaffolding**: Advanced
+middle school (grades 7-8) **Too young**: Elementary (abstract concepts
+challenging)
 
-**Q: Can I use this if my class has already covered genetics?**
-A: **Yes!** Use it as a review/enrichment activity. Students with genetics background often make deeper connections.
+**Q: Can I use this if my class has already covered genetics?** A: **Yes!** Use
+it as a review/enrichment activity. Students with genetics background often make
+deeper connections.
 
-**Q: What if students finish early?**
-A: **Extensions**:
+**Q: What if students finish early?** A: **Extensions**:
 
 - Codon golf (shortest program challenge)
 - Mutation telephone (cumulative drift activity)
 - Create tutorial genome for younger students
 - Explore advanced opcodes (NOISE, SAVE_STATE)
 
-**Q: How do I grade creative work fairly?**
-A: Use **rubric** (functionality, complexity, creativity, documentation). Focus on **process** (iteration, debugging) as much as product. Consider peer review component.
+**Q: How do I grade creative work fairly?** A: Use **rubric** (functionality,
+complexity, creativity, documentation). Focus on **process** (iteration,
+debugging) as much as product. Consider peer review component.
 
-**Q: Can I modify the codon map?**
-A: Technically yes (edit `src/types.ts`), but **not recommended** during pilot. Changing mappings breaks all examples and requires relearning.
+**Q: Can I modify the codon map?** A: Technically yes (edit `src/types.ts`), but
+**not recommended** during pilot. Changing mappings breaks all examples and
+requires relearning.
 
 ---
 
 ### For Students (Teacher Reference)
 
-**Q: What if I make a mistake?**
-A: The linter will highlight errors! Look for red/yellow warnings and follow suggestions. Most errors are typos or missing START/STOP.
+**Q: What if I make a mistake?** A: The linter will highlight errors! Look for
+red/yellow warnings and follow suggestions. Most errors are typos or missing
+START/STOP.
 
-**Q: Can I use real DNA sequences?**
-A: You can paste real DNA, but it likely won't draw anything interesting (real genes don't have START/STOP in the right places). CodonCanvas uses DNA **structure**, not real sequences.
+**Q: Can I use real DNA sequences?** A: You can paste real DNA, but it likely
+won't draw anything interesting (real genes don't have START/STOP in the right
+places). CodonCanvas uses DNA **structure**, not real sequences.
 
-**Q: Why do some codons do the same thing?**
-A: This models genetic **redundancy**—in real DNA, multiple codons code for the same amino acid. It makes mutations less harmful!
+**Q: Why do some codons do the same thing?** A: This models genetic
+**redundancy**—in real DNA, multiple codons code for the same amino acid. It
+makes mutations less harmful!
 
-**Q: What's the coolest thing I can make?**
-A: Check Example 14 (Mandala Pattern) or 12 (Textured Circle with NOISE). Some students create fractals, spirals, or abstract art!
+**Q: What's the coolest thing I can make?** A: Check Example 14 (Mandala
+Pattern) or 12 (Textured Circle with NOISE). Some students create fractals,
+spirals, or abstract art!
 
-**Q: Can I share my work?**
-A: Yes! Use the **💾 Save .genome** button to download your code, then share the file with friends/teacher.
+**Q: Can I share my work?** A: Yes! Use the **💾 Save .genome** button to
+download your code, then share the file with friends/teacher.
 
 ---
 
@@ -1128,9 +1185,10 @@ A: Yes! Use the **💾 Save .genome** button to download your code, then share t
 
 ## Contact & Support
 
-**Found a bug?** Report at: [GitHub Issues](https://github.com/codoncanvas/codoncanvas/issues)
-**Teaching tips?** Share with: [community forum link]
-**Need help?** Email: [educator-support email]
+**Found a bug?** Report at:
+[GitHub Issues](https://github.com/codoncanvas/codoncanvas/issues) **Teaching
+tips?** Share with: [community forum link] **Need help?** Email:
+[educator-support email]
 
 ---
 

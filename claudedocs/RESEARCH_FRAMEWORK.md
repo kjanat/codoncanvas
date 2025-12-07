@@ -1,14 +1,18 @@
 # CodonCanvas Educational Research Framework
 
-**Version:** 1.0
-**Date:** October 2025
-**Purpose:** Rigorous methodology for measuring CodonCanvas educational effectiveness
+**Version:** 1.0 **Date:** October 2025 **Purpose:** Rigorous methodology for
+measuring CodonCanvas educational effectiveness
 
 ---
 
 ## Executive Summary
 
-This framework provides **IRB-ready protocols** for conducting educational research using CodonCanvas. Includes validated assessment instruments, experimental designs, data collection methods, and statistical analysis plans. Designed for: (1) Academic publications in biology/CS education journals, (2) Grant applications (NSF, NIH, educational foundations), (3) Institutional program evaluation, (4) Pilot study implementation.
+This framework provides **IRB-ready protocols** for conducting educational
+research using CodonCanvas. Includes validated assessment instruments,
+experimental designs, data collection methods, and statistical analysis plans.
+Designed for: (1) Academic publications in biology/CS education journals, (2)
+Grant applications (NSF, NIH, educational foundations), (3) Institutional
+program evaluation, (4) Pilot study implementation.
 
 **Target Journals:**
 
@@ -31,34 +35,38 @@ This framework provides **IRB-ready protocols** for conducting educational resea
 
 ### Primary Research Questions
 
-**RQ1: Learning Outcomes**
-Does CodonCanvas instruction improve student understanding of genetic mutation concepts compared to traditional instruction?
+**RQ1: Learning Outcomes** Does CodonCanvas instruction improve student
+understanding of genetic mutation concepts compared to traditional instruction?
 
-**Hypothesis:** Students using CodonCanvas will demonstrate significantly higher scores on mutation concept assessments compared to control groups receiving traditional lecture-based instruction.
+**Hypothesis:** Students using CodonCanvas will demonstrate significantly higher
+scores on mutation concept assessments compared to control groups receiving
+traditional lecture-based instruction.
 
-**RQ2: Conceptual Transfer**
-Can students transfer visual mutation understanding from CodonCanvas to biological contexts?
+**RQ2: Conceptual Transfer** Can students transfer visual mutation understanding
+from CodonCanvas to biological contexts?
 
-**Hypothesis:** CodonCanvas students will show improved performance on transfer tasks requiring application of mutation concepts to novel biological scenarios.
+**Hypothesis:** CodonCanvas students will show improved performance on transfer
+tasks requiring application of mutation concepts to novel biological scenarios.
 
-**RQ3: Engagement & Motivation**
-Does interactive DNA programming increase student engagement with genetics concepts?
+**RQ3: Engagement & Motivation** Does interactive DNA programming increase
+student engagement with genetics concepts?
 
-**Hypothesis:** Students report higher intrinsic motivation and engagement when learning with CodonCanvas versus traditional methods.
+**Hypothesis:** Students report higher intrinsic motivation and engagement when
+learning with CodonCanvas versus traditional methods.
 
 ### Secondary Research Questions
 
-**RQ4: Retention**
-Are learning gains sustained over time (4-8 weeks post-intervention)?
+**RQ4: Retention** Are learning gains sustained over time (4-8 weeks
+post-intervention)?
 
-**RQ5: Misconception Remediation**
-Does CodonCanvas address common genetics misconceptions (e.g., frameshift effects)?
+**RQ5: Misconception Remediation** Does CodonCanvas address common genetics
+misconceptions (e.g., frameshift effects)?
 
-**RQ6: Accessibility**
-Is CodonCanvas effective across diverse learner populations (varying prior knowledge, learning styles)?
+**RQ6: Accessibility** Is CodonCanvas effective across diverse learner
+populations (varying prior knowledge, learning styles)?
 
-**RQ7: Implementation Fidelity**
-What instructional practices maximize CodonCanvas effectiveness?
+**RQ7: Implementation Fidelity** What instructional practices maximize
+CodonCanvas effectiveness?
 
 ---
 
@@ -72,14 +80,16 @@ What instructional practices maximize CodonCanvas effectiveness?
 
 - **Participants:** 200-300 undergraduate students
 - **Courses:** Introductory biology, genetics, molecular biology
-- **Institutions:** 3-5 diverse institutions (R1 universities, liberal arts colleges, community colleges)
+- **Institutions:** 3-5 diverse institutions (R1 universities, liberal arts
+  colleges, community colleges)
 - **Sampling:** Stratified random assignment (by prior knowledge, institution)
 
 #### Groups
 
 - **Treatment Group (n=150):** CodonCanvas + standard instruction
 - **Control Group (n=150):** Standard instruction only
-- **Active Control (optional, n=150):** Alternative interactive tool (PhET simulations, Geniverse)
+- **Active Control (optional, n=150):** Alternative interactive tool (PhET
+  simulations, Geniverse)
 
 #### Timeline
 
@@ -99,7 +109,8 @@ Week 6:  Delayed post-assessment (retention)
 
 #### Controls
 
-- **Instructor training:** Standardize CodonCanvas implementation via training videos
+- **Instructor training:** Standardize CodonCanvas implementation via training
+  videos
 - **Time on task:** Equal instructional time for both groups
 - **Content coverage:** Identical learning objectives across groups
 - **Assessment administration:** Blinded graders for open-response items
@@ -139,7 +150,8 @@ Week 4:  Delayed post-assessment (optional, retention)
 - Selection bias if voluntary participation
 - Maturation threats (students naturally improve over time)
 
-**Best Use:** Pilot testing, proof-of-concept, preliminary evidence for grant applications
+**Best Use:** Pilot testing, proof-of-concept, preliminary evidence for grant
+applications
 
 ---
 
@@ -151,7 +163,8 @@ Week 4:  Delayed post-assessment (optional, retention)
 
 - **Treatment Group:** Classes using CodonCanvas (n=100)
 - **Comparison Group:** Matched classes not using CodonCanvas (n=100)
-- **Matching Variables:** Institution, instructor experience, class size, prior GPA
+- **Matching Variables:** Institution, instructor experience, class size, prior
+  GPA
 
 #### Matching Protocol
 
@@ -173,7 +186,8 @@ Week 4:  Delayed post-assessment (optional, retention)
 - Unmeasured confounders
 - Instructor effects (different instructors for treatment/comparison)
 
-**Mitigation:** Measure and control for as many covariates as possible; acknowledge limitations in publication
+**Mitigation:** Measure and control for as many covariates as possible;
+acknowledge limitations in publication
 
 ---
 
@@ -237,7 +251,8 @@ Justification: Deletion shifts reading frame: ATG GC_A TTA → misaligned codons
 
 - **Duration:** 30 minutes
 - **Format:** Paper or online (Qualtrics, Google Forms)
-- **Instructions:** "Select the BEST answer for each question. No partial credit."
+- **Instructions:** "Select the BEST answer for each question. No partial
+  credit."
 
 ---
 
@@ -298,7 +313,8 @@ Questions:
 #### Scoring
 
 - **Total Score:** 0-15 points
-- **Inter-Rater Reliability:** Train 2+ graders, calculate Cohen's κ (target: κ > 0.75)
+- **Inter-Rater Reliability:** Train 2+ graders, calculate Cohen's κ (target: κ
+  > 0.75)
 - **Blind Grading:** Graders unaware of student's treatment group
 
 #### Administration
@@ -551,7 +567,8 @@ Questions:
 
 **Hypothesis:** Treatment group MCI scores > Control group scores
 
-**Statistical Test:** Independent samples t-test (or ANCOVA if adjusting for covariates)
+**Statistical Test:** Independent samples t-test (or ANCOVA if adjusting for
+covariates)
 
 ```
 Null Hypothesis (H₀): μ_treatment = μ_control
@@ -624,9 +641,11 @@ Subscale scores:
 - Between-subjects factor: Group (treatment vs. control)
 - Interaction: Group × Mutation Type
 
-**Hypothesis:** Treatment group shows larger gains on frameshift items (CodonCanvas strength)
+**Hypothesis:** Treatment group shows larger gains on frameshift items
+(CodonCanvas strength)
 
-**Post-hoc Tests:** Bonferroni correction for multiple comparisons (α = 0.05/5 = 0.01)
+**Post-hoc Tests:** Bonferroni correction for multiple comparisons (α = 0.05/5 =
+0.01)
 
 ---
 
@@ -642,7 +661,8 @@ Subscale scores:
 - Scenario 2 (Tay-Sachs): Frameshift application
 - Scenario 3 (COVID-19): Silent mutation nuances
 
-**Hypothesis:** Treatment group shows higher transfer scores, especially on frameshift scenario
+**Hypothesis:** Treatment group shows higher transfer scores, especially on
+frameshift scenario
 
 **Qualitative Coding:**
 
@@ -716,7 +736,8 @@ Range: 0 (no forgetting) to 1 (complete forgetting)
 Post_MCI = β₀ + β₁(Treatment) + β₂(Moderator) + β₃(Treatment × Moderator) + ε
 ```
 
-**Hypothesis:** Treatment effect consistent across subgroups (no significant interactions)
+**Hypothesis:** Treatment effect consistent across subgroups (no significant
+interactions)
 
 **If interactions significant:**
 
@@ -772,7 +793,8 @@ Post_MCI = β₀ + β₁(Treatment) + β₂(Moderator) + β₃(Treatment × Mode
 **Expedited Criteria (if identifiable data):**
 
 - Category 6: Collection of data through non-invasive procedures
-- Category 7: Research on individual or group characteristics (educational tests)
+- Category 7: Research on individual or group characteristics (educational
+  tests)
 
 ### Informed Consent
 
@@ -783,7 +805,8 @@ Post_MCI = β₀ + β₁(Treatment) + β₂(Moderator) + β₃(Treatment × Mode
 1. **Purpose:** Study evaluates CodonCanvas educational tool
 2. **Procedures:** 3 CodonCanvas lessons, pre/post assessments (3 hours total)
 3. **Risks:** Minimal - comparable to normal classroom activities
-4. **Benefits:** Direct - may improve genetics understanding; Societal - advance ed-tech
+4. **Benefits:** Direct - may improve genetics understanding; Societal - advance
+   ed-tech
 5. **Confidentiality:** Data coded, no names in publications, secure storage
 6. **Voluntary:** Can withdraw anytime, no grade penalty
 7. **Contact:** PI name, email, phone; IRB contact for questions
@@ -791,7 +814,8 @@ Post_MCI = β₀ + β₁(Treatment) + β₂(Moderator) + β₃(Treatment × Mode
 **Special Considerations:**
 
 - **Grades:** Explicitly state participation does NOT affect course grade
-- **Withdrawal:** Students can withdraw without penalty, data deleted if requested
+- **Withdrawal:** Students can withdraw without penalty, data deleted if
+  requested
 - **Incentives:** If provided (e.g., $10 gift card), mention in consent form
 
 #### Parental Consent (if minors involved)
@@ -817,7 +841,8 @@ Post_MCI = β₀ + β₁(Treatment) + β₂(Moderator) + β₃(Treatment × Mode
    - Access: PI and approved research staff only
 
 3. **Data Sharing:**
-   - De-identified data may be shared for secondary analysis (disclose in consent)
+   - De-identified data may be shared for secondary analysis (disclose in
+     consent)
    - Public repositories (OSF, Dryad) - fully anonymized only
    - FERPA compliance: No sharing of educational records without consent
 
@@ -832,9 +857,11 @@ Post_MCI = β₀ + β₁(Treatment) + β₂(Moderator) + β₃(Treatment × Mode
 
 **Students as Participants:**
 
-- **Coercion Risk:** Minimize by emphasizing voluntary participation, no grade impact
+- **Coercion Risk:** Minimize by emphasizing voluntary participation, no grade
+  impact
 - **Power Differential:** Instructor should not recruit own students (use RA)
-- **Alternatives:** Offer alternative assignment if students decline participation
+- **Alternatives:** Offer alternative assignment if students decline
+  participation
 
 **Minors (<18 years):**
 
@@ -899,7 +926,8 @@ Post_MCI = β₀ + β₁(Treatment) + β₂(Moderator) + β₃(Treatment × Mode
 
 ### Manuscript Structure (CBE-LSE Format)
 
-**Title:** "Learning Genetic Mutations Through DNA-Based Visual Programming: A Randomized Controlled Trial of CodonCanvas"
+**Title:** "Learning Genetic Mutations Through DNA-Based Visual Programming: A
+Randomized Controlled Trial of CodonCanvas"
 
 **Abstract (250 words):**
 
@@ -1011,8 +1039,10 @@ Post_MCI = β₀ + β₁(Treatment) + β₂(Moderator) + β₃(Treatment × Mode
 
 **Alignment:**
 
-- **Exploration Track ($300K, 2 years):** Pilot testing, instrument validation, feasibility
-- **Design & Development Track ($600K, 3 years):** Scale-up, multi-institution implementation
+- **Exploration Track ($300K, 2 years):** Pilot testing, instrument validation,
+  feasibility
+- **Design & Development Track ($600K, 3 years):** Scale-up, multi-institution
+  implementation
 
 **Proposal Components:**
 
@@ -1043,8 +1073,10 @@ Post_MCI = β₀ + β₁(Treatment) + β₂(Moderator) + β₃(Treatment × Mode
 
 **Alignment:**
 
-- **Collaborative Planning Grant ($100K, 1 year):** Partnership development, needs assessment
-- **Development Grant ($1.25M, 4 years):** Curriculum development, implementation, evaluation
+- **Collaborative Planning Grant ($100K, 1 year):** Partnership development,
+  needs assessment
+- **Development Grant ($1.25M, 4 years):** Curriculum development,
+  implementation, evaluation
 
 **Proposal Components:**
 
@@ -1243,7 +1275,8 @@ Post_MCI = β₀ + β₁(Treatment) + β₂(Moderator) + β₃(Treatment × Mode
 2. **Complete Tutorial 1:** Click "Start Tutorial" → Follow prompts (15 min)
 3. **Try an Example:** Load "helloCircle.genome" → Click Run
 4. **Edit the Code:** Change GGA to GGC → Run again (notice no change - silent!)
-5. **Experiment:** Change GGA to CCA → Run (circle becomes rectangle - missense!)
+5. **Experiment:** Change GGA to CCA → Run (circle becomes rectangle -
+   missense!)
 
 **Codon Cheat Sheet:**
 
@@ -1283,7 +1316,11 @@ Post_MCI = β₀ + β₁(Treatment) + β₂(Moderator) + β₃(Treatment × Mode
 
 **Example 5-point response:**
 
-> "This is a missense mutation because one nucleotide changed (GAG→GTG), causing Glu→Val substitution at position 6. Glutamic acid is negatively charged, but valine is nonpolar. This charge change causes hemoglobin molecules to stick together (polymerize) when deoxygenated, deforming red blood cells into sickle shapes."
+> "This is a missense mutation because one nucleotide changed (GAG→GTG), causing
+> Glu→Val substitution at position 6. Glutamic acid is negatively charged, but
+> valine is nonpolar. This charge change causes hemoglobin molecules to stick
+> together (polymerize) when deoxygenated, deforming red blood cells into sickle
+> shapes."
 
 **Example 1-point response:**
 
@@ -1437,13 +1474,15 @@ Post_MCI = β₀ + β₁(Treatment) + β₂(Moderator) + β₃(Treatment × Mode
 
 ## 12. Conclusion
 
-This research framework provides a **rigorous, replicable methodology** for evaluating CodonCanvas educational effectiveness. Key strengths:
+This research framework provides a **rigorous, replicable methodology** for
+evaluating CodonCanvas educational effectiveness. Key strengths:
 
-✅ **IRB-Ready:** Detailed protocols, consent forms, ethics considerations
-✅ **Validated Instruments:** MCI, MTT, IMI with strong psychometric properties
-✅ **Rigorous Design:** RCT with adequate power, control for confounds, multilevel analysis
-✅ **Publication-Ready:** Structured for high-impact journals (CBE-LSE, ACM TOCE)
-✅ **Grant-Aligned:** Matches NSF IUSE, NIH SEPA, foundation priorities
+✅ **IRB-Ready:** Detailed protocols, consent forms, ethics considerations ✅
+**Validated Instruments:** MCI, MTT, IMI with strong psychometric properties ✅
+**Rigorous Design:** RCT with adequate power, control for confounds, multilevel
+analysis ✅ **Publication-Ready:** Structured for high-impact journals (CBE-LSE,
+ACM TOCE) ✅ **Grant-Aligned:** Matches NSF IUSE, NIH SEPA, foundation
+priorities
 
 **Next Steps:**
 
@@ -1457,9 +1496,11 @@ This research framework provides a **rigorous, replicable methodology** for eval
 
 **Impact Potential:**
 
-- **Scientific:** Advance understanding of visual programming for science learning
+- **Scientific:** Advance understanding of visual programming for science
+  learning
 - **Educational:** Improve genetics education for 10,000+ students annually
-- **Societal:** Increase genetic literacy in public health, medicine, biotech careers
+- **Societal:** Increase genetic literacy in public health, medicine, biotech
+  careers
 
 **Contact for Collaboration:**
 
@@ -1469,6 +1510,6 @@ This research framework provides a **rigorous, replicable methodology** for eval
 
 ---
 
-**Document Status:** Ready for IRB submission, grant applications, and pilot implementation
-**Version:** 1.0 (October 2025)
-**License:** CC BY 4.0 (Creative Commons Attribution)
+**Document Status:** Ready for IRB submission, grant applications, and pilot
+implementation **Version:** 1.0 (October 2025) **License:** CC BY 4.0 (Creative
+Commons Attribution)

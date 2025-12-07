@@ -12,7 +12,8 @@ ATG [instructions] TAA
 START             STOP
 ```
 
-Every genome begins with `ATG` (START) and ends with a stop codon (`TAA`, `TAG`, or `TGA`).
+Every genome begins with `ATG` (START) and ends with a stop codon (`TAA`, `TAG`,
+or `TGA`).
 
 ---
 
@@ -154,23 +155,23 @@ TAA
 
 ### Silent Mutation
 
-**Change**: `GGA` → `GGC`
-**Effect**: Same opcode (both CIRCLE) → **no visual change**
+**Change**: `GGA` → `GGC` **Effect**: Same opcode (both CIRCLE) → **no visual
+change**
 
 ### Missense Mutation
 
-**Change**: `GGA` → `GCA`
-**Effect**: Different opcode (CIRCLE → TRIANGLE) → **shape changes**
+**Change**: `GGA` → `GCA` **Effect**: Different opcode (CIRCLE → TRIANGLE) →
+**shape changes**
 
 ### Nonsense Mutation
 
-**Change**: `GGA` → `TAA`
-**Effect**: Drawing opcode → STOP → **output truncated**
+**Change**: `GGA` → `TAA` **Effect**: Drawing opcode → STOP → **output
+truncated**
 
 ### Frameshift Mutation
 
-**Change**: Insert `C` after position 9
-**Effect**: All downstream codons shift → **everything breaks**
+**Change**: Insert `C` after position 9 **Effect**: All downstream codons shift
+→ **everything breaks**
 
 ---
 
@@ -372,8 +373,7 @@ Large:   60-100 (38-63 on codon scale)
 
 ### Canvas Coordinates
 
-Default canvas: 400×400 pixels
-Center: (200, 200)
+Default canvas: 400×400 pixels Center: (200, 200)
 
 ```
 Position Guide:
@@ -393,7 +393,8 @@ Save/restore drawing state:
 TCA, TCC, TCG, TCT = SAVE_STATE
 ```
 
-**Use case**: Draw something, save state, draw elsewhere, restore original position.
+**Use case**: Draw something, save state, draw elsewhere, restore original
+position.
 
 Example:
 

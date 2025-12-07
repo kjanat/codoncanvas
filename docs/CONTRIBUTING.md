@@ -1,6 +1,7 @@
 # Contributing to CodonCanvas
 
-Thank you for your interest in contributing to CodonCanvas! This document provides guidelines and instructions for contributing to the project.
+Thank you for your interest in contributing to CodonCanvas! This document
+provides guidelines and instructions for contributing to the project.
 
 ## Table of Contents
 
@@ -17,7 +18,8 @@ Thank you for your interest in contributing to CodonCanvas! This document provid
 
 ## Code of Conduct
 
-By participating in this project, you agree to abide by our [Code of Conduct](CODE_OF_CONDUCT.md). Please read it before contributing.
+By participating in this project, you agree to abide by our
+[Code of Conduct](CODE_OF_CONDUCT.md). Please read it before contributing.
 
 ## Getting Started
 
@@ -395,22 +397,18 @@ When creating a PR, include:
 ### Bug Reports
 
 ```markdown
-**Describe the bug**
-Clear and concise description of the bug.
+**Describe the bug** Clear and concise description of the bug.
 
-**To Reproduce**
-Steps to reproduce:
+**To Reproduce** Steps to reproduce:
 
 1. Open playground
 2. Enter genome: `ATG GGA TAA`
 3. Click run
 4. See error
 
-**Expected behavior**
-What you expected to happen.
+**Expected behavior** What you expected to happen.
 
-**Actual behavior**
-What actually happened.
+**Actual behavior** What actually happened.
 
 **Genome (if applicable)**
 ```
@@ -430,20 +428,15 @@ ATG GGA TAA
 ### Feature Requests
 
 ```markdown
-**Problem Statement**
-What problem does this solve?
+**Problem Statement** What problem does this solve?
 
-**Proposed Solution**
-How would you solve it?
+**Proposed Solution** How would you solve it?
 
-**Alternatives Considered**
-Other approaches you've thought about.
+**Alternatives Considered** Other approaches you've thought about.
 
-**Educational Value**
-How does this enhance the learning experience?
+**Educational Value** How does this enhance the learning experience?
 
-**Additional Context**
-Any other relevant information.
+**Additional Context** Any other relevant information.
 ```
 
 ## Example Genome Contributions
@@ -451,7 +444,8 @@ Any other relevant information.
 ### Criteria for Example Genomes
 
 1. **Educational Value**: Demonstrates a concept clearly
-2. **Appropriate Complexity**: Matches target difficulty level (beginner/intermediate/advanced)
+2. **Appropriate Complexity**: Matches target difficulty level
+   (beginner/intermediate/advanced)
 3. **Visual Interest**: Produces engaging output
 4. **Well-Commented**: Explains what each section does
 5. **Correct Syntax**: Passes linter validation
@@ -537,7 +531,8 @@ execute(opcode: Opcode, codon: Codon): void {
 
 ## License
 
-By contributing, you agree that your contributions will be licensed under the same license as the project (see LICENSE file).
+By contributing, you agree that your contributions will be licensed under the
+same license as the project (see LICENSE file).
 
 ## Recognition
 
@@ -547,4 +542,5 @@ Contributors will be recognized in:
 - CHANGELOG.md (for significant contributions)
 - Special thanks section in README (for major features)
 
-Thank you for contributing to CodonCanvas! Your efforts help make genetic concepts more accessible and engaging for learners everywhere. 🧬
+Thank you for contributing to CodonCanvas! Your efforts help make genetic
+concepts more accessible and engaging for learners everywhere. 🧬

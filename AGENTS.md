@@ -7,15 +7,18 @@
 - **Test pattern**: `bun test:agent --test-name-pattern "tokenize"`
 - **Lint**: `bun run lint` (biome) | **Format**: `bun run fmt` (`dprint`)
 - **Typecheck**: `bun run typecheck` | **Dev server**: `bun run dev`
-- **All-in-one checks/validation**: run `bun validate`, which does all the checks mentioned above.
+- **All-in-one checks/validation**: run `bun validate`, which does all the
+  checks mentioned above.
 
 ## Code Style
 
 - **TypeScript strict mode**, target ES2022, double quotes, 2-space indent
-- **Naming**: files=`kebab-case.ts` except for components which use `PascalCase`,
-  classes=`PascalCase`, functions=`camelCase`, constants=`UPPER_SNAKE_CASE`
+- **Naming**: files=`kebab-case.ts` except for components which use
+  `PascalCase`, classes=`PascalCase`, functions=`camelCase`,
+  constants=`UPPER_SNAKE_CASE`
 - **Imports**: use path aliases `@/*` for `src/`, organize imports via biome
-- **Types**: prefer interfaces over types, avoid `any`, use explicit return types
+- **Types**: prefer interfaces over types, avoid `any`, use explicit return
+  types
 - **Errors**: throw typed errors, handle with try/catch, no silent failures
 
 ## Testing
@@ -50,8 +53,10 @@
 - Aim For:
   - 80%+ overall coverage: Generally considered good
   - 90%+ critical paths: Important business logic should be well-tested
-  - 100% utility functions: Pure functions and utilities are easy to test completely
-  - Lower coverage for UI components: Often acceptable as they may require integration tests
+  - 100% utility functions: Pure functions and utilities are easy to test
+    completely
+  - Lower coverage for UI components: Often acceptable as they may require
+    integration tests
 
 ### E2E Tests (Playwright)
 
@@ -109,8 +114,12 @@ See [tools/README](tools/README.md) for CLI utilities:
 
 ## Sidenotes
 
-- If you are unsure how to do something, use `gh_grep` to search code examples from GitHub.
+- If you are unsure how to do something, use `gh_grep` to search code examples
+  from GitHub.
 - When you need to search docs, use `context7` tools.
-  - Or, when specifically searching for `bun` or `bun:test` docs, use `bun_docs` mcp.
-- Running git commands: append `git` with `--no-pager`, e.g. `git --no-pager log`
-- The default repo branch is `master`. The repo url is `https://github.com/kjanat/codoncanvas.git`
+  - Or, when specifically searching for `bun` or `bun:test` docs, use `bun_docs`
+    mcp.
+- Running git commands: append `git` with `--no-pager`, e.g.
+  `git --no-pager log`
+- The default repo branch is `master`. The repo url is
+  `https://github.com/kjanat/codoncanvas.git`

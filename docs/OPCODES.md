@@ -2,7 +2,9 @@
 
 **Complete instruction set for CodonCanvas v1.0**
 
-This document provides the complete mapping of all 64 codons to their corresponding opcodes, including stack effects, usage examples, and pedagogical notes.
+This document provides the complete mapping of all 64 codons to their
+corresponding opcodes, including stack effects, usage examples, and pedagogical
+notes.
 
 ---
 
@@ -31,7 +33,9 @@ This document provides the complete mapping of all 64 codons to their correspond
 | `TAG` | STOP   | `[] → []`    | Terminate execution (synonymous with TAA).                                           |
 | `TGA` | STOP   | `[] → []`    | Terminate execution (synonymous with TAA).                                           |
 
-**Pedagogy Note:** All valid programs must begin with `ATG` and end with one of the three stop codons (`TAA`, `TAG`, `TGA`). This models biological translation initiation and termination.
+**Pedagogy Note:** All valid programs must begin with `ATG` and end with one of
+the three stop codons (`TAA`, `TAG`, `TGA`). This models biological translation
+initiation and termination.
 
 **Examples:**
 
@@ -45,7 +49,8 @@ ATG ... TGA  ; Another alternative
 
 ## Drawing Primitives
 
-All drawing operations occur at the current drawing position with current rotation, scale, and color applied.
+All drawing operations occur at the current drawing position with current
+rotation, scale, and color applied.
 
 ### Circles
 
@@ -109,7 +114,8 @@ TAA
 | `GCG` | TRIANGLE | `[size] → []` | Synonymous with GCA                           |
 | `GCT` | TRIANGLE | `[size] → []` | Synonymous with GCA                           |
 
-**Pedagogy Note:** Triangle is a missense mutation from Circle (GG* → GC*), demonstrating how single base changes affect output.
+**Pedagogy Note:** Triangle is a missense mutation from Circle (GG* → GC*),
+demonstrating how single base changes affect output.
 
 ### Ellipses
 
@@ -132,7 +138,8 @@ TAA
 
 ## Transform Operations
 
-Transform operations modify the drawing state (position, rotation, scale, color) for subsequent drawing operations.
+Transform operations modify the drawing state (position, rotation, scale, color)
+for subsequent drawing operations.
 
 ### Translation (Movement)
 
@@ -211,7 +218,8 @@ TAA
 
 ## Stack Operations
 
-CodonCanvas uses a stack-based architecture. Values must be pushed onto the stack before operations can consume them.
+CodonCanvas uses a stack-based architecture. Values must be pushed onto the
+stack before operations can consume them.
 
 ### Push (Load Literal)
 
@@ -222,7 +230,8 @@ CodonCanvas uses a stack-based architecture. Values must be pushed onto the stac
 | `GAC` | PUSH   | `[] → [value]` | Synonymous with GAA                             |
 | `GAT` | PUSH   | `[] → [value]` | Synonymous with GAA                             |
 
-**Literal Encoding:** The codon immediately following PUSH is read as a base-4 number:
+**Literal Encoding:** The codon immediately following PUSH is read as a base-4
+number:
 
 - Formula: `value = d1×16 + d2×4 + d3`
 - Where: `A=0, C=1, G=2, T=3`
@@ -285,7 +294,9 @@ CCA                     ; RECT(21, 10) - note swapped dimensions
 
 **Added:** Session 71-72 (October 2025)
 
-Arithmetic operations enable computational programming beyond simple drawing. These opcodes form the foundation for algorithmic examples like Fibonacci sequences and mathematical patterns.
+Arithmetic operations enable computational programming beyond simple drawing.
+These opcodes form the foundation for algorithmic examples like Fibonacci
+sequences and mathematical patterns.
 
 | Codon | Opcode | Stack Effect     | Description                                     |
 | ----- | ------ | ---------------- | ----------------------------------------------- |
@@ -309,7 +320,9 @@ GAA AAC GAA AAC        ; PUSH 1, PUSH 1 (initial: fib(1)=1, fib(2)=1)
 ATA CTG                ; DUP, ADD (result: 2 = fib(3))
 ```
 
-**Pedagogy Note:** Arithmetic opcodes demonstrate that CodonCanvas is a real programming language capable of computation, not just drawing. Combined with LOOP, these enable complex algorithms.
+**Pedagogy Note:** Arithmetic opcodes demonstrate that CodonCanvas is a real
+programming language capable of computation, not just drawing. Combined with
+LOOP, these enable complex algorithms.
 
 ---
 
@@ -317,15 +330,17 @@ ATA CTG                ; DUP, ADD (result: 2 = fib(3))
 
 **Added:** Session 75 (October 2025)
 
-Comparison operations enable conditional behavior and algorithmic patterns. They return 1 (true) or 0 (false), which can be used with arithmetic multiplication to conditionally show/hide shapes.
+Comparison operations enable conditional behavior and algorithmic patterns. They
+return 1 (true) or 0 (false), which can be used with arithmetic multiplication
+to conditionally show/hide shapes.
 
 | Codon | Opcode | Stack Effect                  | Description                             |
 | ----- | ------ | ----------------------------- | --------------------------------------- |
 | `CTA` | EQ     | `[a, b] → [1 if a==b else 0]` | Equality: push 1 if equal, 0 otherwise  |
 | `CTC` | LT     | `[a, b] → [1 if a<b else 0]`  | Less than: push 1 if a < b, 0 otherwise |
 
-**Creative Usage Pattern:**
-Since CodonCanvas lacks branching (IF/ELSE), use comparison results as multipliers:
+**Creative Usage Pattern:** Since CodonCanvas lacks branching (IF/ELSE), use
+comparison results as multipliers:
 
 ```
 ; Draw circle ONLY if 5 == 5 (should appear)
@@ -339,7 +354,9 @@ GAA AGC CTT             ; PUSH 8, MUL → 8 * 0 = 0
 GGA                     ; CIRCLE(0) - invisible!
 ```
 
-**Pedagogy Note:** This "conditional via multiplication" pattern is brilliant computational thinking - achieving branching behavior without branch instructions. Demonstrates creative problem-solving within constraints.
+**Pedagogy Note:** This "conditional via multiplication" pattern is brilliant
+computational thinking - achieving branching behavior without branch
+instructions. Demonstrates creative problem-solving within constraints.
 
 **Example: FizzBuzz Logic**
 
@@ -358,14 +375,16 @@ GAA AAA CTA             ; PUSH 0, EQ (is remainder 0?)
 
 **Added:** Session 73 (October 2025)
 
-The LOOP opcode enables efficient iteration without manually repeating code blocks.
+The LOOP opcode enables efficient iteration without manually repeating code
+blocks.
 
 | Codon | Opcode | Stack Effect                | Description                                |
 | ----- | ------ | --------------------------- | ------------------------------------------ |
 | `CAA` | LOOP   | `[count, ...block] → [...]` | Execute opcodes in loop body `count` times |
 
-**Usage:**
-The LOOP opcode reads a loop body from the source code and executes it multiple times based on the stack count value. The loop body is defined by a "loop counter" that specifies how many subsequent opcodes belong to the loop.
+**Usage:** The LOOP opcode reads a loop body from the source code and executes
+it multiple times based on the stack count value. The loop body is defined by a
+"loop counter" that specifies how many subsequent opcodes belong to the loop.
 
 **Example:**
 
@@ -377,9 +396,12 @@ ATG
 TAA
 ```
 
-**Implementation Note:** The loop body size is currently hard-coded or auto-detected. Future versions may use an explicit loop size parameter.
+**Implementation Note:** The loop body size is currently hard-coded or
+auto-detected. Future versions may use an explicit loop size parameter.
 
-**Pedagogy Value:** LOOP demonstrates that CodonCanvas supports iteration, a fundamental programming concept. Combined with arithmetic, enables complex algorithmic patterns (Fibonacci, fractals, prime spirals).
+**Pedagogy Value:** LOOP demonstrates that CodonCanvas supports iteration, a
+fundamental programming concept. Combined with arithmetic, enables complex
+algorithmic patterns (Fibonacci, fractals, prime spirals).
 
 ---
 
@@ -414,7 +436,8 @@ TAA
 | `TCG` | RESTORE_STATE | `[] → []`    | Pop and restore drawing state from state stack                                 |
 | `TCT` | RESTORE_STATE | `[] → []`    | Synonymous with TCG                                                            |
 
-**Use Case:** Nested compositions where you need to return to a previous drawing state.
+**Use Case:** Nested compositions where you need to return to a previous drawing
+state.
 
 **Example:**
 
@@ -430,13 +453,16 @@ ATG
 TAA
 ```
 
-**Pedagogy Note:** State management models biological regulation - saving "context" before exploring different paths, then returning to original state.
+**Pedagogy Note:** State management models biological regulation - saving
+"context" before exploring different paths, then returning to original state.
 
 ---
 
 ## Opcode Families & Synonymous Codons
 
-CodonCanvas uses **synonymous codons** (codon families) to model genetic redundancy. Multiple codons map to the same opcode, enabling **silent mutations** for pedagogical demonstrations.
+CodonCanvas uses **synonymous codons** (codon families) to model genetic
+redundancy. Multiple codons map to the same opcode, enabling **silent
+mutations** for pedagogical demonstrations.
 
 ### Complete Family Mapping
 
@@ -485,7 +511,8 @@ GGA → GGC (both CIRCLE)
 CCA → CCT (both RECT)
 ```
 
-**Pedagogy:** Models genetic redundancy where DNA changes don't affect protein function.
+**Pedagogy:** Models genetic redundancy where DNA changes don't affect protein
+function.
 
 ### Missense Mutation
 
@@ -514,7 +541,8 @@ GGA → TAA (CIRCLE → STOP)
 
 ### Frameshift Mutation
 
-**Definition:** Insert/delete bases (not multiple of 3) → all downstream codons change
+**Definition:** Insert/delete bases (not multiple of 3) → all downstream codons
+change
 
 **Example:**
 
@@ -524,22 +552,24 @@ Insert C:  ATG CGA ACC CGG ATA A
            ↑   └── frame shifted! ──┘
 ```
 
-**Pedagogy:** Models how reading frame matters - catastrophic downstream effects.
+**Pedagogy:** Models how reading frame matters - catastrophic downstream
+effects.
 
 ---
 
 ## Computational Completeness
 
-With the addition of arithmetic (ADD, SUB, MUL, DIV), comparison (EQ, LT), and iteration (LOOP) opcodes, CodonCanvas approaches **Turing completeness**:
+With the addition of arithmetic (ADD, SUB, MUL, DIV), comparison (EQ, LT), and
+iteration (LOOP) opcodes, CodonCanvas approaches **Turing completeness**:
 
-✅ **Arithmetic:** Basic math operations
-✅ **Conditionals:** Comparison opcodes + creative workarounds
-✅ **Iteration:** LOOP opcode
-✅ **Memory:** Value stack
-⚠️ **Branching:** No IF/ELSE (but can simulate via multiplication)
+✅ **Arithmetic:** Basic math operations ✅ **Conditionals:** Comparison
+opcodes + creative workarounds ✅ **Iteration:** LOOP opcode ✅ **Memory:**
+Value stack ⚠️ **Branching:** No IF/ELSE (but can simulate via multiplication)
 ⚠️ **Recursion:** No call stack (could simulate via LOOP + arithmetic)
 
-**Conclusion:** CodonCanvas is a **real programming language** capable of expressing algorithms (FizzBuzz, Fibonacci, prime detection) beyond simple drawing commands.
+**Conclusion:** CodonCanvas is a **real programming language** capable of
+expressing algorithms (FizzBuzz, Fibonacci, prime detection) beyond simple
+drawing commands.
 
 ---
 
@@ -609,12 +639,14 @@ Legend: * = all 4 bases (family of 4), (3) = 3 codons, (2) = 2 codons
 
 ## Further Reading
 
-- [MVP Technical Specification](MVP_Technical_Specification.md) - Original design document
-- [Quick Reference](claudedocs/QUICK_REFERENCE.md) - 1-page cheat sheet for students
+- [MVP Technical Specification](MVP_Technical_Specification.md) - Original
+  design document
+- [Quick Reference](claudedocs/QUICK_REFERENCE.md) - 1-page cheat sheet for
+  students
 - [Example Gallery](/gallery) - 38+ working examples from simple to advanced
 - [Interactive Tutorial](/tutorial) - Step-by-step guided learning
 
 ---
 
-**CodonCanvas** • DNA-Inspired Visual Programming Language
-MIT License • [https://github.com/kjanat/codoncanvas](https://github.com/kjanat/codoncanvas)
+**CodonCanvas** • DNA-Inspired Visual Programming Language MIT License •
+[https://github.com/kjanat/codoncanvas](https://github.com/kjanat/codoncanvas)

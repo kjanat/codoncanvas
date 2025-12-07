@@ -6,8 +6,7 @@ CodonCanvas is an educational programming language that uses DNA-like triplets
 (codons) as syntax.\
 Learners write sequences of three-character tokens that execute as visual
 outputs,\
-making genetic concepts like mutations and reading frames tangible and
-playful.
+making genetic concepts like mutations and reading frames tangible and playful.
 
 ## Features
 
@@ -68,8 +67,8 @@ Try CodonCanvas online (no installation required):
   📈 Detailed engagement metrics and analysis
 
 > [!NOTE]
-> Replace `kjanat` with your GitHub username after deployment.
-> See [DEPLOYMENT.md][deployment-doc] for setup instructions.
+> Replace `kjanat` with your GitHub username after deployment. See
+> [DEPLOYMENT.md][deployment-doc] for setup instructions.
 
 ## Screenshots
 
@@ -308,8 +307,8 @@ AUG GAA AAU GGA UAA
 
 > [!NOTE]
 > CodonCanvas supports both DNA (T) and RNA (U) notation.\
-> U and T are treated as synonyms - you can mix both in the same genome
-> for educational demonstrations of transcription.
+> U and T are treated as synonyms - you can mix both in the same genome for
+> educational demonstrations of transcription.
 
 ## Built-in Examples
 
@@ -462,8 +461,8 @@ file:
 
 GIF exports capture every step of execution, perfect for sharing on social media
 or embedding in documentation.\
-Adjust FPS for smoother animation (higher file size) or faster encoding
-(lower FPS).
+Adjust FPS for smoother animation (higher file size) or faster encoding (lower
+FPS).
 
 ### File Format Example
 
@@ -811,8 +810,8 @@ bun run build
 bun test
 ```
 
-Test suite uses Bun's built-in test runner with vitest-compatible API.
-Tests mirror the `src/` directory structure in `tests/`.
+Test suite uses Bun's built-in test runner with vitest-compatible API. Tests
+mirror the `src/` directory structure in `tests/`.
 
 ## Pedagogy
 
@@ -843,8 +842,8 @@ CodonCanvas provides comprehensive classroom support tools:
 
 **Workflow:**
 
-1. Students complete activities and click `📊 Export Progress` button in
-   the playground
+1. Students complete activities and click `📊 Export Progress` button in the
+   playground
 2. Students save their progress file (JSON format) and submit to teacher
 3. Teacher opens Teacher Dashboard and imports multiple student files via
    drag-and-drop

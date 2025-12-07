@@ -1,15 +1,17 @@
 # CodonCanvas Lesson Plans
 
-**Version:** 1.0.0
-**Target Audience:** Secondary/tertiary biology students (ages 15+)
-**Total Duration:** 3 × 60-minute sessions
-**Prerequisites:** Basic biology (DNA, genes, mutations) and willingness to experiment
+**Version:** 1.0.0 **Target Audience:** Secondary/tertiary biology students
+(ages 15+) **Total Duration:** 3 × 60-minute sessions **Prerequisites:** Basic
+biology (DNA, genes, mutations) and willingness to experiment
 
 ---
 
 ## Overview
 
-This lesson sequence introduces genetic concepts through creative coding. Students write DNA-like programs (genomes) that produce visual outputs, then observe how different mutation types alter results. The three-lesson arc builds from basic shapes to complex compositions while reinforcing genetic literacy.
+This lesson sequence introduces genetic concepts through creative coding.
+Students write DNA-like programs (genomes) that produce visual outputs, then
+observe how different mutation types alter results. The three-lesson arc builds
+from basic shapes to complex compositions while reinforcing genetic literacy.
 
 **Learning Arc:**
 
@@ -26,7 +28,9 @@ This lesson sequence introduces genetic concepts through creative coding. Studen
 
 **🎯 Teaching Resources:**
 
-- **[Interactive Mutation Demos](/demos)** - Visual before/after comparisons of all 4 mutation types (silent, missense, nonsense, frameshift). Perfect for projecting during Lesson 2! ⭐ **RECOMMENDED**
+- **[Interactive Mutation Demos](/demos)** - Visual before/after comparisons of
+  all 4 mutation types (silent, missense, nonsense, frameshift). Perfect for
+  projecting during Lesson 2! ⭐ **RECOMMENDED**
 - **[Student Worksheets](worksheets/)** - Structured exercises for all 3 lessons
 - **[Assessment Framework](ASSESSMENTS.md)** - Pre/post tests and rubrics
 
@@ -44,8 +48,7 @@ This lesson sequence introduces genetic concepts through creative coding. Studen
 
 ## Lesson 1: Hello DNA - Your First Genome
 
-**Duration:** 60 minutes
-**Learning Objectives:**
+**Duration:** 60 minutes **Learning Objectives:**
 
 - Write and execute a valid CodonCanvas genome
 - Understand codon families and synonymous codons
@@ -58,7 +61,10 @@ This lesson sequence introduces genetic concepts through creative coding. Studen
 
 **Instructor Script:**
 
-> "Today we're learning to program using DNA-like code. Just like DNA uses triplets (codons) to encode instructions, CodonCanvas uses three-letter codes to create drawings. We'll discover how genetic redundancy works by seeing it in action."
+> "Today we're learning to program using DNA-like code. Just like DNA uses
+> triplets (codons) to encode instructions, CodonCanvas uses three-letter codes
+> to create drawings. We'll discover how genetic redundancy works by seeing it
+> in action."
 
 **Demo:** Show `01_hello_circle.ccd` running live
 
@@ -97,10 +103,11 @@ ATG GAA CCC GGC TAA
 
 **Ask:** "What changed?" (Answer: Nothing! Silent mutation)
 
-**Step 3:** Change GGA → GGT → GGG
-**Observe:** All four GG\* codons produce identical circles
+**Step 3:** Change GGA → GGT → GGG **Observe:** All four GG\* codons produce
+identical circles
 
-**Concept Introduction:** "These four codons are a FAMILY - they all mean CIRCLE. This is like how multiple DNA codons can code for the same amino acid!"
+**Concept Introduction:** "These four codons are a FAMILY - they all mean
+CIRCLE. This is like how multiple DNA codons can code for the same amino acid!"
 
 ---
 
@@ -108,8 +115,8 @@ ATG GAA CCC GGC TAA
 
 **Activity:** "Shape Shifter"
 
-**Challenge 1:** Change GGA → CCA (CIRCLE → RECT)
-**Expected:** Circle becomes rectangle (but needs 2 numbers!)
+**Challenge 1:** Change GGA → CCA (CIRCLE → RECT) **Expected:** Circle becomes
+rectangle (but needs 2 numbers!)
 
 **Fix:** Add second number
 
@@ -119,8 +126,8 @@ ATG GAA CCC GAA CCC CCA TAA
 
 **Result:** Square appears
 
-**Challenge 2:** Explore CC\* family (CCA, CCC, CCG, CCT)
-**Observation:** All produce same rectangle (silent mutations)
+**Challenge 2:** Explore CC\* family (CCA, CCC, CCG, CCT) **Observation:** All
+produce same rectangle (silent mutations)
 
 **Challenge 3:** Try AA\* family (LINE)
 
@@ -128,7 +135,8 @@ ATG GAA CCC GAA CCC CCA TAA
 ATG GAA CCC AAA TAA
 ```
 
-**Concept Reinforcement:** "Each shape family has 4 synonymous codons. Why might biology use this redundancy?" (Error tolerance, wobble base pairing)
+**Concept Reinforcement:** "Each shape family has 4 synonymous codons. Why might
+biology use this redundancy?" (Error tolerance, wobble base pairing)
 
 ---
 
@@ -172,8 +180,7 @@ TAA
 
 ## Lesson 2: Mutation Gallery - When Codons Change
 
-**Duration:** 60 minutes
-**Learning Objectives:**
+**Duration:** 60 minutes **Learning Objectives:**
 
 - Classify mutations as silent, missense, nonsense, frameshift
 - Predict visual outcomes from mutation type
@@ -260,13 +267,15 @@ TAA
 
 **Result:** Only first circle appears
 
-**Discussion:** "In biology, nonsense mutations truncate proteins. What might this mean for function?"
+**Discussion:** "In biology, nonsense mutations truncate proteins. What might
+this mean for function?"
 
 ---
 
 #### Part 4: Frameshift Mutations (20 min)
 
-**Concept:** "Frameshift = reading frame disrupted, everything downstream scrambled"
+**Concept:** "Frameshift = reading frame disrupted, everything downstream
+scrambled"
 
 **Activity:** "The Chaos Mutation"
 
@@ -328,8 +337,7 @@ Insert 'G': ATG GAA AGG ATA A?? (frame shifts differently)
 
 ## Lesson 3: Genome Composition - Creative Evolution
 
-**Duration:** 60 minutes
-**Learning Objectives:**
+**Duration:** 60 minutes **Learning Objectives:**
 
 - Design multi-component visual compositions
 - Apply transform operations (translate, rotate, scale)
@@ -486,7 +494,8 @@ See `ASSESSMENTS.md` for:
 **Issue 4: "Frameshift is confusing"**
 
 - **Cause:** Abstract concept
-- **Fix:** Use physical demo - have students hold cards with bases, physically shift reading
+- **Fix:** Use physical demo - have students hold cards with bases, physically
+  shift reading
 
 ### Timing Flexibility
 
@@ -535,7 +544,8 @@ See `ASSESSMENTS.md` for:
 
 **Instructor Script:**
 
-> "In real biology, DNA uses Thymine (T), but when it's transcribed to RNA, Thymine becomes Uracil (U). CodonCanvas lets you see this transformation."
+> "In real biology, DNA uses Thymine (T), but when it's transcribed to RNA,
+> Thymine becomes Uracil (U). CodonCanvas lets you see this transformation."
 
 **Activity:** "Toggle the Nucleotide Display"
 
@@ -543,7 +553,8 @@ See `ASSESSMENTS.md` for:
 2. Click the DNA/RNA toggle button in the toolbar
 3. Watch all T's become U's (and vice versa)
 
-**Key Point:** This is purely visual - the program runs the same way. Just like how DNA and RNA encode the same information differently.
+**Key Point:** This is purely visual - the program runs the same way. Just like
+how DNA and RNA encode the same information differently.
 
 **Discussion Questions:**
 
@@ -565,7 +576,9 @@ See `ASSESSMENTS.md` for:
 
 **Key Insight:**
 
-> "Notice how GGA, GGC, GGG, and GGT all map to the same thing in BOTH systems! CodonCanvas intentionally mimics this 'wobble position' redundancy from real biology."
+> "Notice how GGA, GGC, GGG, and GGT all map to the same thing in BOTH systems!
+> CodonCanvas intentionally mimics this 'wobble position' redundancy from real
+> biology."
 
 **Worksheet Exercise (optional):** Complete the comparison table for a genome
 
@@ -598,9 +611,12 @@ See `ASSESSMENTS.md` for:
 
 **Analogy:**
 
-> "CodonCanvas is like learning to drive using a simulator - the steering and pedals work the same way, but you're not actually on a road. The PATTERNS are real; the OUTPUT is educational."
+> "CodonCanvas is like learning to drive using a simulator - the steering and
+> pedals work the same way, but you're not actually on a road. The PATTERNS are
+> real; the OUTPUT is educational."
 
-**See Also:** For detailed comparison, use the built-in Biology Comparison panel or refer to `docs/METAPHOR_LIMITATIONS.md`.
+**See Also:** For detailed comparison, use the built-in Biology Comparison panel
+or refer to `docs/METAPHOR_LIMITATIONS.md`.
 
 ---
 

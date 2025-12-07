@@ -10,9 +10,15 @@ Audience: Teachers, curriculum designers, researchers
 
 ## Overview
 
-CodonCanvas uses DNA as a programming language to teach genetic concepts. This document explains exactly where the metaphor aligns with real molecular biology, where it intentionally diverges, and how educators can bridge both contexts effectively.
+CodonCanvas uses DNA as a programming language to teach genetic concepts. This
+document explains exactly where the metaphor aligns with real molecular biology,
+where it intentionally diverges, and how educators can bridge both contexts
+effectively.
 
-**Key insight**: CodonCanvas teaches **genetic code patterns**, not **molecular mechanisms**. The redundancy, mutation types, and reading frame concepts transfer directly to real biology; the execution model (opcodes vs. proteins) does not.
+**Key insight**: CodonCanvas teaches **genetic code patterns**, not **molecular
+mechanisms**. The redundancy, mutation types, and reading frame concepts
+transfer directly to real biology; the execution model (opcodes vs. proteins)
+does not.
 
 ---
 
@@ -40,7 +46,9 @@ CodonCanvas uses DNA as a programming language to teach genetic concepts. This d
 | ATG                | Methionine + START  | START              | Yes (unique)   |
 | TAA, TAG, TGA      | STOP                | STOP               | Yes (3 stops)  |
 
-**Key teaching point**: The **pattern** of redundancy (wobble position tolerance) is identical. The **output** differs (amino acids vs. drawing commands).
+**Key teaching point**: The **pattern** of redundancy (wobble position
+tolerance) is identical. The **output** differs (amino acids vs. drawing
+commands).
 
 ### Mutation Types
 
@@ -52,7 +60,8 @@ CodonCanvas uses DNA as a programming language to teach genetic concepts. This d
 | **Frameshift** | All downstream codons misread       | All downstream codons misread       | Direct transfer      |
 | **Point**      | Single base change                  | Single base change                  | Direct transfer      |
 
-**All mutation concepts transfer directly** because they operate at the codon level, not the protein level.
+**All mutation concepts transfer directly** because they operate at the codon
+level, not the protein level.
 
 ---
 
@@ -72,11 +81,13 @@ CodonCanvas uses DNA as a programming language to teach genetic concepts. This d
 - Transcription adds complexity without teaching codon logic
 - RNA mode available for educators who want to show U notation
 
-**Classroom bridge**: "In real cells, DNA is first copied to RNA. The T becomes U. Let's toggle to RNA mode to see what that looks like."
+**Classroom bridge**: "In real cells, DNA is first copied to RNA. The T becomes
+U. Let's toggle to RNA mode to see what that looks like."
 
 #### 2. Translation
 
-**Reality**: mRNA is read by ribosomes, tRNA brings amino acids, protein chain grows.
+**Reality**: mRNA is read by ribosomes, tRNA brings amino acids, protein chain
+grows.
 
 **CodonCanvas**: Codons directly trigger operations (no ribosome, no tRNA).
 
@@ -86,13 +97,17 @@ CodonCanvas uses DNA as a programming language to teach genetic concepts. This d
 - Direct execution provides instant feedback
 - Core codon concepts don't require translation mechanism
 
-**Classroom bridge**: "Real cells use molecular machines called ribosomes to read this code. Each codon tells the ribosome which amino acid to add to the protein chain."
+**Classroom bridge**: "Real cells use molecular machines called ribosomes to
+read this code. Each codon tells the ribosome which amino acid to add to the
+protein chain."
 
 #### 3. Amino Acid Chemistry
 
-**Reality**: 20 amino acids with distinct properties (polar, nonpolar, charged, aromatic).
+**Reality**: 20 amino acids with distinct properties (polar, nonpolar, charged,
+aromatic).
 
-**CodonCanvas**: 17 opcodes with functional purposes (drawing, math, control flow).
+**CodonCanvas**: 17 opcodes with functional purposes (drawing, math, control
+flow).
 
 **Why omitted**:
 
@@ -100,11 +115,14 @@ CodonCanvas uses DNA as a programming language to teach genetic concepts. This d
 - Visual output more immediately engaging
 - Mutation effects still observable without chemistry
 
-**Classroom bridge**: "Each CodonCanvas opcode is like an amino acid instruction. In real proteins, the amino acid properties determine how the protein folds and functions."
+**Classroom bridge**: "Each CodonCanvas opcode is like an amino acid
+instruction. In real proteins, the amino acid properties determine how the
+protein folds and functions."
 
 #### 4. Gene Regulation
 
-**Reality**: Promoters, enhancers, silencers, transcription factors, epigenetics.
+**Reality**: Promoters, enhancers, silencers, transcription factors,
+epigenetics.
 
 **CodonCanvas**: Every program starts at ATG, runs to STOP, no regulation.
 
@@ -114,11 +132,13 @@ CodonCanvas uses DNA as a programming language to teach genetic concepts. This d
 - Core mutation pedagogy doesn't require it
 - Keeps focus on coding sequence
 
-**Classroom bridge**: "Real genes have 'on/off switches' called promoters. CodonCanvas skips these to focus on what happens once a gene is being read."
+**Classroom bridge**: "Real genes have 'on/off switches' called promoters.
+CodonCanvas skips these to focus on what happens once a gene is being read."
 
 #### 5. Protein Folding
 
-**Reality**: Amino acid sequence determines 3D structure, structure determines function.
+**Reality**: Amino acid sequence determines 3D structure, structure determines
+function.
 
 **CodonCanvas**: Opcode sequence determines drawing output directly.
 
@@ -128,7 +148,9 @@ CodonCanvas uses DNA as a programming language to teach genetic concepts. This d
 - Would require physics simulation
 - Immediate visual output serves pedagogy better
 
-**Classroom bridge**: "In real cells, the amino acid chain folds into a 3D shape. That shape determines what the protein does. It's like how your CodonCanvas code creates a specific picture."
+**Classroom bridge**: "In real cells, the amino acid chain folds into a 3D
+shape. That shape determines what the protein does. It's like how your
+CodonCanvas code creates a specific picture."
 
 ---
 
@@ -227,7 +249,8 @@ Students need additional instruction for:
 - Mutant: ATG GTG ... (Valine)
 - Effect: Hemoglobin misfolding, sickle-shaped cells
 
-**Discussion**: "The mutation TYPE is identical. The CONSEQUENCE depends on protein chemistry we haven't modeled."
+**Discussion**: "The mutation TYPE is identical. The CONSEQUENCE depends on
+protein chemistry we haven't modeled."
 
 ---
 
@@ -235,17 +258,22 @@ Students need additional instruction for:
 
 ### Q: Is CodonCanvas scientifically accurate?
 
-**A**: It accurately models **genetic code structure** (codons, redundancy, mutations, reading frames). It intentionally omits **molecular mechanisms** (transcription, translation, protein chemistry). Think of it as "genetic code algebra" rather than "cell biology."
+**A**: It accurately models **genetic code structure** (codons, redundancy,
+mutations, reading frames). It intentionally omits **molecular mechanisms**
+(transcription, translation, protein chemistry). Think of it as "genetic code
+algebra" rather than "cell biology."
 
 ### Q: Can students develop misconceptions?
 
 **A**: Potential misconceptions to address:
 
 - "DNA directly does things" -> Explain transcription/translation
-- "Mutations always cause visible changes" -> Explain silent mutations in real proteins
+- "Mutations always cause visible changes" -> Explain silent mutations in real
+  proteins
 - "All genes work like programs" -> Explain gene regulation
 
-**Mitigation**: Use explicit bridge activities (Part 4) to connect CodonCanvas patterns to molecular reality.
+**Mitigation**: Use explicit bridge activities (Part 4) to connect CodonCanvas
+patterns to molecular reality.
 
 ### Q: Should I teach CodonCanvas before or after molecular biology?
 
@@ -263,7 +291,9 @@ Students need additional instruction for:
 
 ### Q: How do I assess transfer?
 
-**Assessment prompt**: "In CodonCanvas, changing GGA to GGC produces the same output. In real cells, what would happen if the same change occurred in a gene? Why?"
+**Assessment prompt**: "In CodonCanvas, changing GGA to GGC produces the same
+output. In real cells, what would happen if the same change occurred in a gene?
+Why?"
 
 **Good answer includes**:
 
@@ -327,4 +357,5 @@ G   | Val   | Ala   | Asp   | Gly   | U
                                 Third Position
 ```
 
-**Activity**: Have students map CodonCanvas codon families to amino acid families. They'll discover the same redundancy pattern!
+**Activity**: Have students map CodonCanvas codon families to amino acid
+families. They'll discover the same redundancy pattern!

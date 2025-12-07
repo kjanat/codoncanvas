@@ -1,6 +1,7 @@
 # CodonCanvas Operational Runbooks
 
-**Purpose:** Incident response procedures and operational workflows for CodonCanvas deployment
+**Purpose:** Incident response procedures and operational workflows for
+CodonCanvas deployment
 
 ---
 
@@ -423,23 +424,23 @@ git push origin master
 
 ### Issue: localStorage not working
 
-**Cause:** Browser privacy settings or incognito mode
-**Fix:** Instruct users to use normal browser mode with cookies enabled
+**Cause:** Browser privacy settings or incognito mode **Fix:** Instruct users to
+use normal browser mode with cookies enabled
 
 ### Issue: Examples not loading
 
-**Cause:** Network issue or broken example files
-**Fix:** Check examples/ directory integrity, verify file paths
+**Cause:** Network issue or broken example files **Fix:** Check examples/
+directory integrity, verify file paths
 
 ### Issue: Renderer not displaying
 
-**Cause:** Canvas API issue or missing DOM element
-**Fix:** Check canvas element exists, verify browser compatibility
+**Cause:** Canvas API issue or missing DOM element **Fix:** Check canvas element
+exists, verify browser compatibility
 
 ### Issue: Achievements not persisting
 
-**Cause:** localStorage quota exceeded or browser data cleared
-**Fix:** Check localStorage quota, implement quota warning
+**Cause:** localStorage quota exceeded or browser data cleared **Fix:** Check
+localStorage quota, implement quota warning
 
 ---
 

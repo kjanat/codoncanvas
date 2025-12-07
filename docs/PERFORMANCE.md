@@ -1,12 +1,15 @@
 # CodonCanvas Performance Benchmarks
 
-**Version:** 1.1.0
-**Test Date:** October 12, 2025
-**Environment:** Node.js with node-canvas (server-side rendering)
+**Version:** 1.1.0 **Test Date:** October 12, 2025 **Environment:** Node.js with
+node-canvas (server-side rendering)
 
 ## Executive Summary
 
-CodonCanvas achieves **72,000-307,000 codons/second** throughput depending on genome complexity. Lexer operations are negligible (<0.2ms even for 1500 codons), while VM+rendering dominates execution time. Complex genomes with mixed transforms execute 3-4× faster than simple shape-heavy genomes due to rendering overhead.
+CodonCanvas achieves **72,000-307,000 codons/second** throughput depending on
+genome complexity. Lexer operations are negligible (<0.2ms even for 1500
+codons), while VM+rendering dominates execution time. Complex genomes with mixed
+transforms execute 3-4× faster than simple shape-heavy genomes due to rendering
+overhead.
 
 **Key Findings:**
 
@@ -14,7 +17,8 @@ CodonCanvas achieves **72,000-307,000 codons/second** throughput depending on ge
 - ✅ **Fast lexing**: Tokenization is <1% of total execution time
 - ✅ **Rendering-bound**: Drawing operations dominate (95%+ of execution time)
 - ✅ **Real-time capable**: 100-codon genomes execute in <2ms (500+ FPS)
-- ✅ **Educational scale**: Typical student genomes (10-50 codons) execute in <1ms
+- ✅ **Educational scale**: Typical student genomes (10-50 codons) execute in
+  <1ms
 
 ## Benchmark Methodology
 
@@ -48,7 +52,8 @@ CodonCanvas achieves **72,000-307,000 codons/second** throughput depending on ge
 
 ### Simple Genomes (Repeated Shapes)
 
-Shape-heavy programs with minimal transforms. Represents worst-case rendering performance.
+Shape-heavy programs with minimal transforms. Represents worst-case rendering
+performance.
 
 | Codons | Lexer (ms) | VM (ms) | End-to-End (ms) | Throughput (codons/sec) |
 | ------ | ---------- | ------- | --------------- | ----------------------- |
@@ -67,7 +72,8 @@ Shape-heavy programs with minimal transforms. Represents worst-case rendering pe
 
 ### Complex Genomes (Mixed Opcodes)
 
-Balanced programs with shapes, transforms, and state management. Represents typical usage.
+Balanced programs with shapes, transforms, and state management. Represents
+typical usage.
 
 | Codons | Lexer (ms) | VM (ms) | End-to-End (ms) | Throughput (codons/sec) |
 | ------ | ---------- | ------- | --------------- | ----------------------- |
@@ -93,7 +99,8 @@ Balanced programs with shapes, transforms, and state management. Represents typi
 - 14 codons: 0.01ms (1.4M codons/sec)
 - 1499 codons: 0.19ms (7.8M codons/sec)
 
-**Conclusion:** Lexer is effectively free. Tokenization overhead is <1% of total execution time across all genome sizes.
+**Conclusion:** Lexer is effectively free. Tokenization overhead is <1% of total
+execution time across all genome sizes.
 
 ### VM Performance
 
@@ -101,13 +108,16 @@ Balanced programs with shapes, transforms, and state management. Represents typi
 
 - Transform operations (TRANSLATE, ROTATE, SCALE): ~0.001ms per operation
 - Stack operations (PUSH, DUP, POP): ~0.0005ms per operation
-- Drawing primitives (CIRCLE, RECT, LINE): ~0.01-0.03ms per shape (varies by complexity)
+- Drawing primitives (CIRCLE, RECT, LINE): ~0.01-0.03ms per shape (varies by
+  complexity)
 
-**Bottleneck:** Canvas rendering (arc, rect, line drawing) dominates execution time.
+**Bottleneck:** Canvas rendering (arc, rect, line drawing) dominates execution
+time.
 
 ### Scaling Characteristics
 
-**Linear Complexity:** Both simple and complex genomes scale linearly (O(n)) with codon count.
+**Linear Complexity:** Both simple and complex genomes scale linearly (O(n))
+with codon count.
 
 **Rendering vs Computation:**
 
@@ -134,7 +144,8 @@ Balanced programs with shapes, transforms, and state management. Represents typi
 **Performance Expectations:**
 
 - All student genomes execute in <5ms (200+ FPS)
-- Real-time mutation preview is viable (300ms debounce provides smooth experience)
+- Real-time mutation preview is viable (300ms debounce provides smooth
+  experience)
 - Timeline scrubbing with state snapshots has negligible overhead
 - Mutation comparisons (diff view) are instant (<2ms per genome)
 
@@ -166,7 +177,8 @@ Balanced programs with shapes, transforms, and state management. Represents typi
    - Complexity: Medium (diff tracking required)
    - Value: Medium (improves mutation preview UX)
 
-**Verdict:** Current performance is excellent for educational use case. No optimizations needed for v1.x series.
+**Verdict:** Current performance is excellent for educational use case. No
+optimizations needed for v1.x series.
 
 ## Performance Recommendations
 
@@ -220,8 +232,7 @@ npx tsx scripts/benchmark.ts
 - Markdown tables: Copy-paste ready for documentation
 - JSON data: Raw results for further analysis
 
-**Customization:**
-Edit `scripts/benchmark.ts` to adjust:
+**Customization:** Edit `scripts/benchmark.ts` to adjust:
 
 - Iteration count (default: 20)
 - Warmup runs (default: 5)
@@ -230,17 +241,21 @@ Edit `scripts/benchmark.ts` to adjust:
 
 ## Conclusion
 
-CodonCanvas v1.1.0 achieves **excellent performance** for its educational use case:
+CodonCanvas v1.1.0 achieves **excellent performance** for its educational use
+case:
 
 - ✅ **Real-time execution:** All student genomes run in <5ms (200+ FPS)
 - ✅ **Linear scaling:** Performance is predictable and O(n)
 - ✅ **Lexer efficiency:** Tokenization is negligible (<1% overhead)
 - ✅ **Mutation-friendly:** Instant feedback for all mutation types
 
-**Performance is not a bottleneck** for the MVP. Current implementation exceeds educational requirements with significant safety margin. Future optimizations should focus on UX (incremental rendering for large diffs) rather than raw speed.
+**Performance is not a bottleneck** for the MVP. Current implementation exceeds
+educational requirements with significant safety margin. Future optimizations
+should focus on UX (incremental rendering for large diffs) rather than raw
+speed.
 
 ---
 
-**Benchmark Data:** October 12, 2025
-**Test Environment:** Node.js 20+ with node-canvas 2.11.2
-**Browser Performance:** Expected to be 2-3× faster with hardware acceleration
+**Benchmark Data:** October 12, 2025 **Test Environment:** Node.js 20+ with
+node-canvas 2.11.2 **Browser Performance:** Expected to be 2-3× faster with
+hardware acceleration

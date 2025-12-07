@@ -26,7 +26,8 @@ Extract and display all colors from a genome file by executing the VM.
 bun tools/get-colours.ts examples/starfield.genome
 ```
 
-Shows actual decoded stack values, HSL, and hex for each `TLA` (color) instruction. Output includes clickable file links.
+Shows actual decoded stack values, HSL, and hex for each `TLA` (color)
+instruction. Output includes clickable file links.
 
 ---
 
@@ -38,7 +39,9 @@ Check for discrepancies between inline comments and actual codon values.
 bun tools/audit-genome-comments.ts
 ```
 
-Scans all `examples/*.genome` files. Only checks **same-line** comment/code mismatches. Does not detect multi-line comment inconsistencies (e.g., descriptive comment on line N vs code on line N+1).
+Scans all `examples/*.genome` files. Only checks **same-line** comment/code
+mismatches. Does not detect multi-line comment inconsistencies (e.g.,
+descriptive comment on line N vs code on line N+1).
 
 ---
 
@@ -51,7 +54,8 @@ bun tools/fix-genome-codons.ts --dry-run  # preview changes
 bun tools/fix-genome-codons.ts            # apply fixes
 ```
 
-Uses same logic as `audit-genome-comments.ts`. Only fixes same-line discrepancies.
+Uses same logic as `audit-genome-comments.ts`. Only fixes same-line
+discrepancies.
 
 ---
 
@@ -75,7 +79,8 @@ Checks:
 
 ## coverage-check.ts
 
-Identify source files not imported by any test (won't appear in coverage reports).
+Identify source files not imported by any test (won't appear in coverage
+reports).
 
 ```bash
 bun tools/coverage-check.ts           # Console report
@@ -83,4 +88,6 @@ bun tools/coverage-check.ts --json    # JSON output
 bun tools/coverage-check.ts --verbose # Include imported files list
 ```
 
-Analyzes test files to find which `src/` files are imported (directly or transitively). Files not imported by tests won't be instrumented by the coverage tool.
+Analyzes test files to find which `src/` files are imported (directly or
+transitively). Files not imported by tests won't be instrumented by the coverage
+tool.

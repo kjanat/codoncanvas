@@ -2,7 +2,8 @@
 
 ## Overview
 
-This project uses Bun's native test runner (`bun:test`). DOM testing uses happy-dom via `bun-test-setup.ts`.
+This project uses Bun's native test runner (`bun:test`). DOM testing uses
+happy-dom via `bun-test-setup.ts`.
 
 ---
 
@@ -92,7 +93,8 @@ Pattern: `tests/**/*.test.ts`
 
 ## DOM testing
 
-happy-dom provides DOM globals (`document`, `window`, etc.). Setup is automatic via `bun-test-setup.ts`.
+happy-dom provides DOM globals (`document`, `window`, etc.). Setup is automatic
+via `bun-test-setup.ts`.
 
 Canvas `getContext('2d')` returns null by design. Mock locally when needed:
 
@@ -110,13 +112,15 @@ test("renders to canvas", () => {
 });
 ```
 
-Storage (`localStorage`, `sessionStorage`) is mocked and cleared after each test.
+Storage (`localStorage`, `sessionStorage`) is mocked and cleared after each
+test.
 
 ---
 
 ## Coverage
 
-Built-in coverage with `--coverage` flag. Thresholds configured in `bunfig.toml`.
+Built-in coverage with `--coverage` flag. Thresholds configured in
+`bunfig.toml`.
 
 ```bash
 # Run with coverage report
@@ -133,7 +137,8 @@ Agent mode (`bun test:agent`) filters passing test output for cleaner CI logs.
 
 ### Canvas method not implemented
 
-Mock canvas methods locally in your test. Don't rely on happy-dom's canvas implementation.
+Mock canvas methods locally in your test. Don't rely on happy-dom's canvas
+implementation.
 
 ### Test files not discovered
 
@@ -141,7 +146,8 @@ Ensure files are in `tests/` directory and match `*.test.ts` pattern.
 
 ### Storage not isolated
 
-Storage is cleared after each test automatically. If issues persist, check that `bun-test-setup.ts` is preloaded.
+Storage is cleared after each test automatically. If issues persist, check that
+`bun-test-setup.ts` is preloaded.
 
 ---
 

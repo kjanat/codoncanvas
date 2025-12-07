@@ -236,11 +236,13 @@ Effect: _________________________________________________
 
    ---
 
-3. **If you were "mutating" a classmate's genome, which type would you choose to minimize damage?**
+3. **If you were "mutating" a classmate's genome, which type would you choose to
+   minimize damage?**
 
    ---
 
-4. **Real-world connection: Sickle cell anemia is caused by a single base change (GAG → GTG). What type of mutation is this?**
+4. **Real-world connection: Sickle cell anemia is caused by a single base change
+   (GAG → GTG). What type of mutation is this?**
 
    [ ] Silent\
    [ ] Missense\
@@ -253,9 +255,12 @@ Effect: _________________________________________________
 
 **Part B:**
 
-1. **Missense** - GGA (CIRCLE) → CCA (RECT), shape changes from circle to rectangle
-2. **Nonsense** - GGA → TAA (STOP), program terminates early, second shape (RECT) disappears
-3. **Frameshift** - Delete 'A' shifts reading frame, all downstream codons scrambled: `GAA AGG` → `GA AAG`, `GGA` → `GGG`, `TAA` → `ATA A`
+1. **Missense** - GGA (CIRCLE) → CCA (RECT), shape changes from circle to
+   rectangle
+2. **Nonsense** - GGA → TAA (STOP), program terminates early, second shape
+   (RECT) disappears
+3. **Frameshift** - Delete 'A' shifts reading frame, all downstream codons
+   scrambled: `GAA AGG` → `GA AAG`, `GGA` → `GGG`, `TAA` → `ATA A`
 4. **Silent** - CCA → CCG, both are RECT opcode, no visual change
 5. **Missense** - GGA (CIRCLE) → GCA (TRIANGLE), circle becomes triangle at end
 
@@ -274,8 +279,8 @@ Effect: _________________________________________________
 
 ### What is Base-4?
 
-Normal numbers (base-10) use digits 0-9.
-Base-4 uses only **4 digits: 0, 1, 2, 3**
+Normal numbers (base-10) use digits 0-9. Base-4 uses only **4 digits: 0, 1, 2,
+3**
 
 In CodonCanvas:
 
@@ -442,17 +447,15 @@ TAA
 
 ### Common Mistakes
 
-❌ **Forgot START:** Program won't run
-✅ **Always begin with `ATG`**
+❌ **Forgot START:** Program won't run ✅ **Always begin with `ATG`**
 
-❌ **Forgot STOP:** Program hangs
-✅ **Always end with `TAA`, `TAG`, or `TGA`**
+❌ **Forgot STOP:** Program hangs ✅ **Always end with `TAA`, `TAG`, or `TGA`**
 
-❌ **Typo in codon:** `AT G` (has space)
-✅ **Codons must be exactly 3 letters:** `ATG`
+❌ **Typo in codon:** `AT G` (has space) ✅ **Codons must be exactly 3
+letters:** `ATG`
 
-❌ **Not enough numbers on stack:** RECT needs 2 values (width, height)
-✅ **Check linter for "Stack underflow" errors**
+❌ **Not enough numbers on stack:** RECT needs 2 values (width, height) ✅
+**Check linter for "Stack underflow" errors**
 
 ---
 
@@ -547,11 +550,10 @@ TAA
 
 ### Tips for Success
 
-✅ **Plan First**: Sketch on paper before coding
-✅ **Build Gradually**: Add one shape at a time, test frequently
-✅ **Comment As You Go**: Don't wait until the end
-✅ **Use Examples**: Look at built-in examples for inspiration
-✅ **Ask Questions**: Better to ask than stay stuck!
+✅ **Plan First**: Sketch on paper before coding ✅ **Build Gradually**: Add one
+shape at a time, test frequently ✅ **Comment As You Go**: Don't wait until the
+end ✅ **Use Examples**: Look at built-in examples for inspiration ✅ **Ask
+Questions**: Better to ask than stay stuck!
 
 ---
 
@@ -570,9 +572,11 @@ TAA
 
 **Printing Recommendations:**
 
-- **Codon Chart**: Color preferred (helps distinguish opcode families), laminate for reuse
+- **Codon Chart**: Color preferred (helps distinguish opcode families), laminate
+  for reuse
 - **Worksheets**: B&W acceptable, single-sided for note-taking space
-- **Conversion Table**: Color optional, consider posting one large version in classroom
+- **Conversion Table**: Color optional, consider posting one large version in
+  classroom
 - **Quick Start**: B&W acceptable, give to all students on Day 1
 
 **Differentiation:**

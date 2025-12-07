@@ -2,7 +2,12 @@
 
 ## Application Overview
 
-CodonCanvas is a DNA-inspired visual programming language web application targeting educators and students. It features a code editor with genome syntax, canvas rendering for visual output, multiple interactive demos (mutation, timeline, evolution, population genetics, genetic algorithm, achievements, assessment), a tutorial system with progressive lessons, an example gallery with 39 examples, and educational dashboards for teachers and researchers.
+CodonCanvas is a DNA-inspired visual programming language web application
+targeting educators and students. It features a code editor with genome syntax,
+canvas rendering for visual output, multiple interactive demos (mutation,
+timeline, evolution, population genetics, genetic algorithm, achievements,
+assessment), a tutorial system with progressive lessons, an example gallery with
+39 examples, and educational dashboards for teachers and researchers.
 
 ## Test Scenarios
 
@@ -393,7 +398,8 @@ CodonCanvas is a DNA-inspired visual programming language web application target
 
 **Expected Results:**
 
-- Mutation type buttons: Silent, Missense, Nonsense, Point, Insertion, Deletion, Frameshift
+- Mutation type buttons: Silent, Missense, Nonsense, Point, Insertion, Deletion,
+  Frameshift
 - Original and Mutated genome panels visible
 - Codon visualization displays
 
@@ -686,7 +692,8 @@ CodonCanvas is a DNA-inspired visual programming language web application target
 
 **Expected Results:**
 
-- DNA Fundamentals, Visual Programming, Nature's Algorithms, Mathematical Beauty paths visible
+- DNA Fundamentals, Visual Programming, Nature's Algorithms, Mathematical Beauty
+  paths visible
 - Progress percentages shown
 - Clicking navigates to playground with path parameter
 

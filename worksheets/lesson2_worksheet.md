@@ -1,6 +1,7 @@
 # Lesson 2 Student Worksheet: Mutation Gallery
 
-**Name:** \_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_ **Date:** \_\_\_\_\_\_\_\_\_\_
+**Name:** \_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_ **Date:**
+\_\_\_\_\_\_\_\_\_\_
 
 **Learning Objectives:**
 
@@ -20,7 +21,8 @@
 - \_\_\_\_\_\_\_\_ family (shape: \_\_\_\_\_\_\_)
 - \_\_\_\_\_\_\_\_ family (shape: \_\_\_\_\_\_\_)
 
-**2. What is a silent mutation?** \_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
+**2. What is a silent mutation?**
+\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
 
 ---
 
@@ -28,7 +30,8 @@
 
 ## Part 2: Missense Mutations (15 min)
 
-A **missense mutation** changes one codon to a DIFFERENT codon family, producing a different instruction but still functional.
+A **missense mutation** changes one codon to a DIFFERENT codon family, producing
+a different instruction but still functional.
 
 ### Exercise 2.1: Shape Shifter
 
@@ -49,9 +52,11 @@ Now make these changes ONE AT A TIME (undo after each):
 | GGA → GTA | GTA (ELLIPSE)  |           |                   |
 | GGA → AAA | AAA (LINE)     |           |                   |
 
-**Which mutations worked?** \_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
+**Which mutations worked?**
+\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
 
-**Which mutations failed?** \_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
+**Which mutations failed?**
+\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
 
 **Why did some fail?** HINT: Look at how many numbers each shape needs
 
@@ -81,11 +86,15 @@ ATG GAA AGG GAA AGG _____ TAA
 
 **Result:** Circle became \_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
 
-**Biological parallel:** In real biology, a missense mutation changes one amino acid to another. Sometimes the protein still works (like your drawing), sometimes it doesn't. Can you think of an example of each?
+**Biological parallel:** In real biology, a missense mutation changes one amino
+acid to another. Sometimes the protein still works (like your drawing),
+sometimes it doesn't. Can you think of an example of each?
 
-Works: \_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
+Works:
+\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
 
-Doesn't work: \_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
+Doesn't work:
+\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
 
 ---
 
@@ -121,7 +130,8 @@ TAA
 
 **How many circles now?** \_\_\_\_\_\_\_
 
-**What happened?** \_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
+**What happened?**
+\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
 
 ---
 
@@ -157,13 +167,15 @@ ATG GAA CCC GGA GAA CCC GGA TAA
 
 **Circles drawn:** \_\_\_\_\_\_\_
 
-**Conclusion:** The earlier the nonsense mutation, the \_\_\_\_\_\_\_\_\_\_\_\_\_ information is lost.
+**Conclusion:** The earlier the nonsense mutation, the
+\_\_\_\_\_\_\_\_\_\_\_\_\_ information is lost.
 
 ---
 
 ## Part 4: Frameshift Mutations (20 min)
 
-A **frameshift mutation** inserts or deletes bases, shifting how triplets are read. Everything downstream gets scrambled!
+A **frameshift mutation** inserts or deletes bases, shifting how triplets are
+read. Everything downstream gets scrambled!
 
 ### Exercise 2.5: Understanding Reading Frames
 
@@ -235,7 +247,8 @@ ATGAAAGGATAA  (ATG|AAA|GGA|TAA)
 ATGAAGGATAA   (ATG|AAG|GAT|AA)
 ```
 
-Now the codons are: ATG (START) | AAG (LINE family) | GAT (PUSH family) | AA (incomplete)
+Now the codons are: ATG (START) | AAG (LINE family) | GAT (PUSH family) | AA
+(incomplete)
 
 **Result:** Completely different instructions!
 
@@ -266,7 +279,8 @@ New:      ATG|AAA|CCG|GAT|AA
 | Missense      | \_\_\_\_\_\_\_\_ | Low/Med/High |
 | Frameshift    | \_\_\_\_\_\_\_\_ | Low/Med/High |
 
-**Why is frameshift more severe?** \_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
+**Why is frameshift more severe?**
+\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
 
 ---
 
@@ -278,56 +292,59 @@ For each pair, identify the mutation type AND predict the visual effect.
 
 ### Challenge 1
 
-**Original:** `ATG GAA CCC GGA TAA`
-**Mutated:** `ATG GAA CCC GGC TAA`
+**Original:** `ATG GAA CCC GGA TAA` **Mutated:** `ATG GAA CCC GGC TAA`
 
 **Mutation type:** ☐ Silent ☐ Missense ☐ Nonsense ☐ Frameshift
 
-**Predicted effect:** \_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
+**Predicted effect:**
+\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
 
 ---
 
 ### Challenge 2
 
-**Original:** `ATG GAA CCC GGA GAA CCC CCA TAA`
-**Mutated:** `ATG GAA CCC GGA TAA CCC CCA TAA`
+**Original:** `ATG GAA CCC GGA GAA CCC CCA TAA` **Mutated:**
+`ATG GAA CCC GGA TAA CCC CCA TAA`
 
 **Mutation type:** ☐ Silent ☐ Missense ☐ Nonsense ☐ Frameshift
 
-**Predicted effect:** \_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
+**Predicted effect:**
+\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
 
 ---
 
 ### Challenge 3
 
-**Original:** `ATG GAA CCC GGA TAA`
-**Mutated:** `ATG GAA CCC GCA TAA`
+**Original:** `ATG GAA CCC GGA TAA` **Mutated:** `ATG GAA CCC GCA TAA`
 
 **Mutation type:** ☐ Silent ☐ Missense ☐ Nonsense ☐ Frameshift
 
-**Predicted effect:** \_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
+**Predicted effect:**
+\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
 
 ---
 
 ### Challenge 4
 
-**Original:** `ATGAAACCCGGATAA` (ATG|AAA|CCC|GGA|TAA)
-**Mutated:** `ATGAACCCGGATAA` (ATG|AAC|CCG|GAT|AA)
+**Original:** `ATGAAACCCGGATAA` (ATG|AAA|CCC|GGA|TAA) **Mutated:**
+`ATGAACCCGGATAA` (ATG|AAC|CCG|GAT|AA)
 
 **Mutation type:** ☐ Silent ☐ Missense ☐ Nonsense ☐ Frameshift
 
-**Predicted effect:** \_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
+**Predicted effect:**
+\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
 
 ---
 
 ### Challenge 5
 
-**Original:** `ATG GAA CCC GGA GAA CCC GGA TAA`
-**Mutated:** `ATG GAA CCC CCA GAA CCC GGA TAA`
+**Original:** `ATG GAA CCC GGA GAA CCC GGA TAA` **Mutated:**
+`ATG GAA CCC CCA GAA CCC GGA TAA`
 
 **Mutation type:** ☐ Silent ☐ Missense ☐ Nonsense ☐ Frameshift
 
-**Predicted effect:** \_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
+**Predicted effect:**
+\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
 
 ---
 
@@ -337,12 +354,10 @@ For each pair, identify the mutation type AND predict the visual effect.
 
 Rank these mutation types from least to most severe (1 = least, 4 = most):
 
-\_\_\_\_\_ Silent
-\_\_\_\_\_ Missense
-\_\_\_\_\_ Nonsense
-\_\_\_\_\_ Frameshift
+\_\_\_\_\_ Silent \_\_\_\_\_ Missense \_\_\_\_\_ Nonsense \_\_\_\_\_ Frameshift
 
-**Explain your ranking:** \_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
+**Explain your ranking:**
+\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
 
 ---
 
@@ -352,7 +367,8 @@ Rank these mutation types from least to most severe (1 = least, 4 = most):
 
 ### Question 2: Real Biology Connection
 
-In real biology, sickle cell anemia is caused by a single base change in the hemoglobin gene (glutamic acid → valine).
+In real biology, sickle cell anemia is caused by a single base change in the
+hemoglobin gene (glutamic acid → valine).
 
 **What type of mutation is this?** ☐ Silent ☐ Missense ☐ Nonsense ☐ Frameshift
 
@@ -368,11 +384,13 @@ In real biology, sickle cell anemia is caused by a single base change in the hem
 
 If an organism has a mutation in its DNA, which mutation type would be:
 
-**Most likely to be passed to offspring without harm?** \_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
+**Most likely to be passed to offspring without harm?**
+\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
 
 **Most likely to be lethal?** \_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
 
-**Why?** \_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
+**Why?**
+\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
 
 ---
 
@@ -380,7 +398,8 @@ If an organism has a mutation in its DNA, which mutation type would be:
 
 ## Bonus Challenge: Create Your Own
 
-Design a genome, then create THREE different mutations (one missense, one nonsense, one frameshift).
+Design a genome, then create THREE different mutations (one missense, one
+nonsense, one frameshift).
 
 **Original genome:**
 
@@ -422,8 +441,10 @@ TAA
 
 (Show actual base deletion/insertion)
 
-**Which had the biggest visual impact?** \_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
+**Which had the biggest visual impact?**
+\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
 
 ---
 
-**Teacher Signature:** \_\_\_\_\_\_\_\_\_\_\_\_\_\_\_ **Completion:** ☐ Excellent ☐ Good ☐ Needs Review
+**Teacher Signature:** \_\_\_\_\_\_\_\_\_\_\_\_\_\_\_ **Completion:** ☐
+Excellent ☐ Good ☐ Needs Review

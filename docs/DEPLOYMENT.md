@@ -31,7 +31,8 @@ git push -u origin master
 
 ### 3. Update Social Sharing URLs
 
-After deployment, update the following files to use your actual GitHub Pages URL:
+After deployment, update the following files to use your actual GitHub Pages
+URL:
 
 **In `index.html`** (lines 14, 17, 21, 24):
 
@@ -55,7 +56,8 @@ git push
 - Go to **Actions** tab in GitHub repository
 - Watch the "Deploy to GitHub Pages" workflow run
 - Deployment typically takes 2-3 minutes
-- Once complete, your site will be live at: `https://YOUR_USERNAME.github.io/codoncanvas/`
+- Once complete, your site will be live at:
+  `https://YOUR_USERNAME.github.io/codoncanvas/`
 
 ## Deployment Architecture
 
@@ -83,7 +85,8 @@ Location: `vite.config.ts`
 
 **Key Settings:**
 
-- **Base path:** Dynamically set via `VITE_BASE_PATH` env var (defaults to `/codoncanvas/`)
+- **Base path:** Dynamically set via `VITE_BASE_PATH` env var (defaults to
+  `/codoncanvas/`)
 - **SPA:** React application with TanStack Router for client-side routing
 - **Output:** `dist/` directory with bundled assets
 
@@ -137,7 +140,9 @@ bun run preview
 
 **Problem:** Direct URL access gives 404 errors.
 
-**Solution:** React Router handles client-side routing. For GitHub Pages, a `404.html` redirect may be needed for direct URL access. The build process should copy `index.html` to `404.html`.
+**Solution:** React Router handles client-side routing. For GitHub Pages, a
+`404.html` redirect may be needed for direct URL access. The build process
+should copy `index.html` to `404.html`.
 
 ### Deployment Fails on Tests
 
@@ -158,7 +163,8 @@ bun test
 1. Ensure `screenshot_playground.png` exists in repository root
 2. Update Open Graph URLs in HTML files with correct deployment URL
 3. Use absolute URLs (not relative paths)
-4. Test with [Facebook Sharing Debugger](https://developers.facebook.com/tools/debug/)
+4. Test with
+   [Facebook Sharing Debugger](https://developers.facebook.com/tools/debug/)
 
 ## Custom Domain Setup (Optional)
 

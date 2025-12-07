@@ -1,6 +1,7 @@
 # Lesson 1 Student Worksheet: Hello DNA
 
-**Name:** \_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_ **Date:** \_\_\_\_\_\_\_\_\_\_
+**Name:** \_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_ **Date:**
+\_\_\_\_\_\_\_\_\_\_
 
 **Learning Objectives:**
 
@@ -20,14 +21,19 @@ Type this genome into CodonCanvas:
 ATG GAA CCC GGA TAA
 ```
 
-**What do you see?** \_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
+**What do you see?**
+\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
 
 **Explain what each codon does:**
 
-- `ATG`: \_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
-- `GAA CCC`: \_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
-- `GGA`: \_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
-- `TAA`: \_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
+- `ATG`:
+  \_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
+- `GAA CCC`:
+  \_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
+- `GGA`:
+  \_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
+- `TAA`:
+  \_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
 
 ---
 
@@ -39,7 +45,8 @@ Now change `GGA` to `GGC`:
 ATG GAA CCC GGC TAA
 ```
 
-**What changed in the output?** \_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
+**What changed in the output?**
+\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
 
 Try all four GG\* codons (GGA, GGC, GGG, GGT):
 
@@ -50,7 +57,8 @@ Try all four GG\* codons (GGA, GGC, GGG, GGT):
 | GGG   |                    |                    |
 | GGT   |                    |                    |
 
-**Conclusion:** Codons that start with \_\_\_\_\_\_\_ and \_\_\_\_\_\_\_ all produce the same \_\_\_\_\_\_\_\_\_. This is called a **codon family**.
+**Conclusion:** Codons that start with \_\_\_\_\_\_\_ and \_\_\_\_\_\_\_ all
+produce the same \_\_\_\_\_\_\_\_\_. This is called a **codon family**.
 
 ---
 
@@ -64,9 +72,11 @@ Change `GGA` to `CCA`:
 ATG GAA CCC CCA TAA
 ```
 
-**What happened?** \_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
+**What happened?**
+\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
 
-**Error message (if any):** \_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
+**Error message (if any):**
+\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
 
 **Why didn't it work?** HINT: RECT needs TWO numbers (width and height)
 
@@ -76,7 +86,8 @@ ATG GAA CCC CCA TAA
 ATG GAA CCC GAA CCC CCA TAA
 ```
 
-**Now what do you see?** \_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
+**Now what do you see?**
+\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
 
 ---
 
@@ -144,7 +155,8 @@ TAA
 
 ### Exercise 1.7: Mix Shapes
 
-Modify your genome to use TWO different shapes (circle and rectangle, or circle and line, etc.)
+Modify your genome to use TWO different shapes (circle and rectangle, or circle
+and line, etc.)
 
 **Your genome:**
 
@@ -157,7 +169,8 @@ ATG
 TAA
 ```
 
-**Describe your composition:** \_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
+**Describe your composition:**
+\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
 
 ---
 
@@ -167,7 +180,8 @@ TAA
 
 ### Question 1: Codon Families
 
-Why might it be useful for biology to have multiple codons that code for the same thing?
+Why might it be useful for biology to have multiple codons that code for the
+same thing?
 
 ---
 
@@ -177,7 +191,8 @@ Why might it be useful for biology to have multiple codons that code for the sam
 
 ### Question 2: Silent Mutations
 
-A "silent mutation" in real biology changes DNA but doesn't change the protein. How is this similar to changing GGA → GGC in CodonCanvas?
+A "silent mutation" in real biology changes DNA but doesn't change the protein.
+How is this similar to changing GGA → GGC in CodonCanvas?
 
 ---
 
@@ -217,7 +232,8 @@ ATG
 TAA
 ```
 
-**Title for your artwork:** \_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
+**Title for your artwork:**
+\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
 
 ---
 
@@ -225,6 +241,4 @@ TAA
 
 **Completion:**
 
-☐ Excellent
-☐ Good
-☐ Needs Review
+☐ Excellent ☐ Good ☐ Needs Review

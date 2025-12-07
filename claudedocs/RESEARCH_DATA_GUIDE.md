@@ -1,8 +1,7 @@
 # CodonCanvas Research Data Collection Guide
 
-**Version:** 1.0
-**Date:** October 2025
-**Purpose:** Instructions for collecting, formatting, and analyzing research data
+**Version:** 1.0 **Date:** October 2025 **Purpose:** Instructions for
+collecting, formatting, and analyzing research data
 
 ---
 
@@ -262,11 +261,17 @@ Cohen's d: 1.14 (large)
 
 **For Pre-Post Study:**
 
-> Students demonstrated significant learning gains from pre-test (M = 55.2, SD = 12.5) to post-test (M = 70.5, SD = 10.8), t(49) = 8.45, p < .001, d = 1.20. The mean gain of 15.3 points (95% CI: [11.5, 19.1]) represents a large effect size and suggests substantial improvement in mutation concept understanding.
+> Students demonstrated significant learning gains from pre-test (M = 55.2, SD =
+> 12.5) to post-test (M = 70.5, SD = 10.8), t(49) = 8.45, p < .001, d = 1.20.
+> The mean gain of 15.3 points (95% CI: [11.5, 19.1]) represents a large effect
+> size and suggests substantial improvement in mutation concept understanding.
 
 **For RCT Study:**
 
-> The treatment group (M = 72.3, SD = 11.2) significantly outperformed the control group (M = 58.5, SD = 13.1) on the post-test, t(98) = 5.67, p < .001, d = 1.14. This 13.8-point difference (95% CI: [9.1, 18.6]) represents a large treatment effect and provides strong evidence for CodonCanvas effectiveness.
+> The treatment group (M = 72.3, SD = 11.2) significantly outperformed the
+> control group (M = 58.5, SD = 13.1) on the post-test, t(98) = 5.67, p < .001,
+> d = 1.14. This 13.8-point difference (95% CI: [9.1, 18.6]) represents a large
+> treatment effect and provides strong evidence for CodonCanvas effectiveness.
 
 ---
 
@@ -306,18 +311,23 @@ Before running analysis, verify:
 
 **Issue:** "Effect size smaller than expected"
 
-- **Possible causes:** Implementation fidelity issues, sample heterogeneity, ceiling effects
-- **Actions:** Check instructor fidelity logs, analyze by subgroup, examine score distributions
+- **Possible causes:** Implementation fidelity issues, sample heterogeneity,
+  ceiling effects
+- **Actions:** Check instructor fidelity logs, analyze by subgroup, examine
+  score distributions
 
 **Issue:** "High attrition rate (>20%)"
 
-- **Solution:** Conduct attrition analysis (compare completers vs. non-completers)
-- **Report:** "Attrition rate was X%. Completers and non-completers did not differ on baseline characteristics (p > .05)."
+- **Solution:** Conduct attrition analysis (compare completers vs.
+  non-completers)
+- **Report:** "Attrition rate was X%. Completers and non-completers did not
+  differ on baseline characteristics (p > .05)."
 
 **Issue:** "Ceiling effect (many scores at 100)"
 
 - **Solution:** Report but acknowledge limitation
-- **Report:** "A ceiling effect was observed, with X% of participants scoring 95-100 on post-test, potentially underestimating treatment effects."
+- **Report:** "A ceiling effect was observed, with X% of participants scoring
+  95-100 on post-test, potentially underestimating treatment effects."
 
 ---
 
@@ -370,7 +380,8 @@ research_data/
 **Retention:**
 
 - **During study:** All data retained
-- **After publication:** De-identified data retained 3-7 years (check IRB policy)
+- **After publication:** De-identified data retained 3-7 years (check IRB
+  policy)
 - **Identifiable data:** Destroyed after retention period
 - **Public sharing:** Only de-identified data (OSF, Zenodo) if consented
 
@@ -403,7 +414,8 @@ npm run research:analyze -- --design prepost --data /full/path/to/data.csv
 
 **Q: What sample size do I need?**
 
-- **A:** Run power analysis: `npm run research:analyze -- --power-analysis --effect 0.5`
+- **A:** Run power analysis:
+  `npm run research:analyze -- --power-analysis --effect 0.5`
 - Typical result: N=64 per group (RCT), N=34 total (pre-post, d=0.5)
 
 **Q: My p-value is .06, almost significant. What do I do?**
@@ -413,7 +425,8 @@ npm run research:analyze -- --design prepost --data /full/path/to/data.csv
 
 **Q: How do I report subscale results?**
 
-- **A:** Use repeated measures analysis or separate t-tests with Bonferroni correction.
+- **A:** Use repeated measures analysis or separate t-tests with Bonferroni
+  correction.
 - Example: α = .05 / 5 tests = .01 per test (conservative)
 
 **Q: Can I combine pilot data with main study data?**
@@ -438,13 +451,15 @@ If you prefer GUI-based tools:
 
 **Research Design:**
 
-- Shadish, Cook, & Campbell (2002). _Experimental and Quasi-Experimental Designs_
+- Shadish, Cook, & Campbell (2002). _Experimental and Quasi-Experimental
+  Designs_
 - Creswell & Creswell (2017). _Research Design_ (5th ed.)
 
 **Statistical Analysis:**
 
 - Field (2018). _Discovering Statistics Using IBM SPSS Statistics_ (5th ed.)
-- Cumming (2012). _Understanding the New Statistics: Effect Sizes, CIs, and Meta-Analysis_
+- Cumming (2012). _Understanding the New Statistics: Effect Sizes, CIs, and
+  Meta-Analysis_
 
 **Education Research:**
 
@@ -455,7 +470,8 @@ If you prefer GUI-based tools:
 
 **Technical Issues:**
 
-- GitHub Issues: [codoncanvas/issues](https://github.com/username/codoncanvas/issues)
+- GitHub Issues:
+  [codoncanvas/issues](https://github.com/username/codoncanvas/issues)
 - Email support: [contact info]
 
 **Methodological Consultation:**
@@ -517,6 +533,5 @@ npm run research:analyze -- --design prepost --data study.csv --table
 
 ---
 
-**Document Version:** 1.0
-**Last Updated:** October 2025
-**Contact:** [Project PI contact information]
+**Document Version:** 1.0 **Last Updated:** October 2025 **Contact:** [Project
+PI contact information]

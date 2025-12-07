@@ -2,9 +2,7 @@
 
 **A Strategic Synthesis: From Concept to Implementation**
 
-Version: 1.0.0
-Date: October 2025
-Status: Living Document
+Version: 1.0.0 Date: October 2025 Status: Living Document
 
 ---
 
@@ -23,7 +21,10 @@ Status: Living Document
 
 ## 0. Biological Accuracy & Pedagogical Scope
 
-CodonCanvas is a **pedagogical tool**, not a molecular biology simulator. This section explicitly documents what the system models authentically, what it intentionally simplifies, and why these design decisions serve educational goals.
+CodonCanvas is a **pedagogical tool**, not a molecular biology simulator. This
+section explicitly documents what the system models authentically, what it
+intentionally simplifies, and why these design decisions serve educational
+goals.
 
 ### What CodonCanvas Models Authentically
 
@@ -39,15 +40,20 @@ CodonCanvas is a **pedagogical tool**, not a molecular biology simulator. This s
 
 #### Genetic Redundancy (Degeneracy)
 
-CodonCanvas faithfully models the **wobble position** pattern observed in real genetic code:
+CodonCanvas faithfully models the **wobble position** pattern observed in real
+genetic code:
 
-- **Four-fold degenerate families**: GGA, GGC, GGG, GGT all produce the same output
+- **Four-fold degenerate families**: GGA, GGC, GGG, GGT all produce the same
+  output
   - Real biology: These four codons all encode Glycine
   - CodonCanvas: These four codons all execute CIRCLE
-- **Partial degeneracy**: Some operations have 1-3 codons (matches biological variance)
-- **Synonymous substitutions**: Changing GGA to GGC produces identical output (silent mutation)
+- **Partial degeneracy**: Some operations have 1-3 codons (matches biological
+  variance)
+- **Synonymous substitutions**: Changing GGA to GGC produces identical output
+  (silent mutation)
 
-This pattern teaches **why genetic redundancy exists**: error tolerance against point mutations.
+This pattern teaches **why genetic redundancy exists**: error tolerance against
+point mutations.
 
 #### Mutation Mechanisms
 
@@ -59,11 +65,13 @@ This pattern teaches **why genetic redundancy exists**: error tolerance against 
 | **Frameshift** | All downstream corrupted    | Reading frame shift            | Catastrophic downstream effects |
 | **Point**      | Single base change          | Single nucleotide polymorphism | Minimal change, variable effect |
 
-Students experience these mutation effects **immediately and visually**, building intuition that transfers to real genetics.
+Students experience these mutation effects **immediately and visually**,
+building intuition that transfers to real genetics.
 
 ### Intentional Pedagogical Abstractions
 
-CodonCanvas makes deliberate simplifications to focus on **genetic code logic** rather than molecular machinery.
+CodonCanvas makes deliberate simplifications to focus on **genetic code logic**
+rather than molecular machinery.
 
 #### No Transcription/Translation Machinery
 
@@ -77,9 +85,11 @@ CodonCanvas makes deliberate simplifications to focus on **genetic code logic** 
 - Eliminates molecular complexity (RNA polymerase, ribosomes, tRNA)
 - Enables instant feedback (no waiting for protein synthesis)
 
-**What students still learn**: Codon structure, reading frames, mutations, redundancy
+**What students still learn**: Codon structure, reading frames, mutations,
+redundancy
 
-**What requires follow-up study**: Transcription, translation, ribosome mechanics
+**What requires follow-up study**: Transcription, translation, ribosome
+mechanics
 
 #### Opcodes Replace Amino Acids
 
@@ -93,7 +103,8 @@ CodonCanvas makes deliberate simplifications to focus on **genetic code logic** 
 - Aesthetic motivation sustains engagement ("Look at my mutation art!")
 - Genotype->phenotype relationship becomes **directly observable**
 
-**Trade-off accepted**: Loses protein chemistry, gains computational thinking + instant visualization
+**Trade-off accepted**: Loses protein chemistry, gains computational thinking +
+instant visualization
 
 #### No Gene Regulation
 
@@ -109,7 +120,9 @@ CodonCanvas makes deliberate simplifications to focus on **genetic code logic** 
 
 ### Scope Statement
 
-> CodonCanvas teaches **genetic code structure and mutation patterns** through executable DNA. It is a "genetic code algebra" tool, not a "cell biology chemistry" simulator.
+> CodonCanvas teaches **genetic code structure and mutation patterns** through
+> executable DNA. It is a "genetic code algebra" tool, not a "cell biology
+> chemistry" simulator.
 
 **What students learn:**
 
@@ -129,13 +142,20 @@ CodonCanvas makes deliberate simplifications to focus on **genetic code logic** 
 
 For educators who want to bridge CodonCanvas to authentic molecular biology:
 
-1. **After CodonCanvas lesson**: "You discovered that GGA, GGC, GGG, GGT all produce the same output. In real cells, these four codons all encode the same amino acid: Glycine."
+1. **After CodonCanvas lesson**: "You discovered that GGA, GGC, GGG, GGT all
+   produce the same output. In real cells, these four codons all encode the same
+   amino acid: Glycine."
 
-2. **Transfer moment**: "The redundancy pattern you experienced is exactly how real DNA protects against mutations. A point mutation in the wobble position often has no effect."
+2. **Transfer moment**: "The redundancy pattern you experienced is exactly how
+   real DNA protects against mutations. A point mutation in the wobble position
+   often has no effect."
 
-3. **Extension activity**: Compare CodonCanvas codon chart with standard genetic code table. Students identify: same structure, same redundancy pattern, different outputs (opcodes vs amino acids).
+3. **Extension activity**: Compare CodonCanvas codon chart with standard genetic
+   code table. Students identify: same structure, same redundancy pattern,
+   different outputs (opcodes vs amino acids).
 
-See also: [Metaphor Limitations Guide](./METAPHOR_LIMITATIONS.md) for detailed educator resources.
+See also: [Metaphor Limitations Guide](./METAPHOR_LIMITATIONS.md) for detailed
+educator resources.
 
 ---
 
@@ -143,9 +163,14 @@ See also: [Metaphor Limitations Guide](./METAPHOR_LIMITATIONS.md) for detailed e
 
 ### Why DNA as Programming Language?
 
-CodonCanvas emerged from a fundamental question: **How can we make abstract genetic concepts tangible and immediately graspable?**
+CodonCanvas emerged from a fundamental question: **How can we make abstract
+genetic concepts tangible and immediately graspable?**
 
-Traditional genetics education faces a persistent challenge—mutations, reading frames, and genetic redundancy are taught as abstract rules that students must memorize without experiencing their consequences. CodonCanvas inverts this model by making genetic concepts **executable**, **visual**, and **immediately observable**.
+Traditional genetics education faces a persistent challenge—mutations, reading
+frames, and genetic redundancy are taught as abstract rules that students must
+memorize without experiencing their consequences. CodonCanvas inverts this model
+by making genetic concepts **executable**, **visual**, and **immediately
+observable**.
 
 #### The DNA Metaphor: Four Strategic Advantages
 
@@ -154,13 +179,15 @@ Traditional genetics education faces a persistent challenge—mutations, reading
 - DNA changes → immediate visual phenotype changes
 - Silent mutation → identical output (redundancy becomes concrete)
 - Missense mutation → shape changes (function alteration visible)
-- Frameshift → catastrophic downstream effects (reading frame sensitivity embodied)
+- Frameshift → catastrophic downstream effects (reading frame sensitivity
+  embodied)
 
 **2. Biological Authenticity**
 
 - All 64 possible DNA triplets (codons) mapped to operations
 - Authentic start codon (ATG) and stop codons (TAA, TAG, TGA)
-- Synonymous codons demonstrate genetic redundancy (e.g., GGA/GGC/GGG/GGT all produce CIRCLE)
+- Synonymous codons demonstrate genetic redundancy (e.g., GGA/GGC/GGG/GGT all
+  produce CIRCLE)
 - Reading frames enforced through triplet tokenization
 
 **3. Low Cognitive Barriers**
@@ -175,28 +202,37 @@ Traditional genetics education faces a persistent challenge—mutations, reading
 - Code becomes art (visual output motivates experimentation)
 - Aesthetic feedback loop encourages iteration
 - "Evolving" programs through mutation feels like discovery, not debugging
-- Multi-sensory output (visual + optional audio) supports diverse learning styles
+- Multi-sensory output (visual + optional audio) supports diverse learning
+  styles
 
 ### Why Visual Output?
 
 Visual programming output serves three pedagogical functions:
 
-**Immediate Feedback Loop**: Students see results within seconds, enabling rapid hypothesis testing ("What happens if I change GGA to CCA?")
+**Immediate Feedback Loop**: Students see results within seconds, enabling rapid
+hypothesis testing ("What happens if I change GGA to CCA?")
 
-**Aesthetic Motivation**: Creating visual art is intrinsically rewarding, sustaining engagement through initial learning curves. Students share creations organically ("Look at this mutation effect!").
+**Aesthetic Motivation**: Creating visual art is intrinsically rewarding,
+sustaining engagement through initial learning curves. Students share creations
+organically ("Look at this mutation effect!").
 
-**Concrete Phenotypes**: Visual outputs serve as observable "phenotypes" making the genotype-phenotype relationship explicit. A silent mutation produces identical images; a frameshift produces dramatically different ones.
+**Concrete Phenotypes**: Visual outputs serve as observable "phenotypes" making
+the genotype-phenotype relationship explicit. A silent mutation produces
+identical images; a frameshift produces dramatically different ones.
 
 ### Why Programming + Biology Integration?
 
-CodonCanvas bridges two domains that are increasingly convergent in modern science:
+CodonCanvas bridges two domains that are increasingly convergent in modern
+science:
 
 - **Computational Biology**: DNA sequences as information, genes as algorithms
 - **Synthetic Biology**: Programming living systems through genetic code
 - **Bioinformatics**: Computational analysis of biological data
 - **Systems Biology**: Understanding organisms as complex computational systems
 
-By learning to program with DNA-like syntax, students develop intuitions transferable to real computational biology applications while simultaneously strengthening their understanding of genetics.
+By learning to program with DNA-like syntax, students develop intuitions
+transferable to real computational biology applications while simultaneously
+strengthening their understanding of genetics.
 
 ---
 
@@ -206,7 +242,8 @@ CodonCanvas's pedagogical approach synthesizes multiple educational frameworks:
 
 ### Constructionist Learning (Seymour Papert)
 
-**Core Principle**: Learning happens most effectively when learners construct external artifacts they can reflect upon.
+**Core Principle**: Learning happens most effectively when learners construct
+external artifacts they can reflect upon.
 
 **CodonCanvas Application**:
 
@@ -215,11 +252,14 @@ CodonCanvas's pedagogical approach synthesizes multiple educational frameworks:
 - Construction process reveals genetic concepts experientially
 - "Low floor, high ceiling": Simple to start, infinite creative possibilities
 
-**Design Choice**: Web-based playground with instant visual preview embodies Papert's vision of "objects to think with"—the codon chart becomes a creative tool, not a memorization burden.
+**Design Choice**: Web-based playground with instant visual preview embodies
+Papert's vision of "objects to think with"—the codon chart becomes a creative
+tool, not a memorization burden.
 
 ### Cognitive Load Theory (John Sweller)
 
-**Core Principle**: Learning is constrained by working memory capacity. Reduce extraneous load, manage intrinsic load, optimize germane load.
+**Core Principle**: Learning is constrained by working memory capacity. Reduce
+extraneous load, manage intrinsic load, optimize germane load.
 
 **CodonCanvas Strategies**:
 
@@ -238,15 +278,19 @@ CodonCanvas's pedagogical approach synthesizes multiple educational frameworks:
 
 **Optimizing Germane Load**:
 
-- Mutation tools encourage schema formation ("What pattern predicts silent mutations?")
+- Mutation tools encourage schema formation ("What pattern predicts silent
+  mutations?")
 - Diff viewer highlights structural changes supporting pattern recognition
 - Timeline scrubber externalizes execution flow, reducing mental simulation load
 
-**Design Choice**: Stack machine architecture was chosen despite being less intuitive initially because it reduces long-term cognitive load—once understood, stack operations compose predictably without hidden state surprises.
+**Design Choice**: Stack machine architecture was chosen despite being less
+intuitive initially because it reduces long-term cognitive load—once understood,
+stack operations compose predictably without hidden state surprises.
 
 ### Universal Design for Learning (CAST)
 
-**Core Principle**: Provide multiple means of representation, action/expression, and engagement.
+**Core Principle**: Provide multiple means of representation, action/expression,
+and engagement.
 
 **CodonCanvas Implementation**:
 
@@ -271,11 +315,14 @@ CodonCanvas's pedagogical approach synthesizes multiple educational frameworks:
 - Research metrics (analytical learners can explore patterns)
 - Collaborative sharing (social learners)
 
-**Design Choice**: Web-first deployment ensures device flexibility (Chromebooks, tablets, laptops) supporting equitable access across diverse school technology landscapes.
+**Design Choice**: Web-first deployment ensures device flexibility (Chromebooks,
+tablets, laptops) supporting equitable access across diverse school technology
+landscapes.
 
 ### Assessment for Learning (Dylan Wiliam)
 
-**Core Principle**: Assessment should inform instruction and provide actionable feedback during learning, not just measure outcomes.
+**Core Principle**: Assessment should inform instruction and provide actionable
+feedback during learning, not just measure outcomes.
 
 **CodonCanvas Features**:
 
@@ -293,20 +340,26 @@ CodonCanvas's pedagogical approach synthesizes multiple educational frameworks:
 - Assessment rubrics (clear success criteria)
 - Self-paced tutorials (adaptive learning paths)
 
-**Design Choice**: Embedding assessment directly in the programming environment (rather than external quizzes) provides immediate, contextualized feedback aligned with Wiliam's "feedback during learning" principle.
+**Design Choice**: Embedding assessment directly in the programming environment
+(rather than external quizzes) provides immediate, contextualized feedback
+aligned with Wiliam's "feedback during learning" principle.
 
 ### Situated Learning (Jean Lave & Etienne Wenger)
 
-**Core Principle**: Learning occurs through participation in authentic practice communities.
+**Core Principle**: Learning occurs through participation in authentic practice
+communities.
 
 **CodonCanvas Context**:
 
-- Students engage in authentic programming practices (writing, debugging, iterating)
-- Shared vocabulary emerges naturally ("That's a frameshift!", "Let's add a LOOP")
+- Students engage in authentic programming practices (writing, debugging,
+  iterating)
+- Shared vocabulary emerges naturally ("That's a frameshift!", "Let's add a
+  LOOP")
 - Gallery sharing creates artifacts for community discussion
 - Mutation demos provide shared reference experiences
 
-**Design Choice**: .genome file format enables students to exchange programs, creating an authentic "community of practice" around genetic programming.
+**Design Choice**: .genome file format enables students to exchange programs,
+creating an authentic "community of practice" around genetic programming.
 
 ---
 
@@ -314,53 +367,80 @@ CodonCanvas's pedagogical approach synthesizes multiple educational frameworks:
 
 ### Why 64 Codons (Complete DNA Triplet Space)?
 
-**Decision**: Map all 64 possible DNA triplets to operations, leaving no undefined codons.
+**Decision**: Map all 64 possible DNA triplets to operations, leaving no
+undefined codons.
 
 **Rationale**:
 
-1. **Biological Completeness**: Real genetic code uses all 64 codons. Partial mapping would create misleading mental models.
-2. **No Undefined Behavior**: Every possible input is valid (or explicitly invalid via frameshift), eliminating "mystery errors."
-3. **Synonymous Codons**: Complete mapping enables authentic degeneracy—multiple codons for same operation (e.g., 4 codons → CIRCLE) models genetic redundancy.
-4. **Extensibility**: No "reserved for future" gaps that could fragment learning materials.
+1. **Biological Completeness**: Real genetic code uses all 64 codons. Partial
+   mapping would create misleading mental models.
+2. **No Undefined Behavior**: Every possible input is valid (or explicitly
+   invalid via frameshift), eliminating "mystery errors."
+3. **Synonymous Codons**: Complete mapping enables authentic degeneracy—multiple
+   codons for same operation (e.g., 4 codons → CIRCLE) models genetic
+   redundancy.
+4. **Extensibility**: No "reserved for future" gaps that could fragment learning
+   materials.
 
-**Trade-off Accepted**: 64 operations exceeds minimum pedagogical needs. Some opcodes (NOP, multiple STOP) exist primarily for biological authenticity rather than computational necessity.
+**Trade-off Accepted**: 64 operations exceeds minimum pedagogical needs. Some
+opcodes (NOP, multiple STOP) exist primarily for biological authenticity rather
+than computational necessity.
 
-**Validation**: Student feedback confirms redundancy aids mutation demonstrations—changing GGA→GGC (silent) vs GGA→CCA (missense) provides clear before/after comparisons.
+**Validation**: Student feedback confirms redundancy aids mutation
+demonstrations—changing GGA→GGC (silent) vs GGA→CCA (missense) provides clear
+before/after comparisons.
 
 ### Why Stack Machine Architecture?
 
-**Decision**: Use stack-based VM (PUSH/POP/DUP) rather than register-based or variable-based.
+**Decision**: Use stack-based VM (PUSH/POP/DUP) rather than register-based or
+variable-based.
 
 **Rationale**:
 
-1. **Simplicity**: No named variables to track. State is entirely spatial (stack order).
-2. **Composability**: Operations compose naturally—PUSH, PUSH, ADD is self-explanatory sequence.
-3. **Biological Parallel**: DNA is linear sequential instructions, like stack programs.
-4. **Turing Completeness**: Stack + conditional + loop = full computational power.
-5. **Educational Precedent**: Forth, PostScript, JVM—stack machines have proven pedagogical track record.
+1. **Simplicity**: No named variables to track. State is entirely spatial (stack
+   order).
+2. **Composability**: Operations compose naturally—PUSH, PUSH, ADD is
+   self-explanatory sequence.
+3. **Biological Parallel**: DNA is linear sequential instructions, like stack
+   programs.
+4. **Turing Completeness**: Stack + conditional + loop = full computational
+   power.
+5. **Educational Precedent**: Forth, PostScript, JVM—stack machines have proven
+   pedagogical track record.
 
-**Trade-off Accepted**: Stack manipulation (DUP, SWAP) adds initial learning curve. However, this complexity is localized—once understood, no hidden state surprises emerge later.
+**Trade-off Accepted**: Stack manipulation (DUP, SWAP) adds initial learning
+curve. However, this complexity is localized—once understood, no hidden state
+surprises emerge later.
 
-**Validation**: Timeline scrubber visualizes stack state during execution, transforming abstract concept into concrete observation. Students grasp stack mechanics within 1-2 examples.
+**Validation**: Timeline scrubber visualizes stack state during execution,
+transforming abstract concept into concrete observation. Students grasp stack
+mechanics within 1-2 examples.
 
 ### Why Base-4 Numeric Encoding?
 
-**Decision**: Numeric literals encoded as subsequent codons in base-4 (A=0, C=1, G=2, T=3).
+**Decision**: Numeric literals encoded as subsequent codons in base-4 (A=0, C=1,
+G=2, T=3).
 
 **Example**: `GAA TCC` → PUSH 57 (T=3, C=1, C=1 → 3×16 + 1×4 + 1 = 53)
 
 **Rationale**:
 
 1. **DNA Native**: Uses DNA alphabet directly, no external number syntax.
-2. **Elegant Mapping**: Codon structure naturally encodes 0-63 range (3 digits, base 4 = 64 values).
+2. **Elegant Mapping**: Codon structure naturally encodes 0-63 range (3 digits,
+   base 4 = 64 values).
 3. **Biological Metaphor**: Genetic information encoded in nucleotide sequences.
-4. **Unique Pedagogical Value**: Students learn positional number systems (rarely taught with bases other than 2/10/16).
+4. **Unique Pedagogical Value**: Students learn positional number systems
+   (rarely taught with bases other than 2/10/16).
 
-**Trade-off Accepted**: Base-4 arithmetic is non-intuitive initially. Requires lookup table or calculation.
+**Trade-off Accepted**: Base-4 arithmetic is non-intuitive initially. Requires
+lookup table or calculation.
 
-**Mitigation**: Codon chart includes pre-calculated numeric values. Most programs use small set of repeated values (10, 20, 30) students memorize quickly.
+**Mitigation**: Codon chart includes pre-calculated numeric values. Most
+programs use small set of repeated values (10, 20, 30) students memorize
+quickly.
 
-**Alternative Considered**: External decimal syntax (`GAA 10`) rejected because it breaks DNA metaphor and introduces non-biological syntax.
+**Alternative Considered**: External decimal syntax (`GAA 10`) rejected because
+it breaks DNA metaphor and introduces non-biological syntax.
 
 ### Why Visual + Audio Multi-Modality?
 
@@ -369,17 +449,26 @@ CodonCanvas's pedagogical approach synthesizes multiple educational frameworks:
 **Rationale**:
 
 1. **Accessibility**: Audio mode supports visually impaired learners.
-2. **Multi-Sensory Engagement**: Audio adds dimension for kinesthetic/auditory learners.
-3. **Aesthetic Variety**: Some students discover they prefer "hearing" mutations vs seeing them.
-4. **Computational Thinking Transfer**: Audio synthesis (frequency, duration, envelope) parallels visual primitives (circle, translate, color), reinforcing operational thinking.
+2. **Multi-Sensory Engagement**: Audio adds dimension for kinesthetic/auditory
+   learners.
+3. **Aesthetic Variety**: Some students discover they prefer "hearing" mutations
+   vs seeing them.
+4. **Computational Thinking Transfer**: Audio synthesis (frequency, duration,
+   envelope) parallels visual primitives (circle, translate, color), reinforcing
+   operational thinking.
 
-**Trade-off Accepted**: Audio implementation complexity (Web Audio API). However, modular renderer design kept audio optional without complicating core VM.
+**Trade-off Accepted**: Audio implementation complexity (Web Audio API).
+However, modular renderer design kept audio optional without complicating core
+VM.
 
-**Design Choice**: Audio codons map metaphorically (CIRCLE→tone, TRANSLATE→pitch shift, COLOR→timbre change), maintaining conceptual consistency across modalities.
+**Design Choice**: Audio codons map metaphorically (CIRCLE→tone, TRANSLATE→pitch
+shift, COLOR→timbre change), maintaining conceptual consistency across
+modalities.
 
 ### Why Add Arithmetic/Loops (Evolution Beyond MVP)?
 
-**Decision**: Session 71-76 added ADD, SUB, MUL, DIV, EQ, LT, LOOP opcodes despite absence from original MVP spec.
+**Decision**: Session 71-76 added ADD, SUB, MUL, DIV, EQ, LT, LOOP opcodes
+despite absence from original MVP spec.
 
 **Original Spec Allocation**: NOISE (4 codons) for visual texture effects.
 
@@ -387,26 +476,37 @@ CodonCanvas's pedagogical approach synthesizes multiple educational frameworks:
 
 **Greater Pedagogical Value**:
 
-- **Algorithmic Art**: Arithmetic enables fractals, spirals, Fibonacci sequences—patterns impossible with only primitives.
-- **Computational Thinking**: Loops and arithmetic introduce algorithmic reasoning alongside biological concepts.
-- **Research Applications**: Genetic algorithms require fitness functions (comparison ops) and iterative evolution (loops).
-- **Curriculum Depth**: Advanced students explore computational complexity (O(n) vs O(n²) patterns visible in output).
+- **Algorithmic Art**: Arithmetic enables fractals, spirals, Fibonacci
+  sequences—patterns impossible with only primitives.
+- **Computational Thinking**: Loops and arithmetic introduce algorithmic
+  reasoning alongside biological concepts.
+- **Research Applications**: Genetic algorithms require fitness functions
+  (comparison ops) and iterative evolution (loops).
+- **Curriculum Depth**: Advanced students explore computational complexity (O(n)
+  vs O(n²) patterns visible in output).
 
 **Biological Metaphors Enhanced**:
 
-- **Arithmetic as Metabolism**: Mathematical operations model cellular computation.
-- **Loops as Gene Regulation**: Repeated expression patterns analogous to developmental biology.
-- **Comparison as Feedback**: Conditional logic mirrors biological feedback loops (homeostasis).
+- **Arithmetic as Metabolism**: Mathematical operations model cellular
+  computation.
+- **Loops as Gene Regulation**: Repeated expression patterns analogous to
+  developmental biology.
+- **Comparison as Feedback**: Conditional logic mirrors biological feedback
+  loops (homeostasis).
 
-**Trade-off**: Removed NOISE (artistic texture) in favor of computational features. NOISE was "nice-to-have"; arithmetic is "enables new pedagogical domain."
+**Trade-off**: Removed NOISE (artistic texture) in favor of computational
+features. NOISE was "nice-to-have"; arithmetic is "enables new pedagogical
+domain."
 
 **Validation Metrics**:
 
-- Fractal examples (Fibonacci spiral, Sierpiński triangle) most-shared in gallery
+- Fractal examples (Fibonacci spiral, Sierpiński triangle) most-shared in
+  gallery
 - 40% of advanced students use LOOP in final projects (assessment data)
 - Teacher feedback: "Arithmetic unlocked AP CS integration opportunities"
 
-**Alternative Considered**: Add 64 new codons for computational features. Rejected because exceeding biological 64-codon completeness breaks metaphor.
+**Alternative Considered**: Add 64 new codons for computational features.
+Rejected because exceeding biological 64-codon completeness breaks metaphor.
 
 ---
 
@@ -414,7 +514,8 @@ CodonCanvas's pedagogical approach synthesizes multiple educational frameworks:
 
 ### Learning Progression Design
 
-CodonCanvas employs **scaffolded discovery learning** across five developmental stages:
+CodonCanvas employs **scaffolded discovery learning** across five developmental
+stages:
 
 #### Stage 1: Exploration (Sessions 1-2)
 
@@ -432,7 +533,8 @@ CodonCanvas employs **scaffolded discovery learning** across five developmental 
 - Student explains difference between missense/nonsense
 - Time-to-first-artifact <5 minutes
 
-**Pedagogical Principle**: Low-stakes experimentation before formal instruction builds intrinsic motivation (Papert's constructionism).
+**Pedagogical Principle**: Low-stakes experimentation before formal instruction
+builds intrinsic motivation (Papert's constructionism).
 
 #### Stage 2: Comprehension (Sessions 3-4)
 
@@ -450,7 +552,8 @@ CodonCanvas employs **scaffolded discovery learning** across five developmental 
 - Student explains stack operation sequence
 - Student successfully modifies example to meet specification
 
-**Pedagogical Principle**: Guided practice with immediate feedback reduces cognitive load during schema formation (Sweller).
+**Pedagogical Principle**: Guided practice with immediate feedback reduces
+cognitive load during schema formation (Sweller).
 
 #### Stage 3: Application (Sessions 5-7)
 
@@ -468,7 +571,8 @@ CodonCanvas employs **scaffolded discovery learning** across five developmental 
 - Student intentionally demonstrates 4+ mutation types
 - Student explains frameshift cascade effect
 
-**Pedagogical Principle**: Authentic creation tasks consolidate understanding (Bloom's taxonomy: Apply→Analyze).
+**Pedagogical Principle**: Authentic creation tasks consolidate understanding
+(Bloom's taxonomy: Apply→Analyze).
 
 #### Stage 4: Analysis (Sessions 8-10)
 
@@ -486,7 +590,8 @@ CodonCanvas employs **scaffolded discovery learning** across five developmental 
 - Student designs controlled mutation experiments
 - Student interprets research metrics data
 
-**Pedagogical Principle**: Inquiry-based learning through authentic research tasks (scientific method application).
+**Pedagogical Principle**: Inquiry-based learning through authentic research
+tasks (scientific method application).
 
 #### Stage 5: Synthesis (Sessions 11-15)
 
@@ -504,7 +609,8 @@ CodonCanvas employs **scaffolded discovery learning** across five developmental 
 - Student explains limitations of metaphor
 - Student applies computational thinking to biology problems
 
-**Pedagogical Principle**: Transfer requires explicit connection-making and metacognitive reflection (Bransford's "How People Learn").
+**Pedagogical Principle**: Transfer requires explicit connection-making and
+metacognitive reflection (Bransford's "How People Learn").
 
 ### Mutation Type Pedagogy Mapping
 
@@ -520,7 +626,9 @@ Each biological mutation type maps to observable CodonCanvas behavior:
 | **Deletion**    | Remove 3+ nucleotides | Remove codon(s)         | Missing shape                  | Demonstrates deletion effects      |
 | **Duplication** | Repeat sequence       | Copy codon block        | Repeated pattern               | Models gene duplication events     |
 
-**Design Principle**: One-to-one mapping between biological concepts and observable behaviors eliminates need for abstract translation. Students SEE the consequences directly.
+**Design Principle**: One-to-one mapping between biological concepts and
+observable behaviors eliminates need for abstract translation. Students SEE the
+consequences directly.
 
 ### Scaffolding Mechanisms
 
@@ -548,13 +656,15 @@ Each biological mutation type maps to observable CodonCanvas behavior:
 - Diff viewer (comparison tool for pattern recognition)
 - Research metrics (data for hypothesis testing)
 
-**Design Principle**: Support structures withdraw progressively as competence grows (Vygotsky's zone of proximal development).
+**Design Principle**: Support structures withdraw progressively as competence
+grows (Vygotsky's zone of proximal development).
 
 ---
 
 ## 5. Research Enablement
 
-CodonCanvas includes extensive research infrastructure for educational studies and computational genetics experiments:
+CodonCanvas includes extensive research infrastructure for educational studies
+and computational genetics experiments:
 
 ### Educational Research Applications
 
@@ -569,7 +679,8 @@ CodonCanvas includes extensive research infrastructure for educational studies a
 **Research Questions Addressable**:
 
 - Which mutation types are most difficult for students to predict?
-- Does visual programming improve genetics concept retention vs traditional instruction?
+- Does visual programming improve genetics concept retention vs traditional
+  instruction?
 - What codon patterns emerge in successful student programs?
 - How does achievement system impact engagement/persistence?
 
@@ -603,7 +714,8 @@ CodonCanvas includes extensive research infrastructure for educational studies a
 - Comparative genomics (diff viewer, similarity metrics)
 - Phylogenetic relationships (genome comparison)
 
-**Design Philosophy**: Tools serve both pedagogy (students learn by experimenting) and research (educators study outcomes systematically).
+**Design Philosophy**: Tools serve both pedagogy (students learn by
+experimenting) and research (educators study outcomes systematically).
 
 ### Data Collection Ethics
 
@@ -614,7 +726,8 @@ CodonCanvas includes extensive research infrastructure for educational studies a
 3. **Minimalism**: Collect only data necessary for educational improvement
 4. **Privacy**: No personally identifiable information stored
 5. **Security**: Local-first architecture, encrypted if cloud storage used
-6. **Purpose Limitation**: Data used only for stated educational/research purposes
+6. **Purpose Limitation**: Data used only for stated educational/research
+   purposes
 
 **Implementation**:
 
@@ -623,7 +736,8 @@ CodonCanvas includes extensive research infrastructure for educational studies a
 - Export/delete functionality (data portability/right to erasure)
 - No advertising, no third-party analytics
 
-**Design Choice**: Ethical data practices model responsible computing for students—data literacy through transparency.
+**Design Choice**: Ethical data practices model responsible computing for
+students—data literacy through transparency.
 
 ---
 
@@ -631,7 +745,8 @@ CodonCanvas includes extensive research infrastructure for educational studies a
 
 ### Three-Phase Development Arc
 
-CodonCanvas evolved across 92 autonomous development sessions, following an emergent rather than pre-planned trajectory:
+CodonCanvas evolved across 92 autonomous development sessions, following an
+emergent rather than pre-planned trajectory:
 
 #### Phase 1: MVP Foundation (Sessions 1-30)
 
@@ -670,7 +785,8 @@ CodonCanvas evolved across 92 autonomous development sessions, following an emer
 - Mutation predictor (effect forecasting)
 - Teacher dashboard (classroom analytics)
 
-**Milestone**: Transitioned from "toy language" to "research/education platform."
+**Milestone**: Transitioned from "toy language" to "research/education
+platform."
 
 #### Phase 3: Computational Features (Sessions 71-76)
 
@@ -686,7 +802,11 @@ CodonCanvas evolved across 92 autonomous development sessions, following an emer
 
 **Milestone**: Enabled computational thinking pedagogy alongside genetics.
 
-**Design Decision Rationale**: Arithmetic was NOT in MVP spec. However, during example creation (Session 70), recognized pattern limitation—only static compositions possible, no algorithmic patterns. Adding arithmetic unlocked fractals, spirals, mathematical art. Trade-off: Removed NOISE (low pedagogical value) to maintain 64-codon biological completeness.
+**Design Decision Rationale**: Arithmetic was NOT in MVP spec. However, during
+example creation (Session 70), recognized pattern limitation—only static
+compositions possible, no algorithmic patterns. Adding arithmetic unlocked
+fractals, spirals, mathematical art. Trade-off: Removed NOISE (low pedagogical
+value) to maintain 64-codon biological completeness.
 
 #### Phase 4: Polish & Launch Prep (Sessions 77-92)
 
@@ -702,11 +822,13 @@ CodonCanvas evolved across 92 autonomous development sessions, following an emer
 - Specification compliance audit
 - Code quality verification
 
-**Milestone**: Launch-ready from technical, documentation, and specification perspectives.
+**Milestone**: Launch-ready from technical, documentation, and specification
+perspectives.
 
 ### Why Scope Exceeded MVP?
 
-**Emergent Opportunities**: As implementation progressed, natural extensions became apparent:
+**Emergent Opportunities**: As implementation progressed, natural extensions
+became apparent:
 
 - Genetic algorithms emerged from mutation tools (Session 29)
 - Audio mode emerged from renderer modularity (Session 39)
@@ -718,11 +840,14 @@ CodonCanvas evolved across 92 autonomous development sessions, following an emer
 - Does it enable new computational thinking concepts? OR
 - Does it support research/assessment needs?
 
-**No Feature Bloat**: Every addition serves clear pedagogical purpose. No "cool tech for tech's sake" features added.
+**No Feature Bloat**: Every addition serves clear pedagogical purpose. No "cool
+tech for tech's sake" features added.
 
-**Intentional Evolution**: Scope expansion was deliberate, not accidental. Each session concluded with strategic reflection on value-add.
+**Intentional Evolution**: Scope expansion was deliberate, not accidental. Each
+session concluded with strategic reflection on value-add.
 
-**Design Philosophy**: MVP establishes foundation; evolution refines based on actual usage insights. Better to iterate rapidly than over-plan speculatively.
+**Design Philosophy**: MVP establishes foundation; evolution refines based on
+actual usage insights. Better to iterate rapidly than over-plan speculatively.
 
 ---
 
@@ -730,7 +855,8 @@ CodonCanvas evolved across 92 autonomous development sessions, following an emer
 
 ### Theory of Change
 
-**Input**: Students engage with CodonCanvas (3-5 class sessions, ~4-6 hours total)
+**Input**: Students engage with CodonCanvas (3-5 class sessions, ~4-6 hours
+total)
 
 **Activities**:
 
@@ -772,7 +898,8 @@ CodonCanvas evolved across 92 autonomous development sessions, following an emer
 
 #### Engagement Metrics (Immediate)
 
-- **Time-to-first-artifact**: Target <5 minutes (current: 3.2 min average from pilot)
+- **Time-to-first-artifact**: Target <5 minutes (current: 3.2 min average from
+  pilot)
 - **Session duration**: Target 45-60 min sustained engagement
 - **Example exploration**: Target 5+ examples viewed per student
 - **Original creation**: Target 80%+ students create original genome
@@ -780,19 +907,25 @@ CodonCanvas evolved across 92 autonomous development sessions, following an emer
 #### Learning Outcomes (Short-term)
 
 - **Mutation type identification**: Target 85%+ accuracy on post-assessment
-- **Reading frame explanation**: Target 75%+ students explain frameshift cascades correctly
-- **Code-phenotype reasoning**: Target 70%+ students predict visual effect from codon change
+- **Reading frame explanation**: Target 75%+ students explain frameshift
+  cascades correctly
+- **Code-phenotype reasoning**: Target 70%+ students predict visual effect from
+  codon change
 
 #### Retention (Medium-term)
 
-- **3-month recall**: Target 70%+ genetics concept retention (vs 40% traditional lecture)
-- **Transfer application**: Target 60%+ students apply concepts to real DNA sequences
+- **3-month recall**: Target 70%+ genetics concept retention (vs 40% traditional
+  lecture)
+- **Transfer application**: Target 60%+ students apply concepts to real DNA
+  sequences
 
 #### Attitudinal Shifts
 
 - **STEM identity**: Target 20% increase in "I am good at science" self-ratings
-- **Cross-disciplinary confidence**: Target 30% increase in "I can apply CS to biology"
-- **Creative confidence**: Target 40% increase in "I can create something new with code"
+- **Cross-disciplinary confidence**: Target 30% increase in "I can apply CS to
+  biology"
+- **Creative confidence**: Target 40% increase in "I can create something new
+  with code"
 
 ### Measurement Approach
 
@@ -816,7 +949,8 @@ CodonCanvas evolved across 92 autonomous development sessions, following an emer
 - Design-based research (iterative refinement based on classroom testing)
 - Action research (teachers as co-investigators)
 
-**Design Principle**: Measurement integrated into tool (research metrics) reduces burden on educators while providing actionable data.
+**Design Principle**: Measurement integrated into tool (research metrics)
+reduces burden on educators while providing actionable data.
 
 ### Validation Status
 
@@ -840,21 +974,30 @@ CodonCanvas evolved across 92 autonomous development sessions, following an emer
 
 CodonCanvas synthesizes multiple design philosophies into coherent whole:
 
-**Biological Authenticity** (64 codons, start/stop, redundancy) grounds learning in genuine genetic mechanisms.
+**Biological Authenticity** (64 codons, start/stop, redundancy) grounds learning
+in genuine genetic mechanisms.
 
-**Constructionist Pedagogy** (create artifacts, reflect, iterate) provides intrinsic motivation through creative expression.
+**Constructionist Pedagogy** (create artifacts, reflect, iterate) provides
+intrinsic motivation through creative expression.
 
-**Cognitive Science** (progressive disclosure, multi-modal, scaffolding) optimizes learning efficiency through evidence-based principles.
+**Cognitive Science** (progressive disclosure, multi-modal, scaffolding)
+optimizes learning efficiency through evidence-based principles.
 
-**Computational Thinking** (stack machine, algorithms, debugging) bridges programming and biology domains naturally.
+**Computational Thinking** (stack machine, algorithms, debugging) bridges
+programming and biology domains naturally.
 
-**Ethical Research** (opt-in metrics, privacy, transparency) models responsible data practices.
+**Ethical Research** (opt-in metrics, privacy, transparency) models responsible
+data practices.
 
-**Intentional Evolution** (MVP → research → computational) demonstrates adaptive development responsive to emergent opportunities.
+**Intentional Evolution** (MVP → research → computational) demonstrates adaptive
+development responsive to emergent opportunities.
 
-Every design decision traces to pedagogical rationale. Every feature serves educational purpose. Every trade-off explicitly weighed against learning value.
+Every design decision traces to pedagogical rationale. Every feature serves
+educational purpose. Every trade-off explicitly weighed against learning value.
 
-**Result**: Tool that makes genetics tangible, programming accessible, and computational biology inviting—while maintaining intellectual rigor and biological fidelity.
+**Result**: Tool that makes genetics tangible, programming accessible, and
+computational biology inviting—while maintaining intellectual rigor and
+biological fidelity.
 
 ---
 
@@ -915,7 +1058,8 @@ Comprehensive decision history available in:
 - LOLCODE (internet culture as syntax)
 - Piet (visual art as code)
 
-CodonCanvas occupies unique intersection: esoteric language aesthetics + authentic biology + educational rigor.
+CodonCanvas occupies unique intersection: esoteric language aesthetics +
+authentic biology + educational rigor.
 
 ### D. Acknowledgments
 
@@ -926,11 +1070,14 @@ Developed through 92 autonomous sessions (October 2025) synthesizing:
 - Software engineering principles (clean architecture, comprehensive testing)
 - Ethical research practices (privacy, transparency, consent)
 
-**Standing on shoulders of**: Seymour Papert's constructionism, John Sweller's cognitive load theory, CAST's Universal Design for Learning, Dylan Wiliam's formative assessment research.
+**Standing on shoulders of**: Seymour Papert's constructionism, John Sweller's
+cognitive load theory, CAST's Universal Design for Learning, Dylan Wiliam's
+formative assessment research.
 
 ---
 
-**Document Status**: Living document, updated as CodonCanvas evolves based on classroom usage, research findings, and community feedback.
+**Document Status**: Living document, updated as CodonCanvas evolves based on
+classroom usage, research findings, and community feedback.
 
-**Last Updated**: October 2025 (Session 93)
-**Next Review**: Post-formal-pilot (target: 6 months)
+**Last Updated**: October 2025 (Session 93) **Next Review**: Post-formal-pilot
+(target: 6 months)

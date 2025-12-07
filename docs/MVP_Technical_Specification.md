@@ -1,29 +1,36 @@
 # CodonCanvas MVP Technical Specification
 
-**Version:** 1.0.0
-**Target:** Phase A-B Implementation
-**Date:** October 2025
+**Version:** 1.0.0 **Target:** Phase A-B Implementation **Date:** October 2025
 **Status:** 📜 HISTORICAL REFERENCE
 
 > **⚠️ IMPLEMENTATION HAS EVOLVED BEYOND THIS SPECIFICATION**
 >
-> This document reflects the **original MVP design** from October 2025. The implementation has successfully delivered all Phase A and Phase B requirements, but has **intentionally evolved** to include additional computational features for enhanced pedagogical value.
+> This document reflects the **original MVP design** from October 2025. The
+> implementation has successfully delivered all Phase A and Phase B
+> requirements, but has **intentionally evolved** to include additional
+> computational features for enhanced pedagogical value.
 >
 > **Key Changes from Original Spec:**
 >
 > - ✅ Phase A (MVP Core): Complete + exceeded
 > - ✅ Phase B (Pedagogy Tools): Complete + exceeded
-> - 🔄 **Opcode Evolution**: NOISE removed, added Arithmetic (ADD/SUB/MUL/DIV), Comparison (EQ/LT), and LOOP
-> - 📈 **Enhanced Features**: 48 examples (vs 3 spec), audio mode, research tools, teacher dashboard
+> - 🔄 **Opcode Evolution**: NOISE removed, added Arithmetic (ADD/SUB/MUL/DIV),
+>   Comparison (EQ/LT), and LOOP
+> - 📈 **Enhanced Features**: 48 examples (vs 3 spec), audio mode, research
+>   tools, teacher dashboard
 >
 > **For Current Implementation Details:**
 >
 > - [OPCODES.md](./OPCODES.md) - Complete current opcode reference
 > - [README.md](./README.md) - Getting started guide
 > - [EDUCATORS.md](./EDUCATORS.md) - Comprehensive pedagogical documentation
-> - [claudedocs/SPEC_COMPLIANCE_AUDIT.md](./claudedocs/SPEC_COMPLIANCE_AUDIT.md) - Detailed compliance analysis
+> - [claudedocs/SPEC_COMPLIANCE_AUDIT.md](./claudedocs/SPEC_COMPLIANCE_AUDIT.md) -
+>   Detailed compliance analysis
 >
-> **Rationale for Evolution**: Added computational features (arithmetic, comparison, loops) enable algorithmic art, computational thinking pedagogy, and research applications. The codon count remains 64 (complete DNA triplet coverage maintained).
+> **Rationale for Evolution**: Added computational features (arithmetic,
+> comparison, loops) enable algorithmic art, computational thinking pedagogy,
+> and research applications. The codon count remains 64 (complete DNA triplet
+> coverage maintained).
 
 ---
 
@@ -83,7 +90,8 @@
 
 ## 2. Base-4 Numeric Literal Encoding
 
-When a PUSH opcode executes, the **next codon** is interpreted as a base-4 number:
+When a PUSH opcode executes, the **next codon** is interpreted as a base-4
+number:
 
 **Formula:** `value = d1 × 16 + d2 × 4 + d3`\
 where `d1, d2, d3 ∈ {A:0, C:1, G:2, T:3}`
@@ -109,7 +117,8 @@ Let me fix TCA:
 
 **Range:** 0-63 (sufficient for most canvas coordinates when scaled)
 
-**Screen Scaling:** Literals are interpreted as percentages of canvas dimensions:
+**Screen Scaling:** Literals are interpreted as percentages of canvas
+dimensions:
 
 - Canvas assumed to be 400×400 pixels for MVP
 - Value 32 → 200 pixels (32/64 × 400)
@@ -356,7 +365,8 @@ Let me recalculate AGG with base-4:
 - A=0, G=2, G=2
 - 0×16 + 2×4 + 2 = 0 + 8 + 2 = 10
 
-So the literal is 10, which would be radius 10 pixels (10/64 × 400 = 62.5 pixels).
+So the literal is 10, which would be radius 10 pixels (10/64 × 400 = 62.5
+pixels).
 
 Let me pick better examples:
 
@@ -379,9 +389,11 @@ Single circle centered at (200, 200) with radius ~131 pixels.
 **Mutation Demos:**
 
 - `GGA → GGC` (silent): Identical output
-- `GGA → CCA` (missense): Circle becomes rectangle (needs 2 stack values, will error or use default)
+- `GGA → CCA` (missense): Circle becomes rectangle (needs 2 stack values, will
+  error or use default)
 - `GGA → TAA` (nonsense): No circle drawn (program stops early)
-- Insert `G` after `GAA`: Frameshift - `GAA` becomes `GAG`, `CCC` becomes `CCG`, `GA` → incomplete
+- Insert `G` after `GAA`: Frameshift - `GAA` becomes `GAG`, `CCC` becomes `CCG`,
+  `GA` → incomplete
 
 ### 4.2 Example 2: "Two Shapes" (Composition)
 
@@ -748,6 +760,8 @@ CA* = NOP        CT* = NOISE
 
 ---
 
-**Ready to code?** Start with the lexer test suite and work up the stack. The core engine should take 1-2 weeks for a solo developer, then 1-2 weeks for tooling/polish.
+**Ready to code?** Start with the lexer test suite and work up the stack. The
+core engine should take 1-2 weeks for a solo developer, then 1-2 weeks for
+tooling/polish.
 
 🧬 **Let's build this!** 🚀

@@ -1,14 +1,16 @@
 # 🎵 Audio Mode - Multi-Sensory Mutation Learning
 
-**Status:** Experimental Phase C Feature
-**Version:** 1.0.0
-**Purpose:** Multi-modal learning through sound synthesis
+**Status:** Experimental Phase C Feature **Version:** 1.0.0 **Purpose:**
+Multi-modal learning through sound synthesis
 
 ---
 
 ## Overview
 
-Audio Mode transforms CodonCanvas into a **musical programming language** where DNA-like codons generate **sound instead of visuals**. The same genetic mutations that alter visual patterns now produce **audible changes in melodies**, enabling:
+Audio Mode transforms CodonCanvas into a **musical programming language** where
+DNA-like codons generate **sound instead of visuals**. The same genetic
+mutations that alter visual patterns now produce **audible changes in
+melodies**, enabling:
 
 - **Multi-sensory learning**: Reinforcement through sound + vision
 - **Accessibility**: Alternative modality for vision-impaired learners
@@ -24,7 +26,8 @@ Audio Mode transforms CodonCanvas into a **musical programming language** where 
    - `🎨🔊 Both`: **Multi-sensory mode** (audio + visual simultaneously)
 2. **Run a Genome**: Click `▶ Run` to execute with selected mode
 3. **Export**: In "Both" mode, both PNG and Audio export buttons appear
-4. **Try Examples**: Load `examples/audio-scale.genome` or `audio-mutation-demo.genome`
+4. **Try Examples**: Load `examples/audio-scale.genome` or
+   `audio-mutation-demo.genome`
 
 ---
 
@@ -49,31 +52,33 @@ Audio Mode transforms CodonCanvas into a **musical programming language** where 
 
 ### 1. Silent Mutations (Synonymous Codons)
 
-**Visual**: `GGA` (CIRCLE) → `GGC` (CIRCLE) looks identical
-**Audio**: Both produce **same sine wave frequency** → sounds identical
+**Visual**: `GGA` (CIRCLE) → `GGC` (CIRCLE) looks identical **Audio**: Both
+produce **same sine wave frequency** → sounds identical
 
 **Learning**: Reinforces genetic redundancy concept through multiple senses
 
 ### 2. Missense Mutations (Different Function)
 
-**Visual**: `GGA` (CIRCLE) → `GCA` (TRIANGLE) changes shape
-**Audio**: Sine wave → Triangle wave = **timbre change** (same pitch, different "color")
+**Visual**: `GGA` (CIRCLE) → `GCA` (TRIANGLE) changes shape **Audio**: Sine wave
+→ Triangle wave = **timbre change** (same pitch, different "color")
 
-**Learning**: Both modalities show functional change, auditory highlights subtle vs. dramatic shifts
+**Learning**: Both modalities show functional change, auditory highlights subtle
+vs. dramatic shifts
 
 ### 3. Nonsense Mutations (Early Stop)
 
-**Visual**: Drawing truncates mid-program
-**Audio**: Melody **cuts short** unexpectedly
+**Visual**: Drawing truncates mid-program **Audio**: Melody **cuts short**
+unexpectedly
 
 **Learning**: Immediate auditory feedback makes truncation viscerally obvious
 
 ### 4. Frameshift Mutations (Complete Scramble)
 
-**Visual**: Downstream drawing becomes chaotic
-**Audio**: Melody **completely scrambles** into dissonant noise
+**Visual**: Downstream drawing becomes chaotic **Audio**: Melody **completely
+scrambles** into dissonant noise
 
-**Learning**: Sound emphasizes how catastrophic frameshifts are—entire "melody" destroyed
+**Learning**: Sound emphasizes how catastrophic frameshifts are—entire "melody"
+destroyed
 
 ---
 
@@ -141,7 +146,8 @@ TAA
 
 ### 3. Mutation Demo (`audio-mutation-demo.genome`)
 
-4-note melody for mutation experiments—students apply mutations and hear results.
+4-note melody for mutation experiments—students apply mutations and hear
+results.
 
 ---
 
@@ -168,7 +174,8 @@ TAA
 
 ### Research Application
 
-**Hypothesis**: Multi-sensory (audio + visual) reinforcement improves mutation concept retention vs. visual-only.
+**Hypothesis**: Multi-sensory (audio + visual) reinforcement improves mutation
+concept retention vs. visual-only.
 
 **Method**: RCT with audio mode treatment group vs. visual-only control.
 
@@ -187,7 +194,8 @@ TAA
 ### Auditory Learners
 
 - **Preferred modality**: Some learners process auditory info better than visual
-- **Reinforcement**: Dual-coding theory suggests multi-modal learning aids retention
+- **Reinforcement**: Dual-coding theory suggests multi-modal learning aids
+  retention
 
 ---
 
@@ -195,8 +203,10 @@ TAA
 
 ### 1. Browser Compatibility
 
-- **Requirement**: Modern browsers with Web Audio API support (Chrome, Firefox, Safari, Edge)
-- **iOS Safari**: Requires user interaction to initialize AudioContext (autoplay policy)
+- **Requirement**: Modern browsers with Web Audio API support (Chrome, Firefox,
+  Safari, Edge)
+- **iOS Safari**: Requires user interaction to initialize AudioContext (autoplay
+  policy)
 
 ### 2. Export Format
 
@@ -221,7 +231,8 @@ TAA
 
 **Status**: ✅ **IMPLEMENTED**
 
-The "Both" mode enables **simultaneous audio and visual rendering**, bringing multi-sensory learning theory into practice:
+The "Both" mode enables **simultaneous audio and visual rendering**, bringing
+multi-sensory learning theory into practice:
 
 **How to Use:**
 
@@ -232,8 +243,10 @@ The "Both" mode enables **simultaneous audio and visual rendering**, bringing mu
 
 **Pedagogical Impact:**
 
-- **Dual-Coding Theory** (Paivio, 1971): Visual + auditory encoding → stronger memory
-- **Multi-Sensory Integration**: Cross-modal reinforcement strengthens understanding
+- **Dual-Coding Theory** (Paivio, 1971): Visual + auditory encoding → stronger
+  memory
+- **Multi-Sensory Integration**: Cross-modal reinforcement strengthens
+  understanding
 - **Research Enabled**: Multi-sensory effectiveness studies now possible
 
 **Technical Implementation:**
@@ -250,7 +263,8 @@ The "Both" mode enables **simultaneous audio and visual rendering**, bringing mu
 
 **Status**: ✅ **IMPLEMENTED**
 
-Export CodonCanvas genomes as **MIDI files** for integration with professional music software (GarageBand, Ableton Live, Logic Pro, FL Studio, etc.).
+Export CodonCanvas genomes as **MIDI files** for integration with professional
+music software (GarageBand, Ableton Live, Logic Pro, FL Studio, etc.).
 
 **How to Use:**
 
@@ -345,7 +359,8 @@ TAA
 
 ### Security
 
-- **User interaction required**: AudioContext initialization requires click (browser security policy)
+- **User interaction required**: AudioContext initialization requires click
+  (browser security policy)
 - **No external requests**: All synthesis local, no privacy concerns
 
 ---
@@ -359,8 +374,10 @@ TAA
 
 ### Educational Theory
 
-- **Dual-Coding Theory**: Paivio (1971, 1986) — multi-modal representations enhance learning
-- **Multi-Sensory Learning**: Shams & Seitz (2008) — auditory-visual integration improves encoding
+- **Dual-Coding Theory**: Paivio (1971, 1986) — multi-modal representations
+  enhance learning
+- **Multi-Sensory Learning**: Shams & Seitz (2008) — auditory-visual integration
+  improves encoding
 
 ### Similar Projects
 
@@ -372,13 +389,13 @@ TAA
 
 ## Getting Help
 
-- **Issue Tracker**: Report audio bugs at [GitHub Issues](https://github.com/yourusername/codoncanvas/issues)
+- **Issue Tracker**: Report audio bugs at
+  [GitHub Issues](https://github.com/yourusername/codoncanvas/issues)
 - **Tag**: `audio-mode` for audio-specific issues
 - **Educators**: Email feedback on pedagogical effectiveness
 
 ---
 
-**Created**: 2025-10-12 (Autonomous Session 39)
-**Updated**: 2025-10-12 (Autonomous Session 41 - MIDI Export)
-**Author**: CodonCanvas Development Team
+**Created**: 2025-10-12 (Autonomous Session 39) **Updated**: 2025-10-12
+(Autonomous Session 41 - MIDI Export) **Author**: CodonCanvas Development Team
 **License**: MIT (same as main project)

@@ -1,6 +1,7 @@
 # CodonCanvas CLI Tool
 
-Command-line interface for validating, linting, and analyzing CodonCanvas genome files. Perfect for:
+Command-line interface for validating, linting, and analyzing CodonCanvas genome
+files. Perfect for:
 
 - **Educators:** Batch-grade student assignments, detect plagiarism
 - **Researchers:** Automate data validation in effectiveness studies
@@ -282,7 +283,9 @@ done
 
 ## Research Integration
 
-The CLI tool complements the [Educational Research Framework](claudedocs/RESEARCH_FRAMEWORK.md) for automated data collection and validation.
+The CLI tool complements the
+[Educational Research Framework](claudedocs/RESEARCH_FRAMEWORK.md) for automated
+data collection and validation.
 
 ### Validate Experimental Data
 
@@ -443,11 +446,13 @@ time bun run cli -- check-similarity large1.genome large2.genome
 
 ### Glob pattern not working
 
-- **Solution:** Quote the pattern: `codoncanvas lint "*.genome"` (not `*.genome`)
+- **Solution:** Quote the pattern: `codoncanvas lint "*.genome"` (not
+  `*.genome`)
 
 ### Slow similarity checks
 
-- **Solution:** Large genomes (>5,000 bases) take longer due to O(n^2) algorithm. Consider sampling or chunking.
+- **Solution:** Large genomes (>5,000 bases) take longer due to O(n^2)
+  algorithm. Consider sampling or chunking.
 
 ---
 
@@ -477,7 +482,8 @@ MIT - Same as CodonCanvas project
 
 ## See Also
 
-- [Educational Research Framework](claudedocs/RESEARCH_FRAMEWORK.md) - Research methodology
+- [Educational Research Framework](claudedocs/RESEARCH_FRAMEWORK.md) - Research
+  methodology
 - [README.md](README.md) - CodonCanvas overview
 - [EDUCATORS.md](EDUCATORS.md) - Teaching resources
 - [ASSESSMENTS.md](ASSESSMENTS.md) - Assessment instruments

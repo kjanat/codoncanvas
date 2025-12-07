@@ -1,8 +1,7 @@
 # CodonCanvas Research Metrics Guide
 
-**Version:** 1.0.0
-**Date:** October 2025
-**For:** Educators, Researchers, and Institutional Review Boards
+**Version:** 1.0.0 **Date:** October 2025 **For:** Educators, Researchers, and
+Institutional Review Boards
 
 ---
 
@@ -21,7 +20,9 @@
 
 ## Overview
 
-CodonCanvas includes **privacy-respecting research instrumentation** to measure learning effectiveness, engagement patterns, and tool usage. This system enables empirical validation of educational outcomes while protecting student privacy.
+CodonCanvas includes **privacy-respecting research instrumentation** to measure
+learning effectiveness, engagement patterns, and tool usage. This system enables
+empirical validation of educational outcomes while protecting student privacy.
 
 ### Key Features
 
@@ -62,9 +63,11 @@ CodonCanvas includes **privacy-respecting research instrumentation** to measure 
 
 **Feature Usage:**
 
-- Mutation types applied (silent, missense, nonsense, frameshift, point, insertion, deletion)
+- Mutation types applied (silent, missense, nonsense, frameshift, point,
+  insertion, deletion)
 - Render modes used (visual, audio, both)
-- Tool usage (diff viewer, timeline scrubber, evolution lab, assessment system, export)
+- Tool usage (diff viewer, timeline scrubber, evolution lab, assessment system,
+  export)
 
 **What's NOT Tracked:**
 
@@ -82,8 +85,8 @@ CodonCanvas includes **privacy-respecting research instrumentation** to measure 
 
 Before enabling research metrics, you **must** obtain appropriate consent:
 
-**For Students ≥18 years:** Individual informed consent
-**For Students <18 years:** Parental consent + student assent
+**For Students ≥18 years:** Individual informed consent **For Students <18
+years:** Parental consent + student assent
 
 See [IRB Submission Guide](#irb-submission-guide) for consent form templates.
 
@@ -187,7 +190,9 @@ CodonCanvas research metrics are designed to comply with FERPA:
 - Parents can delete data (browser localStorage clear)
 - Data collection is optional (opt-in consent required)
 
-**FERPA Risk Assessment:** **LOW** - Metrics do not constitute "education records" under FERPA as they lack student identification and are not maintained by educational institution.
+**FERPA Risk Assessment:** **LOW** - Metrics do not constitute "education
+records" under FERPA as they lack student identification and are not maintained
+by educational institution.
 
 ### COPPA Compliance (Children's Online Privacy Protection Act)
 
@@ -208,7 +213,8 @@ For students under 13 years:
 - Parents can request data deletion anytime
 - Educator must provide clear deletion instructions
 
-**COPPA Risk Assessment:** **LOW** - Anonymous usage metrics with parental consent.
+**COPPA Risk Assessment:** **LOW** - Anonymous usage metrics with parental
+consent.
 
 ### IRB Review Requirements
 
@@ -410,7 +416,8 @@ Do you want to participate? You can ask me questions first!
 **Section 1: Study Overview**
 
 - **Title:** Evaluating CodonCanvas for Genetics Education
-- **Purpose:** Measure learning effectiveness and engagement with DNA programming
+- **Purpose:** Measure learning effectiveness and engagement with DNA
+  programming
 - **Design:** [Pre/post, RCT, longitudinal - specify your design]
 - **Sample:** [Target N, age range, recruitment method]
 
@@ -575,7 +582,8 @@ df.groupby(["renderMode_visual", "renderMode_audio"]).mean()
 
 ## Research Dashboard Guide
 
-The research dashboard (`/dashboards/research`) provides visual analytics and data export.
+The research dashboard (`/dashboards/research`) provides visual analytics and
+data export.
 
 ### Dashboard Sections
 
@@ -647,40 +655,38 @@ https://yourdomain.com/dashboards/research
 
 ### No Data Appearing in Dashboard
 
-**Cause:** Research metrics not enabled
-**Solution:** Enable metrics in playground (see [Quick Start](#quick-start-for-educators))
+**Cause:** Research metrics not enabled **Solution:** Enable metrics in
+playground (see [Quick Start](#quick-start-for-educators))
 
-**Cause:** Different browser used
-**Solution:** Open dashboard in **same browser** as playground
+**Cause:** Different browser used **Solution:** Open dashboard in **same
+browser** as playground
 
-**Cause:** Private/Incognito mode
-**Solution:** localStorage disabled in private mode - use normal browser mode
+**Cause:** Private/Incognito mode **Solution:** localStorage disabled in private
+mode - use normal browser mode
 
 ### CSV Export Empty
 
-**Cause:** No sessions recorded yet
-**Solution:** Use CodonCanvas, then re-export
+**Cause:** No sessions recorded yet **Solution:** Use CodonCanvas, then
+re-export
 
-**Cause:** Sessions not saved
-**Solution:** Wait 30 seconds (auto-save interval) or manually trigger save
+**Cause:** Sessions not saved **Solution:** Wait 30 seconds (auto-save interval)
+or manually trigger save
 
 ### Analysis Script Errors
 
-**Cause:** CSV format mismatch
-**Solution:** Ensure CSV exported from ResearchMetrics (not hand-edited)
+**Cause:** CSV format mismatch **Solution:** Ensure CSV exported from
+ResearchMetrics (not hand-edited)
 
-**Cause:** Missing dependencies
-**Solution:** Run `bun install` first
+**Cause:** Missing dependencies **Solution:** Run `bun install` first
 
 ### Data Lost After Browser Update
 
-**Cause:** localStorage cleared
-**Solution:** Export CSV regularly (weekly) to prevent data loss
+**Cause:** localStorage cleared **Solution:** Export CSV regularly (weekly) to
+prevent data loss
 
 ### Multi-Device Data Collection
 
-**Challenge:** Each device has separate localStorage
-**Solution:**
+**Challenge:** Each device has separate localStorage **Solution:**
 
 1. Student 1 exports CSV → `student1.csv`
 2. Student 2 exports CSV → `student2.csv`
@@ -698,27 +704,30 @@ https://yourdomain.com/dashboards/research
 
 ### Can I collect data without IRB approval?
 
-**No.** Research involving human subjects requires IRB review, even if anonymous. Submit for exempt determination first.
+**No.** Research involving human subjects requires IRB review, even if
+anonymous. Submit for exempt determination first.
 
 ### Can students use CodonCanvas without metrics collection?
 
-**Yes.** Research metrics are **opt-in only**. Students can fully use CodonCanvas with metrics disabled.
+**Yes.** Research metrics are **opt-in only**. Students can fully use
+CodonCanvas with metrics disabled.
 
 ### How long should I collect data?
 
-**Minimum:** 2-3 weeks for engagement patterns
-**Recommended:** Full semester (15 weeks) for longitudinal analysis
-**RCT:** Duration depends on intervention (4-8 weeks typical)
+**Minimum:** 2-3 weeks for engagement patterns **Recommended:** Full semester
+(15 weeks) for longitudinal analysis **RCT:** Duration depends on intervention
+(4-8 weeks typical)
 
 ### Can I link metrics to student grades?
 
-**Caution:** Linking to grades requires additional IRB justification (educational records access). Recommend keeping metrics anonymous and separate from grades.
+**Caution:** Linking to grades requires additional IRB justification
+(educational records access). Recommend keeping metrics anonymous and separate
+from grades.
 
 ### What sample size do I need?
 
-**Pilot study:** N=10-20 (feasibility)
-**Pre/post:** N=30+ (detect medium effects)
-**RCT:** N=60+ total (30 per group, detect d=0.5 with 80% power)
+**Pilot study:** N=10-20 (feasibility) **Pre/post:** N=30+ (detect medium
+effects) **RCT:** N=60+ total (30 per group, detect d=0.5 with 80% power)
 **Longitudinal:** N=50+ (account for 20-30% attrition)
 
 See Session 62 (RESEARCH_FOUNDATION.md) for detailed power analyses.
@@ -731,7 +740,8 @@ See Session 62 (RESEARCH_FOUNDATION.md) for detailed power analyses.
 - IRB protocol allows data sharing (specify in protocol)
 - Consent form disclosed potential sharing (add clause)
 
-Recommend depositing in open repositories (OSF, Dataverse) for scientific transparency.
+Recommend depositing in open repositories (OSF, Dataverse) for scientific
+transparency.
 
 ---
 
@@ -740,7 +750,8 @@ Recommend depositing in open repositories (OSF, Dataverse) for scientific transp
 **Related Documentation:**
 
 - `RESEARCH_FOUNDATION.md` - Research background and study designs
-- `scripts/research-data-analyzer.ts` - Assessment data analysis (student test scores)
+- `scripts/research-data-analyzer.ts` - Assessment data analysis (student test
+  scores)
 - `scripts/metrics-analyzer.ts` - Metrics data analysis (usage patterns)
 - `src/research-metrics.ts` - Technical implementation details
 
@@ -760,17 +771,14 @@ Recommend depositing in open repositories (OSF, Dataverse) for scientific transp
 
 ## Contact & Support
 
-**Technical Questions:**
-Open GitHub issue: https://github.com/yourusername/codoncanvas/issues
+**Technical Questions:** Open GitHub issue:
+https://github.com/yourusername/codoncanvas/issues
 
-**Research Design Consultation:**
-Contact: [Your Email]
+**Research Design Consultation:** Contact: [Your Email]
 
-**IRB Questions:**
-Contact your institutional IRB office
+**IRB Questions:** Contact your institutional IRB office
 
 ---
 
-**Document Version:** 1.0.0
-**Last Updated:** October 2025
-**License:** CC BY 4.0 (documentation), MIT (code)
+**Document Version:** 1.0.0 **Last Updated:** October 2025 **License:** CC BY
+4.0 (documentation), MIT (code)

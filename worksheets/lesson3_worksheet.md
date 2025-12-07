@@ -1,6 +1,7 @@
 # Lesson 3 Student Worksheet: Genome Composition
 
-**Name:** \_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_ **Date:** \_\_\_\_\_\_\_\_\_\_
+**Name:** \_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_ **Date:**
+\_\_\_\_\_\_\_\_\_\_
 
 **Learning Objectives:**
 
@@ -163,7 +164,8 @@ ATG
 TAA
 ```
 
-**Title for your artwork:** \_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
+**Title for your artwork:**
+\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
 
 **Description (what were you trying to create?):**
 
@@ -219,7 +221,8 @@ ATG
 TAA
 ```
 
-**Pattern name:** \_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
+**Pattern name:**
+\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
 
 ---
 
@@ -240,39 +243,41 @@ ATG
 TAA
 ```
 
-**Mutation 1 (Silent):**
-Change: \_\_\_\_\_\_\_ → \_\_\_\_\_\_\_
+**Mutation 1 (Silent):** Change: \_\_\_\_\_\_\_ → \_\_\_\_\_\_\_
 
 **Predicted effect:** No change (same family)
 
-**Actual result:** \_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
+**Actual result:**
+\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
 
 ---
 
-**Mutation 2 (Missense):**
-Change: \_\_\_\_\_\_\_ → \_\_\_\_\_\_\_
+**Mutation 2 (Missense):** Change: \_\_\_\_\_\_\_ → \_\_\_\_\_\_\_
 
-**Predicted effect:** \_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
+**Predicted effect:**
+\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
 
-**Actual result:** \_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
+**Actual result:**
+\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
 
 ---
 
-**Mutation 3 (Your Choice):**
-Change: \_\_\_\_\_\_\_ → \_\_\_\_\_\_\_
+**Mutation 3 (Your Choice):** Change: \_\_\_\_\_\_\_ → \_\_\_\_\_\_\_
 
 **Mutation type:** ☐ Silent ☐ Missense ☐ Nonsense ☐ Frameshift
 
-**Predicted effect:** \_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
+**Predicted effect:**
+\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
 
-**Actual result:** \_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
+**Actual result:**
+\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
 
 ---
 
 ### Exercise 3.8: Selection & Fitness
 
-**Which variant do you like best?**
-☐ Original ☐ Mutation 1 ☐ Mutation 2 ☐ Mutation 3
+**Which variant do you like best?** ☐ Original ☐ Mutation 1 ☐ Mutation 2 ☐
+Mutation 3
 
 **Why is it "fittest"?** (Most interesting, balanced, beautiful?)
 
@@ -280,13 +285,17 @@ Change: \_\_\_\_\_\_\_ → \_\_\_\_\_\_\_
 
 ---
 
-**Biological parallel:** In evolution, "fitness" means better at surviving and reproducing. In art, "fitness" might mean more appealing or interesting. How are these similar? Different?
+**Biological parallel:** In evolution, "fitness" means better at surviving and
+reproducing. In art, "fitness" might mean more appealing or interesting. How are
+these similar? Different?
 
-Similar: \_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
+Similar:
+\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
 
 ---
 
-Different: \_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
+Different:
+\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
 
 ---
 
@@ -296,7 +305,8 @@ Different: \_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\
 
 ### Exercise 3.9: Nested Transforms (BONUS)
 
-**SAVE_STATE** (TCA family) lets you save your current position/rotation, make changes, then restore!
+**SAVE_STATE** (TCA family) lets you save your current position/rotation, make
+changes, then restore!
 
 **Advanced pattern:**
 
@@ -315,7 +325,8 @@ TAA
 
 ### Exercise 3.10: Maximum Complexity
 
-**Final Challenge:** Create the most complex genome you can that still looks intentional (not random).
+**Final Challenge:** Create the most complex genome you can that still looks
+intentional (not random).
 
 **Requirements:**
 
@@ -351,7 +362,8 @@ ATG
 TAA
 ```
 
-**Artwork title:** \_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
+**Artwork title:**
+\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
 
 **Artist statement (what does it represent?):**
 
@@ -387,7 +399,8 @@ How was designing a genome different from drawing with traditional tools?
 
 ### Question 2: Mutation as Tool
 
-You used mutations to "evolve" your artwork. In biology, mutations are random. How did you use mutations intentionally?
+You used mutations to "evolve" your artwork. In biology, mutations are random.
+How did you use mutations intentionally?
 
 ---
 
@@ -405,13 +418,17 @@ Could an organism "intentionally" mutate? Why or why not?
 
 ### Question 3: Creative Constraints
 
-The codon system limits what you can express (only certain shapes, limited numbers, specific transforms). How did these constraints affect your creativity?
+The codon system limits what you can express (only certain shapes, limited
+numbers, specific transforms). How did these constraints affect your creativity?
 
-Did they make it easier or harder? \_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
+Did they make it easier or harder?
+\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
 
-Did they make your work more or less interesting? \_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
+Did they make your work more or less interesting?
+\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
 
-**Real biology parallel:** DNA can only code for 20 amino acids, yet creates incredible diversity. How is this similar to your experience?
+**Real biology parallel:** DNA can only code for 20 amino acids, yet creates
+incredible diversity. How is this similar to your experience?
 
 ---
 
@@ -435,12 +452,13 @@ Did they make your work more or less interesting? \_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
 
 ---
 
-**How has your understanding of mutations changed?**
-Before CodonCanvas: \_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
+**How has your understanding of mutations changed?** Before CodonCanvas:
+\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
 
 ---
 
-After CodonCanvas: \_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
+After CodonCanvas:
+\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
 
 ---
 
@@ -455,7 +473,8 @@ After CodonCanvas: \_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\
 ☐ Exercise 3.5 (Geometric Garden)\
 ☐ Exercise 3.6 (Pattern Creation)\
 ☐ Exercise 3.10 (Maximum Complexity)\
-☐ Other: \_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
+☐ Other:
+\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
 
 **Export your genome:** Save as .ccd file and submit with this worksheet
 
@@ -485,7 +504,8 @@ Rate yourself on these skills (1 = still learning, 5 = confident):
 ☐ Better codon chart reference\
 ☐ Video tutorials\
 ☐ Pair programming with peer\
-☐ Other: \_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
+☐ Other:
+\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
 
 ---
 

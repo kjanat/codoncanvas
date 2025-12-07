@@ -11,7 +11,8 @@
     "ignoreDirective": "prettier-ignore",
     "ignoreFileDirective": "prettier-ignore-file",
     "ignoreStartDirective": "prettier-ignore-start",
-    "ignoreEndDirective": "prettier-ignore-end"
+    "ignoreEndDirective": "prettier-ignore-end",
+    "textWrap": "always"
   },
   "dockerfile": {},
   "biome": {

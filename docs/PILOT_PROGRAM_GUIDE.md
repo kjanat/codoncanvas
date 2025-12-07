@@ -1,8 +1,7 @@
 # CodonCanvas Pilot Program Guide
 
-**Version:** 1.0.0
-**Purpose:** Structured observation protocol for 10-student pilot validation
-**Duration:** 3 sessions × 60 minutes (Week 5 deployment)
+**Version:** 1.0.0 **Purpose:** Structured observation protocol for 10-student
+pilot validation **Duration:** 3 sessions × 60 minutes (Week 5 deployment)
 **Target:** Secondary/tertiary students (ages 15-18)
 
 ---
@@ -24,7 +23,8 @@
 
 ### What is the Pilot?
 
-A **10-student, 3-session pilot** (Week 5 deployment) to empirically validate CodonCanvas MVP against four primary metrics:
+A **10-student, 3-session pilot** (Week 5 deployment) to empirically validate
+CodonCanvas MVP against four primary metrics:
 
 1. **Time-to-first-artifact**: <5 minutes target
 2. **Retention across 3 lessons**: >80% attendance target
@@ -314,7 +314,8 @@ A **10-student, 3-session pilot** (Week 5 deployment) to empirically validate Co
 **Focus Areas:**
 
 - **Creative composition quality** (complexity, originality)
-- **Transform operation mastery** (do students use TRANSLATE, ROTATE, SCALE confidently?)
+- **Transform operation mastery** (do students use TRANSLATE, ROTATE, SCALE
+  confidently?)
 - **"Evolution" understanding** (do students grasp cumulative mutation effects?)
 - **Overall confidence** (compare to Session 1 hesitancy)
 
@@ -441,7 +442,8 @@ A **10-student, 3-session pilot** (Week 5 deployment) to empirically validate Co
 
 ### Instrument 3: Mutation Classification Accuracy
 
-**Purpose:** Assess mutation type identification skills (target: >70% post-assessment)
+**Purpose:** Assess mutation type identification skills (target: >70%
+post-assessment)
 
 **Method:**
 
@@ -484,14 +486,16 @@ A **10-student, 3-session pilot** (Week 5 deployment) to empirically validate Co
 
 **Purpose:** Measure user satisfaction (target: >80% positive)
 
-**Format:** 8 questions, 5-point Likert scale (1=strongly disagree, 5=strongly agree)
+**Format:** 8 questions, 5-point Likert scale (1=strongly disagree, 5=strongly
+agree)
 
 **Questions:**
 
 1. **Enjoyment:** "I enjoyed learning with CodonCanvas."
    - 1 = Strongly Disagree → 5 = Strongly Agree ✓
 
-2. **Understanding:** "CodonCanvas helped me understand genetic mutations better."
+2. **Understanding:** "CodonCanvas helped me understand genetic mutations
+   better."
    - 1 = Strongly Disagree → 5 = Strongly Agree ✓
 
 3. **Ease of Use:** "The CodonCanvas interface was easy to use."
@@ -503,13 +507,15 @@ A **10-student, 3-session pilot** (Week 5 deployment) to empirically validate Co
 5. **Recommend:** "I would recommend CodonCanvas to a friend."
    - 1 = Strongly Disagree → 5 = Strongly Agree ✓
 
-6. **Biology Connection:** "CodonCanvas helped me see connections between programming and biology."
+6. **Biology Connection:** "CodonCanvas helped me see connections between
+   programming and biology."
    - 1 = Strongly Disagree → 5 = Strongly Agree ✓
 
 7. **Future Use:** "I would use CodonCanvas again if available."
    - 1 = Strongly Disagree → 5 = Strongly Agree ✓
 
-8. **Open-Ended:** "What did you like most about CodonCanvas? What would you improve?"
+8. **Open-Ended:** "What did you like most about CodonCanvas? What would you
+   improve?"
    - Free text response
 
 **Scoring:**
@@ -532,7 +538,8 @@ A **10-student, 3-session pilot** (Week 5 deployment) to empirically validate Co
 - [ ] Students express excitement (verbal/non-verbal)
 - [ ] Students stay on-task (minimal off-topic browsing)
 
-**Notes:** \_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
+**Notes:**
+\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
 
 #### Confusion Indicators
 
@@ -542,7 +549,8 @@ A **10-student, 3-session pilot** (Week 5 deployment) to empirically validate Co
 - [ ] Students attempt same error multiple times
 - [ ] Students request instructor help frequently
 
-**Confused Concepts:** \_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
+**Confused Concepts:**
+\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
 
 #### Technical Issues
 
@@ -552,7 +560,8 @@ A **10-student, 3-session pilot** (Week 5 deployment) to empirically validate Co
 - [ ] Examples fail to run
 - [ ] Canvas rendering errors
 
-**Bug Details:** \_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
+**Bug Details:**
+\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
 
 #### Biological Connections
 
@@ -562,7 +571,8 @@ A **10-student, 3-session pilot** (Week 5 deployment) to empirically validate Co
 - [ ] Students discuss evolutionary implications
 - [ ] Students critique differences from biology
 
-**Quotes:** \_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
+**Quotes:**
+\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
 
 ### Instrument 6: Technical Performance Log
 
@@ -657,7 +667,8 @@ Conclusion: High satisfaction, minor usability friction
 - **Frameshift Challenge:** Confirmed hypothesis (lowest accuracy at 53%)
   - Recommendation: Add visual demo (physical cards showing frame shift)
   - Consider: Interactive frameshift visualization tool
-- **Silent Mutation Success:** High accuracy (88%) indicates redundancy concept clear
+- **Silent Mutation Success:** High accuracy (88%) indicates redundancy concept
+  clear
 - **Transform Operations:** TRANSLATE caused confusion (45% needed help)
   - Recommendation: Add coordinate system visual aid
 
@@ -921,7 +932,8 @@ Parent/Guardian (if <18): _____________________ Date: _________
 
 **Week 5 (Pilot Sessions):**
 
-- **Session 1 (Day 1):** Collect consents, administer Lesson 1, track time-to-first-artifact
+- **Session 1 (Day 1):** Collect consents, administer Lesson 1, track
+  time-to-first-artifact
 - **Session 2 (Day 3):** Administer Lesson 2, focus on mutation classification
 - **Session 3 (Day 5):** Administer Lesson 3, collect post-assessment + survey
 
@@ -957,8 +969,8 @@ Parent/Guardian (if <18): _____________________ Date: _________
 
 ---
 
-**🎓 Ready to pilot? Review checklist, gather materials, and validate CodonCanvas with real students! 🧬**
+**🎓 Ready to pilot? Review checklist, gather materials, and validate
+CodonCanvas with real students! 🧬**
 
-**Document Version:** 1.0.0
-**Last Updated:** 2025-10-12
-**Next Review:** After pilot completion (Week 6)
+**Document Version:** 1.0.0 **Last Updated:** 2025-10-12 **Next Review:** After
+pilot completion (Week 6)

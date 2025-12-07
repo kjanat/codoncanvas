@@ -1,8 +1,7 @@
 # CodonCanvas Gamification System - Educator Guide
 
-**Version:** 1.0.0
-**Last Updated:** October 2025
-**Target Audience:** Educators, Workshop Leaders, Curriculum Designers
+**Version:** 1.0.0 **Last Updated:** October 2025 **Target Audience:**
+Educators, Workshop Leaders, Curriculum Designers
 
 ---
 
@@ -28,25 +27,29 @@
 
 ## Overview
 
-The **CodonCanvas Gamification System** rewards students for learning and practicing mutation concepts through a comprehensive achievement system. Students earn badges for completing milestones across genome creation, drawing, assessment challenges, and advanced features.
+The **CodonCanvas Gamification System** rewards students for learning and
+practicing mutation concepts through a comprehensive achievement system.
+Students earn badges for completing milestones across genome creation, drawing,
+assessment challenges, and advanced features.
 
 ### Key Features for Educators
 
-✅ **Automated Progression Tracking** - System automatically tracks 15+ activity types
-✅ **Visual Progress Indicators** - Students see real-time progress bars and statistics
-✅ **Instant Gratification** - Achievement notifications appear immediately upon unlock
-✅ **Persistent Progress** - All progress saved locally, survives page refreshes
-✅ **Zero Configuration** - Works out-of-the-box, no setup required
-✅ **Privacy-First** - All data stored locally on student devices, never leaves their browser
+✅ **Automated Progression Tracking** - System automatically tracks 15+ activity
+types ✅ **Visual Progress Indicators** - Students see real-time progress bars
+and statistics ✅ **Instant Gratification** - Achievement notifications appear
+immediately upon unlock ✅ **Persistent Progress** - All progress saved locally,
+survives page refreshes ✅ **Zero Configuration** - Works out-of-the-box, no
+setup required ✅ **Privacy-First** - All data stored locally on student
+devices, never leaves their browser
 
 ### Key Features for Students
 
-🎮 **16 Unique Achievements** across 4 difficulty tiers
-🏆 **Badge Collection** with visual unlock states (locked/unlocked)
-📊 **Statistics Dashboard** showing total genomes, mutations, accuracy
-🎉 **Unlock Notifications** with animated toasts celebrating achievements
-💾 **Progress Persistence** so students can continue where they left off
-🌟 **Legend Status** for unlocking all achievements (ultimate goal)
+🎮 **16 Unique Achievements** across 4 difficulty tiers 🏆 **Badge Collection**
+with visual unlock states (locked/unlocked) 📊 **Statistics Dashboard** showing
+total genomes, mutations, accuracy 🎉 **Unlock Notifications** with animated
+toasts celebrating achievements 💾 **Progress Persistence** so students can
+continue where they left off 🌟 **Legend Status** for unlocking all achievements
+(ultimate goal)
 
 ---
 
@@ -54,16 +57,18 @@ The **CodonCanvas Gamification System** rewards students for learning and practi
 
 ### Educational Research Support
 
-**Increased Engagement:** Gamification increases student engagement by 48% on average (Hamari et al., 2014)
-**Practice Motivation:** Badge systems increase practice time by 32% (Dicheva et al., 2015)
-**Skill Mastery:** Clear progression paths improve skill mastery rates by 26% (Sailer et al., 2017)
+**Increased Engagement:** Gamification increases student engagement by 48% on
+average (Hamari et al., 2014) **Practice Motivation:** Badge systems increase
+practice time by 32% (Dicheva et al., 2015) **Skill Mastery:** Clear progression
+paths improve skill mastery rates by 26% (Sailer et al., 2017)
 
 ### CodonCanvas-Specific Benefits
 
 **Addresses "Why Should I Practice?" Problem**
 
 - Without gamification: Students complete assigned work, then stop
-- With gamification: Students pursue achievements voluntarily, increasing practice 3-5x
+- With gamification: Students pursue achievements voluntarily, increasing
+  practice 3-5x
 
 **Provides Concrete Learning Goals**
 
@@ -88,10 +93,9 @@ The **CodonCanvas Gamification System** rewards students for learning and practi
 
 ### 🌱 BASICS (Onboarding)
 
-**Purpose:** Introduce core features and validate basic understanding
-**Target Audience:** All students, especially first-time users
-**Typical Unlock Time:** 5-15 minutes
-**Educator Value:** Confirms students can navigate core features
+**Purpose:** Introduce core features and validate basic understanding **Target
+Audience:** All students, especially first-time users **Typical Unlock Time:**
+5-15 minutes **Educator Value:** Confirms students can navigate core features
 
 **Achievements:**
 
@@ -100,34 +104,39 @@ The **CodonCanvas Gamification System** rewards students for learning and practi
 - 🔄 **First Mutation** - Apply first mutation
 - 🎭 **Shape Explorer** - Use all 5 shape opcodes
 
-**Teaching Tip:** Use Basics achievements as "warm-up goals" in first 15 minutes of class. Students who haven't unlocked all Basics achievements by end of class likely need additional support.
+**Teaching Tip:** Use Basics achievements as "warm-up goals" in first 15 minutes
+of class. Students who haven't unlocked all Basics achievements by end of class
+likely need additional support.
 
 ---
 
 ### 🎯 MASTERY (Skill Development)
 
 **Purpose:** Develop deep understanding of mutation types and assessment skills
-**Target Audience:** Students who've completed onboarding and are ready for challenges
-**Typical Unlock Time:** 20-60 minutes
-**Educator Value:** Indicates genuine understanding of mutation concepts
+**Target Audience:** Students who've completed onboarding and are ready for
+challenges **Typical Unlock Time:** 20-60 minutes **Educator Value:** Indicates
+genuine understanding of mutation concepts
 
 **Achievements:**
 
 - 🎯 **Mutation Expert** - Correctly identify 10 mutations
 - 🏆 **Perfect Score** - Achieve 100% on an assessment
 - 🔬 **Pattern Master** - Correctly identify all 6 mutation types
-- ⚡ **Speed Runner** - Complete 5 challenges quickly (via consecutive correct streak)
+- ⚡ **Speed Runner** - Complete 5 challenges quickly (via consecutive correct
+  streak)
 
-**Teaching Tip:** Mastery achievements align with learning objectives. Students who unlock "Pattern Master" have demonstrated comprehensive understanding of all mutation types.
+**Teaching Tip:** Mastery achievements align with learning objectives. Students
+who unlock "Pattern Master" have demonstrated comprehensive understanding of all
+mutation types.
 
 ---
 
 ### 🔍 EXPLORATION (Discovery)
 
-**Purpose:** Encourage students to try different features and creative applications
-**Target Audience:** Students ready to experiment beyond core curriculum
-**Typical Unlock Time:** Variable (30-120 minutes total)
-**Educator Value:** Shows breadth of engagement with platform
+**Purpose:** Encourage students to try different features and creative
+applications **Target Audience:** Students ready to experiment beyond core
+curriculum **Typical Unlock Time:** Variable (30-120 minutes total) **Educator
+Value:** Shows breadth of engagement with platform
 
 **Achievements:**
 
@@ -149,8 +158,8 @@ The **CodonCanvas Gamification System** rewards students for learning and practi
 
 **Purpose:** Challenge advanced students and recognize exceptional mastery
 **Target Audience:** High-performing students seeking additional challenges
-**Typical Unlock Time:** 60-180 minutes total
-**Educator Value:** Identifies top performers for advanced activities
+**Typical Unlock Time:** 60-180 minutes total **Educator Value:** Identifies top
+performers for advanced activities
 
 **Achievements:**
 
@@ -195,10 +204,12 @@ The **CodonCanvas Gamification System** rewards students for learning and practi
 
 ### First Launch Experience
 
-1. **Clean Slate** - Students see all achievements locked (gray icons, "🔒 LOCKED" badges)
+1. **Clean Slate** - Students see all achievements locked (gray icons, "🔒
+   LOCKED" badges)
 2. **Progress: 0%** - Top progress bar shows 0/16 achievements unlocked
 3. **Statistics Dashboard** - Shows zeros for all activity counters
-4. **Visual Hierarchy** - Achievements organized by difficulty (Basics → Mastery → Exploration → Perfection)
+4. **Visual Hierarchy** - Achievements organized by difficulty (Basics → Mastery
+   → Exploration → Perfection)
 
 ### First Achievement Unlock
 
@@ -210,7 +221,8 @@ The **CodonCanvas Gamification System** rewards students for learning and practi
    🧬 First Genome
    Create and execute your first genome
    ```
-4. **Badge Updates** - Icon becomes full-color, "🔒 LOCKED" removed, unlock date shown
+4. **Badge Updates** - Icon becomes full-color, "🔒 LOCKED" removed, unlock date
+   shown
 5. **Progress Bar Animates** - Smooth animation to 1/16 (6%)
 6. **Stats Update** - "Genomes Run" counter increments to 1
 
@@ -273,9 +285,11 @@ Session 2 (Wednesday):
 
 **Tracking Points:**
 
-- **Genome Creation** - Tracked when editor content becomes valid genome (ATG...TAA)
+- **Genome Creation** - Tracked when editor content becomes valid genome
+  (ATG...TAA)
 - **Genome Execution** - Tracked when "Run" button executes successfully
-- **Mutation Application** - Tracked when mutation tools used (point/indel/frameshift buttons)
+- **Mutation Application** - Tracked when mutation tools used
+  (point/indel/frameshift buttons)
 - **Opcode Usage** - Tracked during execution (CIRCLE, RECT, COLOR, etc.)
 
 **Example Integration (Conceptual):**
@@ -336,7 +350,8 @@ achievementUI.handleUnlocks(newUnlocks);
 **Tracking Points:**
 
 - **Step-Through Usage** - Tracked when timeline step controls used
-- **Accumulated for Future Achievements** - Currently tracked but no achievement uses it (reserved for v2.0)
+- **Accumulated for Future Achievements** - Currently tracked but no achievement
+  uses it (reserved for v2.0)
 
 ---
 
@@ -579,10 +594,8 @@ Grading:
 ```markdown
 # Lesson [Number]: [Topic] - Target Achievement: [Icon] [Name]
 
-**Duration:** [X] minutes
-**Target Achievement:** [Icon] [Name] ([Category])
-**Prerequisites:** [List prerequisite achievements]
-**Learning Objectives:**
+**Duration:** [X] minutes **Target Achievement:** [Icon] [Name] ([Category])
+**Prerequisites:** [List prerequisite achievements] **Learning Objectives:**
 
 - [Objective 1]
 - [Objective 2]
@@ -637,10 +650,8 @@ Grading:
 ```markdown
 # Lesson 1: Introduction to CodonCanvas - Target: 🧬 First Genome
 
-**Duration:** 50 minutes
-**Target Achievement:** 🧬 First Genome (Basics)
-**Prerequisites:** None (first lesson)
-**Learning Objectives:**
+**Duration:** 50 minutes **Target Achievement:** 🧬 First Genome (Basics)
+**Prerequisites:** None (first lesson) **Learning Objectives:**
 
 - Understand what a genome is in CodonCanvas
 - Execute a simple program
@@ -726,8 +737,8 @@ Grading:
 Class Average: 10.7/16 (67%)
 ```
 
-**Update Frequency:** Weekly
-**Privacy Note:** Use first names only or student IDs
+**Update Frequency:** Weekly **Privacy Note:** Use first names only or student
+IDs
 
 **Benefits:**
 
@@ -739,8 +750,10 @@ Class Average: 10.7/16 (67%)
 
 **In-Class Rituals:**
 
-- 🎉 **First Unlock of Class:** Applause when first student unlocks new achievement
-- 🏆 **Achievement Shoutouts:** Last 5 min of class, students share recent unlocks
+- 🎉 **First Unlock of Class:** Applause when first student unlocks new
+  achievement
+- 🏆 **Achievement Shoutouts:** Last 5 min of class, students share recent
+  unlocks
 - 🌟 **Legend Ceremony:** Special recognition when first student unlocks Legend
 
 **Digital Celebrations:**
@@ -1019,7 +1032,9 @@ showUnlockNotification(achievement: Achievement): void
 - ✅ No unauthorized access to student data
 - ✅ Student controls their own data
 
-**Note:** If you export student data for grading, YOU become responsible for GDPR/FERPA compliance of exported files. Store securely and delete after semester ends.
+**Note:** If you export student data for grading, YOU become responsible for
+GDPR/FERPA compliance of exported files. Store securely and delete after
+semester ends.
 
 ### Data Export & Deletion
 
@@ -1157,61 +1172,66 @@ getTierName(): string {
 
 ### General Questions
 
-**Q: Do students need accounts to use achievements?**
-A: No! Achievements work without login. Progress saved locally in browser.
+**Q: Do students need accounts to use achievements?** A: No! Achievements work
+without login. Progress saved locally in browser.
 
-**Q: What if students clear their browser cache?**
-A: Achievement progress will be lost. Recommend students export data before clearing cache.
+**Q: What if students clear their browser cache?** A: Achievement progress will
+be lost. Recommend students export data before clearing cache.
 
-**Q: Can students cheat the achievement system?**
-A: Technically yes (browser dev tools can modify localStorage). But achievements are for motivation, not grades. If using for grades, combine with other assessments.
+**Q: Can students cheat the achievement system?** A: Technically yes (browser
+dev tools can modify localStorage). But achievements are for motivation, not
+grades. If using for grades, combine with other assessments.
 
-**Q: Can I see student achievement data?**
-A: Not automatically. Students must manually export and share their data with you.
+**Q: Can I see student achievement data?** A: Not automatically. Students must
+manually export and share their data with you.
 
-**Q: Do achievements work on mobile?**
-A: Yes! UI is responsive. Notifications may be smaller on mobile.
+**Q: Do achievements work on mobile?** A: Yes! UI is responsive. Notifications
+may be smaller on mobile.
 
-**Q: Can I disable specific achievements?**
-A: Yes, but requires code modification. Comment out achievement in `defineAchievements()`.
+**Q: Can I disable specific achievements?** A: Yes, but requires code
+modification. Comment out achievement in `defineAchievements()`.
 
 ### Technical Questions
 
-**Q: What browsers are supported?**
-A: All modern browsers with localStorage support (Chrome, Firefox, Safari, Edge).
+**Q: What browsers are supported?** A: All modern browsers with localStorage
+support (Chrome, Firefox, Safari, Edge).
 
-**Q: How much storage do achievements use?**
-A: ~10-50 KB depending on progress. Well under localStorage limits.
+**Q: How much storage do achievements use?** A: ~10-50 KB depending on progress.
+Well under localStorage limits.
 
-**Q: Can achievements be synced across devices?**
-A: Not built-in. Students would need to export from device 1, import to device 2 (manual process).
+**Q: Can achievements be synced across devices?** A: Not built-in. Students
+would need to export from device 1, import to device 2 (manual process).
 
-**Q: Can I integrate with my LMS (Canvas, Blackboard, Moodle)?**
-A: Not automatically, but you can export JSON and import to LMS gradebook.
+**Q: Can I integrate with my LMS (Canvas, Blackboard, Moodle)?** A: Not
+automatically, but you can export JSON and import to LMS gradebook.
 
-**Q: How do I backup student achievement data?**
-A: Have students export JSON at regular intervals (weekly recommended).
+**Q: How do I backup student achievement data?** A: Have students export JSON at
+regular intervals (weekly recommended).
 
 ### Pedagogical Questions
 
-**Q: Are achievements aligned with learning objectives?**
-A: Yes! Mastery achievements directly map to mutation identification skills. See "Learning Objectives Alignment" in Appendix.
+**Q: Are achievements aligned with learning objectives?** A: Yes! Mastery
+achievements directly map to mutation identification skills. See "Learning
+Objectives Alignment" in Appendix.
 
-**Q: What if students only pursue easy achievements?**
-A: Category system encourages progression (Basics → Mastery → Exploration → Perfection). Legend achievement requires ALL unlocks.
+**Q: What if students only pursue easy achievements?** A: Category system
+encourages progression (Basics → Mastery → Exploration → Perfection). Legend
+achievement requires ALL unlocks.
 
-**Q: How do I prevent achievements from becoming the ONLY motivation?**
-A: Balance intrinsic and extrinsic motivation:
+**Q: How do I prevent achievements from becoming the ONLY motivation?** A:
+Balance intrinsic and extrinsic motivation:
 
 - Connect achievements to learning goals (not just points)
 - Use reflective questions ("What did you learn unlocking this?")
 - Emphasize understanding over unlocking
 
-**Q: What if high-performing students don't care about achievements?**
-A: Achievements are optional motivation. Don't force it. Some students prefer grades, others prefer achievements, many prefer both.
+**Q: What if high-performing students don't care about achievements?** A:
+Achievements are optional motivation. Don't force it. Some students prefer
+grades, others prefer achievements, many prefer both.
 
-**Q: Can I use achievements for formative assessment?**
-A: Yes! Achievement unlock rates = understanding rates. Example: 60% of class has "Pattern Master" → 60% understand all 6 mutation types.
+**Q: Can I use achievements for formative assessment?** A: Yes! Achievement
+unlock rates = understanding rates. Example: 60% of class has "Pattern Master" →
+60% understand all 6 mutation types.
 
 ---
 
@@ -1253,11 +1273,18 @@ A: Yes! Achievement unlock rates = understanding rates. Example: 60% of class ha
 
 ### C. Research Citations
 
-- Hamari, J., Koivisto, J., & Sarsa, H. (2014). Does gamification work? A literature review of empirical studies on gamification. _47th Hawaii International Conference on System Sciences_, 3025-3034.
+- Hamari, J., Koivisto, J., & Sarsa, H. (2014). Does gamification work? A
+  literature review of empirical studies on gamification. _47th Hawaii
+  International Conference on System Sciences_, 3025-3034.
 
-- Dicheva, D., Dichev, C., Agre, G., & Angelova, G. (2015). Gamification in education: A systematic mapping study. _Educational Technology & Society_, 18(3), 75-88.
+- Dicheva, D., Dichev, C., Agre, G., & Angelova, G. (2015). Gamification in
+  education: A systematic mapping study. _Educational Technology & Society_,
+  18(3), 75-88.
 
-- Sailer, M., Hense, J. U., Mayr, S. K., & Mandl, H. (2017). How gamification motivates: An experimental study of the effects of specific game design elements on psychological need satisfaction. _Computers in Human Behavior_, 69, 371-380.
+- Sailer, M., Hense, J. U., Mayr, S. K., & Mandl, H. (2017). How gamification
+  motivates: An experimental study of the effects of specific game design
+  elements on psychological need satisfaction. _Computers in Human Behavior_,
+  69, 371-380.
 
 ### D. Sample Lesson Plans
 
@@ -1299,8 +1326,7 @@ A: Yes! Achievement unlock rates = understanding rates. Example: 60% of class ha
 
 ---
 
-**Document Version:** 1.0.0
-**Last Updated:** October 2025
-**Feedback:** Please submit via GitHub issues or email
+**Document Version:** 1.0.0 **Last Updated:** October 2025 **Feedback:** Please
+submit via GitHub issues or email
 
 **Happy Gamifying!** 🎮🧬🎉
