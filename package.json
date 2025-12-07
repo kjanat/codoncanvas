@@ -11,7 +11,7 @@
     "build": "bun typecheck && vite build",
     "cli": "bun --bun cli.ts",
     "dev": "bun --bun run vite",
-    "diff": "bun --bun .opencode/command/review.ts",
+    "diff": ".opencode/command/review.sh",
     "e2e": "playwright test",
     "e2e:debug": "playwright test --debug",
     "e2e:headed": "playwright test --headed",
