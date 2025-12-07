@@ -145,6 +145,42 @@ export function restoreCanvasContext(): void {
   }
 }
 
+/** Context mock that tracks all method calls for assertions */
+export interface TrackingContext2DMock extends CanvasRenderingContext2D {
+  _calls: { method: string; args: unknown[] }[];
+  _getCallCount: (method: string) => number;
+}
+
+/**
+ * Creates a 2D context mock that tracks all method calls.
+ * Useful for verifying specific canvas operations were/weren't called.
+ */
+export function createTrackingContext2DMock(): TrackingContext2DMock {
+  const calls: { method: string; args: unknown[] }[] = [];
+  const baseMock = createContext2DMock();
+
+  const tracked = new Proxy(baseMock, {
+    get(target, prop) {
+      if (prop === "_calls") return calls;
+      if (prop === "_getCallCount") {
+        return (method: string) =>
+          calls.filter((c) => c.method === method).length;
+      }
+
+      const value = target[prop as keyof typeof target];
+      if (typeof value === "function") {
+        return (...args: unknown[]) => {
+          calls.push({ method: String(prop), args });
+          return (value as (...args: unknown[]) => unknown).apply(target, args);
+        };
+      }
+      return value;
+    },
+  });
+
+  return tracked as TrackingContext2DMock;
+}
+
 /**
  * Create a mock Renderer for use in hook/component tests
  * Matches the Renderer interface from src/core/renderer.ts

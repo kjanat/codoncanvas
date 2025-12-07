@@ -7,6 +7,7 @@ import { renderHook } from "@testing-library/react";
 import { useRenderGenome } from "@/hooks/useRenderGenome";
 import { ThemeWrapper } from "@/tests/test-utils";
 import {
+  createTrackingContext2DMock,
   mockCanvasContext,
   restoreCanvasContext,
 } from "@/tests/test-utils/canvas-mock";
@@ -217,23 +218,73 @@ describe("useRenderGenome", () => {
       expect(renderResult.success).toBe(false);
       expect(renderResult.error).toBe("Render failed");
     });
+  });
 
-    test("renderWithResult with skipClear option", () => {
-      const { result } = renderHook(() => useRenderGenome(), {
-        wrapper: ThemeWrapper,
-      });
+  describe("skipClear behavior", () => {
+    test("renderWithResult with skipClear skips canvas clear", () => {
+      const trackingCtx = createTrackingContext2DMock();
+      const originalGetContext = HTMLCanvasElement.prototype.getContext;
+      HTMLCanvasElement.prototype.getContext = ((contextId: string) => {
+        return contextId === "2d" ? trackingCtx : null;
+      }) as typeof HTMLCanvasElement.prototype.getContext;
 
-      const canvas = document.createElement("canvas");
-      canvas.width = 200;
-      canvas.height = 200;
+      try {
+        const { result } = renderHook(() => useRenderGenome(), {
+          wrapper: ThemeWrapper,
+        });
 
-      // Should not throw and should work with skipClear
-      const renderResult = result.current.renderWithResult("ATG TAA", canvas, {
-        skipClear: true,
-      });
+        const canvas = document.createElement("canvas");
+        canvas.width = 200;
+        canvas.height = 200;
 
-      // Even with skipClear, render may fail due to invalid genome, but it shouldn't crash
-      expect(typeof renderResult.success).toBe("boolean");
+        result.current.renderWithResult("ATG TAA", canvas, { skipClear: true });
+
+        // clear() calls fillRect(0, 0, width, height) - verify NOT called
+        const clearCalls = trackingCtx._calls.filter(
+          (c) =>
+            c.method === "fillRect" &&
+            c.args[0] === 0 &&
+            c.args[1] === 0 &&
+            c.args[2] === 200 &&
+            c.args[3] === 200,
+        );
+        expect(clearCalls.length).toBe(0);
+      } finally {
+        HTMLCanvasElement.prototype.getContext = originalGetContext;
+      }
+    });
+
+    test("renderWithResult without skipClear clears canvas first", () => {
+      const trackingCtx = createTrackingContext2DMock();
+      const originalGetContext = HTMLCanvasElement.prototype.getContext;
+      HTMLCanvasElement.prototype.getContext = ((contextId: string) => {
+        return contextId === "2d" ? trackingCtx : null;
+      }) as typeof HTMLCanvasElement.prototype.getContext;
+
+      try {
+        const { result } = renderHook(() => useRenderGenome(), {
+          wrapper: ThemeWrapper,
+        });
+
+        const canvas = document.createElement("canvas");
+        canvas.width = 200;
+        canvas.height = 200;
+
+        result.current.renderWithResult("ATG TAA", canvas); // no skipClear
+
+        // Verify fillRect was called for clearing
+        const clearCalls = trackingCtx._calls.filter(
+          (c) =>
+            c.method === "fillRect" &&
+            c.args[0] === 0 &&
+            c.args[1] === 0 &&
+            c.args[2] === 200 &&
+            c.args[3] === 200,
+        );
+        expect(clearCalls.length).toBe(1);
+      } finally {
+        HTMLCanvasElement.prototype.getContext = originalGetContext;
+      }
     });
   });
 });
