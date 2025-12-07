@@ -16,7 +16,13 @@ export default defineConfig({
   /* Use 4 parallel workers in CI for better performance */
   workers: buildConfig.isCI ? 4 : undefined,
   /* Reporter to use. See https://playwright.dev/docs/test-reporters */
-  reporter: [["html"], ["list"]],
+  reporter: buildConfig.isCI
+    ? [
+        ["github"], // PR annotations on failures
+        ["html"], // Detailed interactive report
+        ["junit", { outputFile: "test-results/junit.xml" }], // Codecov test analytics
+      ]
+    : [["list"], ["html"]],
   /* Global timeout for each test */
   timeout: 30000,
   /* Expect timeout */

@@ -12,10 +12,11 @@ concurrency:
 
 jobs:
   test:
-    timeout-minutes: 60
+    timeout-minutes: 30
     runs-on: ubuntu-latest
     permissions:
       contents: read
+      id-token: write
     steps:
       - uses: actions/checkout@v6
 
@@ -27,6 +28,16 @@ jobs:
 
       - name: Run Playwright tests
         run: bunx playwright test
+
+      - name: Upload test results to Codecov
+        if: ${{ !cancelled() }}
+        uses: codecov/test-results-action@v1
+        with:
+          name: playwright
+          flags: e2e
+          files: ./test-results/junit.xml
+          fail_ci_if_error: false
+          use_oidc: true
 
       - uses: actions/upload-artifact@v4
         if: ${{ !cancelled() }}
