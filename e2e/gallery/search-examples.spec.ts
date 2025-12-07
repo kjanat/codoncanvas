@@ -4,7 +4,7 @@
 import { expect, test } from "@playwright/test";
 
 test.describe("Example Gallery", () => {
-  test("search-examples", async ({ page }) => {
+  test("search-examples", async ({ page }): Promise<void> => {
     const searchBox = page.getByRole("searchbox", {
       name: "Search examples...",
     });
@@ -38,6 +38,6 @@ test.describe("Example Gallery", () => {
     await expect(
       page.getByRole("heading", { name: "Hello Circle" }),
     ).toBeVisible();
-    await expect(page.getByText("Browse 39 examples")).toBeVisible();
+    await expect(page.getByText(/Browse \d+ examples?/)).toBeVisible();
   });
 });

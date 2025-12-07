@@ -1,10 +1,11 @@
+import type { ReactElement } from "react";
 import type { TutorialLesson } from "@/data/tutorial-lessons";
 
 interface LessonHeaderProps {
   lesson: TutorialLesson;
 }
 
-export function LessonHeader({ lesson }: LessonHeaderProps) {
+export function LessonHeader({ lesson }: LessonHeaderProps): ReactElement {
   return (
     <div className="mb-4 border-b border-border pb-4 md:mb-6">
       <div className="mb-1 text-xs text-text-muted md:text-sm">

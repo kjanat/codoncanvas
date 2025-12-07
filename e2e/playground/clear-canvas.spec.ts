@@ -4,7 +4,7 @@
 import { expect, test } from "@playwright/test";
 
 test.describe("Core Playground", () => {
-  test("clear-canvas", async ({ page }) => {
+  test("clear-canvas", async ({ page }): Promise<void> => {
     // 1. Navigate to playground
     await page.goto("/");
 

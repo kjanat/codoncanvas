@@ -4,7 +4,7 @@
 import { expect, test } from "@playwright/test";
 
 test.describe("Core Playground", () => {
-  test("run-genome-renders-canvas", async ({ page }) => {
+  test("run-genome-renders-canvas", async ({ page }): Promise<void> => {
     const consoleErrors: string[] = [];
 
     // Listen for console errors

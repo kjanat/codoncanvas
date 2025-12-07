@@ -4,7 +4,7 @@
 import { expect, test } from "@playwright/test";
 
 test.describe("Timeline Capture", () => {
-  test("run-and-capture-timeline", async ({ page }) => {
+  test("run-and-capture-timeline", async ({ page }): Promise<void> => {
     // 1. Navigate to /demos/timeline
     await page.goto("/demos/timeline");
 
@@ -26,7 +26,7 @@ test.describe("Timeline Capture", () => {
     await expect(vmStatePanel.first()).toBeVisible();
   });
 
-  test("timeline-shows-step-count", async ({ page }) => {
+  test("timeline-shows-step-count", async ({ page }): Promise<void> => {
     await page.goto("/demos/timeline");
 
     // Capture timeline

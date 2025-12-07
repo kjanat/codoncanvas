@@ -5,14 +5,14 @@ import { expect, test } from "@playwright/test";
  * These serve as basic smoke tests to ensure the application works.
  */
 
-test("has title", async ({ page }) => {
+test("has title", async ({ page }): Promise<void> => {
   await page.goto("/");
 
   // Expect a title "to contain" a substring.
   await expect(page).toHaveTitle(/CodonCanvas/);
 });
 
-test("playground has essential elements", async ({ page }) => {
+test("playground has essential elements", async ({ page }): Promise<void> => {
   await page.goto("/");
 
   // Verify editor is present

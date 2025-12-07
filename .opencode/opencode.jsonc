@@ -74,13 +74,6 @@
       "extensions": ["sh"]
     }
   },
-  /*"agent": {
-    "playwright": {
-      "tools": {
-        
-      }
-    }
-  },*/
   "mcp": {
     "playwright-test": {
       "type": "local",

@@ -4,7 +4,9 @@
 import { expect, test } from "@playwright/test";
 
 test.describe("Core Playground", () => {
-  test("loads-application-with-default-state", async ({ page }) => {
+  test("loads-application-with-default-state", async ({
+    page,
+  }): Promise<void> => {
     // 1. Navigate to homepage
     await page.goto("/");
 

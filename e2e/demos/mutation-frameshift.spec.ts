@@ -4,7 +4,7 @@
 import { expect, test } from "@playwright/test";
 
 test.describe("Mutation Lab - Frameshift Mutation", () => {
-  test("apply-frameshift-mutation", async ({ page }) => {
+  test("apply-frameshift-mutation", async ({ page }): Promise<void> => {
     // 1. Navigate to /demos/mutation
     await page.goto("/demos/mutation");
 
@@ -23,7 +23,7 @@ test.describe("Mutation Lab - Frameshift Mutation", () => {
     await expect(canvases.first()).toBeVisible();
   });
 
-  test("custom-genome-mutation", async ({ page }) => {
+  test("custom-genome-mutation", async ({ page }): Promise<void> => {
     await page.goto("/demos/mutation");
 
     // Enter custom genome

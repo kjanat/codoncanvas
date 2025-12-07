@@ -4,7 +4,7 @@
 import { expect, test } from "@playwright/test";
 
 test.describe("File Operations", () => {
-  test("load-example-from-dropdown", async ({ page }) => {
+  test("load-example-from-dropdown", async ({ page }): Promise<void> => {
     const exampleSelector = page.getByLabel("Select example genome");
     const genomeEditor = page.getByRole("textbox", { name: "Genome editor" });
 

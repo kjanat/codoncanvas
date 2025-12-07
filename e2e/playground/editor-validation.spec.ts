@@ -4,7 +4,7 @@
 import { expect, test } from "@playwright/test";
 
 test.describe("Core Playground", () => {
-  test("editor-typing-and-validation", async ({ page }) => {
+  test("editor-typing-and-validation", async ({ page }): Promise<void> => {
     const genomeEditor = page.getByRole("textbox", { name: "Genome editor" });
 
     // 1. Navigate to playground

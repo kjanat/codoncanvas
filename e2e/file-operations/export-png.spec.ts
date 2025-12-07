@@ -4,7 +4,7 @@
 import { expect, test } from "@playwright/test";
 
 test.describe("File Operations", () => {
-  test("export-canvas-as-png", async ({ page }) => {
+  test("export-canvas-as-png", async ({ page }): Promise<void> => {
     // 1. Navigate to playground
     await page.goto("/");
 
@@ -23,5 +23,9 @@ test.describe("File Operations", () => {
 
     // 4. Verify PNG file is downloaded
     expect(download.suggestedFilename()).toMatch(/\.png$/);
+
+    // Verify the file actually exists and has content
+    const path = await download.path();
+    expect(path).toBeTruthy();
   });
 });

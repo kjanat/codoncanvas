@@ -6,7 +6,7 @@ import { expect, test } from "@playwright/test";
  * and ensures the application loads correctly.
  */
 test.describe("CodonCanvas Seed", () => {
-  test("application loads successfully", async ({ page }) => {
+  test("application loads successfully", async ({ page }): Promise<void> => {
     await page.goto("/");
     await expect(page).toHaveTitle(/CodonCanvas/);
     await expect(

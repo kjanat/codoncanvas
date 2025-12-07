@@ -4,7 +4,7 @@
 import { expect, test } from "@playwright/test";
 
 test.describe("Tutorial Lesson Validation", () => {
-  test("lesson-code-validation", async ({ page }) => {
+  test("lesson-code-validation", async ({ page }): Promise<void> => {
     // 1. Navigate to /tutorial on first lesson
     await page.goto("/tutorial");
 
@@ -27,7 +27,7 @@ test.describe("Tutorial Lesson Validation", () => {
     await expect(feedback.first()).toBeVisible({ timeout: 5000 });
   });
 
-  test("preview-updates-on-code-change", async ({ page }) => {
+  test("preview-updates-on-code-change", async ({ page }): Promise<void> => {
     await page.goto("/tutorial");
 
     // Wait for lesson to load

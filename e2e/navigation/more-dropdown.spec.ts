@@ -4,7 +4,7 @@
 import { expect, test } from "@playwright/test";
 
 test.describe("Navigation - More Dropdown", () => {
-  test("more-dropdown-menu", async ({ page }) => {
+  test("more-dropdown-menu", async ({ page }): Promise<void> => {
     // 1. Navigate to homepage
     await page.goto("/");
 
@@ -21,7 +21,7 @@ test.describe("Navigation - More Dropdown", () => {
     await expect(page.getByRole("link", { name: /timeline/i })).toBeVisible();
   });
 
-  test("demos-page-links-to-all-demos", async ({ page }) => {
+  test("demos-page-links-to-all-demos", async ({ page }): Promise<void> => {
     await page.goto("/demos");
 
     // Verify all demo links are present

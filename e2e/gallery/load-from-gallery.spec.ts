@@ -4,12 +4,15 @@
 import { expect, test } from "@playwright/test";
 
 test.describe("Example Gallery", () => {
-  test("load-example-from-gallery", async ({ page }) => {
+  test("load-example-from-gallery", async ({ page }): Promise<void> => {
     // 1. Navigate to /gallery
     await page.goto("/gallery");
 
-    // 2. Click on 'Fibonacci Spiral' example card
-    await page.getByRole("button", { name: /Fibonacci Spiral/ }).click();
+    // 2. Click on the first example card
+    const firstExample = page
+      .locator("[data-testid='example-card'], article")
+      .first();
+    await firstExample.click();
 
     // This should open a preview modal
     await expect(

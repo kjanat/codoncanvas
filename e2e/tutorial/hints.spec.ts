@@ -4,7 +4,7 @@
 import { expect, test } from "@playwright/test";
 
 test.describe("Tutorial Hint System", () => {
-  test("hint-system", async ({ page }) => {
+  test("hint-system", async ({ page }): Promise<void> => {
     // 1. Navigate to /tutorial
     await page.goto("/tutorial");
 
@@ -35,7 +35,7 @@ test.describe("Tutorial Hint System", () => {
     }
   });
 
-  test("hints-persist-when-returning", async ({ page }) => {
+  test("hints-persist-when-returning", async ({ page }): Promise<void> => {
     await page.goto("/tutorial");
 
     // Reveal a hint

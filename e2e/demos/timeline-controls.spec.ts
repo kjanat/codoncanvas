@@ -4,7 +4,7 @@
 import { expect, test } from "@playwright/test";
 
 test.describe("Timeline Navigation Controls", () => {
-  test.beforeEach(async ({ page }) => {
+  test.beforeEach(async ({ page }): Promise<void> => {
     await page.goto("/demos/timeline");
 
     // Capture timeline first
@@ -19,7 +19,7 @@ test.describe("Timeline Navigation Controls", () => {
     });
   });
 
-  test("timeline-navigation-controls", async ({ page }) => {
+  test("timeline-navigation-controls", async ({ page }): Promise<void> => {
     // 1. Click 'Next step' button multiple times
     const nextButton = page.getByRole("button", { name: /next|forward|>/i });
     if (await nextButton.isVisible()) {
@@ -47,7 +47,7 @@ test.describe("Timeline Navigation Controls", () => {
     }
   });
 
-  test("timeline-slider-navigation", async ({ page }) => {
+  test("timeline-slider-navigation", async ({ page }): Promise<void> => {
     // Use slider to jump to specific step
     const slider = page.locator("input[type='range']").first();
     if (await slider.isVisible()) {
@@ -60,7 +60,7 @@ test.describe("Timeline Navigation Controls", () => {
     }
   });
 
-  test("timeline-play-button", async ({ page }) => {
+  test("timeline-play-button", async ({ page }): Promise<void> => {
     // Click 'Play' to auto-advance
     const playButton = page.getByRole("button", { name: /play/i });
     if (await playButton.isVisible()) {

@@ -4,7 +4,7 @@
 import { expect, test } from "@playwright/test";
 
 test.describe("Timeline Playback Speed", () => {
-  test("timeline-playback-speed", async ({ page }) => {
+  test("timeline-playback-speed", async ({ page }): Promise<void> => {
     // 1. Navigate and capture timeline
     await page.goto("/demos/timeline");
 

@@ -4,7 +4,7 @@
 import { expect, test } from "@playwright/test";
 
 test.describe("Teacher Dashboard", () => {
-  test("teacher-dashboard-empty-state", async ({ page }) => {
+  test("teacher-dashboard-empty-state", async ({ page }): Promise<void> => {
     // 1. Navigate to /dashboards/teacher
     await page.goto("/dashboards/teacher");
 
@@ -26,7 +26,7 @@ test.describe("Teacher Dashboard", () => {
     expect(hasEmptyState || hasImport || hasDemo).toBeTruthy();
   });
 
-  test("teacher-dashboard-load-demo", async ({ page }) => {
+  test("teacher-dashboard-load-demo", async ({ page }): Promise<void> => {
     await page.goto("/dashboards/teacher");
 
     // Look for 'Load Demo Data' button

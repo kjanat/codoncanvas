@@ -4,7 +4,7 @@
 import { expect, test } from "@playwright/test";
 
 test.describe("Error Handling", () => {
-  test("invalid-genome-syntax", async ({ page }) => {
+  test("invalid-genome-syntax", async ({ page }): Promise<void> => {
     const genomeEditor = page.getByRole("textbox", { name: "Genome editor" });
 
     // 1. Navigate to playground

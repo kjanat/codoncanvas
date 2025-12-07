@@ -1,5 +1,10 @@
 /**
  * Action icons - UI action and toolbar icons
+ *
+ * Default sizes:
+ * - Status icons (Close, Check, Error): h-4 w-4 (16px) - inline feedback
+ * - Warning icon: h-8 w-8 (32px) - prominent alerts
+ * - Toolbar icons (Play, Save, etc.): h-5 w-5 (20px) - touch targets
  */
 
 import type { IconProps } from "./types";

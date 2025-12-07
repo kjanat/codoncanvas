@@ -4,7 +4,7 @@
 import { expect, test } from "@playwright/test";
 
 test.describe("Timeline Demo", () => {
-  test("timeline-demo-loads", async ({ page }) => {
+  test("timeline-demo-loads", async ({ page }): Promise<void> => {
     // 1. Navigate to /demos/timeline
     await page.goto("/demos/timeline");
 

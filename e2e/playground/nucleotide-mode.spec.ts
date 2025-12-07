@@ -4,7 +4,7 @@
 import { expect, test } from "@playwright/test";
 
 test.describe("Core Playground", () => {
-  test("nucleotide-mode-toggle", async ({ page }) => {
+  test("nucleotide-mode-toggle", async ({ page }): Promise<void> => {
     const toggleButton = page.getByRole("button", {
       name: "Toggle RNA display mode",
     });

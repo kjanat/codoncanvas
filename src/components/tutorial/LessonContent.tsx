@@ -36,9 +36,11 @@ export function LessonContent({
   const [hintsRevealed, setHintsRevealed] = useState(initialHintsRevealed);
 
   const handleRevealHint = (): void => {
-    const newCount = hintsRevealed + 1;
-    setHintsRevealed(newCount);
-    onHintUsed(newCount);
+    setHintsRevealed((prev) => {
+      const newCount = prev + 1;
+      onHintUsed(newCount);
+      return newCount;
+    });
   };
 
   const handleRun = (): void => {

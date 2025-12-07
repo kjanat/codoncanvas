@@ -4,7 +4,7 @@
 import { expect, test } from "@playwright/test";
 
 test.describe("Mutation Lab", () => {
-  test("mutation-lab-page-loads", async ({ page }) => {
+  test("mutation-lab-page-loads", async ({ page }): Promise<void> => {
     // 1. Navigate to /demos/mutation
     await page.goto("/demos/mutation");
 

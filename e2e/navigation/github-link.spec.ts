@@ -4,7 +4,7 @@
 import { expect, test } from "@playwright/test";
 
 test.describe("Navigation - GitHub Link", () => {
-  test("github-link", async ({ page }) => {
+  test("github-link", async ({ page }): Promise<void> => {
     // 1. Navigate to homepage
     await page.goto("/");
 
@@ -12,10 +12,10 @@ test.describe("Navigation - GitHub Link", () => {
     const githubLink = page.getByRole("link", { name: /github/i });
     await expect(githubLink).toBeVisible();
 
-    // 3. Verify link points to correct repository
+    // 3. Verify link points to repository
     await expect(githubLink).toHaveAttribute(
       "href",
-      /github\.com\/kjanat\/codoncanvas/,
+      "https://github.com/kjanat/codoncanvas",
     );
 
     // 4. Verify link opens in new tab

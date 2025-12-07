@@ -4,7 +4,7 @@
 import { expect, test } from "@playwright/test";
 
 test.describe("Responsive Design", () => {
-  test("mobile-viewport-layout", async ({ page }) => {
+  test("mobile-viewport-layout", async ({ page }): Promise<void> => {
     // 1. Set viewport to mobile size (375x667 - iPhone SE)
     await page.setViewportSize({ width: 375, height: 667 });
 

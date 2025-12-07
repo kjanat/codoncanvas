@@ -4,7 +4,7 @@
 import { expect, test } from "@playwright/test";
 
 test.describe("Example Gallery", () => {
-  test("gallery-page-loads", async ({ page }) => {
+  test("gallery-page-loads", async ({ page }): Promise<void> => {
     // 1. Navigate to /gallery
     await page.goto("/gallery");
 

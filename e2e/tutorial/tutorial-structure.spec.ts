@@ -4,7 +4,7 @@
 import { expect, test } from "@playwright/test";
 
 test.describe("Tutorial System", () => {
-  test("tutorial-page-structure", async ({ page }) => {
+  test("tutorial-page-structure", async ({ page }): Promise<void> => {
     // 1. Navigate to /tutorial
     await page.goto("/tutorial");
 

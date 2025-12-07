@@ -8,7 +8,7 @@
 type UserName = string | undefined;
 
 /** Tagline type - can be a string or object with short/long variants */
-type Tagline =
+export type Tagline =
   | string
   | {
       /** Short tagline for mobile */

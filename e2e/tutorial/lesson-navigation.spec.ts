@@ -4,7 +4,7 @@
 import { expect, test } from "@playwright/test";
 
 test.describe("Tutorial Navigation", () => {
-  test("navigate-between-lessons", async ({ page }) => {
+  test("navigate-between-lessons", async ({ page }): Promise<void> => {
     // 1. Navigate to /tutorial
     await page.goto("/tutorial");
 
@@ -31,7 +31,7 @@ test.describe("Tutorial Navigation", () => {
     await expect(page.getByText("Your Code")).toBeVisible();
   });
 
-  test("mobile-sidebar-toggle", async ({ page }) => {
+  test("mobile-sidebar-toggle", async ({ page }): Promise<void> => {
     // Set mobile viewport
     await page.setViewportSize({ width: 375, height: 667 });
 

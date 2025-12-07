@@ -4,7 +4,7 @@
 import { expect, test } from "@playwright/test";
 
 test.describe("Learning Paths Dashboard", () => {
-  test("learning-paths-dashboard", async ({ page }) => {
+  test("learning-paths-dashboard", async ({ page }): Promise<void> => {
     // 1. Navigate to /dashboards/learning
     await page.goto("/dashboards/learning");
 

@@ -4,7 +4,7 @@
 import { expect, test } from "@playwright/test";
 
 test.describe("Accessibility - ARIA Labels", () => {
-  test("aria-labels-present", async ({ page }) => {
+  test("aria-labels-present", async ({ page }): Promise<void> => {
     // 1. Navigate to playground
     await page.goto("/");
 
@@ -22,7 +22,7 @@ test.describe("Accessibility - ARIA Labels", () => {
     await expect(canvas).toBeVisible();
   });
 
-  test("interactive-elements-are-labeled", async ({ page }) => {
+  test("interactive-elements-are-labeled", async ({ page }): Promise<void> => {
     await page.goto("/");
 
     // All buttons should have accessible names

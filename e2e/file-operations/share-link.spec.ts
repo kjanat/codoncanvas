@@ -24,16 +24,11 @@ test.describe("File Operations", () => {
       await page.getByRole("button", { name: "Copy shareable link" }).click();
     }
 
-    // 4. Verify shareable link is generated/copied
-    // The button should still be visible after clicking
-    if (isMobile) {
-      // Menu closes after click, reopen to verify
-      await page.getByRole("button", { name: "More actions" }).click();
-      await expect(page.getByRole("button", { name: "Share" })).toBeVisible();
-    } else {
-      await expect(
-        page.getByRole("button", { name: "Copy shareable link" }),
-      ).toBeVisible();
-    }
+    // 4. Verify shareable link is generated/copied to clipboard
+    const clipboardContent = await page.evaluate(() =>
+      navigator.clipboard.readText(),
+    );
+    expect(clipboardContent).toMatch(/^https?:\/\/.+/);
+    expect(clipboardContent).toContain("genome=");
   });
 });

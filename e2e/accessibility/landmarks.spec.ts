@@ -4,7 +4,7 @@
 import { expect, test } from "@playwright/test";
 
 test.describe("Accessibility - Landmarks", () => {
-  test("screen-reader-landmarks", async ({ page }) => {
+  test("screen-reader-landmarks", async ({ page }): Promise<void> => {
     // 1. Navigate to homepage
     await page.goto("/");
 
@@ -22,7 +22,7 @@ test.describe("Accessibility - Landmarks", () => {
     await expect(footer.first()).toBeVisible();
   });
 
-  test("navigation-landmark", async ({ page }) => {
+  test("navigation-landmark", async ({ page }): Promise<void> => {
     await page.goto("/");
 
     // Check for navigation landmark

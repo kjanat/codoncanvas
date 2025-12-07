@@ -4,7 +4,7 @@
 import { expect, test } from "@playwright/test";
 
 test.describe("Accessibility", () => {
-  test("keyboard-navigation", async ({ page }) => {
+  test("keyboard-navigation", async ({ page }): Promise<void> => {
     // 1. Navigate to playground
     await page.goto("/");
 

@@ -5,7 +5,7 @@
  * Centralizes the Lexer -> Renderer -> VM pipeline used across demos.
  */
 
-import { useRef } from "react";
+import { useCallback, useRef } from "react";
 import { useTheme } from "@/contexts";
 import { Canvas2DRenderer } from "@/core";
 import { CodonLexer } from "@/core/lexer";
@@ -72,51 +72,57 @@ export function useRenderGenome(): UseRenderGenomeReturn {
   const isDark = resolvedTheme === "dark";
 
   // Clear canvas with theme-appropriate background
-  const clear = (canvas: HTMLCanvasElement | null) => {
-    if (!canvas) return;
-    const ctx = canvas.getContext("2d");
-    if (!ctx) return;
-    ctx.fillStyle = isDark ? "#1e1e1e" : "#ffffff";
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
-  };
+  const clear = useCallback(
+    (canvas: HTMLCanvasElement | null): void => {
+      if (!canvas) return;
+      const ctx = canvas.getContext("2d");
+      if (!ctx) return;
+      ctx.fillStyle = isDark ? "#1e1e1e" : "#ffffff";
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+    },
+    [isDark],
+  );
 
   // Render genome with detailed result (auto-clears canvas first)
-  const renderWithResult = (
-    genome: string,
-    canvas: HTMLCanvasElement | null,
-    options: RenderOptions = {},
-  ): RenderResult => {
-    if (!canvas) {
-      return { success: false, error: "Canvas not available" };
-    }
+  const renderWithResult = useCallback(
+    (
+      genome: string,
+      canvas: HTMLCanvasElement | null,
+      options: RenderOptions = {},
+    ): RenderResult => {
+      if (!canvas) {
+        return { success: false, error: "Canvas not available" };
+      }
 
-    // Clear canvas before rendering (unless skipped)
-    if (!options.skipClear) {
-      clear(canvas);
-    }
+      // Clear canvas before rendering (unless skipped)
+      if (!options.skipClear) {
+        clear(canvas);
+      }
 
-    try {
-      const tokens = lexer.tokenize(genome);
-      const renderer = new Canvas2DRenderer(canvas);
-      renderer.setColor(0, 0, isDark ? 100 : 0);
-      const vm = new CodonVM(renderer);
-      vm.run(tokens);
-      return { success: true, error: null };
-    } catch (err) {
-      return {
-        success: false,
-        error: err instanceof Error ? err.message : "Render failed",
-      };
-    }
-  };
+      try {
+        const tokens = lexer.tokenize(genome);
+        const renderer = new Canvas2DRenderer(canvas);
+        renderer.setColor(0, 0, isDark ? 100 : 0);
+        const vm = new CodonVM(renderer);
+        vm.run(tokens);
+        return { success: true, error: null };
+      } catch (err) {
+        return {
+          success: false,
+          error: err instanceof Error ? err.message : "Render failed",
+        };
+      }
+    },
+    [isDark, lexer, clear],
+  );
 
   // Simple render returning boolean
-  const render = (
-    genome: string,
-    canvas: HTMLCanvasElement | null,
-  ): boolean => {
-    return renderWithResult(genome, canvas).success;
-  };
+  const render = useCallback(
+    (genome: string, canvas: HTMLCanvasElement | null): boolean => {
+      return renderWithResult(genome, canvas).success;
+    },
+    [renderWithResult],
+  );
 
   return {
     render,

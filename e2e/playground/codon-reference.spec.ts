@@ -4,7 +4,7 @@
 import { expect, test } from "@playwright/test";
 
 test.describe("Core Playground", () => {
-  test("codon-reference-panel", async ({ page }) => {
+  test("codon-reference-panel", async ({ page }): Promise<void> => {
     const referenceButton = page.getByRole("button", {
       name: "Show codon reference",
     });

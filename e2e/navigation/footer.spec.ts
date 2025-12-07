@@ -4,7 +4,7 @@
 import { expect, test } from "@playwright/test";
 
 test.describe("Navigation - Footer", () => {
-  test("footer-content", async ({ page }) => {
+  test("footer-content", async ({ page }): Promise<void> => {
     // 1. Navigate to homepage
     await page.goto("/");
 

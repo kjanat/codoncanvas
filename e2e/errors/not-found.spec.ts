@@ -4,7 +4,7 @@
 import { expect, test } from "@playwright/test";
 
 test.describe("Error Handling", () => {
-  test("404-not-found-page", async ({ page }) => {
+  test("404-not-found-page", async ({ page }): Promise<void> => {
     // 1. Navigate to non-existent route
     await page.goto("/nonexistent-page-that-does-not-exist");
 

@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import { Card } from "@/components/Card";
 import { ErrorAlert } from "@/components/ErrorAlert";
@@ -77,13 +77,19 @@ function TimelineDemoPage() {
   const isDark = resolvedTheme === "dark";
 
   const player = useTimelinePlayer({ canvasRef });
+  const initializedRef = useRef(false);
 
-  if (
-    player.genome === "ATG GAA AAT GGA TAA" &&
-    examples.spiralPattern?.genome
-  ) {
-    player.setGenome(examples.spiralPattern.genome);
-  }
+  // Initialize with spiral pattern example on first mount
+  useEffect(() => {
+    if (initializedRef.current) return;
+    if (
+      player.genome === "ATG GAA AAT GGA TAA" &&
+      examples.spiralPattern?.genome
+    ) {
+      player.setGenome(examples.spiralPattern.genome);
+      initializedRef.current = true;
+    }
+  }, [player.genome, player.setGenome]);
 
   const handleExportGif = async () => {
     if (!canvasRef.current || player.snapshots.length === 0) return;

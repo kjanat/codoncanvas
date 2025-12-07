@@ -4,7 +4,7 @@
 import { expect, test } from "@playwright/test";
 
 test.describe("Navigation - Theme Toggle", () => {
-  test("theme-toggle", async ({ page }) => {
+  test("theme-toggle", async ({ page }): Promise<void> => {
     // 1. Navigate to homepage
     await page.goto("/");
 
@@ -32,7 +32,7 @@ test.describe("Navigation - Theme Toggle", () => {
     await expect(themeButton).toBeVisible();
   });
 
-  test("theme-persists-across-navigation", async ({ page }) => {
+  test("theme-persists-across-navigation", async ({ page }): Promise<void> => {
     await page.goto("/");
 
     // Toggle to dark mode
