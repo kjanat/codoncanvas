@@ -12,12 +12,15 @@ test.describe("Navigation - Theme Toggle", () => {
     });
     await expect(themeButton).toBeVisible();
 
-    // Capture initial theme from button text
+    // Capture initial theme from button text and DOM state
     const initialText = await themeButton.textContent();
     const initialThemeMatch = initialText?.match(/\((system|light|dark)\)/i);
     const initialTheme = initialThemeMatch?.[1]?.toLowerCase();
+    const initialIsDark = await page.evaluate(() =>
+      document.documentElement.classList.contains("dark"),
+    );
 
-    // Toggle theme - cycles: light -> dark -> system -> light
+    // Toggle theme - cycle to the next value (light, dark, or system)
     await themeButton.click();
 
     // Verify button text changed to next theme in cycle
@@ -32,7 +35,15 @@ test.describe("Navigation - Theme Toggle", () => {
       new RegExp(`Toggle theme \\(${expectedNextTheme}\\)`, "i"),
     );
 
-    // Verify data-theme attribute is set on document
+    // Verify DOM theme actually changed (when not starting from "system")
+    if (initialTheme !== "system") {
+      const newIsDark = await page.evaluate(() =>
+        document.documentElement.classList.contains("dark"),
+      );
+      expect(newIsDark).not.toBe(initialIsDark);
+    }
+
+    // Sanity-check that the attribute resolves to a concrete theme
     const dataTheme = await page.evaluate(() =>
       document.documentElement.getAttribute("data-theme"),
     );

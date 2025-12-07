@@ -9,7 +9,7 @@ test.describe("Accessibility - Landmarks", () => {
     await page.goto("/");
 
     // 2. Verify page has proper landmark regions
-    // Header/banner landmark (may be nested in layout container)
+    // Header/banner landmark (at least one visible)
     const header = page.locator("header").first();
     await expect(header).toBeVisible();
 

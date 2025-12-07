@@ -37,10 +37,10 @@ test.describe("Timeline Navigation Controls", () => {
     const { current: afterNext } = await getStepInfo(page);
     expect(afterNext).toBe(initialStep + 1);
 
-    // Click Previous - step should decrement by 1
+    // Click Previous - step should return to initial
     await prevButton.click();
     const { current: afterPrev } = await getStepInfo(page);
-    expect(afterPrev).toBe(afterNext - 1);
+    expect(afterPrev).toBe(initialStep);
 
     // Advance a few steps then Reset - should return to step 1
     await nextButton.click();

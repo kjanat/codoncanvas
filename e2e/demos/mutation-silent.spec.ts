@@ -5,8 +5,8 @@ import { expect, test } from "@playwright/test";
 
 test.describe("Mutation Lab - Silent Mutation", () => {
   test("apply-silent-mutation", async ({ page }): Promise<void> => {
-    // 1. Navigate to /demos/mutation
-    await page.goto("/demos/mutation");
+    // 1. Navigate to /demos/mutation with deterministic seed
+    await page.goto("/demos/mutation?test-seed=42");
 
     // 2. Click 'Silent' mutation button
     await page.getByRole("button", { name: /^Silent:/i }).click();

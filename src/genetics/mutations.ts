@@ -23,6 +23,7 @@ import {
   Opcode,
 } from "@/types";
 import { cleanGenome, formatAsCodons, parseGenome } from "@/utils/genome-utils";
+import { defaultRNG, type RNG } from "@/utils/rng";
 
 /**
  * Result of applying a mutation to a genome.
@@ -104,6 +105,7 @@ function getMissenseCodons(codon: Codon): Codon[] {
 export function applySilentMutation(
   genome: string,
   position?: number,
+  rng: RNG = defaultRNG,
 ): MutationResult {
   const codons = parseGenome(genome);
 
@@ -118,8 +120,7 @@ export function applySilentMutation(
       throw new Error("No synonymous mutations available in this genome");
     }
 
-    const selectedCandidate =
-      candidates[Math.floor(Math.random() * candidates.length)];
+    const selectedCandidate = candidates[rng.nextInt(candidates.length)];
     if (!selectedCandidate) {
       throw new Error("No synonymous mutations available in this genome");
     }
@@ -138,7 +139,7 @@ export function applySilentMutation(
     );
   }
 
-  const newCodon = synonymous[Math.floor(Math.random() * synonymous.length)];
+  const newCodon = synonymous[rng.nextInt(synonymous.length)];
   if (!newCodon) {
     throw new Error("Failed to select synonymous codon");
   }
@@ -177,6 +178,7 @@ export function applySilentMutation(
 export function applyMissenseMutation(
   genome: string,
   position?: number,
+  rng: RNG = defaultRNG,
 ): MutationResult {
   const codons = parseGenome(genome);
 
@@ -190,8 +192,7 @@ export function applyMissenseMutation(
       throw new Error("No missense mutations available in this genome");
     }
 
-    const selectedCandidate =
-      candidates[Math.floor(Math.random() * candidates.length)];
+    const selectedCandidate = candidates[rng.nextInt(candidates.length)];
     if (!selectedCandidate) {
       throw new Error("No missense mutations available in this genome");
     }
@@ -210,7 +211,7 @@ export function applyMissenseMutation(
     );
   }
 
-  const newCodon = missense[Math.floor(Math.random() * missense.length)];
+  const newCodon = missense[rng.nextInt(missense.length)];
   if (!newCodon) {
     throw new Error("Failed to select missense codon");
   }
@@ -251,6 +252,7 @@ export function applyMissenseMutation(
 export function applyNonsenseMutation(
   genome: string,
   position?: number,
+  rng: RNG = defaultRNG,
 ): MutationResult {
   const codons = parseGenome(genome);
 
@@ -268,8 +270,7 @@ export function applyNonsenseMutation(
       throw new Error("No nonsense mutation positions available");
     }
 
-    const selectedCandidate =
-      candidates[Math.floor(Math.random() * candidates.length)];
+    const selectedCandidate = candidates[rng.nextInt(candidates.length)];
     if (!selectedCandidate) {
       throw new Error("No nonsense mutation positions available");
     }
@@ -313,17 +314,18 @@ export function applyNonsenseMutation(
 export function applyPointMutation(
   genome: string,
   position?: number,
+  rng: RNG = defaultRNG,
 ): MutationResult {
   const cleaned = cleanGenome(genome);
 
-  const targetPos = position ?? Math.floor(Math.random() * cleaned.length);
+  const targetPos = position ?? rng.nextInt(cleaned.length);
   if (targetPos >= cleaned.length) {
     throw new Error(`Position ${targetPos} out of range`);
   }
 
   const originalBase = cleaned[targetPos];
   const otherBases = BASES.filter((b) => b !== originalBase);
-  const newBase = otherBases[Math.floor(Math.random() * otherBases.length)];
+  const newBase = otherBases[rng.nextInt(otherBases.length)];
 
   const mutated =
     cleaned.substring(0, targetPos) +
@@ -362,10 +364,11 @@ export function applyInsertion(
   genome: string,
   position?: number,
   length: number = 1,
+  rng: RNG = defaultRNG,
 ): MutationResult {
   const cleaned = cleanGenome(genome);
 
-  const targetPos = position ?? Math.floor(Math.random() * cleaned.length);
+  const targetPos = position ?? rng.nextInt(cleaned.length);
   if (targetPos > cleaned.length) {
     throw new Error(`Position ${targetPos} out of range`);
   }
@@ -373,7 +376,7 @@ export function applyInsertion(
   // Generate random bases
   const insertion = Array.from(
     { length },
-    () => BASES[Math.floor(Math.random() * BASES.length)],
+    () => BASES[rng.nextInt(BASES.length)],
   ).join("");
 
   const mutated =
@@ -413,12 +416,12 @@ export function applyDeletion(
   genome: string,
   position?: number,
   length: number = 1,
+  rng: RNG = defaultRNG,
 ): MutationResult {
   const cleaned = cleanGenome(genome);
 
   const targetPos =
-    position ??
-    Math.floor(Math.random() * Math.max(0, cleaned.length - length));
+    position ?? rng.nextInt(Math.max(1, cleaned.length - length));
   if (targetPos + length > cleaned.length) {
     throw new Error(
       `Deletion at position ${targetPos} with length ${length} exceeds genome length`,
@@ -461,17 +464,18 @@ export function applyDeletion(
 export function applyFrameshiftMutation(
   genome: string,
   position?: number,
+  rng: RNG = defaultRNG,
 ): MutationResult {
-  const isInsertion = Math.random() < 0.5;
-  const length = Math.floor(Math.random() * 2) + 1; // 1 or 2 bases
+  const isInsertion = rng.next() < 0.5;
+  const length = rng.nextInt(2) + 1; // 1 or 2 bases
 
   if (isInsertion) {
-    const result = applyInsertion(genome, position, length);
+    const result = applyInsertion(genome, position, length, rng);
     result.type = "frameshift";
     result.description = `Frameshift (insertion): ${result.description}`;
     return result;
   } else {
-    const result = applyDeletion(genome, position, length);
+    const result = applyDeletion(genome, position, length, rng);
     result.type = "frameshift";
     result.description = `Frameshift (deletion): ${result.description}`;
     return result;
@@ -506,6 +510,7 @@ export const MUTATION_TYPES = Object.keys(
  *
  * @param type - Mutation type to apply
  * @param genome - Source genome string
+ * @param rng - Optional RNG for deterministic behavior (defaults to Math.random)
  * @returns Mutation result with original, mutated, and metadata
  * @throws Error if mutation type is unknown
  *
@@ -518,12 +523,26 @@ export const MUTATION_TYPES = Object.keys(
 export function getMutationByType(
   type: MutationType,
   genome: string,
+  rng: RNG = defaultRNG,
 ): MutationResult {
-  const mutationFn = MUTATION_FUNCTIONS[type];
-  if (!mutationFn) {
-    throw new Error(`Unknown mutation type: ${type}`);
+  switch (type) {
+    case "silent":
+      return applySilentMutation(genome, undefined, rng);
+    case "missense":
+      return applyMissenseMutation(genome, undefined, rng);
+    case "nonsense":
+      return applyNonsenseMutation(genome, undefined, rng);
+    case "point":
+      return applyPointMutation(genome, undefined, rng);
+    case "insertion":
+      return applyInsertion(genome, undefined, 1, rng);
+    case "deletion":
+      return applyDeletion(genome, undefined, 1, rng);
+    case "frameshift":
+      return applyFrameshiftMutation(genome, undefined, rng);
+    default:
+      throw new Error(`Unknown mutation type: ${type}`);
   }
-  return mutationFn(genome);
 }
 
 /**

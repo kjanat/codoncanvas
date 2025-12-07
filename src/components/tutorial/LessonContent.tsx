@@ -18,6 +18,9 @@ interface LessonContentProps {
   onNextLesson: () => void;
 }
 
+const ACTION_BUTTON_CLASS =
+  "min-h-11 rounded-lg bg-success px-6 py-2 font-medium text-white transition-colors hover:bg-success-dark";
+
 /**
  * Self-contained lesson content component.
  * Uses key-based reset pattern - parent renders with key={lesson.id}
@@ -63,9 +66,6 @@ export function LessonContent({
       });
     }
   };
-
-  const actionButtonClass =
-    "min-h-11 rounded-lg bg-success px-6 py-2 font-medium text-white transition-colors hover:bg-success-dark";
 
   return (
     <div className="mx-auto max-w-4xl">
@@ -114,14 +114,14 @@ export function LessonContent({
             <div className="flex justify-end gap-4">
               {lesson.nextLesson ? (
                 <button
-                  className={actionButtonClass}
+                  className={ACTION_BUTTON_CLASS}
                   onClick={onNextLesson}
                   type="button"
                 >
                   Next Lesson -&gt;
                 </button>
               ) : (
-                <Link className={actionButtonClass} to="/">
+                <Link className={ACTION_BUTTON_CLASS} to="/">
                   Start Coding!
                 </Link>
               )}

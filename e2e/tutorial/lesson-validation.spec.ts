@@ -4,8 +4,7 @@
 import { expect, test } from "@playwright/test";
 
 test.describe("Tutorial Lesson Validation", () => {
-  test("lesson-code-validation", async ({ page }): Promise<void> => {
-    // 1. Navigate to /tutorial on first lesson
+  test("valid-code-shows-success", async ({ page }): Promise<void> => {
     await page.goto("/tutorial");
 
     // Wait for lesson to load
@@ -13,22 +12,44 @@ test.describe("Tutorial Lesson Validation", () => {
       page.getByRole("heading", { name: "Your Code" }),
     ).toBeVisible();
 
-    // 2. Find the code editor using data-testid for stability
     const editor = page.getByTestId("lesson-editor");
     await expect(editor).toBeVisible();
 
-    // 3. Click 'Run & Validate' button
+    // First lesson requires ATG, GAA, GGA, TAA with min 4 instructions
+    await editor.fill("ATG GAA CCC GGA TAA");
+
+    // Run validation
     const runButton = page.getByRole("button", { name: "Run & Validate" });
     await runButton.click();
 
-    // Verify validation feedback appears with actual content
+    // Should show success
     const feedback = page.locator("[role='alert']");
     await expect(feedback).toBeVisible({ timeout: 5000 });
-    // Verify it contains pass/fail indicator (not just exists)
-    await expect(feedback).toHaveText(/Passed|issue/i);
+    await expect(feedback).toHaveText(/Passed/i);
+  });
 
-    // Editor should still be visible
+  test("invalid-code-shows-error", async ({ page }): Promise<void> => {
+    await page.goto("/tutorial");
+
+    // Wait for lesson to load
+    await expect(
+      page.getByRole("heading", { name: "Your Code" }),
+    ).toBeVisible();
+
+    const editor = page.getByTestId("lesson-editor");
     await expect(editor).toBeVisible();
+
+    // Enter code that doesn't satisfy the lesson (no circle)
+    await editor.fill("AAA BBB CCC");
+
+    // Run validation
+    const runButton = page.getByRole("button", { name: "Run & Validate" });
+    await runButton.click();
+
+    // Should show error
+    const feedback = page.locator("[role='alert']");
+    await expect(feedback).toBeVisible({ timeout: 5000 });
+    await expect(feedback).toHaveText(/issue/i);
   });
 
   test("preview-canvas-exists", async ({ page }): Promise<void> => {

@@ -48,7 +48,7 @@ test.describe("Responsive Design", () => {
       await expect(
         page.getByRole("button", { name: "More actions" }),
       ).toBeVisible();
-      await expect(page.getByText("Load")).not.toBeVisible();
+      await expect(page.getByText("Load", { exact: true })).not.toBeVisible();
     });
 
     test("gallery layout adapts correctly", async ({ page }): Promise<void> => {
@@ -90,6 +90,27 @@ test.describe("Responsive Design", () => {
         page.getByRole("button", { name: "Open menu" }),
       ).toBeVisible();
     });
+
+    test("mobile menu navigation works", async ({ page }): Promise<void> => {
+      await page.goto("/");
+
+      // Open mobile menu
+      const menuButton = page.getByRole("button", { name: "Open menu" });
+      await expect(menuButton).toBeVisible();
+      await menuButton.click();
+
+      // Menu drawer should be visible with navigation links
+      await expect(page.getByRole("link", { name: "Gallery" })).toBeVisible();
+
+      // Navigate to Gallery via mobile menu
+      await page.getByRole("link", { name: "Gallery" }).click();
+
+      // Verify navigation worked
+      await expect(page).toHaveURL(/\/gallery/);
+      await expect(
+        page.getByRole("heading", { name: "Example Gallery" }),
+      ).toBeVisible();
+    });
   });
 
   test.describe("tablet viewport (768x1024)", () => {
@@ -123,7 +144,7 @@ test.describe("Responsive Design", () => {
       ).not.toBeVisible();
 
       // Tablet/Desktop: desktop I/O buttons visible, overflow menu hidden
-      await expect(page.getByText("Load")).toBeVisible();
+      await expect(page.getByText("Load", { exact: true })).toBeVisible();
       await expect(
         page.getByRole("button", { name: "More actions" }),
       ).not.toBeVisible();
@@ -204,7 +225,7 @@ test.describe("Responsive Design", () => {
       ).not.toBeVisible();
 
       // Desktop: desktop I/O buttons visible, overflow menu hidden
-      await expect(page.getByText("Load")).toBeVisible();
+      await expect(page.getByText("Load", { exact: true })).toBeVisible();
       await expect(
         page.getByRole("button", { name: "More actions" }),
       ).not.toBeVisible();

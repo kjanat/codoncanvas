@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 
 import { DiffViewer } from "@/components/DiffViewer";
 import { ErrorAlert } from "@/components/ErrorAlert";
@@ -9,6 +9,7 @@ import { examples } from "@/data/examples";
 import { MUTATION_TYPES } from "@/data/mutation-types";
 import { getMutationByType, type MutationResult } from "@/genetics/mutations";
 import type { MutationType } from "@/types";
+import { defaultRNG, type RNG, SeededRandom } from "@/utils/rng";
 
 function MutationDemoPage() {
   const [originalGenome, setOriginalGenome] = useState(
@@ -21,10 +22,25 @@ function MutationDemoPage() {
     useState<MutationType>("silent");
   const [error, setError] = useState<string | null>(null);
 
+  // Detect test mode from URL parameter
+  const rng: RNG = useMemo(() => {
+    if (typeof window !== "undefined") {
+      const params = new URLSearchParams(window.location.search);
+      const testSeed = params.get("test-seed");
+      if (testSeed) {
+        const seed = parseInt(testSeed, 10);
+        if (!Number.isNaN(seed)) {
+          return new SeededRandom(seed);
+        }
+      }
+    }
+    return defaultRNG;
+  }, []);
+
   const applySelectedMutation = () => {
     try {
       setError(null);
-      const result = getMutationByType(selectedMutation, originalGenome);
+      const result = getMutationByType(selectedMutation, originalGenome, rng);
       setMutationResult(result);
     } catch (err) {
       setError(err instanceof Error ? err.message : "Mutation failed");
