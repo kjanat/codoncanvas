@@ -108,10 +108,7 @@ export function NavDropdown({
             className={index > 0 ? "mt-2 border-t border-border pt-2" : ""}
             key={section.title}
           >
-            <p
-              className="px-3 py-1 text-xs font-semibold uppercase text-text-muted"
-              id={`nav-section-${section.title.toLowerCase().replace(/\s+/g, "-")}`}
-            >
+            <p className="px-3 py-1 text-xs font-semibold uppercase text-text-muted">
               {section.title}
             </p>
             {section.links.map((link) => (

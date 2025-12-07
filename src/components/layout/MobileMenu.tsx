@@ -79,17 +79,6 @@ export function MobileMenu(): ReactElement {
     };
   }, [isOpen]);
 
-  // Close on escape key
-  useEffect(() => {
-    if (!isOpen) return;
-
-    const handleEscape = (e: KeyboardEvent) => {
-      if (e.key === "Escape") setIsOpen(false);
-    };
-    document.addEventListener("keydown", handleEscape);
-    return () => document.removeEventListener("keydown", handleEscape);
-  }, [isOpen]);
-
   const close = () => setIsOpen(false);
 
   return (
