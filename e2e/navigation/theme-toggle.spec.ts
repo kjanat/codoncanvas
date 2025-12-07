@@ -13,28 +13,17 @@ test.describe("Navigation - Theme Toggle", () => {
     });
     await expect(themeButton).toBeVisible();
 
-    // Capture initial theme state from DOM (not just button text)
-    const initialIsDark = await page.evaluate(() =>
-      document.documentElement.classList.contains("dark"),
-    );
+    // Capture initial button text to verify theme name changes
+    const initialText = await themeButton.textContent();
 
-    // Single toggle should cycle to next theme state
+    // Single toggle should cycle to next theme state (light -> dark -> system)
     await themeButton.click();
 
-    // Verify theme actually changed in DOM
-    const newIsDark = await page.evaluate(() =>
-      document.documentElement.classList.contains("dark"),
-    );
+    // Button text should change to reflect the new theme
+    const newText = await themeButton.textContent();
+    expect(newText).not.toBe(initialText);
 
-    // Theme state should have changed (dark class toggled)
-    // Note: system -> light keeps light, light -> dark adds dark class
-    // We verify EITHER the dark class changed OR button text changed
-    const initialName = await themeButton.evaluate(
-      (el) => el.textContent?.trim() ?? "",
-    );
-    expect(newIsDark !== initialIsDark || initialName.length > 0).toBe(true);
-
-    // Button text should reflect the new theme state
+    // Button text should still match expected pattern
     await expect(themeButton).toHaveText(
       /Toggle theme \((system|light|dark)\)/i,
     );

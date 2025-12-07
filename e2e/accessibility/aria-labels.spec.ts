@@ -5,26 +5,17 @@ import { expect, test } from "@playwright/test";
 
 test.describe("Accessibility - ARIA Labels", () => {
   test("key-elements-have-aria-labels", async ({ page }): Promise<void> => {
-    // 1. Navigate to playground
     await page.goto("/");
 
-    // 2. Verify run button has aria-label
+    // getByRole with name already validates accessible name
     const runButton = page.getByRole("button", { name: "Run genome" });
     await expect(runButton).toBeVisible();
-    await expect(runButton).toHaveAttribute("aria-label", /run genome/i);
 
-    // 3. Verify editor has aria-label
     const editor = page.getByRole("textbox", { name: "Genome editor" });
     await expect(editor).toBeVisible();
-    await expect(editor).toHaveAttribute("aria-label", /genome editor/i);
 
-    // 4. Verify canvas has aria-label
     const canvas = page.getByRole("img", { name: "Genome execution output" });
     await expect(canvas).toBeVisible();
-    await expect(canvas).toHaveAttribute(
-      "aria-label",
-      /genome execution output/i,
-    );
   });
 
   test("interactive-elements-are-labeled", async ({ page }): Promise<void> => {

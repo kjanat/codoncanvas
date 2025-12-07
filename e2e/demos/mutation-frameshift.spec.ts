@@ -21,8 +21,13 @@ test.describe("Mutation Lab - Frameshift Mutation", () => {
     ).toBeVisible();
 
     // Visual output should be significantly different
-    const canvases = page.locator("canvas");
-    await expect(canvases.first()).toBeVisible();
+    const originalCanvas = page.getByRole("img", { name: "Original Output" });
+    const mutatedCanvas = page.getByRole("img", { name: "Mutated Output" });
+    const mutatedError = page.getByRole("alert", {
+      name: "Mutated Output - render failed",
+    });
+    await expect(originalCanvas).toBeVisible();
+    await expect(mutatedCanvas.or(mutatedError)).toBeVisible();
 
     // Verify that multiple codons have changed due to frameshift
     const diffContainer = page

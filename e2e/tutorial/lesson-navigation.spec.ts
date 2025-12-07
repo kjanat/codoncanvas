@@ -53,6 +53,7 @@ test.describe("Mobile Tutorial", () => {
     const closeButton = drawer.getByRole("button", { name: "Close menu" });
     await expect(closeButton).toBeVisible();
     await closeButton.click();
-    await expect(drawer).toHaveAttribute("data-open", "false");
+    // Drawer is conditionally rendered, so it should not be visible when closed
+    await expect(drawer).not.toBeVisible();
   });
 });
