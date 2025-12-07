@@ -65,6 +65,10 @@ export class Canvas2DRenderer extends BaseRenderer implements Renderer {
     this._width = canvas.width;
     this._height = canvas.height;
 
+    // Sync initial color from BaseRenderer to canvas context
+    this.ctx.fillStyle = this.currentColor;
+    this.ctx.strokeStyle = this.currentColor;
+
     // Initialize at center
     this.resetTransformState(this._width, this._height);
   }

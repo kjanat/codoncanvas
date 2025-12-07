@@ -30,6 +30,23 @@ export abstract class BaseRenderer {
   protected currentScale: number = 1;
   protected currentColor: string = "hsl(0, 0%, 0%)";
 
+  // Dimensions
+  abstract get width(): number;
+  abstract get height(): number;
+
+  // Drawing primitives
+  abstract circle(radius: number): void;
+  abstract rect(width: number, height: number): void;
+  abstract line(length: number): void;
+  abstract triangle(size: number): void;
+  abstract ellipse(rx: number, ry: number): void;
+  abstract noise(seed: number, intensity: number): void;
+
+  // Lifecycle
+  abstract clear(): void;
+  abstract resize(width?: number, height?: number): void;
+  abstract toDataURL(): string;
+
   /**
    * Set absolute drawing position.
    * @param x - X coordinate in pixels (0 = left edge)

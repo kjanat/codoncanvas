@@ -7,6 +7,7 @@
 
 import { Link, useRouterState } from "@tanstack/react-router";
 import { FocusTrap } from "focus-trap-react";
+import { AnimatePresence, motion } from "motion/react";
 import { type ReactElement, useEffect, useRef, useState } from "react";
 
 import { useScrollLock } from "@/hooks";

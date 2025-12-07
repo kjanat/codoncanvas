@@ -22,7 +22,9 @@ function MutationDemoPage() {
     useState<MutationType>("silent");
   const [error, setError] = useState<string | null>(null);
 
-  // Detect test mode from URL parameter
+  // Initialize RNG once on mount. The test-seed param is read only at initial
+  // load to ensure deterministic E2E tests. We intentionally ignore subsequent
+  // URL changes to avoid resetting mutation state mid-session.
   const rng: RNG = useMemo(() => {
     if (typeof window !== "undefined") {
       const params = new URLSearchParams(window.location.search);

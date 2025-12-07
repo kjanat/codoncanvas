@@ -77,7 +77,9 @@ export function ModuleSidebar({
   const closeButtonRef = useRef<HTMLButtonElement>(null);
   const fabRef = useRef<HTMLButtonElement>(null);
   const [isOpen, setIsOpen] = useState(false);
-  const modules = [1, 2, 3];
+  const modules = Object.keys(moduleNames)
+    .map(Number)
+    .sort((a, b) => a - b);
 
   // Close on escape
   useEffect(() => {

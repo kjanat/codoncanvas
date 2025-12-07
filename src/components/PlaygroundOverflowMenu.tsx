@@ -29,8 +29,9 @@ interface OverflowMenuProps {
   history: ToolbarHistoryProps;
 }
 
-/** Overflow menu for mobile */
-const MENU_ITEM_COUNT = 6;
+/** Menu item keys for roving tabindex */
+const MENU_ITEMS = ["load", "save", "copy", "share", "undo", "redo"] as const;
+const MENU_ITEM_COUNT = MENU_ITEMS.length;
 
 export function OverflowMenu({ io, history }: OverflowMenuProps): JSX.Element {
   const triggerId = useId();

@@ -390,7 +390,7 @@ TAA
 ## Getting Help
 
 - **Issue Tracker**: Report audio bugs at
-  [GitHub Issues](https://github.com/yourusername/codoncanvas/issues)
+  [GitHub Issues](https://github.com/kjanat/codoncanvas/issues)
 - **Tag**: `audio-mode` for audio-specific issues
 - **Educators**: Email feedback on pedagogical effectiveness
 

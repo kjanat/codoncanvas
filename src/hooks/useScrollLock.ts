@@ -16,22 +16,17 @@ export function useScrollLock(enabled: boolean): void {
       return;
     }
 
-    let locked = false;
-
     if (lockCount === 0) {
       originalOverflow = document.body.style.overflow;
     }
     lockCount++;
-    locked = true;
     document.body.style.overflow = "hidden";
 
     return () => {
-      if (locked) {
-        lockCount = Math.max(0, lockCount - 1);
-        if (lockCount === 0) {
-          document.body.style.overflow = originalOverflow ?? "";
-          originalOverflow = undefined;
-        }
+      lockCount = Math.max(0, lockCount - 1);
+      if (lockCount === 0) {
+        document.body.style.overflow = originalOverflow ?? "";
+        originalOverflow = undefined;
       }
     };
   }, [enabled]);

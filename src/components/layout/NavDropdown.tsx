@@ -98,8 +98,10 @@ export function NavDropdown({
       </button>
 
       <div
+        aria-labelledby={triggerId}
         className={`absolute right-0 top-full z-50 mt-1 w-56 rounded-lg border border-border bg-surface p-2 shadow-lg transition-all ${isOpen ? "visible opacity-100" : "invisible opacity-0"}`}
         id={menuId}
+        role="menu"
       >
         {sections.map((section, index) => (
           <div
