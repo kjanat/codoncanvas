@@ -1185,11 +1185,9 @@ download your code, then share the file with friends/teacher.
 
 ## Contact & Support
 
-**Found a bug?** Report at:
-[GitHub Issues](https://github.com/codoncanvas/codoncanvas/issues) **Teaching
-tips?** Share with: [community forum link] **Need help?** Email:
-[educator-support email]
+**Found a bug?** Report at
+[GitHub Issues](https://github.com/kjanat/codoncanvas/issues)
 
 ---
 
-**🎓 Happy Teaching! Let's evolve some computational thinking! 🧬**
+**Happy Teaching! Let's evolve some computational thinking!**

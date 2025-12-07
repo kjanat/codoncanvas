@@ -68,7 +68,7 @@ from basic shapes to complex compositions while reinforcing genetic literacy.
 
 **Demo:** Show `01_hello_circle.ccd` running live
 
-```
+```genome
 ATG GAA CCC GGA TAA
 ```
 
@@ -89,7 +89,7 @@ ATG GAA CCC GGA TAA
 
 **Step 1:** Type the hello circle genome
 
-```
+```genome
 ATG GAA CCC GGA TAA
 ```
 
@@ -97,7 +97,7 @@ ATG GAA CCC GGA TAA
 
 **Step 2:** Change GGA → GGC
 
-```
+```genome
 ATG GAA CCC GGC TAA
 ```
 
@@ -120,7 +120,7 @@ rectangle (but needs 2 numbers!)
 
 **Fix:** Add second number
 
-```
+```genome
 ATG GAA CCC GAA CCC CCA TAA
 ```
 
@@ -131,7 +131,7 @@ produce same rectangle (silent mutations)
 
 **Challenge 3:** Try AA\* family (LINE)
 
-```
+```genome
 ATG GAA CCC AAA TAA
 ```
 
@@ -154,7 +154,7 @@ biology use this redundancy?" (Error tolerance, wobble base pairing)
 
 **Example Solution:**
 
-```
+```genome
 ATG
   GAA CCC GGA           ; Circle radius 21
   GAA CCC GAA AAA ACA   ; Translate (21, 0)
@@ -200,7 +200,7 @@ TAA
 
 **Demo:** Show `10_mutation_gallery.ccd` with missense mutation
 
-```
+```genome
 ; Original
 ATG GAA CCC GGA TAA  → Circle
 
@@ -218,7 +218,7 @@ ATG GAA CCC CCA TAA  → Rectangle (wrong # args → error?)
 
 **Start Genome:**
 
-```
+```genome
 ATG GAA AGG GGA TAA  ; Circle radius 10
 ```
 
@@ -247,7 +247,7 @@ ATG GAA AGG GGA TAA  ; Circle radius 10
 
 **Start Genome:**
 
-```
+```genome
 ATG
   GAA CCC GGA        ; Circle
   GAA CCC GAA AAA ACA  ; Translate
@@ -257,7 +257,7 @@ TAA
 
 **Mutation:** Change middle GGA → TAA
 
-```
+```genome
 ATG
   GAA CCC GGA        ; Circle
   GAA CCC GAA AAA TAA  ; EARLY STOP!
@@ -281,14 +281,14 @@ scrambled"
 
 **Start Genome:**
 
-```
+```genome
 ATG GAA CCC GGA GAA CCC CCA TAA
 ; Codons: ATG|GAA|CCC|GGA|GAA|CCC|CCA|TAA
 ```
 
 **Frameshift:** Delete one 'A' after ATG
 
-```
+```text
 ATG GAA CCC GGA GAA CCC CCA TAA
 ; Codons: ATG|GAA|CCC|GGA|GAA|CCC|CAT|AA?
 ; Wait, now: ATG|GGA|ACC|CGG|AGA|ACC|CCC|ATA|A
@@ -296,7 +296,7 @@ ATG GAA CCC GGA GAA CCC CCA TAA
 
 **Corrected Frameshift:**
 
-```
+```text
 ATG GAACCC GGA GAA CCC CCA TAA
 ; Remove space: ATGGAACCCGGAGAACCCCCTAA
 ; New frame: ATG|GAA|CCC|GGA|GAA|CCC|CCT|AA
@@ -306,7 +306,7 @@ Actually, let me demonstrate correctly:
 
 **Proper Frameshift Demo:**
 
-```
+```text
 Original: ATG AAA GGA TAA (3 codons read correctly)
 Delete 'A': ATG AAG GAT AA? (frame shifts, new codons)
 Insert 'G': ATG GAA AGG ATA A?? (frame shifts differently)
@@ -354,7 +354,7 @@ Insert 'G': ATG GAA AGG ATA A?? (frame shifts differently)
 
 **Demo 1: TRANSLATE (ACA family)**
 
-```
+```genome
 ATG
   GAA AAT GGA        ; Small circle
   GAA CCC GAA AAA ACA  ; Move right
@@ -364,7 +364,7 @@ TAA
 
 **Demo 2: ROTATE (AGA family)**
 
-```
+```genome
 ATG
   GAA CCC AAA        ; Line length 21
   GAA CGC AGA        ; Rotate 50 degrees
@@ -374,7 +374,7 @@ TAA
 
 **Demo 3: SCALE (CGA family)**
 
-```
+```genome
 ATG
   GAA CCC GGA        ; Circle
   GAA AGG CGA        ; Scale by 2×
@@ -398,7 +398,7 @@ TAA
 
 **Example Approach:**
 
-```
+```genome
 ATG
   ; Flower center
   GAA AGG GGA

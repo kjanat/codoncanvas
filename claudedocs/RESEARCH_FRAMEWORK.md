@@ -66,7 +66,8 @@ misconceptions (e.g., frameshift effects)?
 populations (varying prior knowledge, learning styles)?
 
 **RQ7: Implementation Fidelity** What instructional practices maximize
-CodonCanvas effectiveness?
+CodonCanvas effectiveness? (Operationalized via fidelity measures as moderator;
+see [Fidelity Measurement](#fidelity-measurement-rq7) in Design 1)
 
 ---
 
@@ -78,7 +79,8 @@ CodonCanvas effectiveness?
 
 #### Population
 
-- **Participants:** 200-300 undergraduate students
+- **Participants:** 300 undergraduate students (two-arm) or 450 (three-arm with
+  active control)
 - **Courses:** Introductory biology, genetics, molecular biology
 - **Institutions:** 3-5 diverse institutions (R1 universities, liberal arts
   colleges, community colleges)
@@ -86,10 +88,17 @@ CodonCanvas effectiveness?
 
 #### Groups
 
+**Two-arm design (recommended, N=300):**
+
 - **Treatment Group (n=150):** CodonCanvas + standard instruction
 - **Control Group (n=150):** Standard instruction only
-- **Active Control (optional, n=150):** Alternative interactive tool (PhET
-  simulations, Geniverse)
+
+**Three-arm design (exploratory, N=450):**
+
+- **Treatment Group (n=150):** CodonCanvas + standard instruction
+- **Control Group (n=150):** Standard instruction only
+- **Active Control (n=150):** Alternative interactive tool (PhET simulations,
+  Geniverse)
 
 #### Timeline
 
@@ -114,6 +123,39 @@ Week 6:  Delayed post-assessment (retention)
 - **Time on task:** Equal instructional time for both groups
 - **Content coverage:** Identical learning objectives across groups
 - **Assessment administration:** Blinded graders for open-response items
+
+#### Fidelity Measurement (RQ7)
+
+**Role:** Implementation fidelity treated as a **moderator** (tested as
+Treatment x Fidelity interaction) to identify which instructional practices
+maximize effectiveness.
+
+**Fidelity Measures** (from Fidelity Checklist, Section 6.2):
+
+| Measure             | Items                                      | Timing              |
+| ------------------- | ------------------------------------------ | ------------------- |
+| Content coverage    | % of planned content covered               | End of each session |
+| Tutorial completion | % students completing tutorials            | End of each session |
+| Time on task        | Minutes on CodonCanvas (logged)            | Continuous          |
+| Protocol adherence  | Deviations from protocol (count, severity) | End of each session |
+| Technical issues    | Issues encountered (count, resolution)     | End of each session |
+
+**Fidelity Composite Score:** Mean of standardized measures (0-100 scale)
+
+**Analytic Approach:**
+
+1. **Moderation analysis:** Test Treatment x Fidelity interaction in ANCOVA
+   - High fidelity (>80%) vs. Low fidelity (<80%) subgroups
+   - Continuous fidelity score as covariate with interaction term
+
+2. **Subgroup analyses:** Compare effect sizes for high vs. low fidelity
+   implementations
+
+3. **Exploratory mediation:** If interaction significant, test whether fidelity
+   mediates the Treatment → Learning pathway
+
+**Stratification (optional three-arm design):** If fidelity varies substantially
+across sites, consider site-level stratification in randomization.
 
 ---
 
@@ -472,11 +514,16 @@ Questions:
 
 #### Fidelity Checklist (Instructor Completes Each Session)
 
-- [ ] Covered all planned content
+> **Note:** These items operationalize RQ7 (Implementation Fidelity). See
+> [Fidelity Measurement (RQ7)](#fidelity-measurement-rq7) in Design 1 for
+> analytic approach.
+
+- [ ] Covered all planned content (% covered: \_\_\_)
 - [ ] Students completed tutorials (% completion: \_\_\_)
-- [ ] Technical issues encountered (describe: \_\_\_)
+- [ ] Technical issues encountered (count: \_\_\_, describe: \_\_\_)
 - [ ] Time on CodonCanvas: \_\_\_ minutes
-- [ ] Deviations from protocol (describe: \_\_\_)
+- [ ] Deviations from protocol (count: \_\_\_, severity: minor/major, describe:
+      \_\_\_)
 
 #### Control Group Activities (Time-Matched)
 
@@ -933,7 +980,7 @@ Randomized Controlled Trial of CodonCanvas"
 
 - Background: Challenge of teaching mutations
 - Intervention: CodonCanvas DNA programming tool
-- Methods: RCT, N=200, pre/post MCI + MTT
+- Methods: RCT, N=300 (two-arm), pre/post MCI + MTT
 - Results: Treatment group significantly higher (d=0.65, p<0.001)
 - Conclusions: Visual programming effective for mutations
 

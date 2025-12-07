@@ -21,7 +21,7 @@ assessment), a tutorial system with progressive lessons, an example gallery with
 
 **Steps:**
 
-1. Navigate to http://127.0.0.1:5173/
+1. Navigate to `http://127.0.0.1:5173/`
 2. Verify page title contains 'CodonCanvas'
 3. Verify editor textbox is visible with placeholder text
 4. Verify 'Run' button is present

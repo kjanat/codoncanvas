@@ -365,8 +365,8 @@ Let me recalculate AGG with base-4:
 - A=0, G=2, G=2
 - 0×16 + 2×4 + 2 = 0 + 8 + 2 = 10
 
-So the literal is 10, which would be radius 10 pixels (10/64 × 400 = 62.5
-pixels).
+So the literal is 10, which on a 400x400 canvas scales to ~62.5 pixels according
+to the `value/64 * canvas_width` rule.
 
 Let me pick better examples:
 
@@ -379,7 +379,7 @@ ATG GAA CCC GGA TAA
 **Explanation:**
 
 1. `ATG` - START
-2. `GAA CCC` - PUSH 23 (C=1,C=1,C=1 → 1×16 + 1×4 + 1 = 21)
+2. `GAA CCC` - PUSH 21 (C=1,C=1,C=1 → 1×16 + 1×4 + 1 = 21)
 3. `GGA` - CIRCLE (draws circle with radius 21, scaled to ~131 pixels)
 4. `TAA` - STOP
 

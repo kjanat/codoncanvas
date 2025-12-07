@@ -8,8 +8,6 @@
 
 ### Issue Reporting
 
-**Email:** [your-contact-email]
-
 **What to Include:**
 
 1. Browser type and version (Chrome 120, Firefox 115, Safari 17)
@@ -460,7 +458,6 @@ ATG AAA GGG TA
 ### Community Support
 
 - **GitHub Issues:** Report bugs and request features
-- **Email:** Direct support for urgent classroom issues
 
 ### Professional Development
 
@@ -469,8 +466,6 @@ ATG AAA GGG TA
 - Webinar for teacher onboarding
 - Video tutorials for classroom integration
 - Sample lesson plans and assessment rubrics
-
-**Contact:** [your-email]
 
 ---
 
@@ -497,11 +492,10 @@ ATG AAA GGG TA
 │  → Read the error message                   │
 │  → Ask teacher or classmate                 │
 │                                              │
-│ Site: https://codoncanvas.dev              │
-│ Support: [your-email]                       │
+│ Site: https://codoncanvas.dev               │
 └─────────────────────────────────────────────┘
 ```
 
 ---
 
-**Last Updated:** 2025-11-25 **Support Contact:** [your-contact-email]
+**Last Updated:** 2025-11-25

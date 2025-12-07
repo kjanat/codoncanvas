@@ -771,14 +771,15 @@ transparency.
 
 ## Contact & Support
 
-**Technical Questions:** Open GitHub issue:
-https://github.com/yourusername/codoncanvas/issues
-
-**Research Design Consultation:** Contact: [Your Email]
+**Technical Questions:** Open a
+[GitHub issue](https://github.com/kjanat/codoncanvas/issues)
 
 **IRB Questions:** Contact your institutional IRB office
 
 ---
 
-**Document Version:** 1.0.0 **Last Updated:** October 2025 **License:** CC BY
-4.0 (documentation), MIT (code)
+**Document Version:** 1.0.0
+
+**Last Updated:** October 2025
+
+**License:** CC BY 4.0 (documentation), MIT (code)

@@ -1071,57 +1071,55 @@ Kesler, A., Shamir-Inbal, T., & Blau, I. (2022). Active Learning by Visual
 Programming: Pedagogical Perspectives of Instructivist and Constructivist Code
 Teachers and Their Implications on Actual Teaching Strategies and Students'
 Programming Artifacts. _Journal of Educational Computing Research_, _60_(7).
-https://doi.org/10.1177/07356331211017793
+[doi:10.1177/07356331211017793][kesler-2022]
 
 Yu, Q., Yu, K., & Li, B. (2025). Effects of Block-Based Visual Programming on
 K-12 Students' Learning Outcomes. _Journal of Educational Computing Research_.
-https://doi.org/10.1177/07356331241293163
+[doi:10.1177/07356331241293163][yu-2025]
 
 Huang, X. (2025). Effect of Visual Programming Instruction on Students' Flow
 Experience, Programming Self-Efficacy, and Sustained Willingness to Learn.
-_Journal of Computer Assisted Learning_. https://doi.org/10.1111/jcal.13110
+_Journal of Computer Assisted Learning_. [doi:10.1111/jcal.13110][huang-2025]
 
 ### Constructivism & Learning Environments
 
 National Center for Biotechnology Information (2023). How do constructivism
 learning environments generate better motivation and learning strategies? The
-Design Science Approach. _PMC_.
-https://pmc.ncbi.nlm.nih.gov/articles/PMC10730747/
+Design Science Approach. _PMC_. [PMC10730747][ncbi-constructivism]
 
 ### Genetics Misconceptions Research
 
 Todd, A., & Romine, W. L. (2016). Tracking the Resolution of Student
 Misconceptions about the Central Dogma of Molecular Biology. _Journal of College
-Science Teaching_, _46_(5). https://pmc.ncbi.nlm.nih.gov/articles/PMC5134937/
+Science Teaching_, _46_(5). [PMC5134937][todd-2016]
 
-Kılıç, D., Sağlam, N., & Yaman, S. (2021). Secondary school students'
+Kilic, D., Saglam, N., & Yaman, S. (2021). Secondary school students'
 misconceptions in genetics: origins and solutions. _Journal of Biological
-Education_. https://doi.org/10.1080/00219266.2021.1933136
+Education_. [doi:10.1080/00219266.2021.1933136][kilic-2021]
 
 Uhl, J. D., Kiser, R., & Newman, D. L. (2021). Introductory biology
 undergraduate students' mixed ideas about genetic information flow.
 _Biochemistry and Molecular Biology Education_.
-https://doi.org/10.1002/bmb.21483
+[doi:10.1002/bmb.21483][uhl-2021]
 
 ### Learning Standards & Curriculum
 
 Next Generation Science Standards (NGSS). _HS-LS3: Heredity - Inheritance and
-Variation of Traits_.
-https://www.nextgenscience.org/dci-arrangement/hs-ls3-heredity-inheritance-and-variation-traits
+Variation of Traits_. [NGSS HS-LS3][ngss-hs-ls3]
 
 College Board. (2024). _AP Biology Course and Exam Description_.
-https://apcentral.collegeboard.org/courses/ap-biology
+[AP Biology][ap-biology]
 
 International Baccalaureate Organization. (2023). _Biology Guide: First
-Assessment 2025_. https://www.ibo.org/
+Assessment 2025_. [ibo.org][ibo]
 
 ### Competitive Tools & Platforms
 
 PhET Interactive Simulations. _Biology Simulations_. University of Colorado
-Boulder. https://phet.colorado.edu/
+Boulder. [phet.colorado.edu][phet]
 
 Scratch Biology Simulations Studio. _MIT Media Lab_.
-https://scratch.mit.edu/studios/1242004/
+[Scratch Biology Studio][scratch-biology]
 
 ### Pedagogical Theory
 
@@ -1157,6 +1155,25 @@ pedagogy - a space currently underserved by existing educational tools.
 
 ---
 
-**Document Version**: 1.0.0 **Last Updated**: October 2025 **Maintained By**:
-CodonCanvas Research Team **License**: CC BY 4.0 (Attribution required for
-academic use)
+**Document Version**: 1.0.0
+
+**Last Updated**: October 2025
+
+**Maintained By**: CodonCanvas Research Team
+
+**License**: CC BY 4.0 (Attribution required for academic use)
+
+<!-- Reference link definitions -->
+
+[kesler-2022]: https://doi.org/10.1177/07356331211017793
+[yu-2025]: https://doi.org/10.1177/07356331241293163
+[huang-2025]: https://doi.org/10.1111/jcal.13110
+[ncbi-constructivism]: https://pmc.ncbi.nlm.nih.gov/articles/PMC10730747/
+[todd-2016]: https://pmc.ncbi.nlm.nih.gov/articles/PMC5134937/
+[kilic-2021]: https://doi.org/10.1080/00219266.2021.1933136
+[uhl-2021]: https://doi.org/10.1002/bmb.21483
+[ngss-hs-ls3]: https://www.nextgenscience.org/dci-arrangement/hs-ls3-heredity-inheritance-and-variation-traits
+[ap-biology]: https://apcentral.collegeboard.org/courses/ap-biology
+[ibo]: https://www.ibo.org/
+[phet]: https://phet.colorado.edu/
+[scratch-biology]: https://scratch.mit.edu/studios/1242004/

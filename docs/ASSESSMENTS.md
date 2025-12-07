@@ -1,7 +1,8 @@
 # CodonCanvas Assessment Framework
 
-**Version:** 1.0.0 **Purpose:** Measure learning outcomes for CodonCanvas lesson
-sequence **Target:** Secondary/tertiary biology students (ages 15+)
+**Version:** 1.0.0\
+**Purpose:** Measure learning outcomes for CodonCanvas lesson sequence\
+**Target:** Secondary/tertiary biology students (ages 15+)
 
 ---
 
@@ -19,65 +20,73 @@ memorization. Students should demonstrate:
 
 ## Pre-Assessment (Before Lesson 1)
 
-**Purpose:** Establish baseline understanding of genetic concepts **Duration:**
-10 minutes **Format:** Written or digital quiz
+**Purpose:** Establish baseline understanding of genetic concepts\
+**Duration:** 10 minutes\
+**Format:** Written or digital quiz
 
 ### Pre-Assessment Questions
 
-**1. DNA Structure (Knowledge)** DNA is made of sequences of four bases. What
-are they?
+**1. DNA Structure (Knowledge)**\
+DNA is made of sequences of four bases.\
+What are they?
 
 - [ ] A, C, G, T
 - [ ] A, B, C, D
 - [ ] Red, Green, Blue, Yellow
 - [ ] 0, 1, 2, 3
 
-**2. Codons (Knowledge)** A codon is:
+**2. Codons (Knowledge)**\
+A codon is:
 
 - [ ] A single DNA base
 - [ ] A sequence of three DNA bases
 - [ ] A complete gene
 - [ ] A type of protein
 
-**3. Mutations (Comprehension)** A mutation in DNA means:
+**3. Mutations (Comprehension)**\
+A mutation in DNA means:
 
 - [ ] The DNA is broken
 - [ ] The DNA sequence changes
 - [ ] The organism dies
 - [ ] DNA stops working
 
-**4. Mutation Effects (Application)** If a mutation changes one DNA base, which
-is most likely?
+**4. Mutation Effects (Application)**\
+If a mutation changes one DNA base, which is most likely?
 
 - [ ] No effect at all
 - [ ] Small effect
 - [ ] The organism dies immediately
 - [ ] A new species forms
 
-**5. Genetic Redundancy (Analysis)** Multiple codons can code for the same amino
-acid. Why might this be useful?
+**5. Genetic Redundancy (Analysis)**\
+Multiple codons can code for the same amino acid.\
+Why might this be useful?
 
 - [ ] Makes DNA longer
 - [ ] Protects against some mutations
 - [ ] Makes proteins faster
 - [ ] It's not useful, just random
 
-**6. Reading Frames (Analysis)** DNA is read in groups of three bases. If one
-base is deleted:
+**6. Reading Frames (Analysis)**\
+DNA is read in groups of three bases.\
+If one base is deleted:
 
 - [ ] Only that codon changes
 - [ ] All codons downstream change
 - [ ] Nothing changes
 - [ ] The cell fixes it automatically
 
-**7. Phenotype Connection (Synthesis)** A "phenotype" is:
+**7. Phenotype Connection (Synthesis)**\
+A "phenotype" is:
 
 - [ ] The DNA sequence
 - [ ] The observable traits
 - [ ] A type of mutation
 - [ ] The genetic code
 
-**8. Mutation Types (Prior Knowledge)** Have you heard of these mutation types?
+**8. Mutation Types (Prior Knowledge)**\
+Have you heard of these mutation types?\
 (Check all you know)
 
 - [ ] Silent mutation
@@ -86,16 +95,16 @@ base is deleted:
 - [ ] Frameshift mutation
 - [ ] None of these
 
-**9. Programming Experience (Background)** Have you written computer code
-before?
+**9. Programming Experience (Background)**\
+Have you written computer code before?
 
 - [ ] Never
 - [ ] Once or twice
 - [ ] Several times
 - [ ] Regularly
 
-**10. Confidence (Metacognition)** How confident are you explaining mutations to
-a friend?
+**10. Confidence (Metacognition)**\
+How confident are you explaining mutations to a friend?
 
 - [ ] Not at all confident (1)
 - [ ] Slightly confident (2)
@@ -109,20 +118,20 @@ a friend?
 
 ### Lesson 1 Checkpoints
 
-**Checkpoint 1A: Codon Recognition (Verbal/Hands-up)** "If I change GGA to GGC,
-what will happen?"
+**Checkpoint 1A: Codon Recognition (Verbal/Hands-up)**\
+"If I change GGA to GGC, what will happen?"
 
 - ✅ Correct: "Nothing changes" / "Same shape"
 - ⚠️ Review needed: "Different shape" / "Unsure"
 
-**Checkpoint 1B: Family Identification (Worksheet)** Students complete Exercise
-1.4 (testing CC\* family)
+**Checkpoint 1B: Family Identification (Worksheet)**\
+Students complete Exercise 1.4 (testing CC\* family)
 
 - ✅ Mastery: Correctly identifies all 4 as same
 - ⚠️ Review: Misses patterns or reports differences
 
-**Checkpoint 1C: Creative Application (Observation)** Students complete Exercise
-1.6 (two shapes with TRANSLATE)
+**Checkpoint 1C: Creative Application (Observation)**\
+Students complete Exercise 1.6 (two shapes with TRANSLATE)
 
 - ✅ Mastery: Working genome with two distinct shapes
 - ⚠️ Support needed: Syntax errors, single shape, or missing TRANSLATE
@@ -131,20 +140,20 @@ what will happen?"
 
 ### Lesson 2 Checkpoints
 
-**Checkpoint 2A: Mutation Classification (Worksheet)** Exercise 2.1 -
-identifying which mutations work
+**Checkpoint 2A: Mutation Classification (Worksheet)**\
+Exercise 2.1 - identifying which mutations work
 
 - ✅ Mastery: Correctly predicts functional vs non-functional
 - ⚠️ Review: Random guessing or all marked as same
 
-**Checkpoint 2B: Nonsense Recognition (Demonstration)** Student can explain why
-early TAA stops execution
+**Checkpoint 2B: Nonsense Recognition (Demonstration)**\
+Student can explain why early TAA stops execution
 
 - ✅ Mastery: "It stops reading the rest of the code"
 - ⚠️ Review: "It breaks the code" / Unsure
 
-**Checkpoint 2C: Frameshift Understanding (Worksheet)** Exercise 2.7 - comparing
-frameshift severity to missense
+**Checkpoint 2C: Frameshift Understanding (Worksheet)**\
+Exercise 2.7 - comparing frameshift severity to missense
 
 - ✅ Mastery: Recognizes frameshift affects multiple codons
 - ⚠️ Review: Thinks they're equally severe
@@ -153,20 +162,20 @@ frameshift severity to missense
 
 ### Lesson 3 Checkpoints
 
-**Checkpoint 3A: Transform Application (Observation)** Student uses TRANSLATE,
-ROTATE, or SCALE correctly
+**Checkpoint 3A: Transform Application (Observation)**\
+Student uses TRANSLATE, ROTATE, or SCALE correctly
 
 - ✅ Mastery: Intentional positioning/rotation visible
 - ⚠️ Support: Random transforms, no visible strategy
 
-**Checkpoint 3B: Creative Synthesis (Portfolio)** Exercise 3.5 composition meets
-requirements
+**Checkpoint 3B: Creative Synthesis (Portfolio)**\
+Exercise 3.5 composition meets requirements
 
 - ✅ Mastery: 3+ shapes, 2+ transforms, visually intentional
 - ⚠️ Support: Minimal composition or technical errors
 
-**Checkpoint 3C: Evolution Reasoning (Reflection)** Exercise 3.8 - explaining
-"fitness" in biological terms
+**Checkpoint 3C: Evolution Reasoning (Reflection)**\
+Exercise 3.8 - explaining "fitness" in biological terms
 
 - ✅ Mastery: Connects artistic choices to selection concepts
 - ⚠️ Review: Purely aesthetic explanation, no biology link
@@ -175,42 +184,46 @@ requirements
 
 ## Post-Assessment (After Lesson 3)
 
-**Purpose:** Measure learning gains and concept mastery **Duration:** 15-20
-minutes **Format:** Written quiz + practical challenge
+**Purpose:** Measure learning gains and concept mastery\
+**Duration:** 15-20 minutes\
+**Format:** Written quiz + practical challenge
 
 ### Part A: Conceptual Understanding (10 questions)
 
-**1. Codon Families (Knowledge)** Which codons are in the CIRCLE family?
+**1. Codon Families (Knowledge)**\
+Which codons are in the CIRCLE family?
 
 - [ ] GGA, GGC, GGG, GGT
 - [ ] CCA, CCC, CCG, CCT
 - [ ] AAA, AAC, AAG, AAT
 - [ ] All starting with G
 
-**2. Silent Mutations (Comprehension)** A silent mutation is one that:
+**2. Silent Mutations (Comprehension)**\
+A silent mutation is one that:
 
 - [ ] Produces no change in output
 - [ ] Only affects color
 - [ ] Stops the program early
 - [ ] Scrambles all downstream code
 
-**3. Missense Mutations (Comprehension)** A missense mutation:
+**3. Missense Mutations (Comprehension)**\
+A missense mutation:
 
 - [ ] Changes nothing
 - [ ] Changes one instruction to a different one
 - [ ] Stops execution early
 - [ ] Shifts the reading frame
 
-**4. Nonsense Mutations (Application)** Introducing a TAA codon in the middle of
-a genome will:
+**4. Nonsense Mutations (Application)**\
+Introducing a TAA codon in the middle of a genome will:
 
 - [ ] Do nothing
 - [ ] Change one shape
 - [ ] Stop execution and truncate output
 - [ ] Speed up the program
 
-**5. Frameshift Mutations (Application)** Deleting one base from a genome
-affects:
+**5. Frameshift Mutations (Application)**\
+Deleting one base from a genome affects:
 
 - [ ] Only that one codon
 - [ ] That codon and the next one
@@ -225,32 +238,34 @@ A) Silent B) Missense C) Nonsense D) Frameshift
 
 Order: \_\_\_\_\_ → \_\_\_\_\_ → \_\_\_\_\_ → \_\_\_\_\_
 
-**7. Reading Frames (Analysis)** Why does reading frame matter?
+**7. Reading Frames (Analysis)**\
+Why does reading frame matter?
 
 - [ ] It determines color
 - [ ] Triplets must be read correctly to decode instructions
 - [ ] It speeds up execution
 - [ ] It makes code more readable
 
-**8. Biological Parallel (Synthesis)** In real biology, which mutation type is
-most similar to changing GGA → GGC?
+**8. Biological Parallel (Synthesis)**\
+In real biology, which mutation type is most similar to changing GGA → GGC?
 
 - [ ] Silent mutation (synonymous codon)
 - [ ] Missense mutation (different amino acid)
 - [ ] Nonsense mutation (stop codon)
 - [ ] Frameshift mutation (insertion/deletion)
 
-**9. Genetic Redundancy (Evaluation)** The genetic code has redundancy (multiple
-codons → same amino acid). Is this:
+**9. Genetic Redundancy (Evaluation)**\
+The genetic code has redundancy (multiple codons → same amino acid). Is this:
 
 - [ ] A design flaw (wasteful)
 - [ ] Advantageous (error tolerance)
 - [ ] Neutral (no effect)
 - [ ] Depends on the organism
 
-**10. Transfer Knowledge (Synthesis)** Sickle cell disease is caused by a single
-base change (GAG → GTG) in the hemoglobin gene, changing glutamic acid to
-valine. This is:
+**10. Transfer Knowledge (Synthesis)**\
+Sickle cell disease is caused by a single base change (GAG → GTG) in the
+hemoglobin gene, changing glutamic acid to valine.\
+This is:
 
 - [ ] Silent mutation (no effect)
 - [ ] Missense mutation (different amino acid)
@@ -266,61 +281,61 @@ the visual effect.
 
 **Challenge 1:**
 
-```
+```text
 Original: ATG GAA CCC GGA TAA
 Mutated:  ATG GAA CCC GGT TAA
 ```
 
-**Mutation type:** `_________________________` **Predicted effect:**
-`_________________________`
+**Mutation type:** `_________________________`\
+**Predicted effect:** `_________________________`
 
 ---
 
 **Challenge 2:**
 
-```
+```text
 Original: ATG GAA CCC GGA GAA CCC CCA TAA
 Mutated:  ATG GAA CCC GCA GAA CCC CCA TAA
 ```
 
-**Mutation type:** `_________________________` **Predicted effect:**
-`_________________________`
+**Mutation type:** `_________________________`\
+**Predicted effect:** `_________________________`
 
 ---
 
 **Challenge 3:**
 
-```
+```text
 Original: ATG GAA CCC GGA GAA CCC CCA TAA
 Mutated:  ATG GAA CCC TAA GAA CCC CCA TAA
 ```
 
-**Mutation type:** `_________________________` **Predicted effect:**
-`_________________________`
+**Mutation type:** `_________________________`\
+**Predicted effect:** `_________________________`
 
 ---
 
 **Challenge 4:**
 
-```
+```text
 Original: ATGAAACCCGGATAA
 Mutated:  ATGAACCCGGATAA  (one A deleted)
 ```
 
-**Mutation type:** `_________________________` **Predicted effect:**
-`_________________________`
+**Mutation type:** `_________________________`\
+**Predicted effect:** `_________________________`
 
 ---
 
 **Challenge 5:**
 
-```
+```text
 Original: ATG GAA AGG GGA TAA
 Mutated:  ATG GAA AGG CCA TAA
 ```
 
-**Mutation type:** `_________________________` **Predicted effect:**
-`_________________________`
+**Mutation type:** `_________________________`\
+**Predicted effect:** `_________________________`
 
 ---
 
@@ -340,27 +355,27 @@ mutation types.
 
 **Original Genome:**
 
-```
+```genome
 ```
 
 **Silent Mutation Version:**
 
-```
+```genome
 ```
 
 **Missense Mutation Version:**
 
-```
+```genome
 ```
 
 **Nonsense Mutation Version:**
 
-```
+```genome
 ```
 
 **Frameshift Mutation Version:**
 
-```
+```genome
 ```
 
 ---
@@ -387,7 +402,7 @@ Score each challenge (0-2 points):
 - **Mastery:** 9-10 points
 - **Proficient:** 7-8 points
 - **Developing:** 5-6 points
-- **Beginning:** <5 points
+- **Beginning:** \<5 points
 
 ### Part C: Creative Challenge
 
@@ -436,7 +451,7 @@ Score each challenge (0-2 points):
 **Time-to-First-Artifact:**
 
 - Record time from "open CodonCanvas" to first successful genome execution
-- Target: <5 minutes (per MVP spec)
+- Target: \<5 minutes (per MVP spec)
 
 **Retention Across Lessons:**
 
@@ -449,7 +464,7 @@ Score each challenge (0-2 points):
 **Mutation Identification Accuracy:**
 
 - Post-assessment Part B score distribution
-- Target: >70% accuracy on mutation classification
+- Target: \>70% accuracy on mutation classification
 
 **User Satisfaction:**
 
@@ -523,7 +538,7 @@ Score each challenge (0-2 points):
 
 **Targets (from MVP spec):**
 
-- ✅ Time-to-first-artifact: <5 minutes (>80% of students)
+- ✅ Time-to-first-artifact: \<5 minutes (\>80% of students)
 - ✅ Retention: >80% complete all 3 lessons
 - ✅ Mutation identification: >70% accuracy on classification
 - ✅ User satisfaction: >80% thumbs up / ≥4/5 stars
