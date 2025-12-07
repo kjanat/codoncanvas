@@ -35,11 +35,15 @@ test.describe("Teacher Dashboard", () => {
     await expect(demoButton).toBeVisible();
     await demoButton.click();
 
-    // Dashboard should populate with data - wait for table to appear
-    await expect(page.locator("table")).toBeVisible({ timeout: 5000 });
+    // Dashboard should populate with data - wait for engagement table to appear
+    // The table has a caption "Student engagement metrics..."
+    const engagementTable = page.getByRole("table", {
+      name: /Student engagement metrics/i,
+    });
+    await expect(engagementTable).toBeVisible({ timeout: 5000 });
 
-    // Verify table is present
-    const tableCount = await page.locator("table").count();
-    expect(tableCount).toBeGreaterThan(0);
+    // Verify table has data rows (at least one student)
+    const rows = engagementTable.locator("tbody tr");
+    await expect(rows.first()).toBeVisible();
   });
 });

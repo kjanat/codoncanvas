@@ -21,12 +21,14 @@ test.describe("Mutation Lab - Silent Mutation", () => {
     ).toBeVisible();
 
     // Verify exactly 1 codon changed (silent mutations affect single codon)
-    // UI structure: <span>1</span><span>codon changed</span>
-    await expect(page.getByText("codon changed")).toBeVisible();
-    const countText = await page
-      .getByText("codon changed")
-      .locator("..")
-      .textContent();
+    // UI structure in DiffViewer header: <span>{count}</span><span>codon changed</span>
+    // Scope to the DiffViewer container using the mutation result heading
+    const diffViewerHeader = page
+      .getByRole("heading", { name: "Mutation Result: silent" })
+      .locator("..");
+    const codonChangedLabel = diffViewerHeader.getByText("codon changed");
+    await expect(codonChangedLabel).toBeVisible();
+    const countText = await codonChangedLabel.locator("..").textContent();
     expect(countText).toContain("1");
 
     // Verify the codon change is displayed (nucleotide sequence changed)

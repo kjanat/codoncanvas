@@ -51,7 +51,9 @@ test.describe("Genetic Algorithm Demo", () => {
 
     // 11. Verify population grid has individual buttons
     await expect(
-      page.getByRole("button", { name: /Select individual 1 with/i }),
+      page.getByRole("button", {
+        name: /Select individual 1 with fitness \d+%/i,
+      }),
     ).toBeVisible();
   });
 });

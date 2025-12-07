@@ -32,6 +32,7 @@ export {
   Navigation,
   type NavLink,
   type NavSection,
+  type RoutePath,
   ThemeToggle,
 } from "./layout";
 export {

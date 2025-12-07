@@ -30,14 +30,11 @@ test.describe("Example Gallery", () => {
     await expect(page).toHaveURL(/example=/);
 
     // 4. Verify we're on the playground page
-    await expect(
-      page.getByRole("textbox", { name: "Genome editor" }),
-    ).toBeVisible();
+    const editor = page.getByRole("textbox", { name: "Genome editor" });
+    await expect(editor).toBeVisible();
 
     // Verify the editor has content (not empty)
-    const editorValue = await page
-      .getByRole("textbox", { name: "Genome editor" })
-      .inputValue();
+    const editorValue = await editor.inputValue();
     expect(editorValue.length).toBeGreaterThan(0);
   });
 });

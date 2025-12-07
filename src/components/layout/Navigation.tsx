@@ -22,19 +22,21 @@ export function Navigation() {
       aria-label="Primary navigation"
       className="hidden items-center gap-1 md:flex"
     >
-      {NAV_LINKS.map((link) => (
-        <Link
-          className={`rounded-md px-3 py-2 text-sm font-medium transition-colors ${
-            location.pathname === link.path
-              ? "bg-primary text-white"
-              : "text-text hover:bg-bg-light"
-          }`}
-          key={link.path}
-          to={link.path}
-        >
-          {link.label}
-        </Link>
-      ))}
+      {NAV_LINKS.map((link) => {
+        const isActive = location.pathname === link.path;
+        return (
+          <Link
+            aria-current={isActive ? "page" : undefined}
+            className={`rounded-md px-3 py-2 text-sm font-medium transition-colors ${
+              isActive ? "bg-primary text-white" : "text-text hover:bg-bg-light"
+            }`}
+            key={link.path}
+            to={link.path}
+          >
+            {link.label}
+          </Link>
+        );
+      })}
 
       <NavDropdown label="More" sections={MORE_SECTIONS} />
     </nav>

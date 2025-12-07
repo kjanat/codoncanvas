@@ -5,7 +5,7 @@
  * both desktop Navigation and MobileMenu components.
  */
 
-import type { NavLink, NavSection } from "./NavDropdown";
+import type { NavLink, NavSection } from "@/types";
 
 /** Primary navigation links shown in main nav bar */
 export const NAV_LINKS: readonly NavLink[] = [

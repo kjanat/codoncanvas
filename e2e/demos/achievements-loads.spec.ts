@@ -4,11 +4,12 @@
 import { expect, test } from "@playwright/test";
 
 test.describe("Achievements Demo", () => {
-  test("achievements-page-loads", async ({ page }): Promise<void> => {
-    // 1. Navigate to /demos/achievements
+  test.beforeEach(async ({ page }): Promise<void> => {
     await page.goto("/demos/achievements");
+  });
 
-    // 2. Verify page heading
+  test("achievements-page-loads", async ({ page }): Promise<void> => {
+    // Verify page heading
     await expect(
       page.getByRole("heading", { name: "Achievements" }),
     ).toBeVisible();
@@ -20,8 +21,6 @@ test.describe("Achievements Demo", () => {
   });
 
   test("achievements-grid-displayed", async ({ page }): Promise<void> => {
-    await page.goto("/demos/achievements");
-
     // Verify achievements grid/cards section exists (lg:col-span-3 card)
     // The grid contains filter toggle (radiogroup) and achievement cards
     await expect(page.getByRole("radiogroup")).toBeVisible();
@@ -29,8 +28,6 @@ test.describe("Achievements Demo", () => {
   });
 
   test("progress-bar-visible", async ({ page }): Promise<void> => {
-    await page.goto("/demos/achievements");
-
     // Verify progress bar with "Overall Progress" label
     await expect(page.getByText("Overall Progress")).toBeVisible();
 
@@ -39,8 +36,6 @@ test.describe("Achievements Demo", () => {
   });
 
   test("stats-panel-visible", async ({ page }): Promise<void> => {
-    await page.goto("/demos/achievements");
-
     // Verify "Your Stats" heading
     await expect(
       page.getByRole("heading", { name: "Your Stats" }),
@@ -52,8 +47,6 @@ test.describe("Achievements Demo", () => {
   });
 
   test("simulation-panel-visible", async ({ page }): Promise<void> => {
-    await page.goto("/demos/achievements");
-
     // Verify "Simulate Actions" heading
     await expect(
       page.getByRole("heading", { name: "Simulate Actions" }),

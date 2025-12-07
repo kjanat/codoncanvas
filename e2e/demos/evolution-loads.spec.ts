@@ -18,21 +18,31 @@ test.describe("Evolution Demo", () => {
       page.getByRole("heading", { name: "Current Parent" }),
     ).toBeVisible();
 
-    // 4. Verify parent genome textarea
+    // 4. Verify parent genome textarea is editable and has content
     const genomeInput = page.getByRole("textbox", {
       name: /Parent genome code/i,
     });
     await expect(genomeInput).toBeVisible();
+    await expect(genomeInput).toBeEditable();
+    await expect(genomeInput).not.toBeEmpty();
 
-    // 5. Verify parent visualization canvas
-    await expect(
-      page.getByRole("img", { name: /Current parent genome visualization/i }),
-    ).toBeVisible();
+    // 5. Verify parent visualization canvas actually renders
+    const canvas = page.getByRole("img", {
+      name: /Current parent genome visualization/i,
+    });
+    await expect(canvas).toBeVisible();
+    // Verify canvas has actual dimensions (not collapsed)
+    const boundingBox = await canvas.boundingBox();
+    expect(boundingBox).not.toBeNull();
+    expect(boundingBox?.width).toBeGreaterThan(0);
+    expect(boundingBox?.height).toBeGreaterThan(0);
 
-    // 6. Verify Generate Offspring button
-    await expect(
-      page.getByRole("button", { name: "Generate Offspring" }),
-    ).toBeVisible();
+    // 6. Verify Generate Offspring button is enabled
+    const generateButton = page.getByRole("button", {
+      name: "Generate Offspring",
+    });
+    await expect(generateButton).toBeVisible();
+    await expect(generateButton).toBeEnabled();
   });
 
   test("evolution-demo-generates-candidates", async ({
@@ -48,9 +58,20 @@ test.describe("Evolution Demo", () => {
       page.getByRole("heading", { name: "Select the Fittest Candidate" }),
     ).toBeVisible();
 
-    // Verify at least one candidate button exists
-    await expect(
-      page.getByRole("button", { name: /Select candidate 1/i }),
-    ).toBeVisible();
+    // Verify multiple candidates are generated
+    const candidateButtons = page.getByRole("button", {
+      name: /Select candidate \d+:/i,
+    });
+    const candidateCount = await candidateButtons.count();
+    expect(candidateCount).toBeGreaterThan(1);
+
+    // Verify each candidate has an associated visualization
+    for (let i = 1; i <= candidateCount; i++) {
+      await expect(
+        page.getByRole("img", {
+          name: new RegExp(`Genome visualization for candidate ${i}`, "i"),
+        }),
+      ).toBeVisible();
+    }
   });
 });

@@ -14,17 +14,8 @@ import {
   useState,
 } from "react";
 
+import type { NavSection } from "@/types";
 import { ChevronDownIcon } from "@/ui/icons";
-
-export interface NavLink {
-  path: string;
-  label: string;
-}
-
-export interface NavSection {
-  title: string;
-  links: readonly NavLink[];
-}
 
 export interface NavDropdownProps {
   /** Button label */
