@@ -27,11 +27,13 @@ export function CanvasPanel({
 }: CanvasPanelProps): ReactElement {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const [renderError, setRenderError] = useState<string | null>(null);
+  const [isRendered, setIsRendered] = useState(false);
   const { renderWithResult } = useRenderGenome();
 
   useEffect(() => {
     const canvas = canvasRef.current;
     if (canvas) {
+      setIsRendered(false);
       canvas.width = width;
       canvas.height = height;
       const result = renderWithResult(genome, canvas);
@@ -41,6 +43,7 @@ export function CanvasPanel({
         onRenderError?.(new Error(message), genome);
       } else {
         setRenderError(null);
+        setIsRendered(true);
       }
     }
   }, [genome, width, height, renderWithResult, onRenderError]);
@@ -61,6 +64,7 @@ export function CanvasPanel({
         <canvas
           aria-label={label}
           className="rounded-lg border border-border bg-surface"
+          data-rendered={isRendered}
           height={height}
           ref={canvasRef}
           role="img"
