@@ -4,9 +4,17 @@
 import { expect, test } from "@playwright/test";
 
 test.describe("File Operations", () => {
-  test("share-link-generation", async ({ page, context, isMobile }) => {
-    // Grant clipboard permissions
-    await context.grantPermissions(["clipboard-read", "clipboard-write"]);
+  test("share-link-generation", async ({
+    page,
+    context,
+    isMobile,
+    browserName,
+  }) => {
+    // Grant clipboard permissions - only supported in Chromium
+    // Firefox and WebKit don't support clipboard-read permission
+    if (browserName === "chromium") {
+      await context.grantPermissions(["clipboard-read", "clipboard-write"]);
+    }
 
     // 1. Navigate to playground
     await page.goto("/");

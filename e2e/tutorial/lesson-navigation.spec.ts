@@ -39,16 +39,19 @@ test.describe("Tutorial Navigation", () => {
     await page.goto("/tutorial");
 
     // On mobile, sidebar should be hidden initially
-    // Look for menu button (FAB) to open sidebar
-    const menuButton = page.getByRole("button", { name: /menu|lessons/i });
+    // Look for menu button (FAB) to open sidebar - use first() to avoid strict mode violation
+    // as there may be both "Open menu" and "Close menu" buttons
+    const menuButton = page
+      .getByRole("button", { name: /menu|lessons/i })
+      .first();
     if (await menuButton.isVisible()) {
       await menuButton.click();
 
       // Sidebar should now be visible
       await expect(page.getByText("Module 1")).toBeVisible();
 
-      // Close sidebar
-      const closeButton = page.getByRole("button", { name: /close/i });
+      // Close sidebar - use exact name to avoid matching multiple buttons
+      const closeButton = page.getByRole("button", { name: "Close menu" });
       if (await closeButton.isVisible()) {
         await closeButton.click();
       }

@@ -22,10 +22,13 @@ test.describe("Teacher Dashboard", () => {
   test("teacher-dashboard-load-demo", async ({ page }): Promise<void> => {
     await page.goto("/dashboards/teacher");
 
-    // Look for 'Load Demo Data' button
-    const demoButton = page.getByRole("button", {
-      name: /demo.*data|load.*demo/i,
-    });
+    // Look for 'Load Demo Data' button - use first() to avoid strict mode violation
+    // when multiple buttons match (e.g., multiple "Load Demo Data" buttons)
+    const demoButton = page
+      .getByRole("button", {
+        name: /demo.*data|load.*demo/i,
+      })
+      .first();
     if (await demoButton.isVisible()) {
       await demoButton.click();
 

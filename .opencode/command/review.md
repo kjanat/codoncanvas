@@ -1,6 +1,5 @@
 ---
-description: |
-  Review changes [all|staged|unstaged|commit|branch|pr] [ref]
+description: Review changes [all|staged|unstaged|commit|branch|pr] [ref]
 agent: plan
 ---
 

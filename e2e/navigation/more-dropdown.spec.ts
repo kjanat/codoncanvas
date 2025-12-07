@@ -36,7 +36,8 @@ test.describe("Navigation - More Dropdown", () => {
     ];
 
     for (const demoPattern of demoLinks) {
-      const link = page.getByRole("link", { name: demoPattern });
+      // Use first() to handle cases where multiple links match (e.g., "Evolution Lab" and "Genetic Algorithm")
+      const link = page.getByRole("link", { name: demoPattern }).first();
       // At least some demos should be linked
       if (await link.isVisible()) {
         await expect(link).toBeVisible();
