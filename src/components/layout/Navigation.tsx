@@ -7,35 +7,8 @@
 
 import { Link, useRouterState } from "@tanstack/react-router";
 
-import { NavDropdown, type NavSection } from "./NavDropdown";
-
-const NAV_LINKS = [
-  { path: "/", label: "Playground" },
-  { path: "/gallery", label: "Gallery" },
-  { path: "/tutorial", label: "Tutorial" },
-  { path: "/demos", label: "Demos" },
-] as const;
-
-const MORE_SECTIONS: NavSection[] = [
-  {
-    title: "Demos",
-    links: [
-      { path: "/demos/mutation", label: "Mutation Lab" },
-      { path: "/demos/timeline", label: "Timeline" },
-      { path: "/demos/evolution", label: "Evolution" },
-      { path: "/demos/population", label: "Population" },
-      { path: "/demos/genetic", label: "Genetic Algorithm" },
-    ],
-  },
-  {
-    title: "Dashboards",
-    links: [
-      { path: "/dashboards/learning", label: "Learning Paths" },
-      { path: "/dashboards/teacher", label: "Teacher Dashboard" },
-      { path: "/dashboards/research", label: "Research" },
-    ],
-  },
-];
+import { NavDropdown } from "./NavDropdown";
+import { MORE_SECTIONS, NAV_LINKS } from "./nav-data";
 
 /**
  * Main navigation bar with links and dropdown menus.

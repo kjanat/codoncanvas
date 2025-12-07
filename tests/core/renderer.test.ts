@@ -493,8 +493,8 @@ describe("Canvas2DRenderer", () => {
 
     test("accepts full hue range (0-360)", () => {
       renderer.setColor(360, 100, 50);
-
-      expect(ctx.fillStyle).toBe("hsl(360, 100%, 50%)");
+      // 360 degrees normalizes to 0 (full circle)
+      expect(ctx.fillStyle).toBe("hsl(0, 100%, 50%)");
     });
 
     test("accepts full saturation range (0-100)", () => {

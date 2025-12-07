@@ -7,11 +7,9 @@
  * @module core/svg-renderer
  */
 
-import type { Renderer, TransformState } from "./renderer";
+import { BaseRenderer } from "./base-renderer";
+import type { Renderer } from "./renderer";
 import { generateNoisePoints, safeNum } from "./renderer";
-
-/** Minimum scale to prevent zero/negative values breaking rendering */
-const MIN_SCALE = 0.001;
 
 /**
  * SVG rendering implementation.
@@ -29,14 +27,8 @@ const MIN_SCALE = 0.001;
  * const svgString = renderer.toSVG();
  * ```
  */
-export class SVGRenderer implements Renderer {
+export class SVGRenderer extends BaseRenderer implements Renderer {
   private elements: string[] = [];
-  private currentX: number;
-  private currentY: number;
-  private currentRotation: number = 0;
-  private currentScale: number = 1;
-  private currentColor: string = "hsl(0, 0%, 0%)";
-
   private _width: number;
   private _height: number;
 
@@ -49,10 +41,10 @@ export class SVGRenderer implements Renderer {
   }
 
   constructor(width: number, height: number) {
+    super();
     this._width = width;
     this._height = height;
-    this.currentX = width / 2;
-    this.currentY = height / 2;
+    this.resetTransformState(width, height);
   }
 
   /**
@@ -66,18 +58,12 @@ export class SVGRenderer implements Renderer {
     if (width !== undefined) this._width = width;
     if (height !== undefined) this._height = height;
     this.elements = [];
-    this.currentX = this._width / 2;
-    this.currentY = this._height / 2;
-    this.currentRotation = 0;
-    this.currentScale = 1;
+    this.resetTransformState(this._width, this._height);
   }
 
   clear(): void {
     this.elements = [];
-    this.currentX = this._width / 2;
-    this.currentY = this._height / 2;
-    this.currentRotation = 0;
-    this.currentScale = 1;
+    this.resetTransformState(this._width, this._height);
   }
 
   private getTransformAttr(): string {
@@ -161,54 +147,6 @@ export class SVGRenderer implements Renderer {
     );
 
     this.addElement(`<g transform="${transform}">${dots.join("")}</g>`);
-  }
-
-  setPosition(x: number, y: number): void {
-    this.currentX = safeNum(x);
-    this.currentY = safeNum(y);
-  }
-
-  translate(dx: number, dy: number): void {
-    this.currentX += safeNum(dx);
-    this.currentY += safeNum(dy);
-  }
-
-  setRotation(degrees: number): void {
-    this.currentRotation = safeNum(degrees);
-  }
-
-  rotate(degrees: number): void {
-    this.currentRotation += safeNum(degrees);
-  }
-
-  setScale(scale: number): void {
-    this.currentScale = Math.max(safeNum(scale), MIN_SCALE);
-  }
-
-  scale(factor: number): void {
-    this.currentScale = Math.max(
-      this.currentScale * safeNum(factor),
-      MIN_SCALE,
-    );
-  }
-
-  setColor(h: number, s: number, l: number): void {
-    const sanitizedH = safeNum(h);
-    const sanitizedS = safeNum(s);
-    const sanitizedL = safeNum(l);
-    const safeH = ((sanitizedH % 360) + 360) % 360; // Normalize hue to 0-359
-    const safeS = Math.max(0, Math.min(100, sanitizedS));
-    const safeL = Math.max(0, Math.min(100, sanitizedL));
-    this.currentColor = `hsl(${safeH}, ${safeS}%, ${safeL}%)`;
-  }
-
-  getCurrentTransform(): TransformState {
-    return {
-      x: this.currentX,
-      y: this.currentY,
-      rotation: this.currentRotation,
-      scale: this.currentScale,
-    };
   }
 
   /**

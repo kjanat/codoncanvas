@@ -9,37 +9,10 @@ import { Link, useRouterState } from "@tanstack/react-router";
 import { FocusTrap } from "focus-trap-react";
 import { type ReactElement, useEffect, useRef, useState } from "react";
 
-import type { NavLink, NavSection } from "@/components/layout";
 import { useScrollLock } from "@/hooks";
 import { MenuIcon, XIcon } from "@/ui/icons";
 
-const NAV_LINKS: NavLink[] = [
-  { path: "/", label: "Playground" },
-  { path: "/gallery", label: "Gallery" },
-  { path: "/tutorial", label: "Tutorial" },
-  { path: "/demos", label: "Demos" },
-];
-
-const MORE_SECTIONS: NavSection[] = [
-  {
-    title: "Demos",
-    links: [
-      { path: "/demos/mutation", label: "Mutation Lab" },
-      { path: "/demos/timeline", label: "Timeline" },
-      { path: "/demos/evolution", label: "Evolution" },
-      { path: "/demos/population", label: "Population" },
-      { path: "/demos/genetic", label: "Genetic Algorithm" },
-    ],
-  },
-  {
-    title: "Dashboards",
-    links: [
-      { path: "/dashboards/learning", label: "Learning Paths" },
-      { path: "/dashboards/teacher", label: "Teacher Dashboard" },
-      { path: "/dashboards/research", label: "Research" },
-    ],
-  },
-];
+import { MORE_SECTIONS, NAV_LINKS } from "./nav-data";
 
 /**
  * Mobile navigation menu with hamburger toggle and slide-out drawer.

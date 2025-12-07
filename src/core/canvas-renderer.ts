@@ -7,11 +7,9 @@
  * @module core/canvas-renderer
  */
 
-import type { Renderer, TransformState } from "./renderer";
-import { generateNoisePoints, safeNum } from "./renderer";
-
-/** Minimum scale to prevent zero/negative values breaking rendering */
-const MIN_SCALE = 0.001;
+import { BaseRenderer } from "./base-renderer";
+import type { Renderer } from "./renderer";
+import { generateNoisePoints } from "./renderer";
 
 /** Error thrown when canvas 2D context cannot be obtained */
 export class CanvasContextError extends Error {
@@ -44,13 +42,8 @@ export class CanvasContextError extends Error {
  * renderer.circle(50); // Draw blue circle
  * ```
  */
-export class Canvas2DRenderer implements Renderer {
+export class Canvas2DRenderer extends BaseRenderer implements Renderer {
   private ctx: CanvasRenderingContext2D;
-  private currentX: number = 0;
-  private currentY: number = 0;
-  private currentRotation: number = 0;
-  private currentScale: number = 1;
-
   private _width: number;
   private _height: number;
 
@@ -63,6 +56,7 @@ export class Canvas2DRenderer implements Renderer {
   }
 
   constructor(canvas: HTMLCanvasElement) {
+    super();
     const context = canvas.getContext("2d");
     if (!context) {
       throw new CanvasContextError("Could not get 2D context from canvas");
@@ -72,8 +66,7 @@ export class Canvas2DRenderer implements Renderer {
     this._height = canvas.height;
 
     // Initialize at center
-    this.currentX = this._width / 2;
-    this.currentY = this._height / 2;
+    this.resetTransformState(this._width, this._height);
   }
 
   /**
@@ -86,18 +79,12 @@ export class Canvas2DRenderer implements Renderer {
   resize(_width?: number, _height?: number): void {
     this._width = this.ctx.canvas.width;
     this._height = this.ctx.canvas.height;
-    this.currentX = this._width / 2;
-    this.currentY = this._height / 2;
-    this.currentRotation = 0;
-    this.currentScale = 1;
+    this.resetTransformState(this._width, this._height);
   }
 
   clear(): void {
     this.ctx.clearRect(0, 0, this._width, this._height);
-    this.currentX = this._width / 2;
-    this.currentY = this._height / 2;
-    this.currentRotation = 0;
-    this.currentScale = 1;
+    this.resetTransformState(this._width, this._height);
   }
 
   private applyTransform(): void {
@@ -170,48 +157,14 @@ export class Canvas2DRenderer implements Renderer {
     this.restoreTransform();
   }
 
-  setPosition(x: number, y: number): void {
-    this.currentX = safeNum(x);
-    this.currentY = safeNum(y);
-  }
-
-  translate(dx: number, dy: number): void {
-    this.currentX += safeNum(dx);
-    this.currentY += safeNum(dy);
-  }
-
-  setRotation(degrees: number): void {
-    this.currentRotation = safeNum(degrees);
-  }
-
-  rotate(degrees: number): void {
-    this.currentRotation += safeNum(degrees);
-  }
-
-  setScale(scale: number): void {
-    this.currentScale = Math.max(safeNum(scale), MIN_SCALE);
-  }
-
-  scale(factor: number): void {
-    this.currentScale = Math.max(
-      this.currentScale * safeNum(factor),
-      MIN_SCALE,
-    );
-  }
-
-  setColor(h: number, s: number, l: number): void {
-    const color = `hsl(${h}, ${s}%, ${l}%)`;
-    this.ctx.fillStyle = color;
-    this.ctx.strokeStyle = color;
-  }
-
-  getCurrentTransform(): TransformState {
-    return {
-      x: this.currentX,
-      y: this.currentY,
-      rotation: this.currentRotation,
-      scale: this.currentScale,
-    };
+  /**
+   * Set drawing color for fill and stroke.
+   * Overrides base to sync with Canvas2D context.
+   */
+  override setColor(h: number, s: number, l: number): void {
+    super.setColor(h, s, l);
+    this.ctx.fillStyle = this.currentColor;
+    this.ctx.strokeStyle = this.currentColor;
   }
 
   toDataURL(): string {

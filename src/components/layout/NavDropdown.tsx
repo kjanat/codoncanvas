@@ -23,14 +23,14 @@ export interface NavLink {
 
 export interface NavSection {
   title: string;
-  links: NavLink[];
+  links: readonly NavLink[];
 }
 
 export interface NavDropdownProps {
   /** Button label */
   label: string;
   /** Grouped sections of links */
-  sections: NavSection[];
+  sections: readonly NavSection[];
 }
 
 /**

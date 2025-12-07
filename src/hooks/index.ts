@@ -76,11 +76,6 @@ export {
 } from "./useRenderGenome";
 export { useScrollLock } from "./useScrollLock";
 export {
-  type UseShareUrlOptions,
-  type UseShareUrlReturn,
-  useShareUrl,
-} from "./useShareUrl";
-export {
   type SimulationState,
   type UseSimulationOptions,
   type UseSimulationReturn,
