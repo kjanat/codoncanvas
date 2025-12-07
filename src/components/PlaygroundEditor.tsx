@@ -117,7 +117,7 @@ export const PlaygroundEditor = memo(
         nucleotideMode,
       },
       ref,
-    ) {
+    ): ReactElement {
       return (
         <div className="flex flex-1 flex-col border-r border-border bg-surface md:border-b-0">
           {/* Editor textarea */}

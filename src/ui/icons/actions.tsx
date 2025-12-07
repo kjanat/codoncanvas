@@ -1,5 +1,5 @@
 /**
- * Action icons - close, check, error, warning
+ * Action icons - UI action and toolbar icons
  */
 
 import type { IconProps } from "./types";

@@ -71,6 +71,7 @@ function TimelineDemoPage() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [isExporting, setIsExporting] = useState(false);
   const [exportProgress, setExportProgress] = useState(0);
+  const [exportError, setExportError] = useState<string | null>(null);
 
   const { resolvedTheme } = useTheme();
   const isDark = resolvedTheme === "dark";
@@ -89,6 +90,7 @@ function TimelineDemoPage() {
 
     setIsExporting(true);
     setExportProgress(0);
+    setExportError(null);
 
     try {
       const exporter = new GifExporter({
@@ -113,7 +115,8 @@ function TimelineDemoPage() {
 
       exporter.downloadGif(blob, "codoncanvas-timeline.gif");
     } catch (err) {
-      console.error("GIF export failed:", err);
+      const message = err instanceof Error ? err.message : "Unknown error";
+      setExportError(`GIF export failed: ${message}`);
     } finally {
       setIsExporting(false);
       setExportProgress(0);
@@ -146,6 +149,9 @@ function TimelineDemoPage() {
           </button>
           {player.error && (
             <ErrorAlert className="mt-4">{player.error}</ErrorAlert>
+          )}
+          {exportError && (
+            <ErrorAlert className="mt-4">{exportError}</ErrorAlert>
           )}
         </Card>
 

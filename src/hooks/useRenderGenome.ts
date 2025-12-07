@@ -19,6 +19,12 @@ export interface RenderResult {
   error: string | null;
 }
 
+/** Optional configuration for rendering */
+export interface RenderOptions {
+  /** Skip clearing the canvas before rendering */
+  skipClear?: boolean;
+}
+
 /** Return type of useRenderGenome hook */
 export interface UseRenderGenomeReturn {
   /** Render genome to canvas, returns success boolean */
@@ -27,6 +33,7 @@ export interface UseRenderGenomeReturn {
   renderWithResult: (
     genome: string,
     canvas: HTMLCanvasElement | null,
+    options?: RenderOptions,
   ) => RenderResult;
   /** Clear canvas */
   clear: (canvas: HTMLCanvasElement | null) => void;
@@ -77,7 +84,7 @@ export function useRenderGenome(): UseRenderGenomeReturn {
   const renderWithResult = (
     genome: string,
     canvas: HTMLCanvasElement | null,
-    options: { skipClear?: boolean } = {},
+    options: RenderOptions = {},
   ): RenderResult => {
     if (!canvas) {
       return { success: false, error: "Canvas not available" };
