@@ -86,6 +86,13 @@ function MutationDemoPage() {
         />
       </div>
 
+      {/* Status announcement for screen readers */}
+      <div aria-atomic="true" aria-live="polite" className="sr-only">
+        {mutationResult
+          ? `Mutation applied: ${mutationResult.type}. View the comparison below.`
+          : ""}
+      </div>
+
       <DiffViewer
         mutated={mutationResult?.mutated || originalGenome}
         original={originalGenome}

@@ -21,30 +21,58 @@ export function EngagementTable({ students }: EngagementTableProps) {
       </div>
       <div className="overflow-x-auto">
         <table className="w-full">
+          <caption className="sr-only">
+            Student engagement metrics including sessions, duration, genomes
+            created, and completion status
+          </caption>
           <thead className="border-b border-border bg-bg-light">
             <tr>
-              <th className="px-4 py-3 text-left text-sm font-medium text-text-muted">
+              <th
+                className="px-4 py-3 text-left text-sm font-medium text-text-muted"
+                scope="col"
+              >
                 ID
               </th>
-              <th className="px-4 py-3 text-left text-sm font-medium text-text-muted">
+              <th
+                className="px-4 py-3 text-left text-sm font-medium text-text-muted"
+                scope="col"
+              >
                 Name
               </th>
-              <th className="px-4 py-3 text-left text-sm font-medium text-text-muted">
+              <th
+                className="px-4 py-3 text-left text-sm font-medium text-text-muted"
+                scope="col"
+              >
                 Sessions
               </th>
-              <th className="px-4 py-3 text-left text-sm font-medium text-text-muted">
+              <th
+                className="px-4 py-3 text-left text-sm font-medium text-text-muted"
+                scope="col"
+              >
                 Duration
               </th>
-              <th className="px-4 py-3 text-left text-sm font-medium text-text-muted">
+              <th
+                className="px-4 py-3 text-left text-sm font-medium text-text-muted"
+                scope="col"
+              >
                 Genomes
               </th>
-              <th className="px-4 py-3 text-left text-sm font-medium text-text-muted">
+              <th
+                className="px-4 py-3 text-left text-sm font-medium text-text-muted"
+                scope="col"
+              >
                 Mutations
               </th>
-              <th className="px-4 py-3 text-left text-sm font-medium text-text-muted">
+              <th
+                className="px-4 py-3 text-left text-sm font-medium text-text-muted"
+                scope="col"
+              >
                 Completion
               </th>
-              <th className="px-4 py-3 text-left text-sm font-medium text-text-muted">
+              <th
+                className="px-4 py-3 text-left text-sm font-medium text-text-muted"
+                scope="col"
+              >
                 Status
               </th>
             </tr>

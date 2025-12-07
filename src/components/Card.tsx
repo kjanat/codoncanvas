@@ -73,7 +73,7 @@ export function Card({
   const hoverClass =
     hoverable && !needsButtonRole ? "transition-shadow hover:shadow-md" : "";
   const interactiveClass = needsButtonRole
-    ? "cursor-pointer transition-all hover:border-primary hover:shadow-md"
+    ? "cursor-pointer transition-all hover:border-primary hover:shadow-md focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
     : "";
 
   const combinedClasses = [

@@ -12,7 +12,7 @@ export function ThemeToggle(): ReactElement {
 
   return (
     <button
-      className="rounded-md p-2 text-text-muted transition-colors hover:bg-bg-light hover:text-text"
+      className="rounded-md p-2 text-text-muted transition-colors hover:bg-bg-light hover:text-text focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
       onClick={cycleTheme}
       title={`Theme: ${theme}`}
       type="button"

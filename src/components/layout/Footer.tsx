@@ -37,6 +37,7 @@ export function Footer({ authorName, githubUrl }: FooterProps): ReactElement {
               target="_blank"
             >
               {authorName}
+              <span className="sr-only"> (opens in new tab)</span>
             </a>
           ) : (
             authorName

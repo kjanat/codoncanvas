@@ -14,6 +14,13 @@ function EvolutionDemoPage() {
 
   return (
     <PageContainer>
+      {/* Status announcement for screen readers */}
+      <div aria-atomic="true" aria-live="polite" className="sr-only">
+        {lab.candidates.length > 0
+          ? `Generation ${lab.generation}: ${lab.candidates.length} candidates ready for selection`
+          : ""}
+      </div>
+
       <PageHeader
         badge={
           <span className="inline-flex items-center gap-4 rounded-full bg-primary/10 px-6 py-2">

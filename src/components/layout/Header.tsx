@@ -43,7 +43,7 @@ export function Header() {
             rel="noopener noreferrer"
             target="_blank"
           >
-            <span className="sr-only">View on GitHub</span>
+            <span className="sr-only">View on GitHub (opens in new tab)</span>
             <GitHubIcon />
           </a>
           <MobileMenu />

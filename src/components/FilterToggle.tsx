@@ -40,9 +40,10 @@ export function FilterToggle<T extends string>({
 
   const baseClasses = "font-medium transition-colors";
 
+  // Minimum touch target size: 44x44px (WCAG 2.5.5)
   const sizeClasses = {
-    sm: "px-2 py-0.5 text-xs",
-    md: "px-3 py-1.5 text-sm",
+    sm: "px-3 py-2 text-xs min-h-[44px]",
+    md: "px-4 py-2.5 text-sm min-h-[44px]",
   } as const;
 
   const variantClasses = {

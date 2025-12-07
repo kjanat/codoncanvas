@@ -17,6 +17,13 @@ function GeneticDemoPage() {
 
   return (
     <PageContainer>
+      {/* Status announcement for screen readers */}
+      <div aria-atomic="true" aria-live="polite" className="sr-only">
+        {ga.state.generation > 0
+          ? `Generation ${ga.state.generation}: Best fitness ${ga.state.bestFitness.toFixed(2)}`
+          : ""}
+      </div>
+
       <PageHeader
         subtitle="Automated evolution with fitness functions"
         title="Genetic Algorithm"

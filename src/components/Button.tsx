@@ -71,7 +71,7 @@ export function Button({
   ...props
 }: ButtonProps): ReactElement {
   const baseClasses =
-    "rounded-lg font-medium transition-colors disabled:cursor-not-allowed";
+    "rounded-lg font-medium transition-colors disabled:cursor-not-allowed focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2";
   const variantClass = VARIANT_CLASSES[variant];
   const sizeClass = SIZE_CLASSES[size];
   const widthClass = fullWidth ? "w-full" : "";
