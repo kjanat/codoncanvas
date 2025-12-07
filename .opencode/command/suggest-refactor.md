@@ -35,6 +35,5 @@ For each finding provide:
 - Suggested fix with code example
 - Estimated effort (easy/medium/hard)
 
-Focus on actionable suggestions.
-If an ignore is justified (e.g., testing invalid inputs),
-acknowledge it but still suggest alternatives if possible.
+Focus on actionable suggestions. If an ignore is justified (e.g., testing
+invalid inputs), acknowledge it but still suggest alternatives if possible.

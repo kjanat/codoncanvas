@@ -11,13 +11,15 @@ arguments: $ARGUMENTS
 
 </consider>
 
-- If `no-push` or `nopush` is present OR flag reference is specified: do NOT push after commit
+- If `no-push` or `nopush` is present OR flag reference is specified: do NOT
+  push after commit
 - If `push` is present: push after commit
 - If `no-verify` is present: use `--no-verify` flag, otherwise do not use it
 - If `amend` is present: use `--amend` flag, decide yourself whether to use
   `--no-edit`, or specify an updated message, otherwise do not use `--amend`.
 
-IMPORTANT: NEVER use `--no-verify` or `--amend` unless explicitly provided in arguments.
+IMPORTANT: NEVER use `--no-verify` or `--amend` unless explicitly provided in
+arguments.
 
 Make sure the commit message includes a prefix like
 
@@ -48,8 +50,8 @@ WHAT was done.
 do not do generic messages like "improved agent experience" be very specific
 about what user-facing changes were made
 
-After the single commit that requested a push,
-do not push again, ever, without explicit re-request to do so.
+After the single commit that requested a push, do not push again, ever, without
+explicit re-request to do so.
 
 Here is the status:
 
