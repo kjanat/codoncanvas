@@ -1,6 +1,6 @@
 import FocusTrap from "focus-trap-react";
 import type { ReactNode } from "react";
-import { useEffect, useId, useRef } from "react";
+import { useEffect, useId } from "react";
 import { CanvasPreview } from "@/components/CanvasPreview";
 import { CloseIcon } from "@/ui/icons";
 import type { ExampleWithName } from "./types";
@@ -17,7 +17,6 @@ export function PreviewModal({
   onOpenInPlayground,
 }: PreviewModalProps): ReactNode {
   const titleId = useId();
-  const closeButtonRef = useRef<HTMLButtonElement>(null);
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent): void => {
@@ -32,7 +31,7 @@ export function PreviewModal({
   return (
     <FocusTrap
       focusTrapOptions={{
-        initialFocus: () => closeButtonRef.current,
+        initialFocus: '[aria-label="Close modal"]',
         escapeDeactivates: false, // We handle Escape ourselves
         allowOutsideClick: true,
       }}
@@ -65,7 +64,6 @@ export function PreviewModal({
                 aria-label="Close modal"
                 className="rounded-lg p-2 text-text-muted hover:bg-bg-light hover:text-text"
                 onClick={onClose}
-                ref={closeButtonRef}
                 type="button"
               >
                 <CloseIcon className="h-6 w-6" />

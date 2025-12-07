@@ -40,7 +40,7 @@
     "test:coverage": "bun --bun ./scripts/coverage-reporter.ts",
     "test:watch": "bun test --watch",
     "typecheck": "tsgo --noEmit",
-    "validate": "bun lint:fix && bun fmt && bun typecheck && bun test:agent",
+    "validate": "bun lint:fix && bun fmt && bun typecheck && bun test:agent && bun e2e",
     "zip-examples": "bun --bun scripts/zip-examples.ts"
   },
   "dependencies": {

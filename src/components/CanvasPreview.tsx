@@ -27,7 +27,7 @@ interface CanvasPreviewProps {
 
 /**
  * Memoized canvas preview component.
- * Only re-renders when genome changes.
+ * Uses React.memo for shallow prop comparison to prevent unnecessary re-renders.
  */
 export const CanvasPreview = memo(function CanvasPreview({
   genome,

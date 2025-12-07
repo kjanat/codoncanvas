@@ -8,11 +8,6 @@ test.describe("Tutorial Navigation", () => {
     // 1. Navigate to /tutorial
     await page.goto("/tutorial");
 
-    // Get initial lesson title
-    const initialTitle = await page
-      .getByRole("heading", { level: 1 })
-      .textContent();
-
     // 2. Click on a different lesson in the sidebar
     // Lesson buttons have format "2 Moving Around - TRANSLATE"
     const secondLesson = page.getByRole("button", {
@@ -20,9 +15,9 @@ test.describe("Tutorial Navigation", () => {
     });
     await secondLesson.click();
 
-    // 3. Verify lesson content updates
-    await expect(page.getByRole("heading", { level: 1 })).not.toHaveText(
-      initialTitle ?? "",
+    // 3. Verify lesson content updates to lesson 2
+    await expect(page.getByRole("heading", { level: 1 })).toHaveText(
+      /2 Moving Around/i,
     );
 
     // 4. Verify code editor resets for new lesson
@@ -55,5 +50,9 @@ test.describe("Mobile Tutorial", () => {
     await closeButton.click();
     // Drawer is conditionally rendered, so it should not be visible when closed
     await expect(drawer).not.toBeVisible();
+    // Verify the drawer header is also no longer visible
+    await expect(
+      page.getByRole("heading", { name: "Lessons" }),
+    ).not.toBeVisible();
   });
 });

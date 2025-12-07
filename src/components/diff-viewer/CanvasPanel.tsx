@@ -5,7 +5,13 @@
  * Uses useRenderGenome hook for consistent rendering.
  */
 
-import { type ReactElement, useEffect, useRef, useState } from "react";
+import {
+  type ReactElement,
+  useEffect,
+  useEffectEvent,
+  useRef,
+  useState,
+} from "react";
 
 import { useRenderGenome } from "@/hooks";
 
@@ -30,6 +36,13 @@ export function CanvasPanel({
   const [isRendered, setIsRendered] = useState(false);
   const { renderWithResult } = useRenderGenome();
 
+  // Stable event handler that doesn't trigger effect re-runs
+  const handleRenderError = useEffectEvent(
+    (error: Error, genomeStr: string) => {
+      onRenderError?.(error, genomeStr);
+    },
+  );
+
   useEffect(() => {
     const canvas = canvasRef.current;
     if (canvas) {
@@ -40,13 +53,13 @@ export function CanvasPanel({
       if (!result.success) {
         const message = result.error ?? "Render failed";
         setRenderError(message);
-        onRenderError?.(new Error(message), genome);
+        handleRenderError(new Error(message), genome);
       } else {
         setRenderError(null);
         setIsRendered(true);
       }
     }
-  }, [genome, width, height, renderWithResult, onRenderError]);
+  }, [genome, width, height, renderWithResult]);
 
   return (
     <div className="flex flex-col items-center gap-2">

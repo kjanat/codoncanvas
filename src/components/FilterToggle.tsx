@@ -38,7 +38,8 @@ export function FilterToggle<T extends string>({
   const generatedId = useId();
   const groupName = name ?? `filter-toggle-${generatedId}`;
 
-  const baseClasses = "font-medium transition-colors";
+  const baseClasses =
+    "inline-flex items-center justify-center font-medium transition-colors";
 
   // Minimum touch target size: 44x44px (WCAG 2.5.5)
   const sizeClasses = {
