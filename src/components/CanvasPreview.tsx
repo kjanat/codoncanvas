@@ -6,7 +6,7 @@
  */
 
 import type { ReactElement } from "react";
-import { memo, useEffect, useRef } from "react";
+import { memo, useEffect, useRef, useState } from "react";
 
 import { useRenderGenome } from "@/hooks";
 
@@ -38,6 +38,7 @@ export const CanvasPreview = memo(function CanvasPreview({
   "aria-label": ariaLabel = "Genome visualization",
 }: CanvasPreviewProps): ReactElement {
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const [isRendered, setIsRendered] = useState(false);
   const { render } = useRenderGenome();
 
   // Re-render when genome/dimensions/theme change
@@ -45,11 +46,13 @@ export const CanvasPreview = memo(function CanvasPreview({
   useEffect(() => {
     const canvas = canvasRef.current;
     if (canvas) {
+      setIsRendered(false);
       // Set canvas dimensions
       canvas.width = width;
       canvas.height = height;
       // Render genome (auto-clears with correct background)
-      render(genome, canvas);
+      const success = render(genome, canvas);
+      setIsRendered(success);
     }
   }, [genome, width, height, render]);
 
@@ -57,6 +60,7 @@ export const CanvasPreview = memo(function CanvasPreview({
     <canvas
       aria-label={ariaLabel}
       className={className}
+      data-rendered={isRendered}
       data-testid={testId}
       height={height}
       ref={canvasRef}

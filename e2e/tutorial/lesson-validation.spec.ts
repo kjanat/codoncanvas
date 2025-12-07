@@ -56,6 +56,9 @@ test.describe("Tutorial Lesson Validation", () => {
     const preview = page.getByTestId("lesson-preview-canvas");
     await expect(preview).toBeVisible();
 
+    // Wait for canvas to finish rendering
+    await expect(preview).toHaveAttribute("data-rendered", "true");
+
     // Verify canvas has actual content (not blank)
     const canvasData = await preview.evaluate((el: HTMLCanvasElement) =>
       el.toDataURL(),

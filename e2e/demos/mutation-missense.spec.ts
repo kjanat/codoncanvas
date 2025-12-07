@@ -39,6 +39,10 @@ async function applyMissenseMutation(page: Page): Promise<{
     return { success: false, originalData: "", mutatedData: "" };
   }
 
+  // Wait for both canvases to finish rendering
+  await expect(originalCanvas).toHaveAttribute("data-rendered", "true");
+  await expect(mutatedCanvas).toHaveAttribute("data-rendered", "true");
+
   const [originalData, mutatedData] = await Promise.all([
     getCanvasData(originalCanvas),
     getCanvasData(mutatedCanvas),
