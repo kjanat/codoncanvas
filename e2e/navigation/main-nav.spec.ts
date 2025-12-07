@@ -9,14 +9,16 @@ test.describe("Navigation", () => {
     await page.goto("/");
 
     // Helper to navigate - on mobile we need to open the menu first
-    async function navigateTo(linkName: string) {
+    async function navigateTo(linkName: string): Promise<void> {
       if (isMobile) {
         // Open mobile menu
         const menuButton = page.getByRole("button", { name: /open menu/i });
         if (await menuButton.isVisible()) {
           await menuButton.click();
-          // Wait for drawer animation
-          await page.waitForTimeout(300);
+          // Wait for the target link to be visible in the drawer
+          await page
+            .getByRole("link", { name: linkName })
+            .waitFor({ state: "visible" });
         }
       }
       await page.getByRole("link", { name: linkName }).click();

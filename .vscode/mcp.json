@@ -2,7 +2,7 @@
   "servers": {
     "playwright-test": {
       "type": "stdio",
-      "command": "npx",
+      "command": "bunx",
       "args": ["playwright", "run-test-mcp-server"]
     }
   },

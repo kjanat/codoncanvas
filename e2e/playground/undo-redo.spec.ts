@@ -56,27 +56,34 @@ test.describe("Core Playground", () => {
       const undoButton = page.getByRole("button", { name: "Undo last change" });
       const redoButton = page.getByRole("button", { name: "Redo last change" });
 
-      // 2. Verify Undo button is initially disabled
+      // 2. Verify initial editor state matches baseline
+      await expect(genomeEditor).toBeVisible();
+      await expect(
+        genomeEditor,
+        `Editor should start with default genome "${originalGenome}"`,
+      ).toHaveValue(originalGenome);
+
+      // 3. Verify Undo/Redo buttons are initially disabled
       await expect(undoButton).toBeDisabled();
       await expect(redoButton).toBeDisabled();
 
-      // 3. Type additional codons in editor
+      // 4. Type additional codons in editor
       await genomeEditor.fill(modifiedGenome);
 
-      // 4. Verify Undo button becomes enabled
+      // 5. Verify Undo button becomes enabled
       await expect(undoButton).toBeEnabled();
 
-      // 5. Click Undo button
+      // 6. Click Undo button
       await undoButton.click();
 
       // Verify Undo restores previous editor state
       await expect(genomeEditor).toHaveValue(originalGenome);
 
-      // 6. Verify Redo button becomes enabled and Undo is disabled
+      // 7. Verify Redo button becomes enabled and Undo is disabled
       await expect(redoButton).toBeEnabled();
       await expect(undoButton).toBeDisabled();
 
-      // 7. Click Redo button
+      // 8. Click Redo button
       await redoButton.click();
 
       // Verify Redo restores the undone change

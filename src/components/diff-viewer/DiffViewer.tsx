@@ -63,7 +63,10 @@ export function DiffViewer({
       </div>
 
       {showCanvas && (
-        <div className="mb-6 grid gap-6 lg:grid-cols-2">
+        <div
+          className="mb-6 grid gap-6 lg:grid-cols-2"
+          data-testid="diff-canvas-container"
+        >
           <CanvasPanel
             genome={original}
             height={canvasHeight}

@@ -18,9 +18,9 @@ test.describe("Mutation Lab - Missense Mutation", () => {
     // Mutation changes codon function, visual output should differ
     await expect(page.getByText(/mutation result/i)).toBeVisible();
 
-    // At least one canvas should render (original)
-    // Note: missense mutations may cause render failures in the mutated version
-    const canvases = page.locator("canvas");
-    await expect(canvases.first()).toBeVisible();
+    // Verify exactly 2 canvases render in the diff container (original + mutated)
+    const diffContainer = page.locator('[data-testid="diff-canvas-container"]');
+    const canvases = diffContainer.locator("canvas");
+    await expect(canvases).toHaveCount(2);
   });
 });

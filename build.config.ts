@@ -21,19 +21,19 @@
  */
 
 /** Normalized base path without trailing slash (empty string for root) */
-const basePath = (process.env.VITE_BASE_PATH ?? "").replace(/\/+$/, "");
+const BASE_PATH = (process.env.VITE_BASE_PATH ?? "").replace(/\/+$/, "");
 
 /** Whether running in CI environment (GitHub Actions or GitHub Pages deploy) */
-const isCI = !!process.env.CI || process.env.GITHUB_PAGES === "true";
+const IS_CI = !!process.env.CI || process.env.GITHUB_PAGES === "true";
 
 export const buildConfig = {
   /** True when running in CI (GitHub Actions, GitHub Pages deploy) */
-  isCI,
+  isCI: IS_CI,
   /**
    * Base path with trailing slash for Vite's `base` option.
    * @example "/" or "/codoncanvas/"
    */
-  base: `${basePath}/`,
+  base: `${BASE_PATH}/`,
   /** Dev server configuration */
   server: {
     /** Server host (default: 127.0.0.1) */
@@ -49,4 +49,4 @@ export const buildConfig = {
  * @example "http://127.0.0.1:5173" or "http://127.0.0.1:5173/codoncanvas"
  */
 export const getBaseUrl = (): string =>
-  `http://${buildConfig.server.host}:${buildConfig.server.port}${basePath}`;
+  `http://${buildConfig.server.host}:${buildConfig.server.port}${BASE_PATH}`;

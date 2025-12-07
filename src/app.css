@@ -114,3 +114,8 @@ body {
 .font-mono {
   font-family: var(--font-mono);
 }
+
+/* Custom height utility for sidebar nav (100% minus header height) */
+@utility h-sidebar-nav {
+  height: calc(100% - 57px);
+}

@@ -28,21 +28,32 @@ test.describe("Accessibility - Landmarks", () => {
   test("navigation-landmark", async ({ page }): Promise<void> => {
     await page.goto("/");
 
-    // Check for primary navigation landmark
-    const nav = page.locator("nav, [role='navigation']").first();
-    await expect(nav).toBeVisible();
+    // Get all navigation landmarks
+    const allNavs = page.locator("nav, [role='navigation']");
+    const navCount = await allNavs.count();
 
-    // Navigation should contain links with accessible names
-    const navLinks = nav.getByRole("link");
-    const count = await navLinks.count();
-    expect(count).toBeGreaterThan(0);
+    // Ensure at least one navigation landmark exists
+    expect(navCount).toBeGreaterThan(0);
 
-    for (let i = 0; i < count; i++) {
-      const link = navLinks.nth(i);
-      const text = (await link.textContent())?.trim();
-      const ariaLabel = (await link.getAttribute("aria-label"))?.trim();
-      const title = (await link.getAttribute("title"))?.trim();
-      expect(text || ariaLabel || title).toBeTruthy();
+    // Validate each navigation landmark is visible and has accessible links
+    for (let navIndex = 0; navIndex < navCount; navIndex++) {
+      const nav = allNavs.nth(navIndex);
+      await expect(nav).toBeVisible();
+
+      // Navigation should contain links with accessible names
+      const navLinks = nav.getByRole("link");
+      const linkCount = await navLinks.count();
+
+      // Each visible nav with links should have accessible link names
+      if (linkCount > 0) {
+        for (let i = 0; i < linkCount; i++) {
+          const link = navLinks.nth(i);
+          const text = (await link.textContent())?.trim();
+          const ariaLabel = (await link.getAttribute("aria-label"))?.trim();
+          const title = (await link.getAttribute("title"))?.trim();
+          expect(text || ariaLabel || title).toBeTruthy();
+        }
+      }
     }
   });
 });

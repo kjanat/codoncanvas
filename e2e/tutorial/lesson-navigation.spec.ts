@@ -37,11 +37,10 @@ test.describe("Tutorial Navigation", () => {
 test.describe("Mobile Tutorial", () => {
   test.use({ viewport: { width: 375, height: 667 } });
 
-  // FIXME: Application bug - Sidebar does not close.
-  // Verified failures with: standard click, force click, backdrop click, and Escape key.
-  // The internal state 'isOpen' seems to be stuck or reset immediately.
-  test.fixme("mobile-sidebar-toggle", async ({ page }): Promise<void> => {
+  test("mobile-sidebar-toggle", async ({ page }): Promise<void> => {
     await page.goto("/tutorial");
+
+    const drawer = page.getByTestId("lesson-sidebar-drawer");
 
     // Open mobile sidebar (ModuleSidebar FAB)
     const menuButton = page.getByRole("button", { name: "Open lesson menu" });
@@ -50,16 +49,12 @@ test.describe("Mobile Tutorial", () => {
 
     // Sidebar should now be visible (Header "Lessons")
     await expect(page.getByRole("heading", { name: "Lessons" })).toBeVisible();
-
-    // Wait for sidebar animation to complete
-    await page.waitForTimeout(500);
+    await expect(drawer).toHaveAttribute("data-open", "true");
 
     // Close sidebar
-    const closeButton = page
-      .locator("main")
-      .getByRole("button", { name: "Close menu" });
+    const closeButton = drawer.getByRole("button", { name: "Close menu" });
     await expect(closeButton).toBeVisible();
     await closeButton.click();
-    await expect(closeButton).not.toBeVisible();
+    await expect(drawer).toHaveAttribute("data-open", "false");
   });
 });

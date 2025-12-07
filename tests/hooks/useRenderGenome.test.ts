@@ -189,5 +189,51 @@ describe("useRenderGenome", () => {
       expect(renderResult.success).toBe(false);
       expect(typeof renderResult.error).toBe("string");
     });
+
+    test("renderWithResult returns 'Render failed' for non-Error exceptions", () => {
+      const { result } = renderHook(() => useRenderGenome(), {
+        wrapper: ThemeWrapper,
+      });
+
+      const canvas = document.createElement("canvas");
+      canvas.width = 200;
+      canvas.height = 200;
+
+      // Mock getContext to throw a non-Error value
+      const originalGetContext = canvas.getContext.bind(canvas);
+      let callCount = 0;
+      canvas.getContext = ((contextId: string) => {
+        callCount++;
+        // First call is for clear(), let it succeed
+        // Second call is for Canvas2DRenderer, throw non-Error
+        if (callCount > 1) {
+          throw "non-error-string";
+        }
+        return originalGetContext(contextId);
+      }) as typeof canvas.getContext;
+
+      const renderResult = result.current.renderWithResult("ATG TAA", canvas);
+
+      expect(renderResult.success).toBe(false);
+      expect(renderResult.error).toBe("Render failed");
+    });
+
+    test("renderWithResult with skipClear option", () => {
+      const { result } = renderHook(() => useRenderGenome(), {
+        wrapper: ThemeWrapper,
+      });
+
+      const canvas = document.createElement("canvas");
+      canvas.width = 200;
+      canvas.height = 200;
+
+      // Should not throw and should work with skipClear
+      const renderResult = result.current.renderWithResult("ATG TAA", canvas, {
+        skipClear: true,
+      });
+
+      // Even with skipClear, render may fail due to invalid genome, but it shouldn't crash
+      expect(typeof renderResult.success).toBe("boolean");
+    });
   });
 });

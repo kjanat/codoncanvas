@@ -5,7 +5,15 @@
  * and reference panel toggle. Responsive design with icon-only on mobile.
  */
 
-import { type ChangeEvent, type JSX, memo, useState } from "react";
+import {
+  type ChangeEvent,
+  type JSX,
+  type KeyboardEvent,
+  memo,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 
 import type { ExampleWithKey } from "@/hooks/useExamples";
 import {
@@ -74,6 +82,27 @@ interface OverflowMenuProps {
 /** Overflow menu for mobile */
 function OverflowMenu({ io, history }: OverflowMenuProps): JSX.Element {
   const [isOpen, setIsOpen] = useState(false);
+  const triggerRef = useRef<HTMLButtonElement>(null);
+  const menuRef = useRef<HTMLDivElement>(null);
+
+  // Move focus to menu when opened, restore to trigger when closed
+  useEffect(() => {
+    if (isOpen) {
+      menuRef.current?.focus();
+    }
+  }, [isOpen]);
+
+  const closeMenu = () => {
+    setIsOpen(false);
+    triggerRef.current?.focus();
+  };
+
+  const handleBackdropKeyDown = (e: KeyboardEvent<HTMLDivElement>) => {
+    if (e.key === "Escape") {
+      e.preventDefault();
+      closeMenu();
+    }
+  };
 
   return (
     <div className="relative md:hidden">
@@ -83,6 +112,7 @@ function OverflowMenu({ io, history }: OverflowMenuProps): JSX.Element {
         aria-label="More actions"
         className="flex min-h-[44px] min-w-[44px] items-center justify-center rounded-md text-text hover:bg-bg-light"
         onClick={() => setIsOpen(!isOpen)}
+        ref={triggerRef}
         type="button"
       >
         <DotsVerticalIcon />
@@ -93,9 +123,15 @@ function OverflowMenu({ io, history }: OverflowMenuProps): JSX.Element {
           <div
             aria-hidden="true"
             className="fixed inset-0 z-40"
-            onClick={() => setIsOpen(false)}
+            onClick={closeMenu}
           />
-          <div className="absolute right-0 top-full z-50 mt-1 w-48 rounded-lg border border-border bg-surface py-1 shadow-lg">
+          <div
+            className="absolute right-0 top-full z-50 mt-1 w-48 rounded-lg border border-border bg-surface py-1 shadow-lg"
+            onKeyDown={handleBackdropKeyDown}
+            ref={menuRef}
+            role="menu"
+            tabIndex={-1}
+          >
             <label className="flex w-full cursor-pointer items-center gap-3 px-4 py-3 text-left text-sm text-text hover:bg-bg-light">
               <UploadIcon className="h-4 w-4" />
               Load file

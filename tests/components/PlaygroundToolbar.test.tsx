@@ -592,6 +592,243 @@ describe("PlaygroundToolbar - Run Button", () => {
 });
 
 // ============================================================================
+// Mobile Overflow Menu Tests
+// ============================================================================
+
+describe("PlaygroundToolbar - Overflow Menu", () => {
+  test("renders overflow menu button with aria-label", () => {
+    renderToolbar();
+
+    const button = screen.getByLabelText("More actions");
+    expect(button).toBeDefined();
+    expect(button.getAttribute("aria-haspopup")).toBe("true");
+    expect(button.getAttribute("aria-expanded")).toBe("false");
+  });
+
+  test("opens menu when button is clicked", () => {
+    renderToolbar();
+
+    const button = screen.getByLabelText("More actions");
+    fireEvent.click(button);
+
+    expect(button.getAttribute("aria-expanded")).toBe("true");
+    expect(screen.getByText("Load file")).toBeDefined();
+  });
+
+  test("closes menu when menu button is clicked again", () => {
+    renderToolbar();
+
+    const button = screen.getByLabelText("More actions");
+    fireEvent.click(button);
+
+    // Menu should be open
+    expect(button.getAttribute("aria-expanded")).toBe("true");
+
+    // Click button again to close
+    fireEvent.click(button);
+
+    // Menu should be closed
+    expect(button.getAttribute("aria-expanded")).toBe("false");
+  });
+
+  test("backdrop is rendered when menu is open", () => {
+    const { container } = renderToolbar();
+
+    const button = screen.getByLabelText("More actions");
+    fireEvent.click(button);
+
+    // Backdrop should be rendered (fixed inset-0 overlay)
+    const backdrop = container.querySelector(".fixed.inset-0");
+    expect(backdrop).toBeDefined();
+    expect(backdrop?.getAttribute("aria-hidden")).toBe("true");
+  });
+
+  test("mobile Save button calls io.onSave and closes menu", () => {
+    const { props } = renderToolbar();
+
+    const menuButton = screen.getByLabelText("More actions");
+    fireEvent.click(menuButton);
+
+    // Find and click Save in the menu (there are two Save buttons, one desktop one mobile)
+    const saveButtons = screen.getAllByText("Save");
+    const mobileSaveButton = saveButtons.find(
+      (btn) => btn.closest(".md\\:hidden") !== null,
+    );
+    fireEvent.click(mobileSaveButton!);
+
+    expect(props.io.onSave).toHaveBeenCalledTimes(1);
+    expect(menuButton.getAttribute("aria-expanded")).toBe("false");
+  });
+
+  test("mobile Copy button calls io.onCopy and closes menu", () => {
+    const { props } = renderToolbar();
+
+    const menuButton = screen.getByLabelText("More actions");
+    fireEvent.click(menuButton);
+
+    const copyButton = screen.getByTestId("mobile-menu-copy");
+    fireEvent.click(copyButton);
+
+    expect(props.io.onCopy).toHaveBeenCalledTimes(1);
+    expect(menuButton.getAttribute("aria-expanded")).toBe("false");
+  });
+
+  test("mobile Copy button shows 'Copied!' when copied is true", () => {
+    renderToolbar({
+      io: { ...createDefaultProps().io, copied: true },
+    });
+
+    const menuButton = screen.getByLabelText("More actions");
+    fireEvent.click(menuButton);
+
+    const copyButton = screen.getByTestId("mobile-menu-copy");
+    expect(copyButton.textContent).toBe("Copied!");
+  });
+
+  test("mobile Share button calls io.onShare and closes menu", () => {
+    const { props } = renderToolbar();
+
+    const menuButton = screen.getByLabelText("More actions");
+    fireEvent.click(menuButton);
+
+    // Find Share in the mobile menu
+    const shareButtons = screen.getAllByText("Share");
+    const mobileShareButton = shareButtons.find(
+      (btn) => btn.closest(".md\\:hidden") !== null,
+    );
+    fireEvent.click(mobileShareButton!);
+
+    expect(props.io.onShare).toHaveBeenCalledTimes(1);
+    expect(menuButton.getAttribute("aria-expanded")).toBe("false");
+  });
+
+  test("mobile Undo button calls history.onUndo and closes menu", () => {
+    const { props } = renderToolbar({
+      history: { ...createDefaultProps().history, canUndo: true },
+    });
+
+    const menuButton = screen.getByLabelText("More actions");
+    fireEvent.click(menuButton);
+
+    // Find Undo in the mobile menu
+    const undoButtons = screen.getAllByText("Undo");
+    const mobileUndoButton = undoButtons.find(
+      (btn) => btn.closest(".md\\:hidden") !== null,
+    );
+    fireEvent.click(mobileUndoButton!);
+
+    expect(props.history.onUndo).toHaveBeenCalledTimes(1);
+    expect(menuButton.getAttribute("aria-expanded")).toBe("false");
+  });
+
+  test("mobile Redo button calls history.onRedo and closes menu", () => {
+    const { props } = renderToolbar({
+      history: { ...createDefaultProps().history, canRedo: true },
+    });
+
+    const menuButton = screen.getByLabelText("More actions");
+    fireEvent.click(menuButton);
+
+    // Find Redo in the mobile menu
+    const redoButtons = screen.getAllByText("Redo");
+    const mobileRedoButton = redoButtons.find(
+      (btn) => btn.closest(".md\\:hidden") !== null,
+    );
+    fireEvent.click(mobileRedoButton!);
+
+    expect(props.history.onRedo).toHaveBeenCalledTimes(1);
+    expect(menuButton.getAttribute("aria-expanded")).toBe("false");
+  });
+
+  test("mobile Load file input calls io.onLoad and closes menu", () => {
+    const { props } = renderToolbar();
+
+    const menuButton = screen.getByLabelText("More actions");
+    fireEvent.click(menuButton);
+
+    // Find the file input in the mobile menu (it's in a label with "Load file" text)
+    const loadFileLabel = screen.getByText("Load file");
+    const fileInput = loadFileLabel
+      .closest("label")
+      ?.querySelector('input[type="file"]');
+    expect(fileInput).toBeDefined();
+
+    fireEvent.change(fileInput!, {
+      target: { files: [new File(["ATG TAA"], "test.genome")] },
+    });
+
+    expect(props.io.onLoad).toHaveBeenCalledTimes(1);
+    expect(menuButton.getAttribute("aria-expanded")).toBe("false");
+  });
+
+  test("mobile Undo button is disabled when canUndo is false", () => {
+    renderToolbar({
+      history: { ...createDefaultProps().history, canUndo: false },
+    });
+
+    const menuButton = screen.getByLabelText("More actions");
+    fireEvent.click(menuButton);
+
+    const undoButtons = screen.getAllByText("Undo");
+    const mobileUndoButton = undoButtons.find(
+      (btn) => btn.closest(".md\\:hidden") !== null,
+    ) as HTMLButtonElement;
+
+    expect(mobileUndoButton.disabled).toBe(true);
+  });
+
+  test("mobile Redo button is disabled when canRedo is false", () => {
+    renderToolbar({
+      history: { ...createDefaultProps().history, canRedo: false },
+    });
+
+    const menuButton = screen.getByLabelText("More actions");
+    fireEvent.click(menuButton);
+
+    const redoButtons = screen.getAllByText("Redo");
+    const mobileRedoButton = redoButtons.find(
+      (btn) => btn.closest(".md\\:hidden") !== null,
+    ) as HTMLButtonElement;
+
+    expect(mobileRedoButton.disabled).toBe(true);
+  });
+
+  test("menu closes on Escape key and restores focus to trigger", () => {
+    renderToolbar();
+
+    const menuButton = screen.getByLabelText("More actions");
+    fireEvent.click(menuButton);
+
+    // Menu should be open
+    expect(menuButton.getAttribute("aria-expanded")).toBe("true");
+
+    // Find the menu container (role="menu")
+    const menu = screen.getByRole("menu");
+    expect(menu).toBeDefined();
+
+    // Press Escape on the menu
+    fireEvent.keyDown(menu, { key: "Escape" });
+
+    // Menu should be closed
+    expect(menuButton.getAttribute("aria-expanded")).toBe("false");
+
+    // Focus should return to trigger button
+    expect(document.activeElement).toBe(menuButton);
+  });
+
+  test("menu has role='menu' and is focusable", () => {
+    renderToolbar();
+
+    const menuButton = screen.getByLabelText("More actions");
+    fireEvent.click(menuButton);
+
+    const menu = screen.getByRole("menu");
+    expect(menu).toBeDefined();
+    expect(menu.getAttribute("tabindex")).toBe("-1");
+  });
+});
+
+// ============================================================================
 // Integration Tests
 // ============================================================================
 

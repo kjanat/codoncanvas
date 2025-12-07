@@ -150,6 +150,8 @@ export function ModuleSidebar({
         className={`fixed inset-y-0 left-0 z-50 w-80 max-w-[85vw] transform bg-surface shadow-xl transition-transform duration-300 ease-in-out md:hidden ${
           isOpen ? "translate-x-0" : "-translate-x-full"
         }`}
+        data-open={isOpen}
+        data-testid="lesson-sidebar-drawer"
         role="dialog"
       >
         <div className="flex items-center justify-between border-b border-border px-4 py-3">
@@ -171,10 +173,7 @@ export function ModuleSidebar({
             <XIcon />
           </button>
         </div>
-        <nav
-          className="overflow-y-auto p-4"
-          style={{ height: "calc(100% - 57px)" }}
-        >
+        <nav className="h-sidebar-nav overflow-y-auto p-4">
           {sidebarContent}
         </nav>
       </div>

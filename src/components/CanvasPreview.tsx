@@ -35,7 +35,8 @@ export const CanvasPreview = memo(function CanvasPreview({
   const { render } = useRenderGenome();
 
   // Re-render when genome/dimensions/theme change
-  // Note: render function changes when isDark changes (from useRenderGenome)
+  // Note: Currently render is recreated on every useRenderGenome() call (not memoized).
+  // TODO: After memoizing useRenderGenome with useCallback, render will only change when isDark changes.
   useEffect(() => {
     const canvas = canvasRef.current;
     if (canvas) {

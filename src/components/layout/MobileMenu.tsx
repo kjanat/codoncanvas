@@ -6,7 +6,7 @@
  */
 
 import { Link, useRouterState } from "@tanstack/react-router";
-import { useEffect, useRef, useState } from "react";
+import { type ReactElement, useEffect, useRef, useState } from "react";
 
 import { MenuIcon, XIcon } from "@/ui/icons";
 
@@ -52,7 +52,7 @@ const MORE_SECTIONS: NavSection[] = [
  * Mobile navigation menu with hamburger toggle and slide-out drawer.
  * Hidden on desktop (md:hidden), visible on mobile.
  */
-export function MobileMenu() {
+export function MobileMenu(): ReactElement {
   const [isOpen, setIsOpen] = useState(false);
   const { location } = useRouterState();
   const pathname = location.pathname;
@@ -116,6 +116,7 @@ export function MobileMenu() {
       {/* Drawer */}
       <div
         aria-label="Mobile navigation"
+        aria-modal="true"
         className={`fixed inset-y-0 right-0 z-50 w-72 transform bg-surface shadow-lg transition-transform duration-300 ease-in-out ${
           isOpen ? "translate-x-0" : "translate-x-full"
         }`}
