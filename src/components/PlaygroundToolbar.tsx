@@ -150,7 +150,10 @@ function OverflowMenu({ io, history }: OverflowMenuProps): JSX.Element {
             role="menu"
             tabIndex={-1}
           >
-            <label className="flex w-full cursor-pointer items-center gap-3 px-4 py-3 text-left text-sm text-text hover:bg-bg-light">
+            <label
+              className="flex w-full cursor-pointer items-center gap-3 px-4 py-3 text-left text-sm text-text hover:bg-bg-light"
+              data-testid="mobile-menu-load"
+            >
               <UploadIcon className="h-4 w-4" />
               Load file
               <input
@@ -166,6 +169,7 @@ function OverflowMenu({ io, history }: OverflowMenuProps): JSX.Element {
             </label>
             <button
               className="flex w-full items-center gap-3 px-4 py-3 text-left text-sm text-text hover:bg-bg-light"
+              data-testid="mobile-menu-save"
               onClick={() => {
                 io.onSave();
                 setIsOpen(false);
@@ -195,6 +199,7 @@ function OverflowMenu({ io, history }: OverflowMenuProps): JSX.Element {
             </button>
             <button
               className="flex w-full items-center gap-3 px-4 py-3 text-left text-sm text-text hover:bg-bg-light"
+              data-testid="mobile-menu-share"
               onClick={() => {
                 io.onShare();
                 setIsOpen(false);
@@ -208,6 +213,7 @@ function OverflowMenu({ io, history }: OverflowMenuProps): JSX.Element {
             <hr className="my-1 border-border" />
             <button
               className="flex w-full items-center gap-3 px-4 py-3 text-left text-sm text-text hover:bg-bg-light disabled:opacity-40"
+              data-testid="mobile-menu-undo"
               disabled={!history.canUndo}
               onClick={() => {
                 history.onUndo();
@@ -221,6 +227,7 @@ function OverflowMenu({ io, history }: OverflowMenuProps): JSX.Element {
             </button>
             <button
               className="flex w-full items-center gap-3 px-4 py-3 text-left text-sm text-text hover:bg-bg-light disabled:opacity-40"
+              data-testid="mobile-menu-redo"
               disabled={!history.canRedo}
               onClick={() => {
                 history.onRedo();

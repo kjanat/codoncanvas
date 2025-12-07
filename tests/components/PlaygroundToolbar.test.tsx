@@ -649,12 +649,8 @@ describe("PlaygroundToolbar - Overflow Menu", () => {
     const menuButton = screen.getByLabelText("More actions");
     fireEvent.click(menuButton);
 
-    // Find and click Save in the menu (there are two Save buttons, one desktop one mobile)
-    const saveButtons = screen.getAllByText("Save");
-    const mobileSaveButton = saveButtons.find(
-      (btn) => btn.closest(".md\\:hidden") !== null,
-    );
-    fireEvent.click(mobileSaveButton!);
+    const mobileSaveButton = screen.getByTestId("mobile-menu-save");
+    fireEvent.click(mobileSaveButton);
 
     expect(props.io.onSave).toHaveBeenCalledTimes(1);
     expect(menuButton.getAttribute("aria-expanded")).toBe("false");
@@ -691,12 +687,8 @@ describe("PlaygroundToolbar - Overflow Menu", () => {
     const menuButton = screen.getByLabelText("More actions");
     fireEvent.click(menuButton);
 
-    // Find Share in the mobile menu
-    const shareButtons = screen.getAllByText("Share");
-    const mobileShareButton = shareButtons.find(
-      (btn) => btn.closest(".md\\:hidden") !== null,
-    );
-    fireEvent.click(mobileShareButton!);
+    const mobileShareButton = screen.getByTestId("mobile-menu-share");
+    fireEvent.click(mobileShareButton);
 
     expect(props.io.onShare).toHaveBeenCalledTimes(1);
     expect(menuButton.getAttribute("aria-expanded")).toBe("false");
@@ -710,12 +702,8 @@ describe("PlaygroundToolbar - Overflow Menu", () => {
     const menuButton = screen.getByLabelText("More actions");
     fireEvent.click(menuButton);
 
-    // Find Undo in the mobile menu
-    const undoButtons = screen.getAllByText("Undo");
-    const mobileUndoButton = undoButtons.find(
-      (btn) => btn.closest(".md\\:hidden") !== null,
-    );
-    fireEvent.click(mobileUndoButton!);
+    const mobileUndoButton = screen.getByTestId("mobile-menu-undo");
+    fireEvent.click(mobileUndoButton);
 
     expect(props.history.onUndo).toHaveBeenCalledTimes(1);
     expect(menuButton.getAttribute("aria-expanded")).toBe("false");
@@ -729,12 +717,8 @@ describe("PlaygroundToolbar - Overflow Menu", () => {
     const menuButton = screen.getByLabelText("More actions");
     fireEvent.click(menuButton);
 
-    // Find Redo in the mobile menu
-    const redoButtons = screen.getAllByText("Redo");
-    const mobileRedoButton = redoButtons.find(
-      (btn) => btn.closest(".md\\:hidden") !== null,
-    );
-    fireEvent.click(mobileRedoButton!);
+    const mobileRedoButton = screen.getByTestId("mobile-menu-redo");
+    fireEvent.click(mobileRedoButton);
 
     expect(props.history.onRedo).toHaveBeenCalledTimes(1);
     expect(menuButton.getAttribute("aria-expanded")).toBe("false");
@@ -746,11 +730,8 @@ describe("PlaygroundToolbar - Overflow Menu", () => {
     const menuButton = screen.getByLabelText("More actions");
     fireEvent.click(menuButton);
 
-    // Find the file input in the mobile menu (it's in a label with "Load file" text)
-    const loadFileLabel = screen.getByText("Load file");
-    const fileInput = loadFileLabel
-      .closest("label")
-      ?.querySelector('input[type="file"]');
+    const mobileLoadLabel = screen.getByTestId("mobile-menu-load");
+    const fileInput = mobileLoadLabel.querySelector('input[type="file"]');
     expect(fileInput).toBeDefined();
 
     fireEvent.change(fileInput!, {
@@ -769,9 +750,8 @@ describe("PlaygroundToolbar - Overflow Menu", () => {
     const menuButton = screen.getByLabelText("More actions");
     fireEvent.click(menuButton);
 
-    const undoButtons = screen.getAllByText("Undo");
-    const mobileUndoButton = undoButtons.find(
-      (btn) => btn.closest(".md\\:hidden") !== null,
+    const mobileUndoButton = screen.getByTestId(
+      "mobile-menu-undo",
     ) as HTMLButtonElement;
 
     expect(mobileUndoButton.disabled).toBe(true);
@@ -785,9 +765,8 @@ describe("PlaygroundToolbar - Overflow Menu", () => {
     const menuButton = screen.getByLabelText("More actions");
     fireEvent.click(menuButton);
 
-    const redoButtons = screen.getAllByText("Redo");
-    const mobileRedoButton = redoButtons.find(
-      (btn) => btn.closest(".md\\:hidden") !== null,
+    const mobileRedoButton = screen.getByTestId(
+      "mobile-menu-redo",
     ) as HTMLButtonElement;
 
     expect(mobileRedoButton.disabled).toBe(true);
