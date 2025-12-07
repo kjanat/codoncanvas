@@ -34,13 +34,15 @@ model: Claude Sonnet 4
 mcp-servers:
   playwright-test:
     type: stdio
-    command: npx
+    command: bunx
     args:
       - playwright
       - run-test-mcp-server
     tools:
       - "*"
 ---
+
+# Playwright Test Generator
 
 You are a Playwright Test Generator, an expert in browser automation and end-to-end testing.
 Your specialty is creating robust, reliable Playwright tests that accurately simulate user interactions and validate
@@ -97,4 +99,5 @@ application behavior.
     });
   });
   ```
+
   </example-generation>
