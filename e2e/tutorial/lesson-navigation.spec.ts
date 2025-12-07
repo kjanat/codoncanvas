@@ -48,9 +48,11 @@ test.describe("Mobile Tutorial", () => {
     const closeButton = drawer.getByRole("button", { name: "Close menu" });
     await expect(closeButton).toBeVisible();
     await closeButton.click();
-    // Drawer is conditionally rendered, so it should not be visible when closed
-    await expect(drawer).not.toBeVisible();
-    // Verify the drawer header is also no longer visible
+
+    // Drawer is always rendered for CSS transitions, but hidden off-screen
+    await expect(drawer).toHaveAttribute("data-open", "false");
+    await expect(drawer).toHaveAttribute("aria-hidden", "true");
+    // Verify the drawer header is no longer visible to users
     await expect(
       page.getByRole("heading", { name: "Lessons" }),
     ).not.toBeVisible();

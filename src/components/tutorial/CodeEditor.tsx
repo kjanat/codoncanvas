@@ -1,3 +1,5 @@
+import { useId } from "react";
+
 import type { ValidationResult } from "./types";
 
 interface CodeEditorProps {
@@ -13,6 +15,7 @@ export function CodeEditor({
   validation,
   onRun,
 }: CodeEditorProps) {
+  const errorListId = useId();
   return (
     <div className="flex flex-col gap-4">
       <div className="relative">
@@ -38,6 +41,7 @@ export function CodeEditor({
 
         {validation && (
           <div
+            aria-describedby={!validation.passed ? errorListId : undefined}
             className={`text-sm ${validation.passed ? "text-success" : "text-danger"}`}
             role="alert"
           >
@@ -50,7 +54,7 @@ export function CodeEditor({
 
       {validation && !validation.passed && (
         <div className="rounded-lg border border-danger/30 bg-danger/5 p-3">
-          <ul className="space-y-1 text-sm text-danger">
+          <ul className="space-y-1 text-sm text-danger" id={errorListId}>
             {validation.errors.map((error) => (
               <li key={error}>* {error}</li>
             ))}

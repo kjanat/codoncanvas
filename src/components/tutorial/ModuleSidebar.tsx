@@ -149,46 +149,46 @@ export function ModuleSidebar({
         />
       )}
 
-      {/* Mobile: Drawer */}
-      {isOpen && (
-        <FocusTrap
-          focusTrapOptions={{
-            initialFocus: () => closeButtonRef.current,
-            escapeDeactivates: false, // We handle Escape ourselves
-            allowOutsideClick: true,
-          }}
+      {/* Mobile: Drawer - always rendered for CSS transition animation */}
+      <FocusTrap
+        active={isOpen}
+        focusTrapOptions={{
+          initialFocus: () => closeButtonRef.current,
+          escapeDeactivates: false, // We handle Escape ourselves
+          allowOutsideClick: true,
+        }}
+      >
+        <div
+          aria-hidden={!isOpen}
+          aria-labelledby={titleId}
+          aria-modal="true"
+          className={`fixed inset-y-0 left-0 z-50 w-80 max-w-[85vw] transform bg-surface shadow-xl transition-transform duration-300 ease-in-out md:hidden ${isOpen ? "translate-x-0" : "-translate-x-full"}`}
+          data-open={isOpen}
+          data-testid="lesson-sidebar-drawer"
+          role="dialog"
         >
-          <div
-            aria-labelledby={titleId}
-            aria-modal="true"
-            className="fixed inset-y-0 left-0 z-50 w-80 max-w-[85vw] transform bg-surface shadow-xl transition-transform duration-300 ease-in-out md:hidden translate-x-0"
-            data-open={isOpen}
-            data-testid="lesson-sidebar-drawer"
-            role="dialog"
-          >
-            <div className="flex items-center justify-between border-b border-border px-4 py-3">
-              <span className="text-lg font-semibold text-primary" id={titleId}>
-                Lessons
-              </span>
-              <button
-                aria-label="Close menu"
-                className="flex h-11 w-11 items-center justify-center rounded-md text-text hover:bg-bg-light"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  handleClose();
-                }}
-                ref={closeButtonRef}
-                type="button"
-              >
-                <XIcon className="h-6 w-6" />
-              </button>
-            </div>
-            <nav className="h-sidebar-nav overflow-y-auto p-4">
-              {sidebarContent}
-            </nav>
+          <div className="flex items-center justify-between border-b border-border px-4 py-3">
+            <span className="text-lg font-semibold text-primary" id={titleId}>
+              Lessons
+            </span>
+            <button
+              aria-label="Close menu"
+              className="flex h-11 w-11 items-center justify-center rounded-md text-text hover:bg-bg-light"
+              onClick={(e) => {
+                e.stopPropagation();
+                handleClose();
+              }}
+              ref={closeButtonRef}
+              type="button"
+            >
+              <XIcon className="h-6 w-6" />
+            </button>
           </div>
-        </FocusTrap>
-      )}
+          <nav className="h-sidebar-nav overflow-y-auto p-4">
+            {sidebarContent}
+          </nav>
+        </div>
+      </FocusTrap>
 
       {/* Desktop: Fixed sidebar */}
       <aside className="hidden w-72 shrink-0 overflow-y-auto border-r border-border bg-surface p-6 md:block">

@@ -54,7 +54,7 @@ export function NavDropdown({
   const triggerId = useId();
   const menuId = useId();
   const [isOpen, setIsOpen] = useState(false);
-  const containerRef = useRef<HTMLDivElement>(null);
+  const containerRef = useRef<HTMLElement>(null);
 
   const handleKeyDown = (e: KeyboardEvent<HTMLDivElement>): void => {
     if (e.key === "Escape" && isOpen) {
@@ -75,19 +75,19 @@ export function NavDropdown({
   const handleMouseLeave = (): void => setIsOpen(false);
 
   return (
-    <div
+    <nav
+      aria-label={`${label} navigation`}
       className="group relative"
       onBlur={handleBlur}
       onKeyDown={handleKeyDown}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
       ref={containerRef}
-      role="none"
     >
       <button
         aria-controls={menuId}
         aria-expanded={isOpen}
-        aria-haspopup="menu"
+        aria-haspopup="true"
         className="flex items-center gap-1 rounded-md px-3 py-2 text-sm font-medium text-text hover:bg-bg-light focus:outline-none focus:ring-2 focus:ring-primary"
         id={triggerId}
         onClick={() => setIsOpen(!isOpen)}
@@ -98,28 +98,21 @@ export function NavDropdown({
       </button>
 
       <div
-        aria-labelledby={triggerId}
         className={`absolute right-0 top-full z-50 mt-1 w-56 rounded-lg border border-border bg-surface p-2 shadow-lg transition-all ${isOpen ? "visible opacity-100" : "invisible opacity-0"}`}
         id={menuId}
-        role="menu"
       >
         {sections.map((section, index) => (
           <div
             className={index > 0 ? "mt-2 border-t border-border pt-2" : ""}
             key={section.title}
-            role="presentation"
           >
-            <p
-              className="px-3 py-1 text-xs font-semibold uppercase text-text-muted"
-              role="presentation"
-            >
+            <p className="px-3 py-1 text-xs font-semibold uppercase text-text-muted">
               {section.title}
             </p>
             {section.links.map((link) => (
               <Link
                 className="block rounded-md px-3 py-2 text-sm text-text hover:bg-bg-light"
                 key={link.path}
-                role="menuitem"
                 to={link.path}
               >
                 {link.label}
@@ -128,6 +121,6 @@ export function NavDropdown({
           </div>
         ))}
       </div>
-    </div>
+    </nav>
   );
 }

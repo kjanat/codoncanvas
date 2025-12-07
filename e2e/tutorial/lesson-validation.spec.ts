@@ -49,8 +49,8 @@ test.describe("Tutorial Lesson Validation", () => {
     }
     const width = Number.parseInt(widthAttr, 10);
     const height = Number.parseInt(heightAttr, 10);
-    expect(Number.isFinite(width) && width > 0).toBe(true);
-    expect(Number.isFinite(height) && height > 0).toBe(true);
+    expect(width).toBeGreaterThan(0);
+    expect(height).toBeGreaterThan(0);
   });
 
   test("preview-canvas-renders-content", async ({ page }): Promise<void> => {

@@ -69,6 +69,44 @@ describe("useScrollLock", () => {
     });
   });
 
+  describe("reference counting", () => {
+    test("maintains lock until all holders release", () => {
+      // Mount two concurrent hooks with enabled=true
+      const hook1 = renderHook(() => useScrollLock(true));
+      const hook2 = renderHook(() => useScrollLock(true));
+
+      // Body should be locked
+      expect(document.body.style.overflow).toBe("hidden");
+
+      // Unmount first hook - body should still be locked
+      hook1.unmount();
+      expect(document.body.style.overflow).toBe("hidden");
+
+      // Unmount second hook - body should now be unlocked
+      hook2.unmount();
+      expect(document.body.style.overflow).toBe("");
+    });
+
+    test("handles mixed enable states across multiple holders", () => {
+      const hook1 = renderHook(({ enabled }) => useScrollLock(enabled), {
+        initialProps: { enabled: true },
+      });
+      const hook2 = renderHook(({ enabled }) => useScrollLock(enabled), {
+        initialProps: { enabled: true },
+      });
+
+      expect(document.body.style.overflow).toBe("hidden");
+
+      // Disable first hook - second still holds lock
+      hook1.rerender({ enabled: false });
+      expect(document.body.style.overflow).toBe("hidden");
+
+      // Disable second hook - no more holders
+      hook2.rerender({ enabled: false });
+      expect(document.body.style.overflow).toBe("");
+    });
+  });
+
   describe("edge cases", () => {
     test("handles starting disabled then enabling", () => {
       const { rerender, unmount } = renderHook(
@@ -99,10 +137,10 @@ describe("useScrollLock", () => {
       expect(document.body.style.overflow).toBe("");
     });
 
-    test("SSR guard prevents errors when document is undefined", () => {
-      // The hook guards against undefined document, so this test
-      // verifies the hook doesn't throw when document exists
-      // (actual SSR environment would have document undefined)
+    test("does not throw when called in browser environment", () => {
+      // Note: The hook has an SSR guard (typeof document === "undefined")
+      // but renderHook itself requires document, so we can only verify
+      // non-throwing behavior in a browser-like environment here.
       expect(() => {
         renderHook(() => useScrollLock(true));
       }).not.toThrow();

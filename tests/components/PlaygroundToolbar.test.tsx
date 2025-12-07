@@ -601,7 +601,7 @@ describe("PlaygroundToolbar - Overflow Menu", () => {
 
     const button = screen.getByLabelText("More actions");
     expect(button).toBeDefined();
-    expect(button.getAttribute("aria-haspopup")).toBe("menu");
+    expect(button.getAttribute("aria-haspopup")).toBe("true");
     expect(button.getAttribute("aria-expanded")).toBe("false");
   });
 
@@ -786,12 +786,13 @@ describe("PlaygroundToolbar - Overflow Menu", () => {
     // Menu should be open
     expect(menuButton.getAttribute("aria-expanded")).toBe("true");
 
-    // Find the menu container (role="menu")
-    const menu = screen.getByRole("menu");
-    expect(menu).toBeDefined();
+    // Find the menu container by its id (controlled by aria-controls)
+    const menuId = menuButton.getAttribute("aria-controls");
+    const menu = document.getElementById(menuId!);
+    expect(menu).not.toBeNull();
 
     // Press Escape on the menu
-    fireEvent.keyDown(menu, { key: "Escape" });
+    fireEvent.keyDown(menu!, { key: "Escape" });
 
     // Menu should be closed
     expect(menuButton.getAttribute("aria-expanded")).toBe("false");
@@ -800,15 +801,17 @@ describe("PlaygroundToolbar - Overflow Menu", () => {
     expect(document.activeElement).toBe(menuButton);
   });
 
-  test("menu has role='menu' and is focusable", () => {
+  test("menu popup is focusable", () => {
     renderToolbar();
 
     const menuButton = screen.getByLabelText("More actions");
     fireEvent.click(menuButton);
 
-    const menu = screen.getByRole("menu");
-    expect(menu).toBeDefined();
-    expect(menu.getAttribute("tabindex")).toBe("-1");
+    // Find menu container by aria-controls relationship
+    const menuId = menuButton.getAttribute("aria-controls");
+    const menu = document.getElementById(menuId!);
+    expect(menu).not.toBeNull();
+    expect(menu!.getAttribute("tabindex")).toBe("-1");
   });
 });
 
