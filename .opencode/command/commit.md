@@ -66,3 +66,9 @@ Here is the status:
 !`git --no-pager diff --stat --staged`
 
 </git_diff_stat_staged>
+
+<git_log_recent>
+
+!`git --no-pager log --oneline -10`
+
+</git_log_recent>
