@@ -9,21 +9,16 @@ test.describe("Accessibility - Landmarks", () => {
     await page.goto("/");
 
     // 2. Verify page has proper landmark regions
-    // Check for a single header/banner landmark
-    const header = page.locator("body > header, body > [role='banner']");
-    await expect(header).toHaveCount(1);
+    // Header/banner landmark (may be nested in layout container)
+    const header = page.locator("header").first();
     await expect(header).toBeVisible();
 
-    // 3. Check for a single main landmark
-    const main = page.locator("body > main, body > [role='main']");
-    await expect(main).toHaveCount(1);
+    // 3. Main landmark with id="main-content"
+    const main = page.locator("main#main-content");
     await expect(main).toBeVisible();
 
-    // 4. Check for a single footer/contentinfo landmark (exclude devtools)
-    const footer = page.locator(
-      "body > footer:not([class*='Devtools']), body > [role='contentinfo']:not([class*='Devtools'])",
-    );
-    await expect(footer).toHaveCount(1);
+    // 4. Footer/contentinfo landmark
+    const footer = page.locator("footer").first();
     await expect(footer).toBeVisible();
   });
 

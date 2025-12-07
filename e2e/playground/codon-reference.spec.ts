@@ -17,28 +17,25 @@ test.describe("Core Playground", () => {
     // 2. Click 'Reference' button
     await referenceButton.click();
 
-    // 3. Verify reference panel opens with header
-    await expect(page.getByText("Codon Reference")).toBeVisible();
+    // 3. Verify reference panel opens with header (role-based for semantic check)
+    await expect(
+      page.getByRole("heading", { name: "Codon Reference" }),
+    ).toBeVisible();
 
     // Verify all category buttons are visible (aria-label is "Filter by X")
-    await expect(
-      page.getByRole("button", { name: "Filter by All" }),
-    ).toBeVisible();
-    await expect(
-      page.getByRole("button", { name: "Filter by Control" }),
-    ).toBeVisible();
-    await expect(
-      page.getByRole("button", { name: "Filter by Drawing" }),
-    ).toBeVisible();
-    await expect(
-      page.getByRole("button", { name: "Filter by Transform" }),
-    ).toBeVisible();
-    await expect(
-      page.getByRole("button", { name: "Filter by Stack" }),
-    ).toBeVisible();
-    await expect(
-      page.getByRole("button", { name: "Filter by Math" }),
-    ).toBeVisible();
+    const categories = [
+      "All",
+      "Control",
+      "Drawing",
+      "Transform",
+      "Stack",
+      "Math",
+    ];
+    for (const category of categories) {
+      await expect(
+        page.getByRole("button", { name: `Filter by ${category}` }),
+      ).toBeVisible();
+    }
 
     // 4. Search for 'CIRCLE' in search box
     await searchBox.fill("CIRCLE");
@@ -54,7 +51,13 @@ test.describe("Core Playground", () => {
 
     // 5. Clear search and click category filter 'Drawing'
     await searchBox.fill("");
-    await page.getByRole("button", { name: "Filter by Drawing" }).click();
+    const drawingFilterButton = page.getByRole("button", {
+      name: "Filter by Drawing",
+    });
+    await drawingFilterButton.click();
+
+    // Verify the button's accessibility state reflects the active filter
+    await expect(drawingFilterButton).toHaveAttribute("aria-pressed", "true");
 
     // Verify Drawing category shows drawing-related codons
     await expect(page.getByText("CIRCLE", { exact: true })).toBeVisible();

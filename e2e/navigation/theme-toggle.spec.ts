@@ -12,30 +12,37 @@ test.describe("Navigation - Theme Toggle", () => {
     });
     await expect(themeButton).toBeVisible();
 
-    // Capture initial theme state from DOM
-    const initialIsDark = await page.evaluate(() =>
-      document.documentElement.classList.contains("dark"),
-    );
+    // Capture initial theme from button text
+    const initialText = await themeButton.textContent();
+    const initialThemeMatch = initialText?.match(/\((system|light|dark)\)/i);
+    const initialTheme = initialThemeMatch?.[1]?.toLowerCase();
 
-    // Toggle theme
+    // Toggle theme - cycles: light -> dark -> system -> light
     await themeButton.click();
 
-    // Verify DOM actually changed (theme class toggled)
-    const newIsDark = await page.evaluate(() =>
-      document.documentElement.classList.contains("dark"),
-    );
-    expect(newIsDark).not.toBe(initialIsDark);
+    // Verify button text changed to next theme in cycle
+    const expectedNextTheme =
+      initialTheme === "light"
+        ? "dark"
+        : initialTheme === "dark"
+          ? "system"
+          : "light";
 
-    // Button text should still match expected pattern
     await expect(themeButton).toHaveText(
-      /Toggle theme \((system|light|dark)\)/i,
+      new RegExp(`Toggle theme \\(${expectedNextTheme}\\)`, "i"),
     );
+
+    // Verify data-theme attribute is set on document
+    const dataTheme = await page.evaluate(() =>
+      document.documentElement.getAttribute("data-theme"),
+    );
+    expect(dataTheme).toMatch(/^(light|dark)$/);
   });
 
   test("theme-persists-across-navigation", async ({ page }): Promise<void> => {
     await page.goto("/");
 
-    // Toggle to dark mode
+    // Toggle theme (capture resulting state)
     const themeButton = page.getByRole("button", {
       name: /Toggle theme \((system|light|dark)\)/i,
     });

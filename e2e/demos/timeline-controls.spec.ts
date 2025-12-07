@@ -1,7 +1,17 @@
 // spec: e2e/test-plan.md
 // seed: e2e/seed.spec.ts
 
+import type { Page } from "@playwright/test";
 import { expect, test } from "@playwright/test";
+
+/** Helper to parse current step from "Step X of Y" text */
+async function getCurrentStep(page: Page): Promise<number> {
+  const stepText = await page.getByText(/step \d+ of \d+/i).textContent();
+  if (!stepText) throw new Error("Step indicator not found");
+  const match = stepText.match(/step (\d+) of (\d+)/i);
+  if (!match) throw new Error(`Failed to parse step text: "${stepText}"`);
+  return parseInt(match[1], 10);
+}
 
 test.describe("Timeline Navigation Controls", () => {
   test.beforeEach(async ({ page }): Promise<void> => {
@@ -20,15 +30,6 @@ test.describe("Timeline Navigation Controls", () => {
   });
 
   test("timeline-navigation-controls", async ({ page }): Promise<void> => {
-    // Helper to parse current step from "Step X of Y" text
-    async function getCurrentStep(): Promise<number> {
-      const stepText = await page.getByText(/step \d+ of \d+/i).textContent();
-      if (!stepText) throw new Error("Step indicator not found");
-      const match = stepText.match(/step (\d+) of (\d+)/i);
-      if (!match) throw new Error(`Failed to parse step text: "${stepText}"`);
-      return parseInt(match[1], 10);
-    }
-
     // Use precise aria-label matches for timeline control buttons
     const nextButton = page.getByRole("button", { name: /next\s*step/i });
     const prevButton = page.getByRole("button", { name: /previous\s*step/i });
@@ -37,23 +38,23 @@ test.describe("Timeline Navigation Controls", () => {
     });
 
     // Capture initial step
-    const initialStep = await getCurrentStep();
+    const initialStep = await getCurrentStep(page);
 
     // Click Next - step should increment by 1
     await nextButton.click();
-    const afterNext = await getCurrentStep();
+    const afterNext = await getCurrentStep(page);
     expect(afterNext).toBe(initialStep + 1);
 
     // Click Previous - step should decrement by 1
     await prevButton.click();
-    const afterPrev = await getCurrentStep();
+    const afterPrev = await getCurrentStep(page);
     expect(afterPrev).toBe(afterNext - 1);
 
     // Advance a few steps then Reset - should return to step 1
     await nextButton.click();
     await nextButton.click();
     await resetButton.click();
-    const afterReset = await getCurrentStep();
+    const afterReset = await getCurrentStep(page);
     expect(afterReset).toBe(initialStep);
   });
 
@@ -77,17 +78,8 @@ test.describe("Timeline Navigation Controls", () => {
   });
 
   test("timeline-play-button", async ({ page }): Promise<void> => {
-    // Helper to parse current step from "Step X of Y" text
-    async function getCurrentStep(): Promise<number> {
-      const stepText = await page.getByText(/step \d+ of \d+/i).textContent();
-      if (!stepText) throw new Error("Step indicator not found");
-      const match = stepText.match(/step (\d+) of (\d+)/i);
-      if (!match) throw new Error(`Failed to parse step text: "${stepText}"`);
-      return parseInt(match[1], 10);
-    }
-
     // Capture initial step before playing
-    const initialStep = await getCurrentStep();
+    const initialStep = await getCurrentStep(page);
 
     // Click 'Play' to auto-advance
     const playButton = page.getByRole("button", { name: /play/i });
@@ -100,12 +92,12 @@ test.describe("Timeline Navigation Controls", () => {
 
     // Wait for step to actually advance (not just icon change)
     await expect(async () => {
-      const currentStep = await getCurrentStep();
+      const currentStep = await getCurrentStep(page);
       expect(currentStep).toBeGreaterThan(initialStep);
     }).toPass({ timeout: 5000 });
 
     // Capture step after playback started
-    const stepAfterPlay = await getCurrentStep();
+    const stepAfterPlay = await getCurrentStep(page);
 
     // Click Pause to stop playback
     await pauseButton.click();

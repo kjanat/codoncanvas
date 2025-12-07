@@ -54,9 +54,12 @@ test.describe("Core Playground", () => {
       await expect(genomeEditor).toHaveValue(modifiedGenome);
 
       // 7. Verify final button states match desktop behavior
+      // Re-query buttons after reopening menu to avoid stale DOM references
       await moreButton.click();
-      await expect(undoButton).toBeEnabled();
-      await expect(redoButton).toBeDisabled();
+      const undoButtonFinal = page.getByRole("button", { name: "Undo" });
+      const redoButtonFinal = page.getByRole("button", { name: "Redo" });
+      await expect(undoButtonFinal).toBeEnabled();
+      await expect(redoButtonFinal).toBeDisabled();
     } else {
       // Desktop: buttons are directly visible
       const undoButton = page.getByRole("button", { name: "Undo last change" });

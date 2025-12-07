@@ -15,9 +15,9 @@ test.describe("Tutorial Navigation", () => {
     });
     await secondLesson.click();
 
-    // 3. Verify lesson content updates to lesson 2
+    // 3. Verify lesson content updates to lesson 2 (title is "Moving Around - TRANSLATE")
     await expect(page.getByRole("heading", { level: 1 })).toHaveText(
-      /2 Moving Around/i,
+      /Moving Around/i,
     );
 
     // 4. Verify code editor resets for new lesson

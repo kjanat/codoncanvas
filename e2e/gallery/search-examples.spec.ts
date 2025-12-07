@@ -31,10 +31,8 @@ test.describe("Example Gallery", () => {
       page.getByRole("heading", { name: "Hello Circle" }),
     ).not.toBeVisible();
 
-    // 4. Clear search and verify all examples return
+    // 4. Clear search - verify examples are visible again (checking one representative item and the count)
     await searchBox.fill("");
-
-    // Verify all examples are visible again
     await expect(
       page.getByRole("heading", { name: "Hello Circle" }),
     ).toBeVisible();
