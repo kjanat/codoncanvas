@@ -3,6 +3,17 @@
 
 import { expect, test } from "@playwright/test";
 
+/** Parse step indicator text "Step X of Y" into numbers. Throws on invalid input. */
+function parseStep(text: string | null): { current: number; total: number } {
+  if (!text) throw new Error("Step indicator text is null");
+  const match = text.match(/step (\d+) of (\d+)/i);
+  if (!match) throw new Error(`Failed to parse step text: "${text}"`);
+  return {
+    current: parseInt(match[1], 10),
+    total: parseInt(match[2], 10),
+  };
+}
+
 test.describe("Timeline Capture", () => {
   test("run-and-capture-timeline", async ({ page }): Promise<void> => {
     // 1. Navigate to /demos/timeline
@@ -44,8 +55,7 @@ test.describe("Timeline Capture", () => {
 
     // Get current step from step indicator (e.g., "Step 1 of 5")
     const stepText = await page.getByText(/step \d+ of \d+/i).textContent();
-    const stepMatch = stepText?.match(/step (\d+) of/i);
-    const currentStep = stepMatch ? Number.parseInt(stepMatch[1], 10) : 0;
+    const { current: currentStep } = parseStep(stepText);
 
     // Instruction count should match the current step number
     const instructionsRow = vmStatePanel
@@ -71,23 +81,11 @@ test.describe("Timeline Capture", () => {
     });
     await captureButton.click();
 
-    // Helper to parse step number from "Step X of Y"
-    async function parseStep(): Promise<{ current: number; total: number }> {
-      const text = await page.getByText(/step \d+ of \d+/i).textContent();
-      if (!text) throw new Error("Step indicator not found");
-      const match = text.match(/step (\d+) of (\d+)/i);
-      if (!match) throw new Error(`Failed to parse step text: "${text}"`);
-      return {
-        current: parseInt(match[1], 10),
-        total: parseInt(match[2], 10),
-      };
-    }
-
     // Wait for timeline to be ready and verify format
-    const stepText = page.getByText(/step \d+ of \d+/i);
-    await expect(stepText).toBeVisible({ timeout: 10000 });
+    const stepIndicator = page.getByText(/step \d+ of \d+/i);
+    await expect(stepIndicator).toBeVisible({ timeout: 10000 });
 
-    const initialStep = await parseStep();
+    const initialStep = parseStep(await stepIndicator.textContent());
     expect(initialStep.current).toBeGreaterThanOrEqual(1);
     expect(initialStep.total).toBeGreaterThan(1);
 
@@ -96,7 +94,7 @@ test.describe("Timeline Capture", () => {
     await nextButton.click();
 
     // Verify step incremented by 1
-    const afterNext = await parseStep();
+    const afterNext = parseStep(await stepIndicator.textContent());
     expect(afterNext.current).toBe(initialStep.current + 1);
     expect(afterNext.total).toBe(initialStep.total); // total unchanged
   });

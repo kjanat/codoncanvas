@@ -27,10 +27,8 @@ test.describe("Tutorial Navigation", () => {
 
     // 4. Verify code editor resets for new lesson
     const editor = page.getByRole("textbox", { name: /code/i });
-    const editorValue = await editor.inputValue();
-    expect(editorValue.length).toBeGreaterThan(0);
-    // Should contain starter code for lesson 2
-    expect(editorValue).toContain("GAA AAT GGA");
+    // Should contain starter code for lesson 2 (auto-waits for content)
+    await expect(editor).toHaveValue(/GAA AAT GGA/);
   });
 });
 

@@ -13,9 +13,7 @@ Review the following code changes for:
 
 ## Changes
 
-Get changes like this, use the following optional
-<arguments>$ARGUMENTS</arguments> (if provided) to filter when running this
-command: `bun diff [all|staged|unstaged|commit|branch|pr] [ref]`
+To get changes, use the following optional <arguments>$ARGUMENTS</arguments> (if provided) to filter when running this command: `bun diff [all|staged|unstaged|commit|branch|pr] [ref]`
 
 <message>
 
@@ -25,8 +23,7 @@ command: `bun diff [all|staged|unstaged|commit|branch|pr] [ref]`
 
 </message>
 
-Please let me know if the above message is empty. Then run `bun diff` to see the
-changes.
+If the above message is empty, run `bun diff` to see the changes.
 
 ## CodonCanvas Guidelines
 

@@ -58,7 +58,7 @@ test.describe("Mutation Lab - Frameshift Mutation", () => {
       .first();
 
     // Derive codons from customGenome and assert each appears in the Original panel
-    const codons = customGenome.split(/\s+/);
+    const codons = customGenome.split(/\s+/).filter((c) => c.trim().length > 0);
     for (const codon of codons) {
       await expect(
         originalPanel.getByText(codon),
@@ -77,10 +77,7 @@ test.describe("Mutation Lab - Frameshift Mutation", () => {
     const changeText = await changeItem.textContent();
     expect(changeText).toBeTruthy();
     // Changed codon should be one of our custom genome codons
-    const customCodons = ["ATG", "GAA", "CCC", "GGA", "TAA"];
-    const hasCustomCodon = customCodons.some((codon) =>
-      changeText?.includes(codon),
-    );
+    const hasCustomCodon = codons.some((codon) => changeText?.includes(codon));
     expect(hasCustomCodon).toBe(true);
   });
 });

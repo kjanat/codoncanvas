@@ -44,7 +44,9 @@ test.describe("Navigation - Theme Toggle", () => {
     await page.goto("/");
 
     // Toggle to dark mode
-    const themeButton = page.getByRole("button", { name: /theme|dark|light/i });
+    const themeButton = page.getByRole("button", {
+      name: /Toggle theme \((system|light|dark)\)/i,
+    });
     await expect(themeButton).toBeVisible();
     await themeButton.click();
 
@@ -57,7 +59,7 @@ test.describe("Navigation - Theme Toggle", () => {
 
     // Theme preference should persist (stored in localStorage)
     const themeButtonOnGallery = page.getByRole("button", {
-      name: /theme|dark|light/i,
+      name: /Toggle theme \((system|light|dark)\)/i,
     });
     await expect(themeButtonOnGallery).toBeVisible();
 

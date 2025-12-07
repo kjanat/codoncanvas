@@ -29,6 +29,7 @@ test.describe("Core Playground", () => {
       await expect(redoButtonInitial).toBeDisabled();
       // Close menu before editing
       await page.keyboard.press("Escape");
+      await expect(undoButtonInitial).toBeHidden();
 
       // 4. Type additional codons in editor
       await genomeEditor.fill(modifiedGenome);
@@ -51,6 +52,11 @@ test.describe("Core Playground", () => {
 
       // Verify Redo restores the undone change
       await expect(genomeEditor).toHaveValue(modifiedGenome);
+
+      // 7. Verify final button states match desktop behavior
+      await moreButton.click();
+      await expect(undoButton).toBeEnabled();
+      await expect(redoButton).toBeDisabled();
     } else {
       // Desktop: buttons are directly visible
       const undoButton = page.getByRole("button", { name: "Undo last change" });
@@ -69,6 +75,7 @@ test.describe("Core Playground", () => {
 
       // 4. Type additional codons in editor
       await genomeEditor.fill(modifiedGenome);
+      await expect(genomeEditor).toHaveValue(modifiedGenome);
 
       // 5. Verify Undo button becomes enabled
       await expect(undoButton).toBeEnabled();
