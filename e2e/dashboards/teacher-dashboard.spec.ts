@@ -10,12 +10,12 @@ test.describe("Teacher Dashboard", () => {
 
     // 2. Verify page loads
     await expect(
-      page.getByRole("heading", { name: /teacher|dashboard/i }),
+      page.getByRole("heading", { name: "Teacher Dashboard" }),
     ).toBeVisible();
 
     // 3. Verify empty state message or data import options
     await expect(
-      page.getByRole("heading", { name: "No Student Data Imported" }),
+      page.getByRole("heading", { name: /No Student Data Imported/i }),
     ).toBeVisible();
   });
 
@@ -29,18 +29,16 @@ test.describe("Teacher Dashboard", () => {
         name: /demo.*data|load.*demo/i,
       })
       .first();
-    if (await demoButton.isVisible()) {
-      await demoButton.click();
 
-      // Dashboard should populate with data - wait for table or chart to appear
-      const dataElements = page.locator(
-        "table, [class*='chart'], [class*='data']",
-      );
-      await expect(dataElements.first()).toBeVisible({ timeout: 5000 });
+    await expect(demoButton).toBeVisible();
+    await demoButton.click();
 
-      // Verify data elements are present
-      const count = await dataElements.count();
-      expect(count).toBeGreaterThan(0);
-    }
+    // Dashboard should populate with data - wait for table or chart to appear
+    const dataElements = page.locator("table");
+    await expect(dataElements.first()).toBeVisible({ timeout: 5000 });
+
+    // Verify data elements are present
+    const count = await dataElements.count();
+    expect(count).toBeGreaterThan(0);
   });
 });

@@ -4,7 +4,7 @@
 import { expect, test } from "@playwright/test";
 
 test.describe("Accessibility - ARIA Labels", () => {
-  test("aria-labels-present", async ({ page }): Promise<void> => {
+  test("key-elements-are-accessible", async ({ page }): Promise<void> => {
     // 1. Navigate to playground
     await page.goto("/");
 
@@ -32,10 +32,12 @@ test.describe("Accessibility - ARIA Labels", () => {
     for (let i = 0; i < Math.min(count, 10); i++) {
       const button = buttons.nth(i);
       const name = await button.getAttribute("aria-label");
-      const text = await button.textContent();
+      const text = (await button.textContent())?.trim();
 
-      // Button should have either aria-label or visible text
-      expect(name || text).toBeTruthy();
+      // Button should have either aria-label or non-empty visible text
+      const accessibleName = name ?? text;
+      expect(accessibleName).toBeTruthy();
+      expect(accessibleName?.length).toBeGreaterThan(0);
     }
   });
 });

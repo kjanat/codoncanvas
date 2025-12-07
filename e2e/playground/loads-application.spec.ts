@@ -2,6 +2,7 @@
 // seed: e2e/seed.spec.ts
 
 import { expect, test } from "@playwright/test";
+import { DEFAULT_GENOME } from "../support/constants";
 
 test.describe("Core Playground", () => {
   test("loads-application-with-default-state", async ({
@@ -14,9 +15,8 @@ test.describe("Core Playground", () => {
     await expect(page).toHaveTitle(/CodonCanvas/);
 
     // 3. Verify editor textbox is visible with placeholder text
-    await expect(
-      page.getByRole("textbox", { name: "Genome editor" }),
-    ).toBeVisible();
+    const genomeEditor = page.getByRole("textbox", { name: "Genome editor" });
+    await expect(genomeEditor).toBeVisible();
 
     // 4. Verify 'Run' button is present
     await expect(
@@ -37,9 +37,7 @@ test.describe("Core Playground", () => {
 
     // Expected Results: Verify default state
     // Editor contains default genome
-    await expect(
-      page.getByRole("textbox", { name: "Genome editor" }),
-    ).toHaveValue("ATG GAA AAT GGA TAA");
+    await expect(genomeEditor).toHaveValue(DEFAULT_GENOME);
 
     // Validation indicator shows 'Valid'
     await expect(page.getByText("Valid")).toBeVisible();

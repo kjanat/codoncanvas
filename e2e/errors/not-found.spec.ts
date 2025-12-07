@@ -15,9 +15,8 @@ test.describe("Error Handling", () => {
     // 3. Verify user can navigate back to valid routes
     // Look for a home link or navigation
     const homeLink = page.getByRole("link", { name: "CodonCanvas" });
-    if (await homeLink.isVisible()) {
-      await homeLink.click();
-      await expect(page).toHaveURL("/");
-    }
+    await expect(homeLink).toBeVisible();
+    await homeLink.click();
+    await expect(page).toHaveURL("/");
   });
 });

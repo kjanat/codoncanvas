@@ -25,18 +25,20 @@ test.describe("Timeline Capture", () => {
     await expect(page.getByRole("heading", { name: "VM State" })).toBeVisible();
   });
 
-  test("timeline-shows-step-count", async ({ page }): Promise<void> => {
+  test("timeline-step-count-increments", async ({ page }): Promise<void> => {
     await page.goto("/demos/timeline");
 
-    // Capture timeline
     const captureButton = page.getByRole("button", {
       name: /run.*capture|capture.*timeline/i,
     });
     await captureButton.click();
 
-    // Step counter should show format "Step X of Y"
-    await expect(page.getByText(/step \d+ of \d+/i)).toBeVisible({
-      timeout: 10000,
-    });
+    // Verify step counter exists and shows expected format
+    const stepText = page.getByText(/step (\d+) of (\d+)/i);
+    await expect(stepText).toBeVisible({ timeout: 10000 });
+
+    // Verify the format is exactly "Step X of Y"
+    const text = await stepText.textContent();
+    expect(text).toMatch(/^Step \d+ of \d+$/i);
   });
 });

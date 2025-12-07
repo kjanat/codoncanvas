@@ -13,22 +13,27 @@ test.describe("Navigation - Theme Toggle", () => {
     await expect(themeButton).toBeVisible();
 
     // Get initial theme state from document
-    const initialIsDark = await page.evaluate(() => {
-      return document.documentElement.classList.contains("dark");
-    });
+    const initialTheme = await page.evaluate(() =>
+      document.documentElement.getAttribute("data-theme"),
+    );
+    // Initial theme is likely 'light' if system theme is light, or 'dark' if last used.
+    // To ensure a change, click twice to go through the cycle.
 
-    // 3. Click theme toggle
-    await themeButton.click();
+    // 3. Click theme toggle first time (e.g., system -> light)
+    await themeButton.click({ force: true });
+    // 4. Click theme toggle second time (e.g., light -> dark)
+    await themeButton.click({ force: true });
 
-    // 4. Verify theme changes
-    const newIsDark = await page.evaluate(() => {
-      return document.documentElement.classList.contains("dark");
-    });
+    // 5. Verify theme changes
+    await expect
+      .poll(async () => {
+        return await page.evaluate(() =>
+          document.documentElement.getAttribute("data-theme"),
+        );
+      })
+      .not.toBe(initialTheme);
 
     // Theme should have changed (or cycled through system -> light -> dark)
-    // Verify the toggle had some effect or button is still functional
-    expect(typeof initialIsDark).toBe("boolean");
-    expect(typeof newIsDark).toBe("boolean");
     await expect(themeButton).toBeVisible();
   });
 
@@ -37,7 +42,12 @@ test.describe("Navigation - Theme Toggle", () => {
 
     // Toggle to dark mode
     const themeButton = page.getByRole("button", { name: /theme|dark|light/i });
+    await expect(themeButton).toBeVisible();
     await themeButton.click();
+
+    const isDarkAfterToggle = await page.evaluate(() =>
+      document.documentElement.classList.contains("dark"),
+    );
 
     // Navigate to another page
     await page.goto("/gallery");
@@ -47,5 +57,10 @@ test.describe("Navigation - Theme Toggle", () => {
       name: /theme|dark|light/i,
     });
     await expect(themeButtonOnGallery).toBeVisible();
+
+    const isDarkOnGallery = await page.evaluate(() =>
+      document.documentElement.classList.contains("dark"),
+    );
+    expect(isDarkOnGallery).toBe(isDarkAfterToggle);
   });
 });

@@ -2,9 +2,10 @@
  * Media icons - gallery, images
  */
 
+import type { JSX } from "react";
 import type { IconProps } from "./types";
 
-export function GalleryIcon({ className = "h-5 w-5" }: IconProps) {
+export function GalleryIcon({ className = "h-5 w-5" }: IconProps): JSX.Element {
   return (
     <svg
       aria-hidden="true"

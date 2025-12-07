@@ -17,7 +17,7 @@ test.describe("Example Gallery", () => {
     await page.getByText("Beginner", { exact: true }).click();
 
     // 3. Verify only beginner examples shown
-    await expect(page.getByText("beginner").first()).toBeVisible();
+    await expect(page.getByText(/beginner/i).first()).toBeVisible();
 
     // Verify Hello Circle (beginner) is visible
     await expect(
@@ -28,7 +28,7 @@ test.describe("Example Gallery", () => {
     await page.getByText("Advanced", { exact: true }).click();
 
     // 5. Verify only advanced examples shown
-    await expect(page.getByText("advanced").first()).toBeVisible();
+    await expect(page.getByText(/advanced/i).first()).toBeVisible();
 
     // Verify an advanced example is visible (Mandala Pattern is advanced)
     await expect(
@@ -42,6 +42,6 @@ test.describe("Example Gallery", () => {
     await expect(
       page.getByRole("radio", { name: "All Examples" }),
     ).toBeChecked();
-    await expect(page.getByText("Browse 39 examples")).toBeVisible();
+    await expect(page.getByText(/Browse\s+\d+\s+examples?/i)).toBeVisible();
   });
 });

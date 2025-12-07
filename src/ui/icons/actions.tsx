@@ -7,9 +7,10 @@
  * - Toolbar icons (Play, Save, etc.): h-5 w-5 (20px) - touch targets
  */
 
+import type { JSX } from "react";
 import type { IconProps } from "./types";
 
-export function CloseIcon({ className = "h-4 w-4" }: IconProps) {
+export function CloseIcon({ className = "h-4 w-4" }: IconProps): JSX.Element {
   return (
     <svg
       aria-hidden="true"
@@ -28,7 +29,7 @@ export function CloseIcon({ className = "h-4 w-4" }: IconProps) {
   );
 }
 
-export function CheckIcon({ className = "h-4 w-4" }: IconProps) {
+export function CheckIcon({ className = "h-4 w-4" }: IconProps): JSX.Element {
   return (
     <svg
       aria-hidden="true"
@@ -45,7 +46,7 @@ export function CheckIcon({ className = "h-4 w-4" }: IconProps) {
   );
 }
 
-export function ErrorIcon({ className = "h-4 w-4" }: IconProps) {
+export function ErrorIcon({ className = "h-4 w-4" }: IconProps): JSX.Element {
   return (
     <svg
       aria-hidden="true"
@@ -62,7 +63,7 @@ export function ErrorIcon({ className = "h-4 w-4" }: IconProps) {
   );
 }
 
-export function WarningIcon({ className = "h-8 w-8" }: IconProps) {
+export function WarningIcon({ className = "h-8 w-8" }: IconProps): JSX.Element {
   return (
     <svg
       aria-hidden="true"
@@ -81,7 +82,7 @@ export function WarningIcon({ className = "h-8 w-8" }: IconProps) {
   );
 }
 
-export function PlayIcon({ className = "h-5 w-5" }: IconProps) {
+export function PlayIcon({ className = "h-5 w-5" }: IconProps): JSX.Element {
   return (
     <svg
       aria-hidden="true"
@@ -98,7 +99,7 @@ export function PlayIcon({ className = "h-5 w-5" }: IconProps) {
   );
 }
 
-export function SaveIcon({ className = "h-5 w-5" }: IconProps) {
+export function SaveIcon({ className = "h-5 w-5" }: IconProps): JSX.Element {
   return (
     <svg
       aria-hidden="true"
@@ -117,7 +118,7 @@ export function SaveIcon({ className = "h-5 w-5" }: IconProps) {
   );
 }
 
-export function UploadIcon({ className = "h-5 w-5" }: IconProps) {
+export function UploadIcon({ className = "h-5 w-5" }: IconProps): JSX.Element {
   return (
     <svg
       aria-hidden="true"
@@ -136,7 +137,7 @@ export function UploadIcon({ className = "h-5 w-5" }: IconProps) {
   );
 }
 
-export function CopyIcon({ className = "h-5 w-5" }: IconProps) {
+export function CopyIcon({ className = "h-5 w-5" }: IconProps): JSX.Element {
   return (
     <svg
       aria-hidden="true"
@@ -155,7 +156,7 @@ export function CopyIcon({ className = "h-5 w-5" }: IconProps) {
   );
 }
 
-export function ShareIcon({ className = "h-5 w-5" }: IconProps) {
+export function ShareIcon({ className = "h-5 w-5" }: IconProps): JSX.Element {
   return (
     <svg
       aria-hidden="true"
@@ -174,7 +175,7 @@ export function ShareIcon({ className = "h-5 w-5" }: IconProps) {
   );
 }
 
-export function UndoIcon({ className = "h-5 w-5" }: IconProps) {
+export function UndoIcon({ className = "h-5 w-5" }: IconProps): JSX.Element {
   return (
     <svg
       aria-hidden="true"
@@ -193,7 +194,7 @@ export function UndoIcon({ className = "h-5 w-5" }: IconProps) {
   );
 }
 
-export function RedoIcon({ className = "h-5 w-5" }: IconProps) {
+export function RedoIcon({ className = "h-5 w-5" }: IconProps): JSX.Element {
   return (
     <svg
       aria-hidden="true"
@@ -212,7 +213,7 @@ export function RedoIcon({ className = "h-5 w-5" }: IconProps) {
   );
 }
 
-export function BookIcon({ className = "h-5 w-5" }: IconProps) {
+export function BookIcon({ className = "h-5 w-5" }: IconProps): JSX.Element {
   return (
     <svg
       aria-hidden="true"
@@ -231,7 +232,9 @@ export function BookIcon({ className = "h-5 w-5" }: IconProps) {
   );
 }
 
-export function DotsVerticalIcon({ className = "h-5 w-5" }: IconProps) {
+export function DotsVerticalIcon({
+  className = "h-5 w-5",
+}: IconProps): JSX.Element {
   return (
     <svg
       aria-hidden="true"

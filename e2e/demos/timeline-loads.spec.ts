@@ -13,8 +13,10 @@ test.describe("Timeline Demo", () => {
       page.getByRole("heading", { name: /timeline/i }),
     ).toBeVisible();
 
-    // 3. Verify genome textbox is present
-    const genomeInput = page.locator("textarea").first();
+    // 3. Verify genome textbox is present (by accessible name)
+    const genomeInput = page.getByRole("textbox", {
+      name: /Genome editor/i,
+    });
     await expect(genomeInput).toBeVisible();
 
     // 4. Verify 'Run & Capture Timeline' button exists

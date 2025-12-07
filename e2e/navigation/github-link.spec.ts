@@ -9,7 +9,9 @@ test.describe("Navigation - GitHub Link", () => {
     await page.goto("/");
 
     // 2. Verify GitHub link in header
-    const githubLink = page.getByRole("link", { name: /github/i });
+    const githubLink = page.locator("header").getByRole("link", {
+      name: /github/i,
+    });
     await expect(githubLink).toBeVisible();
 
     // 3. Verify link points to repository

@@ -2,6 +2,7 @@
 // seed: e2e/seed.spec.ts
 
 import { expect, test } from "@playwright/test";
+import { DEFAULT_GENOME } from "../support/constants";
 
 test.describe("File Operations", () => {
   test("share-link-generation", async ({
@@ -22,7 +23,7 @@ test.describe("File Operations", () => {
     // 2. Verify genome code is present
     await expect(
       page.getByRole("textbox", { name: "Genome editor" }),
-    ).toHaveValue("ATG GAA AAT GGA TAA");
+    ).toHaveValue(DEFAULT_GENOME);
 
     // 3. Click 'Share' button (via overflow menu on mobile)
     if (isMobile) {
@@ -32,9 +33,30 @@ test.describe("File Operations", () => {
       await page.getByRole("button", { name: "Copy shareable link" }).click();
     }
 
-    // 4. Verify share button shows feedback (clipboard API doesn't work in headless CI)
-    // The share button should update to indicate the link was copied
-    // URL uses 'g=' parameter for genome, not 'genome='
-    await expect(page).toHaveURL(/\//); // Verify we're still on the page
+    // 4. Verify share action completed
+    // Check for UI feedback since clipboard doesn't work reliably in headless CI
+    if (isMobile) {
+      // Mobile: verify menu closed or toast appeared
+      await expect(
+        page.getByRole("button", { name: "More actions" }),
+      ).toBeVisible();
+    } else {
+      // Desktop: verify button shows feedback (e.g., "Copied!" text or icon change)
+      await expect(
+        page.getByRole("button", { name: /copied|share/i }),
+      ).toBeVisible();
+    }
+
+    // Verify URL contains genome parameter if share updates the URL
+    // await expect(page).toHaveURL(/[?&]g=/);
+
+    // Read clipboard only in Chromium where it's supported
+    if (browserName === "chromium") {
+      const clipboardContent = await page.evaluate(() =>
+        navigator.clipboard.readText(),
+      );
+      expect(clipboardContent).toMatch(/^https?:\/\/.+/);
+      expect(clipboardContent).toContain("?g=");
+    }
   });
 });

@@ -2,9 +2,12 @@
  * Navigation icons - arrows, chevrons, home
  */
 
+import type { JSX } from "react";
 import type { IconProps } from "./types";
 
-export function ChevronDownIcon({ className = "h-4 w-4" }: IconProps) {
+export function ChevronDownIcon({
+  className = "h-4 w-4",
+}: IconProps): JSX.Element {
   return (
     <svg
       aria-hidden="true"
@@ -23,7 +26,9 @@ export function ChevronDownIcon({ className = "h-4 w-4" }: IconProps) {
   );
 }
 
-export function ChevronLeftIcon({ className = "h-5 w-5" }: IconProps) {
+export function ChevronLeftIcon({
+  className = "h-5 w-5",
+}: IconProps): JSX.Element {
   return (
     <svg
       aria-hidden="true"
@@ -42,7 +47,9 @@ export function ChevronLeftIcon({ className = "h-5 w-5" }: IconProps) {
   );
 }
 
-export function ChevronRightIcon({ className = "h-5 w-5" }: IconProps) {
+export function ChevronRightIcon({
+  className = "h-5 w-5",
+}: IconProps): JSX.Element {
   return (
     <svg
       aria-hidden="true"
@@ -61,7 +68,7 @@ export function ChevronRightIcon({ className = "h-5 w-5" }: IconProps) {
   );
 }
 
-export function HomeIcon({ className = "h-5 w-5" }: IconProps) {
+export function HomeIcon({ className = "h-5 w-5" }: IconProps): JSX.Element {
   return (
     <svg
       aria-hidden="true"
@@ -80,7 +87,7 @@ export function HomeIcon({ className = "h-5 w-5" }: IconProps) {
   );
 }
 
-export function RewindIcon({ className = "h-5 w-5" }: IconProps) {
+export function RewindIcon({ className = "h-5 w-5" }: IconProps): JSX.Element {
   return (
     <svg
       aria-hidden="true"
@@ -99,7 +106,7 @@ export function RewindIcon({ className = "h-5 w-5" }: IconProps) {
   );
 }
 
-export function MenuIcon({ className = "h-6 w-6" }: IconProps) {
+export function MenuIcon({ className = "h-6 w-6" }: IconProps): JSX.Element {
   return (
     <svg
       aria-hidden="true"
@@ -118,7 +125,7 @@ export function MenuIcon({ className = "h-6 w-6" }: IconProps) {
   );
 }
 
-export function XIcon({ className = "h-6 w-6" }: IconProps) {
+export function XIcon({ className = "h-6 w-6" }: IconProps): JSX.Element {
   return (
     <svg
       aria-hidden="true"

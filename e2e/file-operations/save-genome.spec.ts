@@ -2,6 +2,7 @@
 // seed: e2e/seed.spec.ts
 
 import { expect, test } from "@playwright/test";
+import { DEFAULT_GENOME } from "../support/constants";
 
 test.describe("File Operations", () => {
   test("save-genome-file", async ({ page, isMobile }) => {
@@ -11,7 +12,7 @@ test.describe("File Operations", () => {
     // 2. Verify default genome is present
     await expect(
       page.getByRole("textbox", { name: "Genome editor" }),
-    ).toHaveValue("ATG GAA AAT GGA TAA");
+    ).toHaveValue(DEFAULT_GENOME);
 
     // 3. Click 'Save' button and handle download (via overflow menu on mobile)
     const downloadPromise = page.waitForEvent("download");

@@ -9,29 +9,40 @@ test.describe("Accessibility - Landmarks", () => {
     await page.goto("/");
 
     // 2. Verify page has proper landmark regions
-    // Check for banner (header)
+    // Check for a single header/banner landmark
     const header = page.locator("header, [role='banner']");
+    await expect(header).toHaveCount(1);
     await expect(header.first()).toBeVisible();
 
-    // 3. Check for main content area
+    // 3. Check for a single main landmark
     const main = page.locator("main, [role='main']");
+    await expect(main).toHaveCount(1);
     await expect(main.first()).toBeVisible();
 
-    // 4. Check for footer (contentinfo)
-    const footer = page.locator("footer, [role='contentinfo']");
+    // 4. Check for a single footer/contentinfo landmark
+    const footer = page.locator("footer:not([class*='Devtools'])");
+    await expect(footer).toHaveCount(1);
     await expect(footer.first()).toBeVisible();
   });
 
   test("navigation-landmark", async ({ page }): Promise<void> => {
     await page.goto("/");
 
-    // Check for navigation landmark
-    const nav = page.locator("nav, [role='navigation']");
-    await expect(nav.first()).toBeVisible();
+    // Check for primary navigation landmark
+    const nav = page.locator("nav, [role='navigation']").first();
+    await expect(nav).toBeVisible();
 
-    // Navigation should contain links
-    const navLinks = nav.first().getByRole("link");
+    // Navigation should contain links with accessible names
+    const navLinks = nav.getByRole("link");
     const count = await navLinks.count();
     expect(count).toBeGreaterThan(0);
+
+    for (let i = 0; i < count; i++) {
+      const link = navLinks.nth(i);
+      const text = (await link.textContent())?.trim();
+      const ariaLabel = (await link.getAttribute("aria-label"))?.trim();
+      const title = (await link.getAttribute("title"))?.trim();
+      expect(text || ariaLabel || title).toBeTruthy();
+    }
   });
 });

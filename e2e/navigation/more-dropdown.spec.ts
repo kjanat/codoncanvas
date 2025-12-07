@@ -35,13 +35,10 @@ test.describe("Navigation - More Dropdown", () => {
       /achievement/i,
     ];
 
+    // Verify all demo links are present
     for (const demoPattern of demoLinks) {
-      // Use first() to handle cases where multiple links match (e.g., "Evolution Lab" and "Genetic Algorithm")
       const link = page.getByRole("link", { name: demoPattern }).first();
-      // At least some demos should be linked
-      if (await link.isVisible()) {
-        await expect(link).toBeVisible();
-      }
+      await expect(link).toBeVisible();
     }
   });
 });

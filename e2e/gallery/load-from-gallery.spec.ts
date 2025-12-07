@@ -8,9 +8,11 @@ test.describe("Example Gallery", () => {
     // 1. Navigate to /gallery
     await page.goto("/gallery");
 
-    // 2. Click on the first example card (they are buttons with example info)
+    // 2. Click on the first example card (structure-based, not copy-based)
     const firstExample = page
-      .getByRole("button", { name: /Hello Circle/i })
+      .locator("main")
+      .getByRole("button")
+      .filter({ has: page.locator("h3") })
       .first();
     await firstExample.click();
 

@@ -154,7 +154,10 @@ export function ModuleSidebar({
           <button
             aria-label="Close menu"
             className="flex h-11 w-11 items-center justify-center rounded-md text-text hover:bg-bg-light"
-            onClick={() => setIsOpen(false)}
+            onClick={(e) => {
+              e.stopPropagation();
+              setIsOpen(false);
+            }}
             type="button"
           >
             <XIcon />

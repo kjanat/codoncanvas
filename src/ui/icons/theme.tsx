@@ -2,9 +2,10 @@
  * Theme icons - sun, moon, system
  */
 
+import type { JSX } from "react";
 import type { IconProps } from "./types";
 
-export function SunIcon({ className = "h-5 w-5" }: IconProps) {
+export function SunIcon({ className = "h-5 w-5" }: IconProps): JSX.Element {
   return (
     <svg
       aria-hidden="true"
@@ -23,7 +24,7 @@ export function SunIcon({ className = "h-5 w-5" }: IconProps) {
   );
 }
 
-export function MoonIcon({ className = "h-5 w-5" }: IconProps) {
+export function MoonIcon({ className = "h-5 w-5" }: IconProps): JSX.Element {
   return (
     <svg
       aria-hidden="true"
@@ -42,7 +43,7 @@ export function MoonIcon({ className = "h-5 w-5" }: IconProps) {
   );
 }
 
-export function SystemIcon({ className = "h-5 w-5" }: IconProps) {
+export function SystemIcon({ className = "h-5 w-5" }: IconProps): JSX.Element {
   return (
     <svg
       aria-hidden="true"

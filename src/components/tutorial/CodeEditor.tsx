@@ -37,6 +37,7 @@ export function CodeEditor({
         {validation && (
           <div
             className={`text-sm ${validation.passed ? "text-success" : "text-danger"}`}
+            role="alert"
           >
             {validation.passed
               ? "\u2713 Passed!"

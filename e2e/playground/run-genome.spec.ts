@@ -2,6 +2,7 @@
 // seed: e2e/seed.spec.ts
 
 import { expect, test } from "@playwright/test";
+import { DEFAULT_GENOME } from "../support/constants";
 
 test.describe("Core Playground", () => {
   test("run-genome-renders-canvas", async ({ page }): Promise<void> => {
@@ -20,7 +21,7 @@ test.describe("Core Playground", () => {
     // 2. Ensure default genome is loaded
     await expect(
       page.getByRole("textbox", { name: "Genome editor" }),
-    ).toHaveValue("ATG GAA AAT GGA TAA");
+    ).toHaveValue(DEFAULT_GENOME);
 
     // 3. Click 'Run' button to execute genome
     await page.getByRole("button", { name: "Run genome" }).click();

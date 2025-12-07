@@ -1,6 +1,7 @@
 // spec: e2e/test-plan.md
 // seed: e2e/seed.spec.ts
 
+import { promises as fs } from "node:fs";
 import { expect, test } from "@playwright/test";
 
 test.describe("File Operations", () => {
@@ -27,5 +28,14 @@ test.describe("File Operations", () => {
     // Verify the file actually exists and has content
     const path = await download.path();
     expect(path).toBeTruthy();
+
+    if (path) {
+      try {
+        const stats = await fs.stat(path);
+        expect(stats.size).toBeGreaterThan(0);
+      } finally {
+        await fs.unlink(path);
+      }
+    }
   });
 });

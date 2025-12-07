@@ -2,6 +2,7 @@
 // seed: e2e/seed.spec.ts
 
 import { expect, test } from "@playwright/test";
+import { DEFAULT_GENOME, DEFAULT_RNA_GENOME } from "../support/constants";
 
 test.describe("Core Playground", () => {
   test("nucleotide-mode-toggle", async ({ page }): Promise<void> => {
@@ -18,7 +19,7 @@ test.describe("Core Playground", () => {
     await expect(toggleButton).toContainText("DNA");
 
     // Verify editor shows DNA format (T bases)
-    await expect(genomeEditor).toHaveValue("ATG GAA AAT GGA TAA");
+    await expect(genomeEditor).toHaveValue(DEFAULT_GENOME);
 
     // 3. Click RNA/DNA toggle button
     await toggleButton.click();
@@ -27,7 +28,7 @@ test.describe("Core Playground", () => {
     await expect(toggleButton).toContainText("RNA");
 
     // Verify genome text shows RNA format with U instead of T
-    await expect(genomeEditor).toHaveValue("AUG GAA AAU GGA UAA");
+    await expect(genomeEditor).toHaveValue(DEFAULT_RNA_GENOME);
 
     // 5. Verify tooltip shows mode-specific information
     await expect(page.getByText("RNA Mode")).toBeVisible();
@@ -40,6 +41,6 @@ test.describe("Core Playground", () => {
 
     // Verify mode switches back to DNA
     await expect(toggleButton).toContainText("DNA");
-    await expect(genomeEditor).toHaveValue("ATG GAA AAT GGA TAA");
+    await expect(genomeEditor).toHaveValue(DEFAULT_GENOME);
   });
 });

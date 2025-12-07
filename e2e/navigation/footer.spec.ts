@@ -8,11 +8,11 @@ test.describe("Navigation - Footer", () => {
     // 1. Navigate to homepage
     await page.goto("/");
 
-    // 2. Scroll to page footer
-    await page.evaluate(() => window.scrollTo(0, document.body.scrollHeight));
+    // 2. Locate footer and scroll it into view
+    const footer = page.locator("footer:not([class*='Devtools'])");
+    await footer.scrollIntoViewIfNeeded();
 
     // 3. Verify CodonCanvas branding in footer
-    const footer = page.locator("footer");
     await expect(footer).toBeVisible();
 
     // Should contain CodonCanvas text

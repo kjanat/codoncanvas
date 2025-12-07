@@ -120,6 +120,7 @@ function OverflowMenu({
             </button>
             <button
               className="flex w-full items-center gap-3 px-4 py-3 text-left text-sm text-text hover:bg-bg-light"
+              data-testid="mobile-menu-copy"
               onClick={() => {
                 io.onCopy();
                 setIsOpen(false);

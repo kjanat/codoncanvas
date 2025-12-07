@@ -15,10 +15,6 @@ test.describe("Research Dashboard", () => {
 
     // 3. Verify metrics or data visualization present
     // Research dashboards typically have charts or data panels
-    const dataElements = page.locator(
-      "[class*='chart'], [class*='metric'], [class*='stat'], canvas, svg",
-    );
-    // At least one data visualization element should be present
-    await expect(dataElements.first()).toBeVisible({ timeout: 5000 });
+    await expect(page.getByText("Total Sessions")).toBeVisible();
   });
 });

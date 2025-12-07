@@ -4,11 +4,10 @@
 import { expect, test } from "@playwright/test";
 
 test.describe("Responsive Design", () => {
-  test("mobile-viewport-layout", async ({ page }): Promise<void> => {
-    // 1. Set viewport to mobile size (375x667 - iPhone SE)
-    await page.setViewportSize({ width: 375, height: 667 });
+  test.use({ viewport: { width: 375, height: 667 } });
 
-    // 2. Navigate to main pages
+  test("mobile-viewport-layout", async ({ page }): Promise<void> => {
+    // 1. Navigate to main pages
     await page.goto("/");
 
     // 3. Verify layout adapts appropriately
@@ -27,7 +26,7 @@ test.describe("Responsive Design", () => {
       page.getByRole("button", { name: "Run genome" }),
     ).toBeVisible();
 
-    // Navigation to gallery
+    // Visit gallery route at mobile viewport
     await page.goto("/gallery");
     await expect(
       page.getByRole("heading", { name: "Example Gallery" }),

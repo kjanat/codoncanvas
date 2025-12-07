@@ -1,0 +1,2 @@
+export const DEFAULT_GENOME = "ATG GAA AAT GGA TAA";
+export const DEFAULT_RNA_GENOME = "AUG GAA AAU GGA UAA";

@@ -22,58 +22,54 @@ test.describe("Timeline Navigation Controls", () => {
   test("timeline-navigation-controls", async ({ page }): Promise<void> => {
     // 1. Click 'Next step' button multiple times
     const nextButton = page.getByRole("button", { name: /next|forward|>/i });
-    if (await nextButton.isVisible()) {
-      await nextButton.click();
-
-      // Step counter should update
-      await expect(page.getByText(/step \d+ of \d+/i)).toBeVisible();
-    }
+    await expect(nextButton).toBeVisible();
+    await nextButton.click();
+    await expect(page.getByText(/step \d+ of \d+/i)).toBeVisible();
 
     // 2. Click 'Previous step' button
     const prevButton = page.getByRole("button", { name: /prev|back|</i });
-    if (await prevButton.isVisible()) {
-      await prevButton.click();
-    }
+    await expect(prevButton).toBeVisible();
+    await prevButton.click();
+    // Verify step counter updated
+    await expect(page.getByText(/step \d+ of \d+/i)).toBeVisible();
 
     // 3. Click 'Reset to start' button
     const resetButton = page.getByRole("button", {
       name: /reset|start|first/i,
     });
-    if (await resetButton.isVisible()) {
-      await resetButton.click();
-
-      // Should be back at step 1
-      await expect(page.getByText(/step 1 of \d+/i)).toBeVisible();
-    }
+    await expect(resetButton).toBeVisible();
+    await resetButton.click();
+    await expect(page.getByText(/step 1 of \d+/i)).toBeVisible();
   });
 
   test("timeline-slider-navigation", async ({ page }): Promise<void> => {
     // Use slider to jump to specific step
     const slider = page.locator("input[type='range']").first();
-    if (await slider.isVisible()) {
-      // Get max value and set to middle
-      const max = await slider.getAttribute("max");
-      if (max) {
-        const midValue = Math.floor(Number.parseInt(max, 10) / 2);
-        await slider.fill(String(midValue));
-      }
-    }
+    await expect(slider).toBeVisible();
+
+    const max = await slider.getAttribute("max");
+    if (!max) throw new Error("Max attribute is missing");
+    const midValue = Math.floor(Number.parseInt(max, 10) / 2);
+    await slider.fill(String(midValue));
+
+    // Verify step indicator reflects the slider position (UI is 1-based)
+    await expect(
+      page.getByText(new RegExp(`step ${midValue + 1}`, "i")),
+    ).toBeVisible();
   });
 
   test("timeline-play-button", async ({ page }): Promise<void> => {
     // Click 'Play' to auto-advance
     const playButton = page.getByRole("button", { name: /play/i });
-    if (await playButton.isVisible()) {
-      await playButton.click();
+    await expect(playButton).toBeVisible();
+    await playButton.click();
 
-      // Play button might change to Pause
-      await page.waitForTimeout(500);
+    // Wait for pause button to appear (play transforms to pause)
+    const pauseButton = page.getByRole("button", { name: /pause|stop/i });
+    await expect(pauseButton).toBeVisible();
+    await pauseButton.click();
 
-      // Stop playback
-      const pauseButton = page.getByRole("button", { name: /pause|stop/i });
-      if (await pauseButton.isVisible()) {
-        await pauseButton.click();
-      }
-    }
+    // Verify play button returns after stopping
+    await expect(playButton).toBeVisible();
   });
 });

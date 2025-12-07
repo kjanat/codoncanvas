@@ -22,7 +22,7 @@ export default defineConfig({
         ["html"], // Detailed interactive report
         ["junit", { outputFile: "test-results/junit.xml" }], // Codecov test analytics
       ]
-    : [["list"], ["html"]],
+    : [["list"], ["html", { open: "never" }]],
   /* Global timeout for each test */
   timeout: 30000,
   /* Expect timeout */

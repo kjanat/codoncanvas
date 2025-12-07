@@ -15,11 +15,15 @@ test.describe("Mutation Lab - Silent Mutation", () => {
     await page.getByRole("button", { name: /apply mutation/i }).click();
 
     // 4. Compare original and mutated genomes
-    // DiffViewer should show the result
-    await expect(page.getByText(/mutation result/i)).toBeVisible();
+    // Verify DiffViewer title indicates a silent mutation
+    await expect(
+      page.getByRole("heading", { name: "Mutation Result: silent" }),
+    ).toBeVisible();
 
     // Canvas panels should be visible for comparison
     const canvases = page.locator("canvas");
+    await expect(canvases).toHaveCount(2);
     await expect(canvases.first()).toBeVisible();
+    await expect(canvases.last()).toBeVisible();
   });
 });

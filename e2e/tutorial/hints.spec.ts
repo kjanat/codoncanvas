@@ -33,9 +33,14 @@ test.describe("Tutorial Hint System", () => {
 
     // Reveal a hint
     const hintButton = page.getByRole("button", { name: /hint/i });
-    if (await hintButton.isVisible()) {
-      await hintButton.click();
-    }
+    await expect(hintButton).toBeVisible();
+    await hintButton.click();
+
+    // Verify hint is revealed
+    const hintsList = page.getByRole("list").filter({
+      has: page.getByText(/Try:/i),
+    });
+    await expect(hintsList).toBeVisible();
 
     // Navigate away and back - wait for each page to load
     await page.goto("/gallery");
@@ -43,7 +48,7 @@ test.describe("Tutorial Hint System", () => {
     await page.goto("/tutorial");
     await page.waitForLoadState("domcontentloaded");
 
-    // Hint state should be preserved (stored in localStorage)
-    await expect(page.getByText("Instructions")).toBeVisible();
+    // Verify hint is STILL visible (persisted via localStorage)
+    await expect(hintsList).toBeVisible();
   });
 });

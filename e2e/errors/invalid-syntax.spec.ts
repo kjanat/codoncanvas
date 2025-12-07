@@ -25,6 +25,6 @@ test.describe("Error Handling", () => {
     ).toBeDisabled();
 
     // Verify error count is shown
-    await expect(page.getByText(/error/i)).toBeVisible();
+    await expect(page.getByText(/\d+ errors?/i)).toBeVisible();
   });
 });

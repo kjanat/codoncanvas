@@ -2,11 +2,12 @@
 // seed: e2e/seed.spec.ts
 
 import { expect, test } from "@playwright/test";
+import { DEFAULT_GENOME } from "../support/constants";
 
 test.describe("Core Playground", () => {
   test("undo-redo-functionality", async ({ page, isMobile }) => {
     const genomeEditor = page.getByRole("textbox", { name: "Genome editor" });
-    const originalGenome = "ATG GAA AAT GGA TAA";
+    const originalGenome = DEFAULT_GENOME;
     const modifiedGenome = "ATG GAA AAT GGA CCC TAA";
 
     // 1. Navigate to playground

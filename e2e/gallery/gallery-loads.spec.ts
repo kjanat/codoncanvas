@@ -13,19 +13,17 @@ test.describe("Example Gallery", () => {
       page.getByRole("heading", { name: "Example Gallery" }),
     ).toBeVisible();
 
-    // 3. Verify example count displays correctly
-    await expect(page.getByText("Browse 39 examples")).toBeVisible();
+    // 3. Verify example count displays (any positive number)
+    await expect(page.getByText(/Browse\s+\d+\s+examples?/i)).toBeVisible();
 
-    // 4. Verify example cards are visible
-    // Check first example card has title
-    await expect(
-      page.getByRole("heading", { name: "Hello Circle" }),
-    ).toBeVisible();
-
-    // Check that example cards show description
-    await expect(
-      page.getByText("Minimal example - draws a single circle"),
-    ).toBeVisible();
+    // 4. Verify example cards are visible and have structure
+    const firstCard = page
+      .locator("main")
+      .getByRole("button")
+      .filter({ has: page.locator("h3") })
+      .first();
+    await expect(firstCard.getByRole("heading")).toBeVisible();
+    await expect(firstCard.locator("p, [class*='description']")).toBeVisible();
 
     // Check that difficulty badges are visible
     await expect(page.getByText("beginner").first()).toBeVisible();

@@ -30,6 +30,10 @@ function getSafeSliceEnd(tokens: CodonToken[], stepIndex: number): number {
   if (sliceEnd <= tokens.length) {
     const lastToken = tokens[sliceEnd - 1];
     const opcode = CODON_MAP[lastToken.text];
+    if (opcode === undefined && import.meta.env.DEV) {
+      console.warn(`Unknown codon in timeline: ${lastToken.text}`);
+    }
+    // Treat unknown codons as regular instructions (not PUSH), safely falling through
     if (opcode === Opcode.PUSH && sliceEnd < tokens.length) {
       sliceEnd++;
     }
@@ -61,6 +65,7 @@ function renderFrame(
   } catch (err) {
     throw new Error(
       `GIF export failed at step ${stepIndex}: ${(err as Error).message}`,
+      { cause: err },
     );
   }
 
@@ -82,14 +87,11 @@ function TimelineDemoPage() {
   // Initialize with spiral pattern example on first mount
   useEffect(() => {
     if (initializedRef.current) return;
-    if (
-      player.genome === "ATG GAA AAT GGA TAA" &&
-      examples.spiralPattern?.genome
-    ) {
+    if (examples.spiralPattern?.genome) {
       player.setGenome(examples.spiralPattern.genome);
-      initializedRef.current = true;
     }
-  }, [player.genome, player.setGenome]);
+    initializedRef.current = true;
+  }, [player.setGenome]);
 
   const handleExportGif = async () => {
     if (!canvasRef.current || player.snapshots.length === 0) return;
@@ -140,6 +142,7 @@ function TimelineDemoPage() {
         <Card>
           <h2 className="mb-4 text-lg font-semibold text-text">Genome</h2>
           <textarea
+            aria-label="Genome editor"
             className="mb-4 w-full rounded-lg border border-border bg-surface-alt p-3 font-mono text-sm text-dark-text"
             onChange={(e) => player.setGenome(e.target.value)}
             rows={6}

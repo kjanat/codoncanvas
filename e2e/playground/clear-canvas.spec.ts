@@ -16,9 +16,12 @@ test.describe("Core Playground", () => {
     await expect(canvas).toBeVisible();
 
     // 3. Click 'Clear' button in output section
+    const canvasBefore = await canvas.screenshot();
     await page.getByRole("button", { name: "Clear canvas" }).click();
 
-    // Canvas element should still be visible (just cleared/reset)
+    // Canvas should be visible but content should differ
     await expect(canvas).toBeVisible();
+    const canvasAfter = await canvas.screenshot();
+    expect(canvasBefore.equals(canvasAfter)).toBe(false);
   });
 });

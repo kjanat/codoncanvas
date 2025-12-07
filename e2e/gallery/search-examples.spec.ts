@@ -5,12 +5,12 @@ import { expect, test } from "@playwright/test";
 
 test.describe("Example Gallery", () => {
   test("search-examples", async ({ page }): Promise<void> => {
+    // 1. Navigate to /gallery
+    await page.goto("/gallery");
+
     const searchBox = page.getByRole("searchbox", {
       name: "Search examples...",
     });
-
-    // 1. Navigate to /gallery
-    await page.goto("/gallery");
 
     // 2. Type 'spiral' in search box
     await searchBox.fill("spiral");

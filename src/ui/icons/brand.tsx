@@ -2,9 +2,10 @@
  * Brand icons - GitHub, DNA
  */
 
+import type { JSX } from "react";
 import type { IconProps } from "./types";
 
-export function GitHubIcon({ className = "h-5 w-5" }: IconProps) {
+export function GitHubIcon({ className = "h-5 w-5" }: IconProps): JSX.Element {
   return (
     <svg
       aria-hidden="true"
@@ -21,7 +22,7 @@ export function GitHubIcon({ className = "h-5 w-5" }: IconProps) {
   );
 }
 
-export function DnaIcon({ className = "h-12 w-12" }: IconProps) {
+export function DnaIcon({ className = "h-12 w-12" }: IconProps): JSX.Element {
   return (
     <svg
       aria-hidden="true"

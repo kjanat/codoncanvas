@@ -25,8 +25,13 @@ test.describe("Tutorial System", () => {
     await expect(page.getByText(/\d+\/\d+ lessons/)).toBeVisible();
 
     // 4. Verify first lesson content loads
-    // Check for lesson content area
-    await expect(page.getByRole("heading", { level: 2 })).toBeVisible();
+    // Check for first lesson title
+    await expect(
+      page.getByRole("heading", {
+        level: 1,
+        name: /Hello|Introduction|Getting Started/i,
+      }),
+    ).toBeVisible();
 
     // Check for key lesson components
     await expect(page.getByText("Instructions")).toBeVisible();

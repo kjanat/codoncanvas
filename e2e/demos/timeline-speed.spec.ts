@@ -20,18 +20,26 @@ test.describe("Timeline Playback Speed", () => {
 
     // 2. Look for speed selector (dropdown or buttons)
     const speedSelector = page.locator("select").filter({ hasText: /\dx/i });
-    if (await speedSelector.isVisible()) {
+    const selectorVisible = await speedSelector.isVisible();
+
+    if (selectorVisible) {
       // Select '2x' playback speed
       await speedSelector.selectOption({ label: "2x" });
 
       // Verify selection
       await expect(speedSelector).toHaveValue(/2/);
-    }
+    } else {
+      // Alternative: speed buttons
+      const speedButton = page.getByRole("button", { name: /2x|speed/i });
+      const buttonVisible = await speedButton.isVisible();
 
-    // Alternative: speed buttons
-    const speedButton = page.getByRole("button", { name: /2x|speed/i });
-    if (await speedButton.isVisible()) {
-      await speedButton.click();
+      // Fail if neither control exists – we should be testing SOMETHING
+      expect(selectorVisible || buttonVisible).toBe(true);
+
+      if (buttonVisible) {
+        await speedButton.click();
+        // Consider also asserting some visible "2x" indicator here if the UI exposes one.
+      }
     }
   });
 });

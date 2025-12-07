@@ -23,12 +23,15 @@ test.describe("Tutorial Lesson Validation", () => {
     const runButton = page.getByRole("button", { name: "Run & Validate" });
     await runButton.click();
 
-    // 4. Verify the button was clickable and editor still shows
-    // (validation feedback may not have specific class markers)
+    // Verify validation feedback appears
+    const feedback = page.locator("[role='alert']");
+    await expect(feedback).toBeVisible({ timeout: 5000 });
+
+    // Editor should still be visible
     await expect(editor).toBeVisible();
   });
 
-  test("preview-updates-on-code-change", async ({ page }): Promise<void> => {
+  test("preview-canvas-renders", async ({ page }): Promise<void> => {
     await page.goto("/tutorial");
 
     // Wait for lesson to load

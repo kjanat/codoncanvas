@@ -43,7 +43,7 @@ test.describe("Core Playground", () => {
     // 4. Search for 'CIRCLE' in search box
     await searchBox.fill("CIRCLE");
 
-    // Verify search filters codons correctly - only CIRCLE visible
+    // Verify search filters codons correctly - verifies expected CIRCLE codons are visible
     await expect(
       page.getByText("Draw circle with radius from stack"),
     ).toBeVisible();
@@ -52,7 +52,7 @@ test.describe("Core Playground", () => {
     await searchBox.fill("");
     await page.getByRole("button", { name: "Drawing" }).click();
 
-    // Verify Drawing category shows drawing-related codons (use exact match)
+    // Verify Drawing category shows drawing-related codons - verifies expected drawing-related codons are visible
     await expect(page.getByText("CIRCLE", { exact: true })).toBeVisible();
     await expect(page.getByText("RECT", { exact: true })).toBeVisible();
     await expect(page.getByText("LINE", { exact: true })).toBeVisible();

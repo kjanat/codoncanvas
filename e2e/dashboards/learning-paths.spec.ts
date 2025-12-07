@@ -15,18 +15,17 @@ test.describe("Learning Paths Dashboard", () => {
 
     // 3. Verify progress indicators or learning content is present
     // Look for progress bars, percentage indicators, or learning modules
-    const learningContent = page.locator(
-      "[class*='progress'], [role='progressbar'], [class*='module'], [class*='path'], [class*='lesson']",
-    );
+    const learningContent = page.getByRole("progressbar");
     // At least one learning content element should be present
     await expect(learningContent.first()).toBeVisible({ timeout: 5000 });
 
     // 4. Verify 'Continue Learning' or similar action buttons
-    const actionButtons = page.getByRole("button", {
-      name: /continue|start|learn/i,
-    });
-    if ((await actionButtons.count()) > 0) {
-      await expect(actionButtons.first()).toBeVisible();
-    }
+    await expect(
+      page
+        .getByRole("link", {
+          name: /continue|start|learn/i,
+        })
+        .first(),
+    ).toBeVisible();
   });
 });
