@@ -68,7 +68,7 @@ export const PlaygroundCanvas = memo(
             <div className="flex gap-2">
               <button
                 aria-label="Clear canvas"
-                className="min-h-[44px] rounded-md px-3 py-2 text-sm text-dark-text hover:bg-dark-surface"
+                className="min-h-11 rounded-md px-3 py-2 text-sm text-dark-text hover:bg-dark-surface"
                 onClick={onClear}
                 type="button"
               >
@@ -76,7 +76,7 @@ export const PlaygroundCanvas = memo(
               </button>
               <button
                 aria-label="Export canvas as PNG"
-                className="min-h-[44px] rounded-md px-3 py-2 text-sm text-dark-text hover:bg-dark-surface"
+                className="min-h-11 rounded-md px-3 py-2 text-sm text-dark-text hover:bg-dark-surface"
                 onClick={onExportPNG}
                 type="button"
               >

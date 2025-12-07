@@ -6,7 +6,7 @@
  */
 
 import { Link, useRouterState } from "@tanstack/react-router";
-import FocusTrap from "focus-trap-react";
+import { FocusTrap } from "focus-trap-react";
 import { type ReactElement, useEffect, useRef, useState } from "react";
 
 import type { NavLink, NavSection } from "@/components/layout";

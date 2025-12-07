@@ -42,7 +42,7 @@ function analyzeGenome(filename: string, content: string): GenomeComplexity {
   try {
     const tokens = lexer.tokenize(content);
     return analyzeComplexity(filename, tokens);
-  } catch (_error) {
+  } catch (error) {
     // Return minimal analysis for invalid genomes
     return analyzeComplexity(filename, []);
   }

@@ -5,7 +5,7 @@
  * Mobile: Slide-out drawer triggered by FAB
  */
 
-import FocusTrap from "focus-trap-react";
+import { FocusTrap } from "focus-trap-react";
 import type { JSX } from "react";
 import { useEffect, useId, useRef, useState } from "react";
 

@@ -76,7 +76,7 @@ test.describe("Mutation Lab - Missense Mutation", () => {
     await expect(
       page.getByRole("heading", { name: "Mutation Result: missense" }),
     ).toBeVisible();
-    await expect(page.getByText("codon changed")).toBeVisible();
+    await expect(page.getByText(/codon.*changed/i)).toBeVisible();
 
     // Verify the codon change is displayed
     const changesHeading = page.getByRole("heading", {
@@ -102,6 +102,9 @@ test.describe("Mutation Lab - Missense Mutation", () => {
     const mutatedError = page.getByRole("alert", {
       name: "Mutated Output - render failed",
     });
+
+    // Ensure we have SOME final visual state (either canvas or error)
+    await expect(mutatedCanvas.or(mutatedError)).toBeVisible();
 
     const canvasVisible = await mutatedCanvas.isVisible();
     const errorVisible = await mutatedError.isVisible();

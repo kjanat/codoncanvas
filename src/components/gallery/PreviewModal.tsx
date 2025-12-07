@@ -1,4 +1,4 @@
-import FocusTrap from "focus-trap-react";
+import { FocusTrap } from "focus-trap-react";
 import type { ReactNode } from "react";
 import { useEffect, useId } from "react";
 import { CanvasPreview } from "@/components/CanvasPreview";

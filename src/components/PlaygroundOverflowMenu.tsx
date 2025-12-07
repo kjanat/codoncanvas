@@ -76,7 +76,7 @@ export function OverflowMenu({ io, history }: OverflowMenuProps): JSX.Element {
         aria-expanded={isOpen}
         aria-haspopup="true"
         aria-label="More actions"
-        className="flex min-h-[44px] min-w-[44px] items-center justify-center rounded-md text-text hover:bg-bg-light"
+        className="flex min-h-11 min-w-11 items-center justify-center rounded-md text-text hover:bg-bg-light"
         id={triggerId}
         onClick={() => setIsOpen(!isOpen)}
         ref={triggerRef}

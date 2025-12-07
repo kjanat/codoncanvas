@@ -1,17 +1,9 @@
 // spec: e2e/test-plan.md
 // seed: e2e/seed.spec.ts
 
-import type { Page } from "@playwright/test";
 import { expect, test } from "@playwright/test";
 
-/** Helper to parse current step from "Step X of Y" text */
-async function getCurrentStep(page: Page): Promise<number> {
-  const stepText = await page.getByText(/step \d+ of \d+/i).textContent();
-  if (!stepText) throw new Error("Step indicator not found");
-  const match = stepText.match(/step (\d+) of (\d+)/i);
-  if (!match) throw new Error(`Failed to parse step text: "${stepText}"`);
-  return parseInt(match[1], 10);
-}
+import { getStepInfo } from "../test-utils";
 
 test.describe("Timeline Navigation Controls", () => {
   test.beforeEach(async ({ page }): Promise<void> => {
@@ -38,23 +30,23 @@ test.describe("Timeline Navigation Controls", () => {
     });
 
     // Capture initial step
-    const initialStep = await getCurrentStep(page);
+    const { current: initialStep } = await getStepInfo(page);
 
     // Click Next - step should increment by 1
     await nextButton.click();
-    const afterNext = await getCurrentStep(page);
+    const { current: afterNext } = await getStepInfo(page);
     expect(afterNext).toBe(initialStep + 1);
 
     // Click Previous - step should decrement by 1
     await prevButton.click();
-    const afterPrev = await getCurrentStep(page);
+    const { current: afterPrev } = await getStepInfo(page);
     expect(afterPrev).toBe(afterNext - 1);
 
     // Advance a few steps then Reset - should return to step 1
     await nextButton.click();
     await nextButton.click();
     await resetButton.click();
-    const afterReset = await getCurrentStep(page);
+    const { current: afterReset } = await getStepInfo(page);
     expect(afterReset).toBe(initialStep);
   });
 
@@ -79,7 +71,7 @@ test.describe("Timeline Navigation Controls", () => {
 
   test("timeline-play-button", async ({ page }): Promise<void> => {
     // Capture initial step before playing
-    const initialStep = await getCurrentStep(page);
+    const { current: initialStep } = await getStepInfo(page);
 
     // Click 'Play' to auto-advance
     const playButton = page.getByRole("button", { name: /play/i });
@@ -92,12 +84,12 @@ test.describe("Timeline Navigation Controls", () => {
 
     // Wait for step to actually advance (not just icon change)
     await expect(async () => {
-      const currentStep = await getCurrentStep(page);
+      const { current: currentStep } = await getStepInfo(page);
       expect(currentStep).toBeGreaterThan(initialStep);
     }).toPass({ timeout: 5000 });
 
     // Capture step after playback started
-    const stepAfterPlay = await getCurrentStep(page);
+    const { current: stepAfterPlay } = await getStepInfo(page);
 
     // Click Pause to stop playback
     await pauseButton.click();

@@ -51,6 +51,10 @@ test.describe("Core Playground", () => {
 
     // 5. Clear search and click category filter 'Drawing'
     await searchBox.fill("");
+
+    // Prove search clear actually restores control codons
+    await expect(page.getByText("PUSH", { exact: true })).toBeVisible();
+
     const drawingFilterButton = page.getByRole("button", {
       name: "Filter by Drawing",
     });

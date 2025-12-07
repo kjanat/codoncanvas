@@ -33,7 +33,7 @@ export function HintsPanel({
         <h3 className="font-semibold text-warning-dark">Hints</h3>
         {hasMoreHints && (
           <button
-            className="min-h-[44px] rounded-md border border-warning/40 bg-warning/10 px-3 py-1 text-sm font-medium text-warning-dark hover:bg-warning/20"
+            className="min-h-11 rounded-md border border-warning/40 bg-warning/10 px-3 py-1 text-sm font-medium text-warning-dark hover:bg-warning/20"
             onClick={onRevealHint}
             type="button"
           >

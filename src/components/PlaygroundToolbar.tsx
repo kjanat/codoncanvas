@@ -43,7 +43,7 @@ function NucleotideModeToggle({
       <button
         aria-label="Toggle RNA display mode"
         aria-pressed={mode === "RNA"}
-        className={`flex min-h-[44px] items-center justify-center rounded-md px-3 py-2 text-sm transition-colors ${
+        className={`flex min-h-11 items-center justify-center rounded-md px-3 py-2 text-sm transition-colors ${
           mode === "RNA"
             ? "bg-accent/10 text-accent"
             : "text-text hover:bg-bg-light"
@@ -128,7 +128,7 @@ export const PlaygroundToolbar = memo(function PlaygroundToolbar({
       {/* Example selector */}
       <select
         aria-label="Select example genome"
-        className="min-h-[44px] flex-1 rounded-md border border-border px-2 py-2 text-sm focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20 sm:flex-none sm:px-3"
+        className="min-h-11 flex-1 rounded-md border border-border px-2 py-2 text-sm focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20 sm:flex-none sm:px-3"
         onChange={(event: ChangeEvent<HTMLSelectElement>) =>
           onExampleChange(event.target.value)
         }
@@ -144,7 +144,7 @@ export const PlaygroundToolbar = memo(function PlaygroundToolbar({
 
       {/* Desktop: File I/O buttons */}
       <div className="hidden items-center gap-1 md:flex">
-        <label className="flex min-h-[44px] cursor-pointer items-center rounded-md px-3 py-2 text-sm text-text hover:bg-bg-light">
+        <label className="flex min-h-11 cursor-pointer items-center rounded-md px-3 py-2 text-sm text-text hover:bg-bg-light">
           <UploadIcon className="mr-1.5 h-4 w-4" />
           <span>Load</span>
           <input
@@ -157,7 +157,7 @@ export const PlaygroundToolbar = memo(function PlaygroundToolbar({
         </label>
         <button
           aria-label="Save genome file"
-          className="flex min-h-[44px] items-center rounded-md px-3 py-2 text-sm text-text hover:bg-bg-light"
+          className="flex min-h-11 items-center rounded-md px-3 py-2 text-sm text-text hover:bg-bg-light"
           onClick={io.onSave}
           title="Save (Ctrl+S)"
           type="button"
@@ -167,7 +167,7 @@ export const PlaygroundToolbar = memo(function PlaygroundToolbar({
         </button>
         <button
           aria-label={io.copied ? "Copied to clipboard" : "Copy genome code"}
-          className="flex min-h-[44px] items-center rounded-md px-3 py-2 text-sm text-text hover:bg-bg-light"
+          className="flex min-h-11 items-center rounded-md px-3 py-2 text-sm text-text hover:bg-bg-light"
           onClick={io.onCopy}
           title="Copy genome code"
           type="button"
@@ -181,7 +181,7 @@ export const PlaygroundToolbar = memo(function PlaygroundToolbar({
         </button>
         <button
           aria-label="Copy shareable link"
-          className="flex min-h-[44px] items-center rounded-md px-3 py-2 text-sm text-text hover:bg-bg-light"
+          className="flex min-h-11 items-center rounded-md px-3 py-2 text-sm text-text hover:bg-bg-light"
           onClick={io.onShare}
           title="Copy shareable link"
           type="button"
@@ -195,7 +195,7 @@ export const PlaygroundToolbar = memo(function PlaygroundToolbar({
       <div className="hidden items-center gap-1 md:flex">
         <button
           aria-label="Undo last change"
-          className="flex min-h-[44px] items-center rounded-md px-2 py-2 text-sm text-text hover:bg-bg-light disabled:opacity-40"
+          className="flex min-h-11 items-center rounded-md px-2 py-2 text-sm text-text hover:bg-bg-light disabled:opacity-40"
           disabled={!history.canUndo}
           onClick={history.onUndo}
           title="Undo (Ctrl+Z)"
@@ -206,7 +206,7 @@ export const PlaygroundToolbar = memo(function PlaygroundToolbar({
         </button>
         <button
           aria-label="Redo last change"
-          className="flex min-h-[44px] items-center rounded-md px-2 py-2 text-sm text-text hover:bg-bg-light disabled:opacity-40"
+          className="flex min-h-11 items-center rounded-md px-2 py-2 text-sm text-text hover:bg-bg-light disabled:opacity-40"
           disabled={!history.canRedo}
           onClick={history.onRedo}
           title="Redo (Ctrl+Shift+Z)"
@@ -234,7 +234,7 @@ export const PlaygroundToolbar = memo(function PlaygroundToolbar({
             : "Show codon reference"
         }
         aria-pressed={display.showReference}
-        className={`flex min-h-[44px] items-center justify-center rounded-md px-2 py-2 text-sm transition-colors sm:px-3 ${
+        className={`flex min-h-11 items-center justify-center rounded-md px-2 py-2 text-sm transition-colors sm:px-3 ${
           display.showReference
             ? "bg-primary/10 text-primary"
             : "text-text hover:bg-bg-light"
@@ -250,7 +250,7 @@ export const PlaygroundToolbar = memo(function PlaygroundToolbar({
       {/* Run button */}
       <button
         aria-label="Run genome"
-        className="ml-auto flex min-h-[44px] items-center rounded-md bg-primary px-3 py-2 text-sm font-medium text-white transition-colors hover:bg-primary-hover disabled:opacity-50 sm:px-4"
+        className="ml-auto flex min-h-11 items-center rounded-md bg-primary px-3 py-2 text-sm font-medium text-white transition-colors hover:bg-primary-hover disabled:opacity-50 sm:px-4"
         disabled={!execution.canRun}
         onClick={execution.onRun}
         type="button"

@@ -65,7 +65,7 @@ export function LessonContent({
   };
 
   const actionButtonClass =
-    "min-h-[44px] rounded-lg bg-success px-6 py-2 font-medium text-white transition-colors hover:bg-success-dark";
+    "min-h-11 rounded-lg bg-success px-6 py-2 font-medium text-white transition-colors hover:bg-success-dark";
 
   return (
     <div className="mx-auto max-w-4xl">
