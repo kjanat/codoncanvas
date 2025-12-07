@@ -205,6 +205,41 @@ describe("Canvas2DRenderer", () => {
     });
   });
 
+  describe("resize()", () => {
+    test("updates dimensions from canvas element", () => {
+      // Resize the underlying canvas
+      ctx.canvas.width = 800;
+      ctx.canvas.height = 600;
+
+      renderer.resize();
+
+      expect(renderer.width).toBe(800);
+      expect(renderer.height).toBe(600);
+    });
+
+    test("resets position to new center", () => {
+      ctx.canvas.width = 800;
+      ctx.canvas.height = 600;
+
+      renderer.resize();
+
+      const transform = renderer.getCurrentTransform();
+      expect(transform.x).toBe(400); // 800/2
+      expect(transform.y).toBe(300); // 600/2
+    });
+
+    test("resets rotation and scale", () => {
+      renderer.rotate(45);
+      renderer.scale(2);
+
+      renderer.resize();
+
+      const transform = renderer.getCurrentTransform();
+      expect(transform.rotation).toBe(0);
+      expect(transform.scale).toBe(1);
+    });
+  });
+
   describe("circle()", () => {
     test("draws circle with correct radius", () => {
       renderer.circle(50);
