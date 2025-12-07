@@ -112,6 +112,13 @@ See [tools/README](tools/README.md) for CLI utilities:
 - `fix-genome-codons.ts` - auto-fix codon discrepancies
 - `genome-validator.ts` - validate genome structure
 
+## Git Rules
+
+- **NEVER run `git push` directly** - only the `/commit push` command should
+  push
+- After making commits yourself (not via /commit), STOP and ask before pushing
+- Default: commit only, no push
+
 ## Sidenotes
 
 - If you are unsure how to do something, use `gh_grep` to search code examples
