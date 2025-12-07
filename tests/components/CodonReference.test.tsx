@@ -134,22 +134,27 @@ describe("CodonReference", () => {
       render(<CodonReference />);
 
       for (const cat of CATEGORIES) {
-        expect(screen.getByRole("button", { name: cat.label })).toBeDefined();
+        expect(
+          screen.getByRole("button", { name: `Filter by ${cat.label}` }),
+        ).toBeDefined();
       }
     });
 
     test("default category is 'all'", () => {
       render(<CodonReference />);
-      const allButton = screen.getByRole("button", { name: "All" });
-      // Active category has white text
+      const allButton = screen.getByRole("button", { name: "Filter by All" });
+      // Active category has white text and aria-pressed=true
       expect(allButton.className).toContain("text-white");
+      expect(allButton.getAttribute("aria-pressed")).toBe("true");
     });
 
     test("clicking category filters opcodes", () => {
       render(<CodonReference />);
 
       // Click on Drawing category
-      fireEvent.click(screen.getByRole("button", { name: "Drawing" }));
+      fireEvent.click(
+        screen.getByRole("button", { name: "Filter by Drawing" }),
+      );
 
       // Should show drawing opcodes
       expect(screen.getByText("CIRCLE")).toBeDefined();
@@ -164,9 +169,13 @@ describe("CodonReference", () => {
     test("active category button has correct color class", () => {
       render(<CodonReference />);
 
-      fireEvent.click(screen.getByRole("button", { name: "Control" }));
+      fireEvent.click(
+        screen.getByRole("button", { name: "Filter by Control" }),
+      );
 
-      const controlButton = screen.getByRole("button", { name: "Control" });
+      const controlButton = screen.getByRole("button", {
+        name: "Filter by Control",
+      });
       expect(controlButton.className).toContain(CATEGORY_COLORS.control);
       expect(controlButton.className).toContain("text-white");
     });
@@ -175,7 +184,9 @@ describe("CodonReference", () => {
       render(<CodonReference />);
 
       // All is active by default, so Control should be inactive
-      const controlButton = screen.getByRole("button", { name: "Control" });
+      const controlButton = screen.getByRole("button", {
+        name: "Filter by Control",
+      });
       expect(controlButton.className).toContain("bg-bg-light");
       expect(controlButton.className).toContain("text-text-muted");
     });
@@ -184,12 +195,14 @@ describe("CodonReference", () => {
       render(<CodonReference />);
 
       // Click Control
-      fireEvent.click(screen.getByRole("button", { name: "Control" }));
+      fireEvent.click(
+        screen.getByRole("button", { name: "Filter by Control" }),
+      );
       expect(screen.getByText("START")).toBeDefined();
       expect(screen.queryByText("CIRCLE")).toBeNull();
 
       // Switch to Math
-      fireEvent.click(screen.getByRole("button", { name: "Math" }));
+      fireEvent.click(screen.getByRole("button", { name: "Filter by Math" }));
       expect(screen.getByText("ADD")).toBeDefined();
       expect(screen.queryByText("START")).toBeNull();
     });
@@ -245,7 +258,9 @@ describe("CodonReference", () => {
       render(<CodonReference />);
 
       // Filter to control only for easier testing
-      fireEvent.click(screen.getByRole("button", { name: "Control" }));
+      fireEvent.click(
+        screen.getByRole("button", { name: "Filter by Control" }),
+      );
 
       // Find START opcode container and check for color indicator
       const startText = screen.getByText("START");
@@ -286,7 +301,9 @@ describe("CodonReference", () => {
       render(<CodonReference />);
 
       // Select Drawing category
-      fireEvent.click(screen.getByRole("button", { name: "Drawing" }));
+      fireEvent.click(
+        screen.getByRole("button", { name: "Filter by Drawing" }),
+      );
 
       // Search within drawing
       const input = screen.getByPlaceholderText("Search codons...");

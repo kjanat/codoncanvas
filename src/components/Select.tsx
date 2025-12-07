@@ -22,6 +22,8 @@ export interface SelectProps<T extends string | number = string>
   onChange: (value: T) => void;
   /** Size variant */
   size?: "sm" | "md";
+  /** Accessible label for screen readers (passed via aria-label) */
+  "aria-label"?: string;
 }
 
 export function Select<T extends string | number = string>({

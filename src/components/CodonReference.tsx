@@ -27,6 +27,7 @@ export const CodonReference = memo(function CodonReference({
   if (collapsed) {
     return (
       <button
+        aria-label="Show codon reference"
         className="flex h-full w-10 items-center justify-center border-l border-border bg-bg-light hover:bg-border"
         onClick={onToggleCollapse}
         title="Show codon reference"
@@ -44,6 +45,7 @@ export const CodonReference = memo(function CodonReference({
         <h3 className="text-sm font-semibold text-text">Codon Reference</h3>
         {onToggleCollapse && (
           <button
+            aria-label="Hide codon reference"
             className="rounded p-1 hover:bg-bg-light"
             onClick={onToggleCollapse}
             title="Hide reference"
@@ -57,6 +59,7 @@ export const CodonReference = memo(function CodonReference({
       {/* Search */}
       <div className="border-b border-border p-2">
         <input
+          aria-label="Search codons"
           className="w-full rounded-md border border-border px-2 py-1 text-sm focus:border-primary focus:outline-none"
           onChange={(e) => setSearch(e.target.value)}
           placeholder="Search codons..."
@@ -69,6 +72,8 @@ export const CodonReference = memo(function CodonReference({
       <div className="flex flex-wrap gap-1 border-b border-border p-2">
         {CATEGORIES.map((cat) => (
           <button
+            aria-label={`Filter by ${cat.label}`}
+            aria-pressed={category === cat.value}
             className={`rounded-full px-2 py-0.5 text-xs font-medium transition-colors ${
               category === cat.value
                 ? `${CATEGORY_COLORS[cat.value]} text-white`
@@ -99,6 +104,7 @@ export const CodonReference = memo(function CodonReference({
             <div className="flex flex-wrap gap-1">
               {info.codons.map((codon) => (
                 <button
+                  aria-label={`Insert ${codon} codon`}
                   className="rounded bg-dark-bg px-1.5 py-0.5 font-mono text-xs text-dark-text transition-colors hover:bg-primary hover:text-white"
                   key={codon}
                   onClick={() => handleCodonClick(codon)}

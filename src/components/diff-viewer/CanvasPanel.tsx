@@ -56,9 +56,11 @@ export function CanvasPanel({
         </div>
       ) : (
         <canvas
+          aria-label={label}
           className="rounded-lg border border-border bg-surface"
           height={height}
           ref={canvasRef}
+          role="img"
           width={width}
         />
       )}

@@ -30,6 +30,7 @@ export function GalleryFilters({
       />
       <div className="flex gap-2">
         <input
+          aria-label="Search examples"
           className="rounded-lg border border-border px-4 py-2 focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20"
           onChange={(e) => onSearchChange(e.target.value)}
           placeholder="Search examples..."

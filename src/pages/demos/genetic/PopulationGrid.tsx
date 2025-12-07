@@ -42,6 +42,7 @@ export function PopulationGrid({
     <div className="grid grid-cols-4 gap-2">
       {population.map((ind, i) => (
         <button
+          aria-label={`Select individual ${i + 1} with fitness ${(ind.fitness * 100).toFixed(0)}%`}
           className={`relative rounded-lg border-2 p-1 transition-all ${
             selectedId === ind.id
               ? "border-primary ring-2 ring-primary/30"
@@ -52,9 +53,11 @@ export function PopulationGrid({
           type="button"
         >
           <canvas
+            aria-label={`Genome visualization for individual ${i + 1}`}
             className="w-full rounded"
             height={80}
             ref={(el) => setCanvasRef(ind.id, el)}
+            role="img"
             width={80}
           />
           {i < 2 && (

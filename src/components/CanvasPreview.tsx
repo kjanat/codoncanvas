@@ -21,6 +21,8 @@ interface CanvasPreviewProps {
   className?: string;
   /** Test ID for E2E testing */
   "data-testid"?: string;
+  /** Accessible label for screen readers (default: "Genome visualization") */
+  "aria-label"?: string;
 }
 
 /**
@@ -33,6 +35,7 @@ export const CanvasPreview = memo(function CanvasPreview({
   height = 150,
   className = "",
   "data-testid": testId,
+  "aria-label": ariaLabel = "Genome visualization",
 }: CanvasPreviewProps): ReactElement {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const { render } = useRenderGenome();
@@ -53,10 +56,12 @@ export const CanvasPreview = memo(function CanvasPreview({
 
   return (
     <canvas
+      aria-label={ariaLabel}
       className={className}
       data-testid={testId}
       height={height}
       ref={canvasRef}
+      role="img"
       width={width}
     />
   );

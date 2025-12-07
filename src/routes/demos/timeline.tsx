@@ -168,9 +168,11 @@ function TimelineDemoPage() {
           <h2 className="mb-4 text-lg font-semibold text-text">Output</h2>
           <div className="flex justify-center rounded-lg bg-surface-alt p-4">
             <canvas
+              aria-label="Timeline execution visualization"
               className="rounded-lg border border-dark-border"
               height={300}
               ref={canvasRef}
+              role="img"
               width={300}
             />
           </div>

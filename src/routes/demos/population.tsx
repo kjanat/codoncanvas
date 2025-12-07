@@ -106,9 +106,11 @@ function PopulationDemoPage(): ReactElement {
 
           <div className="relative">
             <canvas
+              aria-label="Allele frequency chart over generations"
               className="w-full rounded-lg border border-border bg-surface"
               height={300}
               ref={chartRef}
+              role="img"
               width={600}
             />
             <div className="absolute left-0 top-0 flex h-full flex-col justify-between py-2 text-xs text-text-muted">

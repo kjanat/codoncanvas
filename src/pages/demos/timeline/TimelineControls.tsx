@@ -60,6 +60,7 @@ export function TimelineControls({
         </button>
 
         <button
+          aria-label={isPlaying ? "Pause playback" : "Play timeline"}
           className="rounded-lg bg-primary px-6 py-2 text-white transition-colors hover:bg-primary-hover"
           onClick={onPlayPause}
           type="button"
@@ -93,6 +94,7 @@ export function TimelineControls({
         />
 
         <button
+          aria-label="Export animation as GIF"
           className="ml-auto rounded-lg border border-border px-4 py-2 text-sm font-medium transition-colors hover:bg-bg-light disabled:opacity-50"
           disabled={isExporting || totalSteps === 0}
           onClick={onExportGif}

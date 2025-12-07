@@ -24,9 +24,11 @@ export function FitnessChart({ history }: FitnessChartProps) {
   return (
     <>
       <canvas
+        aria-label="Fitness history chart showing best and average fitness over generations"
         className="w-full rounded border border-border"
         height={100}
         ref={chartRef}
+        role="img"
         width={200}
       />
       <div className="mt-2 flex justify-center gap-4 text-xs">

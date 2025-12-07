@@ -45,15 +45,18 @@ export function CandidateGrid({ candidates, onSelect }: CandidateGridProps) {
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {candidates.map((candidate, i) => (
           <button
+            aria-label={`Select candidate ${i + 1}: ${candidate.mutationType} mutation`}
             className="group rounded-xl border border-border bg-surface p-4 text-left shadow-sm transition-all hover:border-primary hover:shadow-md"
             key={candidate.id}
             onClick={() => onSelect(candidate)}
             type="button"
           >
             <canvas
+              aria-label={`Genome visualization for candidate ${i + 1}`}
               className="mx-auto rounded-lg border border-border bg-surface"
               height={180}
               ref={(el) => setCanvasRef(candidate.id, el)}
+              role="img"
               width={180}
             />
             <div className="mt-3">

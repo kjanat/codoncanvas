@@ -13,12 +13,14 @@ export function ExampleCard({
 }: ExampleCardProps): ReactElement {
   return (
     <button
+      aria-label={`View ${example.title} example`}
       className="group overflow-hidden rounded-xl border border-border bg-surface shadow-sm transition-all hover:shadow-md text-left w-full"
       onClick={onClick}
       type="button"
     >
       <div className="flex aspect-square items-center justify-center bg-surface-alt p-2">
         <CanvasPreview
+          aria-label={`Preview of ${example.title}`}
           className="rounded-md"
           genome={example.genome}
           height={180}

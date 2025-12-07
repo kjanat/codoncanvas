@@ -19,6 +19,8 @@ export interface RangeSliderProps
   max: number;
   /** Step increment */
   step?: number;
+  /** Accessible label for screen readers (passed via aria-label) */
+  "aria-label"?: string;
 }
 
 export function RangeSlider({

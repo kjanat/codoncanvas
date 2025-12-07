@@ -16,9 +16,11 @@ export function GenomeCanvas({
     <Card>
       <h3 className="mb-4 text-center font-semibold text-text">{title}</h3>
       <canvas
+        aria-label={`${title} genome visualization`}
         className="mx-auto block rounded-lg border border-border"
         height={200}
         ref={canvasRef}
+        role="img"
         width={200}
       />
       <pre className="mt-4 overflow-x-auto rounded bg-surface p-2 text-xs">
