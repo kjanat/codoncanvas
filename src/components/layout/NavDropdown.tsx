@@ -107,8 +107,12 @@ export function NavDropdown({
           <div
             className={index > 0 ? "mt-2 border-t border-border pt-2" : ""}
             key={section.title}
+            role="presentation"
           >
-            <p className="px-3 py-1 text-xs font-semibold uppercase text-text-muted">
+            <p
+              className="px-3 py-1 text-xs font-semibold uppercase text-text-muted"
+              role="presentation"
+            >
               {section.title}
             </p>
             {section.links.map((link) => (
