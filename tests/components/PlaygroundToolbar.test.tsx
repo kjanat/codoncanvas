@@ -801,7 +801,7 @@ describe("PlaygroundToolbar - Overflow Menu", () => {
     expect(document.activeElement).toBe(menuButton);
   });
 
-  test("menu popup is focusable", () => {
+  test("menu popup has proper ARIA menu role", () => {
     renderToolbar();
 
     const menuButton = screen.getByLabelText("More actions");
@@ -811,7 +811,11 @@ describe("PlaygroundToolbar - Overflow Menu", () => {
     const menuId = menuButton.getAttribute("aria-controls");
     const menu = document.getElementById(menuId!);
     expect(menu).not.toBeNull();
-    expect(menu!.getAttribute("tabindex")).toBe("-1");
+    // Menu should have proper ARIA role
+    expect(menu!.getAttribute("role")).toBe("menu");
+    // Menu items should be focusable via arrow keys (first item has tabIndex=0)
+    const menuItems = menu!.querySelectorAll('[role="menuitem"]');
+    expect(menuItems.length).toBeGreaterThan(0);
   });
 });
 

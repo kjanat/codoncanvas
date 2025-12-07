@@ -9,16 +9,16 @@ test.describe("Accessibility - Landmarks", () => {
     await page.goto("/");
 
     // 2. Verify page has proper landmark regions
-    // Header/banner landmark (at least one visible)
-    const header = page.locator("header").first();
+    // Header/banner landmark
+    const header = page.getByRole("banner");
     await expect(header).toBeVisible();
 
-    // 3. Main landmark with id="main-content"
-    const main = page.locator("main#main-content");
+    // 3. Main landmark
+    const main = page.getByRole("main");
     await expect(main).toBeVisible();
 
-    // 4. Footer/contentinfo landmark
-    const footer = page.locator("footer").first();
+    // 4. Footer/contentinfo landmark (first one is actual footer, TanStack devtools adds second)
+    const footer = page.getByRole("contentinfo").first();
     await expect(footer).toBeVisible();
   });
 

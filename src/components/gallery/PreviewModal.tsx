@@ -2,6 +2,7 @@ import { FocusTrap } from "focus-trap-react";
 import type { ReactNode } from "react";
 import { useEffect, useId } from "react";
 import { CanvasPreview } from "@/components/CanvasPreview";
+import { useScrollLock } from "@/hooks/useScrollLock";
 import { CloseIcon } from "@/ui/icons";
 import type { ExampleWithName } from "./types";
 
@@ -17,6 +18,7 @@ export function PreviewModal({
   onOpenInPlayground,
 }: PreviewModalProps): ReactNode {
   const titleId = useId();
+  useScrollLock(true);
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent): void => {
@@ -94,6 +96,7 @@ export function PreviewModal({
                   </pre>
                 </div>
                 <button
+                  aria-label={`Open ${example.title} in Playground`}
                   className="w-full rounded-lg bg-primary px-4 py-3 font-medium text-white transition-colors hover:bg-primary-dark"
                   onClick={onOpenInPlayground}
                   type="button"

@@ -22,23 +22,24 @@ test.describe("Teacher Dashboard", () => {
   test("teacher-dashboard-load-demo", async ({ page }): Promise<void> => {
     await page.goto("/dashboards/teacher");
 
-    // Look for 'Load Demo Data' button - use first() to avoid strict mode violation
-    // when multiple buttons match (e.g., multiple "Load Demo Data" buttons)
-    const demoButton = page
-      .getByRole("button", {
-        name: /demo.*data|load.*demo/i,
-      })
-      .first();
+    // Click the 'Load Demo Data' button in the empty state section
+    // Wait for the empty state heading first to ensure we're targeting the right button
+    await expect(
+      page.getByRole("heading", { name: /No Student Data Imported/i }),
+    ).toBeVisible();
 
+    // Now click the button that appears after the empty state message
+    const demoButton = page
+      .getByRole("button", { name: "Load Demo Data" })
+      .last();
     await expect(demoButton).toBeVisible();
     await demoButton.click();
 
-    // Dashboard should populate with data - wait for table or chart to appear
-    const dataElements = page.locator("table");
-    await expect(dataElements.first()).toBeVisible({ timeout: 5000 });
+    // Dashboard should populate with data - wait for table to appear
+    await expect(page.locator("table")).toBeVisible({ timeout: 5000 });
 
-    // Verify data elements are present
-    const count = await dataElements.count();
-    expect(count).toBeGreaterThan(0);
+    // Verify table is present
+    const tableCount = await page.locator("table").count();
+    expect(tableCount).toBeGreaterThan(0);
   });
 });

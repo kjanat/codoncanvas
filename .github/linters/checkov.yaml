@@ -1,4 +1,3 @@
-# yaml-language-server: $schema=https://raw.githubusercontent.com/bridgecrewio/checkov/
 ---
 block-list-secret-scan: []
 custom-tool-name: Checkov

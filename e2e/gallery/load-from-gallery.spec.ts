@@ -16,13 +16,15 @@ test.describe("Example Gallery", () => {
       .first();
     await firstExample.click();
 
-    // This should open a preview modal
-    await expect(
-      page.getByRole("button", { name: "Open in Playground" }),
-    ).toBeVisible();
+    // This should open a preview modal with "Open in Playground" button
+    // Button has aria-label like "Open {title} in Playground"
+    const openButton = page.getByRole("button", {
+      name: /Open .* in Playground/i,
+    });
+    await expect(openButton).toBeVisible();
 
     // Click the Open in Playground button
-    await page.getByRole("button", { name: "Open in Playground" }).click();
+    await openButton.click();
 
     // 3. Verify navigation to playground with example parameter
     await expect(page).toHaveURL(/example=/);

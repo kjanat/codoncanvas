@@ -52,6 +52,7 @@ function LessonButton({
 
   return (
     <button
+      aria-current={isCurrent ? "true" : undefined}
       className={`${baseClass} ${stateClass}`}
       onClick={onSelect}
       type="button"
