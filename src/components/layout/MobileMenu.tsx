@@ -74,7 +74,11 @@ export function MobileMenu(): ReactElement {
         onClick={() => setIsOpen(!isOpen)}
         type="button"
       >
-        {isOpen ? <XIcon /> : <MenuIcon />}
+        {isOpen ? (
+          <XIcon className="h-6 w-6" />
+        ) : (
+          <MenuIcon className="h-6 w-6" />
+        )}
       </button>
 
       {/* Backdrop */}
@@ -112,7 +116,7 @@ export function MobileMenu(): ReactElement {
               onClick={close}
               type="button"
             >
-              <XIcon />
+              <XIcon className="h-6 w-6" />
             </button>
           </div>
 

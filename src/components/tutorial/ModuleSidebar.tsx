@@ -180,7 +180,7 @@ export function ModuleSidebar({
                 ref={closeButtonRef}
                 type="button"
               >
-                <XIcon />
+                <XIcon className="h-6 w-6" />
               </button>
             </div>
             <nav className="h-sidebar-nav overflow-y-auto p-4">

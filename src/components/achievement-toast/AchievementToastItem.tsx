@@ -89,7 +89,7 @@ export function AchievementToastItem({
           onClick={handleDismissClick}
           type="button"
         >
-          <CloseIcon />
+          <CloseIcon className="h-4 w-4" />
         </button>
       </div>
     </output>

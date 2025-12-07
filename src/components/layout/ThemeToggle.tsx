@@ -18,7 +18,7 @@ export function ThemeToggle(): ReactElement {
       type="button"
     >
       <span className="sr-only">Toggle theme ({theme})</span>
-      <ThemeIcon />
+      <ThemeIcon className="h-5 w-5" />
     </button>
   );
 }

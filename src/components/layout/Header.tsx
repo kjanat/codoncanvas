@@ -45,7 +45,7 @@ export function Header(): ReactElement {
             target="_blank"
           >
             <span className="sr-only">View on GitHub (opens in new tab)</span>
-            <GitHubIcon />
+            <GitHubIcon className="h-5 w-5" />
           </a>
           <MobileMenu />
         </div>

@@ -39,11 +39,13 @@
     "test:agent": "bunx cross-env AGENT=1 bun test --coverage",
     "test:coverage": "bun --bun ./scripts/coverage-reporter.ts",
     "test:watch": "bun test --watch",
+    "tsc": "tsgo --noEmit",
     "typecheck": "tsgo --noEmit",
     "validate": "bun lint:fix && bun fmt && bun typecheck && bun test:agent && bun e2e",
     "zip-examples": "bun --bun scripts/zip-examples.ts"
   },
   "dependencies": {
+    "@heroicons/react": "^2.2.0",
     "@tailwindcss/vite": "^4.1.17",
     "@tanstack/react-router": "^1.139.12",
     "@vitejs/plugin-react": "^5.1.1",

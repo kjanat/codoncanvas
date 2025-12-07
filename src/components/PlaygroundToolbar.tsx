@@ -133,7 +133,7 @@ function OverflowMenu({ io, history }: OverflowMenuProps): JSX.Element {
         ref={triggerRef}
         type="button"
       >
-        <DotsVerticalIcon />
+        <DotsVerticalIcon className="h-5 w-5" />
       </button>
 
       {isOpen && (

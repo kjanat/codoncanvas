@@ -27,12 +27,12 @@ function ValidationStatus({
           <span className="text-text-muted">Validating...</span>
         ) : validation.isValid ? (
           <span className="flex items-center gap-1 text-success">
-            <CheckIcon />
+            <CheckIcon className="h-4 w-4" />
             Valid
           </span>
         ) : (
           <span className="flex items-center gap-1 text-danger">
-            <ErrorIcon />
+            <ErrorIcon className="h-4 w-4" />
             {validation.errors.length} error(s)
           </span>
         )}

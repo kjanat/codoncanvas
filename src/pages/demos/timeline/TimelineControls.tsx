@@ -45,7 +45,7 @@ export function TimelineControls({
           title="Reset to start"
           type="button"
         >
-          <RewindIcon />
+          <RewindIcon className="h-5 w-5" />
         </button>
 
         <button
@@ -56,7 +56,7 @@ export function TimelineControls({
           title="Previous step"
           type="button"
         >
-          <ChevronLeftIcon />
+          <ChevronLeftIcon className="h-5 w-5" />
         </button>
 
         <button
@@ -76,7 +76,7 @@ export function TimelineControls({
           title="Next step"
           type="button"
         >
-          <ChevronRightIcon />
+          <ChevronRightIcon className="h-5 w-5" />
         </button>
 
         <RangeSlider

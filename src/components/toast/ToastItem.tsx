@@ -101,7 +101,7 @@ export function ToastItem({ toast, onDismiss }: ToastItemProps) {
           onClick={handleDismissClick}
           type="button"
         >
-          <CloseIcon />
+          <CloseIcon className="h-4 w-4" />
         </button>
       </div>
     </div>

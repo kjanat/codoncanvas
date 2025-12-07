@@ -94,7 +94,7 @@ export function NavDropdown({
         type="button"
       >
         {label}
-        <ChevronDownIcon />
+        <ChevronDownIcon className="h-4 w-4" />
       </button>
 
       <div
