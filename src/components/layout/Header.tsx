@@ -20,7 +20,7 @@ import { ThemeToggle } from "./ThemeToggle";
 export function Header() {
   return (
     <header className="border-b border-border bg-surface shadow-sm">
-      <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3">
+      <div className="mx-auto flex h-14 max-w-7xl items-center justify-between px-4">
         {/* Logo */}
         <Link className="flex items-center gap-2" to="/">
           <span className="text-xl font-bold text-primary">
