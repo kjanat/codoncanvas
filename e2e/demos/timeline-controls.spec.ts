@@ -54,7 +54,7 @@ test.describe("Timeline Navigation Controls", () => {
     await nextButton.click();
     await resetButton.click();
     const afterReset = await getCurrentStep();
-    expect(afterReset).toBe(1);
+    expect(afterReset).toBe(initialStep);
   });
 
   test("timeline-slider-navigation", async ({ page }): Promise<void> => {

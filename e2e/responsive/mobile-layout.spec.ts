@@ -1,7 +1,17 @@
 // spec: e2e/test-plan.md
 // seed: e2e/seed.spec.ts
 
+import type { Page } from "@playwright/test";
 import { expect, test } from "@playwright/test";
+
+/** Check if page has no horizontal overflow */
+async function hasNoHorizontalOverflow(page: Page): Promise<boolean> {
+  return page.evaluate(
+    () =>
+      window.innerWidth >=
+      (document.scrollingElement?.scrollWidth ?? document.body.scrollWidth),
+  );
+}
 
 test.describe("Responsive Design", () => {
   test.use({ viewport: { width: 375, height: 667 } });
@@ -11,11 +21,7 @@ test.describe("Responsive Design", () => {
     await page.goto("/");
 
     // No horizontal overflow
-    const hasNoOverflow = await page.evaluate(
-      () =>
-        window.innerWidth >=
-        (document.scrollingElement?.scrollWidth ?? document.body.scrollWidth),
-    );
+    const hasNoOverflow = await hasNoHorizontalOverflow(page);
     expect(hasNoOverflow).toBe(true);
 
     // Core elements visible
@@ -33,11 +39,7 @@ test.describe("Responsive Design", () => {
     await page.goto("/gallery");
 
     // No horizontal overflow
-    const galleryHasNoOverflow = await page.evaluate(
-      () =>
-        window.innerWidth >=
-        (document.scrollingElement?.scrollWidth ?? document.body.scrollWidth),
-    );
+    const galleryHasNoOverflow = await hasNoHorizontalOverflow(page);
     expect(galleryHasNoOverflow).toBe(true);
 
     // Core elements visible

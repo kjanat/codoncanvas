@@ -74,6 +74,7 @@ export {
   type UseRenderGenomeReturn,
   useRenderGenome,
 } from "./useRenderGenome";
+export { useScrollLock } from "./useScrollLock";
 export {
   type UseShareUrlOptions,
   type UseShareUrlReturn,

@@ -9,6 +9,8 @@ import { Link, useRouterState } from "@tanstack/react-router";
 import FocusTrap from "focus-trap-react";
 import { type ReactElement, useEffect, useRef, useState } from "react";
 
+import { useScrollLock } from "@/hooks";
+
 import { MenuIcon, XIcon } from "@/ui/icons";
 
 interface NavLink {
@@ -68,16 +70,7 @@ export function MobileMenu(): ReactElement {
   }, [pathname]);
 
   // Prevent body scroll when menu is open
-  useEffect(() => {
-    if (isOpen) {
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "";
-    }
-    return () => {
-      document.body.style.overflow = "";
-    };
-  }, [isOpen]);
+  useScrollLock(isOpen);
 
   const close = () => setIsOpen(false);
 

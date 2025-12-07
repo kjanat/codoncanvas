@@ -11,7 +11,11 @@ import { useEffect, useId, useRef, useState } from "react";
 
 import type { TutorialLesson } from "@/data/tutorial-lessons";
 import { getLessonsByModule, moduleNames } from "@/data/tutorial-lessons";
+import { useScrollLock } from "@/hooks";
 import { ChevronRightIcon, MenuIcon, XIcon } from "@/ui/icons";
+
+/** Delay before returning focus to FAB after drawer closes (ms) */
+const FOCUS_RETURN_DELAY_MS = 50;
 
 interface ModuleSidebarProps {
   currentLessonId: string;
@@ -70,6 +74,7 @@ export function ModuleSidebar({
 }: ModuleSidebarProps): JSX.Element {
   const titleId = useId();
   const closeButtonRef = useRef<HTMLButtonElement>(null);
+  const fabRef = useRef<HTMLButtonElement>(null);
   const [isOpen, setIsOpen] = useState(false);
   const modules = [1, 2, 3];
 
@@ -84,20 +89,17 @@ export function ModuleSidebar({
   }, [isOpen]);
 
   // Prevent body scroll when open on mobile
-  useEffect(() => {
-    if (isOpen) {
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "";
-    }
-    return () => {
-      document.body.style.overflow = "";
-    };
-  }, [isOpen]);
+  useScrollLock(isOpen);
 
-  const handleSelectLesson = (id: string) => {
-    onSelectLesson(id);
+  const handleClose = (): void => {
     setIsOpen(false);
+    // Return focus to FAB after drawer closes
+    setTimeout(() => fabRef.current?.focus(), FOCUS_RETURN_DELAY_MS);
+  };
+
+  const handleSelectLesson = (id: string): void => {
+    onSelectLesson(id);
+    handleClose();
   };
 
   const sidebarContent = (
@@ -132,6 +134,7 @@ export function ModuleSidebar({
         aria-label="Open lesson menu"
         className="fixed bottom-4 left-4 z-30 flex h-14 w-14 items-center justify-center rounded-full bg-primary text-white shadow-lg md:hidden"
         onClick={() => setIsOpen(true)}
+        ref={fabRef}
         type="button"
       >
         <MenuIcon className="h-6 w-6" />
@@ -142,7 +145,7 @@ export function ModuleSidebar({
         <div
           aria-hidden="true"
           className="fixed inset-0 z-40 bg-black/50 backdrop-blur-sm md:hidden"
-          onClick={() => setIsOpen(false)}
+          onClick={handleClose}
         />
       )}
 
@@ -172,7 +175,7 @@ export function ModuleSidebar({
                 className="flex h-11 w-11 items-center justify-center rounded-md text-text hover:bg-bg-light"
                 onClick={(e) => {
                   e.stopPropagation();
-                  setIsOpen(false);
+                  handleClose();
                 }}
                 ref={closeButtonRef}
                 type="button"

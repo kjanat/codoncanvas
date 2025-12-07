@@ -13,19 +13,19 @@ test.describe("Tutorial Lesson Validation", () => {
       page.getByRole("heading", { name: "Your Code" }),
     ).toBeVisible();
 
-    // 2. Find the code editor and run button
-    const editor = page.getByRole("textbox", {
-      name: "Genome code editor",
-    });
+    // 2. Find the code editor using data-testid for stability
+    const editor = page.getByTestId("lesson-editor");
     await expect(editor).toBeVisible();
 
     // 3. Click 'Run & Validate' button
     const runButton = page.getByRole("button", { name: "Run & Validate" });
     await runButton.click();
 
-    // Verify validation feedback appears
+    // Verify validation feedback appears with actual content
     const feedback = page.locator("[role='alert']");
     await expect(feedback).toBeVisible({ timeout: 5000 });
+    // Verify it contains pass/fail indicator (not just exists)
+    await expect(feedback).toHaveText(/Passed|issue/i);
 
     // Editor should still be visible
     await expect(editor).toBeVisible();

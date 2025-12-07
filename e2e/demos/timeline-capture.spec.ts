@@ -64,7 +64,10 @@ test.describe("Timeline Capture", () => {
     const instructionCount = await instructionsRow
       .getByText(/^\d+$/)
       .textContent();
-    expect(Number.parseInt(instructionCount ?? "0", 10)).toBe(currentStep);
+    if (!instructionCount) {
+      throw new Error("Instruction count not found in VM State panel");
+    }
+    expect(Number.parseInt(instructionCount, 10)).toBe(currentStep);
 
     await expect(vmStatePanel.getByText("Stack")).toBeVisible();
     // Stack shows either "(empty)" or "[values]"

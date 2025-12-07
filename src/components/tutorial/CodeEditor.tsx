@@ -19,6 +19,7 @@ export function CodeEditor({
         <textarea
           aria-label="Genome code editor"
           className="h-48 w-full rounded-lg border border-border bg-dark-bg p-4 font-mono text-sm text-dark-text focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20"
+          data-testid="lesson-editor"
           onChange={(e) => onChange(e.target.value)}
           placeholder="Write your genome code here..."
           spellCheck={false}

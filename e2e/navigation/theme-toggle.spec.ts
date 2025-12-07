@@ -7,21 +7,24 @@ test.describe("Navigation - Theme Toggle", () => {
   test("theme-toggle", async ({ page }): Promise<void> => {
     await page.goto("/");
 
-    // Button name includes current theme: "Toggle theme (system|light|dark)"
     const themeButton = page.getByRole("button", {
       name: /Toggle theme \((system|light|dark)\)/i,
     });
     await expect(themeButton).toBeVisible();
 
-    // Capture initial button text to verify theme name changes
-    const initialText = await themeButton.textContent();
+    // Capture initial theme state from DOM
+    const initialIsDark = await page.evaluate(() =>
+      document.documentElement.classList.contains("dark"),
+    );
 
-    // Single toggle should cycle to next theme state (light -> dark -> system)
+    // Toggle theme
     await themeButton.click();
 
-    // Button text should change to reflect the new theme
-    const newText = await themeButton.textContent();
-    expect(newText).not.toBe(initialText);
+    // Verify DOM actually changed (theme class toggled)
+    const newIsDark = await page.evaluate(() =>
+      document.documentElement.classList.contains("dark"),
+    );
+    expect(newIsDark).not.toBe(initialIsDark);
 
     // Button text should still match expected pattern
     await expect(themeButton).toHaveText(

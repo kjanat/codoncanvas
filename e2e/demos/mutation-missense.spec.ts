@@ -8,7 +8,9 @@ import { expect, test } from "@playwright/test";
 async function getCanvasData(canvas: Locator): Promise<string> {
   return canvas.evaluate((el: HTMLCanvasElement) => {
     const ctx = el.getContext("2d");
-    if (!ctx) return "";
+    if (!ctx) {
+      throw new Error("Failed to get 2D context for canvas");
+    }
     return ctx.getImageData(0, 0, el.width, el.height).data.toString();
   });
 }
