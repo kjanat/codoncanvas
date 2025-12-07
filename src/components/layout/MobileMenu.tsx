@@ -64,7 +64,7 @@ export function MobileMenu() {
       setIsOpen(false);
       prevPathRef.current = pathname;
     }
-  });
+  }, [pathname]);
 
   // Prevent body scroll when menu is open
   useEffect(() => {

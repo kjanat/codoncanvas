@@ -18,7 +18,7 @@ test.describe("Research Dashboard", () => {
     const dataElements = page.locator(
       "[class*='chart'], [class*='metric'], [class*='stat'], canvas, svg",
     );
-    const count = await dataElements.count();
-    expect(count).toBeGreaterThanOrEqual(0);
+    // At least one data visualization element should be present
+    await expect(dataElements.first()).toBeVisible({ timeout: 5000 });
   });
 });

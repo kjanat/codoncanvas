@@ -12,7 +12,7 @@ export default defineConfig({
   publicDir: "public",
 
   server: {
-    host: "0.0.0.0",
+    host: buildConfig.server.host,
     port: buildConfig.server.port,
     allowedHosts: ["*"],
     strictPort: true,

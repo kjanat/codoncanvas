@@ -18,26 +18,25 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v6
+      - uses: actions/checkout@v6
+        id: checkout
         with:
           persist-credentials: false
 
-      - name: Setup Bun
-        uses: ./.github/actions/setup-bun
+      - uses: ./.github/actions/setup-bun
+        id: setup
         with: { install-node: "true" }
 
-      - name: Setup Pages
-        uses: actions/configure-pages@v5
+      - uses: actions/configure-pages@v5
         id: pages
 
-      - name: Build
-        run: bun run build
+      - run: bun run build
+        id: build
         env:
           VITE_BASE_PATH: ${{ steps.pages.outputs.base_path }}
 
-      - name: Upload artifact
-        uses: actions/upload-pages-artifact@v4
+      - uses: actions/upload-pages-artifact@v4
+        id: upload
         with:
           path: ./dist
 

@@ -36,16 +36,15 @@ test.describe("Teacher Dashboard", () => {
     if (await demoButton.isVisible()) {
       await demoButton.click();
 
-      // Dashboard should populate with data
-      // Wait for content to load
-      await page.waitForTimeout(1000);
-
-      // Verify some data appears (tables, charts, etc.)
+      // Dashboard should populate with data - wait for table or chart to appear
       const dataElements = page.locator(
         "table, [class*='chart'], [class*='data']",
       );
+      await expect(dataElements.first()).toBeVisible({ timeout: 5000 });
+
+      // Verify data elements are present
       const count = await dataElements.count();
-      expect(count).toBeGreaterThanOrEqual(0);
+      expect(count).toBeGreaterThan(0);
     }
   });
 });
