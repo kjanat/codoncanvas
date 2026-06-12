@@ -23,6 +23,7 @@ export interface Engine {
 	tokenize(source: string): TokenizeResult;
 	validate(source: string): import('./types.js').Diagnostic[];
 	mutate(genome: string, kind: MutationType, seed?: number): MutationResult;
+	mutateBatch(genome: string, count: number, seed?: number): MutationResult[];
 	compare(original: string, mutated: string): CodonDiff[];
 	codonInfo(codon: string): CodonInfo;
 	codonChart(): CodonInfo[];
@@ -48,6 +49,7 @@ const engine: Engine = {
 	tokenize: (source) => wasm.tokenize(source) as TokenizeResult,
 	validate: (source) => wasm.validate(source) as import('./types.js').Diagnostic[],
 	mutate: (genome, kind, seed) => wasm.mutate(genome, kind, seed ?? randomSeed()) as MutationResult,
+	mutateBatch: (genome, count, seed) => wasm.mutate_batch(genome, seed ?? randomSeed(), count) as MutationResult[],
 	compare: (original, mutated) => wasm.compare(original, mutated) as CodonDiff[],
 	codonInfo: (codon) => wasm.codon_info(codon) as CodonInfo,
 	codonChart: () => wasm.codon_chart() as CodonInfo[],

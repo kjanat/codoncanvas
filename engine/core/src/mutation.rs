@@ -343,6 +343,28 @@ pub fn apply(kind: MutationType, genome: &str, seed: u64) -> Result<MutationResu
     }
 }
 
+/// Generates `count` candidate mutants from a genome for directed-evolution
+/// style selection. Cycles through mutation kinds so the batch shows variety,
+/// derives a distinct sub-seed per candidate, and falls back to a point
+/// mutation when a chosen kind is impossible for this genome.
+pub fn batch(genome: &str, seed: u64, count: usize) -> Vec<MutationResult> {
+    const KINDS: [MutationType; 5] = [
+        MutationType::Point,
+        MutationType::Silent,
+        MutationType::Missense,
+        MutationType::Insertion,
+        MutationType::Deletion,
+    ];
+    (0..count)
+        .filter_map(|i| {
+            let sub = seed ^ (i as u64).wrapping_mul(0x9E37_79B9_7F4A_7C15);
+            apply(KINDS[i % KINDS.len()], genome, sub)
+                .or_else(|_| apply(MutationType::Point, genome, sub.wrapping_add(1)))
+                .ok()
+        })
+        .collect()
+}
+
 /// A codon-level difference between two genomes.
 #[derive(Debug, Clone, Serialize)]
 pub struct CodonDiff {

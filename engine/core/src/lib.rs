@@ -203,6 +203,22 @@ mod tests {
     }
 
     #[test]
+    fn batch_generates_distinct_candidates() {
+        let parent = "ATG GGA CCA GGA GCA TAA";
+        let candidates = mutation::batch(parent, 99, 6);
+        assert_eq!(candidates.len(), 6);
+        // Every candidate differs from the parent in at least one codon.
+        for c in &candidates {
+            assert!(!mutation::compare(parent, &c.mutated).is_empty());
+        }
+        // Reproducible for a given seed.
+        let again = mutation::batch(parent, 99, 6);
+        let a: Vec<_> = candidates.iter().map(|c| &c.mutated).collect();
+        let b: Vec<_> = again.iter().map(|c| &c.mutated).collect();
+        assert_eq!(a, b);
+    }
+
+    #[test]
     fn mutation_is_deterministic_for_a_seed() {
         let a = mutation::apply(MutationType::Missense, "ATG GGA CCA GGA TAA", 42).unwrap();
         let b = mutation::apply(MutationType::Missense, "ATG GGA CCA GGA TAA", 42).unwrap();

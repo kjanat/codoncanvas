@@ -77,6 +77,13 @@ pub fn mutate(genome: &str, kind: &str, seed: u32) -> Result<JsValue, JsValue> {
     to_js(&result)
 }
 
+/// Generates `count` varied mutation candidates from a genome (for the
+/// Evolution Lab). `seed` makes the batch reproducible.
+#[wasm_bindgen]
+pub fn mutate_batch(genome: &str, seed: u32, count: usize) -> Result<JsValue, JsValue> {
+    to_js(&core::mutation::batch(genome, u64::from(seed), count))
+}
+
 /// Returns the codon-level differences between two genomes.
 #[wasm_bindgen]
 pub fn compare(original: &str, mutated: &str) -> Result<JsValue, JsValue> {

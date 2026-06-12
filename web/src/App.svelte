@@ -2,6 +2,7 @@
 	import { type Engine, loadEngine } from './lib/engine/index.js';
 	import { type Route, router } from './lib/router.svelte.js';
 	import About from './views/About.svelte';
+	import EvolutionLab from './views/EvolutionLab.svelte';
 	import Gallery from './views/Gallery.svelte';
 	import MutationLab from './views/MutationLab.svelte';
 	import Playground from './views/Playground.svelte';
@@ -9,6 +10,7 @@
 
 	let engine = $state<Engine | null>(null);
 	let loadError = $state<string | null>(null);
+	let menuOpen = $state(false);
 
 	loadEngine()
 		.then((e) => (engine = e))
@@ -18,20 +20,35 @@
 		{ route: 'playground', label: 'Playground' },
 		{ route: 'gallery', label: 'Gallery' },
 		{ route: 'mutations', label: 'Mutation Lab' },
+		{ route: 'evolution', label: 'Evolution Lab' },
 		{ route: 'reference', label: 'Codon Reference' },
 		{ route: 'about', label: 'About' },
 	];
+
+	function navigate(route: Route): void {
+		router.go(route);
+		menuOpen = false;
+	}
 </script>
 
 <header class="app-header">
 	<div class="brand">
 		🧬 CodonCanvas <span class="tag">RUST · WASM</span>
 	</div>
-	<nav class="main-nav">
+	<button
+		class="nav-toggle"
+		aria-label="Toggle navigation"
+		aria-expanded={menuOpen}
+		onclick={() => (menuOpen = !menuOpen)}
+	>
+		☰
+	</button>
+	<nav class="main-nav" class:open={menuOpen} aria-label="Primary">
 		{#each NAV as item (item.route)}
 			<button
 				class:active={router.current === item.route}
-				onclick={() => router.go(item.route)}
+				aria-current={router.current === item.route ? 'page' : undefined}
+				onclick={() => navigate(item.route)}
 			>
 				{item.label}
 			</button>
@@ -59,6 +76,8 @@
 		<Gallery {engine} />
 	{:else if router.current === 'mutations'}
 		<MutationLab {engine} />
+	{:else if router.current === 'evolution'}
+		<EvolutionLab {engine} />
 	{:else if router.current === 'reference'}
 		<Reference {engine} />
 	{:else}
