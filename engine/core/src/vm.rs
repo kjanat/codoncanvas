@@ -42,6 +42,15 @@ pub struct Hsl {
     pub l: f64,
 }
 
+/// Default fill/stroke ink before any COLOR opcode runs. Light gray so shapes
+/// are visible on a dark canvas even when a program never sets a color
+/// (the original engine defaulted to black, which is invisible on dark).
+const DEFAULT_COLOR: Hsl = Hsl {
+    h: 0.0,
+    s: 0.0,
+    l: 85.0,
+};
+
 /// The affine transform in effect for a draw command.
 #[derive(Debug, Clone, Copy, PartialEq, Serialize)]
 pub struct Transform {
@@ -156,11 +165,7 @@ impl Vm {
             y: 0.0,
             rotation: 0.0,
             scale: 1.0,
-            color: Hsl {
-                h: 0.0,
-                s: 0.0,
-                l: 0.0,
-            },
+            color: DEFAULT_COLOR,
             stack: Vec::new(),
             state_stack: Vec::new(),
             instruction_count: 0,
@@ -178,11 +183,7 @@ impl Vm {
         self.y = self.height / 2.0;
         self.rotation = 0.0;
         self.scale = 1.0;
-        self.color = Hsl {
-            h: 0.0,
-            s: 0.0,
-            l: 0.0,
-        };
+        self.color = DEFAULT_COLOR;
         self.stack.clear();
         self.state_stack.clear();
         self.instruction_count = 0;
