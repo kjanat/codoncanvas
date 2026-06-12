@@ -6,8 +6,6 @@ on:
   pull_request: { branches: [master] }
   workflow_dispatch: {}
 permissions: { contents: read }
-env:
-  IS_DEPLOY_EVENT: ${{ contains(fromJSON('["push", "workflow_dispatch"]'), github.event_name) }}
 
 jobs:
   build:
@@ -32,11 +30,11 @@ jobs:
         run: bun run build
 
       - name: Setup Pages
-        if: fromJSON(env.IS_DEPLOY_EVENT)
+        if: contains(fromJSON('["push", "workflow_dispatch"]'), github.event_name)
         uses: actions/configure-pages@v6
         id: pages
       - name: Upload artifact
-        if: fromJSON(env.IS_DEPLOY_EVENT)
+        if: contains(fromJSON('["push", "workflow_dispatch"]'), github.event_name)
         uses: actions/upload-pages-artifact@v5
         with: { path: ./web/dist }
 
@@ -45,6 +43,6 @@ jobs:
     permissions: { pages: write, id-token: write }
     environment: { name: github-pages, url: "${{ steps.deployment.outputs.page_url }}" }
     runs-on: ubuntu-latest
-    if: fromJSON(env.IS_DEPLOY_EVENT)
+    if: contains(fromJSON('["push", "workflow_dispatch"]'), github.event_name)
     needs: build
     steps: [{ name: "Deploy to GitHub Pages", id: deployment, uses: actions/deploy-pages@v5 }]
