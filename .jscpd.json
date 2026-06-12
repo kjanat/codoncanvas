@@ -9,7 +9,9 @@
     "**/*.min.js",
     "**/coverage/**",
     "**/dist/**",
-    "**/node_modules/**"
+    "**/engine/**",
+    "**/node_modules/**",
+    "**/web/**"
   ],
   "mode": "mild",
   "output": "./.report/",

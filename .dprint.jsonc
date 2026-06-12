@@ -73,7 +73,9 @@
     "**/.venv",
     "**/node_modules",
     "**/worker-configuration.d.ts",
-    "codon-chart.svg"
+    "codon-chart.svg",
+    "engine/**",
+    "web/**"
   ],
 
   /** Plugins */
