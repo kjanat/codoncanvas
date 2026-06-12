@@ -33,8 +33,13 @@ jobs:
         with:
           workspaces: engine
 
+      # taiki-e/install-action grabs a prebuilt wasm-bindgen-cli (much faster
+      # than `cargo install`). Keep the version in sync with the wasm-bindgen
+      # crate pinned in engine/wasm/Cargo.toml.
       - name: Install wasm-bindgen-cli
-        run: cargo install wasm-bindgen-cli --version 0.2.123 --locked
+        uses: taiki-e/install-action@v2
+        with:
+          tool: wasm-bindgen-cli@0.2.123
 
       # Set up Bun directly rather than the shared composite action, which runs
       # `bun install` at the repo root and trips the root postinstall audit on
