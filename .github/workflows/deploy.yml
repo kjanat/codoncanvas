@@ -36,9 +36,16 @@ jobs:
       - name: Install wasm-bindgen-cli
         run: cargo install wasm-bindgen-cli --version 0.2.123 --locked
 
+      # Set up Bun directly rather than the shared composite action, which runs
+      # `bun install` at the repo root and trips the root postinstall audit on
+      # the legacy React dependency tree. The Svelte app only needs web/ deps.
       - name: Setup Bun
-        uses: ./.github/actions/setup-bun
-        with: { install-node: "true" }
+        uses: oven-sh/setup-bun@v2
+
+      - name: Setup Node
+        uses: actions/setup-node@v6
+        with:
+          node-version: latest
 
       - name: Install web dependencies
         working-directory: web
