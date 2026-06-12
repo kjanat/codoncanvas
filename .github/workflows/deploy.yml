@@ -1,80 +1,50 @@
 name: Deploy to GitHub Pages
+run-name: "${{ github.event_name == 'pull_request' && 'Check Pages' || 'Deploy Pages' }} / ${{ github.head_ref || github.ref_name }} / #${{ github.run_number }} by @${{ github.actor }}"
 
 on:
-  push:
-    branches: [master]
-  pull_request:
-    branches: [master]
-  workflow_dispatch:
-
-permissions:
-  contents: read
-
-concurrency:
-  group: pages
-  cancel-in-progress: false
+  push: { branches: [master] }
+  pull_request: { branches: [master] }
+  workflow_dispatch: {}
+permissions: { contents: read }
+env:
+  IS_DEPLOY_EVENT: ${{ contains(fromJSON('["push", "workflow_dispatch"]'), github.event_name) }}
 
 jobs:
   build:
     runs-on: ubuntu-latest
+    concurrency: { group: "pages-build-${{ github.event_name }}-${{ github.ref }}", cancel-in-progress: true }
     steps:
-      - name: Checkout
-        uses: actions/checkout@v6
-        with:
-          persist-credentials: false
-
-      - name: Setup Rust (with wasm target)
-        uses: dtolnay/rust-toolchain@stable
-        with:
-          targets: wasm32-unknown-unknown
-
-      - name: Cache cargo
-        uses: Swatinem/rust-cache@v2
-        with:
-          workspaces: engine
-
-      - name: Install wasm-bindgen-cli
-        run: cargo install wasm-bindgen-cli --version 0.2.123 --locked
-
-      # Set up Bun directly rather than the shared composite action, which runs
-      # `bun install` at the repo root and trips the root postinstall audit on
-      # the legacy React dependency tree. The Svelte app only needs web/ deps.
-      - name: Setup Bun
-        uses: oven-sh/setup-bun@v2
-
-      - name: Setup Node
-        uses: actions/setup-node@v6
-        with:
-          node-version: latest
+      - uses: actions/checkout@v6
+        with: { persist-credentials: false }
+      - uses: taiki-e/install-action@v2
+        with: { tool: rust+rustfmt+wasm32-unknown-unknown,wasm-bindgen }
+      - uses: Swatinem/rust-cache@v2
+        with: { workspaces: engine }
+      - uses: oven-sh/setup-bun@v2
+      - uses: actions/setup-node@v6
+        with: { node-version: latest }
 
       - name: Install web dependencies
         working-directory: web
         run: bun install
-
       - name: Build (Rust → WASM → Svelte)
         working-directory: web
         run: bun run build
 
       - name: Setup Pages
-        uses: actions/configure-pages@v5
+        if: fromJSON(env.IS_DEPLOY_EVENT)
+        uses: actions/configure-pages@v6
         id: pages
-
       - name: Upload artifact
-        uses: actions/upload-pages-artifact@v4
-        with:
-          path: ./web/dist
+        if: fromJSON(env.IS_DEPLOY_EVENT)
+        uses: actions/upload-pages-artifact@v5
+        with: { path: ./web/dist }
 
   deploy:
-    permissions:
-      pages: write
-      id-token: write
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
+    concurrency: { group: pages-deploy, cancel-in-progress: false }
+    permissions: { pages: write, id-token: write }
+    environment: { name: github-pages, url: "${{ steps.deployment.outputs.page_url }}" }
     runs-on: ubuntu-latest
-    if: github.event_name == 'push'
+    if: fromJSON(env.IS_DEPLOY_EVENT)
     needs: build
-    steps:
-      - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v4
+    steps: [{ name: "Deploy to GitHub Pages", id: deployment, uses: actions/deploy-pages@v5 }]
