@@ -438,18 +438,18 @@ If you prefer GUI-based tools:
 
 **Research Design:**
 
-- Shadish, Cook, & Campbell (2002). _Experimental and Quasi-Experimental Designs_
-- Creswell & Creswell (2017). _Research Design_ (5th ed.)
+- Shadish, Cook, & Campbell (2002). *Experimental and Quasi-Experimental Designs*
+- Creswell & Creswell (2017). *Research Design* (5th ed.)
 
 **Statistical Analysis:**
 
-- Field (2018). _Discovering Statistics Using IBM SPSS Statistics_ (5th ed.)
-- Cumming (2012). _Understanding the New Statistics: Effect Sizes, CIs, and Meta-Analysis_
+- Field (2018). *Discovering Statistics Using IBM SPSS Statistics* (5th ed.)
+- Cumming (2012). *Understanding the New Statistics: Effect Sizes, CIs, and Meta-Analysis*
 
 **Education Research:**
 
-- American Educational Research Association (2006). _Standards for Reporting_
-- Hattie (2008). _Visible Learning_ (effect size interpretation)
+- American Educational Research Association (2006). *Standards for Reporting*
+- Hattie (2008). *Visible Learning* (effect size interpretation)
 
 ### Getting Help
 

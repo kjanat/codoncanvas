@@ -91,9 +91,9 @@
 ```html
 <!-- Add to index.html head -->
 <meta
-  http-equiv="Content-Security-Policy"
-  content="default-src 'self'; script-src 'self' 'unsafe-inline'; ..."
-/>
+	http-equiv="Content-Security-Policy"
+	content="default-src 'self'; script-src 'self' 'unsafe-inline'; ..."
+>
 ```
 
 **8. Implement XSS Tests** (1-2 hours)

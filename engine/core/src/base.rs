@@ -66,5 +66,8 @@ pub fn all_codons() -> Vec<String> {
 
 /// Converts a DNA codon to RNA notation (`T` -> `U`) for display.
 pub fn to_rna(codon: &str) -> String {
-    codon.chars().map(|c| if c == 'T' { 'U' } else { c }).collect()
+    codon
+        .chars()
+        .map(|c| if c == 'T' { 'U' } else { c })
+        .collect()
 }

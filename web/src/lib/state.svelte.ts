@@ -25,11 +25,11 @@ GAA ACG GGA
 TAA`;
 
 class GenomeStore {
-  value = $state(DEFAULT_GENOME);
+	value = $state(DEFAULT_GENOME);
 
-  set(genome: string): void {
-    this.value = genome;
-  }
+	set(genome: string): void {
+		this.value = genome;
+	}
 }
 
 export const genomeStore = new GenomeStore();

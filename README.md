@@ -47,7 +47,7 @@ The engine and site have been rewritten:
 - **Negative-offset fix** — stack values are 6-bit (`0–63`); the old engine
   mapped them to `(v / 64) × width`, which is never negative, so `TRANSLATE`
   could only move right/down. The new engine treats translation offsets as
-  _signed around the midpoint 32_ (`((v − 32) / 64) × width`), so `32` = no
+  *signed around the midpoint 32* (`((v − 32) / 64) × width`), so `32` = no
   move, below 32 = left/up, above 32 = right/down. Shape sizes stay unsigned.
 
 ```bash
@@ -56,8 +56,8 @@ rustup target add wasm32-unknown-unknown && cargo install wasm-bindgen-cli  # on
 npm install && npm run dev    # builds WASM, then serves the Svelte app
 ```
 
-> The original React 19 / TypeScript app under `src/` is kept for reference
-> until the Svelte port reaches full feature parity.
+> This repository is now Rust + Svelte only — the previous React/TypeScript app
+> has been removed. The engine lives in `engine/`, the site in `web/`.
 
 ## Live Demo
 
@@ -327,10 +327,10 @@ AUG GAA AAU GGA UAA
 
 **Explanation:**
 
-- `ATG`/`AUG` - _START_ (begin execution)
-- `GAA AAT`/`AAU` - _PUSH_ 3 (push value 3 to stack)
-- `GGA` - _CIRCLE_ (draw circle with radius from stack)
-- `TAA`/`UAA` - _STOP_ (end execution)
+- `ATG`/`AUG` - *START* (begin execution)
+- `GAA AAT`/`AAU` - *PUSH* 3 (push value 3 to stack)
+- `GGA` - *CIRCLE* (draw circle with radius from stack)
+- `TAA`/`UAA` - *STOP* (end execution)
 
 > [!NOTE]
 > CodonCanvas supports both DNA (T) and RNA (U) notation.\
@@ -399,40 +399,40 @@ The playground includes **48 pedagogical examples** demonstrating all features:
 
 ### Control Flow
 
-- `ATG` - _START_
-- `TAA|TAG|TGA` - _STOP_
+- `ATG` - *START*
+- `TAA|TAG|TGA` - *STOP*
 
 ### Drawing Primitives
 
-- `GG*` (GGA, GGC, GGG, GGT) - _CIRCLE_
-- `CC*` - _RECT_
-- `AA*` - _LINE_
-- `GC*` - _TRIANGLE_
-- `GT*` - _ELLIPSE_
+- `GG*` (GGA, GGC, GGG, GGT) - *CIRCLE*
+- `CC*` - *RECT*
+- `AA*` - *LINE*
+- `GC*` - *TRIANGLE*
+- `GT*` - *ELLIPSE*
 
 ### Transforms
 
-- `AC*` - _TRANSLATE_
-- `AG*` - _ROTATE_
-- `CG*` - _SCALE_
-- `TT*` - _COLOR_
+- `AC*` - *TRANSLATE*
+- `AG*` - *ROTATE*
+- `CG*` - *SCALE*
+- `TT*` - *COLOR*
 
 ### Stack Operations
 
-- `GA*` - _PUSH_ (next codon is numeric literal)
-- `AT*` (ATA, ATC, ATT) - _DUP_
-- `TA*` (TAC, TAT), `TGC` - _POP_
-- `TG*` (TGG, TGT) - _SWAP_
+- `GA*` - *PUSH* (next codon is numeric literal)
+- `AT*` (ATA, ATC, ATT) - *DUP*
+- `TA*` (TAC, TAT), `TGC` - *POP*
+- `TG*` (TGG, TGT) - *SWAP*
 
 ### Utility
 
-- `CA*` - _NOP_
+- `CA*` - *NOP*
 
 ### Advanced Operations
 
-- `CT*` - _NOISE_ (seed, intensity)
-- `TC*` - _SAVE_STATE_
-- `TG*` (TGG, TGT) - _SWAP_
+- `CT*` - *NOISE* (seed, intensity)
+- `TC*` - *SAVE_STATE*
+- `TG*` (TGG, TGT) - *SWAP*
 
 > [!NOTE]
 > `*` means all 4 bases create synonymous codons

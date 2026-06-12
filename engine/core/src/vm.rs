@@ -156,7 +156,11 @@ impl Vm {
             y: 0.0,
             rotation: 0.0,
             scale: 1.0,
-            color: Hsl { h: 0.0, s: 0.0, l: 0.0 },
+            color: Hsl {
+                h: 0.0,
+                s: 0.0,
+                l: 0.0,
+            },
             stack: Vec::new(),
             state_stack: Vec::new(),
             instruction_count: 0,
@@ -174,7 +178,11 @@ impl Vm {
         self.y = self.height / 2.0;
         self.rotation = 0.0;
         self.scale = 1.0;
-        self.color = Hsl { h: 0.0, s: 0.0, l: 0.0 };
+        self.color = Hsl {
+            h: 0.0,
+            s: 0.0,
+            l: 0.0,
+        };
         self.stack.clear();
         self.state_stack.clear();
         self.instruction_count = 0;
@@ -184,7 +192,12 @@ impl Vm {
     }
 
     fn current_transform(&self) -> Transform {
-        Transform { x: self.x, y: self.y, rotation: self.rotation, scale: self.scale }
+        Transform {
+            x: self.x,
+            y: self.y,
+            rotation: self.rotation,
+            scale: self.scale,
+        }
     }
 
     /// Unsigned `0..=63 -> 0..width` mapping for shape dimensions.
@@ -206,7 +219,10 @@ impl Vm {
     fn count_instruction(&mut self) -> Result<(), String> {
         self.instruction_count += 1;
         if self.instruction_count > self.max_instructions {
-            return Err(format!("Instruction limit exceeded (max {})", self.max_instructions));
+            return Err(format!(
+                "Instruction limit exceeded (max {})",
+                self.max_instructions
+            ));
         }
         Ok(())
     }
@@ -235,7 +251,12 @@ impl Vm {
                 Opcode::Push => match self.execute_push(tokens, i) {
                     Ok((next, value)) => {
                         i = next;
-                        Ok(Some(self.make_step(self.ip, codon.clone(), opcode, Some(value))))
+                        Ok(Some(self.make_step(
+                            self.ip,
+                            codon.clone(),
+                            opcode,
+                            Some(value),
+                        )))
                     }
                     Err(e) => Err(e),
                 },

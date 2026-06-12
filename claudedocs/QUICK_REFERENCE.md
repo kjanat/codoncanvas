@@ -411,7 +411,7 @@ ATG
 TAA
 ```
 
-_Note: RESTORE_STATE planned for Phase C_
+*Note: RESTORE_STATE planned for Phase C*
 
 ---
 
@@ -449,4 +449,4 @@ _Note: RESTORE_STATE planned for Phase C_
 
 **CodonCanvas** • [URL] • Open Source (MIT License)
 
-_Print this reference for easy access during coding_
+*Print this reference for easy access during coding*

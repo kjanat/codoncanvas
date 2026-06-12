@@ -39,8 +39,16 @@ struct TokenizeResult {
 #[wasm_bindgen]
 pub fn tokenize(source: &str) -> Result<JsValue, JsValue> {
     let result = match core::tokenize(source) {
-        Ok(tokens) => TokenizeResult { ok: true, tokens, error: None },
-        Err(e) => TokenizeResult { ok: false, tokens: Vec::new(), error: Some(e) },
+        Ok(tokens) => TokenizeResult {
+            ok: true,
+            tokens,
+            error: None,
+        },
+        Err(e) => TokenizeResult {
+            ok: false,
+            tokens: Vec::new(),
+            error: Some(e),
+        },
     };
     to_js(&result)
 }
@@ -64,8 +72,8 @@ pub fn validate(source: &str) -> Result<JsValue, JsValue> {
 pub fn mutate(genome: &str, kind: &str, seed: u32) -> Result<JsValue, JsValue> {
     let kind = core::MutationType::from_name(kind)
         .ok_or_else(|| JsValue::from_str(&format!("Unknown mutation type: {kind}")))?;
-    let result = core::mutation::apply(kind, genome, u64::from(seed))
-        .map_err(|e| JsValue::from_str(&e))?;
+    let result =
+        core::mutation::apply(kind, genome, u64::from(seed)).map_err(|e| JsValue::from_str(&e))?;
     to_js(&result)
 }
 

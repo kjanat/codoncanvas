@@ -955,45 +955,45 @@ CodonCanvas enables novel research questions:
 
 ### Visual Programming & Science Education
 
-Kesler, A., Shamir-Inbal, T., & Blau, I. (2022). Active Learning by Visual Programming: Pedagogical Perspectives of Instructivist and Constructivist Code Teachers and Their Implications on Actual Teaching Strategies and Students' Programming Artifacts. _Journal of Educational Computing Research_, _60_(7). https://doi.org/10.1177/07356331211017793
+Kesler, A., Shamir-Inbal, T., & Blau, I. (2022). Active Learning by Visual Programming: Pedagogical Perspectives of Instructivist and Constructivist Code Teachers and Their Implications on Actual Teaching Strategies and Students' Programming Artifacts. *Journal of Educational Computing Research*, *60*(7). https://doi.org/10.1177/07356331211017793
 
-Yu, Q., Yu, K., & Li, B. (2025). Effects of Block-Based Visual Programming on K-12 Students' Learning Outcomes. _Journal of Educational Computing Research_. https://doi.org/10.1177/07356331241293163
+Yu, Q., Yu, K., & Li, B. (2025). Effects of Block-Based Visual Programming on K-12 Students' Learning Outcomes. *Journal of Educational Computing Research*. https://doi.org/10.1177/07356331241293163
 
-Huang, X. (2025). Effect of Visual Programming Instruction on Students' Flow Experience, Programming Self-Efficacy, and Sustained Willingness to Learn. _Journal of Computer Assisted Learning_. https://doi.org/10.1111/jcal.13110
+Huang, X. (2025). Effect of Visual Programming Instruction on Students' Flow Experience, Programming Self-Efficacy, and Sustained Willingness to Learn. *Journal of Computer Assisted Learning*. https://doi.org/10.1111/jcal.13110
 
 ### Constructivism & Learning Environments
 
-National Center for Biotechnology Information (2023). How do constructivism learning environments generate better motivation and learning strategies? The Design Science Approach. _PMC_. https://pmc.ncbi.nlm.nih.gov/articles/PMC10730747/
+National Center for Biotechnology Information (2023). How do constructivism learning environments generate better motivation and learning strategies? The Design Science Approach. *PMC*. https://pmc.ncbi.nlm.nih.gov/articles/PMC10730747/
 
 ### Genetics Misconceptions Research
 
-Todd, A., & Romine, W. L. (2016). Tracking the Resolution of Student Misconceptions about the Central Dogma of Molecular Biology. _Journal of College Science Teaching_, _46_(5). https://pmc.ncbi.nlm.nih.gov/articles/PMC5134937/
+Todd, A., & Romine, W. L. (2016). Tracking the Resolution of Student Misconceptions about the Central Dogma of Molecular Biology. *Journal of College Science Teaching*, *46*(5). https://pmc.ncbi.nlm.nih.gov/articles/PMC5134937/
 
-Kılıç, D., Sağlam, N., & Yaman, S. (2021). Secondary school students' misconceptions in genetics: origins and solutions. _Journal of Biological Education_. https://doi.org/10.1080/00219266.2021.1933136
+Kılıç, D., Sağlam, N., & Yaman, S. (2021). Secondary school students' misconceptions in genetics: origins and solutions. *Journal of Biological Education*. https://doi.org/10.1080/00219266.2021.1933136
 
-Uhl, J. D., Kiser, R., & Newman, D. L. (2021). Introductory biology undergraduate students' mixed ideas about genetic information flow. _Biochemistry and Molecular Biology Education_. https://doi.org/10.1002/bmb.21483
+Uhl, J. D., Kiser, R., & Newman, D. L. (2021). Introductory biology undergraduate students' mixed ideas about genetic information flow. *Biochemistry and Molecular Biology Education*. https://doi.org/10.1002/bmb.21483
 
 ### Learning Standards & Curriculum
 
-Next Generation Science Standards (NGSS). _HS-LS3: Heredity - Inheritance and Variation of Traits_. https://www.nextgenscience.org/dci-arrangement/hs-ls3-heredity-inheritance-and-variation-traits
+Next Generation Science Standards (NGSS). *HS-LS3: Heredity - Inheritance and Variation of Traits*. https://www.nextgenscience.org/dci-arrangement/hs-ls3-heredity-inheritance-and-variation-traits
 
-College Board. (2024). _AP Biology Course and Exam Description_. https://apcentral.collegeboard.org/courses/ap-biology
+College Board. (2024). *AP Biology Course and Exam Description*. https://apcentral.collegeboard.org/courses/ap-biology
 
-International Baccalaureate Organization. (2023). _Biology Guide: First Assessment 2025_. https://www.ibo.org/
+International Baccalaureate Organization. (2023). *Biology Guide: First Assessment 2025*. https://www.ibo.org/
 
 ### Competitive Tools & Platforms
 
-PhET Interactive Simulations. _Biology Simulations_. University of Colorado Boulder. https://phet.colorado.edu/
+PhET Interactive Simulations. *Biology Simulations*. University of Colorado Boulder. https://phet.colorado.edu/
 
-Scratch Biology Simulations Studio. _MIT Media Lab_. https://scratch.mit.edu/studios/1242004/
+Scratch Biology Simulations Studio. *MIT Media Lab*. https://scratch.mit.edu/studios/1242004/
 
 ### Pedagogical Theory
 
-Papert, S. (1980). _Mindstorms: Children, Computers, and Powerful Ideas_. Basic Books.
+Papert, S. (1980). *Mindstorms: Children, Computers, and Powerful Ideas*. Basic Books.
 
-Sweller, J. (1988). Cognitive load during problem solving: Effects on learning. _Cognitive Science_, _12_(2), 257-285.
+Sweller, J. (1988). Cognitive load during problem solving: Effects on learning. *Cognitive Science*, *12*(2), 257-285.
 
-Paivio, A. (1986). _Mental Representations: A Dual Coding Approach_. Oxford University Press.
+Paivio, A. (1986). *Mental Representations: A Dual Coding Approach*. Oxford University Press.
 
 ---
 

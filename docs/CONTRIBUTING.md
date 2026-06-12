@@ -152,28 +152,28 @@ git push origin master
 Use functional components with hooks. Follow this structure:
 
 ```typescript
-import { useTheme } from "@/contexts/ThemeContext"
-import { useToast } from "@/contexts/ToastContext"
+import { useTheme } from '@/contexts/ThemeContext';
+import { useToast } from '@/contexts/ToastContext';
 
 interface MyComponentProps {
-  title: string
-  onAction?: () => void
+	title: string;
+	onAction?: () => void;
 }
 
 export function MyComponent({ title, onAction }: MyComponentProps) {
-  const { theme } = useTheme()
-  const { showToast } = useToast()
+	const { theme } = useTheme();
+	const { showToast } = useToast();
 
-  const handleClick = () => {
-    onAction?.()
-    showToast("Action completed", "success")
-  }
+	const handleClick = () => {
+		onAction?.();
+		showToast('Action completed', 'success');
+	};
 
-  return (
-    <button onClick={handleClick} className={theme}>
-      {title}
-    </button>
-  )
+	return (
+		<button onClick={handleClick} className={theme}>
+			{title}
+		</button>
+	);
 }
 ```
 
@@ -200,13 +200,13 @@ export function MyComponent({ title, onAction }: MyComponentProps) {
  * @throws {ParseError} If invalid characters or frame breaks detected
  */
 export function tokenize(source: string): CodonToken[] {
-  const cleaned = cleanSource(source);
+	const cleaned = cleanSource(source);
 
-  if (cleaned.length % 3 !== 0) {
-    throw new ParseError("Invalid reading frame", cleaned.length);
-  }
+	if (cleaned.length % 3 !== 0) {
+		throw new ParseError('Invalid reading frame', cleaned.length);
+	}
 
-  return chunkIntoCodons(cleaned);
+	return chunkIntoCodons(cleaned);
 }
 ```
 
@@ -222,22 +222,22 @@ export function tokenize(source: string): CodonToken[] {
 ### Test Organization
 
 ```typescript
-import { describe, expect, test } from "bun:test";
-import { CodonLexer } from "@/core/lexer";
+import { CodonLexer } from '@/core/lexer';
+import { describe, expect, test } from 'bun:test';
 
-describe("CodonLexer", () => {
-  describe("tokenize", () => {
-    test("handles valid triplets", () => {
-      const lexer = new CodonLexer();
-      const result = lexer.tokenize("ATG GGA TAA");
-      expect(result).toHaveLength(3);
-    });
+describe('CodonLexer', () => {
+	describe('tokenize', () => {
+		test('handles valid triplets', () => {
+			const lexer = new CodonLexer();
+			const result = lexer.tokenize('ATG GGA TAA');
+			expect(result).toHaveLength(3);
+		});
 
-    test("throws on invalid frame", () => {
-      const lexer = new CodonLexer();
-      expect(() => lexer.tokenize("ATG GG")).toThrow("Invalid reading frame");
-    });
-  });
+		test('throws on invalid frame', () => {
+			const lexer = new CodonLexer();
+			expect(() => lexer.tokenize('ATG GG')).toThrow('Invalid reading frame');
+		});
+	});
 });
 ```
 

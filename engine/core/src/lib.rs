@@ -109,17 +109,28 @@ mod tests {
         assert!(res.ok, "error: {:?}", res.error);
         let cmd = res.commands.first().expect("a circle was drawn");
         // Started at center x=300; a negative dx must have moved it left.
-        assert!(cmd.transform.x < 300.0, "expected leftward move, got x={}", cmd.transform.x);
+        assert!(
+            cmd.transform.x < 300.0,
+            "expected leftward move, got x={}",
+            cmd.transform.x
+        );
 
         // Translate right: push dx=63, dy=32.
         let res = run_genome("ATG GAA TTT GAA GAA ACA GAA CGA GGA TAA", 600.0, 600.0);
         let cmd = res.commands.first().unwrap();
-        assert!(cmd.transform.x > 300.0, "expected rightward move, got x={}", cmd.transform.x);
+        assert!(
+            cmd.transform.x > 300.0,
+            "expected rightward move, got x={}",
+            cmd.transform.x
+        );
 
         // Translate by midpoint 32 leaves position unchanged.
         let res = run_genome("ATG GAA GAA GAA GAA ACA GAA CGA GGA TAA", 600.0, 600.0);
         let cmd = res.commands.first().unwrap();
-        assert!((cmd.transform.x - 300.0).abs() < 1e-9, "midpoint should not move");
+        assert!(
+            (cmd.transform.x - 300.0).abs() < 1e-9,
+            "midpoint should not move"
+        );
     }
 
     #[test]

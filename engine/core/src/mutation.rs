@@ -33,7 +33,11 @@ impl Rng {
 
     /// Uniform integer in `0..n` (returns 0 when `n == 0`).
     pub fn below(&mut self, n: usize) -> usize {
-        if n == 0 { 0 } else { (self.next_u64() % n as u64) as usize }
+        if n == 0 {
+            0
+        } else {
+            (self.next_u64() % n as u64) as usize
+        }
     }
 
     /// Returns `true` with probability 1/2.
@@ -42,7 +46,11 @@ impl Rng {
     }
 
     fn choice<'a, T>(&mut self, items: &'a [T]) -> Option<&'a T> {
-        if items.is_empty() { None } else { Some(&items[self.below(items.len())]) }
+        if items.is_empty() {
+            None
+        } else {
+            Some(&items[self.below(items.len())])
+        }
     }
 }
 
@@ -92,7 +100,11 @@ fn opcode_name(codon: &str) -> &'static str {
 }
 
 /// Silent mutation: replace a codon with a synonymous one (same opcode).
-pub fn silent(genome: &str, position: Option<usize>, rng: &mut Rng) -> Result<MutationResult, String> {
+pub fn silent(
+    genome: &str,
+    position: Option<usize>,
+    rng: &mut Rng,
+) -> Result<MutationResult, String> {
     let mut codons = parse(genome);
     let pos = match position {
         Some(p) if p < codons.len() => p,
@@ -100,7 +112,8 @@ pub fn silent(genome: &str, position: Option<usize>, rng: &mut Rng) -> Result<Mu
             let candidates: Vec<usize> = (0..codons.len())
                 .filter(|&i| !synonymous_codons(&codons[i]).is_empty())
                 .collect();
-            *rng.choice(&candidates).ok_or("No synonymous mutations available in this genome")?
+            *rng.choice(&candidates)
+                .ok_or("No synonymous mutations available in this genome")?
         }
     };
 
@@ -110,8 +123,10 @@ pub fn silent(genome: &str, position: Option<usize>, rng: &mut Rng) -> Result<Mu
         .choice(&syns)
         .ok_or_else(|| format!("No synonymous codons for {original} at position {pos}"))?
         .clone();
-    let description =
-        format!("Silent mutation: {original} → {new} (same opcode: {})", opcode_name(&original));
+    let description = format!(
+        "Silent mutation: {original} → {new} (same opcode: {})",
+        opcode_name(&original)
+    );
     codons[pos] = new;
 
     Ok(MutationResult {
@@ -124,7 +139,11 @@ pub fn silent(genome: &str, position: Option<usize>, rng: &mut Rng) -> Result<Mu
 }
 
 /// Missense mutation: replace a codon with one of a different (non-STOP) opcode.
-pub fn missense(genome: &str, position: Option<usize>, rng: &mut Rng) -> Result<MutationResult, String> {
+pub fn missense(
+    genome: &str,
+    position: Option<usize>,
+    rng: &mut Rng,
+) -> Result<MutationResult, String> {
     let mut codons = parse(genome);
     let pos = match position {
         Some(p) if p < codons.len() => p,
@@ -132,7 +151,8 @@ pub fn missense(genome: &str, position: Option<usize>, rng: &mut Rng) -> Result<
             let candidates: Vec<usize> = (0..codons.len())
                 .filter(|&i| !missense_codons(&codons[i]).is_empty())
                 .collect();
-            *rng.choice(&candidates).ok_or("No missense mutations available in this genome")?
+            *rng.choice(&candidates)
+                .ok_or("No missense mutations available in this genome")?
         }
     };
 
@@ -159,7 +179,11 @@ pub fn missense(genome: &str, position: Option<usize>, rng: &mut Rng) -> Result<
 }
 
 /// Nonsense mutation: replace a codon with a STOP (`TAA`), truncating execution.
-pub fn nonsense(genome: &str, position: Option<usize>, rng: &mut Rng) -> Result<MutationResult, String> {
+pub fn nonsense(
+    genome: &str,
+    position: Option<usize>,
+    rng: &mut Rng,
+) -> Result<MutationResult, String> {
     let mut codons = parse(genome);
     let pos = match position {
         Some(p) if p < codons.len() => p,
@@ -167,7 +191,8 @@ pub fn nonsense(genome: &str, position: Option<usize>, rng: &mut Rng) -> Result<
             let candidates: Vec<usize> = (0..codons.len())
                 .filter(|&i| i > 0 && codons[i] != "ATG" && !is_stop(&codons[i]))
                 .collect();
-            *rng.choice(&candidates).ok_or("No nonsense mutation positions available")?
+            *rng.choice(&candidates)
+                .ok_or("No nonsense mutation positions available")?
         }
     };
 
@@ -185,7 +210,11 @@ pub fn nonsense(genome: &str, position: Option<usize>, rng: &mut Rng) -> Result<
 
 /// Point mutation: change a single base, which may turn out silent, missense or
 /// nonsense depending on position.
-pub fn point(genome: &str, position: Option<usize>, rng: &mut Rng) -> Result<MutationResult, String> {
+pub fn point(
+    genome: &str,
+    position: Option<usize>,
+    rng: &mut Rng,
+) -> Result<MutationResult, String> {
     let cleaned = clean(genome);
     if cleaned.is_empty() {
         return Err("Cannot mutate an empty genome".into());
@@ -197,7 +226,9 @@ pub fn point(genome: &str, position: Option<usize>, rng: &mut Rng) -> Result<Mut
 
     let original = cleaned.as_bytes()[pos] as char;
     let others: Vec<char> = DNA_LETTERS.into_iter().filter(|&b| b != original).collect();
-    let new = *rng.choice(&others).expect("three alternatives always exist");
+    let new = *rng
+        .choice(&others)
+        .expect("three alternatives always exist");
 
     let mut mutated = cleaned.clone();
     mutated.replace_range(pos..pos + 1, &new.to_string());
@@ -225,7 +256,9 @@ pub fn insertion(
         return Err(format!("Position {pos} out of range"));
     }
 
-    let ins: String = (0..length).map(|_| DNA_LETTERS[rng.below(DNA_LETTERS.len())]).collect();
+    let ins: String = (0..length)
+        .map(|_| DNA_LETTERS[rng.below(DNA_LETTERS.len())])
+        .collect();
     let mut mutated = String::with_capacity(cleaned.len() + length);
     mutated.push_str(&cleaned[..pos]);
     mutated.push_str(&ins);
@@ -278,7 +311,11 @@ pub fn deletion(
 
 /// Frameshift: insert or delete 1–2 bases, guaranteed to disrupt the reading
 /// frame and scramble everything downstream.
-pub fn frameshift(genome: &str, position: Option<usize>, rng: &mut Rng) -> Result<MutationResult, String> {
+pub fn frameshift(
+    genome: &str,
+    position: Option<usize>,
+    rng: &mut Rng,
+) -> Result<MutationResult, String> {
     let length = 1 + rng.below(2); // 1 or 2
     let insert = rng.coin();
     let mut result = if insert {
@@ -323,7 +360,11 @@ pub fn compare(original: &str, mutated: &str) -> Vec<CodonDiff> {
         .filter_map(|i| {
             let oa = a.get(i).cloned().unwrap_or_default();
             let ob = b.get(i).cloned().unwrap_or_default();
-            (oa != ob).then_some(CodonDiff { position: i, original: oa, mutated: ob })
+            (oa != ob).then_some(CodonDiff {
+                position: i,
+                original: oa,
+                mutated: ob,
+            })
         })
         .collect()
 }

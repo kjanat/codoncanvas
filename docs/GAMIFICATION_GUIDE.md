@@ -303,8 +303,8 @@ achievementUI.handleUnlocks(newUnlocks);
 // In assessment-ui.ts - after challenge completion
 const correct = studentAnswer === correctAnswer;
 const newUnlocks = achievementEngine.trackChallengeCompleted(
-  correct,
-  mutationType,
+	correct,
+	mutationType,
 );
 achievementUI.handleUnlocks(newUnlocks);
 ```
@@ -846,15 +846,15 @@ Benefits for Mentors:
 
 ```html
 <script type="module">
-  import { AchievementEngine } from "./dist/achievement-engine.js";
-  import { AchievementUI } from "./dist/achievement-ui.js";
+	import { AchievementEngine } from './dist/achievement-engine.js';
+	import { AchievementUI } from './dist/achievement-ui.js';
 
-  const engine = new AchievementEngine();
-  const ui = new AchievementUI(engine, "achievements-container");
+	const engine = new AchievementEngine();
+	const ui = new AchievementUI(engine, 'achievements-container');
 
-  // Make globally available
-  window.achievementEngine = engine;
-  window.achievementUI = ui;
+	// Make globally available
+	window.achievementEngine = engine;
+	window.achievementUI = ui;
 </script>
 ```
 
@@ -881,42 +881,42 @@ achievementUI.handleUnlocks(newUnlocks);
 ```typescript
 // In playground.ts
 
-import { AchievementEngine } from "./achievement-engine.js";
-import { AchievementUI } from "./achievement-ui.js";
+import { AchievementEngine } from './achievement-engine.js';
+import { AchievementUI } from './achievement-ui.js';
 
 class Playground {
-  private achievementEngine: AchievementEngine;
-  private achievementUI: AchievementUI;
+	private achievementEngine: AchievementEngine;
+	private achievementUI: AchievementUI;
 
-  constructor() {
-    this.achievementEngine = new AchievementEngine();
-    this.achievementUI = new AchievementUI(
-      this.achievementEngine,
-      "achievements-sidebar",
-    );
-  }
+	constructor() {
+		this.achievementEngine = new AchievementEngine();
+		this.achievementUI = new AchievementUI(
+			this.achievementEngine,
+			'achievements-sidebar',
+		);
+	}
 
-  onGenomeCreated(genome: string): void {
-    const codonCount = genome.split(/\s+/).filter((c) => c.length === 3).length;
-    const newUnlocks = this.achievementEngine.trackGenomeCreated(codonCount);
-    this.achievementUI.handleUnlocks(newUnlocks);
-  }
+	onGenomeCreated(genome: string): void {
+		const codonCount = genome.split(/\s+/).filter((c) => c.length === 3).length;
+		const newUnlocks = this.achievementEngine.trackGenomeCreated(codonCount);
+		this.achievementUI.handleUnlocks(newUnlocks);
+	}
 
-  onGenomeExecuted(vm: VM): void {
-    const opcodes = vm.getExecutedOpcodes();
-    const newUnlocks = this.achievementEngine.trackGenomeExecuted(opcodes);
-    this.achievementUI.handleUnlocks(newUnlocks);
-  }
+	onGenomeExecuted(vm: VM): void {
+		const opcodes = vm.getExecutedOpcodes();
+		const newUnlocks = this.achievementEngine.trackGenomeExecuted(opcodes);
+		this.achievementUI.handleUnlocks(newUnlocks);
+	}
 
-  onMutationApplied(mutationType: string): void {
-    const newUnlocks = this.achievementEngine.trackMutationApplied();
-    this.achievementUI.handleUnlocks(newUnlocks);
-  }
+	onMutationApplied(mutationType: string): void {
+		const newUnlocks = this.achievementEngine.trackMutationApplied();
+		this.achievementUI.handleUnlocks(newUnlocks);
+	}
 
-  onShapeDrawn(opcode: string): void {
-    const newUnlocks = this.achievementEngine.trackShapeDrawn(opcode);
-    this.achievementUI.handleUnlocks(newUnlocks);
-  }
+	onShapeDrawn(opcode: string): void {
+		const newUnlocks = this.achievementEngine.trackShapeDrawn(opcode);
+		this.achievementUI.handleUnlocks(newUnlocks);
+	}
 }
 ```
 
@@ -1031,11 +1031,11 @@ const data = achievementEngine.export();
 console.log(data); // Copy/paste to save
 
 // Or download as file
-const blob = new Blob([data], { type: "application/json" });
+const blob = new Blob([data], { type: 'application/json' });
 const url = URL.createObjectURL(blob);
-const a = document.createElement("a");
+const a = document.createElement('a');
 a.href = url;
-a.download = "my-achievements.json";
+a.download = 'my-achievements.json';
 a.click();
 ```
 
@@ -1106,7 +1106,7 @@ bun run build
 
 ```typescript
 // In achievement-engine.ts
-icon: "🎯"; // Change to any emoji
+icon: '🎯'; // Change to any emoji
 ```
 
 **Use Custom Images:**
@@ -1115,9 +1115,9 @@ icon: "🎯"; // Change to any emoji
 // In achievement-ui.ts, renderBadge()
 // Replace emoji with <img> tag
 
-const iconHtml = achievement.icon.startsWith("http")
-  ? `<img src="${achievement.icon}" alt="${achievement.name}" style="width: 48px; height: 48px;">`
-  : `<div class="badge-icon">${achievement.icon}</div>`;
+const iconHtml = achievement.icon.startsWith('http')
+	? `<img src="${achievement.icon}" alt="${achievement.name}" style="width: 48px; height: 48px;">`
+	: `<div class="badge-icon">${achievement.icon}</div>`;
 ```
 
 ### Custom Notification Style
@@ -1128,9 +1128,9 @@ const iconHtml = achievement.icon.startsWith("http")
 /* In achievement-ui.ts, injectStyles() */
 
 .achievement-notification {
-  background: linear-gradient(135deg, #your-color-1, #your-color-2);
-  border: 2px solid #your-border-color;
-  /* ... other styles */
+	background: linear-gradient(135deg, #your-color-1, #your-color-2);
+	border: 2px solid #your-border-color;
+	/* ... other styles */
 }
 ```
 
@@ -1253,11 +1253,11 @@ A: Yes! Achievement unlock rates = understanding rates. Example: 60% of class ha
 
 ### C. Research Citations
 
-- Hamari, J., Koivisto, J., & Sarsa, H. (2014). Does gamification work? A literature review of empirical studies on gamification. _47th Hawaii International Conference on System Sciences_, 3025-3034.
+- Hamari, J., Koivisto, J., & Sarsa, H. (2014). Does gamification work? A literature review of empirical studies on gamification. *47th Hawaii International Conference on System Sciences*, 3025-3034.
 
-- Dicheva, D., Dichev, C., Agre, G., & Angelova, G. (2015). Gamification in education: A systematic mapping study. _Educational Technology & Society_, 18(3), 75-88.
+- Dicheva, D., Dichev, C., Agre, G., & Angelova, G. (2015). Gamification in education: A systematic mapping study. *Educational Technology & Society*, 18(3), 75-88.
 
-- Sailer, M., Hense, J. U., Mayr, S. K., & Mandl, H. (2017). How gamification motivates: An experimental study of the effects of specific game design elements on psychological need satisfaction. _Computers in Human Behavior_, 69, 371-380.
+- Sailer, M., Hense, J. U., Mayr, S. K., & Mandl, H. (2017). How gamification motivates: An experimental study of the effects of specific game design elements on psychological need satisfaction. *Computers in Human Behavior*, 69, 371-380.
 
 ### D. Sample Lesson Plans
 

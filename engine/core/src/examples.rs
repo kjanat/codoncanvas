@@ -59,8 +59,7 @@ static EXAMPLES: &[Example] = &[
     Example {
         id: "negative-offset",
         title: "Negative Offset Demo",
-        description:
-            "Four satellites around a center circle. Two of them (left and up) are only \
+        description: "Four satellites around a center circle. Two of them (left and up) are only \
              reachable thanks to the signed-TRANSLATE fix; the old engine could move \
              right and down only.",
         genome: "ATG\n\
@@ -125,8 +124,7 @@ static EXAMPLES: &[Example] = &[
     Example {
         id: "loop-march",
         title: "Loop March",
-        description:
-            "LOOP replays the last N instructions. Here a circle is drawn, moved right, and \
+        description: "LOOP replays the last N instructions. Here a circle is drawn, moved right, and \
              scaled down — repeated to march a shrinking row across the canvas.",
         genome: "ATG\n\
             GAA TTT GAA TTT GAA GAA TTA  ; red color\n\

@@ -38,13 +38,13 @@ Test configuration lives in three files:
 ```toml
 # bunfig.toml
 [test]
-root = "tests"
-preload = ["./bun-test-setup.ts"]
-coverage = true
+root        = "tests"
+preload     = ["./bun-test-setup.ts"]
+coverage    = true
 coverageDir = "coverage"
 
 [test.coverageThreshold]
-line = 0.85
+line     = 0.85
 function = 0.85
 ```
 
@@ -55,17 +55,17 @@ function = 0.85
 Import test utilities from `bun:test`:
 
 ```typescript
-import { describe, test, expect, beforeEach, afterEach, mock } from "bun:test";
+import { afterEach, beforeEach, describe, expect, mock, test } from 'bun:test';
 ```
 
 Basic test structure:
 
 ```typescript
-describe("Lexer", () => {
-  test("tokenizes codon sequence", () => {
-    const tokens = tokenize("AUG UGA");
-    expect(tokens).toHaveLength(2);
-  });
+describe('Lexer', () => {
+	test('tokenizes codon sequence', () => {
+		const tokens = tokenize('AUG UGA');
+		expect(tokens).toHaveLength(2);
+	});
 });
 ```
 
@@ -97,16 +97,16 @@ happy-dom provides DOM globals (`document`, `window`, etc.). Setup is automatic 
 Canvas `getContext('2d')` returns null by design. Mock locally when needed:
 
 ```typescript
-test("renders to canvas", () => {
-  const canvas = document.createElement("canvas");
-  const mockCtx = {
-    fillRect: mock(() => {}),
-    strokeRect: mock(() => {}),
-    // ... other methods
-  };
-  mock.module("canvas", () => ({ getContext: () => mockCtx }));
+test('renders to canvas', () => {
+	const canvas = document.createElement('canvas');
+	const mockCtx = {
+		fillRect: mock(() => {}),
+		strokeRect: mock(() => {}),
+		// ... other methods
+	};
+	mock.module('canvas', () => ({ getContext: () => mockCtx }));
 
-  // Test canvas operations
+	// Test canvas operations
 });
 ```
 

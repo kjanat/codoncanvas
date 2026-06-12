@@ -105,7 +105,7 @@ ATG NNN  GAA AAA  GGA  ACU ACG  AGC  TTG  CCA
      GAA AAA  GGA  ACU ACG  AGC  TTG  CCA  TAA
 ```
 
-_(Mutate any single **`** → **`** for a small petal rotation change; delete one **``** early to trigger a frameshift and watch the entire rosette deform.)_
+*(Mutate any single **`** → **`** for a small petal rotation change; delete one **``** early to trigger a frameshift and watch the entire rosette deform.)*
 
 ---
 
@@ -180,7 +180,7 @@ _(Mutate any single **`** → **`** for a small petal rotation change; delete on
 - **HelixCraft**
 - **Amino** (if trademark clear)
 
-_(Earlier options remain available; we’ll test with a quick name survey.)_
+*(Earlier options remain available; we’ll test with a quick name survey.)*
 
 ---
 
@@ -200,4 +200,4 @@ _(Earlier options remain available; we’ll test with a quick name survey.)_
 
 ---
 
-_Prepared by: Kaj — concept, pedagogy, and prototyping._
+*Prepared by: Kaj — concept, pedagogy, and prototyping.*

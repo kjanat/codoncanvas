@@ -111,10 +111,6 @@ pub fn missense_codons(codon: &str) -> Vec<String> {
     let codon = normalize(codon);
     crate::base::all_codons()
         .into_iter()
-        .filter(|c| {
-            *c != codon
-                && opcode_for(c) != Some(op)
-                && opcode_for(c) != Some(Opcode::Stop)
-        })
+        .filter(|c| *c != codon && opcode_for(c) != Some(op) && opcode_for(c) != Some(Opcode::Stop))
         .collect()
 }

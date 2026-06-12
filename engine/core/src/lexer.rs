@@ -41,10 +41,20 @@ pub struct Diagnostic {
 
 impl Diagnostic {
     fn warning(message: impl Into<String>, position: usize, fix: impl Into<String>) -> Self {
-        Self { message: message.into(), position, severity: Severity::Warning, fix: fix.into() }
+        Self {
+            message: message.into(),
+            position,
+            severity: Severity::Warning,
+            fix: fix.into(),
+        }
     }
     fn error(message: impl Into<String>, position: usize, fix: impl Into<String>) -> Self {
-        Self { message: message.into(), position, severity: Severity::Error, fix: fix.into() }
+        Self {
+            message: message.into(),
+            position,
+            severity: Severity::Error,
+            fix: fix.into(),
+        }
     }
 }
 
@@ -95,7 +105,11 @@ pub fn tokenize(source: &str) -> Result<Vec<Token>, String> {
     while i < bytes.len() {
         // `cleaned` is ASCII, so byte and char indices coincide.
         let text = cleaned[i..i + 3].to_string();
-        tokens.push(Token { text, position: i, line: line_of_base.get(i).copied().unwrap_or(1) });
+        tokens.push(Token {
+            text,
+            position: i,
+            line: line_of_base.get(i).copied().unwrap_or(1),
+        });
         i += 3;
     }
     Ok(tokens)

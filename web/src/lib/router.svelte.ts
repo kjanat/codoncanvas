@@ -2,30 +2,30 @@
 // app a single static artifact that works on GitHub Pages without server
 // rewrites.
 
-export type Route = "playground" | "gallery" | "mutations" | "reference" | "about";
+export type Route = 'playground' | 'gallery' | 'mutations' | 'reference' | 'about';
 
-const ROUTES: Route[] = ["playground", "gallery", "mutations", "reference", "about"];
+const ROUTES: Route[] = ['playground', 'gallery', 'mutations', 'reference', 'about'];
 
 function parseHash(): Route {
-  const raw = window.location.hash.replace(/^#\/?/, "").split("?")[0];
-  return (ROUTES as string[]).includes(raw) ? (raw as Route) : "playground";
+	const raw = window.location.hash.replace(/^#\/?/, '').split('?')[0];
+	return (ROUTES as string[]).includes(raw) ? (raw as Route) : 'playground';
 }
 
 class Router {
-  current = $state<Route>("playground");
+	current = $state<Route>('playground');
 
-  constructor() {
-    if (typeof window !== "undefined") {
-      this.current = parseHash();
-      window.addEventListener("hashchange", () => {
-        this.current = parseHash();
-      });
-    }
-  }
+	constructor() {
+		if (typeof window !== 'undefined') {
+			this.current = parseHash();
+			window.addEventListener('hashchange', () => {
+				this.current = parseHash();
+			});
+		}
+	}
 
-  go(route: Route): void {
-    window.location.hash = `/${route}`;
-  }
+	go(route: Route): void {
+		window.location.hash = `/${route}`;
+	}
 }
 
 export const router = new Router();
