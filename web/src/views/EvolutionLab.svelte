@@ -21,7 +21,22 @@
 	const parentResult = $derived(engine.run(parent, SIZE, SIZE));
 
 	function generate(): void {
-		candidates = engine.mutateBatch(parent, CANDIDATES);
+		// Over-generate and keep only mutants that still run and draw something,
+		// so every offspring card shows a real phenotype. Lethal mutations
+		// (frame-shifting indels, early STOPs, stack underflows) are naturally
+		// selected out rather than rendered as blank cards.
+		const seen = new Set<string>([parent]);
+		const viable: MutationResult[] = [];
+		for (const c of engine.mutateBatch(parent, CANDIDATES * 6)) {
+			if (seen.has(c.mutated)) continue;
+			const r = engine.run(c.mutated, SIZE, SIZE);
+			if (r.ok && r.commands.length > 0) {
+				viable.push(c);
+				seen.add(c.mutated);
+				if (viable.length >= CANDIDATES) break;
+			}
+		}
+		candidates = viable;
 	}
 
 	function select(candidate: MutationResult): void {

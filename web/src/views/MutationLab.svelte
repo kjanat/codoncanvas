@@ -118,6 +118,15 @@
 		<h3>Mutant</h3>
 		{#if mutated}
 			<CanvasView result={mutated} size={SIZE} />
+			{#if !mutated.ok}
+				<div class="diag error" style="margin-top: 0.4rem">
+					⛔ Lethal mutation — execution broke: {mutated.error}
+				</div>
+			{:else if mutated.commands.length === 0}
+				<p class="muted" style="margin-top: 0.4rem">
+					No output — this mutation silenced the program (e.g. an early STOP).
+				</p>
+			{/if}
 		{:else}
 			<p class="muted">Apply a mutation to see the result.</p>
 		{/if}
