@@ -23,23 +23,39 @@ jobs:
         with:
           persist-credentials: false
 
+      - name: Setup Rust (with wasm target)
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: wasm32-unknown-unknown
+
+      - name: Cache cargo
+        uses: Swatinem/rust-cache@v2
+        with:
+          workspaces: engine
+
+      - name: Install wasm-bindgen-cli
+        run: cargo install wasm-bindgen-cli --version 0.2.123 --locked
+
       - name: Setup Bun
         uses: ./.github/actions/setup-bun
         with: { install-node: "true" }
+
+      - name: Install web dependencies
+        working-directory: web
+        run: bun install
+
+      - name: Build (Rust → WASM → Svelte)
+        working-directory: web
+        run: bun run build
 
       - name: Setup Pages
         uses: actions/configure-pages@v5
         id: pages
 
-      - name: Build
-        run: bun run build
-        env:
-          VITE_BASE_PATH: ${{ steps.pages.outputs.base_path }}
-
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v4
         with:
-          path: ./dist
+          path: ./web/dist
 
   deploy:
     permissions:

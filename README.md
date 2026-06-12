@@ -33,6 +33,32 @@ playful.
 - **Research Metrics**: Detailed engagement analytics for educational assessment
   and research
 
+## 🦀 Rust + WebAssembly + Svelte rewrite
+
+The engine and site have been rewritten:
+
+- **Engine** ([`engine/`](./engine)) — the lexer, codon map, stack VM, and
+  mutation tools are now idiomatic **Rust** (edition 2024), compiled to
+  **WebAssembly**. The same code is unit-tested natively and runs in the
+  browser. See [`engine/README.md`](./engine/README.md).
+- **Site** ([`web/`](./web)) — rebuilt in **Svelte 5** (runes) on Vite, loading
+  the WASM engine. Playground, gallery, mutation lab, and codon reference are
+  ported. See [`web/README.md`](./web/README.md).
+- **Negative-offset fix** — stack values are 6-bit (`0–63`); the old engine
+  mapped them to `(v / 64) × width`, which is never negative, so `TRANSLATE`
+  could only move right/down. The new engine treats translation offsets as
+  *signed around the midpoint 32* (`((v − 32) / 64) × width`), so `32` = no
+  move, below 32 = left/up, above 32 = right/down. Shape sizes stay unsigned.
+
+```bash
+cd web
+rustup target add wasm32-unknown-unknown && cargo install wasm-bindgen-cli  # once
+npm install && npm run dev    # builds WASM, then serves the Svelte app
+```
+
+> The original React 19 / TypeScript app under `src/` is kept for reference
+> until the Svelte port reaches full feature parity.
+
 ## Live Demo
 
 Try CodonCanvas online (no installation required):
