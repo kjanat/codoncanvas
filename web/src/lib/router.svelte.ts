@@ -2,9 +2,22 @@
 // app a single static artifact that works on GitHub Pages without server
 // rewrites.
 
-export type Route = 'playground' | 'gallery' | 'mutations' | 'reference' | 'about';
+export type Route =
+	| 'playground'
+	| 'gallery'
+	| 'mutations'
+	| 'evolution'
+	| 'reference'
+	| 'about';
 
-const ROUTES: Route[] = ['playground', 'gallery', 'mutations', 'reference', 'about'];
+const ROUTES: Route[] = [
+	'playground',
+	'gallery',
+	'mutations',
+	'evolution',
+	'reference',
+	'about',
+];
 
 function parseHash(): Route {
 	const raw = window.location.hash.replace(/^#\/?/, '').split('?')[0];

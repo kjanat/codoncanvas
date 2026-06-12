@@ -150,6 +150,28 @@ nav.main-nav button.active {
 	color: var(--accent);
 }
 
+.nav-toggle {
+	display: none;
+	margin-left: auto;
+	font-size: 1.1rem;
+	line-height: 1;
+	padding: 0.3rem 0.6rem;
+}
+
+@media (max-width: 700px) {
+	.nav-toggle {
+		display: block;
+	}
+	nav.main-nav {
+		display: none;
+		flex-direction: column;
+		width: 100%;
+	}
+	nav.main-nav.open {
+		display: flex;
+	}
+}
+
 main {
 	flex: 1;
 	padding: 1.4rem;

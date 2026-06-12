@@ -14,6 +14,11 @@
 
 	let canvas: HTMLCanvasElement | undefined = $state();
 
+	/** Exposes the underlying canvas (for PNG export) via `bind:this`. */
+	export function getCanvas(): HTMLCanvasElement | undefined {
+		return canvas;
+	}
+
 	$effect(() => {
 		// Re-run whenever the result or step count changes.
 		void result;
