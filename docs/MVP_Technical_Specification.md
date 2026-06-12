@@ -122,20 +122,20 @@ Let me fix TCA:
 
 ```typescript
 // Base types
-type Base = "A" | "C" | "G" | "T";
+type Base = 'A' | 'C' | 'G' | 'T';
 type Codon = `${Base}${Base}${Base}`;
 
 interface CodonToken {
-  text: Codon;
-  position: number; // Character offset in source
-  line: number; // Line number (1-indexed)
+	text: Codon;
+	position: number; // Character offset in source
+	line: number; // Line number (1-indexed)
 }
 
 interface ParseError {
-  message: string;
-  position: number;
-  severity: "error" | "warning" | "info";
-  fix?: string; // Suggested fix (e.g., "Insert 'A' to restore frame")
+	message: string;
+	position: number;
+	severity: 'error' | 'warning' | 'info';
+	fix?: string; // Suggested fix (e.g., "Insert 'A' to restore frame")
 }
 ```
 
@@ -195,85 +195,85 @@ class CodonLexer implements Lexer {
 
 ```typescript
 interface VMState {
-  // Drawing state
-  position: { x: number; y: number };
-  rotation: number; // degrees, 0 = right
-  scale: number;
-  color: { h: number; s: number; l: number };
+	// Drawing state
+	position: { x: number; y: number };
+	rotation: number; // degrees, 0 = right
+	scale: number;
+	color: { h: number; s: number; l: number };
 
-  // Execution state
-  stack: number[];
-  instructionPointer: number;
-  stateStack: VMState[]; // For SAVE_STATE/RESTORE_STATE
+	// Execution state
+	stack: number[];
+	instructionPointer: number;
+	stateStack: VMState[]; // For SAVE_STATE/RESTORE_STATE
 
-  // Metadata
-  instructionCount: number; // For sandboxing
-  seed: number; // For RAND reproducibility
+	// Metadata
+	instructionCount: number; // For sandboxing
+	seed: number; // For RAND reproducibility
 }
 
 interface VM {
-  state: VMState;
-  renderer: Renderer;
+	state: VMState;
+	renderer: Renderer;
 
-  /**
-   * Execute a single opcode
-   * @throws Error if stack underflow or instruction limit exceeded
-   */
-  execute(opcode: Opcode, codon: Codon): void;
+	/**
+	 * Execute a single opcode
+	 * @throws Error if stack underflow or instruction limit exceeded
+	 */
+	execute(opcode: Opcode, codon: Codon): void;
 
-  /**
-   * Run entire program
-   * @returns array of snapshots (one per instruction) for timeline scrubber
-   */
-  run(tokens: CodonToken[]): VMState[];
+	/**
+	 * Run entire program
+	 * @returns array of snapshots (one per instruction) for timeline scrubber
+	 */
+	run(tokens: CodonToken[]): VMState[];
 
-  /**
-   * Reset VM to initial state
-   */
-  reset(): void;
+	/**
+	 * Reset VM to initial state
+	 */
+	reset(): void;
 
-  /**
-   * Create snapshot for rewind/step-through
-   */
-  snapshot(): VMState;
+	/**
+	 * Create snapshot for rewind/step-through
+	 */
+	snapshot(): VMState;
 
-  /**
-   * Restore from snapshot
-   */
-  restore(state: VMState): void;
+	/**
+	 * Restore from snapshot
+	 */
+	restore(state: VMState): void;
 }
 
 // Opcode type
 enum Opcode {
-  START,
-  STOP,
-  CIRCLE,
-  RECT,
-  LINE,
-  TRIANGLE,
-  ELLIPSE,
-  TRANSLATE,
-  ROTATE,
-  SCALE,
-  COLOR,
-  PUSH,
-  DUP,
-  POP,
-  SWAP,
-  NOP,
-  NOISE,
-  SAVE_STATE,
+	START,
+	STOP,
+	CIRCLE,
+	RECT,
+	LINE,
+	TRIANGLE,
+	ELLIPSE,
+	TRANSLATE,
+	ROTATE,
+	SCALE,
+	COLOR,
+	PUSH,
+	DUP,
+	POP,
+	SWAP,
+	NOP,
+	NOISE,
+	SAVE_STATE,
 }
 
 // Codon to Opcode map (hardcoded for v1.0)
 const CODON_MAP: Record<Codon, Opcode> = {
-  ATG: Opcode.START,
-  TAA: Opcode.STOP,
-  TAG: Opcode.STOP,
-  TGA: Opcode.STOP,
-  GGA: Opcode.CIRCLE,
-  GGC: Opcode.CIRCLE,
-  // ... (all 64 mappings)
+	ATG: Opcode.START,
+	TAA: Opcode.STOP,
+	TAG: Opcode.STOP,
+	TGA: Opcode.STOP,
+	GGA: Opcode.CIRCLE,
+	GGC: Opcode.CIRCLE,
+	// ... (all 64 mappings)
 };
 ```
 
@@ -281,56 +281,56 @@ const CODON_MAP: Record<Codon, Opcode> = {
 
 ```typescript
 interface Renderer {
-  readonly width: number;
-  readonly height: number;
+	readonly width: number;
+	readonly height: number;
 
-  /**
-   * Clear canvas
-   */
-  clear(): void;
+	/**
+	 * Clear canvas
+	 */
+	clear(): void;
 
-  /**
-   * Drawing primitives (all use current VM state for position/rotation/color/scale)
-   */
-  circle(radius: number): void;
-  rect(width: number, height: number): void;
-  line(length: number): void;
-  triangle(size: number): void;
-  ellipse(rx: number, ry: number): void;
+	/**
+	 * Drawing primitives (all use current VM state for position/rotation/color/scale)
+	 */
+	circle(radius: number): void;
+	rect(width: number, height: number): void;
+	line(length: number): void;
+	triangle(size: number): void;
+	ellipse(rx: number, ry: number): void;
 
-  /**
-   * State queries (for VM to track position after drawing)
-   */
-  getCurrentTransform(): {
-    x: number;
-    y: number;
-    rotation: number;
-    scale: number;
-  };
+	/**
+	 * State queries (for VM to track position after drawing)
+	 */
+	getCurrentTransform(): {
+		x: number;
+		y: number;
+		rotation: number;
+		scale: number;
+	};
 
-  /**
-   * Export
-   */
-  toDataURL(): string;
-  toImageData(): ImageData;
+	/**
+	 * Export
+	 */
+	toDataURL(): string;
+	toImageData(): ImageData;
 }
 
 // Canvas-based implementation
 class Canvas2DRenderer implements Renderer {
-  private ctx: CanvasRenderingContext2D;
+	private ctx: CanvasRenderingContext2D;
 
-  constructor(canvas: HTMLCanvasElement) {
-    this.ctx = canvas.getContext("2d")!;
-  }
+	constructor(canvas: HTMLCanvasElement) {
+		this.ctx = canvas.getContext('2d')!;
+	}
 
-  circle(radius: number): void {
-    this.ctx.beginPath();
-    this.ctx.arc(0, 0, radius, 0, Math.PI * 2);
-    this.ctx.fill();
-    this.ctx.stroke();
-  }
+	circle(radius: number): void {
+		this.ctx.beginPath();
+		this.ctx.arc(0, 0, radius, 0, Math.PI * 2);
+		this.ctx.fill();
+		this.ctx.stroke();
+	}
 
-  // ... other methods
+	// ... other methods
 }
 ```
 
@@ -520,129 +520,129 @@ TAA
 ### 5.1 Core Functionality Tests
 
 ```typescript
-describe("CodonCanvas VM", () => {
-  test("Silent mutation produces identical output", () => {
-    const genome1 = "ATG GAA AGG GGA TAA";
-    const genome2 = "ATG GAA AGG GGC TAA"; // GGA → GGC (both CIRCLE)
+describe('CodonCanvas VM', () => {
+	test('Silent mutation produces identical output', () => {
+		const genome1 = 'ATG GAA AGG GGA TAA';
+		const genome2 = 'ATG GAA AGG GGC TAA'; // GGA → GGC (both CIRCLE)
 
-    const output1 = renderGenome(genome1);
-    const output2 = renderGenome(genome2);
+		const output1 = renderGenome(genome1);
+		const output2 = renderGenome(genome2);
 
-    expect(output1).toEqual(output2); // Pixel-perfect match
-  });
+		expect(output1).toEqual(output2); // Pixel-perfect match
+	});
 
-  test("Missense mutation changes shape", () => {
-    const circle = "ATG GAA AGG GGA TAA";
-    const rect = "ATG GAA AGG GAA AGG CCA TAA"; // Added extra PUSH for RECT
+	test('Missense mutation changes shape', () => {
+		const circle = 'ATG GAA AGG GGA TAA';
+		const rect = 'ATG GAA AGG GAA AGG CCA TAA'; // Added extra PUSH for RECT
 
-    const output1 = renderGenome(circle);
-    const output2 = renderGenome(rect);
+		const output1 = renderGenome(circle);
+		const output2 = renderGenome(rect);
 
-    expect(output1).not.toEqual(output2);
-    expect(countShapes(output1, "circle")).toBe(1);
-    expect(countShapes(output2, "rect")).toBe(1);
-  });
+		expect(output1).not.toEqual(output2);
+		expect(countShapes(output1, 'circle')).toBe(1);
+		expect(countShapes(output2, 'rect')).toBe(1);
+	});
 
-  test("Nonsense mutation truncates output", () => {
-    const full = "ATG GAA AGG GGA GAA AGG CCA TAA";
-    const truncated = "ATG GAA AGG GGA TAA CCA TAA"; // Early STOP
+	test('Nonsense mutation truncates output', () => {
+		const full = 'ATG GAA AGG GGA GAA AGG CCA TAA';
+		const truncated = 'ATG GAA AGG GGA TAA CCA TAA'; // Early STOP
 
-    const output1 = renderGenome(full);
-    const output2 = renderGenome(truncated);
+		const output1 = renderGenome(full);
+		const output2 = renderGenome(truncated);
 
-    expect(countShapes(output1)).toBe(2); // Circle + rect
-    expect(countShapes(output2)).toBe(1); // Only circle
-  });
+		expect(countShapes(output1)).toBe(2); // Circle + rect
+		expect(countShapes(output2)).toBe(1); // Only circle
+	});
 
-  test("Frameshift scrambles downstream", () => {
-    const original = "ATG GAA AGG GGA TAA";
-    const frameshift = "ATG GA AAG GGG ATA A"; // Deleted first A
+	test('Frameshift scrambles downstream', () => {
+		const original = 'ATG GAA AGG GGA TAA';
+		const frameshift = 'ATG GA AAG GGG ATA A'; // Deleted first A
 
-    const output1 = renderGenome(original);
-    const output2 = renderGenome(frameshift);
+		const output1 = renderGenome(original);
+		const output2 = renderGenome(frameshift);
 
-    // Outputs should be dramatically different
-    const diff = pixelDifference(output1, output2);
-    expect(diff).toBeGreaterThan(0.8); // >80% pixels changed
-  });
+		// Outputs should be dramatically different
+		const diff = pixelDifference(output1, output2);
+		expect(diff).toBeGreaterThan(0.8); // >80% pixels changed
+	});
 });
 
-describe("Numeric literals", () => {
-  test("All values 0-63 work correctly", () => {
-    for (let i = 0; i < 64; i++) {
-      const codon = numberToCodon(i); // Helper to convert 0-63 → base-4 codon
-      const genome = `ATG GAA ${codon} TAA`;
+describe('Numeric literals', () => {
+	test('All values 0-63 work correctly', () => {
+		for (let i = 0; i < 64; i++) {
+			const codon = numberToCodon(i); // Helper to convert 0-63 → base-4 codon
+			const genome = `ATG GAA ${codon} TAA`;
 
-      const vm = new VM();
-      vm.run(lexer.tokenize(genome));
+			const vm = new VM();
+			vm.run(lexer.tokenize(genome));
 
-      expect(vm.state.stack[0]).toBe(i);
-    }
-  });
+			expect(vm.state.stack[0]).toBe(i);
+		}
+	});
 
-  test("Stack underflow throws error", () => {
-    const genome = "ATG GGA TAA"; // CIRCLE without PUSH
+	test('Stack underflow throws error', () => {
+		const genome = 'ATG GGA TAA'; // CIRCLE without PUSH
 
-    expect(() => {
-      const vm = new VM();
-      vm.run(lexer.tokenize(genome));
-    }).toThrow("Stack underflow");
-  });
+		expect(() => {
+			const vm = new VM();
+			vm.run(lexer.tokenize(genome));
+		}).toThrow('Stack underflow');
+	});
 });
 
-describe("Linter", () => {
-  test("Detects mid-triplet break", () => {
-    const source = "ATG GG A CCA TAA"; // Space in "GGA"
-    const errors = lexer.validateFrame(source);
+describe('Linter', () => {
+	test('Detects mid-triplet break', () => {
+		const source = 'ATG GG A CCA TAA'; // Space in "GGA"
+		const errors = lexer.validateFrame(source);
 
-    expect(errors).toHaveLength(1);
-    expect(errors[0].severity).toBe("warning");
-    expect(errors[0].message).toContain("mid-triplet");
-  });
+		expect(errors).toHaveLength(1);
+		expect(errors[0].severity).toBe('warning');
+		expect(errors[0].message).toContain('mid-triplet');
+	});
 
-  test("Detects stop before start", () => {
-    const source = "TAA GGA CCA ATG";
-    const errors = lexer.validateStructure(lexer.tokenize(source));
+	test('Detects stop before start', () => {
+		const source = 'TAA GGA CCA ATG';
+		const errors = lexer.validateStructure(lexer.tokenize(source));
 
-    expect(errors).toHaveLength(1);
-    expect(errors[0].severity).toBe("error");
-    expect(errors[0].message).toContain("Stop before first Start");
-  });
+		expect(errors).toHaveLength(1);
+		expect(errors[0].severity).toBe('error');
+		expect(errors[0].message).toContain('Stop before first Start');
+	});
 
-  test("Warns on start after stop", () => {
-    const source = "ATG GGA TAA ATG CCA TAA";
-    const errors = lexer.validateStructure(lexer.tokenize(source));
+	test('Warns on start after stop', () => {
+		const source = 'ATG GGA TAA ATG CCA TAA';
+		const errors = lexer.validateStructure(lexer.tokenize(source));
 
-    expect(errors).toHaveLength(1);
-    expect(errors[0].severity).toBe("warning");
-    expect(errors[0].message).toContain("Start after Stop");
-  });
+		expect(errors).toHaveLength(1);
+		expect(errors[0].severity).toBe('warning');
+		expect(errors[0].message).toContain('Start after Stop');
+	});
 });
 ```
 
 ### 5.2 Visual Regression Tests
 
 ```typescript
-describe("Visual outputs", () => {
-  test("Example 1: Hello Circle", () => {
-    const genome = "ATG GAA AAT GGA TAA";
-    const output = renderGenome(genome);
+describe('Visual outputs', () => {
+	test('Example 1: Hello Circle', () => {
+		const genome = 'ATG GAA AAT GGA TAA';
+		const output = renderGenome(genome);
 
-    expect(output).toMatchImageSnapshot("hello-circle.png");
-  });
+		expect(output).toMatchImageSnapshot('hello-circle.png');
+	});
 
-  test("Example 2: Two Shapes", () => {
-    const genome = `
+	test('Example 2: Two Shapes', () => {
+		const genome = `
       ATG 
         GAA AGG GAA AGG GGA
         GAA CCC GAA AAA ACA
         GAA AGG GAA AGG CCA
       TAA
     `;
-    const output = renderGenome(genome);
+		const output = renderGenome(genome);
 
-    expect(output).toMatchImageSnapshot("two-shapes.png");
-  });
+		expect(output).toMatchImageSnapshot('two-shapes.png');
+	});
 });
 ```
 

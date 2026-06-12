@@ -1,0 +1,22 @@
+{
+  "name": "codoncanvas-web",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Svelte frontend for CodonCanvas, powered by the Rust/WASM engine.",
+  "type": "module",
+  "scripts": {
+    "build": "npm run build:wasm && vite build",
+    "build:wasm": "bash scripts/build-wasm.sh",
+    "check": "svelte-check --tsconfig ./tsconfig.json",
+    "dev": "npm run build:wasm && vite",
+    "preview": "vite preview"
+  },
+  "devDependencies": {
+    "@sveltejs/vite-plugin-svelte": "^5.0.3",
+    "@tsconfig/svelte": "^5.0.4",
+    "svelte": "^5.19.0",
+    "svelte-check": "^4.1.4",
+    "typescript": "^5.7.3",
+    "vite": "^6.0.7"
+  }
+}

@@ -872,27 +872,27 @@ Comprehensive decision history available in:
 
 **Constructionism**:
 
-- Papert, S. (1980). _Mindstorms: Children, Computers, and Powerful Ideas._
-- Resnick, M. (2017). _Lifelong Kindergarten._
+- Papert, S. (1980). *Mindstorms: Children, Computers, and Powerful Ideas.*
+- Resnick, M. (2017). *Lifelong Kindergarten.*
 
 **Cognitive Load Theory**:
 
 - Sweller, J. (1988). "Cognitive load during problem solving."
-- Mayer, R. (2009). _Multimedia Learning._
+- Mayer, R. (2009). *Multimedia Learning.*
 
 **Universal Design for Learning**:
 
-- CAST (2018). _Universal Design for Learning Guidelines._
-- Rose, D. & Meyer, A. (2002). _Teaching Every Student in the Digital Age._
+- CAST (2018). *Universal Design for Learning Guidelines.*
+- Rose, D. & Meyer, A. (2002). *Teaching Every Student in the Digital Age.*
 
 **Assessment for Learning**:
 
-- Wiliam, D. (2011). _Embedded Formative Assessment._
+- Wiliam, D. (2011). *Embedded Formative Assessment.*
 - Black, P. & Wiliam, D. (1998). "Inside the black box."
 
 **Situated Learning**:
 
-- Lave, J. & Wenger, E. (1991). _Situated Learning._
+- Lave, J. & Wenger, E. (1991). *Situated Learning.*
 - Brown, J.S., Collins, A., & Duguid, P. (1989). "Situated cognition."
 
 ### C. Related Projects

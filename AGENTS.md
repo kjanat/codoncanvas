@@ -30,15 +30,15 @@
 
   ```ts
   // Good: Test actual functionality
-  test("calculateTax should handle different tax rates", () => {
-    expect(calculateTax(100, 0.08)).toBe(8);
-    expect(calculateTax(100, 0.1)).toBe(10);
-    expect(calculateTax(0, 0.08)).toBe(0);
+  test('calculateTax should handle different tax rates', () => {
+  	expect(calculateTax(100, 0.08)).toBe(8);
+  	expect(calculateTax(100, 0.1)).toBe(10);
+  	expect(calculateTax(0, 0.08)).toBe(0);
   });
 
   // Avoid: Just hitting lines for coverage
-  test("calculateTax exists", () => {
-    calculateTax(100, 0.08); // No assertions!
+  test('calculateTax exists', () => {
+  	calculateTax(100, 0.08); // No assertions!
   });
   ```
 - If files aren’t appearing in coverage reports, they might not be imported by

@@ -23,23 +23,46 @@ jobs:
         with:
           persist-credentials: false
 
+      - name: Setup Rust (with wasm target)
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: wasm32-unknown-unknown
+
+      - name: Cache cargo
+        uses: Swatinem/rust-cache@v2
+        with:
+          workspaces: engine
+
+      - name: Install wasm-bindgen-cli
+        run: cargo install wasm-bindgen-cli --version 0.2.123 --locked
+
+      # Set up Bun directly rather than the shared composite action, which runs
+      # `bun install` at the repo root and trips the root postinstall audit on
+      # the legacy React dependency tree. The Svelte app only needs web/ deps.
       - name: Setup Bun
-        uses: ./.github/actions/setup-bun
-        with: { install-node: "true" }
+        uses: oven-sh/setup-bun@v2
+
+      - name: Setup Node
+        uses: actions/setup-node@v6
+        with:
+          node-version: latest
+
+      - name: Install web dependencies
+        working-directory: web
+        run: bun install
+
+      - name: Build (Rust → WASM → Svelte)
+        working-directory: web
+        run: bun run build
 
       - name: Setup Pages
         uses: actions/configure-pages@v5
         id: pages
 
-      - name: Build
-        run: bun run build
-        env:
-          VITE_BASE_PATH: ${{ steps.pages.outputs.base_path }}
-
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v4
         with:
-          path: ./dist
+          path: ./web/dist
 
   deploy:
     permissions:

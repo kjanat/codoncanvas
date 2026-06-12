@@ -1,89 +1,24 @@
 {
-  "$schema": "https://dprint.dev/schemas/v0.json",
-
-  /** General */
-  "lineWidth": 80,
-  "indentWidth": 2,
-  "useTabs": false,
-
-  /** Language specific */
-  "markdown": {
-    "ignoreDirective": "prettier-ignore",
-    "ignoreFileDirective": "prettier-ignore-file",
-    "ignoreStartDirective": "prettier-ignore-start",
-    "ignoreEndDirective": "prettier-ignore-end"
-  },
-  "dockerfile": {},
-  "biome": {
-    "lineWidth": 80,
-    "indentWidth": 2,
-    "indentStyle": "space",
-    "json.indentStyle": "space"
-  },
-  "malva": {},
-  "markup": {
-    "formatComments": true,
-    "ignoreCommentDirective": "prettier-ignore",
-    "ignoreFileCommentDirective": "prettier-ignore-file",
-    "scriptIndent": true,
-    "styleIndent": true,
-    "singleAttrSameLine": true
-  },
-  "yaml": {
-    "indentBlockSequenceInMap": true,
-    "flowMap.preferSingleLine": true
-  },
-
-  /** Exec plugin for external commands */
+  "extends": "https://github.com/kjanat/kjanat/raw/6f8a126/configs/dprint.remote.json",
+  "excludes": [
+    "**/node_modules",
+    "**/dist",
+    "**/*.lock",
+    "**/.serena",
+    "**/.opencode",
+    "engine/target",
+    "web/src/lib/engine/pkg"
+  ],
+  "markdown": { "associations": ["!content/**/*.md"] },
+  "json": { "associations": ["*.webmanifest"] },
   "exec": {
-    "cwd": "${configDir}",
     "commands": [
-      {
-        /** Sorts package.json files */
-        "command": "bunx sort-package-json --stdin",
-        "fileNames": ["package.json"],
-        "stdin": true
-      },
-      {
-        /** Prettifies anf minifies SVG files */
-        "command": "bunx svgo --config .github/linters/svgo.mjs --pretty -q --input - --output -",
-        "exts": ["svg"],
-        "stdin": true
-      },
-      {
-        /** Formats toml files */
-        "command": "bunx tombi format --stdin-filename {{file_path}} -",
-        "exts": ["toml"]
-      },
-      {
-        /** Formats shell files */
-        "command": "shfmt --indent 2 --language-dialect bash --binary-next-line --keep-padding --case-indent --filename {{file_path}}",
-        "exts": ["sh", "bash"],
-        "stdin": true
-      }
+      { "command": "tombi format - --stdin-filename {{file_path}}", "exts": ["toml"] },
+      { "command": "rustfmt --edition 2024", "exts": ["rs"] },
+      { "command": "just --dump --justfile {{file_path}}", "fileNames": ["justfile"] }
     ]
   },
-
-  /** File inclusions/exclusions */
-  "excludes": [
-    "**/*-lock.json",
-    "**/*.gen.ts",
-    "**/*.lock",
-    "**/.opencode",
-    "**/.venv",
-    "**/node_modules",
-    "**/worker-configuration.d.ts",
-    "codon-chart.svg"
-  ],
-
-  /** Plugins */
   "plugins": [
-    "https://plugins.dprint.dev/markdown-0.20.0.wasm",
-    "https://plugins.dprint.dev/dockerfile-0.3.3.wasm",
-    "https://plugins.dprint.dev/biome-0.11.6.wasm",
-    "https://plugins.dprint.dev/g-plane/malva-v0.15.1.wasm",
-    "https://plugins.dprint.dev/g-plane/markup_fmt-v0.25.1.wasm",
-    "https://plugins.dprint.dev/g-plane/pretty_yaml-v0.5.1.wasm",
-    "https://plugins.dprint.dev/exec-0.6.0.json@a054130d458f124f9b5c91484833828950723a5af3f8ff2bd1523bd47b83b364"
+    "https://plugins.dprint.dev/exec-0.6.2.json@df98f54ffd3092b8a841aedd6d098a2651f16d0a796a40535774f1a8b4b9d463"
   ]
 }

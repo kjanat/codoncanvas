@@ -1,0 +1,13 @@
+[package]
+name                 = "codoncanvas-core"
+version.workspace    = true
+edition.workspace    = true
+description          = "Pure-Rust engine for the CodonCanvas DNA-inspired visual programming language: lexer, stack VM, mutation tools."
+repository.workspace = true
+license.workspace    = true
+
+[lib]
+crate-type = ["rlib"]
+
+[dependencies]
+serde = { workspace = true }

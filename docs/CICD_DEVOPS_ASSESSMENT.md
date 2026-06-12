@@ -179,17 +179,17 @@ vitest@1.0.0         ✅ Test runner (current)
 ```typescript
 // Add to achievement-engine.test.ts (copy from theme-manager.test.ts)
 beforeEach(() => {
-  localStorage.clear();
+	localStorage.clear();
 });
 
 // Mock localStorage
 global.localStorage = {
-  clear: vi.fn(),
-  getItem: vi.fn(),
-  setItem: vi.fn(),
-  removeItem: vi.fn(),
-  key: vi.fn(),
-  length: 0,
+	clear: vi.fn(),
+	getItem: vi.fn(),
+	setItem: vi.fn(),
+	removeItem: vi.fn(),
+	key: vi.fn(),
+	length: 0,
 };
 ```
 

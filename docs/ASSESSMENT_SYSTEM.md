@@ -62,22 +62,22 @@ The **Assessment System** provides automated challenges and grading for testing 
 To add assessment mode to the main playground:
 
 ```typescript
-import { AssessmentEngine } from "./assessment-engine";
-import { AssessmentUI } from "./assessment-ui";
+import { AssessmentEngine } from './assessment-engine';
+import { AssessmentUI } from './assessment-ui';
 
 // Initialize
 const engine = new AssessmentEngine();
 const assessmentUI = new AssessmentUI(
-  engine,
-  document.getElementById("assessment-container")!,
+	engine,
+	document.getElementById('assessment-container')!,
 );
 
 // Toggle assessment mode
 document
-  .getElementById("assessment-toggle-btn")
-  .addEventListener("click", () => {
-    assessmentUI.show();
-  });
+	.getElementById('assessment-toggle-btn')
+	.addEventListener('click', () => {
+		assessmentUI.show();
+	});
 ```
 
 ---
@@ -359,17 +359,17 @@ Export results and review `byType` performance to identify gaps.
 
 ```typescript
 class AssessmentEngine {
-  // Identify mutation type between genomes
-  identifyMutation(original: string, mutated: string): MutationType;
+	// Identify mutation type between genomes
+	identifyMutation(original: string, mutated: string): MutationType;
 
-  // Generate random challenge
-  generateChallenge(difficulty: DifficultyLevel): Challenge;
+	// Generate random challenge
+	generateChallenge(difficulty: DifficultyLevel): Challenge;
 
-  // Score student response
-  scoreResponse(challenge: Challenge, response: MutationType): AssessmentResult;
+	// Score student response
+	scoreResponse(challenge: Challenge, response: MutationType): AssessmentResult;
 
-  // Calculate progress from results
-  calculateProgress(results: AssessmentResult[]): StudentProgress;
+	// Calculate progress from results
+	calculateProgress(results: AssessmentResult[]): StudentProgress;
 }
 ```
 
@@ -377,17 +377,17 @@ class AssessmentEngine {
 
 ```typescript
 class AssessmentUI {
-  constructor(engine: AssessmentEngine, container: HTMLElement);
+	constructor(engine: AssessmentEngine, container: HTMLElement);
 
-  // Show/hide UI
-  show(): void;
-  hide(): void;
+	// Show/hide UI
+	show(): void;
+	hide(): void;
 
-  // Get progress for analytics
-  getProgress(): StudentProgress;
+	// Get progress for analytics
+	getProgress(): StudentProgress;
 
-  // Export results as JSON
-  exportResults(): string;
+	// Export results as JSON
+	exportResults(): string;
 }
 ```
 

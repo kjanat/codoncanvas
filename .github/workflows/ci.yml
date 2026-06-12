@@ -5,99 +5,76 @@ on:
     branches: [master]
   pull_request:
     branches: [master]
+  workflow_dispatch:
 
 permissions:
   contents: read
 
 concurrency:
-  group: ${{ github.workflow }}-${{ github.ref }}
+  group: ci-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
-  typecheck:
-    name: Typecheck
+  engine:
+    name: Engine (Rust)
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v6
+      - uses: actions/checkout@v6
         with:
           persist-credentials: false
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          components: rustfmt, clippy
+          targets: wasm32-unknown-unknown
+      - uses: Swatinem/rust-cache@v2
+        with:
+          workspaces: engine
+      - name: Test
+        working-directory: engine
+        run: cargo test
+      - name: Clippy
+        working-directory: engine
+        run: cargo clippy --all-targets -- -D warnings
 
-      - name: Setup Bun
-        uses: ./.github/actions/setup-bun
-
-      - name: Run typecheck
-        run: bun typecheck
-
-  lint:
-    name: Lint
+  web:
+    name: Web (Svelte)
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v6
+      - uses: actions/checkout@v6
         with:
           persist-credentials: false
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: wasm32-unknown-unknown
+      - uses: Swatinem/rust-cache@v2
+        with:
+          workspaces: engine
+      - uses: taiki-e/install-action@v2
+        with:
+          tool: wasm-bindgen-cli@0.2.123
+      - uses: oven-sh/setup-bun@v2
+      - name: Install
+        working-directory: web
+        run: bun install
+      - name: Build (Rust → WASM → Svelte)
+        working-directory: web
+        run: bun run build
+      - name: Type check
+        working-directory: web
+        run: bun run check
 
-      - name: Setup Biome
-        uses: biomejs/setup-biome@dffc78db7e84fe7c20901b2eb7b697f74f916b72 # v2
-
-      - name: Run lint
-        run: biome ci --reporter=github --formatter-enabled=false .
-
-      - name: Run lint (verbose)
-        if: failure()
-        run: biome ci --formatter-enabled=false .
-
-  formatting:
+  format:
     name: Formatting
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v6
+      - uses: actions/checkout@v6
         with:
           persist-credentials: false
-
-      - name: Setup Bun
-        uses: ./.github/actions/setup-bun
-
-      - name: Setup shfmt
-        uses: mfinelli/setup-shfmt@v4
-
-      - name: Formatting
-        if: ${{ !cancelled() }}
-        uses: dprint/check@9cb3a2b17a8e606d37aae341e49df3654933fc23 # v2.3
-
-  test:
-    name: Test
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v6
+      - uses: dtolnay/rust-toolchain@stable
         with:
-          persist-credentials: false
-
-      - name: Setup Bun
-        uses: ./.github/actions/setup-bun
-
-      - name: Run tests
-        run: bun test
-
-  code-duplication:
-    name: Check duplicated code
-    runs-on: ubuntu-latest
-    if: ${{ github.event_name == 'pull_request' }}
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v6
+          components: rustfmt
+      - uses: taiki-e/install-action@v2
         with:
-          persist-credentials: false
-
-      - name: Setup Bun
-        uses: ./.github/actions/setup-bun
-
-      - name: Check duplication
-        uses: ./.github/actions/check-duplication
-        continue-on-error: true
-
-      - name: Prevents job failure
-        run: echo "Hi!"
+          tool: dprint, just, tombi
+      - name: dprint check
+        run: dprint check

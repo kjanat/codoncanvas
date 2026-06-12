@@ -1059,11 +1059,11 @@ By the end of this session, participants will be able to:
 
 [3-5 key citations supporting session content]
 
-Kesler, A., et al. (2022). Active learning by visual programming. _Journal of Educational
-Computing Research_, _60_(7), 1687-1716.
+Kesler, A., et al. (2022). Active learning by visual programming. *Journal of Educational
+Computing Research*, *60*(7), 1687-1716.
 
-Kılıç, D., et al. (2021). Secondary school students' misconceptions in genetics. _Journal
-of Biological Education_, _57_(3), 590-606.
+Kılıç, D., et al. (2021). Secondary school students' misconceptions in genetics. *Journal
+of Biological Education*, *57*(3), 590-606.
 ```
 
 ---

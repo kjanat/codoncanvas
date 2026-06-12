@@ -107,10 +107,10 @@ See [IRB Submission Guide](#irb-submission-guide) for consent form templates.
 
 ```javascript
 // Open browser console (F12), paste:
-import("./src/research-metrics.js").then((m) => {
-  const metrics = new m.ResearchMetrics();
-  metrics.enable();
-  console.log("Research metrics enabled ✓");
+import('./src/research-metrics.js').then((m) => {
+	const metrics = new m.ResearchMetrics();
+	metrics.enable();
+	console.log('Research metrics enabled ✓');
 });
 ```
 
@@ -137,17 +137,17 @@ Data saves every 30 seconds to browser localStorage.
 **Method 2: Browser Console Export**
 
 ```javascript
-import("./src/research-metrics.js").then((m) => {
-  const metrics = new m.ResearchMetrics();
-  const csv = metrics.exportCSV();
+import('./src/research-metrics.js').then((m) => {
+	const metrics = new m.ResearchMetrics();
+	const csv = metrics.exportCSV();
 
-  // Download CSV
-  const blob = new Blob([csv], { type: "text/csv" });
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement("a");
-  a.href = url;
-  a.download = "codoncanvas_metrics.csv";
-  a.click();
+	// Download CSV
+	const blob = new Blob([csv], { type: 'text/csv' });
+	const url = URL.createObjectURL(blob);
+	const a = document.createElement('a');
+	a.href = url;
+	a.download = 'codoncanvas_metrics.csv';
+	a.click();
 });
 ```
 
